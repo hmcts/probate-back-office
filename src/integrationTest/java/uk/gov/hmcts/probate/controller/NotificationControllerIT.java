@@ -24,7 +24,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
@@ -37,6 +36,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -91,6 +92,11 @@ class NotificationControllerIT {
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
     private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -144,7 +150,7 @@ class NotificationControllerIT {
     private EvidenceUploadService evidenceUploadService;
 
     @MockBean
-    private SecurityUtils securityUtils;
+    private UserInfoService userInfoService;
 
     @SpyBean
     private DocumentService documentService;
@@ -221,13 +227,7 @@ class NotificationControllerIT {
 
         when(featureToggleService.isFeatureToggleOn("probate-documents-received-notification", false))
             .thenReturn(true);
-
-        UserInfo caseworkerInfo = UserInfo.builder()
-                .familyName("familyName")
-                .givenName("givenname")
-                .roles(Arrays.asList("caseworker-probate"))
-                .build();
-        doReturn(caseworkerInfo).when(securityUtils).getUserInfo(AUTH_TOKEN);
+        doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
     @Test

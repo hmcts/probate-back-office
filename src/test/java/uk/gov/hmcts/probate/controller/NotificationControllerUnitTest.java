@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -33,12 +34,14 @@ import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationServic
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,8 +49,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -110,6 +115,8 @@ class NotificationControllerUnitTest {
     private HandOffLegacyTransformer handOffLegacyTransformerMock;
     @Mock
     EvidenceUploadService evidenceUploadService;
+    @Mock
+    private UserInfoService userInfoService;
 
     @InjectMocks
     NotificationController notificationController;
@@ -123,7 +130,16 @@ class NotificationControllerUnitTest {
     private Document document;
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    private static final String AUTH_TOKEN = "auth";
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
+
+    @BeforeEach
+    void setUp() {
+        when(userInfoService.getCaseworkerInfo()).thenReturn(CASEWORKER_USERINFO);
+    }
 
     @Test
     void shouldSendApplicationReceived() throws NotificationClientException {
@@ -198,8 +214,9 @@ class NotificationControllerUnitTest {
     @Test
     void shouldSendDocumentsReceived() throws NotificationClientException {
         setUpMocks(DOCUMENTS_RECEIVED);
-        notificationController.sendDocumentReceivedNotification(AUTH_TOKEN, callbackRequest);
-        verify(documentsReceivedNotificationService).handleDocumentReceivedNotification(callbackRequest, AUTH_TOKEN);
+        notificationController.sendDocumentReceivedNotification(callbackRequest);
+        verify(documentsReceivedNotificationService)
+                .handleDocumentReceivedNotification(callbackRequest, CASEWORKER_USERINFO);
     }
 
 
@@ -209,7 +226,7 @@ class NotificationControllerUnitTest {
         HttpServletRequest requestMock = mock(HttpServletRequest.class);
         BindingResult bindingResultMock = mock(BindingResult.class);
         ResponseEntity<CallbackResponse> responseEntity =
-                notificationController.startDelayedNotificationPeriod(AUTH_TOKEN, callbackRequest, bindingResultMock,
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         requestMock);
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
     }
@@ -242,7 +259,7 @@ class NotificationControllerUnitTest {
     void shouldTransformEvidenceHandledGrantReceived() throws NotificationClientException {
         setUpMocks(GRANT_RAISED);
         ResponseEntity<CallbackResponse> callbackResponse =
-                notificationController.sendGrantReceivedNotification(AUTH_TOKEN, callbackRequest);
+                notificationController.sendGrantReceivedNotification(callbackRequest);
         verify(caseDataTransformer).transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequest);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
@@ -251,7 +268,7 @@ class NotificationControllerUnitTest {
     void shouldTransformForAttachDocs() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
         ResponseEntity<CallbackResponse> callbackResponse =
-                notificationController.startDelayedNotificationPeriod(AUTH_TOKEN, callbackRequest, bindingResultMock,
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                 httpServletRequest);
         verify(caseDataTransformer).transformCaseDataForAttachDocuments(callbackRequest);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
@@ -265,7 +282,7 @@ class NotificationControllerUnitTest {
                 .build();
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         ResponseEntity<CallbackResponse> callbackResponse =
-                notificationController.sendGrantReceivedNotification(AUTH_TOKEN, callbackRequest);
+                notificationController.sendGrantReceivedNotification(callbackRequest);
         verify(scannedDocumentOrderingService)
                 .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
@@ -279,7 +296,7 @@ class NotificationControllerUnitTest {
                 .build();
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         ResponseEntity<CallbackResponse> callbackResponse =
-                notificationController.startDelayedNotificationPeriod(AUTH_TOKEN, callbackRequest, bindingResultMock,
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
         verify(scannedDocumentOrderingService)
                 .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
@@ -294,7 +311,7 @@ class NotificationControllerUnitTest {
         caseDetails.setState(CASE_PRINTED.getId());
         callbackRequest = new CallbackRequest(caseDetails);
         ResponseEntity<CallbackResponse> callbackResponse =
-                notificationController.startDelayedNotificationPeriod(AUTH_TOKEN, callbackRequest, bindingResultMock,
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
         verify(notificationService).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
         verify(caseDataTransformer).transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
@@ -307,7 +324,7 @@ class NotificationControllerUnitTest {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
         ResponseEntity<CallbackResponse> callbackResponse =
-                notificationController.startDelayedNotificationPeriod(AUTH_TOKEN, callbackRequest, bindingResultMock,
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
         verify(notificationService, times(0)).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
         verify(caseDataTransformer, times(0)).transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
@@ -322,7 +339,7 @@ class NotificationControllerUnitTest {
                     ID);
         callbackRequest = new CallbackRequest(caseDetails);
         ResponseEntity<CallbackResponse> callbackResponse =
-                notificationController.startDelayedNotificationPeriod(AUTH_TOKEN, callbackRequest, bindingResultMock,
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
         verify(notificationService, times(0)).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
@@ -382,7 +399,7 @@ class NotificationControllerUnitTest {
         when(eventValidationService.validateNocEmail(any(), any())).thenReturn(callbackResponse);
         when(notificationService.sendNocEmail(any(), any())).thenReturn(document);
         ResponseEntity<CallbackResponse> stringResponseEntity =
-                notificationController.sendNOCEmailNotification(AUTH_TOKEN, callbackRequest);
+                notificationController.sendNOCEmailNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -413,7 +430,7 @@ class NotificationControllerUnitTest {
         callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
         when(eventValidationService.validateNocEmail(any(), any())).thenReturn(callbackResponse);
         ResponseEntity<CallbackResponse> stringResponseEntity =
-                notificationController.sendNOCEmailNotification(AUTH_TOKEN, callbackRequest);
+                notificationController.sendNOCEmailNotification(callbackRequest);
         verify(notificationService, times(0)).sendNocEmail(any(), any());
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
     }
@@ -451,7 +468,7 @@ class NotificationControllerUnitTest {
         callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
         when(eventValidationService.validateNocEmail(any(), any())).thenReturn(callbackResponse);
         ResponseEntity<CallbackResponse> stringResponseEntity =
-                notificationController.sendNOCEmailNotification(AUTH_TOKEN, callbackRequest);
+                notificationController.sendNOCEmailNotification(callbackRequest);
         verify(notificationService, times(1)).sendNocEmail(any(), any());
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
     }

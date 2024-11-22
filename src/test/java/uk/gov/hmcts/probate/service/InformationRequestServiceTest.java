@@ -18,10 +18,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.NotificationExecutorsApplyingValidationRule;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,7 +46,11 @@ class InformationRequestServiceTest {
     private static final List<CollectionMember<BulkPrint>> BULK_PRINT_IDS =
         Arrays.asList(new CollectionMember<>(BulkPrint.builder().sendLetterId("123").build()),
             new CollectionMember<>(BulkPrint.builder().sendLetterId("321").build()));
-    private static final String AUTH_TOKEN = "auth";
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
 
     @Mock
     private InformationRequestCorrespondenceService informationRequestCorrespondenceService;
@@ -138,7 +144,7 @@ class InformationRequestServiceTest {
             eq(Arrays.asList(SENT_EMAIL_DOCUMENT)), eq(new ArrayList<>()), any())).thenReturn(callbackResponse);
 
         assertEquals(SENT_EMAIL_DOCUMENT,
-            informationRequestService.handleInformationRequest(callbackRequest, AUTH_TOKEN)
+            informationRequestService.handleInformationRequest(callbackRequest, CASEWORKER_USERINFO)
                 .getData().getProbateNotificationsGenerated().get(0).getValue());
     }
 

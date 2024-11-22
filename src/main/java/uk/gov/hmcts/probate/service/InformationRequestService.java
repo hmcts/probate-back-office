@@ -8,10 +8,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.NotificationExecutorsApplyingValidationRule;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,7 +26,8 @@ public class InformationRequestService {
     private List<Document> letterIdDocuments;
     private List<String> letterIds;
 
-    public CallbackResponse handleInformationRequest(CallbackRequest callbackRequest, String authToken) {
+    public CallbackResponse handleInformationRequest(CallbackRequest callbackRequest,
+                                                     Optional<UserInfo> caseworkerInfo) {
         documents = new LinkedList<>();
         letterIdDocuments = new LinkedList<>();
         letterIds = new ArrayList<>();
@@ -49,6 +52,6 @@ public class InformationRequestService {
             //    });
         }
         return callbackResponseTransformer
-                .addInformationRequestDocuments(callbackRequest, documents, letterIds, authToken);
+                .addInformationRequestDocuments(callbackRequest, documents, letterIds, caseworkerInfo);
     }
 }

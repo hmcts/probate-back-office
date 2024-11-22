@@ -30,7 +30,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
-import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.BulkPrintService;
@@ -38,6 +37,7 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -45,6 +45,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.UUID;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -80,6 +81,11 @@ class DocumentControllerIT {
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
     private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
     @Autowired
     private MockMvc mockMvc;
 
@@ -120,7 +126,7 @@ class DocumentControllerIT {
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
 
     @MockBean
-    private SecurityUtils securityUtils;
+    private UserInfoService userInfoService;
 
     @BeforeEach
     public void setUp() throws NotificationClientException {
@@ -206,12 +212,7 @@ class DocumentControllerIT {
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
             .thenReturn(welshDocumentDraft);
 
-        UserInfo caseworkerInfo = UserInfo.builder()
-                .familyName("familyName")
-                .givenName("givenname")
-                .roles(Arrays.asList("caseworker-probate"))
-                .build();
-        doReturn(caseworkerInfo).when(securityUtils).getUserInfo(AUTH_TOKEN);
+        doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
     @Test

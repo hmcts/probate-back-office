@@ -22,12 +22,14 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.LifeEventCCDService;
 import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,6 +49,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LifeEventControllerIT {
     private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
 
     @Autowired
     private MockMvc mockMvc;
@@ -70,6 +77,9 @@ class LifeEventControllerIT {
     private SecurityUtils securityUtils;
 
     @MockBean
+    private UserInfoService userInfoService;
+
+    @MockBean
     private LifeEventValidationRule lifeEventValidationRule;
 
     @Captor
@@ -82,12 +92,7 @@ class LifeEventControllerIT {
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-        UserInfo caseworkerInfo = UserInfo.builder()
-                .familyName("familyName")
-                .givenName("givenname")
-                .roles(Arrays.asList("caseworker-probate"))
-                .build();
-        doReturn(caseworkerInfo).when(securityUtils).getUserInfo(AUTH_TOKEN);
+        doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
     @Test

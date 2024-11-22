@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationServic
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
@@ -43,6 +44,7 @@ import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -50,6 +52,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
@@ -92,6 +95,7 @@ public class NotificationController {
     private final CaseDataTransformer caseDataTransformer;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final NocEmailAddressNotifyValidationRule nocEmailAddressNotifyValidationRule;
+    private final UserInfoService userInfoService;
 
     @PostMapping(path = "/application-received")
     public ResponseEntity<ProbateDocument> sendApplicationReceivedNotification(
@@ -184,7 +188,8 @@ public class NotificationController {
             }
         }
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.caseStopped(callbackRequest, documents, letterId, authToken);
+            Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+            response = callbackResponseTransformer.caseStopped(callbackRequest, documents, letterId, caseworkerInfo);
         }
         return ResponseEntity.ok(response);
     }
@@ -199,42 +204,40 @@ public class NotificationController {
 
     @PostMapping(path = "/documents-received")
     public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
-        @RequestHeader(value = "Authorization") String authToken,
-        @RequestBody CallbackRequest callbackRequest)
-        throws NotificationClientException {
-        return ResponseEntity
-            .ok(documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest, authToken));
+            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        return ResponseEntity.ok(documentsReceivedNotificationService
+                .handleDocumentReceivedNotification(callbackRequest, caseworkerInfo));
     }
 
     @PostMapping(path = "/stopped-information-request")
-    public ResponseEntity<CallbackResponse> informationRequest(@RequestHeader(value = "Authorization") String authToken,
-                                                               @RequestBody CallbackRequest callbackRequest) {
-        return ResponseEntity.ok(informationRequestService.handleInformationRequest(callbackRequest, authToken));
+    public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest) {
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        return ResponseEntity.ok(informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo));
     }
 
     @PostMapping(path = "/redeclaration-sot")
-    public ResponseEntity<CallbackResponse> redeclarationSot(@RequestHeader(value = "Authorization") String authToken,
-                                                             @RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> redeclarationSot(@RequestBody CallbackRequest callbackRequest) {
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest,
-                authToken));
+                caseworkerInfo));
     }
 
     @PostMapping(path = "/grant-received")
     public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
-        @RequestHeader(value = "Authorization") String authToken,
-        @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         caseDataTransformer.transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequest);
         scannedDocumentOrderingService
                 .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity
             .ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest,
-                    authToken));
+                    caseworkerInfo));
     }
 
     @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
-        @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
         HttpServletRequest request) throws NotificationClientException {
@@ -254,8 +257,9 @@ public class NotificationController {
             document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
             caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
         }
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer
-                .transformCaseForAttachScannedDocs(callbackRequest, document, authToken);
+                .transformCaseForAttachScannedDocs(callbackRequest, document, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
 
@@ -284,7 +288,6 @@ public class NotificationController {
 
     @PostMapping(path = "/noc-notification")
     public ResponseEntity<CallbackResponse> sendNOCEmailNotification(
-            @RequestHeader(value = "Authorization") String authToken,
             @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         log.info("Preparing to send email notification for NOC");
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -300,7 +303,8 @@ public class NotificationController {
             documents.add(nocSentEmail);
             log.info("Successful response from notify for case id {} ",
                     callbackRequest.getCaseDetails().getId());
-            response = callbackResponseTransformer.addNocDocuments(callbackRequest, documents, authToken);
+            Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+            response = callbackResponseTransformer.addNocDocuments(callbackRequest, documents, caseworkerInfo);
         } else {
             log.info("No email sent or document returned to {} case: {}",
                     caseData.getChannelChoice(), caseDetails.getId());

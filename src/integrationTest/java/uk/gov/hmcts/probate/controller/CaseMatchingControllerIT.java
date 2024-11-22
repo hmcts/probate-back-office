@@ -90,7 +90,7 @@ class CaseMatchingControllerIT {
                 .givenName("givenname")
                 .roles(Arrays.asList("caseworker-probate"))
                 .build();
-        doReturn(caseworkerInfo).when(securityUtils).getUserInfo(AUTH_TOKEN);
+        doReturn(caseworkerInfo).when(securityUtils).getUserInfo(any());
     }
 
     @Test

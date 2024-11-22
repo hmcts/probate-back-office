@@ -26,12 +26,12 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
-import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
@@ -40,17 +40,21 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -96,11 +100,16 @@ class DocumentControllerUnitTest {
     @Mock
     private EvidenceUploadService evidenceUploadService;
     @Mock
-    private IdamApi idamApi;
+    private UserInfoService userInfoService;
     private DocumentController documentController;
 
     private static final String DUMMY_OAUTH_2_TOKEN = "oauth2Token";
     private static final String DUMMY_SAUTH_TOKEN = "serviceToken";
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
 
     @BeforeEach
     public void setUp() {
@@ -112,12 +121,13 @@ class DocumentControllerUnitTest {
         ReflectionTestUtils.setField(documentValidation,
             "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
 
-        documentController = new DocumentController(idamApi, documentGeneratorService, registryDetailsService,
+        documentController = new DocumentController(documentGeneratorService, registryDetailsService,
                     pdfManagementService, callbackResponseTransformer, caseDataTransformer,
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
-            evidenceUploadService);
+            evidenceUploadService, userInfoService);
+        doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
     @Test
@@ -201,9 +211,9 @@ class DocumentControllerUnitTest {
         when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
 
         ResponseEntity<CallbackResponse> response = documentController
-                .evidenceAdded(DUMMY_OAUTH_2_TOKEN, callbackRequest);
+                .evidenceAdded(callbackRequest);
         ResponseEntity<CallbackResponse> response2 = documentController
-                .evidenceAdded(DUMMY_OAUTH_2_TOKEN, callbackRequest);
+                .evidenceAdded(callbackRequest);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));
 
@@ -272,9 +282,9 @@ class DocumentControllerUnitTest {
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
 
         ResponseEntity<CallbackResponse> response =
-                documentController.permanentlyDeleteRemovedGrant(DUMMY_OAUTH_2_TOKEN, callbackRequest);
+                documentController.permanentlyDeleteRemovedGrant(callbackRequest);
         verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
-        verify(callbackResponseTransformer, times(1)).updateTaskList(callbackRequest, DUMMY_OAUTH_2_TOKEN);
+        verify(callbackResponseTransformer, times(1)).updateTaskList(callbackRequest, CASEWORKER_USERINFO);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

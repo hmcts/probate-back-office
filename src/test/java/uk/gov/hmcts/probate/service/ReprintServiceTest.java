@@ -19,10 +19,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -54,7 +57,11 @@ class ReprintServiceTest {
     @Captor
     private ArgumentCaptor<Document> selectedDocumentCaptor;
 
-    private static final String AUTH_TOKEN = "auth";
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
 
 
     @BeforeEach
@@ -83,7 +90,7 @@ class ReprintServiceTest {
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
-        reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+        reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.DIGITAL_GRANT));
@@ -109,7 +116,7 @@ class ReprintServiceTest {
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
-        reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+        reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.DIGITAL_GRANT));
@@ -135,7 +142,7 @@ class ReprintServiceTest {
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
-        reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+        reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.DIGITAL_GRANT_REISSUE));
@@ -161,7 +168,7 @@ class ReprintServiceTest {
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
-        reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+        reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.STATEMENT_OF_TRUTH));
@@ -187,7 +194,7 @@ class ReprintServiceTest {
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
 
-        reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+        reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.OTHER));
@@ -201,7 +208,7 @@ class ReprintServiceTest {
                     .build();
             when(caseData.getReprintDocument()).thenReturn(doc);
 
-            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+            reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
         });
     }
 
@@ -215,7 +222,7 @@ class ReprintServiceTest {
                     .build();
             when(caseData.getReprintDocument()).thenReturn(doc);
 
-            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+            reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
         });
     }
 
@@ -229,7 +236,7 @@ class ReprintServiceTest {
                     .build();
             when(caseData.getReprintDocument()).thenReturn(doc);
 
-            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+            reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
         });
     }
 
@@ -250,7 +257,7 @@ class ReprintServiceTest {
 
             setupGeneratedDocs();
 
-            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+            reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
         });
     }
 
@@ -271,7 +278,7 @@ class ReprintServiceTest {
 
             setupGeneratedDocs();
 
-            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+            reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
         });
     }
 
@@ -292,7 +299,7 @@ class ReprintServiceTest {
 
             setupScannedDocs();
 
-            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
+            reprintService.reprintSelectedDocument(callbackRequest, CASEWORKER_USERINFO);
         });
     }
 

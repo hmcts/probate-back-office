@@ -24,12 +24,14 @@ import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,7 +56,12 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private static final String COVERSHEET_FILE_NAME = "coversheet.pdf";
     private static final byte[] DOC_BYTES = {(byte) 23};
-    private static final String AUTH_TOKEN = "AuthToken";
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
+
     @MockBean
     BulkPrintService bulkPrintService;
     @Autowired
@@ -118,7 +125,7 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
             .documentFileName(SENT_EMAIL_FILE_NAME).documentType(GRANT_RAISED).build());
 
         CallbackResponse response = handleGrantReceivedNotification.handleGrantReceivedNotification(callbackRequest,
-            AUTH_TOKEN);
+            CASEWORKER_USERINFO);
         assertEquals(1, response.getData().getProbateNotificationsGenerated().size());
         assertEquals(SENT_EMAIL_FILE_NAME,
             response.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
@@ -150,7 +157,7 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
                 .documentFileName(COVERSHEET_FILE_NAME).documentType(GRANT_COVERSHEET).build());
 
         CallbackResponse response = handleGrantReceivedNotification.handleGrantReceivedNotification(callbackRequest,
-            AUTH_TOKEN);
+            CASEWORKER_USERINFO);
         assertEquals(2, response.getData().getProbateNotificationsGenerated().size());
         assertEquals(COVERSHEET_FILE_NAME,
             response.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());

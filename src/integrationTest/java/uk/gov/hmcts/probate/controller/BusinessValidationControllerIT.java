@@ -35,7 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
-import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.PrepareNocService;
@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
@@ -200,6 +201,11 @@ class BusinessValidationControllerIT {
                 .item("Item")
                 .value("999.99")
                 .build()));
+    private static final SecurityDTO securityDTO = SecurityDTO.builder()
+            .authorisation(AUTH_TOKEN)
+            .userId("userId")
+            .serviceAuthorisation("serviceToken")
+            .build();
     private final TestUtils testUtils = new TestUtils();
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -224,7 +230,7 @@ class BusinessValidationControllerIT {
     @MockBean
     private PrepareNocService prepareNocService;
     @MockBean
-    private SecurityUtils securityUtils;
+    private UserInfoService userInfoService;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
@@ -296,7 +302,7 @@ class BusinessValidationControllerIT {
                 .givenName("givenname")
                 .roles(Arrays.asList("caseworker-probate"))
                 .build();
-        doReturn(caseworkerInfo).when(securityUtils).getUserInfo(AUTH_TOKEN);
+        doReturn(caseworkerInfo).when(userInfoService).getCaseworkerInfo();
     }
 
     @Test
