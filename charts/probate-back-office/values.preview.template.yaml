@@ -273,6 +273,7 @@ aac-manage-case-assignment:
 ccd-case-document-am-api:
   enabled: true
   java:
+    disableKeyVaults: true
     image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
     releaseNameOverride: ${SERVICE_NAME}-cdam
     ingressHost: ccd-case-document-am-api-${SERVICE_FQDN}
@@ -284,6 +285,7 @@ ccd-case-document-am-api:
       S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       DM_STORE_BASE_URL: http://dm-store-aat.service.core-compute-aat.internal
       CASE_DOCUMENT_AM_API_S2S_SECRET: ${CASE_DOCUMENT_AM_API_S2S_SECRET}
+      CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,probate_backend,em_npa_app,dg_docassembly_api,em_stitching_api,em_ccd_orchestrator,bulk_scan_orchestrator
 
 java:
   image: ${IMAGE_NAME}
