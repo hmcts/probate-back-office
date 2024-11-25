@@ -35,7 +35,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
-import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.PrepareNocService;
@@ -148,7 +147,6 @@ class BusinessValidationControllerIT {
     private static final String SOLS_VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String CASE_PRINTED = "/case/casePrinted";
-    private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String CHANGE_CASE_STATE_URL = "/case/changeCaseState";
@@ -201,11 +199,12 @@ class BusinessValidationControllerIT {
                 .item("Item")
                 .value("999.99")
                 .build()));
-    private static final SecurityDTO securityDTO = SecurityDTO.builder()
-            .authorisation(AUTH_TOKEN)
-            .userId("userId")
-            .serviceAuthorisation("serviceToken")
-            .build();
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
+
     private final TestUtils testUtils = new TestUtils();
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -297,12 +296,7 @@ class BusinessValidationControllerIT {
         doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(ID.toString(),
                 AUTH_TOKEN);
 
-        UserInfo caseworkerInfo = UserInfo.builder()
-                .familyName("familyName")
-                .givenName("givenname")
-                .roles(Arrays.asList("caseworker-probate"))
-                .build();
-        doReturn(caseworkerInfo).when(userInfoService).getCaseworkerInfo();
+        doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
     @Test
@@ -801,59 +795,6 @@ class BusinessValidationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
         mockMvc.perform(post(CASE_PRINTED).header(AUTH_HEADER, AUTH_TOKEN)
-                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
-    void shouldReturnCheckListValidateSuccessfulQAState() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
-
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).header(AUTH_HEADER, AUTH_TOKEN)
-                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
-    void shouldReturnCheckListValidateUnSuccessfulQ1IsNo() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
-
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).header(AUTH_HEADER, AUTH_TOKEN)
-                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("Ensure all checks have been completed, cancel to return to the examining state"))
-            .andExpect(jsonPath("$.errors[1]")
-                    .value("Sicrhewch bod yr holl wiriadau wedi'u cwblhau, canslo i ddychwelyd i'r cam "
-                            + "arholi"))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-    }
-
-    @Test
-    void shouldReturnCheckListValidateUnSuccessfulQ2IsNo() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadChecklist.json");
-
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).header(AUTH_HEADER, AUTH_TOKEN)
-                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("Ensure all checks have been completed, cancel to return to the examining state"))
-            .andExpect(jsonPath("$.errors[1]")
-                    .value("Sicrhewch bod yr holl wiriadau wedi'u cwblhau, canslo i ddychwelyd i'r cam "
-                            + "arholi"))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-    }
-
-    @Test
-    void shouldReturnCheckListValidateSuccessful() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutorsReadyToIssue.json");
-
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).header(AUTH_HEADER, AUTH_TOKEN)
                         .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));

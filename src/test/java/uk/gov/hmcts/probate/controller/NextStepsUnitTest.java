@@ -187,7 +187,8 @@ class NextStepsUnitTest {
     void shouldValidateWithNoErrorsForStateChange() throws NotificationClientException {
         Optional<String> newState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(newState);
-        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, newState, null))
+        when(callbackResponseTransformerMock
+            .transformWithConditionalStateChange(callbackRequestMock, newState, Optional.empty()))
                 .thenReturn(callbackResponseMock);
 
 
