@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -524,7 +525,7 @@ public class CaseData extends CaseDataParent {
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
     private LocalDate escalatedDate;
-    private String registrarEscalateReason;
+    private RegistrarEscalateReason registrarEscalateReason;
     private LocalDate caseWorkerEscalationDate;
     private LocalDate resolveCaseWorkerEscalationDate;
     private String resolveCaseWorkerEscalationState;

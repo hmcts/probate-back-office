@@ -15,6 +15,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -288,7 +289,6 @@ class CallbackResponseTransformerTest {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String CASE_MATCHING_ISSUE_GRANT = "BOCaseMatchingIssueGrant";
-    private static final String REGISTRAR_ESCALATE_REASON_REFERRALS = "referrals";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
     private static final LocalDate VALID_CODICIL_DATE = LocalDate.now().minusDays(1);
     private static final LocalDate VALID_ORIGINAL_WILL_SIGNED_DATE = LocalDate.now().minusDays(1);
@@ -2607,12 +2607,12 @@ class CallbackResponseTransformerTest {
 
     @Test
     void shouldChangeRegistrarEscalateReasonReferrals() {
-        caseDataBuilder.registrarEscalateReason(REGISTRAR_ESCALATE_REASON_REFERRALS);
+        caseDataBuilder.registrarEscalateReason(RegistrarEscalateReason.REFERRALS);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-        assertEquals(REGISTRAR_ESCALATE_REASON_REFERRALS, callbackResponse.getData().getRegistrarEscalateReason());
+        assertEquals(RegistrarEscalateReason.REFERRALS, callbackResponse.getData().getRegistrarEscalateReason());
     }
 
     @Test
