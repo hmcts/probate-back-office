@@ -31,7 +31,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
-import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -127,10 +126,6 @@ public class CallbackResponseTransformer {
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final String IHT400 = "IHT400";
     private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection", "boCorrection");
-    private static final List<String> EXCLUDED_ROLE_LIST = Arrays.asList("caseworker-probate-systemupdate",
-            "caseworker-probate-scheduler", "caseworker-probate-registrar",
-            "caseworker-probate-rparobot", "idam-service-account");
-    private static final String CASEWORKER_ROLE = "caseworker-probate";
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -145,7 +140,6 @@ public class CallbackResponseTransformer {
     private final IhtEstateDefaulter ihtEstateDefaulter;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
-    private final SecurityUtils securityUtils;
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
 
