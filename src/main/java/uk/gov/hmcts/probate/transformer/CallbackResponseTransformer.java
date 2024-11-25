@@ -501,19 +501,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse selectForQA(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-            getResponseCaseData(callbackRequest.getCaseDetails(),
-                    callbackRequest.getEventId(),
-                    callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
-                    false);
-        if (ANSWER_YES.equalsIgnoreCase(callbackRequest.getCaseDetails().getData()
-                .getBoExaminationChecklistRequestQA())) {
-            responseCaseDataBuilder.state(QA_CASE_STATE);
-        }
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
     public CallbackResponse resolveStop(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
         setState(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =

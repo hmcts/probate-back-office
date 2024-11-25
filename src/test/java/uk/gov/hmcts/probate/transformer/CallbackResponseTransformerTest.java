@@ -1490,27 +1490,6 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldSelectForQA() {
-        CallbackResponse response = underTest.selectForQA(callbackRequestMock, CASEWORKER_USERINFO);
-
-        assertCommon(response);
-        assertLegacyInfo(response);
-
-        assertEquals(CallbackResponseTransformer.QA_CASE_STATE, response.getData().getState());
-    }
-
-    @Test
-    void shouldNotSelectForQA() {
-        caseDataBuilder.boExaminationChecklistRequestQA(null);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsMock.getState()).thenReturn("CurrentStateId");
-
-        CallbackResponse response = underTest.selectForQA(callbackRequestMock, CASEWORKER_USERINFO);
-
-        assertEquals("CurrentStateId", response.getData().getState());
-    }
-
-    @Test
     void shouldConvertRequestToDataBeanWithStopDetailsChange() {
         List<Document> documents = new ArrayList<>();
         documents.add(Document.builder().documentType(CAVEAT_STOPPED).build());
