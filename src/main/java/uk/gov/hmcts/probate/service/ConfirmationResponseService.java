@@ -250,7 +250,7 @@ public class ConfirmationResponseService {
                     + "**Customer application reference** " + ccdData.getFee().getSolsPBAPaymentReference();
 
             paymentInfo = "**You must complete payment next**\n"
-                    + "\n" + "Go to the Service Request tab on you case details\n"
+                    + "\n" + "Go to the Service Request tab on your case details\n"
                     + "\n" + "Complete the payment process\n";
         } else {
             paymentSummary = "Not applicable";
