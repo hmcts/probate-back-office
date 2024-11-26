@@ -725,22 +725,7 @@ public class BusinessValidationController {
         if (newState.isPresent()) {
             response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
         } else {
-            //Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
-            Document document;
-            try {
-                document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
-            } catch (Exception e) {
-                log.error("Caught?", e);
-                final DocumentLink fakeDocLink = DocumentLink.builder()
-                        .documentFilename("fakeFilename")
-                        .documentUrl("fakeUrl")
-                        .documentHash("fakeHash")
-                        .documentBinaryUrl("fakeBinaryUrl")
-                        .build();
-                document = new Document();
-                document.setDocumentType(LEGAL_STATEMENT);
-                document.setDocumentLink(fakeDocLink);
-            }
+            Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
             response = callbackResponseTransformer.transform(callbackRequest, document, caseType);
         }
         return response;
