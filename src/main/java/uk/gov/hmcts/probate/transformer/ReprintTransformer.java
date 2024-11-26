@@ -49,7 +49,7 @@ public class ReprintTransformer {
             listItems.addAll(caseData.getProbateDocumentsGenerated().stream()
                 .filter(doc -> isFromGeneratedDocuments(doc.getValue()))
                 .map(doc -> buildFromGeneratedDocument(doc.getValue()).get())
-                .collect(Collectors.toList()));
+                .toList());
         }
 
         if (caseData.getProbateSotDocumentsGenerated() != null && !caseData.getProbateSotDocumentsGenerated()
@@ -85,27 +85,16 @@ public class ReprintTransformer {
     }
 
     private boolean isFromGeneratedDocuments(Document document) {
-        switch (document.getDocumentType()) {
-            case DIGITAL_GRANT:
-            case INTESTACY_GRANT:
-            case ADMON_WILL_GRANT:
-            case AD_COLLIGENDA_BONA_GRANT:
-            case WELSH_DIGITAL_GRANT:
-            case WELSH_INTESTACY_GRANT:
-            case WELSH_ADMON_WILL_GRANT:
-            case WELSH_AD_COLLIGENDA_BONA_GRANT:
-                return true;
-            case DIGITAL_GRANT_REISSUE:
-            case INTESTACY_GRANT_REISSUE:
-            case ADMON_WILL_GRANT_REISSUE:
-            case AD_COLLIGENDA_BONA_GRANT_REISSUE:
-                return true;
-            case STATEMENT_OF_TRUTH:
-            case WELSH_STATEMENT_OF_TRUTH:
-                return true;
-            default:
-                return false;
-        }
+        return switch (document.getDocumentType()) {
+            case DIGITAL_GRANT, INTESTACY_GRANT, ADMON_WILL_GRANT, AD_COLLIGENDA_BONA_GRANT, WELSH_DIGITAL_GRANT,
+                    WELSH_INTESTACY_GRANT, WELSH_ADMON_WILL_GRANT, WELSH_AD_COLLIGENDA_BONA_GRANT ->
+                    true;
+            case DIGITAL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE,
+                    AD_COLLIGENDA_BONA_GRANT_REISSUE ->
+                    true;
+            case STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH -> true;
+            default -> false;
+        };
     }
 
     private Optional<DynamicListItem> buildFromScannedDocument(ScannedDocument document) {
@@ -115,25 +104,16 @@ public class ReprintTransformer {
     private Optional<DynamicListItem> buildFromGeneratedDocument(Document document) {
         Optional<DynamicListItem> optionalDynamicListItem = Optional.empty();
         switch (document.getDocumentType()) {
-            case DIGITAL_GRANT:
-            case INTESTACY_GRANT:
-            case ADMON_WILL_GRANT:
-            case AD_COLLIGENDA_BONA_GRANT:
-            case WELSH_DIGITAL_GRANT:
-            case WELSH_INTESTACY_GRANT:
-            case WELSH_ADMON_WILL_GRANT:
-            case WELSH_AD_COLLIGENDA_BONA_GRANT:
+            case DIGITAL_GRANT, INTESTACY_GRANT, ADMON_WILL_GRANT, AD_COLLIGENDA_BONA_GRANT, WELSH_DIGITAL_GRANT,
+                    WELSH_INTESTACY_GRANT, WELSH_ADMON_WILL_GRANT, WELSH_AD_COLLIGENDA_BONA_GRANT:
                 optionalDynamicListItem = Optional.of(buildListItem(document.getDocumentFileName(), LABEL_GRANT));
                 break;
-            case DIGITAL_GRANT_REISSUE:
-            case INTESTACY_GRANT_REISSUE:
-            case ADMON_WILL_GRANT_REISSUE:
-            case AD_COLLIGENDA_BONA_GRANT_REISSUE:
+            case DIGITAL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE,
+                    AD_COLLIGENDA_BONA_GRANT_REISSUE:
                 optionalDynamicListItem =
                     Optional.of(buildListItem(document.getDocumentFileName(), LABEL_REISSUED_GRANT));
                 break;
-            case STATEMENT_OF_TRUTH:
-            case WELSH_STATEMENT_OF_TRUTH:
+            case STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH:
                 optionalDynamicListItem = Optional.of(buildListItem(document.getDocumentFileName(), LABEL_SOT));
                 break;
             default:

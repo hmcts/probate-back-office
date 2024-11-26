@@ -25,57 +25,27 @@ public class DocumentTransformer {
 
     public void addDocument(CallbackRequest callbackRequest, Document document, Boolean coversheetNotification) {
         switch (document.getDocumentType()) {
-            case DIGITAL_GRANT_DRAFT:
-            case DIGITAL_GRANT:
-            case DIGITAL_GRANT_REISSUE_DRAFT:
-            case DIGITAL_GRANT_REISSUE:
-            case WELSH_DIGITAL_GRANT_REISSUE_DRAFT:
-            case WELSH_DIGITAL_GRANT_REISSUE:
-            case INTESTACY_GRANT_DRAFT:
-            case INTESTACY_GRANT:
-            case INTESTACY_GRANT_REISSUE_DRAFT:
-            case INTESTACY_GRANT_REISSUE:
-            case WELSH_INTESTACY_GRANT_REISSUE_DRAFT:
-            case WELSH_INTESTACY_GRANT_REISSUE:
-            case ADMON_WILL_GRANT_DRAFT:
-            case ADMON_WILL_GRANT:
-            case ADMON_WILL_GRANT_REISSUE_DRAFT:
-            case ADMON_WILL_GRANT_REISSUE:
-            case WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT:
-            case WELSH_ADMON_WILL_GRANT_REISSUE:
-            case AD_COLLIGENDA_BONA_GRANT_DRAFT:
-            case AD_COLLIGENDA_BONA_GRANT:
-            case AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT:
-            case AD_COLLIGENDA_BONA_GRANT_REISSUE:
-            case WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT:
-            case WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE:
-            case SOT_INFORMATION_REQUEST:
-            case GRANT_COVER:
-            case ASSEMBLED_LETTER:
-            case BLANK_LETTER:
-            case WELSH_DIGITAL_GRANT_DRAFT:
-            case WELSH_DIGITAL_GRANT:
-            case WELSH_ADMON_WILL_GRANT_DRAFT:
-            case WELSH_ADMON_WILL_GRANT:
-            case WELSH_INTESTACY_GRANT_DRAFT:
-            case WELSH_INTESTACY_GRANT:
-            case WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT:
-            case WELSH_AD_COLLIGENDA_BONA_GRANT:
+            case DIGITAL_GRANT_DRAFT, DIGITAL_GRANT, DIGITAL_GRANT_REISSUE_DRAFT, DIGITAL_GRANT_REISSUE,
+                    WELSH_DIGITAL_GRANT_REISSUE_DRAFT, WELSH_DIGITAL_GRANT_REISSUE, INTESTACY_GRANT_DRAFT,
+                    INTESTACY_GRANT, INTESTACY_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE,
+                    WELSH_INTESTACY_GRANT_REISSUE_DRAFT, WELSH_INTESTACY_GRANT_REISSUE, ADMON_WILL_GRANT_DRAFT,
+                    ADMON_WILL_GRANT, ADMON_WILL_GRANT_REISSUE_DRAFT, ADMON_WILL_GRANT_REISSUE,
+                    WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT, WELSH_ADMON_WILL_GRANT_REISSUE,
+                    AD_COLLIGENDA_BONA_GRANT_DRAFT, AD_COLLIGENDA_BONA_GRANT, AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT,
+                    AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT,
+                    WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE, SOT_INFORMATION_REQUEST, GRANT_COVER, ASSEMBLED_LETTER,
+                    BLANK_LETTER, WELSH_DIGITAL_GRANT_DRAFT, WELSH_DIGITAL_GRANT, WELSH_ADMON_WILL_GRANT_DRAFT,
+                    WELSH_ADMON_WILL_GRANT, WELSH_INTESTACY_GRANT_DRAFT, WELSH_INTESTACY_GRANT,
+                    WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT, WELSH_AD_COLLIGENDA_BONA_GRANT:
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
-            case STATEMENT_OF_TRUTH:
-            case WELSH_STATEMENT_OF_TRUTH:
-            case LEGAL_STATEMENT_PROBATE:
-            case LEGAL_STATEMENT_PROBATE_TRUST_CORPS:
-            case LEGAL_STATEMENT_INTESTACY:
-            case LEGAL_STATEMENT_ADMON:
+            case STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH, LEGAL_STATEMENT_PROBATE,
+                    LEGAL_STATEMENT_PROBATE_TRUST_CORPS, LEGAL_STATEMENT_INTESTACY, LEGAL_STATEMENT_ADMON:
                 callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
-            case SENT_EMAIL:
-            case GRANT_RAISED:
-            case CAVEAT_STOPPED:
+            case SENT_EMAIL, GRANT_RAISED, CAVEAT_STOPPED:
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
