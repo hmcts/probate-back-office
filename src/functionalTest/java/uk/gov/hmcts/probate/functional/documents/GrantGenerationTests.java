@@ -455,35 +455,37 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    void verifyGenerateAllEnglishAdColligendaPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales()
+    void verifyGenerateAllEnglishAdColligendaPersonalGrantType()
             throws IOException {
         String adColligendaPayload = "/default/adColligenda/personal/";
 
         String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON,
                 GENERATE_GRANT_DRAFT);
-        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES_TEXT));
+        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
 
         response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON, GENERATE_GRANT);
-        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES_TEXT));
+        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
 
-        response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON, GENERATE_GRANT_REISSUE);
-        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES_TEXT));
+        response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_REISSUE_JSON,
+                GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
     }
 
     @Test
-    void verifyGenerateAllEnglishAdColligendaSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales()
+    void verifyGenerateAllEnglishAdColligendaSolicitorGrantTypes()
             throws IOException {
         String adColligendaPayload = "/default/adColligenda/solicitor/";
 
         String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON,
                 GENERATE_GRANT_DRAFT);
-        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES_TEXT));
+        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
 
         response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON, GENERATE_GRANT);
-        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES_TEXT));
+        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
 
-        response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON, GENERATE_GRANT_REISSUE);
-        assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES_TEXT));
+        response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_REISSUE_JSON,
+                GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
     }
 
     @Test
@@ -1523,13 +1525,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     @Test
     void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
-    }
-
-    @Test
-    void verifySuccessForAdColligendaBonaGrantText() throws IOException {
-        final String response = generateGrantDocument(AD_COLLIGENDA_PAYLOAD, GENERATE_GRANT);
-
-        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
     }
 
     private String generateGrantDocument(String jsonFileName, String path) throws IOException {
