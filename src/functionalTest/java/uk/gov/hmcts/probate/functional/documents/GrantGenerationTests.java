@@ -473,7 +473,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     @Test
     void verifyGenerateAllEnglishAdColligendaSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales()
             throws IOException {
-        String adColligendaPayload = "/default/intestacy/solicitor/";
+        String adColligendaPayload = "/default/adColligenda/solicitor/";
 
         String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON,
                 GENERATE_GRANT_DRAFT);
