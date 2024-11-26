@@ -31,6 +31,7 @@ public class TaskListController {
     @PostMapping(path = "/updateCasePrinted", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateCasePrinted(@RequestBody CallbackRequest request) {
         caseDataTransformer.transformCaseDataForEvidenceHandled(request);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(request);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 }

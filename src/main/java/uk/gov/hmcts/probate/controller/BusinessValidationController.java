@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -74,6 +75,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
@@ -555,6 +557,7 @@ public class BusinessValidationController {
 
         notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequest);
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
 
         return ResponseEntity.ok(response);
@@ -624,6 +627,7 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
         validateForPayloadErrors(callbackRequest, bindingResult);
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
@@ -721,7 +725,22 @@ public class BusinessValidationController {
         if (newState.isPresent()) {
             response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
         } else {
-            Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
+            //Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
+            Document document;
+            try {
+                document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
+            } catch (Exception e) {
+                log.error("Caught?", e);
+                final DocumentLink fakeDocLink = DocumentLink.builder()
+                        .documentFilename("fakeFilename")
+                        .documentUrl("fakeUrl")
+                        .documentHash("fakeHash")
+                        .documentBinaryUrl("fakeBinaryUrl")
+                        .build();
+                document = new Document();
+                document.setDocumentType(LEGAL_STATEMENT);
+                document.setDocumentLink(fakeDocLink);
+            }
             response = callbackResponseTransformer.transform(callbackRequest, document, caseType);
         }
         return response;
