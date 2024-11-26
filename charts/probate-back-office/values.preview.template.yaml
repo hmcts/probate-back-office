@@ -273,12 +273,11 @@ aac-manage-case-assignment:
 ccd-case-document-am-api:
   enabled: true
   java:
-    disableKeyVaults: true
     image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
     releaseNameOverride: ${SERVICE_NAME}-cdam
     ingressHost: ccd-case-document-am-api-${SERVICE_FQDN}
     environment:
-      CCD_DATA_STORE_API_BASE_URL: ${CCD_DAT_URL}
+      CCD_DATA_STORE_API_BASE_URL: http://${SERVICE_NAME}-ccd-data-store-api
       IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
       IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
       OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts
