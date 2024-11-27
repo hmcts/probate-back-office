@@ -15,6 +15,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -2602,6 +2603,16 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
         assertEquals(CASE_MATCHING_ISSUE_GRANT, callbackResponse.getData().getState());
+    }
+
+    @Test
+    void shouldChangeRegistrarEscalateReasonReferrals() {
+        caseDataBuilder.registrarEscalateReason(RegistrarEscalateReason.REFERRALS);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        assertEquals(RegistrarEscalateReason.REFERRALS, callbackResponse.getData().getRegistrarEscalateReason());
     }
 
     @Test
