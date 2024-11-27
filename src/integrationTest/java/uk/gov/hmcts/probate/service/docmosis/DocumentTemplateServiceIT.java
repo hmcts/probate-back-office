@@ -174,4 +174,47 @@ class DocumentTemplateServiceIT {
         assertEquals(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT, responseReissueWelshDraft);
 
     }
+
+    @Test
+    void shouldGetAdColligendaBonaTemplate() {
+        DocumentType responseEnglish = documentTemplateService
+                .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.GRANT,
+                        DocumentCaseType.AD_COLLIGENDA_BONA);
+        assertEquals(DocumentType.AD_COLLIGENDA_BONA_GRANT, responseEnglish);
+
+        DocumentType responseEnglishDraft = documentTemplateService
+                .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT,
+                        DocumentCaseType.AD_COLLIGENDA_BONA);
+        assertEquals(DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT, responseEnglishDraft);
+
+        DocumentType response = documentTemplateService
+                .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,
+                        DocumentCaseType.AD_COLLIGENDA_BONA);
+        assertEquals(DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE, response);
+
+        DocumentType responseWelsh = documentTemplateService
+                .getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.GRANT,
+                        DocumentCaseType.AD_COLLIGENDA_BONA);
+        assertEquals(DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT, responseWelsh);
+
+        DocumentType responseDraft = documentTemplateService
+                .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,
+                        DocumentCaseType.AD_COLLIGENDA_BONA);
+        assertEquals(DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT, responseDraft);
+
+        DocumentType responseDraftWelsh = documentTemplateService
+                .getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT,
+                        DocumentCaseType.AD_COLLIGENDA_BONA);
+        assertEquals(DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT, responseDraftWelsh);
+
+        DocumentType responseReissueWelsh = documentTemplateService
+                .getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,
+                        DocumentCaseType.AD_COLLIGENDA_BONA);
+        assertEquals(DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE, responseReissueWelsh);
+
+        DocumentType responseReissueWelshDraft = documentTemplateService
+                .getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,
+                        DocumentCaseType.AD_COLLIGENDA_BONA);
+        assertEquals(DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT, responseReissueWelshDraft);
+    }
 }

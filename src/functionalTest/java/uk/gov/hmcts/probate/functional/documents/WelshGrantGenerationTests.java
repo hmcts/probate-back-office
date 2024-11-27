@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.functional.documents;
 
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Slf4j
 @ExtendWith(SerenityJUnit5Extension.class)
 public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
 
@@ -50,6 +52,12 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
     void verifyPersonalGenerateWelshGrantIntestacy() throws IOException {
         verifyPersonalWelshGrantText("personalPayloadGrantIntestacyWelsh.json",
             "expectedDocumentGrantIntestacyWelsh.txt");
+    }
+
+    @Test
+    void verifyPersonalGenerateWelshGrantAdColligenda() throws IOException {
+        verifyPersonalWelshGrantText("personalPayloadGrantAdColligendaWelsh.json",
+                "expectedDocumentGrantAdColligendaWelsh.txt");
     }
 
     private void verifyPersonalWelshGrantText(String payload, String expectedFile) throws IOException {

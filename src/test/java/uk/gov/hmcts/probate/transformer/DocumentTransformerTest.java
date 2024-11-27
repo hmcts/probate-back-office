@@ -24,6 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
@@ -49,6 +53,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
@@ -200,11 +206,55 @@ class DocumentTransformerTest {
     }
 
     @Test
+    void shouldAddAdColligendaBonaGrantToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer
+            .addDocument(callbackRequest, Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT).build(),
+                    false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    void shouldAddAdColligendaBonaGrantDraftToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer
+            .addDocument(callbackRequest, Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT_DRAFT).build(),
+                    false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    void shouldAddAdColligendaBonaGrantReissueDraftToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer
+            .addDocument(callbackRequest, Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT)
+                            .build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    void shouldAddAdColligendaBonaGrantReissueToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer
+            .addDocument(callbackRequest, Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT_REISSUE).build(),
+                    false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
     void shouldAddIntestacyGrantToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
         documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT).build(), false);
+                .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -214,7 +264,7 @@ class DocumentTransformerTest {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
         documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_DRAFT).build(), false);
+                .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_DRAFT).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -224,8 +274,8 @@ class DocumentTransformerTest {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
         documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_REISSUE_DRAFT).build(),
-                false);
+                .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_REISSUE_DRAFT).build(),
+                        false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -235,7 +285,7 @@ class DocumentTransformerTest {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
         documentTransformer
-            .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_REISSUE).build(), false);
+                .addDocument(callbackRequest, Document.builder().documentType(INTESTACY_GRANT_REISSUE).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -320,6 +370,30 @@ class DocumentTransformerTest {
         documentTransformer
             .addDocument(callbackRequest, Document.builder().documentType(WELSH_INTESTACY_GRANT_REISSUE).build(),
                 false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    void shouldAddWelshAdColligendaBonaGrantReissueDraftToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer
+                .addDocument(callbackRequest, Document.builder()
+                                .documentType(WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT).build(),
+                        false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    void shouldAddWelshAdColligendaBonaGrantReissueToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer
+                .addDocument(callbackRequest, Document.builder()
+                                .documentType(WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE).build(),
+                        false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }

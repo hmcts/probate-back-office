@@ -66,17 +66,21 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
+    adColligendaBonaGrantReissueDraft:
+        templateName: FL-PRB-GRP-ENG-01295.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
+    adColligendaBonaGrantReissue:
+      templateName: FL-PRB-GRP-ENG-01295.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
@@ -88,17 +92,21 @@ docmosis:
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
+    welshAdColligendaBonaGrant:
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
+    welshAdColligendaBonaGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00236.doc
 
 fee.api:
   url: http://localhost:4411
@@ -312,30 +320,36 @@ documents:
             intestacy: INTESTACY_GRANT_REISSUE
             admonWill: ADMON_WILL_GRANT_REISSUE
             gop: DIGITAL_GRANT_REISSUE
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_REISSUE
           grant:
             intestacy: INTESTACY_GRANT
             admonWill: ADMON_WILL_GRANT
             gop: DIGITAL_GRANT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT
         preview:
           reissue:
             intestacy: INTESTACY_GRANT_REISSUE_DRAFT
             admonWill: ADMON_WILL_GRANT_REISSUE_DRAFT
             gop: DIGITAL_GRANT_REISSUE_DRAFT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT
           grant:
             intestacy: INTESTACY_GRANT_DRAFT
             admonWill: ADMON_WILL_GRANT_DRAFT
             gop: DIGITAL_GRANT_DRAFT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_DRAFT
       welsh:
         final:
           grant:
             intestacy: WELSH_INTESTACY_GRANT
             admonWill: WELSH_ADMON_WILL_GRANT
             gop: WELSH_DIGITAL_GRANT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT
         preview:
           grant:
             intestacy: WELSH_INTESTACY_GRANT_DRAFT
             admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
             gop: WELSH_DIGITAL_GRANT_DRAFT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT
 
 registry:
   registries:
