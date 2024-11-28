@@ -55,7 +55,6 @@ import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
-import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.NOC;
@@ -126,26 +125,20 @@ public class NotificationController {
         @RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
 
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = caseDetails.getData();
-        CallbackResponse response = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         Document document;
         List<Document> documents = new ArrayList<>();
         String letterId = null;
-
-        if (caseData.isCaveatStopNotificationRequested() && caseData.isCaveatStopEmailNotificationRequested()) {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
-            if (response.getErrors().isEmpty()) {
-                log.info("Initiate call to send caveat email for case id {} ",
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CallbackResponse response =
+                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
+        if (response.getErrors().isEmpty()) {
+            log.info("Initiate call to send caveat email for case id {} ",
                     callbackRequest.getCaseDetails().getId());
-                document = notificationService.sendEmail(CASE_STOPPED_CAVEAT, caseDetails);
-                documents.add(document);
-                log.info("Successful response for caveat email for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
-            }
-        } else if (caseData.isCaveatStopNotificationRequested() && !caseData.isCaveatStopEmailNotificationRequested()) {
-
+            document = notificationService.sendEmail(CASE_STOPPED_CAVEAT, caseDetails);
+            documents.add(document);
+            log.info("Successful response for caveat email for case id {} ", callbackRequest.getCaseDetails().getId());
+        } else {
             Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
             documents.add(coversheet);
 
@@ -160,26 +153,13 @@ public class NotificationController {
             log.info("Successful response for caveat stopped document for case id {} ",
                 callbackRequest.getCaseDetails().getId());
 
-            if (caseData.isCaveatStopSendToBulkPrintRequested()) {
-                log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
+            log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
                     callbackRequest.getCaseDetails().getId());
-                SendLetterResponse sendLetterResponse =
+            SendLetterResponse sendLetterResponse =
                     bulkPrintService.sendToBulkPrintForGrant(callbackRequest, caveatRaisedDoc, coversheet);
-                letterId = sendLetterResponse != null
-                    ? sendLetterResponse.letterId.toString()
-                    : null;
-                response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
-            }
-        } else {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
-            if (response.getErrors().isEmpty()) {
-                log.info("Initiate call to notify applicant for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
-                document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
-                documents.add(document);
-                log.info("Successful response from notify for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
-            }
+            letterId = sendLetterResponse != null
+                    ? sendLetterResponse.letterId.toString() : null;
+            response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
         }
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.caseStopped(callbackRequest, documents, letterId);
@@ -187,11 +167,19 @@ public class NotificationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/request-information-default-values")
-    public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
+    @PostMapping(path = "/redeclaration-sot-default-values")
+    public ResponseEntity<CallbackResponse> redeclarationSOTDefaultValues(
         @RequestBody CallbackRequest callbackRequest) {
         CallbackResponse callbackResponse =
-            callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
+            callbackResponseTransformer.defaultRedeclarationSOTValues(callbackRequest);
+        return ResponseEntity.ok(callbackResponse);
+    }
+
+    @PostMapping(path = "/request-information-default-values")
+    public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
+            @RequestBody CallbackRequest callbackRequest) {
+        CallbackResponse callbackResponse =
+                callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
         return ResponseEntity.ok(callbackResponse);
     }
 
@@ -206,6 +194,12 @@ public class NotificationController {
     @PostMapping(path = "/stopped-information-request")
     public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(informationRequestService.handleInformationRequest(callbackRequest));
+    }
+
+    @PostMapping(path = "/information-request-email-preview")
+    public ResponseEntity<CallbackResponse> emailPreview(@RequestBody CallbackRequest callbackRequest) {
+        Document document = informationRequestService.emailPreview(callbackRequest);
+        return ResponseEntity.ok(callbackResponseTransformer.addDocumentPreview(callbackRequest, document));
     }
 
     @PostMapping(path = "/redeclaration-sot")
