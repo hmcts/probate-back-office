@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
@@ -55,7 +54,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -382,16 +380,14 @@ public class DocumentController {
     }
 
     @PostMapping(
-        value = "/upload",
+        path = "/upload",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @ResponseBody
     public List<String> upload(
         @RequestHeader(value = "Authorization") String authorizationToken,
         @RequestHeader(value = "ServiceAuthorization") String serviceAuthorizationToken,
-        @RequestPart("file") List<MultipartFile> files
-    ) {
+        @RequestPart("file") List<MultipartFile> files) {
         List<String> result = new ArrayList<>();
         List<String> fileValidationErrors = documentValidation.validateFiles(files);
         if (!fileValidationErrors.isEmpty()) {
@@ -401,16 +397,29 @@ public class DocumentController {
 
         log.info("Uploading document at BackOffice");
         UploadResponse uploadResponse = documentManagementService
-            .uploadForCitizen(files, authorizationToken, DocumentType.DIGITAL_GRANT);
+            .uploadForCitizen(files, authorizationToken, DocumentType.CITIZEN_HUB_UPLOAD);
         if (uploadResponse != null) {
             result = uploadResponse
                 .getDocuments()
                 .stream()
                 .map(f -> f.links.self.href)
-                .collect(Collectors.toList());
+                .toList();
         }
 
         return result;
+    }
+
+    @PostMapping(path = "/citizenHubResponse", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> citizenHubResponse(@RequestBody CallbackRequest callbackRequest) {
+        log.info("Citizen Hub Response for caseId: {}  Checkbox: {} citizenResponse: {} documentUploadIssue: {}"
+                + "isSaveAndClose: {}",
+                callbackRequest.getCaseDetails().getId(),
+                callbackRequest.getCaseDetails().getData().getCitizenResponseCheckbox(),
+                callbackRequest.getCaseDetails().getData().getCitizenResponse(),
+                callbackRequest.getCaseDetails().getData().getDocumentUploadIssue(),
+                callbackRequest.getCaseDetails().getData().getIsSaveAndClose()
+        );
+        return ResponseEntity.ok(callbackResponseTransformer.transformCitizenHubResponse(callbackRequest));
     }
 
     @PostMapping(path = "/setup-for-permanent-removal", consumes = MediaType.APPLICATION_JSON_VALUE)

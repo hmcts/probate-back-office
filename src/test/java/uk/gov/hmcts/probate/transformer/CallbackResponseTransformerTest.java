@@ -63,6 +63,7 @@ import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
+import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.MaritalStatus;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
@@ -108,8 +109,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.ApplicationState.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -124,7 +128,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
-import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
@@ -311,6 +314,7 @@ class CallbackResponseTransformerTest {
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final LocalDateTime dateTime = LocalDateTime.of(2024, 1, 1, 1, 1, 1, 1);
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
+    private static final String RESPONSE_CONTENT = "I responded";
     private List<CaseMatch> caseMatches = new ArrayList<>();
 
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
@@ -2465,14 +2469,31 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldDefaultRequestInformationValues() {
+    void shouldDefaultRedeclarationSOTValues() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.defaultRedeclarationSOTValues(callbackRequestMock);
         assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals("Yes", callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
+    }
+
+    @Test
+    void shouldDefaultRequestInformationValues() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .informationNeeded("Yes")
+                .informationNeededByPost("Yes")
+                .boStopDetails("Some stop details")
+                .boStopDetailsDeclarationParagraph("Yes");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
+        assertNull(callbackResponse.getData().getInformationNeeded());
+        assertNull(callbackResponse.getData().getInformationNeededByPost());
+        assertNull(callbackResponse.getData().getBoStopDetails());
+        assertNull(callbackResponse.getData().getBoStopDetailsDeclarationParagraph());
     }
 
     @Test
@@ -2491,18 +2512,25 @@ class CallbackResponseTransformerTest {
             Arrays.asList(document), Arrays.asList("123"), CASEWORKER_USERINFO);
         assertEquals(SENT_EMAIL.getTemplateName(),
             callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
-        assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
     }
 
     @Test
-    void shouldAddInformationRequestDocumentsSOT() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+    void shouldResetCitizenHubFieldsWhenHubResponseRequired() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL)
+                .informationNeeded(YES)
+                .informationNeededByPost(NO)
+                .citizenResponseCheckbox(YES)
+                .expectedResponseDate("some date")
+                .documentUploadIssue(YES);
 
         Document document = Document.builder()
-            .documentLink(documentLinkMock)
-            .documentType(SOT_INFORMATION_REQUEST)
-            .documentFileName(SOT_INFORMATION_REQUEST.getTemplateName())
-            .build();
+                .documentLink(documentLinkMock)
+                .documentType(SENT_EMAIL)
+                .documentFileName(SENT_EMAIL.getTemplateName())
+                .build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -2511,6 +2539,11 @@ class CallbackResponseTransformerTest {
         assertEquals(SOT_INFORMATION_REQUEST.getTemplateName(),
             callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue().getDocumentFileName());
         assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
+                Arrays.asList(document));
+        assertNull(callbackResponse.getData().getCitizenResponseCheckbox());
+        assertNull(callbackResponse.getData().getExpectedResponseDate());
+        assertNull(callbackResponse.getData().getDocumentUploadIssue());
+        assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
     }
 
     @Test
@@ -3477,6 +3510,14 @@ class CallbackResponseTransformerTest {
             .applyingExecutorOtherReason("Married")
             .build();
         return new CollectionMember<>(id, add1na);
+    }
+
+    private CollectionMember<CitizenResponse> createCitizenResponse(String id) {
+        CitizenResponse newResponse = CitizenResponse.builder()
+                .response(RESPONSE_CONTENT)
+                .submittedDate(LocalDateTime.now())
+                .build();
+        return new CollectionMember<>(id, newResponse);
     }
 
     private void assertCommon(CallbackResponse callbackResponse) {
@@ -4560,7 +4601,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse =
                 underTest.addMatches(callbackRequestMock, caseMatches, CASEWORKER_USERINFO);
 
-        assertEquals(callbackResponse.getData().getMatches(), "No matches found");
+        assertEquals("No matches found", callbackResponse.getData().getMatches());
     }
 
     @Test
@@ -4579,7 +4620,131 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse =
                 underTest.addMatches(callbackRequestMock, caseMatches, CASEWORKER_USERINFO);
 
-        assertEquals(callbackResponse.getData().getMatches(), "Possible case matches");
+        assertEquals("Possible case matches", callbackResponse.getData().getMatches());
+    }
+
+    @Test
+    void shouldReturnEmailPreview() {
+        when(documentLinkMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
+        when(documentLinkMock.getDocumentUrl()).thenReturn(DOC_URL);
+        when(documentLinkMock.getDocumentFilename()).thenReturn(DOC_NAME);
+        Document document = Document.builder()
+                .documentType(SENT_EMAIL)
+                .documentLink(documentLinkMock)
+                .documentFileName(SENT_EMAIL.getTemplateName())
+                .build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse =
+                underTest.addDocumentPreview(callbackRequestMock, document);
+
+        assertEquals(documentLinkMock, callbackResponse.getData().getEmailPreview());
+    }
+
+    @Test
+    void shouldTransformCitizenHubResponseWhenCheckboxYes() {
+        List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
+        documents.add(createUploadDocuments("0"));
+
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL)
+                .informationNeeded(YES)
+                .informationNeededByPost(NO)
+                .citizenResponseCheckbox(YES)
+                .citizenResponse("responses")
+                .citizenDocumentsUploaded(documents);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
+        assertNull(callbackResponse.getData().getInformationNeeded());
+        assertNull(callbackResponse.getData().getInformationNeededByPost());
+        assertEquals(NO, callbackResponse.getData().getEvidenceHandled());
+        assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
+        assertEquals("responses",
+                callbackResponse.getData().getCitizenResponses().get(0).getValue().getResponse());
+    }
+
+    @Test
+    void shouldAddCitizenHubResponseWhenResponsesExist() {
+        List<CollectionMember<CitizenResponse>> citizenResponseList = new ArrayList<>();
+        citizenResponseList.add(createCitizenResponse("0"));
+
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL)
+                .informationNeeded(YES)
+                .informationNeededByPost(NO)
+                .citizenResponseCheckbox(YES)
+                .citizenResponses(citizenResponseList)
+                .citizenResponse("responses");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
+        assertNull(callbackResponse.getData().getInformationNeeded());
+        assertNull(callbackResponse.getData().getInformationNeededByPost());
+        assertEquals(NO, callbackResponse.getData().getEvidenceHandled());
+        assertEquals(0, callbackResponse.getData().getBoDocumentsUploaded().size());
+        assertEquals(2, callbackResponse.getData().getCitizenResponses().size());
+        assertEquals("responses",
+                callbackResponse.getData().getCitizenResponses().get(1).getValue().getResponse());
+    }
+
+    @Test
+    void shouldSetEvidenceHandledYesWhenHaveDocumentUploadIssue() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL)
+                .informationNeeded(YES)
+                .informationNeededByPost(NO)
+                .citizenResponseCheckbox(YES)
+                .documentUploadIssue(YES)
+                .isSaveAndClose(NO);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
+        assertNull(callbackResponse.getData().getInformationNeeded());
+        assertNull(callbackResponse.getData().getInformationNeededByPost());
+        assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
+    }
+
+    @Test
+    void shouldNotTransformCitizenHubResponseWhenCheckboxIsNotYes() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL)
+                .informationNeeded(YES)
+                .informationNeededByPost(NO);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
+        assertEquals(YES, callbackResponse.getData().getInformationNeeded());
+        assertEquals(NO, callbackResponse.getData().getInformationNeededByPost());
+        assertNull(callbackResponse.getData().getExpectedResponseDate());
+    }
+
+    @Test
+    void shouldDefaultInformationRequestSwitch() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getState()).thenReturn(BO_CASE_STOPPED.getId());
+
+        CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
+        assertEquals(YES, callbackResponse.getData().getInformationNeededByPostSwitch());
+    }
+
+    @Test
+    void shouldNotDefaultInformationRequestSwitch() {
+        caseDataBuilder.applicationType(SOLICITOR)
+                .channelChoice(CHANNEL_CHOICE_BULKSCAN);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getState()).thenReturn(GRANT_ISSUED.getId());
+
+        CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
+        assertEquals(NO, callbackResponse.getData().getInformationNeededByPostSwitch());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

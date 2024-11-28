@@ -853,6 +853,26 @@ class DocumentControllerIT {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void shouldHandleEvidenceToYesForCitizenHubResponse() throws Exception {
+        String payload = testUtils.getStringFromFile("citizenHubResponseevidenceHandledYes.json");
+
+        mockMvc.perform(post("/document/citizenHubResponse")
+                        .content(payload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
+    }
+
+    @Test
+    void shouldHandleEvidenceToNoForCitizenHubResponse() throws Exception {
+        String payload = testUtils.getStringFromFile("citizenHubResponseevidenceHandledNo.json");
+
+        mockMvc.perform(post("/document/citizenHubResponse")
+                        .content(payload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));
+    }
+
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));
     }

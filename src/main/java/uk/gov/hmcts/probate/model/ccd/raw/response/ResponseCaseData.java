@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
@@ -397,4 +398,15 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String matches;
     private final String lastModifiedCaseworkerForenames;
     private final String lastModifiedCaseworkerSurname;
+    private final String informationNeeded;
+    private final String informationNeededByPost;
+    private final DocumentLink emailPreview;
+    private final String citizenResponse;
+    private final String documentUploadIssue;
+    private final String citizenResponseCheckbox;
+    private final String expectedResponseDate;
+    private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
+    private final List<CollectionMember<CitizenResponse>> citizenResponses;
+    private final String isSaveAndClose;
+    private final String informationNeededByPostSwitch;
 }

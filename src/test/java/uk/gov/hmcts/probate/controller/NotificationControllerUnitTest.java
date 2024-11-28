@@ -404,6 +404,36 @@ class NotificationControllerUnitTest {
     }
 
     @Test
+    void shouldSendEmailPreview()  {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        document = Document.builder()
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("fileName")
+                .documentGeneratedBy("generatedBy")
+                .documentLink(
+                        DocumentLink.builder().documentUrl("url").documentFilename("file")
+                                .documentBinaryUrl("binary").build())
+                .documentType(DocumentType.SENT_EMAIL)
+                .build();
+        callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(informationRequestService.emailPreview(any())).thenReturn(document);
+        ResponseEntity<CallbackResponse> stringResponseEntity =
+                notificationController.emailPreview(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
     void shouldNotSendNocEmailForBulkScanCaseFirstNoc() throws NotificationClientException {
         setUpMocks(NOC);
         List<CollectionMember<ChangeOfRepresentative>> representatives = new ArrayList();
