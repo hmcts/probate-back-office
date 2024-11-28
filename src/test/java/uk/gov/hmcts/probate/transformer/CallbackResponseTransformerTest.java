@@ -2509,7 +2509,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock,
-            Arrays.asList(document), Arrays.asList("123"), CASEWORKER_USERINFO);
+            Arrays.asList(document), CASEWORKER_USERINFO);
         assertEquals(SENT_EMAIL.getTemplateName(),
             callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
@@ -2535,11 +2535,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock,
-            Arrays.asList(document), Arrays.asList("123"), CASEWORKER_USERINFO);
-        assertEquals(SOT_INFORMATION_REQUEST.getTemplateName(),
-            callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue().getDocumentFileName());
-        assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
-                Arrays.asList(document));
+            Arrays.asList(document), CASEWORKER_USERINFO);
         assertNull(callbackResponse.getData().getCitizenResponseCheckbox());
         assertNull(callbackResponse.getData().getExpectedResponseDate());
         assertNull(callbackResponse.getData().getDocumentUploadIssue());

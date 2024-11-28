@@ -41,9 +41,6 @@ class InformationRequestServiceTest {
     private static final Long ID = 123456789L;
     private static final Document SENT_EMAIL_DOCUMENT =
         Document.builder().documentType(DocumentType.SENT_EMAIL).build();
-    private static final List<CollectionMember<BulkPrint>> BULK_PRINT_IDS =
-        Arrays.asList(new CollectionMember<>(BulkPrint.builder().sendLetterId("123").build()),
-            new CollectionMember<>(BulkPrint.builder().sendLetterId("321").build()));
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
             .familyName("familyName")
             .givenName("givenname")
@@ -73,29 +70,6 @@ class InformationRequestServiceTest {
         caseData = CaseData.builder().build();
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
-
-        documentList.add(new CollectionMember<>(SOT_DOCUMENT));
-        documentList.add(new CollectionMember<>(SOT_DOCUMENT_2));
-
-        letterIdDocs.add(SOT_DOCUMENT);
-        letterIdDocs.add(SOT_DOCUMENT_2);
-
-        ResponseCaseData letterResponseCaseData =
-            ResponseCaseData.builder().probateNotificationsGenerated(documentList).bulkPrintId(BULK_PRINT_IDS).build();
-        CallbackResponse callbackResponse = CallbackResponse.builder().data(letterResponseCaseData).build();
-
-        when(informationRequestCorrespondenceService.generateLetterWithCoversheet(any(), eq(execApplying.getValue())))
-            .thenReturn(Arrays.asList(SOT_DOCUMENT));
-        when(informationRequestCorrespondenceService.generateLetterWithCoversheet(any(), eq(execApplying2.getValue())))
-            .thenReturn(Arrays.asList(SOT_DOCUMENT_2));
-
-        when(informationRequestCorrespondenceService.getLetterId(Arrays.asList(SOT_DOCUMENT), callbackRequest))
-            .thenReturn(Arrays.asList("123"));
-        when(informationRequestCorrespondenceService.getLetterId(Arrays.asList(SOT_DOCUMENT_2), callbackRequest))
-            .thenReturn(Arrays.asList("321"));
-
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(),
-            eq(letterIdDocs), eq(Arrays.asList("123", "321")), any())).thenReturn(callbackResponse);
     }
 
     @Test
@@ -110,7 +84,7 @@ class InformationRequestServiceTest {
         CallbackResponse callbackResponse = CallbackResponse.builder().data(emailResponseCaseData).build();
 
         when(callbackResponseTransformer.addInformationRequestDocuments(any(),
-            eq(Arrays.asList(SENT_EMAIL_DOCUMENT)), eq(new ArrayList<>()), any())).thenReturn(callbackResponse);
+            eq(Arrays.asList(SENT_EMAIL_DOCUMENT)), any())).thenReturn(callbackResponse);
 
         caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
@@ -120,21 +94,12 @@ class InformationRequestServiceTest {
         when(informationRequestCorrespondenceService.emailInformationRequest(caseDetails))
             .thenReturn(Arrays.asList(SENT_EMAIL_DOCUMENT));
         when(callbackResponseTransformer.addInformationRequestDocuments(any(),
-            eq(Arrays.asList(SENT_EMAIL_DOCUMENT)), eq(new ArrayList<>()), any())).thenReturn(callbackResponse);
+            eq(Arrays.asList(SENT_EMAIL_DOCUMENT)), any())).thenReturn(callbackResponse);
 
         assertEquals(SENT_EMAIL_DOCUMENT,
             informationRequestService.handleInformationRequest(callbackRequest, CASEWORKER_USERINFO)
                 .getData().getProbateNotificationsGenerated().get(0).getValue());
     }
-
-    private CollectionMember<ExecutorsApplyingNotification> buildExec(String item, String name, String email,
-                                                                      String applying) {
-        return new CollectionMember<>(item, ExecutorsApplyingNotification.builder()
-            .name(name)
-            .address(ADDRESS)
-            .email(email)
-            .notification(applying)
-            .build());
 
     @Test
     void testEmailRequestReturnsErrorWhenNoEmailProvided() {
@@ -154,7 +119,8 @@ class InformationRequestServiceTest {
                 .thenReturn(Collections.singletonList(fieldErrorResponse));
 
         assertEquals("NoEmailProvidedErrorMessage",
-                informationRequestService.handleInformationRequest(callbackRequest).getErrors().get(0));
+                informationRequestService.handleInformationRequest(callbackRequest, CASEWORKER_USERINFO)
+                        .getErrors().get(0));
     }
 
     @Test

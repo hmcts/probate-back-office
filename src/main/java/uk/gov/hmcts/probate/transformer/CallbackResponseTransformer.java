@@ -286,7 +286,10 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse defaultRequestInformationValues(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(),
+                        callbackRequest.getEventId(),
+                        Optional.empty(),
+                        false);
         resetRequestInformationFields(responseCaseDataBuilder);
         defaultInformationRequestSwitch(callbackRequest, responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
@@ -317,7 +320,10 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCitizenHubResponse(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(),
+                        callbackRequest.getEventId(),
+                        Optional.empty(),
+                        false);
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         if (YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())
@@ -349,7 +355,10 @@ public class CallbackResponseTransformer {
     public CallbackResponse addDocumentPreview(CallbackRequest callbackRequest, Document document) {
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(),
+                        callbackRequest.getEventId(),
+                        Optional.empty(),
+                        false);
         responseCaseDataBuilder.emailPreview(document.getDocumentLink());
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -2000,6 +2009,7 @@ public class CallbackResponseTransformer {
             builder.lastModifiedCaseworkerForenames(u.getGivenName());
             builder.lastModifiedCaseworkerSurname(u.getFamilyName());
         });
+    }
 
     private List<CollectionMember<CitizenResponse>> getCitizenResponsesList(CaseData caseData) {
         if (caseData.getCitizenResponses() == null) {

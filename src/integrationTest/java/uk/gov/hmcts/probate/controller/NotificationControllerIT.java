@@ -219,13 +219,13 @@ class NotificationControllerIT {
         when(callbackResponseTransformer.caseStopped(any(), any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRedeclarationSOTValues(any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any(), any()))
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any()))
             .thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>()), any(), any()))
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>()), any()))
             .thenReturn(successfulResponse);
         when(callbackResponseTransformer.addDocumentPreview(any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.grantRaised(any(), any(), any(), any())).thenReturn(successfulResponse);
-        when(informationRequestService.handleInformationRequest(any())).thenReturn(successfulResponse);
+        when(informationRequestService.handleInformationRequest(any(), any())).thenReturn(successfulResponse);
         when(informationRequestService.emailPreview(any())).thenReturn(document);
 
         when(informationRequestService.handleInformationRequest(any(), any())).thenReturn(successfulResponse);
