@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
@@ -15,8 +16,23 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.service.ReprintService.LABEL_GRANT;
 import static uk.gov.hmcts.probate.service.ReprintService.LABEL_REISSUED_GRANT;
 import static uk.gov.hmcts.probate.service.ReprintService.LABEL_SOT;
@@ -30,7 +46,12 @@ import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
 @AllArgsConstructor
 public class ReprintTransformer {
 
-
+    private static final Set<DocumentType> GENERATED_DOCUMENT_TYPES = Set.of(
+            DIGITAL_GRANT, INTESTACY_GRANT, ADMON_WILL_GRANT, AD_COLLIGENDA_BONA_GRANT, WELSH_DIGITAL_GRANT,
+            WELSH_INTESTACY_GRANT, WELSH_ADMON_WILL_GRANT, WELSH_AD_COLLIGENDA_BONA_GRANT,
+            DIGITAL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, AD_COLLIGENDA_BONA_GRANT_REISSUE,
+            STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH
+    );
     public void transformReprintDocuments(@Valid CaseDetails caseDetails,
                                           ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         responseCaseDataBuilder.reprintDocument(getDocumentsAsDynamicList(caseDetails.getData()));
@@ -85,16 +106,7 @@ public class ReprintTransformer {
     }
 
     private boolean isFromGeneratedDocuments(Document document) {
-        return switch (document.getDocumentType()) {
-            case DIGITAL_GRANT, INTESTACY_GRANT, ADMON_WILL_GRANT, AD_COLLIGENDA_BONA_GRANT, WELSH_DIGITAL_GRANT,
-                    WELSH_INTESTACY_GRANT, WELSH_ADMON_WILL_GRANT, WELSH_AD_COLLIGENDA_BONA_GRANT ->
-                    true;
-            case DIGITAL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE,
-                    AD_COLLIGENDA_BONA_GRANT_REISSUE ->
-                    true;
-            case STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH -> true;
-            default -> false;
-        };
+        return GENERATED_DOCUMENT_TYPES.contains(document.getDocumentType());
     }
 
     private Optional<DynamicListItem> buildFromScannedDocument(ScannedDocument document) {

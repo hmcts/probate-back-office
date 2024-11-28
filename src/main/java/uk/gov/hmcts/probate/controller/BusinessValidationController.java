@@ -44,7 +44,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
-import uk.gov.hmcts.probate.validator.CaseTypeValidationRule;
+import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
@@ -124,7 +124,7 @@ public class BusinessValidationController {
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final RegistrarDirectionService registrarDirectionService;
     private final Pre1900DOBValidationRule pre1900DOBValidationRule;
-    private final CaseTypeValidationRule caseTypeValidationRule;
+    private final AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
 
     @PostMapping(path = "/update-task-list", produces = {APPLICATION_JSON_VALUE})
@@ -580,7 +580,7 @@ public class BusinessValidationController {
         caseDataTransformer.transformCaseDataForPaperForm(callbackRequest);
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
-        caseTypeValidationRule.validate(callbackRequest.getCaseDetails());
+        adColligendaBonaCaseTypeValidationRule.validate(callbackRequest.getCaseDetails());
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
         Document document = null;

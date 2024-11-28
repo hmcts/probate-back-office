@@ -455,20 +455,29 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    void verifyGenerateAllEnglishAdColligendaPersonalGrantType()
-            throws IOException {
+    void verifyGenerateAllEnglishAdColligendaPersonalGrantTypeDraft() throws IOException {
         String adColligendaPayload = "/default/adColligenda/personal/";
-
         String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON,
                 GENERATE_GRANT_DRAFT);
-        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
+        assertTrue("Draft grant document does not contain expected text.",
+                response.contains(AD_COLLIGENDA_GRANT_TEXT));
+    }
 
-        response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON, GENERATE_GRANT);
-        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
+    @Test
+    void verifyGenerateAllEnglishAdColligendaPersonalGrantType() throws IOException {
+        String adColligendaPayload = "/default/adColligenda/personal/";
+        String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON, GENERATE_GRANT);
+        assertTrue("Grant document does not contain expected text.",
+                response.contains(AD_COLLIGENDA_GRANT_TEXT));
+    }
 
-        response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_REISSUE_JSON,
+    @Test
+    void verifyGenerateAllEnglishAdColligendaPersonalGrantTypeReissue() throws IOException {
+        String adColligendaPayload = "/default/adColligenda/personal/";
+        String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_REISSUE_JSON,
                 GENERATE_GRANT_REISSUE);
-        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
+        assertTrue("Reissue grant document does not contain expected text.",
+                response.contains(AD_COLLIGENDA_GRANT_TEXT));
     }
 
     @Test

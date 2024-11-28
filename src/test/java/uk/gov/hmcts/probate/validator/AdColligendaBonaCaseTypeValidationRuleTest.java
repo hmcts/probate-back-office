@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.validator;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,24 +16,27 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 
-class CaseTypeValidationRuleTest {
+class AdColligendaBonaCaseTypeValidationRuleTest {
 
     @InjectMocks
-    private CaseTypeValidationRule caseTypeValidationRule;
+    private AdColligendaBonaCaseTypeValidationRule caseTypeValidationRule;
 
-    @Mock
-    private BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
     private CaseData dataMock;
-    @Mock
     private CaseDetails detailsMock;
 
+    private AutoCloseable closeableMocks;
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        closeableMocks = MockitoAnnotations.openMocks(this);
         dataMock = CaseData.builder().caseType("gop").build();
         detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
+    }
+
+    @AfterEach
+    void cleanUp() throws Exception {
+        closeableMocks.close();
     }
 
     @Test

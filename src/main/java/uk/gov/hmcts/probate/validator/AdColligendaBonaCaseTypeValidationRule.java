@@ -13,7 +13,7 @@ import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
-public class CaseTypeValidationRule {
+public class AdColligendaBonaCaseTypeValidationRule {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
