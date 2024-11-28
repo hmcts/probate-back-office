@@ -52,6 +52,7 @@ public class ReprintTransformer {
             DIGITAL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, AD_COLLIGENDA_BONA_GRANT_REISSUE,
             STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH
     );
+
     public void transformReprintDocuments(@Valid CaseDetails caseDetails,
                                           ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         responseCaseDataBuilder.reprintDocument(getDocumentsAsDynamicList(caseDetails.getData()));

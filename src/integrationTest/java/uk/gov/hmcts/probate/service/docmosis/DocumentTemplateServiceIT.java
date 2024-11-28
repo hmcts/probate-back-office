@@ -174,6 +174,7 @@ class DocumentTemplateServiceIT {
         assertEquals(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT, responseReissueWelshDraft);
 
     }
+
     @Test
     void shouldGetAdColligendaBonaTemplate() {
         assertAll("AdColligendaBonaTemplate",

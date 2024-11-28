@@ -20,13 +20,15 @@ class AdColligendaBonaCaseTypeValidationRuleTest {
 
     @InjectMocks
     private AdColligendaBonaCaseTypeValidationRule caseTypeValidationRule;
-
+    @Mock
+    private BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
     private CaseData dataMock;
     private CaseDetails detailsMock;
 
     private AutoCloseable closeableMocks;
+
     @BeforeEach
     public void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
@@ -40,7 +42,7 @@ class AdColligendaBonaCaseTypeValidationRuleTest {
     }
 
     @Test
-    void shouldReturnErrorForNaSelection() {
+    void shouldReturnErrorForAdColligendaBonaCaseType() {
         dataMock = CaseData.builder()
                 .caseType("adColligendaBona").build();
         detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
@@ -52,7 +54,7 @@ class AdColligendaBonaCaseTypeValidationRuleTest {
     }
 
     @Test
-    void shouldReturnNoerrorForEstateCompletedNo() {
+    void shouldReturnNoErrorForOtherCaseType() {
         assertDoesNotThrow(() -> {
             caseTypeValidationRule.validate(detailsMock);
         });
