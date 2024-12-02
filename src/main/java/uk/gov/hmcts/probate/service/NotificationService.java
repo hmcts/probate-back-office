@@ -168,7 +168,7 @@ public class NotificationService {
 
         TemplatePreview previewResponse =
                 notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
-        return getGeneratedDocument(previewResponse, null, SENT_EMAIL);
+        return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
     }
 
     public Document sendNocEmail(State state, CaseDetails caseDetails) throws NotificationClientException {
