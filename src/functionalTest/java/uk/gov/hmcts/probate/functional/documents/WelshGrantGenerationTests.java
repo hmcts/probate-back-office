@@ -7,7 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
+
+
 
 @ExtendWith(SerenityJUnit5Extension.class)
 public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
