@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,7 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
@@ -58,6 +60,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
@@ -102,6 +105,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Gran
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CallbackResponseTransformer {
 
     public static final String ANSWER_YES = "Yes";
@@ -141,6 +145,8 @@ public class CallbackResponseTransformer {
     private final IhtEstateDefaulter ihtEstateDefaulter;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    private final FeatureToggleService featureToggleService;
+
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
 
@@ -1084,7 +1090,7 @@ public class CallbackResponseTransformer {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
 
-    private ResponseCaseDataBuilder<?, ?> getResponseCaseData(CaseDetails caseDetails, String eventId,
+    ResponseCaseDataBuilder<?, ?> getResponseCaseData(CaseDetails caseDetails, String eventId,
                                                               Optional<UserInfo> caseworkerInfo, boolean transform) {
         CaseData caseData = caseDetails.getData();
 
@@ -1120,7 +1126,6 @@ public class CallbackResponseTransformer {
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
             .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
-            .solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData))
             .caseMatches(caseData.getCaseMatches())
 
             .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
@@ -1357,9 +1362,6 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
-            .deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill())
-            .deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill())
-            .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
@@ -1375,6 +1377,19 @@ public class CallbackResponseTransformer {
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
             .isSaveAndClose(caseData.getIsSaveAndClose());
 
+        if (featureToggleService.enableNewAliasTransformation()) {
+            handleDeceasedAliases(
+                    builder,
+                    caseData,
+                    caseDetails.getId());
+        } else {
+            builder.solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData));
+
+            builder.deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill());
+            builder.deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill());
+            builder.deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill());
+        }
+
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
         } else {
@@ -1388,6 +1403,120 @@ public class CallbackResponseTransformer {
 
 
         return builder;
+    }
+
+    void handleDeceasedAliases(
+            final ResponseCaseDataBuilder<?,?> builder,
+            final CaseData caseData,
+            final Long caseRef) {
+        // Question this asks is "Is the name on the will the same?" Not "Are there other names on the will?" as the
+        // name of the variable in the CaseData object suggests.
+        final String decNameOnWillSame = caseData.getDeceasedAnyOtherNameOnWill();
+        final var decAliases = caseData.getDeceasedAliasNameList();
+        final var solsDecAliases = caseData.getSolsDeceasedAliasNamesList();
+
+        {
+            final boolean hasAlternateNameOnWill = decNameOnWillSame != null && NO.equals(decNameOnWillSame);
+            final boolean hasDecAliases = decAliases != null && !decAliases.isEmpty();
+            final boolean hasSolsDecAliases = solsDecAliases != null && !solsDecAliases.isEmpty();
+
+            if ((hasAlternateNameOnWill || hasDecAliases) && hasSolsDecAliases) {
+                // This is one of the contributing causes for DTSPB-4388
+                log.info("For case {} found both non-sols and sols aliases: hasAltNameOnWill: {}, hasDecAliases: {},"
+                                + " hasSolsDecAliases: {}",
+                        caseRef,
+                        hasAlternateNameOnWill,
+                        hasDecAliases,
+                        hasSolsDecAliases);
+            }
+        }
+
+        List<CollectionMember<AliasName>> newSolsDecAliases = new ArrayList<>();
+
+        if (solsDecAliases != null) {
+            newSolsDecAliases.addAll(solsDecAliases);
+        }
+
+        newSolsDecAliases.addAll(convertDecAliasesSolsDecAliasList(decAliases));
+
+        {
+            final String decAliasFNOnWill = caseData.getDeceasedAliasFirstNameOnWill();
+            final String decAliasLNOnWill = caseData.getDeceasedAliasLastNameOnWill();
+
+            newSolsDecAliases.addAll(convertAliasOnWillToSolsDecAliasList(
+                    caseRef,
+                    decNameOnWillSame,
+                    decAliasFNOnWill,
+                    decAliasLNOnWill));
+        }
+
+        Set<String> seenAliasNames = new HashSet<>();
+
+        builder.solsDeceasedAliasNamesList(newSolsDecAliases.stream()
+                .filter(a -> seenAliasNames.add(a.getValue().getSolsAliasname()))
+                .toList());
+    }
+
+    List<CollectionMember<AliasName>> convertAliasOnWillToSolsDecAliasList(
+            final Long caseRef,
+            final String differentNameOnWill,
+            final String foreNames,
+            final String lastName) {
+        if (differentNameOnWill != null && NO.equals(differentNameOnWill)) {
+            if (foreNames != null && lastName != null) {
+                final String aliasValue = new StringBuilder()
+                        .append(foreNames)
+                        .append(" ")
+                        .append(lastName)
+                        .toString();
+
+                final AliasName alias = AliasName.builder()
+                        .solsAliasname(aliasValue)
+                        .build();
+
+                final CollectionMember<AliasName> listMember = new CollectionMember<>(alias);
+                return List.of(listMember);
+            } else {
+                log.info("For case {}, foreNames == null: {}, lastName == null: {},"
+                                + " so alias is not being added to solsDecAlias list",
+                        caseRef,
+                        foreNames == null,
+                        lastName == null);
+            }
+        }
+        return List.of();
+    }
+
+    List<CollectionMember<AliasName>> convertDecAliasesSolsDecAliasList(
+            final List<CollectionMember<ProbateAliasName>> decAliases) {
+        if (decAliases == null || decAliases.isEmpty()) {
+            return List.of();
+        }
+
+        final Function<CollectionMember<ProbateAliasName>, ProbateAliasName> unwrap = c -> c.getValue();
+
+        final Function<ProbateAliasName, AliasName> convert = p -> {
+            final String aliasValue = new StringBuilder()
+                    .append(p.getForenames())
+                    .append(" ")
+                    .append(p.getLastName())
+                    .toString();
+
+            return AliasName.builder()
+                    .solsAliasname(aliasValue)
+                    .build();
+        };
+
+        final Function<AliasName, CollectionMember<AliasName>> wrap = a -> new CollectionMember<>(a);
+
+        Set<String> seenAliasNames = new HashSet<>();
+
+        return decAliases.stream()
+                .map(unwrap)
+                .map(convert)
+                .map(wrap)
+                .filter(cm -> seenAliasNames.add(cm.getValue().getSolsAliasname()))
+                .toList();
     }
 
     OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
