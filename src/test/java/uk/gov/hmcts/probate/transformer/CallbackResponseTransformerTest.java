@@ -4839,7 +4839,7 @@ class CallbackResponseTransformerTest {
         try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
             respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
 
-            underTest.getResponseCaseData(caseDetailsMock, eventId, transform);
+            underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
         }
 
         verify(builderSpy).deceasedAnyOtherNameOnWill(NO);
@@ -4879,7 +4879,7 @@ class CallbackResponseTransformerTest {
         try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
             respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
 
-            underTest.getResponseCaseData(caseDetailsMock, eventId, transform);
+            underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
         }
 
         verify(builderSpy).deceasedAnyOtherNameOnWill(YES);
@@ -4921,7 +4921,7 @@ class CallbackResponseTransformerTest {
         try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
             respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
 
-            underTest.getResponseCaseData(caseDetailsMock, eventId, transform);
+            underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
         }
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
