@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
@@ -48,6 +49,7 @@ import jakarta.validation.Valid;
 import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -417,6 +419,17 @@ public class NotificationService {
         return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
+    private String rerenderAsXhtml(String textToEscape) {
+        Safelist safelist = Safelist.basic();
+
+        org.jsoup.nodes.Document.OutputSettings outputSettings = new org.jsoup.nodes.Document.OutputSettings()
+                .syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml)
+                .charset(StandardCharsets.UTF_8)
+                .prettyPrint(false);
+
+        return Jsoup.clean(textToEscape, "", safelist, outputSettings);
+    }
+
     private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
                                           DocumentType docType) {
 
@@ -424,16 +437,23 @@ public class NotificationService {
         final String respHtml = response.getHtml().orElse("");
         final org.jsoup.nodes.Document respHtmlParsed = Jsoup.parseBodyFragment(respHtml);
         final String respHtmlProcessed = respHtmlParsed.body().html();
+        final String respHtmlReprocessed = rerenderAsXhtml(respHtmlProcessed);
 
-        log.info("handling sendEmail preview:\n\nmarkdownHtml:\n{}\n\nrespHtml:\n{}\n\nrespHtmlProcessed:\n{}\n\n",
+        log.info(new StringBuilder()
+                        .append("handling sendEmail preview:\n\n")
+                        .append("markdownHtml:\n{}\n\n")
+                        .append("respHtml:\n{}\n\n")
+                        .append("respHtmlProcessed:\n{}\n\n")
+                        .append("respHtmlReprocessed:\n{}\n\n").toString(),
                 markdownHtml,
                 respHtml,
-                respHtmlProcessed);
+                respHtmlProcessed,
+                respHtmlReprocessed);
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
-                .body(respHtmlProcessed)
+                .body(respHtmlReprocessed)
                 .build();
 
         return pdfManagementService.generateAndUpload(sentEmail, docType);
