@@ -436,6 +436,8 @@ public class NotificationService {
 
         html = html.replaceAll("<br>", "<br />");
         html = html.replaceAll("<hr>", "<hr />");
+        html = html.replaceAll("&lt;info&gt;", "<info>");
+        html = html.replaceAll("&lt;/info&gt;", "</info>");
         return html;
     }
 
