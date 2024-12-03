@@ -422,9 +422,10 @@ public class NotificationService {
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
-                .body(response.getHtml().orElse(""))
+                .body(response.getBody())
                 .build();
-        return pdfManagementService.generateAndUpload(sentEmail, docType);
+        Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
+        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {
