@@ -280,9 +280,9 @@
             {% endif %}
             {% endfor %}
             {% else %}
-            {% if case_details.case_data.titleAndClearingType != "TCTPartAllRenouncing" and case_details.case_data.titleAndClearingType != "TCTPartSuccAllRenouncing" %}
-                <p>None.</p>
-            {% endif %}
+                {% if case_details.case_data.titleAndClearingType != "TCTPartAllRenouncing" and case_details.case_data.titleAndClearingType != "TCTPartSuccAllRenouncing" %}
+                    <p>None.</p>
+                {% endif %}
             {% endif %}
         </td>
     </tr>
