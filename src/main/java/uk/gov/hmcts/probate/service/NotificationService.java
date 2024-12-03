@@ -418,7 +418,6 @@ public class NotificationService {
 
     private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
                                           DocumentType docType) {
-        log.info("html: {}", response.getHtml());
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
