@@ -512,5 +512,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenResponses", "Label": "Citizen's response", "FieldType": "Collection", "FieldTypeParameter": "citizenHubResponse", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenDocumentsUploaded", "Label": "Citizen Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "isSaveAndClose", "Label": "Is Save and Close", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "informationNeededByPostSwitch", "Label": "Information need to be returned by post page switch", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "informationNeededByPostSwitch", "Label": "Information need to be returned by post page switch", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "resolveCaveatStopState", "Label": "Which state do you wish to return the case to?", "FieldType": "FixedList", "FieldTypeParameter": "resolveCaveatStopStateFixedList", "SecurityClassification": "Public"}
 ]
