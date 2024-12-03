@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
@@ -95,7 +96,9 @@ public class PDFManagementService {
     }
 
     public Document generateAndUpload(SentEmail sentEmail, DocumentType documentType) {
-        return generateAndUpload(toJson(sentEmail, documentType), documentType);
+        final String json = toJson(sentEmail, documentType);
+        log.info("json:\n\n{}\n\n", json);
+        return generateAndUpload(json, documentType);
     }
 
     private Document generateAndUpload(String json, DocumentType documentType) {

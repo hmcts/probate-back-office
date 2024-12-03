@@ -418,11 +418,15 @@ public class NotificationService {
 
     private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
                                           DocumentType docType) {
+
+        final String markdownHtml = markdownTransformationService.toHtml(response.getBody());
+        final String respHtml = response.getHtml().orElse("");
+        log.info("handling sendEmail preview:\n\nmarkdownHtml:\n{}\n\nrespHtml:\n{}\n\n", markdownHtml, respHtml);
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
-                .body(markdownTransformationService.toHtml(response.getBody()))
+                .body(respHtml)
                 .build();
 
         return pdfManagementService.generateAndUpload(sentEmail, docType);
