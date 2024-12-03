@@ -486,6 +486,16 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/resolveCaveatStopState", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> resolveCaveatStopState(@RequestBody CallbackRequest callbackRequest,
+                                                            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        log.info("resolve caveat stop state started");
+        CallbackResponse response = callbackResponseTransformer.transferCaveatStopState(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/changeDob", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> changeDob(@RequestBody CallbackRequest callbackRequest,
