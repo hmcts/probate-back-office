@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
@@ -421,12 +422,18 @@ public class NotificationService {
 
         final String markdownHtml = markdownTransformationService.toHtml(response.getBody());
         final String respHtml = response.getHtml().orElse("");
-        log.info("handling sendEmail preview:\n\nmarkdownHtml:\n{}\n\nrespHtml:\n{}\n\n", markdownHtml, respHtml);
+        final org.jsoup.nodes.Document respHtmlParsed = Jsoup.parseBodyFragment(respHtml);
+        final String respHtmlProcessed = respHtmlParsed.body().html();
+
+        log.info("handling sendEmail preview:\n\nmarkdownHtml:\n{}\n\nrespHtml:\n{}\n\nrespHtmlProcessed:\n{}\n\n",
+                markdownHtml,
+                respHtml,
+                respHtmlProcessed);
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
-                .body(respHtml)
+                .body(respHtmlProcessed)
                 .build();
 
         return pdfManagementService.generateAndUpload(sentEmail, docType);

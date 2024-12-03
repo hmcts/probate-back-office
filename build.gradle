@@ -263,6 +263,7 @@ dependencies {
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.4'
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
+  implementation group: 'org.jsoup', name: 'jsoup', version: '1.18.3'
 
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.2.1-RELEASE'
