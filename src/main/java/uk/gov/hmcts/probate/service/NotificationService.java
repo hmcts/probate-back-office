@@ -433,7 +433,10 @@ public class NotificationService {
         if (html == null) {
             return null;
         }
-        return html.replaceAll("<br>", "<br />");
+
+        html = html.replaceAll("<br>", "<br />");
+        html = html.replaceAll("<hr>", "<hr />");
+        return html;
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {
