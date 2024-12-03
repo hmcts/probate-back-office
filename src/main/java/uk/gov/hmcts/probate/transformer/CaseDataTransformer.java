@@ -56,7 +56,12 @@ public class CaseDataTransformer {
 
 
     public void transformCaseDataForValidateProbate(CallbackRequest callbackRequest) {
-        final var caseData = callbackRequest.getCaseDetails().getData();
+        final var caseDetails = callbackRequest.getCaseDetails();
+        final var caseData = caseDetails.getData();
+
+        solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
+                caseDetails);
+
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
