@@ -418,14 +418,22 @@ public class NotificationService {
 
     private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
                                           DocumentType docType) {
+        log.info("Html: {}", response.getHtml());
+        log.info("Sanitized Html: {}", sanitizeHtml(response.getHtml().orElse("")));
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
-                .body(response.getBody())
+                .body(sanitizeHtml(response.getHtml().orElse("")))
                 .build();
-        Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
-        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
+        return pdfManagementService.generateAndUpload(sentEmail, docType);
+    }
+
+    private static String sanitizeHtml(String html) {
+        if (html == null) {
+            return null;
+        }
+        return html.replaceAll("<br>", "<br />");
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {
