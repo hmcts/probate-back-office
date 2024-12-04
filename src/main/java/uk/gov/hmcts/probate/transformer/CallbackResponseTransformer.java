@@ -331,11 +331,16 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse addDocumentPreview(CallbackRequest callbackRequest, Document document) {
+    public CallbackResponse addDocumentPreview(
+            CallbackRequest callbackRequest,
+            Document document,
+            Optional<String> htmlPreview) {
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         responseCaseDataBuilder.emailPreview(document.getDocumentLink());
+        htmlPreview.ifPresent(responseCaseDataBuilder::emailPreviewAlt);
+
 
         return transformResponse(responseCaseDataBuilder.build());
     }

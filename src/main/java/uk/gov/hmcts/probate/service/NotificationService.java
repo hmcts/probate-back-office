@@ -156,12 +156,12 @@ public class NotificationService {
         return getSentEmailDocument(state, emailAddress, response);
     }
 
-    public Document emailPreview(CaseDetails caseDetails) throws NotificationClientException {
+    private TemplatePreview getEmailPreview(final CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION,
-            caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
+                caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
                 null, caseData.getChannelChoice(), caseData.getInformationNeededByPost());
         Map<String, Object> personalisation =
                 grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
@@ -169,9 +169,19 @@ public class NotificationService {
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
-        TemplatePreview previewResponse =
-                notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
-        return getGeneratedDocument(previewResponse, null, SENT_EMAIL);
+        return notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
+    }
+
+    public Optional<String> emailPreviewAlt(final CaseDetails caseDetails) throws NotificationClientException {
+        final TemplatePreview preview = getEmailPreview(caseDetails);
+
+        return preview.getHtml();
+    }
+
+    public Document emailPreview(CaseDetails caseDetails) throws NotificationClientException {
+        final TemplatePreview preview = getEmailPreview(caseDetails);
+
+        return getGeneratedDocument(preview, null, SENT_EMAIL);
     }
 
     public Document sendNocEmail(State state, CaseDetails caseDetails) throws NotificationClientException {

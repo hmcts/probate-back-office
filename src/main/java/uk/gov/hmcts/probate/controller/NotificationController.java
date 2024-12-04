@@ -49,6 +49,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
@@ -199,7 +200,14 @@ public class NotificationController {
     @PostMapping(path = "/information-request-email-preview")
     public ResponseEntity<CallbackResponse> emailPreview(@RequestBody CallbackRequest callbackRequest) {
         Document document = informationRequestService.emailPreview(callbackRequest);
-        return ResponseEntity.ok(callbackResponseTransformer.addDocumentPreview(callbackRequest, document));
+        Optional<String> htmlPreview = Optional.empty();
+        try {
+            htmlPreview = notificationService.emailPreviewAlt(callbackRequest.getCaseDetails());
+        } catch (NotificationClientException e) {
+            log.error("", e);
+        }
+
+        return ResponseEntity.ok(callbackResponseTransformer.addDocumentPreview(callbackRequest, document, htmlPreview));
     }
 
     @PostMapping(path = "/redeclaration-sot")
