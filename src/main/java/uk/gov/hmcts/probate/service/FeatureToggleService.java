@@ -68,6 +68,7 @@ public class FeatureToggleService {
             return MASTER;
         }
     }
+
     public DocGen chooseDocGen() {
         final String docGenStr = ldClient.stringVariation("probate-choose-docgen-example", this.ldContext, "MASTER");
 

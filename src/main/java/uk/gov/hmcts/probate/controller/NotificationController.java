@@ -207,7 +207,10 @@ public class NotificationController {
             log.error("", e);
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.addDocumentPreview(callbackRequest, document, htmlPreview));
+        return ResponseEntity.ok(callbackResponseTransformer.addDocumentPreview(
+                callbackRequest,
+                document,
+                htmlPreview));
     }
 
     @PostMapping(path = "/redeclaration-sot")
