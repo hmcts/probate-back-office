@@ -420,9 +420,9 @@ public class NotificationService {
     }
 
     private String rerenderAsXhtml(String textToEscape) {
-        Safelist safelist = Safelist.basic();
+        final Safelist safelist = Safelist.relaxed();
 
-        org.jsoup.nodes.Document.OutputSettings outputSettings = new org.jsoup.nodes.Document.OutputSettings()
+        final org.jsoup.nodes.Document.OutputSettings outputSettings = new org.jsoup.nodes.Document.OutputSettings()
                 .syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml)
                 .charset(StandardCharsets.UTF_8)
                 .prettyPrint(false);
