@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-public class FeatureToggleServiceTest {
+class FeatureToggleServiceTest {
     @Test
     void testDocGenMapping() {
         final BiFunction<String, DocGen, Executable> genAssert = (v, e) -> {
