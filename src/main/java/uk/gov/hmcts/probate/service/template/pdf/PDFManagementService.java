@@ -95,9 +95,7 @@ public class PDFManagementService {
     }
 
     public Document generateAndUpload(SentEmail sentEmail, DocumentType documentType) {
-        final String json = toJson(sentEmail, documentType);
-        log.info("json:\n\n{}\n\n", json);
-        return generateAndUpload(json, documentType);
+        return generateAndUpload(toJson(sentEmail, documentType), documentType);
     }
 
     private Document generateAndUpload(String json, DocumentType documentType) {

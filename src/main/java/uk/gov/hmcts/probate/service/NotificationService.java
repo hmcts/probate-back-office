@@ -430,7 +430,7 @@ public class NotificationService {
         return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
-    private String rerenderAsXhtml(String textToEscape) {
+    String rerenderAsXhtml(String textToEscape) {
         final Safelist safelist = Safelist.relaxed();
 
         final org.jsoup.nodes.Document.OutputSettings outputSettings = new org.jsoup.nodes.Document.OutputSettings()
@@ -441,7 +441,7 @@ public class NotificationService {
         return Jsoup.clean(textToEscape, "", safelist, outputSettings);
     }
 
-    private Document getGeneratedDocument(
+    Document getGeneratedDocument(
             final TemplatePreview response,
             final String emailAddress,
             final DocumentType docType) {

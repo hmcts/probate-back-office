@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
@@ -23,6 +25,7 @@ import uk.gov.hmcts.probate.validator.PersonalisationValidationRule.Personalisat
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.TemplatePreview;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +33,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 class NotificationServiceTest {
@@ -137,5 +141,80 @@ class NotificationServiceTest {
         final var result = notificationService.doCommonNotificationServiceHandling(dummyPersonalisation, dummyCaseId);
 
         assertEquals(CommonNotificationResult.ALL_OK, result);
+    }
+
+    @Test
+    void testRerender() {
+        notificationService.rerenderAsXhtml("");
+    }
+
+    @Test
+    void testGetDocument_master() {
+        final JSONObject templateData = new JSONObject();
+        templateData.put("id", "00000000-0000-0000-0000-000000000000");
+        templateData.put("type", "email");
+        templateData.put("version", 1);
+        templateData.put("body", "body");
+        templateData.put("subject", "subject");
+        templateData.put("html", "html");
+        final TemplatePreview templatePreview = new TemplatePreview(templateData);
+
+
+        when(featureToggleServiceMock.chooseDocGen()).thenReturn(FeatureToggleService.DocGen.MASTER);
+        when(markdownTransformationServiceMock.toHtml(any())).thenReturn("");
+
+        notificationService.getGeneratedDocument(templatePreview, "emailAddr", DocumentType.SENT_EMAIL);
+    }
+
+    @Test
+    void testGetDocument_pr() {
+        final JSONObject templateData = new JSONObject();
+        templateData.put("id", "00000000-0000-0000-0000-000000000000");
+        templateData.put("type", "email");
+        templateData.put("version", 1);
+        templateData.put("body", "body");
+        templateData.put("subject", "subject");
+        templateData.put("html", "html");
+        final TemplatePreview templatePreview = new TemplatePreview(templateData);
+
+
+        when(featureToggleServiceMock.chooseDocGen()).thenReturn(FeatureToggleService.DocGen.PR);
+        when(sentEmailPersonalisationServiceMock.getPersonalisation(any())).thenReturn(Map.of());
+
+        notificationService.getGeneratedDocument(templatePreview, "emailAddr", DocumentType.SENT_EMAIL);
+    }
+
+    @Test
+    void testGetDocument_html() {
+        final JSONObject templateData = new JSONObject();
+        templateData.put("id", "00000000-0000-0000-0000-000000000000");
+        templateData.put("type", "email");
+        templateData.put("version", 1);
+        templateData.put("body", "body");
+        templateData.put("subject", "subject");
+        templateData.put("html", "html");
+        final TemplatePreview templatePreview = new TemplatePreview(templateData);
+
+
+        when(featureToggleServiceMock.chooseDocGen()).thenReturn(FeatureToggleService.DocGen.HTML);
+
+        notificationService.getGeneratedDocument(templatePreview, "emailAddr", DocumentType.SENT_EMAIL);
+    }
+
+    @Test
+    void testGetDocument_htmlProc() {
+        final JSONObject templateData = new JSONObject();
+        templateData.put("id", "00000000-0000-0000-0000-000000000000");
+        templateData.put("type", "email");
+        templateData.put("version", 1);
+        templateData.put("body", "body");
+        templateData.put("subject", "subject");
+        templateData.put("html", "html");
+        final TemplatePreview templatePreview = new TemplatePreview(templateData);
+
+
+        when(featureToggleServiceMock.chooseDocGen()).thenReturn(FeatureToggleService.DocGen.HTML_PROC);
+
+        notificationService.getGeneratedDocument(templatePreview, "emailAddr", DocumentType.SENT_EMAIL);
     }
 }
