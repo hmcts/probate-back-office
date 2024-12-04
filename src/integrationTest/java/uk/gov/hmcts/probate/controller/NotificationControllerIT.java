@@ -209,7 +209,7 @@ class NotificationControllerIT {
             .thenReturn(successfulResponse);
         when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>())))
             .thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addDocumentPreview(any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addDocumentPreview(any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.grantRaised(any(), any(), any())).thenReturn(successfulResponse);
 
         when(informationRequestService.handleInformationRequest(any())).thenReturn(successfulResponse);

@@ -4684,7 +4684,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse =
-                underTest.addDocumentPreview(callbackRequestMock, document);
+                underTest.addDocumentPreview(callbackRequestMock, document, Optional.empty());
 
         assertEquals(documentLinkMock, callbackResponse.getData().getEmailPreview());
     }
