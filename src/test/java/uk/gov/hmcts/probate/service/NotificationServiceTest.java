@@ -70,6 +70,8 @@ class NotificationServiceTest {
     private PersonalisationValidationRule personalisationValidationRuleMock;
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
+    @Mock
+    private FeatureToggleService featureToggleServiceMock;
 
     @InjectMocks
     private NotificationService notificationService;
@@ -79,6 +81,7 @@ class NotificationServiceTest {
     @BeforeEach
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
+        when(featureToggleServiceMock.chooseDocGen()).thenReturn(FeatureToggleService.DocGen.MASTER);
     }
 
     @AfterEach
