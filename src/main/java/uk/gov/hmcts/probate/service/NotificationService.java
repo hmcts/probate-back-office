@@ -95,6 +95,7 @@ public class NotificationService {
     private final DocumentManagementService documentManagementService;
     private final PersonalisationValidationRule personalisationValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
+    private final FeatureToggleService featureToggleService;
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
     private Long grantDelayedNotificationPeriodDays;
@@ -440,33 +441,58 @@ public class NotificationService {
         return Jsoup.clean(textToEscape, "", safelist, outputSettings);
     }
 
-    private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
-                                          DocumentType docType) {
+    private Document getGeneratedDocument(
+            final TemplatePreview response,
+            final String emailAddress,
+            final DocumentType docType) {
+        final FeatureToggleService.DocGen docGen = featureToggleService.chooseDocGen();
 
-        final String markdownHtml = markdownTransformationService.toHtml(response.getBody());
-        final String respHtml = response.getHtml().orElse("");
-        final org.jsoup.nodes.Document respHtmlParsed = Jsoup.parseBodyFragment(respHtml);
-        final String respHtmlProcessed = respHtmlParsed.body().html();
-        final String respHtmlReprocessed = rerenderAsXhtml(respHtmlProcessed);
+        return switch (docGen) {
+            case MASTER -> {
+                SentEmail sentEmail = SentEmail.builder()
+                        .sentOn(LocalDateTime.now().format(formatter))
+                        .to(emailAddress)
+                        .subject(response.getSubject().orElse(""))
+                        .body(markdownTransformationService.toHtml(response.getBody()))
+                        .build();
 
-        log.info(new StringBuilder()
-                        .append("handling sendEmail preview:\n\n")
-                        .append("markdownHtml:\n{}\n\n")
-                        .append("respHtml:\n{}\n\n")
-                        .append("respHtmlProcessed:\n{}\n\n")
-                        .append("respHtmlReprocessed:\n{}\n\n").toString(),
-                markdownHtml,
-                respHtml,
-                respHtmlProcessed,
-                respHtmlReprocessed);
-        SentEmail sentEmail = SentEmail.builder()
-                .sentOn(LocalDateTime.now().format(formatter))
-                .to(emailAddress)
-                .subject(response.getSubject().orElse(""))
-                .body(respHtmlReprocessed)
-                .build();
+                yield pdfManagementService.generateAndUpload(sentEmail, docType);
+            }
+            case PR -> {
+                SentEmail sentEmail = SentEmail.builder()
+                        .sentOn(LocalDateTime.now().format(formatter))
+                        .to(emailAddress)
+                        .subject(response.getSubject().orElse(""))
+                        .body(response.getBody())
+                        .build();
 
-        return pdfManagementService.generateAndUpload(sentEmail, docType);
+                Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
+                yield pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
+            }
+            case HTML -> {
+                final String respHtml = response.getHtml().orElse("");
+
+                SentEmail sentEmail = SentEmail.builder()
+                        .sentOn(LocalDateTime.now().format(formatter))
+                        .to(emailAddress)
+                        .subject(response.getSubject().orElse(""))
+                        .body(respHtml)
+                        .build();
+
+                yield pdfManagementService.generateAndUpload(sentEmail, docType);
+            }
+            case HTML_PROC -> {
+                final String respHtmlReprocessed = rerenderAsXhtml(response.getHtml().orElse(""));
+                SentEmail sentEmail = SentEmail.builder()
+                        .sentOn(LocalDateTime.now().format(formatter))
+                        .to(emailAddress)
+                        .subject(response.getSubject().orElse(""))
+                        .body(respHtmlReprocessed)
+                        .build();
+
+                yield pdfManagementService.generateAndUpload(sentEmail, docType);
+            }
+        };
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {

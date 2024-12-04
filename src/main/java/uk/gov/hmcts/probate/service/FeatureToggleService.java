@@ -52,4 +52,25 @@ public class FeatureToggleService {
     public boolean enableNewAliasTransformation() {
         return this.isFeatureToggleOn("probate-enable-new-alias-transformation", false);
     }
+
+    public enum DocGen {
+        MASTER,
+        PR,
+        HTML,
+        HTML_PROC;
+
+        static DocGen fromString(String value) {
+            for (DocGen docGen : DocGen.values()) {
+                if (docGen.name().equalsIgnoreCase(value)) {
+                    return docGen;
+                }
+            }
+            return MASTER;
+        }
+    }
+    public DocGen chooseDocGen() {
+        final String docGenStr = ldClient.stringVariation("probate-choose-docgen-example", this.ldContext, "MASTER");
+
+        return DocGen.fromString(docGenStr);
+    }
 }
