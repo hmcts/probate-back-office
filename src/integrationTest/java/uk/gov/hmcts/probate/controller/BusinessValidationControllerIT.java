@@ -149,7 +149,7 @@ class BusinessValidationControllerIT {
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String CHANGE_CASE_STATE_URL = "/case/changeCaseState";
-    private static final String RESOLVE_CAVEAT_STOP_URL = "/case/resolveCaveatStop";
+    private static final String RESOLVE_CAVEAT_STOP_URL = "/case/resolveCaveatStopState";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
