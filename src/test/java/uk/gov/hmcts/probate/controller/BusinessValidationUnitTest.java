@@ -971,6 +971,17 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
+    void shouldResolveCaveatState() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.resolveCaveatStopState(callbackRequestMock,httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .transferCaveatStopState(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
     @Test
     void shouldTransformUniqueCode() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
