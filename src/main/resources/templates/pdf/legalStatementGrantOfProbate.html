@@ -281,12 +281,12 @@
     <tr>
         <td  colspan="2">
             {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
-            <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.</span></p>
             {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
-            <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
                 that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                    at the date of death of the deceased have renounced probate.</span></p>
+                at the date of death of the deceased have renounced probate.</span></p>
             {% endif %}
             <p>{% if (multipleExecutors) %}We{% else %}I{% endif %} authorise
                 {{ case_details.case_data.solsSolicitorFirmName }} to send on
