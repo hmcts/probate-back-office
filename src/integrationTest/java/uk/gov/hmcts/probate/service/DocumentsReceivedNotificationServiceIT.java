@@ -19,14 +19,16 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,7 +48,11 @@ class DocumentsReceivedNotificationServiceIT {
     private static final Long CASE_ID = 12345678987654321L;
     private static final String BULK_SCAN_CASE_REFERENCE = "9876654312345678";
     private static final String DOCUMENTS_RECEIVED_FILE_NAME = "documentReceived.pdf";
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
     private Document emailDocument;
     private CallbackRequest callbackRequest;
     private CallbackResponse callbackResponse;
@@ -145,11 +151,12 @@ class DocumentsReceivedNotificationServiceIT {
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
-            .addDocuments(any(), eq(expectedOneDocument), any(), any());
+            .addDocuments(any(), eq(expectedOneDocument), any(), any(), any());
         doReturn(true).when(featureToggleService)
                 .isFeatureToggleOn("probate-documents-received-notification", false);
         CallbackResponse callbackResponse =
-            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+            documentsReceivedNotificationService
+                .handleDocumentReceivedNotification(callbackRequest, CASEWORKER_USERINFO);
 
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
     }
@@ -161,12 +168,13 @@ class DocumentsReceivedNotificationServiceIT {
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
         doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
-            .addDocuments(any(), any(), any(), any());
+            .addDocuments(any(), any(), any(), any(), any());
         doReturn(false).when(featureToggleService)
             .isFeatureToggleOn("probate-documents-received-notification", false);
 
         CallbackResponse callbackResponse =
-            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+            documentsReceivedNotificationService
+                .handleDocumentReceivedNotification(callbackRequest, CASEWORKER_USERINFO);
         assertTrue(callbackResponse.getData().getProbateNotificationsGenerated().isEmpty());
     }
 
@@ -177,12 +185,13 @@ class DocumentsReceivedNotificationServiceIT {
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
-            .addDocuments(any(), eq(expectedOneDocument), any(), any());
+            .addDocuments(any(), eq(expectedOneDocument), any(), any(), any());
         doReturn(true).when(featureToggleService)
             .isFeatureToggleOn("probate-documents-received-notification", false);
 
         CallbackResponse callbackResponse =
-            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+            documentsReceivedNotificationService
+                .handleDocumentReceivedNotification(callbackRequest, CASEWORKER_USERINFO);
 
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
     }
@@ -193,10 +202,11 @@ class DocumentsReceivedNotificationServiceIT {
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
-            .addDocuments(any(), eq(expectedNoDocuments), any(), any());
+            .addDocuments(any(), eq(expectedNoDocuments), any(), any(), any());
 
         CallbackResponse callbackResponse =
-            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+            documentsReceivedNotificationService
+                .handleDocumentReceivedNotification(callbackRequest, CASEWORKER_USERINFO);
 
         assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
     }
@@ -207,10 +217,11 @@ class DocumentsReceivedNotificationServiceIT {
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
-            .addDocuments(any(), eq(expectedNoDocuments), any(), any());
+            .addDocuments(any(), eq(expectedNoDocuments), any(), any(), any());
 
         CallbackResponse callbackResponse =
-            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+            documentsReceivedNotificationService
+                .handleDocumentReceivedNotification(callbackRequest, CASEWORKER_USERINFO);
 
         assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
     }

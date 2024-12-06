@@ -23,12 +23,15 @@ import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.service.LegacyImportService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 
 import jakarta.servlet.http.HttpServletRequest;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +53,7 @@ public class CaseMatchingController {
     private final CaseMatchingService caseMatchingService;
     private final LegacyImportService legacyImportService;
     private final BusinessValidationMessageService businessValidationMessageService;
-
+    private final UserInfoService userInfoService;
 
     @PostMapping(path = "/search-from-grant-flow")
     public ResponseEntity<CallbackResponse> search(@RequestBody CallbackRequest request) {
@@ -71,7 +74,7 @@ public class CaseMatchingController {
                 .collect(Collectors.joining(", "));
         log.info("Case ID: " + request.getCaseDetails().getId() + " case matching search result: " + caseIds);
 
-        return ResponseEntity.ok(callbackResponseTransformer.addMatches(request, caseMatches));
+        return ResponseEntity.ok(callbackResponseTransformer.addMatches(request, caseMatches, Optional.empty()));
     }
 
     @PostMapping(path = "/search-from-caveat-flow")
@@ -146,8 +149,8 @@ public class CaseMatchingController {
                 })
                 .collect(Collectors.joining(", "));
         log.info("Case ID: " + callbackRequest.getCaseDetails().getId() + " case matching import: " + caseIds);
-
-        return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, rows));
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, rows, caseworkerInfo));
     }
 
     @PostMapping(path = "/import-legacy-from-caveat-flow", consumes = APPLICATION_JSON_VALUE, produces = {

@@ -18,10 +18,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.EmailAddressExecutorsApplyingValidationRule;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -66,6 +69,11 @@ class RedeclarationNotificationServiceTest {
             Document.builder().documentType(SENT_EMAIL).documentFileName("file2").build();
     private static final Document SENT_EMAIL_DOCUMENT =
             Document.builder().documentType(DocumentType.SENT_EMAIL).build();
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
 
     @BeforeEach
     public void setup() {
@@ -100,12 +108,13 @@ class RedeclarationNotificationServiceTest {
         CallbackResponse callbackResponse = CallbackResponse.builder().data(letterResponseCaseData).build();
 
 
-        when(callbackResponseTransformer.addDocuments(any(), any(), any(), any())).thenReturn(callbackResponse);
+        when(callbackResponseTransformer.addDocuments(any(), any(), any(), any(), any())).thenReturn(callbackResponse);
     }
 
     @Test
     void handleRedeclarationNotificationShouldBeSuccessful() {
-        CallbackResponse response = redeclarationNotificationService.handleRedeclarationNotification(callbackRequest);
+        CallbackResponse response = redeclarationNotificationService.handleRedeclarationNotification(callbackRequest,
+                CASEWORKER_USERINFO);
 
         assertEquals(1, response.getData().getProbateSotDocumentsGenerated().size());
         assertEquals(SOT_INFORMATION_REQUEST,

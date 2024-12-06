@@ -11,11 +11,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.EmailAddressExecutorsApplyingValidationRule;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -28,7 +30,8 @@ public class RedeclarationNotificationService {
     private final EmailAddressExecutorsApplyingValidationRule emailAddressExecutorsApplyingValidationRule;
     private final CallbackResponseTransformer callbackResponseTransformer;
 
-    public CallbackResponse handleRedeclarationNotification(CallbackRequest callbackRequest) {
+    public CallbackResponse handleRedeclarationNotification(CallbackRequest callbackRequest,
+                                                            Optional<UserInfo> caseworkerInfo) {
 
         log.info("Preparing to send email to executors for redeclaration notification");
         emailAddressExecutorsApplyingValidationRule.validate(callbackRequest.getCaseDetails());
@@ -47,6 +50,6 @@ public class RedeclarationNotificationService {
                 }
             }
         }
-        return callbackResponseTransformer.addDocuments(callbackRequest, emailDocument, null, null);
+        return callbackResponseTransformer.addDocuments(callbackRequest, emailDocument, null, null, caseworkerInfo);
     }
 }

@@ -248,4 +248,8 @@ public class SecurityUtils {
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
         return userInfo.getRoles();
     }
+
+    public UserInfo getUserInfo(String authToken) {
+        return idamApi.retrieveUserInfo(authToken);
+    }
 }
