@@ -120,6 +120,7 @@ class CaseDataTransformerTest {
         verify(evidenceHandledTransformer, times(0)).updateEvidenceHandled(caseDataMock);
     }
 
+
     @Test
     void shouldTransformEvidenceHandledForManualCreateByCWCasePrinted() {
         when(caseDetailsMock.getState()).thenReturn(CASE_PRINTED_NAME);
@@ -295,4 +296,32 @@ class CaseDataTransformerTest {
         caseDataTransformer.transformCaseDataForPaperForm(callbackRequestMock);
         assertThat(caseDataMock.getChannelChoice(), is("PaperForm"));
     }
+
+    @Test
+    void shouldTransformIhtFormIdNullForDiedAfter() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT205").build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
+        assertThat(caseDataMock.getIhtFormId(), CoreMatchers.is(nullValue()));
+    }
+
+    @Test
+    void shouldTransformIhtFormEstateNullForDiedBefore() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT205").build();
+
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
+        assertThat(caseDataMock.getIhtFormEstate(), CoreMatchers.is(nullValue()));
+    }
+
 }
