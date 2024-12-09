@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,6 +20,7 @@ import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -49,6 +49,9 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.validation.Valid;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,39 +80,39 @@ public class DocumentController {
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
     private final IdamApi idamApi;
-    @Autowired
+
     private final DocumentGeneratorService documentGeneratorService;
-    @Autowired
+
     private final RegistryDetailsService registryDetailsService;
-    @Autowired
+
     private final PDFManagementService pdfManagementService;
-    @Autowired
+
     private final CallbackResponseTransformer callbackResponseTransformer;
-    @Autowired
+
     private final CaseDataTransformer caseDataTransformer;
-    @Autowired
+
     private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
-    @Autowired
+
     private final NotificationService notificationService;
-    @Autowired
+
     private final RegistriesProperties registriesProperties;
-    @Autowired
+
     private final BulkPrintService bulkPrintService;
-    @Autowired
+
     private final EventValidationService eventValidationService;
-    @Autowired
+
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
-    @Autowired
+
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
-    @Autowired
+
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
-    @Autowired
+
     private final ReprintService reprintService;
-    @Autowired
+
     private final DocumentValidation documentValidation;
-    @Autowired
+
     private final DocumentManagementService documentManagementService;
-    @Autowired
+
     private final EvidenceUploadService evidenceUploadService;
 
 
@@ -457,5 +460,30 @@ public class DocumentController {
             @RequestBody WillLodgementCallbackRequest callbackRequest) {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForWillLodgement(callbackRequest);
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.transform(callbackRequest));
+    }
+
+    @PostMapping(path = "/amendLegalStatement", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> amendLegalStatement(@RequestBody final CallbackRequest callbackRequest) {
+        log.info("Amending legal statement for case: {}", callbackRequest.getCaseDetails().getId());
+
+        DocumentLink amendedLegalStatement = callbackRequest.getCaseDetails().getData().getAmendedLegalStatement();
+
+        final String baseFileName = switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
+            case PERSONAL -> "amendedLegalStatement";
+            case SOLICITOR -> "amendedLegalStatementGrantOfProbate";
+        };
+
+        final String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        final String amendedFileName = new StringBuilder()
+                .append(baseFileName)
+                .append("_")
+                .append(currentDate)
+                .append(".pdf")
+                .toString();
+
+        amendedLegalStatement.setDocumentFilename(amendedFileName);
+
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(response);
     }
 }
