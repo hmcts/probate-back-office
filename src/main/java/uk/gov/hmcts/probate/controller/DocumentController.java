@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -77,39 +76,39 @@ public class DocumentController {
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
     private final IdamApi idamApi;
-    @Autowired
+
     private final DocumentGeneratorService documentGeneratorService;
-    @Autowired
+
     private final RegistryDetailsService registryDetailsService;
-    @Autowired
+
     private final PDFManagementService pdfManagementService;
-    @Autowired
+
     private final CallbackResponseTransformer callbackResponseTransformer;
-    @Autowired
+
     private final CaseDataTransformer caseDataTransformer;
-    @Autowired
+
     private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
-    @Autowired
+
     private final NotificationService notificationService;
-    @Autowired
+
     private final RegistriesProperties registriesProperties;
-    @Autowired
+
     private final BulkPrintService bulkPrintService;
-    @Autowired
+
     private final EventValidationService eventValidationService;
-    @Autowired
+
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
-    @Autowired
+
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
-    @Autowired
+
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
-    @Autowired
+
     private final ReprintService reprintService;
-    @Autowired
+
     private final DocumentValidation documentValidation;
-    @Autowired
+
     private final DocumentManagementService documentManagementService;
-    @Autowired
+    
     private final EvidenceUploadService evidenceUploadService;
 
 
