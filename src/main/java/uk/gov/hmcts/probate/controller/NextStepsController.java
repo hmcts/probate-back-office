@@ -79,7 +79,7 @@ public class NextStepsController {
             stateChangeService.getChangedStateForCaseReview(callbackRequest.getCaseDetails().getData());
         if (newState.isPresent()) {
             callbackResponse = callbackResponseTransformer
-                .transformWithConditionalStateChange(callbackRequest, newState);
+                .transformWithConditionalStateChange(callbackRequest, newState, Optional.empty());
         } else {
             if (bindingResult.hasErrors()) {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);

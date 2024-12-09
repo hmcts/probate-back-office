@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class ReprintService {
     private final PDFManagementService pdfManagementService;
     private final CallbackResponseTransformer callbackResponseTransformer;
 
-    public CallbackResponse reprintSelectedDocument(CallbackRequest callbackRequest) {
+    public CallbackResponse reprintSelectedDocument(CallbackRequest callbackRequest, Optional<UserInfo> caseworker) {
 
         DynamicListItem selectedDocumentItem =
             callbackRequest.getCaseDetails().getData().getReprintDocument().getValue();
@@ -51,7 +52,7 @@ public class ReprintService {
             callbackRequest.getCaseDetails().getId(),
             selectedDocument.getDocumentType().getTemplateName(), letterId, pdfSize);
         return callbackResponseTransformer
-            .addBulkPrintInformationForReprint(callbackRequest, selectedDocument, letterId, pdfSize);
+            .addBulkPrintInformationForReprint(callbackRequest, selectedDocument, letterId, pdfSize, caseworker);
     }
 
     private Document findDocument(DynamicListItem selectedDocumentItem, CaseData data) {

@@ -13,4 +13,13 @@ public class CallbackRequest {
     private final CaseDetails caseDetails;
     @JsonProperty("event_id")
     private String eventId;
+    @JsonProperty("case_details_before")
+    private CaseDetails caseDetailsBefore;
+
+    public boolean isStateChanged() {
+        if (this.caseDetails == null || this.caseDetailsBefore == null) {
+            return true;
+        }
+        return !this.caseDetails.getState().equalsIgnoreCase(this.caseDetailsBefore.getState());
+    }
 }

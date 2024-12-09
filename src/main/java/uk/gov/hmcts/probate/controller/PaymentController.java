@@ -21,6 +21,8 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.exception.model.InvalidTokenException;
 
+import java.util.Optional;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
@@ -87,6 +89,6 @@ public class PaymentController {
     public ResponseEntity<CallbackResponse> updateTaskList(
         @RequestBody CallbackRequest request) {
         caseDataTransformer.transformCaseDataForEvidenceHandled(request);
-        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request, Optional.empty()));
     }
 }
