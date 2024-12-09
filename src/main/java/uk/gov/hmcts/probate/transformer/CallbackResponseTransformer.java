@@ -1256,6 +1256,7 @@ public class CallbackResponseTransformer {
             .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
             .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
             .statementOfTruthDocument(caseData.getStatementOfTruthDocument())
+            .amendedLegalStatement(caseData.getAmendedLegalStatement())
             .boStopDetailsDeclarationParagraph(caseData.getBoStopDetailsDeclarationParagraph())
             .executorsApplyingNotifications(caseData.getExecutorsApplyingNotifications())
             .boEmailRequestInfoNotification(caseData.getBoEmailRequestInfoNotification())
