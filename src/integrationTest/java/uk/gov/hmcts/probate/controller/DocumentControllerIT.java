@@ -1,8 +1,11 @@
 package uk.gov.hmcts.probate.controller;
 
+import org.hamcrest.BaseMatcher;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,6 +49,7 @@ import uk.gov.service.notify.NotificationClientException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
@@ -875,5 +879,89 @@ class DocumentControllerIT {
 
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));
+    }
+
+    @Test
+    void shouldAttachAmendedLegalStatement_PA() throws Exception {
+        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PA.json");
+
+        final var request = post("/document/amendLegalStatement")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        final String expectedDate = LocalDate.now()
+                .format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        final String expectedFilename = new StringBuilder()
+                .append("amendedLegalStatement_")
+                .append(expectedDate)
+                .append(".pdf")
+                .toString();
+
+        final AmendedFilenameMatcher contentMatcher = new AmendedFilenameMatcher(expectedFilename);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(contentMatcher));
+    }
+
+    @Test
+    void shouldAttachAmendedLegalStatement_PP() throws Exception {
+        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP.json");
+
+        final var request = post("/document/amendLegalStatement")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        final String expectedDate = LocalDate.now()
+                .format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        final String expectedFilename = new StringBuilder()
+                .append("amendedLegalStatementGrantOfProbate_")
+                .append(expectedDate)
+                .append(".pdf")
+                .toString();
+
+        final AmendedFilenameMatcher contentMatcher = new AmendedFilenameMatcher(expectedFilename);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(contentMatcher));
+    }
+
+    private final class AmendedFilenameMatcher extends BaseMatcher<String> {
+
+        private final String expectedFilename;
+
+        AmendedFilenameMatcher(String expectedFilename) {
+            this.expectedFilename = expectedFilename;
+        }
+
+        @Override
+        public void describeTo(Description description) {
+            description.appendText("a json string which has .data.amendedLegalStatement.document_filename matching ");
+            description.appendValue(expectedFilename);
+        }
+
+        @Override
+        public boolean matches(Object actual) {
+            if (!(actual instanceof String)) {
+                return false;
+            }
+            final String body = (String) actual;
+            final JSONObject bodyJson = new JSONObject(body);
+
+            final JSONObject data = bodyJson.optJSONObject("data");
+            if (data == null) {
+                return false;
+            }
+
+            final JSONObject amendedLegalStatement = data.optJSONObject("amendedLegalStatement");
+            if (amendedLegalStatement == null) {
+                return false;
+            }
+
+            final String amendedDocName = amendedLegalStatement.optString("document_filename");
+
+            return expectedFilename.equals(amendedDocName);
+        }
     }
 }
