@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -49,6 +50,9 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.validation.Valid;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -446,5 +450,24 @@ public class DocumentController {
             @RequestBody WillLodgementCallbackRequest callbackRequest) {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForWillLodgement(callbackRequest);
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.transform(callbackRequest));
+    }
+
+    @PostMapping(path = "/amendLegalStatement", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> amendLegalStatement(@RequestBody CallbackRequest callbackRequest) {
+        log.info("Amending legal statement for case: {}", callbackRequest.getCaseDetails().getId());
+
+        DocumentLink amendedLegalStatement = callbackRequest.getCaseDetails().getData().getAmendedLegalStatement();
+
+        final String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        final String amendedFileName = new StringBuilder()
+                .append("amendedLegalStatement_") // do we need to handle this being three different values?
+                .append(currentDate)
+                .toString();
+
+        amendedLegalStatement.setDocumentFilename(amendedFileName);
+
+
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(response);
     }
 }
