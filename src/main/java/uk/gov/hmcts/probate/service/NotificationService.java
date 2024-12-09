@@ -168,7 +168,7 @@ public class NotificationService {
 
         TemplatePreview previewResponse =
                 notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
-        return getGeneratedDocument(previewResponse, null, SENT_EMAIL);
+        return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
     }
 
     public Document sendNocEmail(State state, CaseDetails caseDetails) throws NotificationClientException {
@@ -422,10 +422,10 @@ public class NotificationService {
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
-                .body(markdownTransformationService.toHtml(response.getBody()))
+                .body(response.getBody())
                 .build();
-
-        return pdfManagementService.generateAndUpload(sentEmail, docType);
+        Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
+        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {
