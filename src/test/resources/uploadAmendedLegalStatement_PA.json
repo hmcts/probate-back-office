@@ -23,8 +23,7 @@
       695000000
     ],
     "case_data": {
-      "applicationType": "Solicitor",
-      "paperForm": "No",
+      "applicationType": "Personal",
       "amendedLegalStatement": {
         "document_url": "doc_url",
         "document_filename": "upload.pdf",
