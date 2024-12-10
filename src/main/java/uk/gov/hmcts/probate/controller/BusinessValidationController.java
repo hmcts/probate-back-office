@@ -556,6 +556,7 @@ public class BusinessValidationController {
 
         notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequest);
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
 
         return ResponseEntity.ok(response);
@@ -625,6 +626,7 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
         validateForPayloadErrors(callbackRequest, bindingResult);
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 

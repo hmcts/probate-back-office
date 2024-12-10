@@ -75,5 +75,6 @@ class TaskListControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
         verify(caseDataTransformer).transformCaseDataForEvidenceHandled(any());
+        verify(caseDataTransformer).transformIhtFormCaseDataByDeceasedDOD(any());
     }
 }
