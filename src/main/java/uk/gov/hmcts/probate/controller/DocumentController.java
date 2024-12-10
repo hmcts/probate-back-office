@@ -473,7 +473,8 @@ public class DocumentController {
 
         amendedLegalStatement.setDocumentFilename(amendedFileName);
 
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
 }
