@@ -295,6 +295,7 @@ class DocumentControllerIT {
                 is(DIGITAL_GRANT_REISSUE.getTemplateName())))
             .andReturn();
 
+        verify(notificationService).sendSealedAndCertifiedEmail(any(CaseDetails.class));
         verify(bulkPrintService)
             .optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
     }
