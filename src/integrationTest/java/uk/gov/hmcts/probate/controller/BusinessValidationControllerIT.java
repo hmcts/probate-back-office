@@ -1187,6 +1187,7 @@ class BusinessValidationControllerIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(caseDataTransformer).transformCaseDataForEvidenceHandled(any(CallbackRequest.class));
+        verify(caseDataTransformer).transformIhtFormCaseDataByDeceasedDOD(any(CallbackRequest.class));
     }
 
     @Test
