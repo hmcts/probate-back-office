@@ -485,7 +485,9 @@ public class DocumentController {
                 amendedDocument.size);
 
         if (!MediaType.APPLICATION_PDF_VALUE.equalsIgnoreCase(amendedDocument.mimeType)) {
-            log.warn("case {} amendedLegalStatement has mimeType: {} so rejecting update");
+            log.warn("case {} amendedLegalStatement has mimeType: {} so rejecting update",
+                    caseId,
+                    amendedDocument.mimeType);
 
             CallbackResponse err = CallbackResponse.builder()
                     .errors(List.of(
