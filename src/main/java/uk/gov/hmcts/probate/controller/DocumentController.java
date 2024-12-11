@@ -497,7 +497,7 @@ public class DocumentController {
                                     MediaType.APPLICATION_PDF_VALUE)
                     ))
                     .build();
-            return ResponseEntity.badRequest().body(err);
+            return ResponseEntity.ok(err);
         }
 
         final String baseFileName = switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
