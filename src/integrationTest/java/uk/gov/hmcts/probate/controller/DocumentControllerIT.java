@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.BulkPrintService;
@@ -42,6 +43,7 @@ import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClient;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
@@ -54,6 +56,7 @@ import java.util.UUID;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -90,6 +93,7 @@ class DocumentControllerIT {
             .givenName("givenname")
             .roles(Arrays.asList("caseworker-probate"))
             .build());
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -131,6 +135,12 @@ class DocumentControllerIT {
 
     @MockBean
     private UserInfoService userInfoService;
+
+    @SpyBean
+    private SecurityUtils securityUtils;
+
+    @MockBean
+    private CaseDocumentClient caseDocumentClient;
 
     @BeforeEach
     public void setUp() throws NotificationClientException {
@@ -885,7 +895,17 @@ class DocumentControllerIT {
     void shouldAttachAmendedLegalStatement_PA() throws Exception {
         String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PA.json");
 
+        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
+        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
+
+        final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
+                uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
+                        .mimeType(MediaType.APPLICATION_PDF_VALUE)
+                        .build();
+        when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
+
         final var request = post("/document/amendLegalStatement")
+                .header("authorization", "authToken")
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -908,7 +928,17 @@ class DocumentControllerIT {
     void shouldAttachAmendedLegalStatement_PP() throws Exception {
         String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP.json");
 
+        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
+        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
+
+        final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
+                uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
+                        .mimeType(MediaType.APPLICATION_PDF_VALUE)
+                        .build();
+        when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
+
         final var request = post("/document/amendLegalStatement")
+                .header("authorization", "authToken")
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -963,5 +993,36 @@ class DocumentControllerIT {
 
             return expectedFilename.equals(amendedDocName);
         }
+    }
+
+    /*
+     * There is no distinction between PP and PA at the point this error occurs. We use PP only because it exists.
+     */
+    @Test
+    void shouldRejectNonPdfAmendedLegalStatement() throws Exception {
+        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP.json");
+
+        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
+        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
+
+        final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
+                uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
+                        .mimeType(MediaType.IMAGE_PNG_VALUE)
+                        .build();
+        when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
+
+        final var request = post("/document/amendLegalStatement")
+                .header("authorization", "authToken")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString(new StringBuilder()
+                        .append("has MIME type [")
+                        .append(MediaType.IMAGE_PNG_VALUE)
+                        .append("] which does not match [")
+                        .append(MediaType.APPLICATION_PDF_VALUE)
+                        .toString())));
     }
 }

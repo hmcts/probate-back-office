@@ -1,7 +1,9 @@
 package uk.gov.hmcts.probate.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -27,6 +29,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
@@ -44,6 +47,7 @@ import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClient;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -51,6 +55,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.validation.Valid;
 
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -96,6 +101,8 @@ public class DocumentController {
     private final DocumentManagementService documentManagementService;
     private final EvidenceUploadService evidenceUploadService;
     private final UserInfoService userInfoService;
+    private final SecurityUtils securityUtils;
+    private final CaseDocumentClient caseDocumentClient;
 
 
     private Function<String, State> grantState = (String caseType) -> {
@@ -453,10 +460,43 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/amendLegalStatement", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> amendLegalStatement(@RequestBody final CallbackRequest callbackRequest) {
-        log.info("Amending legal statement for case: {}", callbackRequest.getCaseDetails().getId());
+    public ResponseEntity<CallbackResponse> amendLegalStatement(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) @Parameter(hidden = true) final String auth,
+            @RequestBody final CallbackRequest callbackRequest) {
+        final long caseId = callbackRequest.getCaseDetails().getId();
+        log.info("Amending legal statement for case: {}", caseId);
 
         DocumentLink amendedLegalStatement = callbackRequest.getCaseDetails().getData().getAmendedLegalStatement();
+
+        final String docUrl = amendedLegalStatement.getDocumentUrl();
+        final int lastFSlash = docUrl.lastIndexOf('/');
+        final String docId = docUrl.substring(lastFSlash + 1);
+
+        final String serviceAuth = securityUtils.generateServiceToken();
+
+        final uk.gov.hmcts.reform.ccd.document.am.model.Document amendedDocument = caseDocumentClient
+                .getMetadataForDocument(auth, serviceAuth, docUrl);
+
+
+        log.info("case {} got amendedLegalStatement with id[0..5]: {} mimetype: {} size: {}",
+                caseId,
+                docId.substring(0,5),
+                amendedDocument.mimeType,
+                amendedDocument.size);
+
+        if (!MediaType.APPLICATION_PDF_VALUE.equalsIgnoreCase(amendedDocument.mimeType)) {
+            log.warn("case {} amendedLegalStatement has mimeType: {} so rejecting update");
+
+            CallbackResponse err = CallbackResponse.builder()
+                    .errors(List.of(
+                            MessageFormat.format("Uploaded file [{0}] has MIME type [{1}] which does not match [{2}]",
+                                    amendedDocument.originalDocumentName,
+                                    amendedDocument.mimeType,
+                                    MediaType.APPLICATION_PDF_VALUE)
+                    ))
+                    .build();
+            return ResponseEntity.badRequest().body(err);
+        }
 
         final String baseFileName = switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
             case PERSONAL -> "amendedLegalStatement";
