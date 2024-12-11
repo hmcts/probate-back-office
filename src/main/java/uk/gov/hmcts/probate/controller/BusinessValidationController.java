@@ -540,7 +540,7 @@ public class BusinessValidationController {
 
         notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
-        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequest)
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequest);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
