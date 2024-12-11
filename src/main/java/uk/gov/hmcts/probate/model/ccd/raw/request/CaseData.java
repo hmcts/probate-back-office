@@ -598,6 +598,8 @@ public class CaseData extends CaseDataParent {
     private String deceasedAliasLastNameOnWill;
     @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetNegative}")
     private final BigDecimal ihtFormNetValue;
+    private final String lastModifiedCaseworkerForenames;
+    private final String lastModifiedCaseworkerSurname;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
