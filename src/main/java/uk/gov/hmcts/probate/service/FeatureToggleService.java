@@ -38,4 +38,7 @@ public class FeatureToggleService {
         return this.ldClient.boolVariation(featureToggleCode, this.ldUser, defaultValue);
     }
 
+    public boolean enableNewAliasTransformation() {
+        return this.isFeatureToggleOn("probate-enable-new-alias-transformation", false);
+    }
 }

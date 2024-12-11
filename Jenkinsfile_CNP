@@ -323,10 +323,18 @@ withPipeline("java", product, component) {
     env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
 
     sh """
- docker run --rm --interactive curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DEF_URL/health
- docker run --rm --interactive curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_PRO_URL/health
- docker run --rm --interactive curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
+ docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DEF_URL/health
+ docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_PRO_URL/health
+ docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
  """
+  }
+
+  before('functionalTest:preview') {
+    env.SERVICES_CORECASEDATA_BASEURL = "https://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+  }
+
+  before('functionalTest:aat') {
+    env.SERVICES_CORECASEDATA_BASEURL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
   }
 }
 
