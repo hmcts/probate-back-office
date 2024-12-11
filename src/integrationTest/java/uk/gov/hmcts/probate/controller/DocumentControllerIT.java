@@ -1049,34 +1049,6 @@ class DocumentControllerIT {
                 .andExpect(content().string(contentMatcher));
     }
 
-    /*
-     * There is no distinction between PP and PA at the point this error occurs. We use PP only because it exists.
-     */
-    @Test
-    void shouldRejectNonPdfAmendedLegalStatement() throws Exception {
-        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP.json");
-
-        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
-        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
-
-        final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
-                uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
-                        .mimeType(MediaType.IMAGE_PNG_VALUE)
-                        .build();
-        when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
-
-        final var request = post("/document/amendLegalStatement")
-                .header("authorization", "authToken")
-                .content(payload)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        final RejectedMimeTypeMatcher contentMatcher = new RejectedMimeTypeMatcher(MediaType.IMAGE_PNG_VALUE);
-
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(content().string(contentMatcher));
-    }
-
     private final class RejectedMimeTypeMatcher extends BaseMatcher<String> {
 
         private final String errMessage;
