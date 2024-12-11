@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -32,12 +31,12 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
-import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
@@ -45,6 +44,7 @@ import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -74,43 +74,24 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Gran
 @RestController
 public class DocumentController {
 
-    private static final String DRAFT = "preview";
-    private static final String FINAL = "final";
-    private final IdamApi idamApi;
-    @Autowired
     private final DocumentGeneratorService documentGeneratorService;
-    @Autowired
     private final RegistryDetailsService registryDetailsService;
-    @Autowired
     private final PDFManagementService pdfManagementService;
-    @Autowired
     private final CallbackResponseTransformer callbackResponseTransformer;
-    @Autowired
     private final CaseDataTransformer caseDataTransformer;
-    @Autowired
     private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
-    @Autowired
     private final NotificationService notificationService;
-    @Autowired
     private final RegistriesProperties registriesProperties;
-    @Autowired
     private final BulkPrintService bulkPrintService;
-    @Autowired
     private final EventValidationService eventValidationService;
-    @Autowired
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
-    @Autowired
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
-    @Autowired
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
-    @Autowired
     private final ReprintService reprintService;
-    @Autowired
     private final DocumentValidation documentValidation;
-    @Autowired
     private final DocumentManagementService documentManagementService;
-    @Autowired
     private final EvidenceUploadService evidenceUploadService;
+    private final UserInfoService userInfoService;
 
 
     private Function<String, State> grantState = (String caseType) -> {
@@ -124,8 +105,8 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> assembleLetter(
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) {
-
-        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest);
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, caseworkerInfo);
 
         return ResponseEntity.ok(response);
 
@@ -160,9 +141,9 @@ public class DocumentController {
             letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
                 letter, true);
         }
-
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response =
-            callbackResponseTransformer.transformCaseForLetter(callbackRequest, documents, letterId);
+            callbackResponseTransformer.transformCaseForLetter(callbackRequest, documents, letterId, caseworkerInfo);
 
         return ResponseEntity.ok(response);
     }
@@ -173,9 +154,9 @@ public class DocumentController {
         registryDetailsService.getRegistryDetails(callbackRequest.getCaseDetails());
         Document document =
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.GRANT);
-
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-            Arrays.asList(document), null, null));
+            Arrays.asList(document), null, null, caseworkerInfo));
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -216,7 +197,7 @@ public class DocumentController {
         List<Document> documents = new ArrayList<>();
         documents.add(digitalGrantDocument);
         documents.add(coverSheet);
-
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             callbackResponse =
                 eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
@@ -225,10 +206,12 @@ public class DocumentController {
                     notificationService.sendEmail(grantState.apply(caseData.getCaseType()), caseDetails);
                 documents.add(grantIssuedSentEmail);
                 callbackResponse =
-                    callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
+                    callbackResponseTransformer
+                        .addDocuments(callbackRequest, documents, letterId, pdfSize, caseworkerInfo);
             }
         } else {
-            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
+            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize,
+                    caseworkerInfo);
         }
 
         return ResponseEntity.ok(callbackResponse);
@@ -263,7 +246,9 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> generateGrantDraftReissue(
+
+            @RequestBody CallbackRequest callbackRequest) {
 
         Document document;
         final CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -282,15 +267,15 @@ public class DocumentController {
             document = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW,
                 Optional.of(DocumentIssueType.REISSUE));
         }
-
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-            Arrays.asList(document), null, null));
+            Arrays.asList(document), null, null, caseworkerInfo));
     }
 
     @PostMapping(path = "/generate-grant-reissue", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> generateGrantReissue(@RequestBody CallbackRequest callbackRequest)
-        throws NotificationClientException {
-
+    public ResponseEntity<CallbackResponse> generateGrantReissue(
+            @RequestBody CallbackRequest callbackRequest)
+            throws NotificationClientException {
         final List<Document> documents = new ArrayList<>();
         Document grantDocument;
         Document coversheet;
@@ -328,8 +313,9 @@ public class DocumentController {
             documents.add(notificationService.generateGrantReissue(callbackRequest));
         }
         log.info("{} documents generated: {}", documents.size(), documents);
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-            documents, letterId, pdfSize));
+            documents, letterId, pdfSize, caseworkerInfo));
     }
 
     // This only seems to be called once list lists are mapped to exec lists
@@ -339,8 +325,9 @@ public class DocumentController {
 
         log.info("Initiating call for SoT");
         caseDataTransformer.transformCaseDataForLegalStatementRegeneration(callbackRequest);
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
-            documentGeneratorService.generateSoT(callbackRequest)));
+            documentGeneratorService.generateSoT(callbackRequest), caseworkerInfo));
     }
 
     @PostMapping(path = "/default-reprint-values", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -350,19 +337,20 @@ public class DocumentController {
 
     @PostMapping(path = "/reprint", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> reprint(@RequestBody CallbackRequest callbackRequest) {
-        return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest));
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest, caseworkerInfo));
     }
 
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping(path = "/evidenceAddedRPARobot", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> evidenceAddedRPARobot(
-            @RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> evidenceAddedRPARobot(@RequestBody CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         Boolean update = true;
@@ -381,7 +369,7 @@ public class DocumentController {
         if (Boolean.TRUE.equals(update)) {
             evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
         }
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, Optional.empty());
         return ResponseEntity.ok(response);
     }
 
@@ -442,7 +430,8 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> permanentlyDeleteRemovedGrant(
             @RequestBody CallbackRequest callbackRequest) {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
-        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(callbackRequest));
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(callbackRequest, caseworkerInfo));
     }
 
     @PostMapping(path = "/setup-for-permanent-removal-will", consumes = MediaType.APPLICATION_JSON_VALUE)
