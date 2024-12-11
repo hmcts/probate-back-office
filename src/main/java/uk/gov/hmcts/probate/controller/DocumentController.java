@@ -459,6 +459,52 @@ public class DocumentController {
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.transform(callbackRequest));
     }
 
+    @PostMapping(path = "/validateAmendLegalStatement", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> validateAmendLegalStatement(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) @Parameter(hidden = true) final String auth,
+            @RequestBody final CallbackRequest callbackRequest) {
+        final long caseId = callbackRequest.getCaseDetails().getId();
+        log.info("Validationg amend legal statement for case: {}", caseId);
+
+        DocumentLink amendedLegalStatement = callbackRequest.getCaseDetails().getData().getAmendedLegalStatement();
+
+        final String docUrl = amendedLegalStatement.getDocumentUrl();
+        final int lastFSlash = docUrl.lastIndexOf('/');
+        final String docId = docUrl.substring(lastFSlash + 1);
+
+        final String serviceAuth = securityUtils.generateServiceToken();
+
+        final uk.gov.hmcts.reform.ccd.document.am.model.Document amendedDocument = caseDocumentClient
+                .getMetadataForDocument(auth, serviceAuth, docUrl);
+
+
+        log.info("case {} got amendedLegalStatement with id[0..5]: {} mimetype: {} size: {}",
+                caseId,
+                docId.substring(0,5),
+                amendedDocument.mimeType,
+                amendedDocument.size);
+
+        if (!MediaType.APPLICATION_PDF_VALUE.equalsIgnoreCase(amendedDocument.mimeType)) {
+            log.warn("case {} amendedLegalStatement has mimeType: {} so rejecting update",
+                    caseId,
+                    amendedDocument.mimeType);
+
+            CallbackResponse err = CallbackResponse.builder()
+                    .errors(List.of(
+                            MessageFormat.format("Uploaded file [{0}] has MIME type [{1}] which does not match [{2}]",
+                                    amendedDocument.originalDocumentName,
+                                    amendedDocument.mimeType,
+                                    MediaType.APPLICATION_PDF_VALUE)
+                    ))
+                    .build();
+            return ResponseEntity.ok(err);
+        }
+
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/amendLegalStatement", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> amendLegalStatement(
             @RequestHeader(HttpHeaders.AUTHORIZATION) @Parameter(hidden = true) final String auth,
