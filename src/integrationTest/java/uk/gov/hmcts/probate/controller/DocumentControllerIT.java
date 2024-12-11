@@ -186,6 +186,8 @@ class DocumentControllerIT {
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class))).thenReturn(document);
 
+        when(notificationService.sendSealedAndCertifiedEmail(any(CaseDetails.class))).thenReturn(document);
+
         when(documentGeneratorService.generateGrantReissue(any(), any(), any())).thenReturn(document);
         when(documentGeneratorService.generateCoversheet(any(CallbackRequest.class)))
             .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
