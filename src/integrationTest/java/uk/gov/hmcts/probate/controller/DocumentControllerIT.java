@@ -5,6 +5,7 @@ import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -1016,13 +1017,55 @@ class DocumentControllerIT {
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
+        final RejectedMimeTypeMatcher contentMatcher = new RejectedMimeTypeMatcher(MediaType.IMAGE_PNG_VALUE);
+
         mockMvc.perform(request)
-                .andExpect(status().is4xxClientError())
-                .andExpect(content().string(containsString(new StringBuilder()
-                        .append("has MIME type [")
-                        .append(MediaType.IMAGE_PNG_VALUE)
-                        .append("] which does not match [")
-                        .append(MediaType.APPLICATION_PDF_VALUE)
-                        .toString())));
+                .andExpect(status().isOk())
+                .andExpect(content().string(contentMatcher));
+    }
+
+    private final class RejectedMimeTypeMatcher extends BaseMatcher<String> {
+
+        private final String errMessage;
+
+        RejectedMimeTypeMatcher(String expectedMimeType) {
+            this.errMessage = new StringBuilder()
+                    .append("has MIME type [")
+                    .append(expectedMimeType)
+                    .append("] which does not match [")
+                    .append(MediaType.APPLICATION_PDF_VALUE)
+                    .toString();
+        }
+
+        @Override
+        public void describeTo(Description description) {
+            description.appendText("a json string which has .errors containing a string containing: ");
+            description.appendValue(errMessage);
+        }
+
+        @Override
+        public boolean matches(Object actual) {
+            if (!(actual instanceof String)) {
+                return false;
+            }
+            final String body = (String) actual;
+            final JSONObject bodyJson = new JSONObject(body);
+
+            final JSONArray errors = bodyJson.optJSONArray("errors");
+            if (errors == null || errors.length() == 0) {
+                return false;
+            }
+
+            final int maxIdx = errors.length();
+            for (int idx = 0; idx < maxIdx; idx++) {
+                final String errStr = errors.optString(idx);
+                if (errStr != null) {
+                    if (errStr.contains(errMessage)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }
