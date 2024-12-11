@@ -264,6 +264,7 @@ notifications:
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
         solicitor:
           applicationReceived: "27939b7f-3028-4c90-87bb-694adb0b6a51"
           applicationReceivedNoDocs: "b374863f-3f65-4aed-a5ab-fb2648222f75"
@@ -288,6 +289,7 @@ notifications:
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
           noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
+          sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
       welsh:
         personal:
           applicationReceived: "7f39b671-86ce-49cb-b6b1-2019101aa8b1"
@@ -312,6 +314,7 @@ notifications:
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
         solicitor:
           applicationReceived: "2f282002-6799-47d0-92dd-726960b91c98"
           applicationReceivedNoDocs: "60eab724-adec-4d5d-a0a1-aef73ed7da4d"
@@ -336,6 +339,7 @@ notifications:
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
           noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
+          sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
 
 documents:
   templates:
@@ -512,6 +516,8 @@ data-extract:
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFordData@probate-test.com}
 
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
+
+SealedAndCertifiedEmail: ${SEALED_AND_CERTIFIED_EMAIL:marcus.ho@justice.gov.uk}
 
 welsh:
   months:

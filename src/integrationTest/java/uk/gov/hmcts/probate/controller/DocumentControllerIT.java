@@ -334,6 +334,7 @@ class DocumentControllerIT {
                 jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
             .andReturn();
         verify(notificationService).sendEmail(eq(State.GRANT_ISSUED), any(CaseDetails.class));
+        verify(notificationService).sendSealedAndCertifiedEmail(any(CaseDetails.class));
         verify(documentGeneratorService)
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
@@ -352,6 +353,7 @@ class DocumentControllerIT {
             .andExpect(status().isOk())
             .andReturn();
         verify(notificationService).sendEmail(eq(State.GRANT_ISSUED_INTESTACY), any(CaseDetails.class));
+        verify(notificationService).sendSealedAndCertifiedEmail(any(CaseDetails.class));
         verify(documentGeneratorService)
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
