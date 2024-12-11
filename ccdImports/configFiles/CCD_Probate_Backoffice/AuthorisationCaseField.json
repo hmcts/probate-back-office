@@ -3684,7 +3684,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedAnyChildren", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedHasAssetsOutsideUK", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "statementOfTruthDocument", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "amendedLegalStatement", "UserRole": "caseworker-probate-systemupdate", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "amendedLegalStatement", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boEmailGrantReissuedNotification", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boEmailGrantReissuedNotificationRequested", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boGrantReissueSendToBulkPrintRequested", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
