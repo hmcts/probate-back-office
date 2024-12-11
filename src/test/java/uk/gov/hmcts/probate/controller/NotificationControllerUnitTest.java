@@ -372,6 +372,31 @@ class NotificationControllerUnitTest {
     }
 
     @Test
+    void shouldSealedAndCertifiedEmail() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        document = Document.builder()
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("fileName")
+                .documentGeneratedBy("generatedBy")
+                .documentLink(
+                        DocumentLink.builder().documentUrl("url").documentFilename("file")
+                                .documentBinaryUrl("binary").build())
+                .documentType(DocumentType.SENT_EMAIL)
+                .build();
+        callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(eventValidationService.validateNocEmail(any(), any())).thenReturn(callbackResponse);
+        when(notificationService.sendSealedAndCertifiedEmail(any())).thenReturn(document);
+        ResponseEntity<CallbackResponse> stringResponseEntity =
+                notificationController.sendNOCEmailNotification(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
     void shouldSendNocEmail() throws NotificationClientException {
         setUpMocks(NOC);
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()

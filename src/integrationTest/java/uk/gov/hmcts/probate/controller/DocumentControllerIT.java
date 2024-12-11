@@ -186,6 +186,8 @@ class DocumentControllerIT {
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class))).thenReturn(document);
 
+        when(notificationService.sendSealedAndCertifiedEmail(any(CaseDetails.class))).thenReturn(document);
+
         when(documentGeneratorService.generateGrantReissue(any(), any(), any())).thenReturn(document);
         when(documentGeneratorService.generateCoversheet(any(CallbackRequest.class)))
             .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
@@ -293,6 +295,7 @@ class DocumentControllerIT {
                 is(DIGITAL_GRANT_REISSUE.getTemplateName())))
             .andReturn();
 
+        verify(notificationService).sendSealedAndCertifiedEmail(any(CaseDetails.class));
         verify(bulkPrintService)
             .optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
     }
@@ -334,6 +337,7 @@ class DocumentControllerIT {
                 jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
             .andReturn();
         verify(notificationService).sendEmail(eq(State.GRANT_ISSUED), any(CaseDetails.class));
+        verify(notificationService).sendSealedAndCertifiedEmail(any(CaseDetails.class));
         verify(documentGeneratorService)
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
@@ -352,6 +356,7 @@ class DocumentControllerIT {
             .andExpect(status().isOk())
             .andReturn();
         verify(notificationService).sendEmail(eq(State.GRANT_ISSUED_INTESTACY), any(CaseDetails.class));
+        verify(notificationService).sendSealedAndCertifiedEmail(any(CaseDetails.class));
         verify(documentGeneratorService)
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }

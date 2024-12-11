@@ -198,6 +198,9 @@ public class DocumentController {
         documents.add(digitalGrantDocument);
         documents.add(coverSheet);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (caseData.getOutsideUKGrantCopies() != null && caseData.getOutsideUKGrantCopies() > 0) {
+            documents.add(notificationService.sendSealedAndCertifiedEmail(caseDetails));
+        }
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             callbackResponse =
                 eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
@@ -213,7 +216,6 @@ public class DocumentController {
             callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize,
                     caseworkerInfo);
         }
-
         return ResponseEntity.ok(callbackResponse);
     }
 
@@ -307,11 +309,13 @@ public class DocumentController {
                 grantDocument, true);
         }
 
-        String pdfSize = getPdfSize(caseData);
-
+        if (caseData.getOutsideUKGrantCopies() != null && caseData.getOutsideUKGrantCopies() > 0) {
+            documents.add(notificationService.sendSealedAndCertifiedEmail(caseDetails));
+        }
         if (caseData.isGrantReissuedEmailNotificationRequested()) {
             documents.add(notificationService.generateGrantReissue(callbackRequest));
         }
+        String pdfSize = getPdfSize(caseData);
         log.info("{} documents generated: {}", documents.size(), documents);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,

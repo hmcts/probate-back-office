@@ -163,6 +163,7 @@ notifications:
           redeclarationSot: "pa-redeclaration-sot"
           grantDelayed: "pa-grantDelayed"
           grantAwaitingDocumentation: "pa-grantAwaitingDoc"
+          sealedAndCertified: "sealed-and-certified"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -184,6 +185,7 @@ notifications:
           grantDelayed: "sols-grantDelayed"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc"
           noticeOfChangeReceived: "sols-noc"
+          sealedAndCertified: "sealed-and-certified"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -206,6 +208,7 @@ notifications:
           redeclarationSot: "pa-redeclaration-sot-welsh"
           grantDelayed: "pa-grantDelayed-welsh"
           grantAwaitingDocumentation: "pa-grantAwaitingDoc-welsh"
+          sealedAndCertified: "sealed-and-certified"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -226,6 +229,7 @@ notifications:
           grantDelayed: "sols-grantDelayed-welsh"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc-welsh"
           noticeOfChangeReceived: "sols-noc"
+          sealedAndCertified: "sealed-and-certified"
 
 documents:
   templates:
@@ -408,6 +412,7 @@ idam-s2s-auth:
 excelaEmail: exela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
+sealedAndCertifiedEmail: SealedAndCertified@probate-test.com
 
 data-extract:
   pagination:

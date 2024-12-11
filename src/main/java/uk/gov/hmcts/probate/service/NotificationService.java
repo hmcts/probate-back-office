@@ -171,6 +171,27 @@ public class NotificationService {
         return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
     }
 
+    public Document sendSealedAndCertifiedEmail(CaseDetails caseDetails) throws NotificationClientException {
+        CaseData caseData = caseDetails.getData();
+        String reference = caseDetails.getId().toString();
+        String deceasedName = caseData.getDeceasedFullName();
+
+        String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
+                .get(caseData.getApplicationType()).getSealedAndCertified();
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getSealedAndCertifiedPersonalisation(caseDetails.getId(),
+                         deceasedName);
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
+
+        log.info("Sealed And Certified Personlisation complete now get the email response");
+
+        SendEmailResponse response = notificationClientService.sendEmail(templateId,
+                emailAddresses.getSealedAndCertifiedEmail(), personalisation, reference);
+
+        log.info("Send Sealed And Certified completed.");
+        return getGeneratedSentEmailDocument(response, emailAddresses.getSealedAndCertifiedEmail(), SENT_EMAIL);
+    }
+
     public Document sendNocEmail(State state, CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
