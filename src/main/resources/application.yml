@@ -517,7 +517,7 @@ smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFordData@probate-test.com}
 
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
 
-SealedAndCertifiedEmail: ${SEALED_AND_CERTIFIED_EMAIL:marcus.ho@justice.gov.uk}
+sealedAndCertifiedEmail: ${SEALED_AND_CERTIFIED_EMAIL:marcus.ho@justice.gov.uk}
 
 welsh:
   months:

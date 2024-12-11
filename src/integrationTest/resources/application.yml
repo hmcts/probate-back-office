@@ -412,7 +412,7 @@ idam-s2s-auth:
 excelaEmail: exela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
-SealedAndCertifiedEmail: SealedAndCertified@probate-test.com
+sealedAndCertifiedEmail: SealedAndCertified@probate-test.com
 
 data-extract:
   pagination:
