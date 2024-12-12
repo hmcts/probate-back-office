@@ -873,10 +873,9 @@ class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDetailsMock.getState()).thenReturn(CASE_PRINTED_NAME);
-        ResponseEntity<CallbackResponse> response =  underTest.paCreate(callbackRequestMock,
-                bindingResultMock);
-        verify(callbackResponseTransformerMock).transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+        ResponseEntity<CallbackResponse> response =  underTest.paCreate(callbackRequestMock, bindingResultMock);
         verify(caseDataTransformerMock).transformCaseDataForEvidenceHandled(callbackRequestMock);
+        verify(caseDataTransformerMock).transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -892,6 +891,7 @@ class BusinessValidationUnitTest {
                 bindingResultMock);
 
         verify(caseDataTransformerMock).transformCaseDataForEvidenceHandled(callbackRequestMock);
+        verify(caseDataTransformerMock).transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
