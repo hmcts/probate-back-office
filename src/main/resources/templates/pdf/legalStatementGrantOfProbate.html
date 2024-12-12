@@ -82,13 +82,13 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>yr {% if (multipleExecutors) %}executors believe{% else %}executor believes{% endif %} fod yr holl wybodaeth sydd yn y datganiad cyfreithiol yn wir. Maent wedi awdurdodi {{ case_details.case_data.solsSolicitorFirmName }} i lofnodi datganiad gwirionedd ar eu rhan.</p>
+            <p>yr {% if (multipleExecutors) %}ysgutorion yn credu{% else %}ysgutor yn credu{% endif %} fod yr holl wybodaeth sydd yn y datganiad cyfreithiol yn wir. Maent wedi awdurdodi {{ case_details.case_data.solsSolicitorFirmName }} i lofnodi datganiad gwirionedd ar eu rhan.</p>
             <p>Mae’r datganiad hwn wedi’i seilio ar yr wybodaeth rydych wedi’i rhoi yn eich cais. Bydd yn cael ei storio fel cofnod cyhoeddus.</p>
-            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %},
+            <p>{% if (multipleExecutors) %}Rydym{% else %}Rwyf{% endif %},
                 {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplyingLegalStatement %}
                 {{ executor.value.applyingExecutorName }}
-                {% if executor.value.applyingExecutorOtherNames != null and executor.value.applyingExecutorOtherNames != "" %}otherwise known as {{ executor.value.applyingExecutorOtherNames }}{% endif %}
-                of
+                {% if executor.value.applyingExecutorOtherNames != null and executor.value.applyingExecutorOtherNames != "" %}a adnabyddir hefyd fel {{ executor.value.applyingExecutorOtherNames }}{% endif %}
+                o
                 {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }},{% endif %}
                 {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }},{% endif %}
                 {% if executor.value.applyingExecutorAddress.AddressLine3 != null and executor.value.applyingExecutorAddress.AddressLine3 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine3 }},{% endif %}
@@ -96,7 +96,7 @@
                 {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }},{% endif %}
                 {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }},{% endif %}
                 {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
-                {% if (countApplying < (case_details.case_data.executorsApplyingLegalStatement|length)) %} and {% endif %}
+                {% if (countApplying < (case_details.case_data.executorsApplyingLegalStatement|length)) %} ac {% endif %}
                 {% set countApplying = countApplying + 1 %}
                 {% endfor %}
                 yn gwneud y datganiad canlynol:</p>
@@ -110,9 +110,9 @@
         <td colspan="2">
             <p>
                 {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }},
-                {% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} also known as
+                {% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} a elwir hefyd yn
                 {% for alias in case_details.case_data.solsDeceasedAliasNamesList %} {{ alias.value.SolsAliasname }}{%
-                if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} and{% endif %} {% endfor
+                if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} ac{% endif %} {% endfor
                 %}
                 {% endif %}
                 o
@@ -142,7 +142,7 @@
                 {% if case_details.case_data.appointExec == "Yes" %}
                 Mae’r ewyllys yn penodi ysgutor.{% endif %}
                 {% if case_details.case_data.appointExecNo == "Yes" %}
-                The will appoints an executor according to the tenor.{% endif %}
+                Mae’r ewyllys yn penodi ysgutor yn ôl y copi cywir.{% endif %}
             </p>
         </td>
     </tr>
@@ -156,7 +156,7 @@
                 yn cyfateb i {% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn cyfateb i &#163;{{ case_extras.netValue }}.</p>
             {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
             {% endif %}
-            <p>Hyd eithaf {% if (multipleExecutors) %}our{% else %}fy{% endif %} ngwybodaeth a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn marwolaeth (ac nid drwy ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} and codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} and codicils{% endif %}) o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
+            <p>Hyd eithaf {% if (multipleExecutors) %}ein{% else %}fy{% endif %} ngwybodaeth a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn marwolaeth (ac nid drwy ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} a chodisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} a codisiliau{% endif %}) o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
         </td>
     </tr>
 
@@ -169,7 +169,7 @@
 
             {% if executor.value.applyingExecutorType == "Named" %}
             <p>
-                Mae {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}a{% else %}yr{% endif %} ysgutor a enwir yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
+                Mae {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}a{% else %}yr{% endif %} ysgutor a enwir yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} neu godisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} neu godisiliau{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} fel {{ executor.value.applyingExecutorOtherNames }}{% endif %},
                 yn gwneud cais am brofiant.
             </p>
             {% endif %}
@@ -178,73 +178,67 @@
             {% set morePartners = case_details.case_data.morePartnersHoldingPowerReserved == "Yes" %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" or case_details.case_data.titleAndClearingType == "TCTPartPowerRes" %}
-            <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
-                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}{{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                at the date of death of the deceased. That power is reserved to the other profit-sharing
-                {% if case_details.case_data.morePartnersHoldingPowerReserved == "Yes" %}
+            <p>Mae'r ysgutor {{ executor.value.applyingExecutorName }}, yn {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} sy’n rhannu elw
+                yn y cwmni {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}{{ case_details.case_data.nameOfSucceededFirm }}
+                a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                ar ddyddiad marwolaeth yr unigolyn a fu farw. Bod hawl yn cael ei gadw i’r {% if case_details.case_data.morePartnersHoldingPowerReserved == "Yes" %}
                 {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
                 {% else %}
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                {% endif %}
-                in the {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}successor {% endif %} firm.
+                {% endif %} arall sy’n rhannu elw
+                yn {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}yr olynydd {% endif %} cwmni.
             </p>
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
-            <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
-                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                at the date of death of the deceased. The remaining profit-sharing
-                {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
-                in the firm {{ case_details.case_data.nameOfSucceededFirm }}
-                are renouncing their right to probate.
+            <p>Mae'r ysgutor {{ executor.value.applyingExecutorName }}, yn {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} sy’n rhannu elw
+                yn y cwmni {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
+                a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                ar ddyddiad marwolaeth yr unigolyn a fu farw. Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} arall sy’n rhannu elw
+                yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }}
+                yn ymwrthod â’i hawl i gael profiant.
             </p>
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
-            <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
-                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                at the date of death of the deceased. The other executors have renounced probate.
+            <p>Mae'r ysgutor {{ executor.value.applyingExecutorName }}, yn {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} sy’n rhannu elw
+                yn y cwmni {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
+                a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                ar ddyddiad marwolaeth yr unigolyn a fu farw. Mae’r ysgutorion eraill wedi ymwrthod â’u hawl i gael profiant.
             </p>
             {% endif %}
             {% endif %}
 
             {% if executor.value.applyingExecutorType == "TrustCorporation"%}
 
-            <p>The executor named in the will has by a resolution,
-                {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" %} which has been filed with the Senior District Judge or Registry, {% else %} certified copy of which is lodged with this application, {% endif %}
-                in which {{ executor.value.applyingExecutorName }} identified by the position they hold and which is still in force, appointed them for the purpose of applying for probate of the will or for grants of probate on its behalf.
+            <p>Mae’r ysgutor sydd wedi’i enwi yn yr ewyllys wedi dod i benderfyniad,
+                {% if case_details.case_data.titleAndClearingType == "TCTTrustCorpResWithSDJ" %} sydd wedi’i ffeilio gyda’r Uwch Farnwr Rhanbarth neu’r Gofrestrfa, {% else %} ac mae copi ardystiedig ohono wedi’i gyflwyno gyda’r cais hwn, {% endif %}
+                ac ynddo mae {{ executor.value.applyingExecutorName }} wedi’i adnabod yn ôl y swydd a ddelir ganddynt ac sydd dal mewn grym, eu penodi er pwrpas gwneud cais am brofiant ar gyfer yr ewyllys neu grantiau profiant ar ei ran.
             </p>
-            <p>The executor is a trust corporation as defined by rule 2(1) of the NCPR 1987 and has power to accept the grant now applied for.</p>
+            <p>Mae’r ysgutor yn gorfforaeth ymddiriedolaeth fel y’i diffinnir gan reol 2(1) Rheolau Profiant Diwrthwynebiad 1987, ac mae ganddynt yr hawl i dderbyn y grant y gwneir cais amdano nawr.</p>
 
-            <p> {{ executor.value.applyingExecutorName }} is acting on behalf of {{ case_details.case_data.trustCorpName }}
-                trust corporation. They hold the position of {{ executor.value.applyingExecutorTrustCorpPosition }} as per the resolution.</p>
+            <p> {{ executor.value.applyingExecutorName }} yn gweithredu ar ran {{ case_details.case_data.trustCorpName }}
+                corfforaeth ymddiriedolaeth. Maent yn dal swydd {{ executor.value.applyingExecutorTrustCorpPosition }} yn unol â’r penderfyniad.</p>
             {% endif %}
 
             {% endfor %}
             <p>{% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
-                {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
+                {% if multipleExecutors %}Nyni yw’r ysgutorion a enwir yn yr ewyllys.{% else %}Myfi yw’r ysgutor a enwir yn yr ewyllys.{% endif %}
                 The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.{% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
                 {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
-                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.{% endif %}</p>
+                Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }}
+                a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}
+                ar ddyddiad marwolaeth yr unigolyn a fu farw wedi ymwrthod â’r hawl i gael profiant.{% endif %}</p>
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
-            <p>The executor{% if multipleOtherPartners > 1%}s{% endif %} {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes" %}
+            <p>Mae'r ysgutor{% if multipleOtherPartners > 1%}ion{% endif %} {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes" %}
                 {{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }},{% endif %}
                 {% for executor in case_details.case_data.otherPartnersApplyingAsExecutors %}{{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}, {% endfor %}
-                {% if multipleOtherPartners > 1%}are the profit-sharing{% else %}is the only profit-sharing{% endif %}
-                {% if multipleOtherPartners > 1%}{{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}{% else %}{{ case_details.case_data.singularProfitSharingTextForLegalStatement }}{% endif %}
-                in the firm {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" %}{{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                at the date of death of the deceased.
+                {% if multipleOtherPartners > 1%}yw’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} sy’n rhannu elw {% else %}yw’r unig {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} sy’n rhannu elw{% endif %}
+                yn y cwmni {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" %}{{ case_details.case_data.nameOfSucceededFirm }}
+                a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
+                ar ddyddiad marwolaeth yr unigolyn a fu farw.
             </p>
             {% endif %}
         </td>
@@ -261,41 +255,40 @@
             {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
             {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
             {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
-            <p><span>Notice of this application has on the {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
-                been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules 1987 to
-                {{ executor.value.notApplyingExecutorName }} to whom power is to be reserved.
+            <p><span>Mae rhybudd o’r cais hwn ar {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
+                wedi’i hepgor o dan Reol 27(3) Rheolau Profiant Diwrthwynebiad 1987 i
+                {{ executor.value.notApplyingExecutorName }} i’r sawl sy'n cadw'r hawl.
             </span></p>
             {% else %}
-            <p><span>{% if (multipleExecutors) %}We are{% else %}I am{% endif %} concurrently applying for notice of this application to be dispensed with under
-                Rule 27(3) of the Non-Contentious Probate Rules 1987 to {{ executor.value.notApplyingExecutorName }}
-                to whom power is to be reserved.
+            <p><span>{% if (multipleExecutors) %}Rydym{% else %}yr wyf{% endif %} ar y cyd â hyn yn gwneud cais i’r rhybudd o gais hwn gael ei hepgor o dan Reol 27(3) Rheolau Profiant Diwrthwynebiad 1987 i {{ executor.value.notApplyingExecutorName }}
+                i’r sawl sy'n cadw'r hawl.
             </span></p>
             {% endif %}
             {% else %}
-            <p><span>Nid yw {{ executor.value.notApplyingExecutorName }}, ysgutor arall a enwyd yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
-                        {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} has survived the deceased and died since.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "Renunciation" %}has renounced probate and letters of administration with will annexed.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}lacks capacity to manage their affairs under the Mental Capacity Act 2005 and is unable to act as an executor.{% endif %}
+            <p><span>Nid yw {{ executor.value.notApplyingExecutorName }}, ysgutor arall a enwyd yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} neu godisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} neu godisiliau{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} fel {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
+                        {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}wedi marw yn ystod oes yr unigolyn a fu farw.{% endif %}
+                        {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} wedi goroesi’r unigolyn a fu farw ac wedi marw’n ddiweddarach.{% endif %}
+                        {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}yn gwneud y cais hwn, ond mae’n cadw'r hawl i wneud hynny ar ddyddiad diweddarach. Maent wedi cael eu hysbysu am hyn yn ysgrifenedig.{% endif %}
+                        {% if executor.value.notApplyingExecutorReason == "Renunciation" %}wedi ymwrthod â phrofiant a llythyrau gweinyddu pan fydd yna ewyllys.{% endif %}
+                        {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}nid oes ganddynt y gallu meddyliol i reoli eu materion dan Ddeddf Galluedd Meddyliol 2005 ac nid ydynt yn gallu gweithredu fel ysgutor.{% endif %}
             </span></p>
             {% endif %}
             {% endfor %}
             {% else %}
-            <p>None.</p>
+            <p>Dim.</p>
             {% endif %}
         </td>
     </tr>
     <tr>
         <td  colspan="2">
-            <p>{% if (multipleExecutors) %}We{% else %}Rwy’n{% endif %} awdurdodi
+            <p>{% if (multipleExecutors) %}Rydym yn{% else %}Rwy’n{% endif %} awdurdodi
                 {{ case_details.case_data.solsSolicitorFirmName }} i anfon ar
-                {% if (multipleExecutors) %}our{% else %}fy{% endif %} rhan yr hyn
-                {% if (multipleExecutors) %}we{% else %}i{% endif %} gredaf fod yn ewyllys a thestament gwir a gwreiddiol olaf,{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio ar {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, as contained in a notarial/official copy{% endif %}
-                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} gyda{% else %}, a{% endif %} codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
+                {% if (multipleExecutors) %}ein{% else %}fy{% endif %} rhan yr hyn
+                {% if (multipleExecutors) %}Rydym yn{% else %}i{% endif %} gredaf fod yn ewyllys a thestament gwir a gwreiddiol olaf,{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio ar {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notarïol/swyddogol{% endif %}
+                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} gyda{% else %}, a{% endif %} codisil sydd wedi’i lofnodi a’i ddyddio {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
                 of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
             </p>
-            {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Further evidence in support of this application is:
+            {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Y dystiolaeth bellach sy’n bodoli i gefnogi’r cais hwn yw:
             <p> {{ case_details.case_data.furtherEvidenceForApplication }} </p>
             {% endif %}
             <p>{% if (multipleExecutors) %}ni{% else %}Rwy’n{% endif %} cadarnhau bod yr wybodaeth {% if (multipleExecutors) %}ni{% else %}Rwy’n{% endif %} wyf wedi’i rhoi yn gywir hyd eithaf {% if (multipleExecutors) %}ein{% else %}fy{% endif %} ngwybodaeth.</p>
@@ -309,26 +302,25 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %} cadarnhau y {% if (multipleExecutors) %}we{% else %}I{% endif %} will deal with the estate of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, yn unol â’r gyfraith. {% if (multipleExecutors) %}We{% else %}yn{% endif %} Byddaf:</p>
+            <p>{% if (multipleExecutors) %}Rydym yn{% else %}Rwy’n{% endif %} cadarnhau y {% if (multipleExecutors) %}Rydym yn{% else %}Rwy’n{% endif %} yn delio ag ystad {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, yn unol â’r gyfraith. {% if (multipleExecutors) %}Rydym yn{% else %}yn{% endif %} Byddaf:</p>
             <ul>
                 <li>casglu’r ystad i gyd</li>
                 <li>cadw manylion llawn (rhestr) o’r ystad</li>
                 <li>cadw cofnod llawn o’r ffordd y mae’r ystad wedi cael ei rhannu</li>
             </ul>
 
-            <p>Os bydd y gofrestrfa brofiant (y llys) yn gofyn {% if (multipleExecutors) %}us{% else %}me{% endif %} to do so, {% if (multipleExecutors) %}we{% else %}I{% endif %} will:</p>
+            <p>Os bydd y gofrestrfa brofiant (y llys) yn gofyn {% if (multipleExecutors) %}ni{% else %}mi{% endif %} i wneud hynny, {% if (multipleExecutors) %}Rydym yn{% else %}Rwy’n{% endif %} ewyllys:</p>
             <ul>
                 <li>darparu manylion llawn yr ystad a’r ffordd y cafodd ei rhannu</li>
                 <li>dychwelyd y grant profiant i'r llys</li>
             </ul>
 
-            <p>{% if (multipleExecutors) %}We{% else %}Rwy’n{% endif %} deall:</p>
+            <p>{% if (multipleExecutors) %}Rydym yn{% else %}Rwy’n{% endif %} deall:</p>
             <ul>
-                <li>the application will be rejected if {% if (multipleExecutors) %}we{% else %}I{% endif %} do not provide information (if asked)</li>
+                <li>gwrthodir y cais os {% if (multipleExecutors) %}Rydym yn{% else %}Rwy’n{% endif %} na ddarperir gwybodaeth (os gofynnir am hynny)</li>
                 <li>gellir dwyn achos dirmyg llys yn erbyn y sawl sy’n llofnodi isod os canfyddir bod y dystiolaeth a ddarparwyd yn fwriadol anwir neu’n anonest, yn ogystal â diddymu’r grant</li>
             </ul>
-            <p>{% if (multipleExecutors) %}We{% else %}Rwy’n{% endif %} awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, as {% if (multipleExecutors) %}our{% else %}my{% endif %} appointed Probate practitioner, to
-                submit this application on {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf.</p>
+            <p>{% if (multipleExecutors) %}Rydym yn{% else %}Rwy’n{% endif %} awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, fel {% if (multipleExecutors) %}ein{% else %}fy{% endif %} penodi ymarferydd Profiant, i gyflwyno’r cais hwn ar {% if (multipleExecutors) %}ein{% else %}fy{% endif %} ran.</p>
         </td>
     </tr>
     {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
@@ -364,7 +356,7 @@
             <p>Enw:</p>
         </td>
         <td>
-            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (ymarferydd Profiant{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} and executor{% endif %})</p>
+            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (ymarferydd Profiant{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} ac ysgutor{% endif %})</p>
         </td>
     </tr>
     <tr>

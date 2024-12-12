@@ -74,7 +74,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>The administrator believes that all the information stated in the legal statement is true. {% if case_details.case_data.solsSolicitorFirmName!= null and case_details.case_data.solsSolicitorFirmName!= "" %}Maent wedi awdurdodi {{case_details.case_data.solsSolicitorFirmName}} i lofnodi datganiad gwirionedd ar eu rhan.{% endif %}</p>
+            <p>Creda’r gweinyddwr fod yr holl wybodaeth sydd yn y datganiad cyfreithiol yn wir. {% if case_details.case_data.solsSolicitorFirmName!= null and case_details.case_data.solsSolicitorFirmName!= "" %}Maent wedi awdurdodi {{case_details.case_data.solsSolicitorFirmName}} i lofnodi datganiad gwirionedd ar eu rhan.{% endif %}</p>
             <p>Mae’r datganiad hwn wedi’i seilio ar yr wybodaeth rydych wedi’i rhoi yn eich cais. Bydd yn cael ei storio fel cofnod cyhoeddus.</p>
             <p>Rwyf i, {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} o
                 {% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
@@ -94,9 +94,9 @@
     <tr>
         <td colspan="2">
             <p>
-                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}{% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} also known as
+                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}{% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} a elwir hefyd yn
                 {% for alias in case_details.case_data.solsDeceasedAliasNamesList %}
-                {{ alias.value.SolsAliasname }}{% if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} and{% endif %}{% endfor %}{% endif %}, o
+                {{ alias.value.SolsAliasname }}{% if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} ac{% endif %}{% endfor %}{% endif %}, o
                 {% if case_details.case_data.deceasedAddress.AddressLine1 != null and
                 case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{
                 case_details.case_data.deceasedAddress.AddressLine1 }},{% endif %}
@@ -119,7 +119,7 @@
                 case_details.case_data.deceasedAddress.Country != "" %}{{
                 case_details.case_data.deceasedAddress.Country }}{% endif %}
                 a anwyd ar {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
-                ac a fu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, domiciled in {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}yng Nghymru a Lloegr.{% endif %}
+                ac a fu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, ac roedd ei ddomisil yn {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}yng Nghymru a Lloegr.{% endif %}
             </p>
         </td>
     </tr>
@@ -132,21 +132,21 @@
             <p>Mae gwerth gros yr ystad {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}yn y Deyrnas Unedig {% else %}yn yng Nghymru a Lloegr{% endif %} yn cyfateb i {% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn cyfateb i &#163;{{ case_extras.netValue }}.</p>
             {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
             {% endif %}
-            <p>Hyd eithaf fy ngwybodaeth a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn marwolaeth (ac nid drwy ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length > 1 %} and codicils{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length == 1 %} and codicil{% endif %}) o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}
+            <p>Hyd eithaf fy ngwybodaeth a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn marwolaeth (ac nid drwy ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length > 1 %} a chodisiliau{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length == 1 %} a chodisil{% endif %}) o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}
                 ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
         </td>
     </tr>
 
     <tr>
-        <td colspan="2" valign="top" style="font-weight: bold">Administrators Applying for Letters of Administration (with will annexed)</td>
+        <td colspan="2" valign="top" style="font-weight: bold">Gweinyddwyr yn Gwneud Cais am Lythyrau Gweinyddu (pan fydd yna ewyllys)</td>
     </tr>
     <tr>
         <td colspan="2">
             <p>
-                {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}The grounds for making this application and any supporting evidence are:
+                {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}Y rhesymau dros wneud y cais hwn ac unrhyw dystiolaeth ategol yw:
                 {{ case_details.case_data.applicationGrounds }}
                 {% endif %}
-                {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Further evidence in support of this application is:
+                {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Y dystiolaeth bellach sy’n bodoli i gefnogi’r cais hwn yw:
                 {{ case_details.case_data.furtherEvidenceForApplication }}
                 {% endif %}
             </p>
@@ -159,24 +159,24 @@
                 {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
-                is applying for Letters of Administration (with will annexed) and is named in the
-                {% if case_details.case_data.willHasCodicils == "No" %} will{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.willNumberOfCodicils == "1" %} will and/or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length==1 %} will and/or codicil{% else %} will and/or codicils{% endif %} as
-                {% if case_details.case_data.solsResiduaryType == "Legatee" %} the residuary legatee.
-                {% elseif case_details.case_data.solsResiduaryType == "Devisee" %} the residuary devisee.
-                {% else %} the residuary legatee and devisee.
+                yn gwneud cais am Lythyrau Gweinyddu (pan fydd yna ewyllys) ac mae wedi’i enwi yn yr
+                {% if case_details.case_data.willHasCodicils == "No" %} ewyllys{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.willNumberOfCodicils == "1" %} ewyllys a/neu’r codisil{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length==1 %} ewyllys a/neu’r codisil{% else %} ewyllys a/neu’r codisiliau{% endif %} fel
+                {% if case_details.case_data.solsResiduaryType == "Legatee" %} y derbyniwr cymynrodd.
+                {% elseif case_details.case_data.solsResiduaryType == "Devisee" %} y derbyniwr cymynedig.
+                {% else %} y derbyniwr cymynrodd a chymynnwr.
                 {% endif %}
             </p>
-            <p>I {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} confirm that:</p>
+            <p>I {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} cadarnhau:</p>
             <ul>
-                <li>there are no beneficiaries under the age of 18 named in the will{% if case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length > 1 %} and codicils{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length == 1 %} and codicil{% endif %}</li>
-                <li>there is no life interest in respect of the estate contained in the will{% if case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length > 1 %} and codicils{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length == 1 %} and codicil{% endif %}</li>
-                <li>all executors and any residuary, legatee or devisees in trust named in the will{% if case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length > 1 %} and codicils{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length == 1 %} and codicil{% endif %} have either died or have chosen not to apply for a grant of probate (renounced)</li>
+                <li>nid oes yna fuddiolwyr dan 18 oed wedi’u henwi yn yr ewyllys a’r codisiliau{% if case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length > 1 %} a chodisiliau{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length == 1 %} a chodisil{% endif %}</li>
+                <li>nid oes yna fudd am oes mewn perthynas â’r ystad sydd wedi’i chynnwys yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length > 1 %} a chodisiliau{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length == 1 %} a chodisil{% endif %}</li>
+                <li>mae’r holl ysgutorion ac unrhyw dderbyniwr cymynrodd neu gymynnwr mewn ymddiriedolaeth a enwir yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length > 1 %} a chodisiliau{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length == 1 %} a chodisil{% endif %} naill ai wedi marw neu wedi penderfynu peidio â gwneud cais am grant profiant (ymwrthod)</li>
             </ul>
-            <p>Rwy’n awdurdodi {{ case_details.case_data.solsSolicitorFirmName }} to send on my behalf what I believe to be the true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}
-                {% if case_details.case_data.codicilAddedFormattedDateList != null %}{% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with {% else %}, and {% endif %}codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}{% endif %}
-                {% if case_details.case_data.willAccessNotarial == "Yes" %}, as contained in a notarial/official copy {% endif %}
+            <p>Rwy’n awdurdodi {{ case_details.case_data.solsSolicitorFirmName }} i anfon ar fy rhan yr hyn a gredaf i fod yn ewyllys a thestament gwir a gwreiddiol olaf{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}
+                {% if case_details.case_data.codicilAddedFormattedDateList != null %}{% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} gyda {% else %}, ac {% endif %}chodisil sydd wedi’i lofnodi a’i ddyddio {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}{% endif %}
+                {% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notarïol/swyddogol {% endif %}
                 of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
-            <p>I confirm that the information I have provided is correct to the best of my knowledge.</p>
+            <p>Rwy’n cadarnhau bod yr wybodaeth yr wyf wedi’i rhoi yn gywir hyd eithaf fy ngwybodaeth.</p>
         </td>
     </tr>
 
@@ -195,7 +195,7 @@
             <p>Os bydd y gofrestrfa brofiant (y llys) yn gofyn i mi, byddaf yn:</p>
             <ul>
                 <li>darparu manylion llawn yr ystad a’r ffordd y cafodd ei rhannu</li>
-                <li>return the letters of administration (with will annexed) to the court</li>
+                <li>dychwelyd y llythyrau gweinyddu (pan fydd yna ewyllys) i’r llys</li>
             </ul>
 
             <p>Rwy’n deall:</p>
@@ -203,7 +203,7 @@
                 <li>y bydd y cais yn cael ei wrthod os na fyddaf yn darparu gwybodaeth (os gofynnwyd)</li>
                 <li>y gellir dwyn achos dirmyg llys yn erbyn y sawl sy’n llofnodi isod os canfyddir bod y dystiolaeth a ddarparwyd yn fwriadol anwir neu’n anonest, yn ogystal â diddymu’r grant</li>
             </ul>
-            <p>Rwy’n awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, as my appointed firm, to submit this application on my behalf.</p>
+            <p>Rwy’n awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, fel y cwmni a enwebwyd gennyf, i gyflwyno’r cais hwn ar fy rhan.</p>
         </td>
     </tr>
     <tr>
@@ -211,7 +211,7 @@
             <p>Enw:</p>
         </td>
         <td>
-            <p>{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (applicant)</p>
+            <p>{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (ceisydd)</p>
         </td>
     </tr>
     <tr>
@@ -235,7 +235,7 @@
             <p>Enw:</p>
         </td>
         <td>
-            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (ymarferydd Profiant{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} and executor{% endif %})</p>
+            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (ymarferydd Profiant{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} ac ysgutor{% endif %})</p>
         </td>
     </tr>
     <tr>

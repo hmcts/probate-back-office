@@ -73,7 +73,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>Creda’r applicant fod yr holl wybodaeth sydd yn y datganiad cyfreithiol yn wir. {% if case_details.case_data.solsSolicitorFirmName!= null and case_details.case_data.solsSolicitorFirmName!= "" %}Maent wedi awdurdodi {{case_details.case_data.solsSolicitorFirmName}} i lofnodi datganiad gwirionedd ar eu rhan.{% endif %}</p>
+            <p>Creda’r ceisydd fod yr holl wybodaeth sydd yn y datganiad cyfreithiol yn wir. {% if case_details.case_data.solsSolicitorFirmName!= null and case_details.case_data.solsSolicitorFirmName!= "" %}Maent wedi awdurdodi {{case_details.case_data.solsSolicitorFirmName}} i lofnodi datganiad gwirionedd ar eu rhan.{% endif %}</p>
             <p>Mae’r datganiad hwn wedi’i seilio ar yr wybodaeth rydych wedi’i rhoi yn eich cais. Bydd yn cael ei storio fel cofnod cyhoeddus.</p>
             <p>Rwyf i, {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} o
                 {% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
@@ -93,9 +93,9 @@
     <tr>
         <td colspan="2">
             <p>
-                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}{% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} also known as
+                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}{% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} a elwir hefyd yn
                 {% for alias in case_details.case_data.solsDeceasedAliasNamesList %}
-                {{ alias.value.SolsAliasname }}{% if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} and{% endif %}{% endfor %}{% endif %}, of
+                {{ alias.value.SolsAliasname }}{% if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} ac{% endif %}{% endfor %}{% endif %}, o
                 {% if case_details.case_data.deceasedAddress.AddressLine1 != null and
                 case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{
                 case_details.case_data.deceasedAddress.AddressLine1 }},{% endif %}
@@ -118,23 +118,23 @@
                 case_details.case_data.deceasedAddress.Country != "" %}{{
                 case_details.case_data.deceasedAddress.Country }}{% endif %}
                 a anwyd ar {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
-                ac a fu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }} intestate.
+                ac a fu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }} heb ewyllys.
             </p>
-            <p>They were
+            <p>Nid oeddent
                 {% if case_details.case_data.deceasedMaritalStatus == "neverMarried" %}
-                never married
+                erioed wedi priodi
                 {% elseif case_details.case_data.deceasedMaritalStatus == "widowed" %}
-                widowed
+                yn weddw
                 {% elseif case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
-                married or in a civil partnership,
+                wedi priodi neu mewn partneriaeth sifil,
                 {% elseif case_details.case_data.deceasedMaritalStatus == "divorcedCivilPartnership" %}
-                divorced or their civil partnership was dissolved,
+                wedi ysgaru neu roedd eu partneriaeth sifil wedi’i diddymu,
                 {% else %}
-                judicially separated
+                wedi cael ymwahaniad cyfreithiol
                 {% endif %}
-                and domiciled in {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}Nghymru a Lloegr.{% endif %}
+                ac roedd eu domisil yn {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}Nghymru a Lloegr.{% endif %}
             </p>
-            <p>No children under 18 are entitled to the estate.</p>
+            <p>Nid oes gan blant dan 18 oed hawl i'r ystad.</p>
         </td>
     </tr>
 
@@ -146,37 +146,37 @@
             <p>Mae gwerth gros yr ystad {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}yn y Deyrnas Unedig {% else %}yng Nghymru a Lloegr{% endif %} yn cyfateb i {% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn cyfateb i &#163;{{ case_extras.netValue }}.</p>
             {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
             {% endif %}
-            <p>Hyd eithaf fy ngwybodaeth a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
+            <p>Hyd eithaf fy ngwybodaeth a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn marwolaeth {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
         </td>
     </tr>
 
     <tr>
-        <td colspan="2" valign="top" style="font-weight: bold">Applicant applying for letters of administration</td>
+        <td colspan="2" valign="top" style="font-weight: bold">Ceisydd yn gwneud cais am lythyrau gweinyddu</td>
     </tr>
     <tr>
         <td colspan="2">
             <p>
-                {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}The grounds for making this application and any supporting evidence are:
+                {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}Y rhesymau dros wneud y cais hwn ac unrhyw dystiolaeth ategol yw:
                 {{ case_details.case_data.applicationGrounds }}
                 {% endif %}
-                {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Further evidence in support of this application is:
+                {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Y dystiolaeth bellach sy’n bodoli i gefnogi’r cais hwn yw:
                 {{ case_details.case_data.furtherEvidenceForApplication }}
                 {% endif %}
             </p>
             <p>
                 {% if case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}I am the spouse or civil partner of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and the only person now entitled to the estate.
-                {% else %}{{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}'s spouse or civil partner doesn't want to apply for letters of administration now or in the future. I am the
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} adopted {% endif %} child of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and
-                {% if case_details.case_data.ihtNetValue/100 > 250000 %} one of the people entitled to the estate.
-                {% else %} the only person who may become entitled to the estate.
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}Rwy’n gyn-briod neu’n bartner sifil i {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a’r unig unigolyn sydd nawr â hawl i’r ystad.
+                {% else %}Nid yw gŵr/gwraig neu bartner sifil {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} eisiau gwneud cais am lythyrau gweinyddu nawr neu yn y dyfodol. Fi yw
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} plentyn {% endif %} a fabwysiadwyd {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac
+                {% if case_details.case_data.ihtNetValue/100 > 250000 %} yn un o’r bobl sydd â hawl i’r ystad.
+                {% else %} yr unig unigolyn a allai fod â hawl i’r ystad.
                 {% endif %}
                 {% endif %}
-                {% else %}I am the
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} adopted {% endif %} child of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and the only person now entitled to the estate.
+                {% else %}Fi yw’r
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} plentyn {% endif %} a fabwysiadwyd {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a’r unig unigolyn sydd nawr â hawl i’r ystad
                 {% endif %}
             </p>
-            <p>I am applying for letters of administration. I have provided what I believe to be true and accurate information about {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
+            <p>Rwy’n gwneud cais am lythyrau gweinyddu. Rwyf wedi darparu'r hyn a gredaf i fod yn wybodaeth gywir a gwir am {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
         </td>
     </tr>
 
@@ -195,7 +195,7 @@
             <p>Os bydd y gofrestrfa brofiant (y llys) yn gofyn i mi, byddaf yn:</p>
             <ul>
                 <li>darparu manylion llawn yr ystad a’r ffordd y cafodd ei rhannu</li>
-                <li>return the letters of administration to the court</li>
+                <li>dychwelyd y llythyrau gweinyddu i'r llys</li>
             </ul>
 
             <p>Rwy’n deall:</p>
@@ -203,8 +203,7 @@
                 <li>y bydd y cais yn cael ei wrthod os na fyddaf yn darparu gwybodaeth (os gofynnwyd)</li>
                 <li>y gellir dwyn achos dirmyg llys yn erbyn y sawl sy’n llofnodi isod os canfyddir bod y dystiolaeth a ddarparwyd yn fwriadol anwir neu’n anonest, yn ogystal â diddymu’r grant</li>
             </ul>
-            <p>Rwy’n awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, as my appointed firm to
-                submit this application on my behalf.</p>
+            <p>Rwy’n awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, fel y cwmni a enwebwyd gennyf, i gyflwyno’r cais hwn ar fy rhan.</p>
         </td>
     </tr>
     <tr>
@@ -212,7 +211,7 @@
             <p>Enw:</p>
         </td>
         <td>
-            <p>{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (applicant)</p>
+            <p>{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (ceisydd)</p>
         </td>
     </tr>
     <tr>
@@ -236,7 +235,7 @@
             <p>Enw:</p>
         </td>
         <td>
-            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (ymarferydd Profiant{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} and executor{% endif %})</p>
+            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (ymarferydd Profiant{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} ac ysgutor{% endif %})</p>
         </td>
     </tr>
     <tr>
