@@ -540,9 +540,9 @@ public class BusinessValidationController {
 
         notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequest);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
-
         return ResponseEntity.ok(response);
     }
 
@@ -611,6 +611,7 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
         validateForPayloadErrors(callbackRequest, bindingResult);
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequest);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
