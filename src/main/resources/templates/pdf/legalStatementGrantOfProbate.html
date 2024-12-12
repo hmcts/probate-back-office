@@ -284,7 +284,7 @@
             <p>{% if (multipleExecutors) %}Rydym yn{% else %}Rwy’n{% endif %} awdurdodi
                 {{ case_details.case_data.solsSolicitorFirmName }} i anfon ar
                 {% if (multipleExecutors) %}ein{% else %}fy{% endif %} rhan yr hyn
-                {% if (multipleExecutors) %}Rydym yn{% else %}i{% endif %} gredaf fod yn ewyllys a thestament gwir a gwreiddiol olaf,{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio ar {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notarïol/swyddogol{% endif %}
+                {% if (multipleExecutors) %}Rydym yn{% else %}i{% endif %} gredaf fod yn ewyllys a thestament gwir a gwreiddiol olaf{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio ar {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notarïol/swyddogol{% endif %}
                 {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} gyda{% else %}, a{% endif %} codisil sydd wedi’i lofnodi a’i ddyddio {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
                 of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
             </p>
