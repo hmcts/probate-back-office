@@ -896,15 +896,6 @@ class DocumentControllerIT {
     void shouldAttachAmendedLegalStatement_PA() throws Exception {
         String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PA.json");
 
-        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
-        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
-
-        final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
-                uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
-                        .mimeType(MediaType.APPLICATION_PDF_VALUE)
-                        .build();
-        when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
-
         final var request = post("/document/amendLegalStatement")
                 .header("authorization", "authToken")
                 .content(payload)
@@ -928,15 +919,6 @@ class DocumentControllerIT {
     @Test
     void shouldAttachAmendedLegalStatement_PP() throws Exception {
         String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP.json");
-
-        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
-        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
-
-        final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
-                uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
-                        .mimeType(MediaType.APPLICATION_PDF_VALUE)
-                        .build();
-        when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/amendLegalStatement")
                 .header("authorization", "authToken")

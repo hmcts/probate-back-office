@@ -108,4 +108,13 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             throw new ClientException(500, "No body retrieved for document resource: " + binaryUrl);
         }
     }
+
+    @Override
+    public uk.gov.hmcts.reform.ccd.document.am.model.Document getMetadataByUrl(final String docUrl) {
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        String auth = securityDTO.getAuthorisation();
+        String s2s = securityDTO.getServiceAuthorisation();
+
+        return caseDocumentClient.getMetadataForDocument(auth, s2s, docUrl);
+    }
 }

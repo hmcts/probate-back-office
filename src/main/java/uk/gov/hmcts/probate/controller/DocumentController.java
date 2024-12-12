@@ -1,9 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -29,7 +28,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
-import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
@@ -47,7 +45,6 @@ import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
-import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClient;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -55,7 +52,6 @@ import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.validation.Valid;
 
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -101,9 +97,6 @@ public class DocumentController {
     private final DocumentManagementService documentManagementService;
     private final EvidenceUploadService evidenceUploadService;
     private final UserInfoService userInfoService;
-    private final SecurityUtils securityUtils;
-    private final CaseDocumentClient caseDocumentClient;
-
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -461,42 +454,23 @@ public class DocumentController {
 
     @PostMapping(path = "/validateAmendLegalStatement", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> validateAmendLegalStatement(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) @Parameter(hidden = true) final String auth,
             @RequestBody final CallbackRequest callbackRequest) {
-        final long caseId = callbackRequest.getCaseDetails().getId();
-        log.info("Validationg amend legal statement for case: {}", caseId);
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final long caseId = caseDetails.getId();
 
-        DocumentLink amendedLegalStatement = callbackRequest.getCaseDetails().getData().getAmendedLegalStatement();
+        log.info("Validating amend legal statement for case: {}", caseId);
 
-        final String docUrl = amendedLegalStatement.getDocumentUrl();
-        final int lastFSlash = docUrl.lastIndexOf('/');
-        final String docId = docUrl.substring(lastFSlash + 1);
+        final DocumentLink amendedLegalStatement = caseDetails.getData().getAmendedLegalStatement();
 
-        final String serviceAuth = securityUtils.generateServiceToken();
-
-        final uk.gov.hmcts.reform.ccd.document.am.model.Document amendedDocument = caseDocumentClient
-                .getMetadataForDocument(auth, serviceAuth, docUrl);
-
-
-        log.info("case {} got amendedLegalStatement with id[0..5]: {} mimetype: {} size: {}",
+        final Optional<String> validationErr = documentValidation.validateUploadedDocumentIsType(
                 caseId,
-                docId.substring(0,5),
-                amendedDocument.mimeType,
-                amendedDocument.size);
+                amendedLegalStatement,
+                MediaType.APPLICATION_PDF);
 
-        if (!MediaType.APPLICATION_PDF_VALUE.equalsIgnoreCase(amendedDocument.mimeType)) {
-            log.warn("case {} amendedLegalStatement has mimeType: {} so rejecting update",
-                    caseId,
-                    amendedDocument.mimeType);
-
-            CallbackResponse err = CallbackResponse.builder()
-                    .errors(List.of(
-                            MessageFormat.format("Uploaded file [{0}] has MIME type [{1}] which does not match [{2}]",
-                                    amendedDocument.originalDocumentName,
-                                    amendedDocument.mimeType,
-                                    MediaType.APPLICATION_PDF_VALUE)
-                    ))
-                    .build();
+        if (validationErr.isPresent()) {
+            final String validationMsg = validationErr.get();
+            log.info("case {} validation error: {}", caseId, validationMsg);
+            CallbackResponse err = CallbackResponse.builder().errors(List.of(validationMsg)).build();
             return ResponseEntity.ok(err);
         }
 
@@ -511,7 +485,11 @@ public class DocumentController {
         final long caseId = callbackRequest.getCaseDetails().getId();
         log.info("Amending legal statement for case: {}", caseId);
 
-        final String baseFileName = switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        final ApplicationType applicationType = caseData.getApplicationType();
+        final DocumentLink amendedLegalStatement = caseData.getAmendedLegalStatement();
+
+        final String baseFileName = switch (applicationType) {
             case PERSONAL -> "amendedLegalStatement";
             case SOLICITOR -> "amendedLegalStatementGrantOfProbate";
         };
@@ -524,7 +502,6 @@ public class DocumentController {
                 .append(".pdf")
                 .toString();
 
-        DocumentLink amendedLegalStatement = callbackRequest.getCaseDetails().getData().getAmendedLegalStatement();
         amendedLegalStatement.setDocumentFilename(amendedFileName);
 
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
