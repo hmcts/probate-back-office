@@ -30,7 +30,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     private static final String LEGAL_STATEMENT_WELSH = "Datganiad cyfreithiol";
     private static final String AUTHORISED_SOLICITOR =
         "They have authorised Firm Name to sign a statement of truth on their behalf.";
-        private static final String LEGAL_STATEMENT_DIED_ON = "died on";
+    private static final String LEGAL_STATEMENT_DIED_ON = "died on";
     private static final String LEGAL_STATEMENT_GOP_WELSH = "grant profiant";
     private static final String LEGAL_STATEMENT_GOP = "grant of probate";
     private static final String PRIMARY_APPLICANT_STATEMENT =
