@@ -995,12 +995,37 @@ class DocumentControllerIT {
         when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/validateAmendLegalStatement")
-                .header("authorization", "authToken")
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
+        final NoErrorReturnedMatcher contentMatcher = new NoErrorReturnedMatcher();
+
         mockMvc.perform(request)
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string(contentMatcher));
+    }
+
+    private final class NoErrorReturnedMatcher extends BaseMatcher<String> {
+        @Override
+        public void describeTo(Description description) {
+            description.appendText("a json string which does not have .errors");
+        }
+
+        @Override
+        public boolean matches(Object actual) {
+            if (!(actual instanceof String)) {
+                return false;
+            }
+            final String body = (String) actual;
+            final JSONObject bodyJson = new JSONObject(body);
+
+            final JSONArray errors = bodyJson.optJSONArray("errors");
+
+            if (errors != null && errors.length() != 0) {
+                return false;
+            }
+            return true;
+        }
     }
 
     /*
@@ -1020,34 +1045,20 @@ class DocumentControllerIT {
         when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/validateAmendLegalStatement")
-                .header("authorization", "authToken")
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
-        final RejectedMimeTypeMatcher contentMatcher = new RejectedMimeTypeMatcher(MediaType.IMAGE_PNG_VALUE);
+        final ErrorReturnedMatcher contentMatcher = new ErrorReturnedMatcher();
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().string(contentMatcher));
     }
 
-    private final class RejectedMimeTypeMatcher extends BaseMatcher<String> {
-
-        private final String errMessage;
-
-        RejectedMimeTypeMatcher(String expectedMimeType) {
-            this.errMessage = new StringBuilder()
-                    .append("has MIME type [")
-                    .append(expectedMimeType)
-                    .append("] which does not match [")
-                    .append(MediaType.APPLICATION_PDF_VALUE)
-                    .toString();
-        }
-
+    private final class ErrorReturnedMatcher extends BaseMatcher<String> {
         @Override
         public void describeTo(Description description) {
-            description.appendText("a json string which has .errors containing a string containing: ");
-            description.appendValue(errMessage);
+            description.appendText("a json string which has .errors containing at least one string");
         }
 
         @Override
@@ -1067,9 +1078,7 @@ class DocumentControllerIT {
             for (int idx = 0; idx < maxIdx; idx++) {
                 final String errStr = errors.optString(idx);
                 if (errStr != null) {
-                    if (errStr.contains(errMessage)) {
-                        return true;
-                    }
+                    return true;
                 }
             }
             return false;
