@@ -109,13 +109,13 @@ public class DocumentValidation {
         final MediaType actualType = MediaType.parseMediaType(uploadedDocument.mimeType);
 
         if (!actualType.equalsTypeAndSubtype(expectedType)) {
-            log.info("case {} uploadedDocument has mimeType: {[}] when expecting [{}] so rejecting update",
+            log.info("case {} uploadedDocument has MediaType: {[}] when expecting [{}] so rejecting update",
                     caseId,
                     actualType,
                     expectedType);
 
             final String errMsg = MessageFormat.format(
-                    "Uploaded file [{0}] has MIME type [{1}] which does not match [{2}]",
+                    "Uploaded file [{0}] has file type [{1}] which does not match [{2}]",
                     uploadedDocument.originalDocumentName,
                     actualType,
                     expectedType);
