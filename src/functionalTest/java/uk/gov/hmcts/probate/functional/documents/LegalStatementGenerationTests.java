@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SerenityJUnit5Extension.class)
-@Slf4j
 public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
 
     // Legal statement fields
@@ -120,7 +119,6 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     @Test
     void verifySuccessForGetPdfLegalStatementProbateForLanguagePreferenceBilingual() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_PROBATE_WELSH_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-        log.info("response: {}", response);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(LEGAL_STATEMENT_WELSH));
