@@ -18,9 +18,9 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     private static final String DECLARATION_CIVIL_WORDING =
         "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence "
             + "provided is deliberately untruthful or dishonest, as well as revocation of the grant";
-    private static final String DECLARATION_CIVIL_WORDING_WELSH = "gellir dwyn achos dirmyg llys yn erbyn y sawl sy’n "
-            + "llofnodi isod os canfyddir bod y dystiolaeth a"
-            + "ddarparwyd yn fwriadol anwir neu’n anonest, yn ogystal â diddymu’r grant";
+    private static final String DECLARATION_CIVIL_WORDING_WELSH = "gellir dwyn achos dirmyg llys yn erbyn y sawl sy’n " 
+            + "llofnodi isod os canfyddir bod y dystiolaeth a ddarparwyd yn fwriadol anwir neu’n anonest, yn ogystal â " 
+            + "diddymu’r grant";
     private static final String CODICIL_DATES = " with codicil signed and dated 3rd March 2020, and codicil signed"
         + " and dated 5th March 2020, and codicil signed and dated 6th March 2020";
     private static final String DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC =
