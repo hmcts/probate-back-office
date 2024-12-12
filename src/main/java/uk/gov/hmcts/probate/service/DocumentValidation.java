@@ -109,7 +109,7 @@ public class DocumentValidation {
         final MediaType actualType = MediaType.parseMediaType(uploadedDocument.mimeType);
 
         if (!actualType.equalsTypeAndSubtype(expectedType)) {
-            log.info("case {} uploadedDocument has MediaType: {[}] when expecting [{}] so rejecting update",
+            log.info("case {} uploadedDocument has MediaType: [{}] when expecting [{}] so rejecting update",
                     caseId,
                     actualType,
                     expectedType);
