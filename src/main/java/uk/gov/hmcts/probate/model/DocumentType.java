@@ -86,6 +86,9 @@ public enum DocumentType {
     @JsonProperty("will")
     WILL("will"),
 
+    @JsonProperty("citizenHubUpload")
+    CITIZEN_HUB_UPLOAD("citizenHubUpload"),
+
     @JsonProperty("caveatExtension")
     CAVEAT_EXTENSION("caveatExtension"),
 
