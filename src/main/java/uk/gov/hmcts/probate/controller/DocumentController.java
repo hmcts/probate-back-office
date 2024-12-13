@@ -198,9 +198,6 @@ public class DocumentController {
         documents.add(digitalGrantDocument);
         documents.add(coverSheet);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        if (caseData.getOutsideUKGrantCopies() != null && caseData.getOutsideUKGrantCopies() > 0) {
-            documents.add(notificationService.sendSealedAndCertifiedEmail(caseDetails));
-        }
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             callbackResponse =
                 eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
@@ -208,14 +205,16 @@ public class DocumentController {
                 Document grantIssuedSentEmail =
                     notificationService.sendEmail(grantState.apply(caseData.getCaseType()), caseDetails);
                 documents.add(grantIssuedSentEmail);
-                callbackResponse =
-                    callbackResponseTransformer
-                        .addDocuments(callbackRequest, documents, letterId, pdfSize, caseworkerInfo);
+            } else {
+                return ResponseEntity.ok(callbackResponse);
             }
-        } else {
-            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize,
-                    caseworkerInfo);
+
         }
+        if (caseData.getOutsideUKGrantCopies() != null && caseData.getOutsideUKGrantCopies() > 0) {
+            documents.add(notificationService.sendSealedAndCertifiedEmail(caseDetails));
+        }
+        callbackResponse = callbackResponseTransformer
+                            .addDocuments(callbackRequest, documents, letterId, pdfSize, caseworkerInfo);
         return ResponseEntity.ok(callbackResponse);
     }
 

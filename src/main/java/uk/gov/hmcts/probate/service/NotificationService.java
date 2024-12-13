@@ -183,12 +183,12 @@ public class NotificationService {
                          deceasedName);
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
-        log.info("Sealed And Certified Personlisation complete now get the email response");
+        log.info("Sealed And Certified get the email response for case {}", caseDetails.getId());
 
         SendEmailResponse response = notificationClientService.sendEmail(templateId,
                 emailAddresses.getSealedAndCertifiedEmail(), personalisation, reference);
 
-        log.info("Send Sealed And Certified completed.");
+        log.info("Send Sealed And Certified completed for case {}", caseDetails.getId());
         return getGeneratedSentEmailDocument(response, emailAddresses.getSealedAndCertifiedEmail(), SENT_EMAIL);
     }
 
