@@ -2690,7 +2690,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(RegistrarEscalateReason.REFERRALS, callbackResponse.getData().getRegistrarEscalateReason());
     }
 
