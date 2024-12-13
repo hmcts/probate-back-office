@@ -328,5 +328,13 @@ withPipeline("java", product, component) {
  docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
  """
   }
+
+  before('functionalTest:preview') {
+    env.SERVICES_CORECASEDATA_BASEURL = "https://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+  }
+
+  before('functionalTest:aat') {
+    env.SERVICES_CORECASEDATA_BASEURL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
+  }
 }
 

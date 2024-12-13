@@ -13,7 +13,9 @@ import uk.gov.hmcts.probate.model.State;
 
 import static uk.gov.hmcts.probate.model.CaseOrigin.CASEWORKER;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,13 +26,13 @@ public class TemplateService {
 
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
                                 LanguagePreference languagePreference) {
-        return getTemplateId(state, applicationType, registryLocation, languagePreference, null, null);
+        return getTemplateId(state, applicationType, registryLocation, languagePreference, null, null, null);
 
     }
 
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
                                 LanguagePreference languagePreference, CaseOrigin caseOrigin,
-                                String channelChoice) {
+                                String channelChoice, String informationNeededByPost) {
 
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
         switch (state) {
@@ -57,7 +59,11 @@ public class TemplateService {
             case GENERAL_CAVEAT_MESSAGE:
                 return emailTemplates.getGeneralCaveatMessage();
             case CASE_STOPPED_REQUEST_INFORMATION:
-                return emailTemplates.getRequestInformation();
+                if (requestInfoByPostForPersonalApplication(channelChoice, applicationType, informationNeededByPost)) {
+                    return emailTemplates.getRequestInformationByPost();
+                } else {
+                    return emailTemplates.getRequestInformation();
+                }
             case REDECLARATION_SOT:
                 return emailTemplates.getRedeclarationSot();
             case GRANT_RAISED:
@@ -81,6 +87,15 @@ public class TemplateService {
             default:
                 throw new BadRequestException("Unsupported state");
         }
+    }
+
+    private boolean requestInfoByPostForPersonalApplication(String channelChoice, ApplicationType applicationType,
+                                                            String informationNeededByPost) {
+        return ApplicationType.PERSONAL.equals(applicationType)
+            && ((CHANNEL_CHOICE_DIGITAL.equalsIgnoreCase(channelChoice)
+                && !NO.equalsIgnoreCase(informationNeededByPost))
+                || CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase(channelChoice)
+                || CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase(channelChoice));
     }
 }
 

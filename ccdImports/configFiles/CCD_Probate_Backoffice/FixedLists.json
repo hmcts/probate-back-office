@@ -145,8 +145,9 @@
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "will", "ListElement": "Will", "DisplayOrder": 3},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil", "DisplayOrder": 4},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "uploadedLegalStatement", "ListElement": "Uploaded Legal Statement", "DisplayOrder": 5},
-  {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "other", "ListElement": "Other", "DisplayOrder": 6},
-  {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "deathCertificate", "ListElement": "Death Certificate", "DisplayOrder": 7},
+  {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "deathCertificate", "ListElement": "Death Certificate", "DisplayOrder": 6},
+  {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "citizenHubUpload", "ListElement": "Citizen hub upload", "DisplayOrder": 7},
+  {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "other", "ListElement": "Other", "DisplayOrder": 8},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "cheque", "ListElement": "Cheque"},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "online", "ListElement": "Online"},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "card", "ListElement": "Credit/debit card"},
@@ -447,5 +448,7 @@
   {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "Spreadsheet", "ListElement": "Spreadsheet", "DisplayOrder":  "19"},
   {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "TrustCorporation", "ListElement": "Trust Corporation", "DisplayOrder":  "20"},
   {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "WillCodicilNotated", "ListElement": "Will or codicil to be notated", "DisplayOrder":  "21"},
-  {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "WitnessInterview", "ListElement": "Witness Interview", "DisplayOrder":  "22"}
+  {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "WitnessInterview", "ListElement": "Witness Interview", "DisplayOrder":  "22"},
+  {"LiveFrom": "01/01/2017", "ID": "informationNeededFixedList", "ListElementCode": "Yes", "ListElement": "Yes, I need information or documents", "DisplayOrder":  "1"},
+  {"LiveFrom": "01/01/2017", "ID": "informationNeededFixedList", "ListElementCode": "No", "ListElement": "No, I need to inform of a caveat stop", "DisplayOrder":  "2"}
 ]

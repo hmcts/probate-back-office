@@ -20,6 +20,8 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -85,7 +87,7 @@ class PaymentControllerUnitTest {
 
     @Test
     void shouldUpdateTaskList() {
-        when(callbackResponseTransformerMock.updateTaskList(request)).thenReturn(callbackResponse);
+        when(callbackResponseTransformerMock.updateTaskList(request, Optional.empty())).thenReturn(callbackResponse);
         doNothing().when(caseDataTransformerMock).transformCaseDataForEvidenceHandled(request);
         ResponseEntity<CallbackResponse> response = underTest.updateTaskList(request);
 
