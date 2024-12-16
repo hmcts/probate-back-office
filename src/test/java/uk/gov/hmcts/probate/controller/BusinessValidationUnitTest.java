@@ -191,6 +191,7 @@ class BusinessValidationUnitTest {
     private BusinessValidationMessageService businessValidationMessageServiceMock;
     @Mock
     private AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
+    @Mock
     private UserInfoService userInfoServiceMock;
 
     @Mock
