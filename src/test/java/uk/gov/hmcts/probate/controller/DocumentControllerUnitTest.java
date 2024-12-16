@@ -93,7 +93,6 @@ class DocumentControllerUnitTest {
     private RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     @Mock
     private ReprintService reprintService;
-    @Mock
     private DocumentValidation documentValidation;
     @Mock
     private DocumentManagementService documentManagementService;
