@@ -1362,7 +1362,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1452,7 +1452,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1545,7 +1545,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -3289,7 +3289,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-                underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+                underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                        CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
