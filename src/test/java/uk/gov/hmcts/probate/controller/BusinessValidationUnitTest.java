@@ -233,7 +233,7 @@ class BusinessValidationUnitTest {
             registrarDirectionServiceMock,
             pre1900DOBValidationRuleMock,
             adColligendaBonaCaseTypeValidationRule,
-            businessValidationMessageServiceMock
+            businessValidationMessageServiceMock,
             userInfoServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
