@@ -101,6 +101,8 @@ class DocumentControllerUnitTest {
     private EvidenceUploadService evidenceUploadService;
     @Mock
     private UserInfoService userInfoService;
+
+    /// The object under test
     private DocumentController documentController;
 
     private static final String DUMMY_OAUTH_2_TOKEN = "oauth2Token";
@@ -115,7 +117,7 @@ class DocumentControllerUnitTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        documentValidation = new DocumentValidation();
+        documentValidation = new DocumentValidation(documentManagementService);
         ReflectionTestUtils.setField(documentValidation,
             "allowedFileExtensions", ".pdf .jpeg .bmp .tif .tiff .png");
         ReflectionTestUtils.setField(documentValidation,
