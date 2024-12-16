@@ -111,9 +111,9 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
     @Override
     public uk.gov.hmcts.reform.ccd.document.am.model.Document getMetadataByUrl(final String docUrl) {
-        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        String auth = securityDTO.getAuthorisation();
-        String s2s = securityDTO.getServiceAuthorisation();
+        final SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        final String auth = securityDTO.getAuthorisation();
+        final String s2s = securityDTO.getServiceAuthorisation();
 
         return caseDocumentClient.getMetadataForDocument(auth, s2s, docUrl);
     }

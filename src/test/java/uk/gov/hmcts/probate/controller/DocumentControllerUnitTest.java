@@ -102,6 +102,7 @@ class DocumentControllerUnitTest {
     @Mock
     private UserInfoService userInfoService;
 
+    /// The object under test
     private DocumentController documentController;
 
     private static final String DUMMY_OAUTH_2_TOKEN = "oauth2Token";
