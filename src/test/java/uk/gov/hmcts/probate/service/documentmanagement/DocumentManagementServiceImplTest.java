@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 
@@ -183,5 +184,23 @@ class DocumentManagementServiceImplTest {
                             .build())
                     .build());
         });
+    }
+
+    @Test
+    void shouldQueryCaseDocumentClientForMetadata() {
+        final String docUrl = "docUrl";
+        final String auth = "auth";
+        final String servAuth = "servAuth";
+
+        final SecurityDTO secDTO = SecurityDTO.builder()
+                .authorisation(auth)
+                .serviceAuthorisation(servAuth)
+                .build();
+
+        when(securityUtils.getSecurityDTO()).thenReturn(secDTO);
+
+        documentManagementService.getMetadataByUrl(docUrl);
+
+        verify(caseDocumentClient).getMetadataForDocument(auth, servAuth, docUrl);
     }
 }

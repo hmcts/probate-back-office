@@ -22,4 +22,5 @@ public interface DocumentManagementService {
 
     byte[] getDocumentByBinaryUrl(String binaryUrl) throws IOException;
 
+    uk.gov.hmcts.reform.ccd.document.am.model.Document getMetadataByUrl(String documentUrl);
 }
