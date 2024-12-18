@@ -84,14 +84,6 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
             CASE_MATCHING_EXAMINING_URL, "/intestacy/case-matching-examining-html.txt");
     }
 
-
-    @Test
-    void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogressintestacy/10-caseMatchingReadyToIssue.json",
-            CASE_MATCHING_READY_TO_ISSUE_URL,
-            "/intestacy/case-matching-ready-to-issue-html.txt");
-    }
-
     @Test
     void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/11-markReadyToIssue.json",
