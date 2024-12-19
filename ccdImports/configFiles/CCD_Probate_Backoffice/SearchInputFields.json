@@ -16,10 +16,11 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "latestGrantReissueDate", "Label": "Last grant reissue date", "DisplayOrder": 15},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseHandedOffToLegacySite", "Label": "Case handed off to legacy site", "DisplayOrder": 16},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boHandoffReasonList", "Label": "Handoff reason", "DisplayOrder": 17},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boCaseStopReasonList", "Label": "Case stop reason", "DisplayOrder": 18},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseWorkerEscalationDate", "Label": "SME Referral Date", "DisplayOrder": 19},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "resolveCaseWorkerEscalationDate", "Label": "SME Referral Resolved Date", "DisplayOrder": 20},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastModifiedCaseworkerForenames", "Label": "Caseworker forename(s)", "DisplayOrder": 21},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastModifiedCaseworkerSurname", "Label": "Caseworker surname(s)", "DisplayOrder": 22},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paymentTaken", "Label": "Payment taken", "DisplayOrder": 23}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "registrarEscalateReason", "Label": "Escalation reason", "DisplayOrder": 18},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boCaseStopReasonList", "Label": "Case stop reason", "DisplayOrder": 19},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseWorkerEscalationDate", "Label": "SME Referral Date", "DisplayOrder": 20},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "resolveCaseWorkerEscalationDate", "Label": "SME Referral Resolved Date", "DisplayOrder": 21},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastModifiedCaseworkerForenames", "Label": "Caseworker forename(s)", "DisplayOrder": 22},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastModifiedCaseworkerSurname", "Label": "Caseworker surname(s)", "DisplayOrder": 23},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paymentTaken", "Label": "Payment taken", "DisplayOrder": 24}
 ]
