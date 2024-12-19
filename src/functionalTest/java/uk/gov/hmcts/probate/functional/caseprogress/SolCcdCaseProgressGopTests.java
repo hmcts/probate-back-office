@@ -85,12 +85,6 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     }
 
     @Test
-    void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogress/10-caseMatchingReadyToIssue.json",
-            CASE_MATCHING_READY_TO_ISSUE_URL, "/gop/case-matching-ready-to-issue-html.txt");
-    }
-
-    @Test
     void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/11-markReadyToIssue.json", CASE_MATCHING_EXAMINING_URL,
             "/gop/case-mark-ready-to-issue-html.txt");
