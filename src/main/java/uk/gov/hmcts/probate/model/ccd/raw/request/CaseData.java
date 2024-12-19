@@ -271,6 +271,8 @@ public class CaseData extends CaseDataParent {
 
     private final DocumentLink statementOfTruthDocument;
 
+    private final DocumentLink amendedLegalStatement;
+
     private final DocumentLink solsCoversheetDocument;
 
     @Builder.Default
