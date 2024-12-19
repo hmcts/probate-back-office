@@ -82,7 +82,6 @@
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "WillCondition", "ListElement": "Will (condition)", "DisplayOrder":  "29"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "WillContent", "ListElement": "Will (content, inc not signed)", "DisplayOrder":  "30"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "WelshTranslationRequired", "ListElement": "Welsh Translation Required", "DisplayOrder":  "31"},
-  {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "Other", "ListElement": "*** NOT TO BE USED (Other) ***", "DisplayOrder":  "32"},
   {"LiveFrom": "01/01/2017", "ID": "DocumentsRequiredSubList", "ListElementCode": "Affidavits", "ListElement": "Affidavits", "DisplayOrder":  "1"},
   {"LiveFrom": "01/01/2017", "ID": "DocumentsRequiredSubList", "ListElementCode": "CAPA5C", "ListElement": "CAP A5C", "DisplayOrder":  "2"},
   {"LiveFrom": "01/01/2017", "ID": "DocumentsRequiredSubList", "ListElementCode": "DecreeAbsolute", "ListElement": "Decree Absolute", "DisplayOrder":  "3"},
