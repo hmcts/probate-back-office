@@ -168,6 +168,7 @@ public class NotificationService {
 
         TemplatePreview previewResponse =
                 notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
+        log.info("Email preview response: {}", previewResponse.toString());
         return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
     }
 
