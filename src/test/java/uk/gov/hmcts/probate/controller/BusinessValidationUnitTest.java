@@ -15,7 +15,9 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -1102,5 +1104,41 @@ class BusinessValidationUnitTest {
         verify(callbackResponseTransformerMock, times(1))
                 .superUserMakeCaseDormant(callbackRequestMock, CASEWORKER_USERINFO);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void validateStopReasonShouldReturnErrorWhenOtherStop() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1L);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        CollectionMember<StopReason> other = new CollectionMember<>(
+                "1",
+                StopReason.builder().caseStopReason("Other").build());
+
+        when(caseDataMock.getBoCaseStopReasonList()).thenReturn(List.of(other));
+
+        ResponseEntity<CallbackResponse> response =
+                underTest.validateCaseStopped(callbackRequestMock, httpServletRequest);
+
+        // TODO actual testing
+    }
+
+    @Test
+    void validateStopReasonShouldSucceedWhenNoOtherStop() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1L);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        CollectionMember<StopReason> noOther = new CollectionMember<>(
+                "1",
+                StopReason.builder().caseStopReason("NoOther").build());
+
+        when(caseDataMock.getBoCaseStopReasonList()).thenReturn(List.of(noOther));
+
+        ResponseEntity<CallbackResponse> response =
+                underTest.validateCaseStopped(callbackRequestMock, httpServletRequest);
+
+        // TODO actual testing
     }
 }
