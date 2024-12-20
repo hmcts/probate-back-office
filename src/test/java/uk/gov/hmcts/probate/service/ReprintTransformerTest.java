@@ -21,6 +21,8 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
@@ -31,6 +33,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
@@ -135,12 +138,17 @@ class ReprintTransformerTest {
         createAndAssertGeneratedListItem(INTESTACY_GRANT, "IGrant1", "Grant");
         createAndAssertGeneratedListItem(WELSH_INTESTACY_GRANT, "WIGrant1", "Grant");
 
+        createAndAssertGeneratedListItem(AD_COLLIGENDA_BONA_GRANT, "ACBGrant1", "Grant");
+        createAndAssertGeneratedListItem(WELSH_AD_COLLIGENDA_BONA_GRANT, "WACBGrant1", "Grant");
+
         createAndAssertGeneratedListItem(ADMON_WILL_GRANT, "AWGrant1", "Grant");
         createAndAssertGeneratedListItem(WELSH_ADMON_WILL_GRANT, "WAWGrant1", "Grant");
 
         createAndAssertGeneratedListItem(DIGITAL_GRANT_REISSUE, "GrantReissue1", "ReissuedGrant");
         createAndAssertGeneratedListItem(INTESTACY_GRANT_REISSUE, "IGrantReissue1", "ReissuedGrant");
         createAndAssertGeneratedListItem(ADMON_WILL_GRANT_REISSUE, "AWGrantReissue1", "ReissuedGrant");
+        createAndAssertGeneratedListItem(AD_COLLIGENDA_BONA_GRANT_REISSUE, "ACBGrantReissue1",
+                "ReissuedGrant");
     }
 
     @Test
