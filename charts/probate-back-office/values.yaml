@@ -16,6 +16,9 @@ elastic:
 postgresql:
   enabled: false
 
+ccd-case-document-am-api:
+  enabled: false
+
 java:
   applicationPort: 4104
   image: hmctspublic.azurecr.io/probate/back-office:latest
