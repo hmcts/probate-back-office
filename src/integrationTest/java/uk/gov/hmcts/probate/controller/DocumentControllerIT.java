@@ -230,6 +230,9 @@ class DocumentControllerIT {
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
             .thenReturn(welshDocumentDraft);
 
+        when(documentGeneratorService.getSolicitorSoTDocType(any()))
+                .thenCallRealMethod();
+
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
@@ -965,8 +968,80 @@ class DocumentControllerIT {
     }
 
     @Test
-    void shouldAttachAmendedLegalStatement_PP() throws Exception {
-        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP.json");
+    void shouldAttachAmendedLegalStatement_PP_probate() throws Exception {
+        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_probate.json");
+
+        final var request = post("/document/amendLegalStatement")
+                .header("authorization", "authToken")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        final String expectedDate = LocalDate.now()
+                .format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        final String expectedFilename = new StringBuilder()
+                .append("amendedLegalStatementGrantOfProbate_")
+                .append(expectedDate)
+                .append(".pdf")
+                .toString();
+
+        final AmendedFilenameMatcher contentMatcher = new AmendedFilenameMatcher(expectedFilename);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(contentMatcher));
+    }
+
+    @Test
+    void shouldAttachAmendedLegalStatement_PP_intestacy() throws Exception {
+        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_intestacy.json");
+
+        final var request = post("/document/amendLegalStatement")
+                .header("authorization", "authToken")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        final String expectedDate = LocalDate.now()
+                .format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        final String expectedFilename = new StringBuilder()
+                .append("amendedLegalStatementIntestacy_")
+                .append(expectedDate)
+                .append(".pdf")
+                .toString();
+
+        final AmendedFilenameMatcher contentMatcher = new AmendedFilenameMatcher(expectedFilename);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(contentMatcher));
+    }
+
+    @Test
+    void shouldAttachAmendedLegalStatement_PP_admon() throws Exception {
+        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_admon.json");
+
+        final var request = post("/document/amendLegalStatement")
+                .header("authorization", "authToken")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        final String expectedDate = LocalDate.now()
+                .format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        final String expectedFilename = new StringBuilder()
+                .append("amendedLegalStatementAdmon_")
+                .append(expectedDate)
+                .append(".pdf")
+                .toString();
+
+        final AmendedFilenameMatcher contentMatcher = new AmendedFilenameMatcher(expectedFilename);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string(contentMatcher));
+    }
+
+    @Test
+    void shouldAttachAmendedLegalStatement_PP_edgeCase() throws Exception {
+        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_edgeCase.json");
 
         final var request = post("/document/amendLegalStatement")
                 .header("authorization", "authToken")
@@ -1031,7 +1106,7 @@ class DocumentControllerIT {
      */
     @Test
     void shouldAcceptPdfValidateAmendLegalStatement() throws Exception {
-        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP.json");
+        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_probate.json");
 
         // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
         doReturn("serviceAuth").when(securityUtils).generateServiceToken();
@@ -1081,7 +1156,7 @@ class DocumentControllerIT {
      */
     @Test
     void shouldRejectNonPdfValidateAmendLegalStatement() throws Exception {
-        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP.json");
+        String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_probate.json");
 
         // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
         doReturn("serviceAuth").when(securityUtils).generateServiceToken();
