@@ -494,7 +494,15 @@ public class DocumentController {
 
         final String baseFileName = switch (applicationType) {
             case PERSONAL -> "amendedLegalStatement";
-            case SOLICITOR -> "amendedLegalStatementGrantOfProbate";
+            case SOLICITOR -> {
+                final DocumentType solsDocType = documentGeneratorService.getSolicitorSoTDocType(callbackRequest);
+                final String solsBaseName = solsDocType.getTemplateName();
+                yield new StringBuilder()
+                        .append("amended")
+                        .append(solsBaseName.toUpperCase().substring(0,1))
+                        .append(solsBaseName.substring(1))
+                        .toString();
+            }
         };
 
         final String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
