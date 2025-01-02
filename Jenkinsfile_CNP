@@ -241,6 +241,7 @@ withPipeline("java", product, component) {
       sh 'yarn install'
       sh 'yarn test:fullfunctional-cw'
     }
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
             allowMissing         : true,
