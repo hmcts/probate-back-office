@@ -18,6 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -76,6 +77,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -375,9 +377,6 @@ class CallbackResponseTransformerTest {
 
     private List<CaseMatch> caseMatches = new ArrayList<>();
 
-    @Mock
-    private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
-
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
         new CollectionMember<>(null,
             EstateItem.builder()
@@ -474,15 +473,21 @@ class CallbackResponseTransformerTest {
         .additionalApplying(NO)
         .additionalExecReasonNotApplying(SOLICITOR_SOT_NOT_APPLYING_REASON)
         .build();
-    public static final String DAMAGE_TYPE_1 = "Type1";
-    public static final String DAMAGE_TYPE_2 = "Type2";
-    public static final String DAMAGE_TYPE_OTHER = "Other";
-    public static final String DAMAGE_DESC = "Damage Desc";
-    public static final String DAMAGE_REASON_DESC = "Damage reason";
-    public static final String DAMAGE_CULPRIT_FN = "Damage Culprit FN";
-    public static final String DAMAGE_CULPRIT_LN = "Damage Culprit LN";
-    public static final String DAMAGE_DATE = "9/2021";
+    private static final String DAMAGE_TYPE_1 = "Type1";
+    private static final String DAMAGE_TYPE_2 = "Type2";
+    private static final String DAMAGE_TYPE_OTHER = "Other";
+    private static final String DAMAGE_DESC = "Damage Desc";
+    private static final String DAMAGE_REASON_DESC = "Damage reason";
+    private static final String DAMAGE_CULPRIT_FN = "Damage Culprit FN";
+    private static final String DAMAGE_CULPRIT_LN = "Damage Culprit LN";
+    private static final String DAMAGE_DATE = "9/2021";
     private static final String SERVICE_REQUEST_REFEREMCE = "Service Request Ref";
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+        .familyName("familyName")
+        .givenName("givenname")
+        .roles(Arrays.asList("caseworker-probate"))
+        .build());
+
 
     @InjectMocks
     private CallbackResponseTransformer underTest;
@@ -565,6 +570,8 @@ class CallbackResponseTransformerTest {
     private Iht400421Defaulter iht400421Defaulter;
     @Mock
     Document coversheetMock;
+    @Mock
+    private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     @Mock
     private FeatureToggleService featureToggleService;
@@ -728,7 +735,6 @@ class CallbackResponseTransformerTest {
             .codicilsDamageDate(DAMAGE_DATE)
             .deceasedWrittenWishes(YES)
             .documentsReceivedNotificationSent(YES);
-        ;
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
             .deceasedForenames(DECEASED_FIRSTNAME)
@@ -1003,7 +1009,7 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldConvertRequestToDataBeanForWithStateChange() {
         CallbackResponse callbackResponse =
-            underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE);
+            underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE, CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1015,7 +1021,7 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldConvertRequestToDataBeanWithNoStateChange() {
         CallbackResponse callbackResponse =
-            underTest.transformWithConditionalStateChange(callbackRequestMock, ORIGINAL_STATE);
+            underTest.transformWithConditionalStateChange(callbackRequestMock, ORIGINAL_STATE, CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1066,7 +1072,7 @@ class CallbackResponseTransformerTest {
             .build();
 
         CallbackResponse callbackResponse =
-            underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
+            underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null, CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1082,7 +1088,7 @@ class CallbackResponseTransformerTest {
                 .build();
 
         CallbackResponse callbackResponse =
-                underTest.addNocDocuments(callbackRequestMock, Arrays.asList(document));
+                underTest.addNocDocuments(callbackRequestMock, Arrays.asList(document), CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
     }
@@ -1257,7 +1263,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), null, null);
+            Arrays.asList(grantDocument, grantIssuedSentEmail), null, null, CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1276,7 +1282,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1296,7 +1302,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1315,7 +1321,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1334,7 +1340,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1353,7 +1359,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1376,7 +1382,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
@@ -1400,7 +1406,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1424,7 +1430,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1447,7 +1453,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1470,7 +1476,7 @@ class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -1499,7 +1505,7 @@ class CallbackResponseTransformerTest {
         DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
         String grantIssuedDate = targetFormat.format(new Date());
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(document), null, null);
+            Arrays.asList(document), null, null, CASEWORKER_USERINFO);
         assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
     }
 
@@ -1508,7 +1514,7 @@ class CallbackResponseTransformerTest {
         Document documentsReceivedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(documentsReceivedSentEmail), null, null);
+            Arrays.asList(documentsReceivedSentEmail), null, null, CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1531,7 +1537,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest
-            .addDocuments(callbackRequestMock, documents, null, null);
+            .addDocuments(callbackRequestMock, documents, null, null, CASEWORKER_USERINFO);
 
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
     }
@@ -1540,7 +1546,8 @@ class CallbackResponseTransformerTest {
     void shouldAddMatches() {
         CaseMatch caseMatch = CaseMatch.builder().build();
 
-        CallbackResponse response = underTest.addMatches(callbackRequestMock, Collections.singletonList(caseMatch));
+        CallbackResponse response = underTest.addMatches(callbackRequestMock, Collections.singletonList(caseMatch),
+                CASEWORKER_USERINFO);
 
         assertCommon(response);
         assertLegacyInfo(response);
@@ -1550,32 +1557,12 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldSelectForQA() {
-        CallbackResponse response = underTest.selectForQA(callbackRequestMock);
-
-        assertCommon(response);
-        assertLegacyInfo(response);
-
-        assertEquals(CallbackResponseTransformer.QA_CASE_STATE, response.getData().getState());
-    }
-
-    @Test
-    void shouldNotSelectForQA() {
-        caseDataBuilder.boExaminationChecklistRequestQA(null);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsMock.getState()).thenReturn("CurrentStateId");
-
-        CallbackResponse response = underTest.selectForQA(callbackRequestMock);
-
-        assertEquals("CurrentStateId", response.getData().getState());
-    }
-
-    @Test
     void shouldConvertRequestToDataBeanWithStopDetailsChange() {
         List<Document> documents = new ArrayList<>();
         documents.add(Document.builder().documentType(CAVEAT_STOPPED).build());
 
-        CallbackResponse callbackResponse = underTest.caseStopped(callbackRequestMock, documents, "123");
+        CallbackResponse callbackResponse = underTest
+                .caseStopped(callbackRequestMock, documents, "123", CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1588,21 +1575,22 @@ class CallbackResponseTransformerTest {
         List<Document> documents = new ArrayList<>();
         documents.add(Document.builder().documentType(DIGITAL_GRANT).build());
 
-        CallbackResponse callbackResponse = underTest.caseStopped(callbackRequestMock, documents, "123");
+        CallbackResponse callbackResponse = underTest
+                .caseStopped(callbackRequestMock, documents, "123", CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId(), is(EMPTY_LIST));
     }
 
     @Test
     void shouldTransformCallbackRequestToCallbackResponse() {
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
     }
 
     @Test
     void verifyTrustCorpFieldsAreReset() {
-        underTest.transformCase(callbackRequestMock);
+        underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         verify(resetResponseCaseDataTransformer, times(1))
             .resetTitleAndClearingFields(any(), any());
@@ -1617,7 +1605,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(additionalExecutorsApplyingMock, callbackResponse.getData().getAdditionalExecutorsApplying());
         assertEquals(additionalExecutorsNotApplyingMock,
@@ -1635,7 +1623,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1656,7 +1644,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1672,7 +1660,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1692,7 +1680,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1713,7 +1701,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1730,7 +1718,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1746,7 +1734,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1762,7 +1750,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1779,7 +1767,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(IHT_REFERENCE, callbackResponse.getData().getIhtReferenceNumber());
     }
@@ -1793,7 +1781,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
         assertEquals(NO, callbackResponse.getData().getBoEmailDocsReceivedNotification());
@@ -1810,7 +1798,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(YES, callbackResponse.getData().getBoEmailGrantIssuedNotification());
         assertEquals(YES, callbackResponse.getData().getBoEmailDocsReceivedNotification());
@@ -1826,7 +1814,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
         assertEquals(NO, callbackResponse.getData().getBoEmailDocsReceivedNotification());
@@ -1842,7 +1830,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(YES, callbackResponse.getData().getBoEmailGrantIssuedNotification());
         assertEquals(YES, callbackResponse.getData().getBoEmailDocsReceivedNotification());
@@ -1860,7 +1848,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantSameWillName());
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
@@ -1878,7 +1866,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantSameWillName());
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
@@ -1895,7 +1883,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(NO, callbackResponse.getData().getPrimaryApplicantSameWillName());
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
@@ -1911,7 +1899,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertNull(callbackResponse.getData().getIhtReferenceNumber());
     }
@@ -1929,7 +1917,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertNull(callbackResponse.getData().getDomicilityCountry());
         assertEquals("Item", callbackResponse.getData().getUkEstate().get(0).getValue().getItem());
@@ -1949,7 +1937,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals("OtherCountry", callbackResponse.getData().getDomicilityCountry());
     }
@@ -1964,7 +1952,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals("Alias names", callbackResponse.getData().getPrimaryApplicantAlias());
         assertEquals(null, callbackResponse.getData().getSolsExecutorAliasNames());
@@ -1981,7 +1969,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
     }
@@ -1996,7 +1984,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
     }
@@ -2011,7 +1999,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
         assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
@@ -2027,7 +2015,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertSame(mockList, callbackResponse.getData().getDeathRecords());
     }
@@ -2042,7 +2030,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
     }
@@ -2057,7 +2045,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommonDetails(callbackResponse);
         assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
@@ -2170,7 +2158,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertEquals(1, callbackResponse.getData().getUkEstate().size());
         assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
@@ -2289,7 +2277,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertEquals(1, callbackResponse.getData().getUkEstate().size());
         assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
@@ -2311,7 +2299,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
         assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
 
@@ -2327,7 +2315,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
     }
@@ -2340,7 +2328,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrintRequested());
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
     }
@@ -2353,7 +2341,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertEquals(null, callbackResponse.getData().getSolsSolicitorAppReference());
         assertEquals(null, callbackResponse.getData().getSolsSolicitorEmail());
         assertEquals(null, callbackResponse.getData().getSolsSOTJobTitle());
@@ -2372,7 +2360,7 @@ class CallbackResponseTransformerTest {
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
         when(caseDataMock.getApplicationType()).thenReturn(SOLICITOR);
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertSolsDetails(callbackResponse);
     }
 
@@ -2384,7 +2372,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
         assertSolsDetails(callbackResponse);
     }
@@ -2398,7 +2386,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertNull(callbackResponse.getData().getIhtFormId());
         assertSolsDetails(callbackResponse);
     }
@@ -2412,7 +2400,7 @@ class CallbackResponseTransformerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
         when(caseDataMock.getApplicationType()).thenReturn(SOLICITOR);
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest, document, CASEWORKER_USERINFO);
         assertNull(callbackResponse.getData().getIhtFormId());
     }
 
@@ -2425,7 +2413,7 @@ class CallbackResponseTransformerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest, document, CASEWORKER_USERINFO);
         assertNull(callbackResponse.getData().getIhtFormId());
     }
 
@@ -2442,7 +2430,7 @@ class CallbackResponseTransformerTest {
         DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
         String grantIssuedDate = targetFormat.format(new Date());
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(document), null, null);
+            Arrays.asList(document), null, null, CASEWORKER_USERINFO);
         assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
     }
 
@@ -2459,7 +2447,7 @@ class CallbackResponseTransformerTest {
         DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
         String latestReissueDate = targetFormat.format(new Date());
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-            Arrays.asList(document), null, null);
+            Arrays.asList(document), null, null, CASEWORKER_USERINFO);
         assertEquals(latestReissueDate, callbackResponse.getData().getLatestGrantReissueDate());
     }
 
@@ -2471,7 +2459,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertEquals("diedOn", callbackResponse.getData().getDateOfDeathType());
     }
 
@@ -2483,7 +2471,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(null, callbackResponse.getData().getWillNumberOfCodicils());
     }
@@ -2496,7 +2484,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDeathCertificate());
     }
@@ -2510,7 +2498,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(null, callbackResponse.getData().getDeceasedForeignDeathCertTranslation());
     }
@@ -2524,7 +2512,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(null, callbackResponse.getData().getDeceasedForeignDeathCertInEnglish());
         assertEquals(null, callbackResponse.getData().getDeceasedForeignDeathCertTranslation());
@@ -2538,7 +2526,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertEquals("SOT.pdf", callbackResponse
             .getData().getStatementOfTruthDocument().getDocumentFilename());
     }
@@ -2584,7 +2572,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock,
-            Arrays.asList(document));
+            Arrays.asList(document), CASEWORKER_USERINFO);
         assertEquals(SENT_EMAIL.getTemplateName(),
             callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
@@ -2610,7 +2598,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock,
-                Arrays.asList(document));
+            Arrays.asList(document), CASEWORKER_USERINFO);
         assertNull(callbackResponse.getData().getCitizenResponseCheckbox());
         assertNull(callbackResponse.getData().getExpectedResponseDate());
         assertNull(callbackResponse.getData().getDocumentUploadIssue());
@@ -2624,7 +2612,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(QA_CASE_STATE, callbackResponse.getData().getState());
     }
 
@@ -2635,7 +2623,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(CASE_PRINTED, callbackResponse.getData().getState());
     }
 
@@ -2646,7 +2634,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(READY_FOR_ISSUE, callbackResponse.getData().getState());
     }
 
@@ -2657,7 +2645,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(CASE_MATCHING_ISSUE_GRANT, callbackResponse.getData().getState());
     }
 
@@ -2668,7 +2656,8 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.resolveCaseWorkerEscalationState(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest
+                .resolveCaseWorkerEscalationState(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(QA_CASE_STATE, callbackResponse.getData().getState());
     }
 
@@ -2680,7 +2669,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(QA_CASE_STATE, callbackResponse.getData().getState());
     }
 
@@ -2691,8 +2680,18 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(CASE_MATCHING_ISSUE_GRANT, callbackResponse.getData().getState());
+    }
+
+    @Test
+    void shouldChangeRegistrarEscalateReasonReferrals() {
+        caseDataBuilder.registrarEscalateReason(RegistrarEscalateReason.REFERRALS);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+        assertEquals(RegistrarEscalateReason.REFERRALS, callbackResponse.getData().getRegistrarEscalateReason());
     }
 
     @Test
@@ -2713,7 +2712,8 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.superUserMakeCaseDormant(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest
+                .superUserMakeCaseDormant(callbackRequestMock, CASEWORKER_USERINFO);
         assertNotNull(callbackResponse.getData().getMoveToDormantDateTime());
     }
 
@@ -2853,7 +2853,7 @@ class CallbackResponseTransformerTest {
     void shouldTransformCaseForLetter() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
     }
@@ -2865,7 +2865,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse =
-            underTest.transformCaseForLetter(callbackRequestMock, Arrays.asList(letter), null);
+            underTest.transformCaseForLetter(callbackRequestMock, Arrays.asList(letter), null, CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
         assertEquals(EMPTY_LIST, callbackResponse.getData().getParagraphDetails());
@@ -2895,7 +2895,7 @@ class CallbackResponseTransformerTest {
             .build();
 
         CallbackResponse callbackResponse =
-            underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
+            underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null, CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -2912,7 +2912,7 @@ class CallbackResponseTransformerTest {
                 callbackRequestMock.getCaseDetails().getData().getProbateSotDocumentsGenerated().get(0).getValue());
             return null;
         }).when(documentTransformer).addDocument(callbackRequestMock, SOT_DOC, false);
-        underTest.addSOTDocument(callbackRequestMock, SOT_DOC);
+        underTest.addSOTDocument(callbackRequestMock, SOT_DOC, CASEWORKER_USERINFO);
     }
 
     @Test
@@ -2935,7 +2935,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals("PAFN", callbackResponse.getData().getPrimaryApplicantForenames());
         assertEquals("reprintDocument", callbackResponse.getData().getReprintDocument().getValue().getCode());
         assertEquals("1", callbackResponse.getData().getReprintNumberOfCopies());
@@ -2963,7 +2963,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals("Solicitor Forename", callbackResponse.getData().getSolsForenames());
         assertEquals("Solicitor Surname", callbackResponse.getData().getSolsSurname());
@@ -3024,7 +3024,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals("Yes", callbackResponse.getData().getDispenseWithNotice());
         assertEquals("TCTTrustCorpResWithApp", callbackResponse.getData().getTitleAndClearingType());
@@ -3185,7 +3185,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
@@ -3199,7 +3200,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
@@ -3213,7 +3215,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
@@ -3227,7 +3230,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
@@ -3241,7 +3245,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
@@ -3255,7 +3260,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
@@ -3269,7 +3275,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(),
@@ -3288,7 +3295,8 @@ class CallbackResponseTransformerTest {
             return true;
         }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(),
@@ -3308,7 +3316,8 @@ class CallbackResponseTransformerTest {
         }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
 
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(),
@@ -3329,7 +3338,8 @@ class CallbackResponseTransformerTest {
         }).when(documentTransformer).hasDocumentWithType(any(List.class), any(DocumentType.class));
 
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(),
@@ -3347,7 +3357,8 @@ class CallbackResponseTransformerTest {
             return true;
         }).when(documentTransformer).hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE);
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0",
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
         assertNull(callbackResponse.getData().getBulkPrintPdfSize());
@@ -3363,7 +3374,8 @@ class CallbackResponseTransformerTest {
             return true;
         }).when(documentTransformer).hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE);
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0",
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
         assertNull(callbackResponse.getData().getBulkPrintPdfSize());
@@ -3379,7 +3391,8 @@ class CallbackResponseTransformerTest {
             return true;
         }).when(documentTransformer).hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE);
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0");
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, null, "0",
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().size(), is(0));
         assertNull(callbackResponse.getData().getBulkPrintPdfSize());
@@ -3393,7 +3406,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(),
@@ -3409,7 +3423,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(),
@@ -3425,7 +3440,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(),
@@ -3441,7 +3457,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(),
@@ -3457,7 +3474,8 @@ class CallbackResponseTransformerTest {
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse =
-            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+            underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                    CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(),
@@ -3877,7 +3895,8 @@ class CallbackResponseTransformerTest {
             .build();
         documents.add(0, document);
         String letterId = "123-456";
-        CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId);
+        CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId,
+                CASEWORKER_USERINFO);
 
         assertCommon(callbackResponse);
 
@@ -4042,7 +4061,8 @@ class CallbackResponseTransformerTest {
 
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        underTest.transformWithConditionalStateChange(callbackRequest, Optional.of("Examining"));
+        underTest.transformWithConditionalStateChange(callbackRequest, Optional.of("Examining"),
+                CASEWORKER_USERINFO);
         verify(taskListUpdateService, times(1)).generateTaskList(any(), any());
 
     }
@@ -4055,7 +4075,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(VALID_ORIGINAL_WILL_SIGNED_DATE, callbackResponse.getData().getOriginalWillSignedDate());
         assertEquals(VALID_CODICIL_DATE, callbackResponse.getData().getCodicilAddedDateList()
@@ -4074,7 +4094,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertEquals(NO, callbackResponse.getData().getWillAccessOriginal());
         assertEquals(NO_ACCESS_WILL_REASON, callbackResponse.getData().getNoOriginalWillAccessReason());
@@ -4092,7 +4112,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
         assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
 
@@ -4164,7 +4184,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertNull(callbackResponse.getData().getCodicilAddedDateList());
     }
@@ -4178,7 +4198,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertNull(callbackResponse.getData().getCodicilAddedDateList());
     }
@@ -4220,7 +4240,8 @@ class CallbackResponseTransformerTest {
             .documentFileName(SENT_EMAIL.getTemplateName())
             .build();
 
-        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(callbackRequestMock, sentEmail);
+        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(callbackRequestMock, sentEmail,
+                CASEWORKER_USERINFO);
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
@@ -4238,7 +4259,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(callbackRequestMock, null);
+        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(callbackRequestMock,
+            null, CASEWORKER_USERINFO);
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
         assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
@@ -4312,14 +4334,14 @@ class CallbackResponseTransformerTest {
                 .applicationType(PERSONAL)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
-        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals("Yes", callbackResponse.getData().getBoEmailDocsReceivedNotification());
 
         caseData = caseDataBuilder
                 .primaryApplicantEmailAddress(null)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
-        callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        callbackResponse = underTest.updateTaskList(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
     }
 
@@ -4328,14 +4350,14 @@ class CallbackResponseTransformerTest {
         CaseData caseData = caseDataBuilder
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
-        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals("Yes", callbackResponse.getData().getBoEmailDocsReceivedNotification());
 
         caseData = caseDataBuilder
                 .solsSolicitorEmail(null)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
-        callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        callbackResponse = underTest.updateTaskList(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
     }
 
@@ -4350,7 +4372,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4365,7 +4387,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(null, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4379,7 +4401,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4393,7 +4415,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4408,7 +4430,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
@@ -4435,7 +4457,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals("John Doe",
@@ -4460,7 +4482,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals("John Doe",
@@ -4483,7 +4505,7 @@ class CallbackResponseTransformerTest {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
         CallbackResponse response = underTest.setupOriginalDocumentsForRemoval(callbackRequestMock);
 
         assertEquals(1, response.getData().getSolsDeceasedAliasNamesList().size());
@@ -4508,7 +4530,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -4537,7 +4559,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId);
+        CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId,
+                CASEWORKER_USERINFO);
         assertCommon(callbackResponse);
 
         assertEquals("123-456", callbackResponse
@@ -4562,7 +4585,8 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId);
+        CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId,
+                CASEWORKER_USERINFO);
         assertCommon(callbackResponse);
         assertEquals(callbackResponse.getData().getApplicationSubmittedDate(), "2024-07-10");
     }
@@ -4590,7 +4614,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(reason, callbackResponse.getData().getBoHandoffReasonList());
     }
 
@@ -4603,7 +4627,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
@@ -4614,7 +4638,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
@@ -4625,7 +4649,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
     }
 
@@ -4637,7 +4661,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
     }
 
@@ -4647,7 +4671,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse =
-                underTest.addMatches(callbackRequestMock, caseMatches);
+                underTest.addMatches(callbackRequestMock, caseMatches, CASEWORKER_USERINFO);
 
         assertEquals("No matches found", callbackResponse.getData().getMatches());
     }
@@ -4666,7 +4690,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse =
-                underTest.addMatches(callbackRequestMock, caseMatches);
+                underTest.addMatches(callbackRequestMock, caseMatches, CASEWORKER_USERINFO);
 
         assertEquals("Possible case matches", callbackResponse.getData().getMatches());
     }
@@ -4826,7 +4850,7 @@ class CallbackResponseTransformerTest {
         try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
             respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
 
-            underTest.getResponseCaseData(caseDetailsMock, eventId, transform);
+            underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
         }
 
         verify(builderSpy).deceasedAnyOtherNameOnWill(NO);
@@ -4866,7 +4890,7 @@ class CallbackResponseTransformerTest {
         try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
             respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
 
-            underTest.getResponseCaseData(caseDetailsMock, eventId, transform);
+            underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
         }
 
         verify(builderSpy).deceasedAnyOtherNameOnWill(YES);
@@ -4908,7 +4932,7 @@ class CallbackResponseTransformerTest {
         try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
             respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
 
-            underTest.getResponseCaseData(caseDetailsMock, eventId, transform);
+            underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
         }
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());

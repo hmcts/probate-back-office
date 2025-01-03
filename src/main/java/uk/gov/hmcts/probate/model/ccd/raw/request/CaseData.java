@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -529,6 +530,7 @@ public class CaseData extends CaseDataParent {
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
     private LocalDate escalatedDate;
+    private RegistrarEscalateReason registrarEscalateReason;
     private LocalDate caseWorkerEscalationDate;
     private LocalDate resolveCaseWorkerEscalationDate;
     private String resolveCaseWorkerEscalationState;
@@ -599,6 +601,8 @@ public class CaseData extends CaseDataParent {
     private String deceasedAliasLastNameOnWill;
     @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetNegative}")
     private final BigDecimal ihtFormNetValue;
+    private final String lastModifiedCaseworkerForenames;
+    private final String lastModifiedCaseworkerSurname;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();

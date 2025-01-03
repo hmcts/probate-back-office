@@ -19,15 +19,14 @@ import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
 @Service
 public class ExelaCriteriaService {
 
-    private ArrayList<ReturnedCaseDetails> filteredCases;
     private static final LocalDateTime EARLIEST_DATE = LocalDateTime.parse("2019-03-31T23:59:59");
 
     public List<ReturnedCaseDetails> getFilteredCases(List<ReturnedCaseDetails> cases) {
         log.info("filtering {} cases", cases.size());
-        filteredCases = new ArrayList<>();
+        List<ReturnedCaseDetails> filteredCases = new ArrayList<>();
         for (ReturnedCaseDetails caseItem : cases) {
             if (caseItem.getData().getScannedDocuments() != null) {
-                scannedDocumentsFilter(caseItem);
+                scannedDocumentsFilter(caseItem, filteredCases);
             }
         }
         filteredCases.sort(Comparator.comparing(o -> o.getData().getDeceasedSurname().toLowerCase()));
@@ -36,7 +35,9 @@ public class ExelaCriteriaService {
         return filteredCases;
     }
 
-    private void scannedDocumentsFilter(ReturnedCaseDetails caseItem) {
+    private void scannedDocumentsFilter(
+            final ReturnedCaseDetails caseItem,
+            final List<ReturnedCaseDetails> filteredCases) {
         for (CollectionMember<ScannedDocument> document : caseItem.getData().getScannedDocuments()) {
             if (((DOC_TYPE_OTHER.equalsIgnoreCase(document.getValue().getType())
                         && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype()))
