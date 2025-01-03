@@ -49,6 +49,7 @@ import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
+import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -151,6 +152,8 @@ class NotificationServiceIT {
 
     @MockBean
     private SendEmailResponse sendEmailResponse;
+    @MockBean
+    private TemplatePreview templatePreviewResponse;
 
     @MockBean
     private PDFManagementService pdfManagementService;
@@ -242,6 +245,9 @@ class NotificationServiceIT {
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(anyString(), anyString(), any(), isNull());
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any());
+
+        when(templatePreviewResponse.getBody()).thenReturn("test-body");
+        doReturn(templatePreviewResponse).when(notificationClient).generateTemplatePreview(any(), any());
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(ScannedDocument
             .builder().subtype("will").controlNumber("123456").build());
@@ -1543,17 +1549,8 @@ class NotificationServiceIT {
             .convert(personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeath()));
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
-        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
-            .name(personalCaseDataCtscRequestInformation.getData().getPrimaryApplicantFullName())
-            .address(SolsAddress.builder()
-                .addressLine1("Addressline1")
-                .postCode("postcode")
-                .postTown("posttown")
-                .build())
-            .email("primary@probate-test.com")
-            .notification("Yes").build();
-        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, personalCaseDataCtscRequestInformation,
-            executorsApplyingNotification);
+
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, personalCaseDataCtscRequestInformation);
         verify(notificationClient).sendEmail(
             eq("pa-request-information"),
             eq("primary@probate-test.com"),
@@ -1599,17 +1596,7 @@ class NotificationServiceIT {
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
 
-        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
-            .name(solsCaseDataCtscRequestInformation.getData().getSolsSOTName())
-            .address(SolsAddress.builder()
-                .addressLine1("Addressline1")
-                .postCode("postcode")
-                .postTown("posttown")
-                .build())
-            .email("solicitor@probate-test.com")
-            .notification("Yes").build();
-        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, solsCaseDataCtscRequestInformation,
-            executorsApplyingNotification);
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, solsCaseDataCtscRequestInformation);
 
         verify(notificationClient).sendEmail(
             eq("sols-request-information"),
@@ -1662,53 +1649,6 @@ class NotificationServiceIT {
 
         verify(notificationClient).sendEmail(
             eq("pa-redeclaration-sot"),
-            eq("primary@probate-test.com"),
-            any(),
-            eq(null));
-
-    }
-
-    @Test
-    void shouldSendEmailWithDocumentAttachedCaseStoppedRequestInfo()
-        throws IOException, NotificationClientException {
-        Map<String, Object> personalisation = new HashMap<>();
-        CollectionMember<Document> doc = new CollectionMember<>(Document.builder().build());
-
-        personalCaseDataCtsc.getData().getProbateSotDocumentsGenerated().add(doc);
-        Map<String, String> sotValue = new HashMap<>();
-        sotValue.put("file", "Fw==");
-
-        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, personalCaseDataCtsc.getData().getBoCaseStopCaveatId());
-        personalisation.put(PERSONALISATION_ADDRESSEE, personalCaseDataCtsc.getData().getPrimaryApplicantForenames());
-        personalisation.put(PERSONALISATION_SOT_LINK, new JSONObject(sotValue));
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, personalCaseDataCtsc.getData().getBoStopDetails());
-        personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtsc.getId().toString());
-        personalisation
-            .put(PERSONALISATION_DECEASED_DOD, personalCaseDataCtsc.getData().getDeceasedDateOfDeathFormatted());
-        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
-        personalisation.put(PERSONALISATION_SOLICITOR_NAME, personalCaseDataCtsc.getData().getSolsSolicitorFirmName());
-        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
-            personalCaseDataCtsc.getData().getBoStopDetailsDeclarationParagraph());
-        personalisation.put(PERSONALISATION_APPLICANT_NAME, "null null");
-        personalisation
-            .put(PERSONALISATION_SOLICITOR_REFERENCE, personalCaseDataCtsc.getData().getSolsSolicitorAppReference());
-        personalisation.put(PERSONALISATION_DECEASED_NAME, "null null");
-
-        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
-            .name(personalCaseDataCtsc.getData().getSolsSOTName())
-            .address(SolsAddress.builder()
-                .addressLine1("Addressline1")
-                .postCode("postcode")
-                .postTown("posttown")
-                .build())
-            .email("primary@probate-test.com")
-            .notification("Yes").build();
-        notificationService.sendEmailWithDocumentAttached(personalCaseDataCtsc,
-            executorsApplyingNotification, CASE_STOPPED_REQUEST_INFORMATION);
-
-        verify(notificationClient).sendEmail(
-            eq("pa-request-information"),
             eq("primary@probate-test.com"),
             any(),
             eq(null));
@@ -2089,6 +2029,31 @@ class NotificationServiceIT {
     }
 
     @Test
+    void verifysendsendSealedAndCertifiedEmail()
+            throws NotificationClientException, BadRequestException {
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
+                .build(), LAST_MODIFIED, ID);
+        notificationService.sendSealedAndCertifiedEmail(caseDetails);
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caseDetails.getData().getDeceasedFullName());
+
+        verify(notificationClient).sendEmail(
+                eq("sealed-and-certified"),
+                eq("SealedAndCertified@probate-test.com"),
+                eq(personalisation),
+                eq("1"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
     void verifySendNocEmail()
             throws NotificationClientException, BadRequestException {
 
@@ -2176,8 +2141,7 @@ class NotificationServiceIT {
                 .email("primary@probate-test.com")
                 .notification("Yes").build();
         NotificationClientException expectException =  assertThrows(NotificationClientException.class,
-                () -> notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION,
-                        markdownLinkCaseData, executorsApplyingNotification));
+                () -> notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, markdownLinkCaseData));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
     }
 
@@ -2206,5 +2170,27 @@ class NotificationServiceIT {
                 () -> notificationService.sendEmailWithDocumentAttached(markdownLinkCaseData,
                         executorsApplyingNotification, REDECLARATION_SOT));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
+    }
+
+    @Test
+    void verifyEmailPreview()
+            throws NotificationClientException {
+
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .registryLocation("Manchester")
+                .languagePreferenceWelsh("No")
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
+                .deceasedDateOfDeath(LocalDate.of(2022,12,12))
+                .boStopDetails("stopDetails")
+                .boStopDetailsDeclarationParagraph("No")
+                .build(), LAST_MODIFIED, ID);
+        notificationService.emailPreview(caseDetails);
+
+        verify(pdfManagementService).generateDocmosisDocumentAndUpload(any(), eq(SENT_EMAIL));
     }
 }
