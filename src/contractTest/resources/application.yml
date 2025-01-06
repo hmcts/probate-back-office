@@ -286,7 +286,7 @@ notifications:
           applicationReceivedPaperFormCaseworker: "22c81233-a213-4520-b6bc-896fe8f6988a"
           documentReceived: "83f93f41-58a1-44f2-a9c4-d20d545b7528"
           caseStopped: "a767a0bd-4acc-413e-b510-5a71d24daf85"
-          caseStoppedCaveat: "d5084257-f475-415a-b7d0-2427b5c580b1"
+          caseStoppedCaveat: "4aec6fa3-7e76-406a-9953-2f12d5d29f81"
           grantIssued: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           grantReissued: "9b0e4091-8c94-41bc-8e6c-de4bc211f68f"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
