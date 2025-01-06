@@ -78,6 +78,7 @@ module.exports = function () {
         caseProgressStopEscalateIssueStoppedTabCheck: steps.caseProgressStopEscalateIssue.stoppedTabCheck,
         caseProgressStopEscalateIssueAddCaseStoppedReason: steps.caseProgressStopEscalateIssue.addCaseStoppedReason,
         caseProgressStopEscalateIssueCaseStopAgainReason: steps.caseProgressStopEscalateIssue.addCaseStoppedAgainReason,
+        caseProgressSelectEscalateReason: steps.caseProgressStopEscalateIssue.selectEscalateReason,
         caseProgressStopEscalateIssueAddCaseResolveStop: steps.caseProgressStopEscalateIssue.addResolveStopDetails,
         caseProgressStopEscalateIssueEscalatedTabCheck: steps.caseProgressStopEscalateIssue.escalatedTabCheck,
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
