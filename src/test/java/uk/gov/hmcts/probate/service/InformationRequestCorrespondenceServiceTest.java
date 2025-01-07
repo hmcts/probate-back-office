@@ -46,8 +46,18 @@ class InformationRequestCorrespondenceServiceTest {
     @Test
     void testEmailInformationRequestSuccessful() throws NotificationClientException {
         when(notificationService.sendEmail(State.CASE_STOPPED_REQUEST_INFORMATION, caseDetails))
-            .thenReturn(GENERIC_DOCUMENT);
+                .thenReturn(GENERIC_DOCUMENT);
         assertEquals(GENERIC_DOCUMENT,
-            informationRequestCorrespondenceService.emailInformationRequest(caseDetails).get(0));
+                informationRequestCorrespondenceService.emailInformationRequest(caseDetails).get(0));
+    }
+
+    @Test
+    void testEmailInformationRequestSuccessfulTwice() throws NotificationClientException {
+        when(notificationService.sendEmail(State.CASE_STOPPED_REQUEST_INFORMATION, caseDetails))
+                .thenReturn(GENERIC_DOCUMENT);
+        assertEquals(GENERIC_DOCUMENT,
+                informationRequestCorrespondenceService.emailInformationRequest(caseDetails).get(0));
+        assertEquals(GENERIC_DOCUMENT,
+                informationRequestCorrespondenceService.emailInformationRequest(caseDetails).get(0));
     }
 }
