@@ -45,7 +45,6 @@ public class PA1ACitizenMandatoryFieldsValidator {
     private void addWarningsFormVersion1(Map<String, String> ocrFieldValues, List<String> warnings) {
         Stream.of(IntestacyCitizenMandatoryFields.values()).filter(IntestacyCitizenMandatoryFields::isVersion1)
             .forEach(field -> {
-                log.info("Checking {} against ocr fields", field.getKey());
                 if (!ocrFieldValues.containsKey(field.getKey())) {
                     log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, field.getKey());
                     warnings.add(String.format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));
@@ -77,7 +76,6 @@ public class PA1ACitizenMandatoryFieldsValidator {
     private void addWarningsFormVersion2(Map<String, String> ocrFieldValues, List<String> warnings) {
         Stream.of(IntestacyCitizenMandatoryFields.values()).filter(IntestacyCitizenMandatoryFields::isVersion2)
             .forEach(field -> {
-                log.info("Checking v2 {} against ocr fields", field.getKey());
                 if (!ocrFieldValues.containsKey(field.getKey())) {
                     log.warn("v2 " + MANDATORY_FIELD_NOT_FOUND_LOG, field.getKey());
                     warnings.add(format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));
@@ -90,7 +88,6 @@ public class PA1ACitizenMandatoryFieldsValidator {
     private void addWarningsFormVersion3(Map<String, String> ocrFieldValues, List<String> warnings) {
         Stream.of(IntestacyCitizenMandatoryFields.values()).filter(IntestacyCitizenMandatoryFields::isVersion3)
                 .forEach(field -> {
-                    log.info("Checking v3 {} against ocr fields", field.getKey());
                     if (!ocrFieldValues.containsKey(field.getKey())) {
                         log.warn("v3 " + MANDATORY_FIELD_NOT_FOUND_LOG, field.getKey());
                         warnings.add(format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));

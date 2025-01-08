@@ -14,12 +14,8 @@ public class OCRPopulatedValueMapper {
     public List<OCRField> ocrPopulatedValueMapper(List<OCRField> fields) {
         List<OCRField> populatedValues = new ArrayList<>();
         for (OCRField field : fields) {
-            log.info("Checking ocr field: {} for null or empty", field.getName());
-            if (field.getValue() != null) {
-                if (!field.getValue().isEmpty()) {
-                    populatedValues.add(field);
-                    log.info("{} passed empty check validation", field.getName());
-                }
+            if (field.getValue() != null && !field.getValue().isEmpty()) {
+                populatedValues.add(field);
             }
         }
         return populatedValues;
