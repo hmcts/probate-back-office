@@ -286,9 +286,9 @@ notifications:
           applicationReceivedPaperFormCaseworker: "22c81233-a213-4520-b6bc-896fe8f6988a"
           documentReceived: "83f93f41-58a1-44f2-a9c4-d20d545b7528"
           caseStopped: "a767a0bd-4acc-413e-b510-5a71d24daf85"
-          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
-          grantIssued: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
-          grantReissued: "9b0e4091-8c94-41bc-8e6c-de4bc211f68f"
+          caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
+          grantIssued: "9863cfe5-240b-42ed-912b-188a5f7e1e76"
+          grantReissued: "1855a622-4979-45a9-baa9-fdac6530804c"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
@@ -298,12 +298,12 @@ notifications:
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
           requestInformation: "98233470-7aa6-4165-bf62-a663dc9f3c53"
-          redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
-          grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          redeclarationSot: "c34256d7-c8f5-451c-b7a6-1a9580622f1c"
+          grantIssuedIntestacy: "9863cfe5-240b-42ed-912b-188a5f7e1e76"
           caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
-          noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
+          noticeOfChangeReceived: "4f1f3c47-1d84-4584-b251-2a77d64510f2"
 
 documents:
   templates:
