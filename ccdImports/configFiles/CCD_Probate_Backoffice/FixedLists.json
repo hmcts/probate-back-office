@@ -459,5 +459,12 @@
   {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "WillCodicilNotated", "ListElement": "Will or codicil to be notated", "DisplayOrder":  "21"},
   {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "WitnessInterview", "ListElement": "Witness Interview", "DisplayOrder":  "22"},
   {"LiveFrom": "01/01/2017", "ID": "informationNeededFixedList", "ListElementCode": "Yes", "ListElement": "Yes, I need information or documents", "DisplayOrder":  "1"},
-  {"LiveFrom": "01/01/2017", "ID": "informationNeededFixedList", "ListElementCode": "No", "ListElement": "No, I need to inform of a caveat stop", "DisplayOrder":  "2"}
+  {"LiveFrom": "01/01/2017", "ID": "informationNeededFixedList", "ListElementCode": "No", "ListElement": "No, I need to inform of a caveat stop", "DisplayOrder":  "2"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "CasePrinted", "ListElement": "Awaiting documentation"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseMatchingIssueGrant", "ListElement": "Case Matching (Issue grant)"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOReadyToIssue", "ListElement": "Ready to issue"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseQA", "ListElement": "Case selected for QA"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseStopped", "ListElement": "Case Stopped"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BORegistrarEscalation", "ListElement": "Registrar Escalation"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseWorkerEscalation", "ListElement": "SME Referral"}
 ]

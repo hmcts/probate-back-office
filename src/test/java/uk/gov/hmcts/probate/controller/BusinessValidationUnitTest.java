@@ -74,6 +74,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -995,6 +996,17 @@ class BusinessValidationUnitTest {
                 underTest.changeCaseState(callbackRequestMock, httpServletRequest);
         verify(callbackResponseTransformerMock, times(1))
                 .transferToState(callbackRequestMock, CASEWORKER_USERINFO);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    void shouldResolveCaveatState() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.resolveCaveatStopState(callbackRequestMock,httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .transferCaveatStopState(eq(callbackRequestMock), any());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

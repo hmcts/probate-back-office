@@ -617,6 +617,15 @@ public class CallbackResponseTransformer {
                 .getData().getTransferToState()), caseworkerInfo);
     }
 
+    public CallbackResponse transferCaveatStopState(
+            final CallbackRequest callbackRequest,
+            final Optional<UserInfo> caseworkerInfo) {
+        return transformWithConditionalStateChange(
+                callbackRequest,
+                Optional.of(callbackRequest.getCaseDetails().getData().getResolveCaveatStopState()),
+                caseworkerInfo);
+    }
+
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
