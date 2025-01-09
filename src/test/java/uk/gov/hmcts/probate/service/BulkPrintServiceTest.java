@@ -485,6 +485,11 @@ class BulkPrintServiceTest {
     }
 
     @Test
+    void testSuccessfulSendToBulkPrintAdColligendaBonaGrant() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.AD_COLLIGENDA_BONA_GRANT);
+    }
+
+    @Test
     void testSuccessfulSendToBulkPrintGrantReissue() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.DIGITAL_GRANT_REISSUE);
     }
@@ -500,6 +505,11 @@ class BulkPrintServiceTest {
     }
 
     @Test
+    void testSuccessfulSendToBulkPrintAdColligendaBonaGrantReissue() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE);
+    }
+
+    @Test
     void testSuccessfulSendToBulkPrintGrantReissueWelsh() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_DIGITAL_GRANT_REISSUE);
     }
@@ -512,6 +522,11 @@ class BulkPrintServiceTest {
     @Test
     void testSuccessfulSendToBulkPrintAdmonWillGrantReissueWelsh() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE);
+    }
+
+    @Test
+    void testSuccessfulSendToBulkPrintAdColligendaBonaGrantReissueWelsh() {
+        testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE);
     }
 
     @Test
