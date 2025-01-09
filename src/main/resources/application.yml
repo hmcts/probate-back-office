@@ -276,6 +276,7 @@ notifications:
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
         solicitor:
           applicationReceived: "27939b7f-3028-4c90-87bb-694adb0b6a51"
           applicationReceivedNoDocs: "b374863f-3f65-4aed-a5ab-fb2648222f75"
@@ -300,6 +301,7 @@ notifications:
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
           noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
+          sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
       welsh:
         personal:
           applicationReceived: "7f39b671-86ce-49cb-b6b1-2019101aa8b1"
@@ -532,6 +534,8 @@ data-extract:
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFordData@probate-test.com}
 
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
+
+sealedAndCertifiedEmail: ${SEALED_AND_CERTIFIED_EMAIL:sealedAndCertified@probate-test.com}
 
 welsh:
   months:

@@ -79,7 +79,7 @@ class MarkdownDecoratorServiceTest {
         when(sendDocumentsRenderer.getPA14NotApplyingExecutorText("name1")).thenReturn("formattedLink1");
         when(sendDocumentsRenderer.getPA14NotApplyingExecutorText("name2")).thenReturn("formattedLink2");
 
-        String md = markdownDecoratorService.getPA14FormLabel(caseDataMock);
+        String md = markdownDecoratorService.getPA14FormLabel(caseDataMock,false);
         assertEquals("\n*   formattedLink1\n*   formattedLink2", md);
     }
 
@@ -87,7 +87,7 @@ class MarkdownDecoratorServiceTest {
     void shouldNotGetPA14FormLabel() {
         when(pa14FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
-        String md = markdownDecoratorService.getPA14FormLabel(caseDataMock);
+        String md = markdownDecoratorService.getPA14FormLabel(caseDataMock,false);
         assertEquals("", md);
     }
 
@@ -102,7 +102,7 @@ class MarkdownDecoratorServiceTest {
         when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("name1")).thenReturn("formattedLink1");
         when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("name2")).thenReturn("formattedLink2");
 
-        String md = markdownDecoratorService.getPA15FormLabel(caseDataMock);
+        String md = markdownDecoratorService.getPA15FormLabel(caseDataMock, false);
         assertEquals("\n*   formattedLink1\n*   formattedLink2", md);
     }
 
@@ -110,7 +110,7 @@ class MarkdownDecoratorServiceTest {
     void shouldNotGetPA15FormLabel() {
         when(pa15FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
-        String md = markdownDecoratorService.getPA15FormLabel(caseDataMock);
+        String md = markdownDecoratorService.getPA15FormLabel(caseDataMock, false);
         assertEquals("", md);
     }
 
@@ -119,7 +119,7 @@ class MarkdownDecoratorServiceTest {
         when(pa16FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         when(sendDocumentsRenderer.getPA16FormText()).thenReturn("formattedLink");
 
-        String md = markdownDecoratorService.getPA16FormLabel(caseDataMock);
+        String md = markdownDecoratorService.getPA16FormLabel(caseDataMock, false);
         assertEquals("\n*   formattedLink", md);
     }
 
@@ -127,7 +127,7 @@ class MarkdownDecoratorServiceTest {
     void shouldNotGetPA16FormLabel() {
         when(pa16FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
-        String md = markdownDecoratorService.getPA16FormLabel(caseDataMock);
+        String md = markdownDecoratorService.getPA16FormLabel(caseDataMock, false);
         assertEquals("", md);
     }
 
@@ -137,7 +137,7 @@ class MarkdownDecoratorServiceTest {
         when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         when(sendDocumentsRenderer.getPA17FormText()).thenReturn("formattedLink");
 
-        String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
+        String md = markdownDecoratorService.getPA17FormLabel(caseDataMock, false);
         assertEquals("\n*   formattedLink", md);
     }
 
@@ -145,7 +145,7 @@ class MarkdownDecoratorServiceTest {
     void shouldNotGetPA17FormLabel() {
         when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
-        String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
+        String md = markdownDecoratorService.getPA17FormLabel(caseDataMock, false);
         assertEquals("", md);
     }
 
@@ -153,7 +153,7 @@ class MarkdownDecoratorServiceTest {
     void shouldGetAuthenticatedTranslationFormLabel() {
         when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
 
-        String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
+        String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock, false);
         assertEquals("\n*   an authenticated translation of the will in English or Welsh",
             md);
     }
@@ -162,7 +162,7 @@ class MarkdownDecoratorServiceTest {
     void shouldNotGetAuthenticatedTranslationFormLabel() {
         when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
-        String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
+        String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock, false);
         assertEquals("", md);
     }
 
@@ -176,7 +176,7 @@ class MarkdownDecoratorServiceTest {
         String expectedText = BULLET + supportDocsText + supportDocsEntry;
         when(caseDataMock.getDispenseWithNotice()).thenReturn(YES);
         when(caseDataMock.getDispenseWithNoticeSupportingDocs()).thenReturn("document1 document2");
-        String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
+        String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock, false);
         assertEquals(expectedText, md);
     }
 
@@ -184,7 +184,7 @@ class MarkdownDecoratorServiceTest {
     void shouldNotGetDispenseWithNoticeSupportDocsLabel() {
         when(dispenseNoticeSupportDocsRule.isApplicable(caseDataMock)).thenReturn(false);
 
-        String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
+        String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock, false);
         assertEquals("", md);
     }
 

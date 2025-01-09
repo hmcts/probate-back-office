@@ -1325,6 +1325,7 @@ public class CallbackResponseTransformer {
             .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
             .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())
             .taskList(caseData.getTaskList())
+            .registrarEscalateReason(caseData.getRegistrarEscalateReason())
             .escalatedDate(ofNullable(caseData.getEscalatedDate())
                 .map(dateTimeFormatter::format).orElse(null))
             .caseWorkerEscalationDate(ofNullable(caseData.getCaseWorkerEscalationDate())
