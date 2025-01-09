@@ -199,7 +199,8 @@ public class NotificationController {
     }
 
     @PostMapping(path = "/stopped-information-request")
-    public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> informationRequest(
+            @RequestBody final CallbackRequest callbackRequest) throws NotificationClientException {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo));
     }
