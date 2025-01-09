@@ -18,7 +18,7 @@ public class InformationRequestCorrespondenceService {
 
     private final NotificationService notificationService;
 
-    public List<Document> emailInformationRequest(CaseDetails caseDetails) {
+    public List<Document> emailInformationRequest(CaseDetails caseDetails) throws NotificationClientException {
         try {
             final Document notification = notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails);
             log.info("Successful response for request for information email for case id {} ", caseDetails.getId());
