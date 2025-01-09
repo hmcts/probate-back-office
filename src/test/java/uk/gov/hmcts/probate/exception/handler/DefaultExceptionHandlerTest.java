@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.exception.SocketException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
@@ -21,6 +22,7 @@ import uk.gov.service.notify.NotificationClientException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -177,5 +179,20 @@ class DefaultExceptionHandlerTest {
         assertEquals(OK, response.getStatusCode());
         assertEquals(1, response.getBody().getErrors().size());
         assertEquals("Message", response.getBody().getErrors().get(0));
+    }
+
+    @Test
+    void shouldReturnMarkdownError() {
+        RequestInformationParameterException ex = mock(RequestInformationParameterException.class);
+        when(ex.getMessage()).thenReturn("");
+        when(ex.getUserMessage()).thenReturn(EXCEPTION_MESSAGE);
+
+        ResponseEntity<CallbackResponse> response = underTest.handle(ex);
+
+        assertEquals(OK, response.getStatusCode(),
+                "Expected HTTP OK from RequestInformationParameterException handler");
+        assertEquals(1, response.getBody().getErrors().size(), "Expected one error");
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getErrors().get(0),
+                "Expected error to be extracted from exception");
     }
 }

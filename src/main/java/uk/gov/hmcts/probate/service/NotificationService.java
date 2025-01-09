@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
+import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.Constants;
@@ -71,8 +72,6 @@ public class NotificationService {
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final String INVALID_PERSONALISATION_ERROR_MESSAGE =
-            "Markdown Link detected in case data, stop sending notification email.";
 
     private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
@@ -555,7 +554,7 @@ public class NotificationService {
 
     CommonNotificationResult doCommonNotificationServiceHandling(
             final Map<String, ?> personalisation,
-            final Long caseId) throws NotificationClientException {
+            final Long caseId) throws RequestInformationParameterException {
         final PersonalisationValidationRule.PersonalisationValidationResult validationResult =
                 personalisationValidationRule.validatePersonalisation(personalisation);
         final Map<String, String> invalidFields = validationResult.invalidFields();
@@ -564,7 +563,7 @@ public class NotificationService {
         if (!invalidFields.isEmpty()) {
             log.error("Personalisation validation failed for case: {} fields: {}",
                     caseId, invalidFields);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
+            throw new RequestInformationParameterException();
         } else if (!htmlFields.isEmpty()) {
             log.info("Personalisation validation found HTML for case: {} fields: {}",
                     caseId, validationResult.htmlFields());
