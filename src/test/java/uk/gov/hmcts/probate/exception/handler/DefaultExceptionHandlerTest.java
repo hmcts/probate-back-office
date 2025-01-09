@@ -18,7 +18,6 @@ import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.service.notify.NotificationClientException;
 
 import java.util.Arrays;
 
@@ -43,9 +42,6 @@ class DefaultExceptionHandlerTest {
 
     @Mock
     private BadRequestException badRequestException;
-
-    @Mock
-    private NotificationClientException notificationClientException;
 
     @Mock
     private BusinessValidationException businessValidationException;
@@ -112,17 +108,6 @@ class DefaultExceptionHandlerTest {
 
         assertEquals(bve1Mock, response.getBody().getFieldErrors().get(0));
         assertEquals(bve2Mock, response.getBody().getFieldErrors().get(1));
-    }
-
-    @Test
-    void shouldReturnNotificationClientException() {
-        when(notificationClientException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
-
-        ResponseEntity<ErrorResponse> response = underTest.handle(notificationClientException);
-
-        assertEquals(SERVICE_UNAVAILABLE, response.getStatusCode());
-        assertEquals(DefaultExceptionHandler.CLIENT_ERROR, response.getBody().getError());
-        assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
     }
 
     @Test
