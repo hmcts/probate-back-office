@@ -41,7 +41,6 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String CONNECTION_ERROR = "Connection error";
     public static final String UNAUTHORISED_DATA_EXTRACT_ERROR = "Unauthorised access to Data-Extract error";
 
-
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handle(BadRequestException exception) {
 
@@ -90,16 +89,6 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
-    }
-
-    @ExceptionHandler(value = NotificationClientException.class)
-    public ResponseEntity<ErrorResponse> handle(NotificationClientException exception) {
-        log.warn("Notification service exception", exception);
-        ErrorResponse errorResponse =
-            new ErrorResponse(SERVICE_UNAVAILABLE.value(), CLIENT_ERROR, exception.getMessage());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
     }
 
