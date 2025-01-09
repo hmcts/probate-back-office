@@ -39,6 +39,7 @@ import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
+import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
@@ -190,6 +191,8 @@ class BusinessValidationUnitTest {
     @Mock
     private BusinessValidationMessageService businessValidationMessageServiceMock;
     @Mock
+    private AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
+    @Mock
     private UserInfoService userInfoServiceMock;
 
     @Mock
@@ -231,6 +234,7 @@ class BusinessValidationUnitTest {
             handOffLegacyTransformer,
             registrarDirectionServiceMock,
             pre1900DOBValidationRuleMock,
+            adColligendaBonaCaseTypeValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock);
 
@@ -916,6 +920,7 @@ class BusinessValidationUnitTest {
                 bindingResultMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(adColligendaBonaCaseTypeValidationRule, times(1)).validate(caseDetailsMock);
         verify(caseDataTransformerMock).transformCaseDataForEvidenceHandledForManualCreateByCW(callbackRequestMock);
     }
 
