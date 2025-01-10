@@ -1399,8 +1399,8 @@ public class CallbackResponseTransformer {
             .expectedResponseDate(caseData.getExpectedResponseDate())
             .citizenResponses(caseData.getCitizenResponses())
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
-            .isSaveAndClose(caseData.getIsSaveAndClose()
-            .executorsNamed(caseData.getExecutorsNamed()));
+            .executorsNamed(caseData.getExecutorsNamed())
+            .isSaveAndClose(caseData.getIsSaveAndClose());
 
         if (featureToggleService.enableNewAliasTransformation()) {
             handleDeceasedAliases(
