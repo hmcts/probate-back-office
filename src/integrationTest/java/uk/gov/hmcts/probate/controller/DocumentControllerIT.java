@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -114,9 +113,6 @@ class DocumentControllerIT {
 
     @MockBean
     private EvidenceUploadService evidenceUploadService;
-
-    @MockBean
-    private AppInsights appInsights;
 
     @MockBean
     private IdamApi idamApi;

@@ -45,7 +45,6 @@ public class PA1PCitizenMandatoryFieldsValidator {
     private void addWarningsFormVersion1(Map<String, String> ocrFieldValues, List<String> warnings) {
         Stream.of(GORCitizenMandatoryFields.values()).filter(GORCitizenMandatoryFields::isVersion1)
             .forEach(field -> {
-                log.info("Checking {} against ocr fields", field.getKey());
                 if (!ocrFieldValues.containsKey(field.getKey())) {
                     log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, field.getKey());
                     warnings.add(format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));
@@ -77,7 +76,6 @@ public class PA1PCitizenMandatoryFieldsValidator {
     private void addWarningsFormVersion2(Map<String, String> ocrFieldValues, List<String> warnings) {
         Stream.of(GORCitizenMandatoryFields.values()).filter(GORCitizenMandatoryFields::isVersion2)
             .forEach(field -> {
-                log.info("Checking v2 {} against ocr fields", field.getKey());
                 if (!ocrFieldValues.containsKey(field.getKey())) {
                     log.warn("v2 " + MANDATORY_FIELD_NOT_FOUND_LOG, field.getKey());
                     warnings.add(format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));

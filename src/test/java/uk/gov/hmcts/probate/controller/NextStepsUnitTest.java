@@ -7,12 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Fee;
@@ -100,9 +98,6 @@ class NextStepsUnitTest {
     private ServiceRequestTransformer serviceRequestTransformer;
 
     private static final String USER_ID = "User-ID";
-
-    @MockBean
-    private AppInsights appInsights;
 
     @BeforeEach
     public void setUp() throws NotificationClientException {

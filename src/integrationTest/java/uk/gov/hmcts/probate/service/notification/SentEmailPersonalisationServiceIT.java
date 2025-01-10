@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -33,9 +32,6 @@ class SentEmailPersonalisationServiceIT {
 
     @MockBean
     private CaveatQueryService caveatQueryServiceMock;
-
-    @MockBean
-    private AppInsights appInsights;
 
     @MockBean
     private SendEmailResponse sendEmailResponse;
