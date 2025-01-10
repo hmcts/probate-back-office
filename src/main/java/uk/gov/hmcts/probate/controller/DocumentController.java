@@ -455,6 +455,20 @@ public class DocumentController {
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.transform(callbackRequest));
     }
 
+    @PostMapping(path = "/startAmendLegalStatement", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> startAmendLegalStatement(
+            @RequestBody final CallbackRequest callbackRequest) {
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final long caseId = caseDetails.getId();
+
+        log.info("Starting amend legal statement for case: {}", caseId);
+
+        redeclarationSoTValidationRule.validate(caseDetails);
+
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, Optional.empty());
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/validateAmendLegalStatement", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> validateAmendLegalStatement(
             @RequestBody final CallbackRequest callbackRequest) {
