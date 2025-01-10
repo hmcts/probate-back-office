@@ -328,4 +328,16 @@ class DocumentControllerUnitTest {
         verify(callbackResponseTransformer, times(1)).transformCitizenHubResponse(callbackRequest);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    void shouldCallValidateSotForStartAmendLegalStatement() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<CallbackResponse> response = documentController.startAmendLegalStatement(callbackRequest);
+
+        verify(redeclarationSoTValidationRule, times(1)).validate(caseDetailsMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }
