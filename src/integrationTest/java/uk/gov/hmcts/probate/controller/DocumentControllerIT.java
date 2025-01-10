@@ -37,23 +37,30 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.UUID;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -74,6 +81,13 @@ import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_REC
 class DocumentControllerIT {
 
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
     @Autowired
     private MockMvc mockMvc;
 
@@ -112,6 +126,9 @@ class DocumentControllerIT {
 
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
+
+    @MockBean
+    private UserInfoService userInfoService;
 
     @BeforeEach
     public void setUp() throws NotificationClientException {
@@ -152,6 +169,9 @@ class DocumentControllerIT {
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT)))
             .thenReturn(Document.builder().documentType(INTESTACY_GRANT).build());
 
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(AD_COLLIGENDA_BONA_GRANT)))
+                .thenReturn(Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT).build());
+
 
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT)))
             .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT_DRAFT).build());
@@ -170,6 +190,8 @@ class DocumentControllerIT {
             .thenReturn(Document.builder().documentType(WILL_LODGEMENT_DEPOSIT_RECEIPT).build());
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class))).thenReturn(document);
+
+        when(notificationService.sendSealedAndCertifiedEmail(any(CaseDetails.class))).thenReturn(document);
 
         when(documentGeneratorService.generateGrantReissue(any(), any(), any())).thenReturn(document);
         when(documentGeneratorService.generateCoversheet(any(CallbackRequest.class)))
@@ -196,6 +218,8 @@ class DocumentControllerIT {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
             .thenReturn(welshDocumentDraft);
+
+        doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
     @Test
@@ -208,6 +232,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -228,6 +253,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -248,6 +274,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsBulkPrint.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -265,6 +292,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("payloadWithBulkPrint.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant-reissue")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -272,6 +300,7 @@ class DocumentControllerIT {
                 is(DIGITAL_GRANT_REISSUE.getTemplateName())))
             .andReturn();
 
+        verify(notificationService).sendSealedAndCertifiedEmail(any(CaseDetails.class));
         verify(bulkPrintService)
             .optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
     }
@@ -282,6 +311,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("payloadWithBulkPrintWillLeftAnnexed.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant-reissue")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
                         .content(solicitorPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -304,6 +334,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("payloadWithLocalPrint.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -311,6 +342,7 @@ class DocumentControllerIT {
                 jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
             .andReturn();
         verify(notificationService).sendEmail(eq(State.GRANT_ISSUED), any(CaseDetails.class));
+        verify(notificationService).sendSealedAndCertifiedEmail(any(CaseDetails.class));
         verify(documentGeneratorService)
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
@@ -323,11 +355,13 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotificationsGrantIntestacy.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andReturn();
         verify(notificationService).sendEmail(eq(State.GRANT_ISSUED_INTESTACY), any(CaseDetails.class));
+        verify(notificationService).sendSealedAndCertifiedEmail(any(CaseDetails.class));
         verify(documentGeneratorService)
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
@@ -338,6 +372,7 @@ class DocumentControllerIT {
         String payload = testUtils.getStringFromFile("welshGrantOfProbatPayload.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -354,6 +389,7 @@ class DocumentControllerIT {
         String payload = testUtils.getStringFromFile("welshGrantOfProbatPayloadDraft.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -374,6 +410,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsIntestacy.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -394,6 +431,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsAdmonWill.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -406,6 +444,27 @@ class DocumentControllerIT {
     }
 
     @Test
+    void generateGrantDraftAdColligendaBona() throws Exception {
+        when(documentGeneratorService
+                .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT_DRAFT).build());
+
+        String solicitorPayload = testUtils
+                .getStringFromFile("solicitorPayloadNotificationsAdColligendaBona.json");
+
+        mockMvc.perform(post("/document/generate-grant-draft")
+                        .content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType",
+                        is(AD_COLLIGENDA_BONA_GRANT_DRAFT.getTemplateName())))
+                .andReturn();
+
+        verify(documentGeneratorService)
+                .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT));
+    }
+
+    @Test
     void generateGrantAdmonWill() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
@@ -414,6 +473,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsAdmonWill.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -434,6 +494,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsIntestacy.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -446,6 +507,27 @@ class DocumentControllerIT {
     }
 
     @Test
+    void generateGrantAdColligendaBona() throws Exception {
+        when(documentGeneratorService
+                .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT).build());
+
+        String solicitorPayload = testUtils
+                .getStringFromFile("solicitorPayloadNotificationsAdColligendaBona.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                        .content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType",
+                        is(AD_COLLIGENDA_BONA_GRANT.getTemplateName())))
+                .andReturn();
+
+        verify(documentGeneratorService)
+                .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
+    }
+
+    @Test
     void shouldNotGenerateGrantDraftEdgeCase() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
@@ -454,6 +536,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -470,6 +553,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCaseBulkPrint.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -484,6 +568,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
 
         mockMvc.perform(post("/document/generate-grant-reissue")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -498,6 +583,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCaseBulkPrint.json");
 
         mockMvc.perform(post("/document/generate-grant-reissue")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -514,6 +600,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsDefaultCase.json");
 
         mockMvc.perform(post("/document/generate-grant-draft")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -543,6 +630,7 @@ class DocumentControllerIT {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
 
         mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(personalPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -565,6 +653,7 @@ class DocumentControllerIT {
         String personalPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
         mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(personalPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -580,6 +669,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
         mockMvc.perform(post("/document/generate-grant-draft-reissue")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -593,6 +683,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
         mockMvc.perform(post("/document/generate-grant-reissue")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -606,6 +697,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsNoReissueEmail.json");
 
         mockMvc.perform(post("/document/generate-grant-reissue")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -619,6 +711,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationspdfSizeThree.json");
 
         mockMvc.perform(post("/document/generate-grant-reissue")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -631,6 +724,7 @@ class DocumentControllerIT {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post("/document/generate-sot")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(personalPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -643,7 +737,8 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
 
         mockMvc
-                .perform(post("/document/generate-sot").content(solicitorPayload)
+                .perform(post("/document/generate-sot").header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
@@ -657,7 +752,8 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
 
         mockMvc
-            .perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+            .perform(post("/document/generate-sot").header(AUTH_HEADER, AUTH_TOKEN)
+                    .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -666,7 +762,8 @@ class DocumentControllerIT {
     void shouldValidateAssembleLetter() throws Exception {
         String payload = testUtils.getStringFromFile("generateLetter.json");
 
-        mockMvc.perform(post("/document/assembleLetter").content(payload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/document/assembleLetter").header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -675,7 +772,8 @@ class DocumentControllerIT {
     void shouldValidatePreviewLetter() throws Exception {
         String payload = testUtils.getStringFromFile("generateLetter.json");
 
-        mockMvc.perform(post("/document/previewLetter").content(payload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/document/previewLetter").header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -684,7 +782,8 @@ class DocumentControllerIT {
     void shouldValidateGenerateLetter() throws Exception {
         String payload = testUtils.getStringFromFile("generateLetter.json");
 
-        mockMvc.perform(post("/document/generateLetter").content(payload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/document/generateLetter").header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -707,6 +806,7 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("welshGrantOfProbatPayloadReprintGrant.json");
 
         mockMvc.perform(post("/document/reprint")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -721,7 +821,8 @@ class DocumentControllerIT {
     void shouldHandleEvidenceToYesFromNull() throws Exception {
         String payload = testUtils.getStringFromFile("evidenceHandledYesFromNull.json");
 
-        mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/document/generate-grant").header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
     }
@@ -730,7 +831,8 @@ class DocumentControllerIT {
     void shouldHandleEvidenceToYes() throws Exception {
         String payload = testUtils.getStringFromFile("evidenceHandledYes.json");
 
-        mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/document/generate-grant").header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
     }
@@ -739,7 +841,8 @@ class DocumentControllerIT {
     void shouldHandleEvidenceToNo() throws Exception {
         String payload = testUtils.getStringFromFile("evidenceHandledNo.json");
 
-        mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/document/generate-grant").header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
     }
@@ -748,6 +851,7 @@ class DocumentControllerIT {
     void shouldUpdateLastEvidenceAddedDateCaseworker() throws Exception {
         String payload = testUtils.getStringFromFile("digitalCase.json");
         mockMvc.perform(post("/document/evidenceAdded")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
                         .content(payload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -780,6 +884,7 @@ class DocumentControllerIT {
     void shouldDeleteRemovedDocumentsGrant() throws Exception {
         String caveatPayload = testUtils.getStringFromFile("digitalCase.json");
         mockMvc.perform(post("/document/permanently-delete-removed")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
                         .content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

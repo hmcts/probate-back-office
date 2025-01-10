@@ -30,4 +30,5 @@ public class EmailTemplates {
     private String grantAwaitingDocumentation;
     private String hmrcExtract;
     private String noticeOfChangeReceived;
+    private String sealedAndCertified;
 }
