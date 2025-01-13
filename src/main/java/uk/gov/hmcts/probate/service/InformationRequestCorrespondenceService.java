@@ -25,15 +25,9 @@ public class InformationRequestCorrespondenceService {
             log.info("Successful response for request for information email for case id {} ", caseDetails.getId());
             final List<Document> rVal;
             if (previous != null) {
-                log.info("RACE: {} adding {} intentionally, adding {} 'accidentally'",
-                        caseDetails.getId(),
-                        notification.getDocumentLink().getDocumentUrl(),
-                        previous.getDocumentLink().getDocumentUrl());
                 rVal = List.of(notification, previous);
+                previous.setRaced(true);
             } else {
-                log.info("RACE: {} adding {} intentionally, not adding 'accidentally'",
-                        caseDetails.getId(),
-                        notification.getDocumentLink().getDocumentUrl());
                 rVal = List.of(notification);
             }
             previous = notification;
