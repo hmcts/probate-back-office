@@ -625,6 +625,7 @@ public class CaseData extends CaseDataParent {
     private final String expectedResponseDate;
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
+    private final String executorsNamed;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
