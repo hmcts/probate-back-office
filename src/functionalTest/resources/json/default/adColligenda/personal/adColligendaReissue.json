@@ -1,0 +1,336 @@
+{
+  "case_details": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "CaseCreated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "case_data": {
+      "caseType": "adColligendaBona",
+      "payments": [
+        {
+          "id": "5198bb7b-90df-44ec-ab87-4bc096ce10d1",
+          "value": {
+            "date": null,
+            "amount": "21800",
+            "method": "online",
+            "siteId": "P223",
+            "status": "Success",
+            "reference": "RC-1635-2572-9117-7258",
+            "transactionId": "ojk8h6klau8cu0bmv1pbqvjibk"
+          }
+        }
+      ],
+      "taskList": "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the Probate practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add Probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add deceased details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add application details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the Probate practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Submitted on 26 Oct 2021</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Send documents<br/><details class=\"govuk-details\" data-module=\"govuk-details\">\n  <summary class=\"govuk-details__summary\">\n    <span class=\"govuk-details__summary-text\">\n      View the documents needed by HM Courts and Tribunal Service\n    </span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab) or your reference number 1635257149285592 written on a sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li><li>the original will</li><li>the inheritance tax form IHT207</li></ul>\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">3. Review application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Authenticated on 26 Oct 2021</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We will authenticate your documents and match them with your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Examine application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">Your application will update through any of these case states as it is reviewed by our team:</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>Examining</li>\n<li>Case Matching</li>\n<li>Case selected for Quality Assurance</li>\n<li>Ready to issue</li>\n</ul><hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<h2 class=\"govuk-heading-l\">4. Grant of representation</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">This step is completed by HM Courts and Tribunals Service staff.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days after issuing.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n",
+      "ihtFormId": "IHT207",
+      "paperForm": "No",
+      "willExists": "No",
+      "bulkPrintId": [],
+      "caseMatches": [
+        {
+          "id": "fbb79d2e-311b-4baa-a0a7-9475361be1f1",
+          "value": {
+            "id": null,
+            "dob": "1900-01-01",
+            "dod": "2020-01-01",
+            "type": "Grant of Representation",
+            "valid": "Yes",
+            "aliases": null,
+            "comment": null,
+            "caseLink": {
+              "CaseReference": "1635240157292502"
+            },
+            "doImport": "No",
+            "fullName": "dec eased",
+            "postcode": "EC3A 2AD",
+            "recordId": null,
+            "ccdCaseId": null,
+            "legacyCaseViewUrl": null
+          }
+        },
+        {
+          "id": "8cb64aa7-67df-4230-b070-fc7eb83b2406",
+          "value": {
+            "id": null,
+            "dob": "1900-01-01",
+            "dod": "2020-01-01",
+            "type": "Grant of Representation",
+            "valid": "Yes",
+            "aliases": null,
+            "comment": null,
+            "caseLink": {
+              "CaseReference": "1635253833256239"
+            },
+            "doImport": "No",
+            "fullName": "Dec Eased",
+            "postcode": "EC3A 2AD",
+            "recordId": null,
+            "ccdCaseId": null,
+            "legacyCaseViewUrl": null
+          }
+        },
+        {
+          "id": "eacedaad-5354-4d57-8626-07a595d96af6",
+          "value": {
+            "id": null,
+            "dob": "1900-01-01",
+            "dod": "2020-01-01",
+            "type": "Grant of Representation",
+            "valid": "Yes",
+            "aliases": null,
+            "comment": null,
+            "caseLink": {
+              "CaseReference": "1635237697262540"
+            },
+            "doImport": "No",
+            "fullName": "dec eased",
+            "postcode": "dsad",
+            "recordId": null,
+            "ccdCaseId": null,
+            "legacyCaseViewUrl": null
+          }
+        },
+        {
+          "id": "56fbb06f-2372-4893-aeea-5147cf990791",
+          "value": {
+            "id": null,
+            "dob": "1900-01-01",
+            "dod": "2020-01-01",
+            "type": "Grant of Representation",
+            "valid": "Yes",
+            "aliases": null,
+            "comment": null,
+            "caseLink": {
+              "CaseReference": "1635238257021524"
+            },
+            "doImport": "No",
+            "fullName": "Dec Eased",
+            "postcode": "ddsfds",
+            "recordId": null,
+            "ccdCaseId": null,
+            "legacyCaseViewUrl": null
+          }
+        },
+        {
+          "id": "5b28fb6a-b11e-499b-affc-698f6cbb5c00",
+          "value": {
+            "id": null,
+            "dob": "1900-01-01",
+            "dod": "2020-01-01",
+            "type": "Grant of Representation",
+            "valid": "Yes",
+            "aliases": null,
+            "comment": null,
+            "caseLink": {
+              "CaseReference": "1635252243460860"
+            },
+            "doImport": "No",
+            "fullName": "Dec Eased",
+            "postcode": "EC3A 2AD",
+            "recordId": null,
+            "ccdCaseId": null,
+            "legacyCaseViewUrl": null
+          }
+        },
+        {
+          "id": "3c1c5f9a-d24c-453c-8c35-f0ad172d4874",
+          "value": {
+            "id": null,
+            "dob": "1900-01-01",
+            "dod": "2020-01-01",
+            "type": "Grant of Representation",
+            "valid": "Yes",
+            "aliases": null,
+            "comment": null,
+            "caseLink": {
+              "CaseReference": "1635252725942401"
+            },
+            "doImport": "No",
+            "fullName": "Dec Eased",
+            "postcode": "EC3A 2AD",
+            "recordId": null,
+            "ccdCaseId": null,
+            "legacyCaseViewUrl": null
+          }
+        }
+      ],
+      "casePrinted": "Yes",
+      "declaration": {
+        "accept": null,
+        "confirm": null,
+        "requests": null,
+        "understand": null,
+        "confirmItem1": null,
+        "confirmItem2": null,
+        "confirmItem3": null,
+        "requestsItem1": null,
+        "requestsItem2": null,
+        "understandItem1": null,
+        "understandItem2": null
+      },
+      "ihtNetValue": "800000",
+      "orderNeeded": "Yes",
+      "ihtGrossValue": "1000000",
+      "reissueReason": [
+        {
+          "id": "7223490e-122d-43d9-83da-713e1386c3c7",
+          "value": {
+            "reissueReason": "duplicate",
+            "reissueReasonDetails": "Reason for reissue"
+          }
+        }
+      ],
+      "legalStatement": {
+        "intro": null,
+        "deceased": null,
+        "applicant": null,
+        "executorsApplying": [],
+        "deceasedEstateLand": null,
+        "deceasedOtherNames": null,
+        "deceasedEstateValue": null,
+        "executorsNotApplying": []
+      },
+      "applicationType": "Personal",
+      "dateOfDeathType": "diedOn",
+      "deceasedAddress": {
+        "County": null,
+        "Country": "United Kingdom",
+        "PostCode": "EC3A 2AD",
+        "PostTown": "London",
+        "AddressLine1": "Dusted Design Partners Ltd",
+        "AddressLine2": "65-68 Leadenhall Street",
+        "AddressLine3": null
+      },
+      "deceasedSurname": "Eased",
+      "evidenceHandled": "Yes",
+      "grantIssuedDate": "2021-10-26",
+      "registryAddress": "Line 1 Ox\nLine 2 Ox\nLine 3 Ox\nPostCode Ox\n",
+      "bulkPrintPdfSize": "4",
+      "paragraphDetails": [],
+      "registryLocation": "ctsc",
+      "authenticatedDate": "2021-10-26",
+      "boSendToBulkPrint": "Yes",
+      "bulkScanEnvelopes": [],
+      "deceasedForenames": "Dec",
+      "extraCopiesOfGrant": "2",
+      "boDocumentsUploaded": [],
+      "deceasedDateOfBirth": "1900-01-01",
+      "deceasedDateOfDeath": "2020-01-01",
+      "declarationCheckbox": "Yes",
+      "otherExecutorExists": "No",
+      "legalDeclarationJson": "{\"declarations\":[{\"headers\":[\"In the High Court of Justice\",\"Family Division\",\"(Intestacy)\"],\"sections\":[{\"headingType\":\"large\",\"title\":\"Legal statement\",\"declarationItems\":[{\"title\":\"I, Appfn Appsn of Frederick Gibberd Partnership 117-121 Curtain Road London EC2A 3AD United Kingdom, make the following statement:\"}]},{\"headingType\":\"small\",\"title\":\"The person who died\",\"declarationItems\":[{\"title\":\"That Dec Eased, of Dusted Design Partners Ltd 65-68 Leadenhall Street London EC3A 2AD United Kingdom, was born on 1 January 1900 and died on 1 January 2020 intestate. \"},{\"title\":\"They were married or in a civil partnership and domiciled in England and Wales.\"},{\"title\":\"No children under 18 are entitled to the estate.\"}]},{\"headingType\":\"small\",\"title\":\"The estate of the person who died\",\"declarationItems\":[{\"title\":\"The gross value for the estate amounts to £10000.00 and the net value for the estate amounts to £8000.00.\"},{\"title\":\"To the best of my knowledge, information and belief, there was no land vested in Dec Eased which was settled previously to the death of Dec Eased and which remained settled land notwithstanding such death.\"},{\"title\":\"I am the lawful spouse or civil partner of Dec Eased and the only person now entitled to the estate.\"},{\"title\":\"I am applying for letters of administration. I have provided what I believe to be true and accurate information about Dec Eased.\"}]},{\"headingType\":\"large\",\"title\":\"Declaration\",\"declarationItems\":[{\"title\":\"I confirm that I will administer the estate of Dec Eased, according to law. I will:\",\"values\":[\"collect the whole estate\",\"keep full details (an inventory) of the estate\",\"keep a full account of how the estate has been distributed\"]},{\"title\":\"If the probate registry (court) asks me to do so, I will:\",\"values\":[\"provide the full details of the estate and how it has been distributed\",\"return the letters of administration to the court\"]},{\"title\":\"I understand that:\",\"values\":[\"my application will be rejected if I do not provide information (if asked)\",\"proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant\"]}]}]}],\"dateCreated\":\"26/10/2021, 15:07:22\",\"deceased\":\"Dec Eased\"}",
+      "registryEmailAddress": "ctsc@email.com",
+      "bulkPrintSendLetterId": "1d3c10f8-f64e-4d86-a786-136b75a2949c",
+      "deceasedAnyOtherNames": "No",
+      "deceasedMaritalStatus": "marriedCivilPartnership",
+      "deceasedDomicileInEngWales": "Yes",
+      "deceasedDiedEngOrWales": "Yes",
+      "ihtFormCompletedOnline": "No",
+      "registrySequenceNumber": "5",
+      "checkAnswersSummaryJson": "{\"sections\":[{\"title\":\"About the person who died\",\"type\":\"govuk-heading-m\",\"questionAndAnswers\":[{\"question\":\"Do you require a bilingual grant in English and Welsh?\",\"answers\":[\"No\"]},{\"question\":\"First name and any middle names\",\"answers\":[\"Dec\"]},{\"question\":\"Last name\",\"answers\":[\"Eased\"]},{\"question\":\"Did Dec Eased have assets in another name?\",\"answers\":[\"No\"]},{\"question\":\"What was their date of birth?\",\"answers\":[\"1 January 1900\"]},{\"question\":\"What was the date that they died?\",\"answers\":[\"1 January 2020\"]},{\"question\":\"What was Dec Eased’s marital status?\",\"answers\":[\"Married or in a civil partnership\"]},{\"question\":\"What was the permanent address at the time of their death?\",\"answers\":[\"Dusted Design Partners Ltd 65-68 Leadenhall Street London EC3A 2AD United Kingdom\"]},{\"question\":\"Did Dec Eased die in England or Wales?\",\"answers\":[\"Yes\"]},{\"question\":\"Do you have a death certificate or an interim death certificate?\",\"answers\":[\"Death certificate\"]}]},{\"title\":\"Inheritance tax\",\"type\":\"govuk-heading-m\",\"questionAndAnswers\":[{\"question\":\"How was the Inheritance Tax (IHT) form submitted?\",\"answers\":[\"By post\"]},{\"question\":\"Which paper form was filled in?\",\"answers\":[\"IHT 207 - there was no inheritance tax to pay and the person who died lived abroad\"]},{\"question\":\"Gross value of the estate in £\",\"answers\":[\"10000.00\"]},{\"question\":\"Net value of the estate in £\",\"answers\":[\"8000.00\"]}]},{\"title\":\"About the people applying\",\"type\":\"govuk-heading-m\",\"questionAndAnswers\":[{\"question\":\"What was your relationship to the person who died?\",\"answers\":[\"Husband, wife or civil partner (this does not include common law partners even if you lived together)\"]}]},{\"title\":\"About you\",\"type\":\"govuk-heading-s\",\"questionAndAnswers\":[{\"question\":\"First name and any middle names\",\"answers\":[\"Appfn\"]},{\"question\":\"Last name\",\"answers\":[\"Appsn\"]},{\"question\":\"Phone number\",\"answers\":[\"123456789\"]},{\"question\":\"What is your address?\",\"answers\":[\"Frederick Gibberd Partnership 117-121 Curtain Road London EC2A 3AD United Kingdom\"]}]}],\"mainParagraph\":\"Check the information below carefully. This will form a record of your application for probate. It will also be stored as a public record, and will be able to be viewed online.\",\"pageTitle\":\"Check your answers\"}",
+      "languagePreferenceWelsh": "No",
+      "primaryApplicantAddress": {
+        "County": null,
+        "Country": "United Kingdom",
+        "PostCode": "EC2A 3AD",
+        "PostTown": "London",
+        "AddressLine1": "Frederick Gibberd Partnership",
+        "AddressLine2": "117-121 Curtain Road",
+        "AddressLine3": null
+      },
+      "primaryApplicantSurname": "Appsn",
+      "applicationSubmittedDate": "2021-10-26",
+      "boExaminationChecklistQ1": "Yes",
+      "boExaminationChecklistQ2": "Yes",
+      "deceasedDeathCertificate": "deathCertificate",
+      "primaryApplicantHasAlias": "No",
+      "statementOfTruthDocument": {
+        "document_url": "http://dm-store:8080/documents/b0977f3d-93a5-4dac-9cc2-8adb54b13c28",
+        "document_filename": "SOT.pdf",
+        "document_binary_url": "http://dm-store:8080/documents/b0977f3d-93a5-4dac-9cc2-8adb54b13c28/binary"
+      },
+      "primaryApplicantForenames": "Appfn",
+      "boSendToBulkPrintRequested": "Yes",
+      "deceasedHasAssetsOutsideUK": "No",
+      "primaryApplicantIsApplying": "Yes",
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "primaryApplicantPhoneNumber": "123456789",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "primaryApplicantEmailAddress": "testusername@test.com",
+      "probateSotDocumentsGenerated": [],
+      "boCaveatStopEmailNotification": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "probateNotificationsGenerated": [
+        {
+          "id": "257ede45-15ab-40a4-bdce-77b7347692f7",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/56b2da76-717c-40f5-838c-ed3989d67238",
+              "document_filename": "sentEmail.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/56b2da76-717c-40f5-838c-ed3989d67238/binary"
+            },
+            "DocumentType": "sentEmail",
+            "DocumentFileName": "100ef5ba-aee5-435d-9cfa-0fbbbc77792c.pdf",
+            "DocumentDateAdded": "2021-10-26",
+            "DocumentGeneratedBy": null
+          }
+        },
+        {
+          "id": "823bcc7f-ca8b-4528-a9f6-eaed2a5cb60e",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/b7468e47-5ae7-439a-b09c-fb5604238bcc",
+              "document_filename": "sentEmail.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/b7468e47-5ae7-439a-b09c-fb5604238bcc/binary"
+            },
+            "DocumentType": "sentEmail",
+            "DocumentFileName": "6d6a35ff-fce4-4a5c-9f82-50d1ca503dc4.pdf",
+            "DocumentDateAdded": "2021-10-26",
+            "DocumentGeneratedBy": "4566dedc-7de1-42bd-ad21-99ea1f498595"
+          }
+        },
+        {
+          "id": "36cd668e-82aa-4c83-8a6b-d65dfbabe555",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/1dc785f7-3066-4b6b-a217-98ca15fa2395",
+              "document_filename": "sentEmail.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/1dc785f7-3066-4b6b-a217-98ca15fa2395/binary"
+            },
+            "DocumentType": "sentEmail",
+            "DocumentFileName": "79052175-3441-4bb1-9824-3dc6ec781d98.pdf",
+            "DocumentDateAdded": "2021-10-26",
+            "DocumentGeneratedBy": "4566dedc-7de1-42bd-ad21-99ea1f498595"
+          }
+        }
+      ],
+      "boEmailGrantIssuedNotification": "No",
+      "boEmailRequestInfoNotification": "No",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "No",
+      "boExaminationChecklistRequestQA": "No",
+      "boEmailGrantReissuedNotification": "No",
+      "primaryApplicantRelationshipToDeceased": "partner",
+      "boEmailGrantIssuedNotificationRequested": "Yes",
+      "boEmailDocsReceivedNotificationRequested": "Yes",
+      "grantAwaitingDocumentationNotificationDate": "2021-11-30"
+    }
+  }
+}

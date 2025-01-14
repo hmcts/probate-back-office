@@ -56,6 +56,12 @@ public enum DocumentType {
     @JsonProperty("admonWillGrantDraft")
     ADMON_WILL_GRANT_DRAFT("admonWillGrantDraft"),
 
+    @JsonProperty("adColligendaBonaGrant")
+    AD_COLLIGENDA_BONA_GRANT("adColligendaBonaGrant"),
+
+    @JsonProperty("adColligendaBonaGrantDraft")
+    AD_COLLIGENDA_BONA_GRANT_DRAFT("adColligendaBonaGrantDraft"),
+
     @JsonProperty("sentEmail")
     SENT_EMAIL("sentEmail"),
 
@@ -119,6 +125,9 @@ public enum DocumentType {
     @JsonProperty("admonWillGrantReissueDraft")
     ADMON_WILL_GRANT_REISSUE_DRAFT("admonWillGrantReissueDraft"),
 
+    @JsonProperty("adColligendaBonaGrantReissueDraft")
+    AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT("adColligendaBonaGrantReissueDraft"),
+
     @JsonProperty("digitalGrantReissue")
     DIGITAL_GRANT_REISSUE("digitalGrantReissue"),
 
@@ -127,6 +136,9 @@ public enum DocumentType {
 
     @JsonProperty("admonWillGrantReissue")
     ADMON_WILL_GRANT_REISSUE("admonWillGrantReissue"),
+
+    @JsonProperty("adColligendaBonaGrantReissue")
+    AD_COLLIGENDA_BONA_GRANT_REISSUE("adColligendaBonaGrantReissue"),
 
     @JsonProperty("sotInformationRequest")
     SOT_INFORMATION_REQUEST("sotInformationRequest"),
@@ -161,6 +173,12 @@ public enum DocumentType {
     @JsonProperty("welshIntestacyGrant")
     WELSH_INTESTACY_GRANT("welshIntestacyGrant"),
 
+    @JsonProperty("welshAdColligendaBonaGrantDraft")
+    WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT("welshAdColligendaBonaGrantDraft"),
+
+    @JsonProperty("welshAdColligendaBonaGrant")
+    WELSH_AD_COLLIGENDA_BONA_GRANT("welshAdColligendaBonaGrant"),
+
     @JsonProperty("welshDigitalGrantReissueDraft")
     WELSH_DIGITAL_GRANT_REISSUE_DRAFT("welshDigitalGrantReissueDraft"),
 
@@ -170,6 +188,9 @@ public enum DocumentType {
     @JsonProperty("welshAdmonWillGrantReissueDraft")
     WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT("welshAdmonWillGrantReissueDraft"),
 
+    @JsonProperty("welshAdColligendaBonaGrantReissueDraft")
+    WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT("welshAdColligendaBonaGrantReissueDraft"),
+
     @JsonProperty("welshDigitalGrantReissue")
     WELSH_DIGITAL_GRANT_REISSUE("welshDigitalGrantReissue"),
 
@@ -177,7 +198,10 @@ public enum DocumentType {
     WELSH_INTESTACY_GRANT_REISSUE("welshIntestacyGrantReissue"),
 
     @JsonProperty("welshAdmonWillGrantReissue")
-    WELSH_ADMON_WILL_GRANT_REISSUE("welshAdmonWillGrantReissue");
+    WELSH_ADMON_WILL_GRANT_REISSUE("welshAdmonWillGrantReissue"),
+
+    @JsonProperty("welshAdColligendaBonaGrantReissue")
+    WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE("welshAdColligendaBonaGrantReissue");
 
     private final String templateName;
 
