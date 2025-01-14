@@ -597,4 +597,4 @@ reactivate_dormant:
   minus_days: 1
 
 grand_delay:
-  number_of_weeks: 16
+  number_of_weeks: 12
