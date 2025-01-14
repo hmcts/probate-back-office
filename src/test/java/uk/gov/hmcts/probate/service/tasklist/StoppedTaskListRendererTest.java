@@ -26,7 +26,7 @@ class StoppedTaskListRendererTest {
 
         caseDataBuilder = CaseData.builder()
                 .grantStoppedDate(LocalDate.of(2020,1,1));
-        ReflectionTestUtils.setField(renderer, "grandDelayNumberOfWeeks", "16");
+        ReflectionTestUtils.setField(renderer, "grandDelayNumberOfWeeks", "12");
     }
 
     @Test
