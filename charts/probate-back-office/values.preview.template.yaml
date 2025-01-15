@@ -287,6 +287,7 @@ java:
     BACK_OFFICE_BASEURL: https://${SERVICE_NAME}.preview.platform.hmcts.net
     ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
     PROBATE_POSTGRESQL_HOSTNAME_VAL: '{{ .Values.global.postgresHostname }}'
+    PDF_SERVICE_BASEURL: https://docmosis.preview.platform.hmcts.net
 
   keyVaults:
     probate:
