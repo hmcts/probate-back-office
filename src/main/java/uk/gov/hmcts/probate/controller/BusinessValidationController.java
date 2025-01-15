@@ -45,6 +45,7 @@ import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
+import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
@@ -124,6 +125,7 @@ public class BusinessValidationController {
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final RegistrarDirectionService registrarDirectionService;
     private final Pre1900DOBValidationRule pre1900DOBValidationRule;
+    private final AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
 
@@ -467,6 +469,20 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/resolveCaveatStopState", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> resolveCaveatStopState(@RequestBody CallbackRequest callbackRequest,
+                                                            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        log.info("resolve caveat stop state started");
+
+        final Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        CallbackResponse response = callbackResponseTransformer.transferCaveatStopState(
+                callbackRequest,
+                caseworkerInfo);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/changeDob", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> changeDob(@RequestBody CallbackRequest callbackRequest,
@@ -564,6 +580,7 @@ public class BusinessValidationController {
         caseDataTransformer.transformCaseDataForPaperForm(callbackRequest);
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
+        adColligendaBonaCaseTypeValidationRule.validate(callbackRequest.getCaseDetails());
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
         Document document = null;

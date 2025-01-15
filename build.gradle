@@ -170,7 +170,7 @@ def versions = [
         lombok                          : '1.18.36',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
-        probateCommonsVersion           : '2.0.31',
+        probateCommonsVersion           : '2.0.33',
         probatePactCommonsVersion       : '1.0.2',
         restAssured                     : '5.5.0',
         serenity                        : '4.2.9',
@@ -250,10 +250,10 @@ dependencies {
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
 
   implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.5'
-  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.10.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
 
-  implementation group: 'org.pitest', name: 'pitest', version: '1.17.3'
+  implementation group: 'org.pitest', name: 'pitest', version: '1.17.4'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.24.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
