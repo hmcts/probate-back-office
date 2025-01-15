@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -31,17 +32,22 @@ public class Document {
     @JsonProperty("DocumentGeneratedBy")
     private String documentGeneratedBy;
 
+    @JsonIgnore
+    @Builder.Default
+    private boolean isRaced = false;
+
     public Document() {
         super();
     }
 
     public Document(DocumentLink documentLink, DocumentType documentType, String documentFileName,
-                    LocalDate documentDateAdded, String documentGeneratedBy) {
+                    LocalDate documentDateAdded, String documentGeneratedBy, boolean isRaced) {
         this.documentLink = documentLink;
         this.documentType = documentType;
         this.documentFileName = documentFileName;
         this.documentDateAdded = documentDateAdded;
         this.documentGeneratedBy = documentGeneratedBy;
+        this.isRaced = isRaced;
     }
 
     public ProbateDocument asProbateDocument() {

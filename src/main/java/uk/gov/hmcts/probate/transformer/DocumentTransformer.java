@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -80,23 +81,29 @@ public class DocumentTransformer {
             callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                     .add(new CollectionMember<>(null, document));
         } else {
+            String id = null;
+            if (document.isRaced()) {
+                id = UUID.randomUUID().toString();
+                final long caseId = callbackRequest.getCaseDetails().getId();
+                log.warn("Adding raced document to case {} with id {}", caseId, id);
+            }
             switch (document.getDocumentType()) {
                 case STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH, LEGAL_STATEMENT_PROBATE,
                         LEGAL_STATEMENT_PROBATE_TRUST_CORPS, LEGAL_STATEMENT_INTESTACY, LEGAL_STATEMENT_ADMON:
                     callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated()
-                            .add(new CollectionMember<>(null, document));
+                            .add(new CollectionMember<>(id, document));
                     break;
                 case SENT_EMAIL, GRANT_RAISED, CAVEAT_STOPPED:
                     callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
-                            .add(new CollectionMember<>(null, document));
+                            .add(new CollectionMember<>(id, document));
                     break;
                 case GRANT_COVERSHEET:
                     if (coversheetNotification) {
                         callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
-                                .add(new CollectionMember<>(null, document));
+                                .add(new CollectionMember<>(id, document));
                     } else {
                         callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
-                                .add(new CollectionMember<>(null, document));
+                                .add(new CollectionMember<>(id, document));
                     }
                     break;
                 case EDGE_CASE:
