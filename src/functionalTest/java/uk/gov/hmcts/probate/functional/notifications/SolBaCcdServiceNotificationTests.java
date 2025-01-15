@@ -35,7 +35,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String PAPER_FORM = "/case/paperForm";
 
     private static final String BIRMINGHAM_NO = "0300 303 0648";
-    private static final String REGISTRY_NO = "0113 389 6133";
+    private static final String REGISTRY_NO = " 0300 303 0648";
 
     private static final String EMAIL_NOTIFICATION_URL =
         "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
