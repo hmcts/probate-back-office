@@ -268,8 +268,8 @@ notifications:
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
       welsh:
         personal:
-          applicationReceived: "7f39b671-86ce-49cb-b6b1-2019101aa8b1"
-          applicationReceivedNoDocs: "69b3805d-d66a-4433-ad66-be0bafb31d4a"
+          applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
+          applicationReceivedNoDocs: "37ca2e1e-b7fb-4f4f-9691-7dab45dcd751"
           applicationReceivedPaperFormCaseworker: "f066040c-e986-44a7-8a63-0e4800850c36"
           documentReceived: "de62fdcb-30f9-42d6-8abb-4e98fbc1309e"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
