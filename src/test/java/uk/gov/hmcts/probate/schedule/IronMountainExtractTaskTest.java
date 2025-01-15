@@ -14,7 +14,9 @@ import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.doThrow;
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 
 @ExtendWith(SpringExtension.class)
