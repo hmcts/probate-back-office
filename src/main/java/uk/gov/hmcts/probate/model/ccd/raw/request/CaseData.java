@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
@@ -19,6 +20,7 @@ import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -39,7 +41,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -53,6 +54,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
@@ -67,12 +70,14 @@ import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.ANSWER_NO;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
 @Jacksonized
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Slf4j
 public class CaseData extends CaseDataParent {
 
     // Tasklist update
@@ -318,7 +323,7 @@ public class CaseData extends CaseDataParent {
 
     private final List<CollectionMember<StopReason>> boCaseStopReasonList;
 
-    private final List<CollectionMember<HandoffReason>> boHandoffReasonList;
+    private List<CollectionMember<HandoffReason>> boHandoffReasonList;
 
     private final String boStopDetails;
 
@@ -464,6 +469,7 @@ public class CaseData extends CaseDataParent {
     private final String dateOfDeathType;
     private final String resolveStopState;
     private final String transferToState;
+    private final String resolveCaveatStopState;
     private final String orderNeeded;
     private final List<CollectionMember<Reissue>> reissueReason;
     private final String reissueReasonNotation;
@@ -524,6 +530,7 @@ public class CaseData extends CaseDataParent {
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
     private LocalDate escalatedDate;
+    private RegistrarEscalateReason registrarEscalateReason;
     private LocalDate caseWorkerEscalationDate;
     private LocalDate resolveCaseWorkerEscalationDate;
     private String resolveCaseWorkerEscalationState;
@@ -594,6 +601,8 @@ public class CaseData extends CaseDataParent {
     private String deceasedAliasLastNameOnWill;
     @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetNegative}")
     private final BigDecimal ihtFormNetValue;
+    private final String lastModifiedCaseworkerForenames;
+    private final String lastModifiedCaseworkerSurname;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
@@ -607,6 +616,15 @@ public class CaseData extends CaseDataParent {
     private ChangeOfRepresentative changeOfRepresentative;
     private RemovedRepresentative removedRepresentative;
     private ChangeOrganisationRequest changeOrganisationRequestField;
+    private final String informationNeeded;
+    private final String informationNeededByPost;
+    private final String citizenResponse;
+    private final String documentUploadIssue;
+    private final String isSaveAndClose;
+    private final String citizenResponseCheckbox;
+    private final String expectedResponseDate;
+    private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
+    private List<CollectionMember<CitizenResponse>> citizenResponses;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
@@ -696,6 +714,30 @@ public class CaseData extends CaseDataParent {
 
     public boolean isLanguagePreferenceWelsh() {
         return YES.equals(getLanguagePreferenceWelsh());
+    }
+
+    public void clearPrimaryApplicant() {
+        log.debug("Clearing primary applicant information from CaseData");
+
+
+        this.setPrimaryApplicantIsApplying(null);
+
+        this.setPrimaryApplicantForenames(null);
+        this.setPrimaryApplicantSurname(null);
+
+        // This is to be consistent with the behaviour currently exhibited by the service when creating
+        // a case with a non-NoneOfThese TitleAndClearingType.
+        this.setPrimaryApplicantHasAlias(ANSWER_NO);
+        this.setPrimaryApplicantAlias(null);
+
+
+        // As above this is to be consistent with the behaviour currently exhibited by the service when
+        // creating a case with a non-NoneOfThese TitleAndClearingType.
+        final SolsAddress nullAddress = SolsAddress.builder().build();
+        this.setPrimaryApplicantAddress(nullAddress);
+
+        this.setPrimaryApplicantEmailAddress(null);
+        this.setPrimaryApplicantPhoneNumber(null);
     }
 
 }

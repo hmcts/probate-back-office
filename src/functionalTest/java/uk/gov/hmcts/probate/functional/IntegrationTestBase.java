@@ -38,6 +38,7 @@ public abstract class IntegrationTestBase {
 
     private String solCcdServiceUrl;
     public static String evidenceManagementUrl;
+    private static final long ES_DELAY = 20000L;
 
     @Autowired
     public void solCcdServiceUrl(@Value("${sol.ccd.service.base.url}") String solCcdServiceUrl) {
@@ -142,6 +143,13 @@ public abstract class IntegrationTestBase {
     protected final ResponseBody validatePostSuccess(String jsonFileName, String path) throws IOException {
         return validatePostSuccessForPayload(utils.getJsonFromFile(jsonFileName), path);
     }
+
+    protected final ResponseBody validatePostSuccessForCaseStopped(String payload, String path)
+            throws InterruptedException {
+        Thread.sleep(ES_DELAY);
+        return validatePostSuccessForPayload(payload, path);
+    }
+
 
     protected final ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path,
                                                                         String originalAttr,

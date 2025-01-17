@@ -66,17 +66,21 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
+    adColligendaBonaGrantReissueDraft:
+        templateName: FL-PRB-GRP-ENG-01295.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
+    adColligendaBonaGrantReissue:
+      templateName: FL-PRB-GRP-ENG-01295.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
@@ -88,17 +92,21 @@ docmosis:
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
+    welshAdColligendaBonaGrant:
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
+    welshAdColligendaBonaGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00236.doc
 
 fee.api:
   url: http://localhost:4411
@@ -214,7 +222,7 @@ notifications:
           applicationReceivedPaperFormCaseworker: "01bfc52c-0850-4155-ae03-e6d638286288"
           documentReceived: "24161fba-65f5-4384-9c4f-ef75f4a5c666"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
-          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          caseStoppedCaveat: "d5084257-f475-415a-b7d0-2427b5c580b1"
           grantIssued: "227bc051-8210-4030-b669-6eee2cbe075e"
           grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
@@ -225,7 +233,8 @@ notifications:
           grantRaisedCtsc: "2b877b12-2fdc-45e9-bf07-60285c377b9b"
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
-          requestInformation: "7888704d-b4fb-409f-9dd9-0869b2e293c0"
+          requestInformation: "c871adf7-c902-4a18-934f-abeb504ab5d9"
+          requestInformationByPost: "8eca356b-ce59-400b-8b43-d470bb1b6be7"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
           grantIssuedIntestacy: "cda48ea1-6ee4-4cde-a3e2-0e1f87f9e702"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
@@ -237,7 +246,7 @@ notifications:
           applicationReceivedPaperFormCaseworker: "01bfc52c-0850-4155-ae03-e6d638286288"
           documentReceived: "e618dce9-405e-45a5-86e8-06d792336f2f"
           caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
-          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          caseStoppedCaveat: "d5084257-f475-415a-b7d0-2427b5c580b1"
           grantIssued: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           grantReissued: "9b0e4091-8c94-41bc-8e6c-de4bc211f68f"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
@@ -248,7 +257,7 @@ notifications:
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
-          requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
+          requestInformation: "7567b568-0df4-4b2a-88a0-232693e3fa00"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
@@ -262,7 +271,7 @@ notifications:
           applicationReceivedPaperFormCaseworker: "22c81233-a213-4520-b6bc-896fe8f6988a"
           documentReceived: "39b7cef5-8202-479e-9f1e-86a76f964221"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
-          caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
+          caseStoppedCaveat: "4aec6fa3-7e76-406a-9953-2f12d5d29f81"
           grantIssued: "515c7643-ea3b-4a86-9b94-4622114be080"
           grantReissued: "c5232b10-0975-4085-ba5a-3e5a6eb5c2bf"
           generalCaveatMessage: "d2b33c5b-0c65-4472-b26f-9352de5538ba"
@@ -272,7 +281,8 @@ notifications:
           grantRaisedPaperFormBulkScan: "727981ab-eec0-46c1-a261-9e90ae10cabd"
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
-          requestInformation: "67ddef82-707d-418d-a7a1-4af42b9910c5"
+          requestInformation: "3d9ee152-ffbd-4eee-a781-951e708c9c81"
+          requestInformationByPost: "d51cdb17-3e65-4c0e-ad2e-c228c97d8012"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
           grantIssuedIntestacy: "fc9748a7-6e92-480d-9ee8-fdd4fc45552d"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
@@ -284,7 +294,7 @@ notifications:
           applicationReceivedPaperFormCaseworker: "22c81233-a213-4520-b6bc-896fe8f6988a"
           documentReceived: "83f93f41-58a1-44f2-a9c4-d20d545b7528"
           caseStopped: "a767a0bd-4acc-413e-b510-5a71d24daf85"
-          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          caseStoppedCaveat: "4aec6fa3-7e76-406a-9953-2f12d5d29f81"
           grantIssued: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           grantReissued: "9b0e4091-8c94-41bc-8e6c-de4bc211f68f"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
@@ -295,7 +305,7 @@ notifications:
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
-          requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
+          requestInformation: "98233470-7aa6-4165-bf62-a663dc9f3c53"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
@@ -312,30 +322,36 @@ documents:
             intestacy: INTESTACY_GRANT_REISSUE
             admonWill: ADMON_WILL_GRANT_REISSUE
             gop: DIGITAL_GRANT_REISSUE
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_REISSUE
           grant:
             intestacy: INTESTACY_GRANT
             admonWill: ADMON_WILL_GRANT
             gop: DIGITAL_GRANT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT
         preview:
           reissue:
             intestacy: INTESTACY_GRANT_REISSUE_DRAFT
             admonWill: ADMON_WILL_GRANT_REISSUE_DRAFT
             gop: DIGITAL_GRANT_REISSUE_DRAFT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT
           grant:
             intestacy: INTESTACY_GRANT_DRAFT
             admonWill: ADMON_WILL_GRANT_DRAFT
             gop: DIGITAL_GRANT_DRAFT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_DRAFT
       welsh:
         final:
           grant:
             intestacy: WELSH_INTESTACY_GRANT
             admonWill: WELSH_ADMON_WILL_GRANT
             gop: WELSH_DIGITAL_GRANT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT
         preview:
           grant:
             intestacy: WELSH_INTESTACY_GRANT_DRAFT
             admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
             gop: WELSH_DIGITAL_GRANT_DRAFT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT
 
 registry:
   registries:
@@ -519,7 +535,7 @@ case_document_am:
 
 document_management:
   fileupload:
-    extensions: ".pdf .jpeg .bmp .tif .tiff .png .pdf"
+    extensions: ".pdf .jpeg .bmp .tif .tiff .png"
     mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
 
 dormancy:

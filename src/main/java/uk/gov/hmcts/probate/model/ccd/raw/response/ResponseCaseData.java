@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -27,7 +28,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -39,8 +39,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -177,6 +180,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String paperForm;
     private final String channelChoice;
     private final String languagePreferenceWelsh;
+    private final RegistrarEscalateReason registrarEscalateReason;
 
     //paper form case creator fields
     private final String primaryApplicantSecondPhoneNumber;
@@ -394,4 +398,17 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String deceasedAliasFirstNameOnWill;
     private final String deceasedAliasLastNameOnWill;
     private String matches;
+    private final String lastModifiedCaseworkerForenames;
+    private final String lastModifiedCaseworkerSurname;
+    private final String informationNeeded;
+    private final String informationNeededByPost;
+    private final DocumentLink emailPreview;
+    private final String citizenResponse;
+    private final String documentUploadIssue;
+    private final String citizenResponseCheckbox;
+    private final String expectedResponseDate;
+    private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
+    private final List<CollectionMember<CitizenResponse>> citizenResponses;
+    private final String isSaveAndClose;
+    private final String informationNeededByPostSwitch;
 }
