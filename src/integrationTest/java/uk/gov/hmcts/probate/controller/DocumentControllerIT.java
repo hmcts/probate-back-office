@@ -58,6 +58,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -162,6 +164,9 @@ class DocumentControllerIT {
 
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT)))
             .thenReturn(Document.builder().documentType(INTESTACY_GRANT).build());
+
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(AD_COLLIGENDA_BONA_GRANT)))
+                .thenReturn(Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT).build());
 
 
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT)))
@@ -435,6 +440,27 @@ class DocumentControllerIT {
     }
 
     @Test
+    void generateGrantDraftAdColligendaBona() throws Exception {
+        when(documentGeneratorService
+                .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT_DRAFT).build());
+
+        String solicitorPayload = testUtils
+                .getStringFromFile("solicitorPayloadNotificationsAdColligendaBona.json");
+
+        mockMvc.perform(post("/document/generate-grant-draft")
+                        .content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType",
+                        is(AD_COLLIGENDA_BONA_GRANT_DRAFT.getTemplateName())))
+                .andReturn();
+
+        verify(documentGeneratorService)
+                .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT));
+    }
+
+    @Test
     void generateGrantAdmonWill() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
@@ -474,6 +500,27 @@ class DocumentControllerIT {
 
         verify(documentGeneratorService)
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
+    }
+
+    @Test
+    void generateGrantAdColligendaBona() throws Exception {
+        when(documentGeneratorService
+                .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT).build());
+
+        String solicitorPayload = testUtils
+                .getStringFromFile("solicitorPayloadNotificationsAdColligendaBona.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                        .content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType",
+                        is(AD_COLLIGENDA_BONA_GRANT.getTemplateName())))
+                .andReturn();
+
+        verify(documentGeneratorService)
+                .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
 
     @Test

@@ -76,6 +76,8 @@ import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
@@ -92,6 +94,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
@@ -391,9 +395,11 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, AD_COLLIGENDA_BONA_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT)
-                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)) {
+                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_AD_COLLIGENDA_BONA_GRANT)) {
 
             String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
             responseCaseDataBuilder
@@ -420,13 +426,16 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, AD_COLLIGENDA_BONA_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
-                || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)) {
+                || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE)) {
             if (letterId != null) {
                 var documentTypes = new DocumentType[] {
                     DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
-                    WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE
+                    AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE,
+                    WELSH_INTESTACY_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE
                 };
                 String templateName = getTemplateName(documents, documentTypes);
                 CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
@@ -477,9 +486,11 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, AD_COLLIGENDA_BONA_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT)
-                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)) {
+                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_AD_COLLIGENDA_BONA_GRANT)) {
 
             responseCaseDataBuilder
                     .bulkPrintSendLetterId(letterId)
@@ -488,16 +499,19 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, AD_COLLIGENDA_BONA_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, STATEMENT_OF_TRUTH)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_STATEMENT_OF_TRUTH)
                 || documentTransformer.hasDocumentWithType(documents, DocumentType.OTHER)) {
             if (letterId != null) {
                 var documentTypes = new DocumentType[] {
                     DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
-                    WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE,
+                    AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE,
+                    WELSH_INTESTACY_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE,
                     STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH, DocumentType.OTHER
                 };
                 String templateName = getTemplateName(documents, documentTypes);
@@ -601,6 +615,15 @@ public class CallbackResponseTransformer {
     public CallbackResponse transferToState(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
         return transformWithConditionalStateChange(callbackRequest, Optional.of(callbackRequest.getCaseDetails()
                 .getData().getTransferToState()), caseworkerInfo);
+    }
+
+    public CallbackResponse transferCaveatStopState(
+            final CallbackRequest callbackRequest,
+            final Optional<UserInfo> caseworkerInfo) {
+        return transformWithConditionalStateChange(
+                callbackRequest,
+                Optional.of(callbackRequest.getCaseDetails().getData().getResolveCaveatStopState()),
+                caseworkerInfo);
     }
 
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
