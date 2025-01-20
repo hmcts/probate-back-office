@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 
 @ExtendWith(SpringExtension.class)
-class GrantDelayedExtractTaskTest {
+class GrantAwaitingDocumentationExtractTaskTest {
 
     @Mock
     private DataExtractDateValidator dataExtractDateValidator;
@@ -29,47 +29,49 @@ class GrantDelayedExtractTaskTest {
     private GrantNotificationService grantNotificationService;
 
     @InjectMocks
-    private GrantDelayedExtractTask grantDelayedExtractTask;
+    private GrantAwaitingDocumentationExtractTask grantAwaitingDocumentationExtractTask;
     private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
     private String adhocDate = "2022-09-05";
 
     @Test
-    void shouldPerformGrantDelayedExtractYesterdayDate() {
+    void shouldPerformGrantAwaitingDocumentationExtractYesterdayDate() {
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
-                .body("Perform grant delayed data extract from date finished");
-        grantDelayedExtractTask.run();
+                .body("Perform grant awaiting documentation data extract from date finished");
+        grantAwaitingDocumentationExtractTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-        assertEquals("Perform grant delayed data extract from date finished", responseEntity.getBody());
+        assertEquals("Perform grant awaiting documentation data extract from date finished",
+                responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(date);
-        verify(grantNotificationService).handleGrantDelayedNotification(date);
+        verify(grantNotificationService).handleAwaitingDocumentationNotification(date);
     }
 
     @Test
-    void shouldPerformGrantDelayedExtractForAdhocDate() {
-        grantDelayedExtractTask.adHocJobFromDate = "2022-09-05";
+    void shouldPerformGrantAwaitingDocumentationExtractForAdhocDate() {
+        grantAwaitingDocumentationExtractTask.adHocJobFromDate = "2022-09-05";
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
-                .body("Perform grant delayed data extract from date finished");
-        grantDelayedExtractTask.run();
+                .body("Perform grant awaiting documentation data extract from date finished");
+        grantAwaitingDocumentationExtractTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-        assertEquals("Perform grant delayed data extract from date finished", responseEntity.getBody());
+        assertEquals("Perform grant awaiting documentation data extract from date finished",
+                responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(adhocDate);
-        verify(grantNotificationService).handleGrantDelayedNotification(adhocDate);
+        verify(grantNotificationService).handleAwaitingDocumentationNotification(adhocDate);
     }
 
     @Test
-    void shouldThrowClientExceptionWithBadRequestForGrantDelayedExtractWithIncorrectDateFormat() {
+    void shouldThrowClientExceptionWithBadRequestForGrantAwaitingDocumentationExtractWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
                 .dateValidator(date);
-        grantDelayedExtractTask.run();
+        grantAwaitingDocumentationExtractTask.run();
         verify(dataExtractDateValidator).dateValidator(date);
         verifyNoInteractions(grantNotificationService);
     }
 
     @Test
-    void shouldThrowExceptionForGrantDelayedExtract() {
+    void shouldThrowExceptionForGrantAwaitingDocumentationExtract() {
         doThrow(new NullPointerException()).when(dataExtractDateValidator)
                 .dateValidator(date);
-        grantDelayedExtractTask.run();
+        grantAwaitingDocumentationExtractTask.run();
         verify(dataExtractDateValidator).dateValidator(date);
         verifyNoInteractions(grantNotificationService);
     }
