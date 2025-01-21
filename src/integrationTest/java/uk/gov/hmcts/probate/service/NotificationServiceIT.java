@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
+import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
@@ -2124,7 +2125,7 @@ class NotificationServiceIT {
 
     @Test
     void throwExceptionSendEmailWhenInvalidPersonalisationExists() {
-        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+        RequestInformationParameterException expectException =  assertThrows(RequestInformationParameterException.class,
                 () -> notificationService.sendEmail(CASE_STOPPED, markdownLinkCaseData));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
     }
@@ -2140,14 +2141,14 @@ class NotificationServiceIT {
                         .build())
                 .email("primary@probate-test.com")
                 .notification("Yes").build();
-        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+        RequestInformationParameterException expectException =  assertThrows(RequestInformationParameterException.class,
                 () -> notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, markdownLinkCaseData));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
     }
 
     @Test
     void throwExceptionSendCaveatEmailWhenInvalidPersonalisationExists() {
-        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+        RequestInformationParameterException expectException =  assertThrows(RequestInformationParameterException.class,
                 () -> notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, markdownLinkCaveatData));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
     }
@@ -2166,7 +2167,7 @@ class NotificationServiceIT {
                         .build())
                 .email("primary@probate-test.com")
                 .notification("Yes").build();
-        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+        RequestInformationParameterException expectException =  assertThrows(RequestInformationParameterException.class,
                 () -> notificationService.sendEmailWithDocumentAttached(markdownLinkCaseData,
                         executorsApplyingNotification, REDECLARATION_SOT));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
