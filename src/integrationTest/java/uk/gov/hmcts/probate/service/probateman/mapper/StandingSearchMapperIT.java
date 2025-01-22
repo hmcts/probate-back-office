@@ -6,9 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.model.probateman.StandingSearch;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
@@ -46,9 +44,6 @@ class StandingSearchMapperIT {
 
     @Autowired
     private StandingSearchMapper standingSearchMapper;
-
-    @MockBean
-    AppInsights appInsights;
 
     @Test
     void shouldMapToCcdData() {

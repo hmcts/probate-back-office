@@ -10,7 +10,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.exception.SocketException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
@@ -19,8 +18,6 @@ import jakarta.annotation.Nullable;
 import java.math.BigDecimal;
 import java.net.SocketTimeoutException;
 import java.net.URI;
-
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +28,6 @@ public class FeeService {
     private static final String FEE_API_EVENT_TYPE_CAVEAT = "miscellaneous";
     private final FeeServiceConfiguration feeServiceConfiguration;
     private final RestTemplate restTemplate;
-    private final AppInsights appInsights;
     private final FeatureToggleService featureToggleService;
 
     private static <T> T nonNull(@Nullable T result) {
@@ -65,7 +61,6 @@ public class FeeService {
 
     public FeeResponse getApplicationFeeResponse(BigDecimal amountInPound) throws SocketTimeoutException {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
-        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url",uri.toString()));
         ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             return buildZeroValueFee();
@@ -102,7 +97,6 @@ public class FeeService {
 
     public FeeResponse getCaveatFeesData() {
         URI uri = buildUri(FEE_API_EVENT_TYPE_CAVEAT, "0");
-        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url",uri.toString()));
         ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             return buildZeroValueFee();
