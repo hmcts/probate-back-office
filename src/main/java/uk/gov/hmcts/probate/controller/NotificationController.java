@@ -236,7 +236,6 @@ public class NotificationController {
         BindingResult bindingResult,
         HttpServletRequest request) throws NotificationClientException {
         logRequest(request.getRequestURI(), callbackRequest);
-        log.info("start-delayed-notify-period started");
         notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
         notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
         caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequest);
