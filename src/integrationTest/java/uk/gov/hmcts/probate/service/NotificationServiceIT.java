@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
@@ -146,9 +145,6 @@ class NotificationServiceIT {
 
     @Autowired
     private LocalDateToWelshStringConverter localDateToWelshStringConverter;
-
-    @MockBean
-    private AppInsights appInsights;
 
     @MockBean
     private SendEmailResponse sendEmailResponse;

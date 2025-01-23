@@ -12,7 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
@@ -32,8 +31,6 @@ class StandingSearchControllerIT {
     @Autowired
     private TestUtils testUtils;
 
-    @MockBean
-    private AppInsights appInsights;
 
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;

@@ -217,7 +217,6 @@ public class BusinessValidationController {
                         stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
                 response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
             } else {
-                log.info("Selected No to Hmrc letter");
                 response = callbackResponseTransformer.transformCase(callbackRequest, Optional.empty());
             }
         }
@@ -372,7 +371,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
-        log.info("case-stopped started");
+        log.info("case-stopped started for case: {}", callbackRequest.getCaseDetails().getId());
 
         caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
@@ -399,7 +398,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
-        log.info("case-escalated started");
+        log.info("case-escalated started for case: {}", callbackRequest.getCaseDetails().getId());
 
         caseEscalatedService.caseEscalated(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
@@ -436,7 +435,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
-        log.info("resolve-case-worker-escalated started");
+        log.info("resolve-case-worker-escalated started for case: {}", callbackRequest.getCaseDetails().getId());
 
         caseEscalatedService.setResolveCaseWorkerEscalatedDate(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
@@ -463,7 +462,7 @@ public class BusinessValidationController {
                                                              HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
-        log.info("superuser change state  started");
+        log.info("superuser change state  started for case: {}", callbackRequest.getCaseDetails().getId());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
@@ -488,7 +487,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> changeDob(@RequestBody CallbackRequest callbackRequest,
                                                       HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
-        log.info("superuser change Dob");
+        log.info("superuser change Dob for case: {}", callbackRequest.getCaseDetails().getId());
         pre1900DOBValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.changeDob(callbackRequest);
         return ResponseEntity.ok(response);
@@ -529,7 +528,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> rollbackDataMigration(@RequestBody CallbackRequest callbackRequest,
                                                             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
-        log.info("Rollback Data migration");
+        log.info("Rollback Data migration for case: {}", callbackRequest.getCaseDetails().getId());
         CallbackResponse response = callbackResponseTransformer.rollback(callbackRequest);
         return ResponseEntity.ok(response);
     }
@@ -705,7 +704,6 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/invalidEvent", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> invalidEvent(@RequestBody CallbackRequest callbackRequest) {
-        log.info("invalid creation event");
         List<String> errors = Arrays.asList(businessValidationMessageService.generateError(INVALID_CREATION_EVENT,
                 "invalidCreationEvent").getMessage(), businessValidationMessageService
                 .generateError(INVALID_CREATION_EVENT, "invalidCreationEventWelsh").getMessage());
@@ -719,7 +717,6 @@ public class BusinessValidationController {
     @PostMapping(path = "/use-caveat-notification-event", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> useCaveatEvent() {
-        log.info("Use Caveat Notification event");
         List<String> errors = Arrays.asList(businessValidationMessageService
                 .generateError(USE_DIFFERENT_EVENT, "caveatNotificationEvent").getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()
@@ -732,7 +729,6 @@ public class BusinessValidationController {
     @PostMapping(path = "/use-assemble-letter-event", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> useAssembleLetterEvent() {
-        log.info("Use Assemble Letter event");
         List<String> errors = Arrays.asList(businessValidationMessageService
                 .generateError(USE_DIFFERENT_EVENT, "AssembleLetterEvent").getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()

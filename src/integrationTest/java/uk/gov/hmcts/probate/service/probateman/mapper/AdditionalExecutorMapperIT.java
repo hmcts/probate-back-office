@@ -4,11 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
-import uk.gov.hmcts.probate.service.probateman.mapper.AdditionalExecutorMapper;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
@@ -34,8 +31,6 @@ class AdditionalExecutorMapperIT {
     private static final String GRANTEE4_FORENAMES = "GR4FN1 GRFN2";
     private static final String GRANTEE4_SURNAME = "GR4SN";
     private static final String GRANTEE4_ADDRESS = "GR4AddL1, GR4AddL2, GR4AddL3, GR4AddPC";
-    @MockBean
-    AppInsights appInsights;
     @Autowired
     private AdditionalExecutorMapper additionalExecutorMapper;
 
