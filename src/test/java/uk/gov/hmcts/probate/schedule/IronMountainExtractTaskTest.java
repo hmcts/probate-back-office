@@ -30,7 +30,7 @@ class IronMountainExtractTaskTest {
 
     @InjectMocks
     private IronMountainExtractTask ironMountainExtractTask;
-    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+    private static final String DATE = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
     private String adhocDate = "2022-09-05";
 
     @Test
@@ -40,8 +40,8 @@ class IronMountainExtractTaskTest {
         ironMountainExtractTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform iron mountain data extract from date finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(date);
-        verify(ironMountainDataExtractServiceData).performIronMountainExtractForDate(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
+        verify(ironMountainDataExtractServiceData).performIronMountainExtractForDate(DATE);
     }
 
     @Test
@@ -59,18 +59,18 @@ class IronMountainExtractTaskTest {
     @Test
     void shouldThrowClientExceptionWithBadRequestForIronMountainExtractWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
-                .dateValidator(date);
+                .dateValidator(DATE);
         ironMountainExtractTask.run();
-        verify(dataExtractDateValidator).dateValidator(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
         verifyNoInteractions(ironMountainDataExtractServiceData);
     }
 
     @Test
     void shouldThrowExceptionForIronMountainExtract() {
         doThrow(new NullPointerException()).when(dataExtractDateValidator)
-                .dateValidator(date);
+                .dateValidator(DATE);
         ironMountainExtractTask.run();
-        verify(dataExtractDateValidator).dateValidator(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
         verifyNoInteractions(ironMountainDataExtractServiceData);
     }
 

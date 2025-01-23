@@ -30,7 +30,7 @@ class GrantDelayedExtractTaskTest {
 
     @InjectMocks
     private GrantDelayedExtractTask grantDelayedExtractTask;
-    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+    private static final String DATE = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
     private String adhocDate = "2022-09-05";
 
     @Test
@@ -40,8 +40,8 @@ class GrantDelayedExtractTaskTest {
         grantDelayedExtractTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform grant delayed data extract from date finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(date);
-        verify(grantNotificationService).handleGrantDelayedNotification(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
+        verify(grantNotificationService).handleGrantDelayedNotification(DATE);
     }
 
     @Test
@@ -59,18 +59,18 @@ class GrantDelayedExtractTaskTest {
     @Test
     void shouldThrowClientExceptionWithBadRequestForGrantDelayedExtractWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
-                .dateValidator(date);
+                .dateValidator(DATE);
         grantDelayedExtractTask.run();
-        verify(dataExtractDateValidator).dateValidator(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
         verifyNoInteractions(grantNotificationService);
     }
 
     @Test
     void shouldThrowExceptionForGrantDelayedExtract() {
         doThrow(new NullPointerException()).when(dataExtractDateValidator)
-                .dateValidator(date);
+                .dateValidator(DATE);
         grantDelayedExtractTask.run();
-        verify(dataExtractDateValidator).dateValidator(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
         verifyNoInteractions(grantNotificationService);
     }
 

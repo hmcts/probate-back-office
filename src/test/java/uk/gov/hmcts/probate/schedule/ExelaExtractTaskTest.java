@@ -30,7 +30,7 @@ class ExelaExtractTaskTest {
 
     @InjectMocks
     private ExelaExtractTask exelaExtractTask;
-    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+    private static final String DATE = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
     private String adhocDate = "2022-09-05";
     private String adhocToDate = "2022-09-10";
 
@@ -41,8 +41,8 @@ class ExelaExtractTaskTest {
         exelaExtractTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform exela data extract from date finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(date, date);
-        verify(exelaDataExtractService).performExelaExtractForDateRange(date, date);
+        verify(dataExtractDateValidator).dateValidator(DATE, DATE);
+        verify(exelaDataExtractService).performExelaExtractForDateRange(DATE, DATE);
     }
 
     @Test
@@ -73,18 +73,18 @@ class ExelaExtractTaskTest {
     @Test
     void shouldThrowClientExceptionWithBadRequestForHmrcExtractWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
-                .dateValidator(date, date);
+                .dateValidator(DATE, DATE);
         exelaExtractTask.run();
-        verify(dataExtractDateValidator).dateValidator(date, date);
+        verify(dataExtractDateValidator).dateValidator(DATE, DATE);
         verifyNoInteractions(exelaDataExtractService);
     }
 
     @Test
     void shouldThrowExceptionForHmrcExtract() {
         doThrow(new NullPointerException()).when(dataExtractDateValidator)
-                .dateValidator(date, date);
+                .dateValidator(DATE, DATE);
         exelaExtractTask.run();
-        verify(dataExtractDateValidator).dateValidator(date, date);
+        verify(dataExtractDateValidator).dateValidator(DATE, DATE);
         verifyNoInteractions(exelaDataExtractService);
     }
 

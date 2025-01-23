@@ -30,7 +30,7 @@ class GrantAwaitingDocumentationExtractTaskTest {
 
     @InjectMocks
     private GrantAwaitingDocumentationExtractTask grantAwaitingDocumentationExtractTask;
-    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+    private static final String DATE = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
     private String adhocDate = "2022-09-05";
 
     @Test
@@ -41,8 +41,8 @@ class GrantAwaitingDocumentationExtractTaskTest {
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform grant awaiting documentation data extract from date finished",
                 responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(date);
-        verify(grantNotificationService).handleAwaitingDocumentationNotification(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
+        verify(grantNotificationService).handleAwaitingDocumentationNotification(DATE);
     }
 
     @Test
@@ -61,18 +61,18 @@ class GrantAwaitingDocumentationExtractTaskTest {
     @Test
     void shouldThrowClientExceptionWithBadRequestForGrantAwaitingDocumentationExtractWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
-                .dateValidator(date);
+                .dateValidator(DATE);
         grantAwaitingDocumentationExtractTask.run();
-        verify(dataExtractDateValidator).dateValidator(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
         verifyNoInteractions(grantNotificationService);
     }
 
     @Test
     void shouldThrowExceptionForGrantAwaitingDocumentationExtract() {
         doThrow(new NullPointerException()).when(dataExtractDateValidator)
-                .dateValidator(date);
+                .dateValidator(DATE);
         grantAwaitingDocumentationExtractTask.run();
-        verify(dataExtractDateValidator).dateValidator(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
         verifyNoInteractions(grantNotificationService);
     }
 
