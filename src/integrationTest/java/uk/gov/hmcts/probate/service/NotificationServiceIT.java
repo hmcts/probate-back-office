@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
@@ -146,9 +145,6 @@ class NotificationServiceIT {
 
     @Autowired
     private LocalDateToWelshStringConverter localDateToWelshStringConverter;
-
-    @MockBean
-    private AppInsights appInsights;
 
     @MockBean
     private SendEmailResponse sendEmailResponse;
@@ -2029,6 +2025,31 @@ class NotificationServiceIT {
     }
 
     @Test
+    void verifysendsendSealedAndCertifiedEmail()
+            throws NotificationClientException, BadRequestException {
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
+                .build(), LAST_MODIFIED, ID);
+        notificationService.sendSealedAndCertifiedEmail(caseDetails);
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caseDetails.getData().getDeceasedFullName());
+
+        verify(notificationClient).sendEmail(
+                eq("sealed-and-certified"),
+                eq("SealedAndCertified@probate-test.com"),
+                eq(personalisation),
+                eq("1"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
     void verifySendNocEmail()
             throws NotificationClientException, BadRequestException {
 
@@ -2151,7 +2172,7 @@ class NotificationServiceIT {
     void verifyEmailPreview()
             throws NotificationClientException {
 
-        when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
@@ -2166,6 +2187,6 @@ class NotificationServiceIT {
                 .build(), LAST_MODIFIED, ID);
         notificationService.emailPreview(caseDetails);
 
-        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+        verify(pdfManagementService).generateDocmosisDocumentAndUpload(any(), eq(SENT_EMAIL));
     }
 }

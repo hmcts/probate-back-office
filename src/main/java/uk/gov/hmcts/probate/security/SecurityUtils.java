@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +23,6 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
-
-import static com.microsoft.applicationinsights.boot.dependencies.apachecommons.lang3.StringUtils.isBlank;
 
 @Component
 @Slf4j
@@ -214,7 +213,7 @@ public class SecurityUtils {
     }
 
     public String getBearerToken(String token) {
-        if (isBlank(token)) {
+        if (StringUtils.isBlank(token)) {
             return token;
         }
 
@@ -222,7 +221,7 @@ public class SecurityUtils {
     }
 
     public String authenticate(String authHeader) throws InvalidTokenException {
-        if (isBlank(authHeader)) {
+        if (StringUtils.isBlank(authHeader)) {
             throw new InvalidTokenException("Provided S2S token is missing or invalid");
         }
         String bearerAuthToken = getBearerToken(authHeader);
@@ -247,5 +246,9 @@ public class SecurityUtils {
     public List<String> getRoles(String authToken) {
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
         return userInfo.getRoles();
+    }
+
+    public UserInfo getUserInfo(String authToken) {
+        return idamApi.retrieveUserInfo(authToken);
     }
 }

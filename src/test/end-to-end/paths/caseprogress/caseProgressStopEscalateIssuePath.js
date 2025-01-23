@@ -146,6 +146,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Escalate to registrar', caseRef);
+        await I.caseProgressSelectEscalateReason();
         await I.caseProgressClickSubmitAndSignOut();
 
         await I.logInfo(scenarioName, 'Check progress tab for Case escalated', caseRef);

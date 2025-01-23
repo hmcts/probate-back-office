@@ -168,7 +168,28 @@ public class NotificationService {
 
         TemplatePreview previewResponse =
                 notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
-        return getGeneratedDocument(previewResponse, null, SENT_EMAIL);
+        return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
+    }
+
+    public Document sendSealedAndCertifiedEmail(CaseDetails caseDetails) throws NotificationClientException {
+        CaseData caseData = caseDetails.getData();
+        String reference = caseDetails.getId().toString();
+        String deceasedName = caseData.getDeceasedFullName();
+
+        String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
+                .get(caseData.getApplicationType()).getSealedAndCertified();
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getSealedAndCertifiedPersonalisation(caseDetails.getId(),
+                         deceasedName);
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
+
+        log.info("Sealed And Certified get the email response for case {}", caseDetails.getId());
+
+        SendEmailResponse response = notificationClientService.sendEmail(templateId,
+                emailAddresses.getSealedAndCertifiedEmail(), personalisation, reference);
+
+        log.info("Send Sealed And Certified completed for case {}", caseDetails.getId());
+        return getGeneratedSentEmailDocument(response, emailAddresses.getSealedAndCertifiedEmail(), SENT_EMAIL);
     }
 
     public Document sendNocEmail(State state, CaseDetails caseDetails) throws NotificationClientException {
@@ -422,10 +443,10 @@ public class NotificationService {
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
-                .body(markdownTransformationService.toHtml(response.getBody()))
+                .body(response.getBody())
                 .build();
-
-        return pdfManagementService.generateAndUpload(sentEmail, docType);
+        Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
+        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {

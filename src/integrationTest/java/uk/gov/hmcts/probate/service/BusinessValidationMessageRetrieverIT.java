@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import static java.util.Locale.UK;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,9 +19,6 @@ class BusinessValidationMessageRetrieverIT {
 
     @Autowired
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
-
-    @MockBean
-    AppInsights appInsights;
 
     @Test
     void shouldGetMessage() {

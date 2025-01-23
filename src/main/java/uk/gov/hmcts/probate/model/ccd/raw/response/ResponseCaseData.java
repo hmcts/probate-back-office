@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -179,6 +180,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String paperForm;
     private final String channelChoice;
     private final String languagePreferenceWelsh;
+    private final RegistrarEscalateReason registrarEscalateReason;
 
     //paper form case creator fields
     private final String primaryApplicantSecondPhoneNumber;
@@ -396,6 +398,8 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String deceasedAliasFirstNameOnWill;
     private final String deceasedAliasLastNameOnWill;
     private String matches;
+    private final String lastModifiedCaseworkerForenames;
+    private final String lastModifiedCaseworkerSurname;
     private final String informationNeeded;
     private final String informationNeededByPost;
     private final DocumentLink emailPreview;
