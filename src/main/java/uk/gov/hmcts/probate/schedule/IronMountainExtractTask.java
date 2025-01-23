@@ -18,7 +18,7 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 @RequiredArgsConstructor
 public class IronMountainExtractTask implements Runnable {
 
-    private final DataExtractDateValidator dataExtractDateValidator;
+    private final DataExtractDateValidator dataExtractionDateValidator;
     private final IronMountainDataExtractService ironMountainDataExtractService;
 
     @Value("${adhocSchedulerJobDate}")
@@ -34,7 +34,7 @@ public class IronMountainExtractTask implements Runnable {
         }
         log.info("Calling perform iron mountain data extract from date {}", fromDate);
         try {
-            dataExtractDateValidator.dateValidator(fromDate);
+            dataExtractionDateValidator.dateValidator(fromDate);
             log.info("Perform iron mountain data extract from date started");
             ironMountainDataExtractService.performIronMountainExtractForDate(fromDate);
             log.info("Perform iron mountain data extract from date finished");
