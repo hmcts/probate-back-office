@@ -36,8 +36,10 @@ public class GrantDelayedExtractTask {
         try {
             dataExtractDateValidator.dateValidator(fromDate);
             log.info("Perform grant delayed data extract from date started");
-            GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(fromDate);
-            log.info("Grants delayed attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
+            GrantScheduleResponse grantScheduleResponse = grantNotificationService
+                    .handleGrantDelayedNotification(fromDate);
+            log.info("Grants delayed attempted for: {} grants, {}", grantScheduleResponse
+                            .getScheduleResponseData().size(),
                     StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
             log.info("Perform grant delayed data extract from date finished");
         } catch (ApiClientException e) {

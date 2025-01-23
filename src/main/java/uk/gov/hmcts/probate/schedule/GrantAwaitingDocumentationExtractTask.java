@@ -26,8 +26,8 @@ public class GrantAwaitingDocumentationExtractTask {
     public String adHocJobFromDate;
 
     public void run() {
-        log.info("Scheduled task GrantAwaitingDocumentation started to" +
-                " extract data for Grant Awaiting Documentation Job");
+        log.info("Scheduled task GrantAwaitingDocumentation started to"
+                + " extract data for Grant Awaiting Documentation Job");
         String fromDate = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
         if (StringUtils.isNotEmpty(adHocJobFromDate)) {
             fromDate = adHocJobFromDate;
