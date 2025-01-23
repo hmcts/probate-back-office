@@ -18,7 +18,7 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 @RequiredArgsConstructor
 public class ExelaExtractTask implements Runnable {
 
-    private final DataExtractDateValidator dataExtractDateValidator;
+    private final DataExtractDateValidator dataExtractJobDateValidator;
     private final ExelaDataExtractService exelaDataExtractService;
 
     @Value("${adhocSchedulerJobDate}")
@@ -38,7 +38,7 @@ public class ExelaExtractTask implements Runnable {
         }
         log.info("Calling perform Exela data extract from date, to date {} {}", fromDate, toDate);
         try {
-            dataExtractDateValidator.dateValidator(fromDate, toDate);
+            dataExtractJobDateValidator.dateValidator(fromDate, toDate);
             log.info("Perform Exela data extract from date started");
             exelaDataExtractService.performExelaExtractForDateRange(fromDate, toDate);
             log.info("Perform Exela data extract from date finished");
