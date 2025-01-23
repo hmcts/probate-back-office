@@ -22,18 +22,18 @@ public class ExelaExtractTask implements Runnable {
     private final ExelaDataExtractService exelaDataExtractService;
 
     @Value("${adhocSchedulerJobDate}")
-    public String adHocJobFromDate;
+    public String adHocJobStartDate;
     @Value("${adhocSchedulerJobToDate}")
-    public String adHocJobToDate;
+    public String adHocJobEndDate;
 
     @Override
     public void run() {
         log.info("Scheduled task ExelaExtractTask started to extract data for Hmrc");
         String fromDate = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
         String toDate = fromDate;
-        if (StringUtils.isNotEmpty(adHocJobFromDate)) {
-            fromDate = adHocJobFromDate;
-            toDate = StringUtils.isNotEmpty(adHocJobToDate) ? adHocJobToDate : adHocJobFromDate;
+        if (StringUtils.isNotEmpty(adHocJobStartDate)) {
+            fromDate = adHocJobStartDate;
+            toDate = StringUtils.isNotEmpty(adHocJobEndDate) ? adHocJobEndDate : adHocJobStartDate;
             log.info("Running ExelaDataExtractTask with Adhoc dates {} {}", fromDate, toDate);
         }
         log.info("Calling perform Exela data extract from date, to date {} {}", fromDate, toDate);

@@ -47,7 +47,7 @@ class ExelaExtractTaskTest {
 
     @Test
     void shouldPerformHmrcExtractForAdhocDate() {
-        exelaExtractTask.adHocJobFromDate = "2022-09-05";
+        exelaExtractTask.adHocJobStartDate = "2022-09-05";
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform exela data extract from date finished");
         exelaExtractTask.run();
@@ -59,8 +59,8 @@ class ExelaExtractTaskTest {
 
     @Test
     void shouldPerformHmrcExtractForAdhocDateRange() {
-        exelaExtractTask.adHocJobFromDate = "2022-09-05";
-        exelaExtractTask.adHocJobToDate = "2022-09-10";
+        exelaExtractTask.adHocJobStartDate = "2022-09-05";
+        exelaExtractTask.adHocJobEndDate = "2022-09-10";
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform exela data extract from date finished");
         exelaExtractTask.run();
