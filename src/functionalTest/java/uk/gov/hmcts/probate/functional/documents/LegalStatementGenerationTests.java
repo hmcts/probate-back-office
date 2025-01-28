@@ -494,7 +494,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     void verifySoTPartSuccAllRenouncingWording() throws IOException {
         final String response = generateSotDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
-            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
+            .contains("The profit-sharing partners and stakeholders in the firm"
                 + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will at the "
                 + "date of death of the deceased have renounced probate."));
     }
