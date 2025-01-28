@@ -1400,6 +1400,7 @@ public class CallbackResponseTransformer {
             .expectedResponseDate(caseData.getExpectedResponseDate())
             .citizenResponses(caseData.getCitizenResponses())
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
+            .executorsNamed(caseData.getExecutorsNamed())
             .isSaveAndClose(caseData.getIsSaveAndClose());
 
         if (featureToggleService.enableNewAliasTransformation()) {
