@@ -5,11 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.exception.model.InvalidTokenException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -51,9 +49,6 @@ class PaymentControllerUnitTest {
 
     @InjectMocks
     private PaymentController underTest;
-
-    @MockBean
-    private AppInsights appInsights;
 
     private static final String s2sAuthToken = "s2sAuthToken";
 

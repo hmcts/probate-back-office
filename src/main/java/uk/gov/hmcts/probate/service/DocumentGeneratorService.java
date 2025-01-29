@@ -207,7 +207,7 @@ public class DocumentGeneratorService {
         }
     }
 
-    private DocumentType getSolicitorSoTDocType(CallbackRequest callbackRequest) {
+    public DocumentType getSolicitorSoTDocType(CallbackRequest callbackRequest) {
         DocumentType documentType;
         switch (callbackRequest.getCaseDetails().getData().getCaseType()) {
             case ADMON_WILL:

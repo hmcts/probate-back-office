@@ -159,6 +159,17 @@ class IronMountainFileServiceTest {
     }
 
     @Test
+    void testAdColligendaBonaCaseType() throws IOException {
+        caseData.caseType("adColligendaBona");
+        caseData.applicationType(ApplicationType.SOLICITOR);
+        builtData = caseData.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        caseList.add(createdCase);
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
+                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainAdColligendBona.txt")));
+    }
+
+    @Test
     void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
         builtData = caseData2.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
