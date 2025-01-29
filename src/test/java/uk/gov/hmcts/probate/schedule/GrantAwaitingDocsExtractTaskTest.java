@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 
 @ExtendWith(SpringExtension.class)
-class GrantAwaitingDocumentationExtractTaskTest {
+class GrantAwaitingDocsExtractTaskTest {
 
     @Mock
     private DataExtractDateValidator dataExtractDateValidator;
@@ -29,7 +29,7 @@ class GrantAwaitingDocumentationExtractTaskTest {
     private GrantNotificationService grantNotificationService;
 
     @InjectMocks
-    private GrantAwaitingDocumentationExtractTask grantAwaitingDocumentationExtractTask;
+    private GrantAwaitingDocsExtractTask grantAwaitingDocsExtractTask;
     private static final String DATE = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
     private String adhocDate = "2022-09-05";
 
@@ -37,7 +37,7 @@ class GrantAwaitingDocumentationExtractTaskTest {
     void shouldPerformGrantAwaitingDocumentationExtractYesterdayDate() {
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform grant awaiting documentation data extract from date finished");
-        grantAwaitingDocumentationExtractTask.run();
+        grantAwaitingDocsExtractTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform grant awaiting documentation data extract from date finished",
                 responseEntity.getBody());
@@ -47,10 +47,10 @@ class GrantAwaitingDocumentationExtractTaskTest {
 
     @Test
     void shouldPerformGrantAwaitingDocumentationExtractForAdhocDate() {
-        grantAwaitingDocumentationExtractTask.adHocJobFromDate = "2022-09-05";
+        grantAwaitingDocsExtractTask.adHocJobFromDate = "2022-09-05";
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform grant awaiting documentation data extract from date finished");
-        grantAwaitingDocumentationExtractTask.run();
+        grantAwaitingDocsExtractTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform grant awaiting documentation data extract from date finished",
                 responseEntity.getBody());
@@ -62,7 +62,7 @@ class GrantAwaitingDocumentationExtractTaskTest {
     void shouldThrowClientExceptionWithBadRequestForGrantAwaitingDocumentationExtractWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
                 .dateValidator(DATE);
-        grantAwaitingDocumentationExtractTask.run();
+        grantAwaitingDocsExtractTask.run();
         verify(dataExtractDateValidator).dateValidator(DATE);
         verifyNoInteractions(grantNotificationService);
     }
@@ -71,7 +71,7 @@ class GrantAwaitingDocumentationExtractTaskTest {
     void shouldThrowExceptionForGrantAwaitingDocumentationExtract() {
         doThrow(new NullPointerException()).when(dataExtractDateValidator)
                 .dateValidator(DATE);
-        grantAwaitingDocumentationExtractTask.run();
+        grantAwaitingDocsExtractTask.run();
         verify(dataExtractDateValidator).dateValidator(DATE);
         verifyNoInteractions(grantNotificationService);
     }
