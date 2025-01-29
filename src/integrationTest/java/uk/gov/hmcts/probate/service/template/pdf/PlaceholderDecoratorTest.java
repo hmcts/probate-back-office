@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.insights.AppInsights;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -27,9 +25,6 @@ class PlaceholderDecoratorTest {
     private static final String GRANT_ISSUED_DATE_IN_WELSH = "grantIssuedDateInWelsh";
     private static final String GRANT_REISSUED_DATE = "reissueDate";
     private static final String GRANT_REISSUED_DATE_IN_WELSH = "grantReissuedDateInWelsh";
-
-    @MockBean
-    private AppInsights appInsights;
 
     @Autowired
     private PlaceholderDecorator placeholderDecorator;

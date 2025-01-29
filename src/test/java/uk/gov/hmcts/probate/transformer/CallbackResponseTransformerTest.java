@@ -18,6 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -129,6 +130,8 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
@@ -142,6 +145,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
@@ -1353,6 +1358,25 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldSetSendLetterIdAndPdfSizeInWelshAdColligendaBonaGrant() {
+        Document grantDocument = Document.builder().documentType(WELSH_AD_COLLIGENDA_BONA_GRANT).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
+
+        assertCommon(callbackResponse);
+
+        assertEquals("2", callbackResponse.getData().getBulkPrintPdfSize());
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintSendLetterId());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail,
+                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+    }
+
+    @Test
     void shouldSetSendLetterIdAndPdfSizeGrantReissue() {
         Document grantDocument = Document.builder().documentType(DIGITAL_GRANT_REISSUE).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
@@ -1424,6 +1448,30 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldSetSendLetterIdAndPdfSizeAdColligendaBonaGrantReissue() {
+        Document grantDocument = Document.builder().documentType(AD_COLLIGENDA_BONA_GRANT_REISSUE).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
+
+        assertCommon(callbackResponse);
+
+        assertEquals("abc123", callbackResponse.getData()
+                .getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(AD_COLLIGENDA_BONA_GRANT_REISSUE.getTemplateName(),
+                callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail,
+                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+
+    }
+
+    @Test
     void shouldSetSendLetterIdAndPdfSizeWelshGrantReissue() {
         Document grantDocument = Document.builder().documentType(WELSH_DIGITAL_GRANT_REISSUE).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
@@ -1488,6 +1536,29 @@ class CallbackResponseTransformerTest {
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
         assertEquals(grantIssuedSentEmail,
             callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+    }
+
+    @Test
+    void shouldSetSendLetterIdAndPdfSizeWelshAdColligendaBonaReissue() {
+        Document grantDocument = Document.builder().documentType(WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2", CASEWORKER_USERINFO);
+
+        assertCommon(callbackResponse);
+
+        assertEquals("abc123", callbackResponse.getData()
+                .getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE.getTemplateName(),
+                callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail,
+                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
         assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
         assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
     }
@@ -2684,6 +2755,16 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldChangeRegistrarEscalateReasonReferrals() {
+        caseDataBuilder.registrarEscalateReason(RegistrarEscalateReason.REFERRALS);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+        assertEquals(RegistrarEscalateReason.REFERRALS, callbackResponse.getData().getRegistrarEscalateReason());
+    }
+
+    @Test
     void shouldTransformUniqueCode() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .uniqueProbateCodeId(uniqueCode);
@@ -3206,6 +3287,21 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse =
             underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
                     CASEWORKER_USERINFO);
+
+        assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    void shouldAddBPInformationForAdColligendaBonaReprint() {
+        Document document = Document.builder()
+                .documentType(AD_COLLIGENDA_BONA_GRANT)
+                .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse =
+                underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize,
+                        CASEWORKER_USERINFO);
 
         assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));

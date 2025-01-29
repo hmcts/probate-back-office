@@ -38,6 +38,8 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
@@ -48,6 +50,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_DRAFT;
@@ -203,7 +207,7 @@ public class DocumentGeneratorService {
         }
     }
 
-    private DocumentType getSolicitorSoTDocType(CallbackRequest callbackRequest) {
+    public DocumentType getSolicitorSoTDocType(CallbackRequest callbackRequest) {
         DocumentType documentType;
         switch (callbackRequest.getCaseDetails().getData().getCaseType()) {
             case ADMON_WILL:
@@ -233,11 +237,11 @@ public class DocumentGeneratorService {
     private void expireDrafts(CallbackRequest callbackRequest) {
         log.info("Expiring drafts");
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-            ADMON_WILL_GRANT_REISSUE_DRAFT, WELSH_DIGITAL_GRANT_DRAFT, WELSH_ADMON_WILL_GRANT_DRAFT,
-            WELSH_INTESTACY_GRANT_DRAFT,
+            AD_COLLIGENDA_BONA_GRANT_DRAFT, DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+            ADMON_WILL_GRANT_REISSUE_DRAFT, AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT, WELSH_DIGITAL_GRANT_DRAFT,
+            WELSH_ADMON_WILL_GRANT_DRAFT, WELSH_INTESTACY_GRANT_DRAFT, WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT,
             WELSH_DIGITAL_GRANT_REISSUE_DRAFT, WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT,
-            WELSH_INTESTACY_GRANT_REISSUE_DRAFT};
+            WELSH_INTESTACY_GRANT_REISSUE_DRAFT, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }

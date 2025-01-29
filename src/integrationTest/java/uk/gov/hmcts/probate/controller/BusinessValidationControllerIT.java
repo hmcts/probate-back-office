@@ -150,6 +150,7 @@ class BusinessValidationControllerIT {
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String CHANGE_CASE_STATE_URL = "/case/changeCaseState";
+    private static final String RESOLVE_CAVEAT_STOP_URL = "/case/resolveCaveatStopState";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
@@ -990,6 +991,17 @@ class BusinessValidationControllerIT {
 
         mockMvc.perform(post(CHANGE_CASE_STATE_URL).header(AUTH_HEADER, AUTH_TOKEN)
                         .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOCaseMatchingIssueGrant"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void shouldSetStateToBOCaseMatchingIssueGrantAfterResolveCaveatStopState() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadResolveCaveatStopStateForCaseMatchingIssueGrant.json");
+
+        mockMvc.perform(post(RESOLVE_CAVEAT_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOCaseMatchingIssueGrant"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));

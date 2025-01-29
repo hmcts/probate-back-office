@@ -52,8 +52,6 @@ public class OCRFormsController {
     public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable("form-type") String formType,
                                                                       @Valid @RequestBody OCRRequest ocrRequest) {
         log.info("Validate ocr data for form type: {}", formType);
-        logOcrRequest(ocrRequest);
-
         FormType.isFormTypeValid(formType);
 
         List<OCRField> ocrFields = ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields());
@@ -72,13 +70,5 @@ public class OCRFormsController {
                 .status(warnings.isEmpty() ? ValidationResponseStatus.SUCCESS : ValidationResponseStatus.WARNINGS)
                 .build();
         return ResponseEntity.ok(validationResponse);
-    }
-
-    private void logOcrRequest(OCRRequest ocrRequest) {
-        StringBuilder sb = new StringBuilder();
-        for (OCRField ocrField : ocrRequest.getOcrFields()) {
-            sb.append(ocrField.getName() + ":" + ocrField.getValue() + ",");
-        }
-        log.info(sb.toString());
     }
 }
