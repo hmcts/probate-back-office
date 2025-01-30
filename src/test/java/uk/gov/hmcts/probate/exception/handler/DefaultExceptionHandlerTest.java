@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.exception.SocketException;
+import uk.gov.hmcts.probate.exception.TextFileBuilderException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
@@ -177,5 +178,16 @@ class DefaultExceptionHandlerTest {
         assertEquals(OK, response.getStatusCode());
         assertEquals(1, response.getBody().getErrors().size());
         assertEquals("Message", response.getBody().getErrors().get(0));
+    }
+
+    @Test
+    void shouldReturnTextFileBuilderException() {
+        final TextFileBuilderException ex = new TextFileBuilderException(EXCEPTION_MESSAGE, null);
+
+        ResponseEntity<CallbackResponse> response = underTest.handle(ex);
+
+        assertEquals(OK, response.getStatusCode());
+        assertEquals(1, response.getBody().getErrors().size());
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getErrors().get(0));
     }
 }

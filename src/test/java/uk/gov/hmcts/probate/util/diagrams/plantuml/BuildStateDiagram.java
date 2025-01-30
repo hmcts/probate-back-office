@@ -133,7 +133,7 @@ class BuildStateDiagram {
         String footer = "@enduml";
         allRows.add(footer);
         textFileBuilderService.createFile(allRows, ",", CASE_TYPE_PREFIX + caseType
-                + "_" + filteredByRoleName + "_state.txt");
+                + "_" + filteredByRoleName + "_state.txt", "BuildStateDiagram");
     }
 
     private List<String> getAllInformationRows(Event event) {
