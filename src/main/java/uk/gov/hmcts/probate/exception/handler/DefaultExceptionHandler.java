@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.exception.SocketException;
+import uk.gov.hmcts.probate.exception.TextFileBuilderException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
@@ -131,6 +132,15 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         ValidationResponse validationResponse =
             ValidationResponse.builder().status(ValidationResponseStatus.ERRORS).errors(errors).build();
         return ResponseEntity.ok(validationResponse);
+    }
+
+    @ExceptionHandler(TextFileBuilderException.class)
+    public ResponseEntity<CallbackResponse> handle(TextFileBuilderException exception) {
+        log.error("Error from TestFileBuilderService", exception);
+
+        List<String> errors = List.of(exception.getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
+        return ResponseEntity.ok(callbackResponse);
     }
 
 }

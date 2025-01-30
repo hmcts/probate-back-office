@@ -32,7 +32,7 @@ public class IronMountainFileService extends BaseFileService {
             prepareData(ccdCase.getId(), ccdCase.getData(), fileData);
         }
         log.info("Created IronMountain file=" + fileName);
-        return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
+        return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName, "IronMountain");
     }
 
     private void prepareData(Long id, CaseData data, ImmutableList.Builder<String> fileData) {
