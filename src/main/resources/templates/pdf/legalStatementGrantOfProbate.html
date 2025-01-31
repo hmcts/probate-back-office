@@ -271,10 +271,10 @@
             </span></p>
             {% endif %}
 
-            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
+            {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
             <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.</span></p>
-            {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+            {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
             <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
                 that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.</span></p>
