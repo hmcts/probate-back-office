@@ -17,7 +17,7 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class GrantAwaitingDocsExtractTask {
+public class GrantAwaitingDocsExtractTask implements Runnable {
 
     private final DataExtractDateValidator dataExtractDateValidator;
     private final GrantNotificationService grantNotificationService;
