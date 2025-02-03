@@ -5,14 +5,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @Slf4j
@@ -21,64 +27,85 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
 
     public static final String IHT_PROBATE_NET_GREATER_THAN_GROSS = "ihtProbateNetGreaterThanGross";
     public static final String IHT_ESTATE_NET_GREATER_THAN_GROSS = "ihtEstateNetGreaterThanGross";
-
     public static final String
             IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE = "ihtEstateNetQualifyingValueGreaterThanGross";
     public static final String
             IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE = "ihtEstateNetQualifyingValueGreaterThanNet";
 
     public static final String IHT_VALUE_VALIDATION = "ihtValueValidation";
+    public static final String WELSH = "Welsh";
+    private static final String IHT400 = "IHT400";
 
     private final BusinessValidationMessageService businessValidationMessageService;
+    private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private static final String REGEX_PATTERN = "^\\d\\d*$";
 
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
-        return Optional.ofNullable(ccdData.getIht())
-                .map(iht -> {
-                    List<String> codes = new ArrayList<>();
-                    if ((iht.getGrossValue() != null && !iht.getGrossValue().toPlainString().matches(REGEX_PATTERN))
-                            || (iht.getNetValue() != null && !iht.getNetValue().toPlainString().matches(REGEX_PATTERN))
-                            || (iht.getIhtFormNetValue() != null && !iht.getIhtFormNetValue().toPlainString()
-                            .matches(REGEX_PATTERN))
-                            || (iht.getIhtEstateGrossValue() != null && !iht.getIhtEstateGrossValue().toPlainString()
-                            .matches(REGEX_PATTERN))
-                            || (iht.getIhtEstateNetValue() != null && !iht.getIhtEstateNetValue()
-                            .toPlainString().matches(REGEX_PATTERN))) {
-                        codes.add(IHT_VALUE_VALIDATION);
-                    }
-                    if (iht.getNetValue() != null && iht.getGrossValue() != null) {
-                        if (iht.getNetValue().compareTo(iht.getGrossValue()) > 0) {
-                            codes.add(IHT_PROBATE_NET_GREATER_THAN_GROSS);
-                        }
-                    }
+        InheritanceTax iht = ccdData.getIht();
+        if (iht == null) {
+            return Collections.emptyList();
+        }
 
-                    if (iht.getIhtEstateNetValue() != null && iht.getIhtEstateGrossValue() != null) {
-                        if (iht.getIhtEstateNetValue().compareTo(iht.getIhtEstateGrossValue()) > 0) {
-                            codes.add(IHT_ESTATE_NET_GREATER_THAN_GROSS);
-                        }
-                    }
+        List<String> codes = new ArrayList<>();
+        validateIhtValues(iht, codes);
+        validateGrossAndNetComparisons(ccdData, codes);
 
-                    if (iht.getIhtFormNetValue() != null && iht.getGrossValue() != null) {
-                        if (iht.getIhtFormNetValue().compareTo(iht.getGrossValue()) > 0) {
-                            codes.add(IHT_PROBATE_NET_GREATER_THAN_GROSS);
-                        }
-                    }
-                    if (iht.getIhtEstateNetValue() != null && iht.getIhtEstateNetQualifyingValue() != null) {
-                        if (iht.getIhtEstateNetQualifyingValue().compareTo(iht.getIhtEstateNetValue()) > 0) {
-                            codes.add(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE);
-                        }
-                    }
-                    if (iht.getIhtEstateGrossValue() != null && iht.getIhtEstateNetQualifyingValue() != null) {
-                        if (iht.getIhtEstateNetQualifyingValue().compareTo(iht.getIhtEstateGrossValue()) > 0) {
-                            codes.add(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE);
-                        }
-                    }
-                    return codes;
-                })
-                .map(List::stream)
-                .orElse(Stream.empty())
+        return codes.stream()
                 .map(code -> businessValidationMessageService.generateError(BUSINESS_ERROR, code))
                 .collect(Collectors.toList());
+    }
+
+    private void validateIhtValues(InheritanceTax iht, List<String> codes) {
+        if (isInvalidIhtValue(iht.getGrossValue())
+            || isInvalidIhtValue(iht.getNetValue())
+            || isInvalidIhtValue(iht.getIhtFormNetValue())
+            || isInvalidIhtValue(iht.getIhtEstateGrossValue())
+            || isInvalidIhtValue(iht.getIhtEstateNetValue())) {
+            addValidationMessageCodes(codes, IHT_VALUE_VALIDATION);
+        }
+    }
+
+    private boolean isInvalidIhtValue(BigDecimal value) {
+        return value != null && !value.toPlainString().matches(REGEX_PATTERN);
+    }
+
+    private void validateGrossAndNetComparisons(CCDData ccdData, List<String> codes) {
+        InheritanceTax iht = ccdData.getIht();
+        if (shouldValidateIhtFormNetValue(ccdData)) {
+            validateComparison(iht.getIhtFormNetValue(), iht.getGrossValue(), codes,
+                    IHT_PROBATE_NET_GREATER_THAN_GROSS);
+        } else {
+            validateComparison(iht.getNetValue(), iht.getGrossValue(), codes,
+                    IHT_PROBATE_NET_GREATER_THAN_GROSS);
+        }
+        validateComparison(iht.getIhtEstateNetValue(), iht.getIhtEstateGrossValue(), codes,
+                IHT_ESTATE_NET_GREATER_THAN_GROSS);
+        validateComparison(iht.getIhtEstateNetQualifyingValue(), iht.getIhtEstateNetValue(), codes,
+                IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE);
+        validateComparison(iht.getIhtEstateNetQualifyingValue(), iht.getIhtEstateGrossValue(), codes,
+                IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE);
+    }
+
+    private void validateComparison(BigDecimal comparisonValue, BigDecimal referenceValue,
+                                    List<String> codes, String code) {
+        if (comparisonValue != null && referenceValue != null && comparisonValue.compareTo(referenceValue) > 0) {
+            addValidationMessageCodes(codes, code);
+        }
+    }
+
+    private void addValidationMessageCodes(List<String> codes, String code) {
+        codes.add(code);
+        codes.add(code + WELSH);
+    }
+
+    private boolean shouldValidateIhtFormNetValue(CCDData ccdData) {
+        boolean isOnOrAfterSwitchDate =
+                exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ccdData.getDeceasedDateOfDeath());
+        return (SOLICITOR.toString().equals(ccdData.getApplicationType())
+                && CHANNEL_CHOICE_DIGITAL.equalsIgnoreCase(ccdData.getChannelChoice()))
+            && ((!isOnOrAfterSwitchDate && IHT400.equals(ccdData.getIht().getFormName()))
+                || (isOnOrAfterSwitchDate && IHT400.equals(ccdData.getIht().getIhtFormEstate())
+                    && YES.equalsIgnoreCase(ccdData.getIht().getIhtFormEstateValuesCompleted())));
     }
 }

@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
@@ -181,6 +182,7 @@ class CCDDataTransformerTest {
         additionalExecutorsNotApplying.add(new CollectionMember<>(addNot1));
         additionalExecutorsNotApplying.add(new CollectionMember<>(addNot2));
         when(caseDataMock.getAdditionalExecutorsNotApplying()).thenReturn(additionalExecutorsNotApplying);
+        when(caseDataMock.getChannelChoice()).thenReturn(CHANNEL_CHOICE_DIGITAL);
     }
 
     @Test
@@ -471,6 +473,7 @@ class CCDDataTransformerTest {
         assertEquals(true, ccdData.getExecutors().get(0).isApplying());
         assertEquals(false, ccdData.getExecutors().get(1).isApplying());
         assertEquals("Renunciation", ccdData.getExecutors().get(1).getReasonNotApplying());
+        assertEquals("Digital", ccdData.getChannelChoice());
     }
 
     private void assertCaseSubmissionDate(CCDData ccdData) {

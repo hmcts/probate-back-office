@@ -22,6 +22,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 public class CaseworkersSolicitorPostcodeValidationRule implements ValidationRule {
 
     private static final String SOLICITOR_ADDRESS_MISSING_POST_CODE = "solicitorAddressMissingPostcode";
+    private static final String SOLICITOR_ADDRESS_MISSING_POST_CODE_WELSH = "solicitorAddressMissingPostcodeWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -40,6 +41,7 @@ public class CaseworkersSolicitorPostcodeValidationRule implements ValidationRul
         if (SOLICITOR.toString().equals(ccdData.getApplicationType())
                 && StringUtils.isEmpty(solicitorAddress.getPostCode())) {
             allErrorCodes.add(SOLICITOR_ADDRESS_MISSING_POST_CODE);
+            allErrorCodes.add(SOLICITOR_ADDRESS_MISSING_POST_CODE_WELSH);
         }
 
         return allErrorCodes;

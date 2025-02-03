@@ -10,7 +10,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -72,8 +71,6 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private CoreCaseDataApi coreCaseDataApi;
     @MockBean
     private CaveatQueryService caveatQueryServiceMock;
-    @MockBean
-    private AppInsights appInsights;
     @MockBean
     private SendEmailResponse sendEmailResponse;
     @Mock

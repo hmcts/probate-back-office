@@ -14,7 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -54,8 +53,6 @@ class NextStepsControllerIT {
 
     private CaseDataBuilder  caseDataBuilder = CaseDataTestBuilder.withDefaults();
 
-    @MockBean
-    AppInsights appInsights;
     @MockBean
     FeeService feeService;
     @MockBean
@@ -113,7 +110,8 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmName"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm name cannot be empty"));
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm name "
+                        + "cannot be empty"));
     }
 
     @Test
@@ -130,7 +128,8 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorAddress.postCode"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("The deceased postcode cannot be empty"));
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("The deceased postcode "
+                        + "cannot be empty"));
     }
 
     @Test
@@ -146,7 +145,8 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTForenames"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT forenames cannot be empty"));
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT forenames "
+                        + "cannot be empty"));
     }
 
     @Test
@@ -162,7 +162,8 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTSurname"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT surname cannot be empty"));
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT surname "
+                        + "cannot be empty"));
     }
 
 

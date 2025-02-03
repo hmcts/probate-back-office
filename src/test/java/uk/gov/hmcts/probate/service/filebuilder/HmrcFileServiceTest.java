@@ -320,6 +320,16 @@ class HmrcFileServiceTest {
     }
 
     @Test
+    void testAdColligendaBonaCaseType() throws IOException {
+        caseDataSolictor.caseType("adColligendaBona");
+        builtData = caseDataSolictor.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L);
+        caseList.add(createdCase);
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+                is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcAdColligendaBona.txt")));
+    }
+
+    @Test
     void testHmrcFileBuiltForPersonal() throws IOException {
         builtData = caseDataPersonal.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);

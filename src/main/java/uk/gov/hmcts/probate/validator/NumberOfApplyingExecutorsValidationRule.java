@@ -19,6 +19,7 @@ import java.util.Locale;
 public class NumberOfApplyingExecutorsValidationRule {
 
     private static final String TOO_MANY_EXECUTORS = "tooManyExecutors";
+    private static final String TOO_MANY_EXECUTORS_WELSH = "tooManyExecutorsWelsh";
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final int MAX_EXECUTORS = 4;
     private final ExecutorsTransformer executorsTransformer;
@@ -26,6 +27,8 @@ public class NumberOfApplyingExecutorsValidationRule {
     public void validate(CaseDetails caseDetails) {
         String[] args = {caseDetails.getId().toString()};
         String userMessage = businessValidationMessageRetriever.getMessage(TOO_MANY_EXECUTORS, args, Locale.UK);
+        String userMessageWelsh = businessValidationMessageRetriever.getMessage(TOO_MANY_EXECUTORS_WELSH, args,
+                Locale.UK);
 
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying =
             executorsTransformer.createCaseworkerApplyingList(caseDetails.getData());
@@ -37,7 +40,8 @@ public class NumberOfApplyingExecutorsValidationRule {
 
         if (executors.size() > MAX_EXECUTORS) {
             throw new BusinessValidationException(userMessage,
-                "The total number executors applying cannot exceed 4 for case id " + caseDetails.getId());
+                "The total number executors applying cannot exceed 4 for case id " + caseDetails.getId(),
+                    userMessageWelsh);
         }
     }
 }

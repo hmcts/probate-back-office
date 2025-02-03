@@ -1,0 +1,90 @@
+{
+  "case_details": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "CaseCreated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "case_data": {
+      "documentUploadIssue": "Yes",
+      "channelChoice": "Digital",
+      "citizenResponseCheckbox": "Yes",
+      "informationNeeded": "Yes",
+      "informationNeededByPost": "No",
+      "otherExecutorExists": "No",
+      "outsideUKGrantCopies": null,
+      "applicationType": "Personal",
+      "deceasedAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "caseType": "intestacy",
+      "paperForm": "No",
+      "boSendToBulkPrint": "No",
+      "deceasedAnyOtherNames": "No",
+      "solsFeeAccountNumber": "1234",
+      "willHasCodicils": "No",
+      "deceasedDateOfBirth": "1900-01-01",
+      "willAccessOriginal": "Yes",
+      "boEmailRequestInfoNotification": "Yes",
+      "willExists": "Yes",
+      "deceasedDateOfDeath": "2000-01-01",
+      "solsSOTNeedToUpdate": "No",
+      "primaryApplicantEmailAddress": "primary@probate-test.com",
+      "primaryApplicantForenames": "Executor name 1",
+      "primaryApplicantAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "solsSolicitorEmail": "solicitor@probate-test.com",
+      "deceasedDomicileInEngWales": "Yes",
+      "ihtNetValue": "800000",
+      "boStopDetails": "stop details",
+      "deceasedSurname": "Deceased Last Name",
+      "solsLegalStatementDocument": {
+        "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
+        "document_filename": "legal_statement.pdf",
+        "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
+      },
+      "extraCopiesOfGrant": null,
+      "solsPaymentMethods": "fee account",
+      "deceasedForenames": "Deceased First Name",
+      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantHasAlias": "No",
+      "solsSOTName": "name",
+      "ihtGrossValue": "1000000",
+      "ihtFormId": "IHT205",
+      "registryLocation": "Birmingham",
+      "primaryApplicantSurname": "Executor Last Name 1",
+      "solsSolicitorAppReference": "1231-3984-3949-0300",
+      "solsSOTJobTitle": "job title"
+    }
+  }
+}

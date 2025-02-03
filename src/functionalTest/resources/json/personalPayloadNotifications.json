@@ -28,8 +28,11 @@
       "otherExecutorExists": "No",
       "boSendToBulkPrint": "No",
       "paperForm": "No",
+      "channelChoice": "Digital",
+      "informationNeededByPost": "Yes",
       "outsideUKGrantCopies": null,
       "applicationType": "Personal",
+      "boCaseStopCaveatId": "1691481848274878",
       "deceasedAddress": {
         "County": "",
         "Country": "",

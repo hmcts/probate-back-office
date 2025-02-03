@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.transformer;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,8 +16,10 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecuto
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -116,6 +119,7 @@ class CaseDataTransformerTest {
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequestMock);
         verify(evidenceHandledTransformer, times(0)).updateEvidenceHandled(caseDataMock);
     }
+
 
     @Test
     void shouldTransformEvidenceHandledForManualCreateByCWCasePrinted() {
@@ -245,6 +249,45 @@ class CaseDataTransformerTest {
     }
 
     @Test
+    void shouldTransformFormSelectionForDiedAfterIHT400() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormEstateValuesCompleted("Yes")
+                .ihtEstateGrossValue(new BigDecimal(new BigInteger("100"), 0))
+                .ihtEstateNetValue(new BigDecimal(new BigInteger("100"), 0))
+                .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("100"), 0)).build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+        assertThat(caseDataMock.getIhtFormEstate(), is("IHT400"));
+        assertThat(caseDataMock.getIhtEstateGrossValue(), CoreMatchers.is(nullValue()));
+        assertThat(caseDataMock.getIhtEstateNetValue(), CoreMatchers.is(nullValue()));
+        assertThat(caseDataMock.getIhtEstateNetQualifyingValue(), CoreMatchers.is(nullValue()));
+    }
+
+    @Test
+    void shouldTransformFormSelectionForDiedAfterIhtNA() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("NA")
+                .ihtFormEstateValuesCompleted("Yes")
+                .ihtEstateGrossValue(new BigDecimal(new BigInteger("100"), 0))
+                .ihtEstateNetValue(new BigDecimal(new BigInteger("100"), 0))
+                .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("100"), 0)).build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+        assertThat(caseDataMock.getIhtFormEstate(), is("NA"));
+        assertThat(caseDataMock.getIhtEstateGrossValue(), is(new BigDecimal(new BigInteger("100"), 0)));
+        assertThat(caseDataMock.getIhtEstateNetValue(), is(new BigDecimal(new BigInteger("100"), 0)));
+        assertThat(caseDataMock.getIhtEstateNetQualifyingValue(),
+                is(new BigDecimal(new BigInteger("100"), 0)));
+    }
+
+    @Test
     void shouldTransformCaseDataForPaperForm() {
         caseDataMock = CaseData.builder().build();
 
@@ -253,4 +296,32 @@ class CaseDataTransformerTest {
         caseDataTransformer.transformCaseDataForPaperForm(callbackRequestMock);
         assertThat(caseDataMock.getChannelChoice(), is("PaperForm"));
     }
+
+    @Test
+    void shouldTransformIhtFormIdNullForDiedAfter() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT205").build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
+        assertThat(caseDataMock.getIhtFormId(), CoreMatchers.is(nullValue()));
+    }
+
+    @Test
+    void shouldTransformIhtFormEstateNullForDiedBefore() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT205").build();
+
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
+        assertThat(caseDataMock.getIhtFormEstate(), CoreMatchers.is(nullValue()));
+    }
+
 }

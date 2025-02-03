@@ -22,6 +22,7 @@ public class EmailTemplates {
     private String caveatRaisedCtsc;
     private String caveatRaisedSols;
     private String requestInformation;
+    private String requestInformationByPost;
     private String redeclarationSot;
     private String caveatWithdrawn;
     private String grantIssuedIntestacy;
@@ -29,4 +30,5 @@ public class EmailTemplates {
     private String grantAwaitingDocumentation;
     private String hmrcExtract;
     private String noticeOfChangeReceived;
+    private String sealedAndCertified;
 }

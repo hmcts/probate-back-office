@@ -5,7 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 import uk.gov.hmcts.probate.model.DocumentCaseType;
@@ -13,6 +15,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
+
+import java.util.List;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -215,5 +222,40 @@ class HandOffLegacyTransformerTest {
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(YES, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
+    }
+
+    @Test
+    void shouldSetHandOffReasonWhenHandOffFlagIsYes() {
+        caseDataBuilder
+                .caseHandedOffToLegacySite(null)
+                .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ)
+                .applicationType(SOLICITOR);
+
+        CollectionMember<HandoffReason> collectionMember = new CollectionMember<>(null, HandoffReason.builder()
+                .caseHandoffReason(HandoffReasonId.TRUST_CORPORATION).build());
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetailsMock)).thenReturn(true);
+        when(handOffLegacyService.setHandoffReason(caseDetailsMock)).thenReturn(List.of(collectionMember));
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
+
+        assertEquals(HandoffReasonId.TRUST_CORPORATION,
+                callbackRequestMock.getCaseDetails().getData().getBoHandoffReasonList().get(0).getValue()
+                        .getCaseHandoffReason());
+    }
+
+    @Test
+    void shouldNotSetHandOffReasonWhenHandOffFlagIsNo() {
+        caseDataBuilder
+                .caseHandedOffToLegacySite(null)
+                .titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetailsMock)).thenReturn(false);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
+
+        assertNull(callbackRequestMock.getCaseDetails().getData().getBoHandoffReasonList());
     }
 }

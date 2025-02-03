@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -33,12 +34,14 @@ import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationServic
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,8 +49,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -110,6 +115,8 @@ class NotificationControllerUnitTest {
     private HandOffLegacyTransformer handOffLegacyTransformerMock;
     @Mock
     EvidenceUploadService evidenceUploadService;
+    @Mock
+    private UserInfoService userInfoService;
 
     @InjectMocks
     NotificationController notificationController;
@@ -122,7 +129,17 @@ class NotificationControllerUnitTest {
     private CallbackResponse callbackResponse;
     private Document document;
 
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
+
+    @BeforeEach
+    void setUp() {
+        when(userInfoService.getCaseworkerInfo()).thenReturn(CASEWORKER_USERINFO);
+    }
 
     @Test
     void shouldSendApplicationReceived() throws NotificationClientException {
@@ -198,7 +215,8 @@ class NotificationControllerUnitTest {
     void shouldSendDocumentsReceived() throws NotificationClientException {
         setUpMocks(DOCUMENTS_RECEIVED);
         notificationController.sendDocumentReceivedNotification(callbackRequest);
-        verify(documentsReceivedNotificationService).handleDocumentReceivedNotification(callbackRequest);
+        verify(documentsReceivedNotificationService)
+                .handleDocumentReceivedNotification(callbackRequest, CASEWORKER_USERINFO);
     }
 
 
@@ -208,7 +226,8 @@ class NotificationControllerUnitTest {
         HttpServletRequest requestMock = mock(HttpServletRequest.class);
         BindingResult bindingResultMock = mock(BindingResult.class);
         ResponseEntity<CallbackResponse> responseEntity =
-                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock, requestMock);
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
+                        requestMock);
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -227,7 +246,7 @@ class NotificationControllerUnitTest {
         callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
         when(eventValidationService.validateEmailRequest(any(), any())).thenReturn(callbackResponse);
         when(notificationService.sendEmail(any(), any())).thenReturn(document);
-        when(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(any()))
+        when(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(any(), any()))
                 .thenReturn(callbackResponse);
 
     }
@@ -353,6 +372,31 @@ class NotificationControllerUnitTest {
     }
 
     @Test
+    void shouldSealedAndCertifiedEmail() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        document = Document.builder()
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("fileName")
+                .documentGeneratedBy("generatedBy")
+                .documentLink(
+                        DocumentLink.builder().documentUrl("url").documentFilename("file")
+                                .documentBinaryUrl("binary").build())
+                .documentType(DocumentType.SENT_EMAIL)
+                .build();
+        callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(eventValidationService.validateNocEmail(any(), any())).thenReturn(callbackResponse);
+        when(notificationService.sendSealedAndCertifiedEmail(any())).thenReturn(document);
+        ResponseEntity<CallbackResponse> stringResponseEntity =
+                notificationController.sendNOCEmailNotification(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
     void shouldSendNocEmail() throws NotificationClientException {
         setUpMocks(NOC);
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
@@ -381,6 +425,36 @@ class NotificationControllerUnitTest {
         when(notificationService.sendNocEmail(any(), any())).thenReturn(document);
         ResponseEntity<CallbackResponse> stringResponseEntity =
                 notificationController.sendNOCEmailNotification(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSendEmailPreview()  {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        document = Document.builder()
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("fileName")
+                .documentGeneratedBy("generatedBy")
+                .documentLink(
+                        DocumentLink.builder().documentUrl("url").documentFilename("file")
+                                .documentBinaryUrl("binary").build())
+                .documentType(DocumentType.SENT_EMAIL)
+                .build();
+        callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(informationRequestService.emailPreview(any())).thenReturn(document);
+        ResponseEntity<CallbackResponse> stringResponseEntity =
+                notificationController.emailPreview(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
     }
 

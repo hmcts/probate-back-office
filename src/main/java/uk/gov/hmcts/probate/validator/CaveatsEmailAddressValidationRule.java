@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,10 +21,12 @@ class CaveatsEmailAddressValidationRule implements CaveatsEmailAddressNotificati
 
     @Override
     public List<FieldErrorResponse> validate(CaveatData ccdData) {
-        Set<FieldErrorResponse> errors = new HashSet<>();
+        Set<FieldErrorResponse> errors = new LinkedHashSet<>();
 
         if (ccdData.getCaveatorEmailAddress().isEmpty()) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "emailNotProvidedCaveats"));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "emailNotProvidedCaveatsWelsh"));
         }
         return new ArrayList<>(errors);
     }

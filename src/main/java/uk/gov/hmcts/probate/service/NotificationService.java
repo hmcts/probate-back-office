@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
@@ -45,6 +44,8 @@ import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
 import jakarta.validation.Valid;
+import uk.gov.service.notify.TemplatePreview;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -56,6 +57,7 @@ import java.util.Optional;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 import static uk.gov.service.notify.NotificationClient.prepareUpload;
 
@@ -72,7 +74,6 @@ public class NotificationService {
     private static final String INVALID_PERSONALISATION_ERROR_MESSAGE =
             "Markdown Link detected in case data, stop sending notification email.";
 
-    @Autowired
     private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
     private final RegistriesProperties registriesProperties;
@@ -90,8 +91,8 @@ public class NotificationService {
     private final NotificationClientService notificationClientService;
     private final DocumentManagementService documentManagementService;
     private final PersonalisationValidationRule personalisationValidationRule;
-    @Autowired
-    private BusinessValidationMessageService businessValidationMessageService;
+    private final BusinessValidationMessageService businessValidationMessageService;
+
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
     private Long grantDelayedNotificationPeriodDays;
     @Value("${notifications.grantAwaitingDocumentationNotificationPeriodDays}")
@@ -112,13 +113,13 @@ public class NotificationService {
         Registry registry = getRegistry(caseData.getRegistryLocation(), caseData.getLanguagePreference());
         log.info(
             "template params, state={}, applicationType()={}, regLocation={}, language={}, for case: "
-                + "{}, origin: {}, channelChoice: {}",
+                + "{}, origin: {}, channelChoice: {}, informationNeededByPost: {}",
             state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
                 caseDetails.getId(), caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get(),
-                caseData.getChannelChoice());
+                caseData.getChannelChoice(), caseData.getInformationNeededByPost());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
             caseData.getRegistryLocation(), caseData.getLanguagePreference(),
-            caseOriginOptional.orElse(null),caseData.getChannelChoice());
+            caseOriginOptional.orElse(null), caseData.getChannelChoice(), caseData.getInformationNeededByPost());
         log.info("Got templateId: {}", templateId);
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
@@ -127,12 +128,7 @@ public class NotificationService {
         if (state == state.CASE_STOPPED_CAVEAT) {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
         }
-        List<String> invalidPersonalisation = personalisationValidationRule.validatePersonalisation(personalisation);
-        if (!invalidPersonalisation.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caseDetails.getId(), invalidPersonalisation);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        }
+
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
             if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
                 personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
@@ -142,9 +138,13 @@ public class NotificationService {
                         String.join(" ", caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()));
             }
         }
+
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         String reference = caseData.getSolsSolicitorAppReference();
+
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
+
         log.info("Personlisation complete now get the email repsonse");
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
@@ -153,33 +153,43 @@ public class NotificationService {
         return getSentEmailDocument(state, emailAddress, response);
     }
 
-
-    public Document sendEmail(State state, CaseDetails caseDetails, ExecutorsApplyingNotification executor)
-        throws NotificationClientException {
+    public Document emailPreview(CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-            caseData.getRegistryLocation(), caseData.getLanguagePreference());
-        String emailAddress = executor.getEmail();
+        String templateId = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION,
+            caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
+                null, caseData.getChannelChoice(), caseData.getInformationNeededByPost());
         Map<String, Object> personalisation =
-            grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
-                registry);
-        String reference = caseData.getSolsSolicitorAppReference();
-        String emailReplyToId = registry.getEmailReplyToId();
+                grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
+                        registry);
 
-        personalisation.replace(PERSONALISATION_APPLICANT_NAME, executor.getName());
-        List<String> invalidPersonalisation = personalisationValidationRule.validatePersonalisation(personalisation);
-        if (!invalidPersonalisation.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caseDetails.getId(), invalidPersonalisation);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        }
-        SendEmailResponse response =
-            getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
-                caseDetails.getId());
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
-        return getSentEmailDocument(state, emailAddress, response);
+        TemplatePreview previewResponse =
+                notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
+        return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
+    }
+
+    public Document sendSealedAndCertifiedEmail(CaseDetails caseDetails) throws NotificationClientException {
+        CaseData caseData = caseDetails.getData();
+        String reference = caseDetails.getId().toString();
+        String deceasedName = caseData.getDeceasedFullName();
+
+        String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
+                .get(caseData.getApplicationType()).getSealedAndCertified();
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getSealedAndCertifiedPersonalisation(caseDetails.getId(),
+                         deceasedName);
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
+
+        log.info("Sealed And Certified get the email response for case {}", caseDetails.getId());
+
+        SendEmailResponse response = notificationClientService.sendEmail(templateId,
+                emailAddresses.getSealedAndCertifiedEmail(), personalisation, reference);
+
+        log.info("Send Sealed And Certified completed for case {}", caseDetails.getId());
+        return getGeneratedSentEmailDocument(response, emailAddresses.getSealedAndCertifiedEmail(), SENT_EMAIL);
     }
 
     public Document sendNocEmail(State state, CaseDetails caseDetails) throws NotificationClientException {
@@ -197,6 +207,9 @@ public class NotificationService {
                 grantOfRepresentationPersonalisationService.getNocPersonalisation(caseDetails.getId(),
                         solicitorName, deceasedName);
         String emailReplyToId = registry.getEmailReplyToId();
+
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
+
         log.info("Personlisation complete now get the email response");
 
         SendEmailResponse response =
@@ -221,6 +234,9 @@ public class NotificationService {
                         CAVEAT_SOLICITOR_NAME, deceasedName);
         String emailReplyToId = registry.getEmailReplyToId();
         String reference = caveatData.getSolsSolicitorAppReference();
+
+        doCommonNotificationServiceHandling(personalisation, caveatDetails.getId());
+
         log.info("Personlisation complete now get the email response");
 
         SendEmailResponse response =
@@ -248,15 +264,11 @@ public class NotificationService {
         }
 
         String reference = caveatDetails.getId().toString();
-        List<String> invalidPersonalisation = personalisationValidationRule.validatePersonalisation(personalisation);
-        if (!invalidPersonalisation.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caveatDetails.getId(), invalidPersonalisation);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        }
-        SendEmailResponse response;
-        response = notificationClientService.sendEmail(caveatDetails.getId(), templateId, emailAddress,
-            personalisation, reference);
+
+        doCommonNotificationServiceHandling(personalisation, caveatDetails.getId());
+
+        SendEmailResponse response = notificationClientService.sendEmail(
+                caveatDetails.getId(), templateId, emailAddress, personalisation, reference);
         log.info("Sent email with template {} for caveat number {}", templateId, caveatDetails.getId());
 
         DocumentType documentType;
@@ -325,17 +337,14 @@ public class NotificationService {
         grantOfRepresentationPersonalisationService.addSingleAddressee(personalisation, executor.getName());
 
         personalisation.put(PERSONALISATION_SOT_LINK, prepareUpload(sotDocument));
-        List<String> invalidPersonalisation = personalisationValidationRule.validatePersonalisation(personalisation);
-        if (!invalidPersonalisation.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caseDetails.getId(), invalidPersonalisation);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        }
+
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType(),
                 caseDetails.getData().getRegistryLocation(),
                 caseDetails.getData().getLanguagePreference());
         String emailReplyToId = registry.getEmailReplyToId();
+
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, executor.getEmail(), personalisation, reference,
@@ -357,11 +366,15 @@ public class NotificationService {
         } else if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
             throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
                 "emailNotProvidedSOLS").getMessage(),
-                "Invalid email exception: No email address provided for application type SOLS: " + caseDetails.getId());
+                "Invalid email exception: No email address provided for application type SOLS: " + caseDetails.getId(),
+                    businessValidationMessageService.generateError(BUSINESS_ERROR,
+                            "emailNotProvidedSOLSWelsh").getMessage());
         } else {
             throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
                 "emailNotProvidedPA").getMessage(),
-                "Invalid email exception: No email address provided for application type PA: " + caseDetails.getId());
+                "Invalid email exception: No email address provided for application type PA: " + caseDetails.getId(),
+                    businessValidationMessageService.generateError(BUSINESS_ERROR,
+                            "emailNotProvidedPAWelsh").getMessage());
         }
 
         return sentEmail;
@@ -389,15 +402,13 @@ public class NotificationService {
             registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
-        List<String> invalidPersonalisation = personalisationValidationRule.validatePersonalisation(personalisation);
-        if (!invalidPersonalisation.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caseDetails.getId(), invalidPersonalisation);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        }
+
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String emailAddress = caseDetails.getData().getApplicationType().equals(ApplicationType.PERSONAL)
             ? caseDetails.getData().getPrimaryApplicantEmailAddress() : caseDetails.getData().getSolsSolicitorEmail();
+
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
+
         SendEmailResponse response = notificationClientService.sendEmail(caseDetails.getId(), templateId, emailAddress,
             personalisation, reference);
         log.info("Grant notification email reference response: {}", response.getReference());
@@ -424,6 +435,18 @@ public class NotificationService {
             .build();
 
         return pdfManagementService.generateAndUpload(sentEmail, docType);
+    }
+
+    private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
+                                          DocumentType docType) {
+        SentEmail sentEmail = SentEmail.builder()
+                .sentOn(LocalDateTime.now().format(formatter))
+                .to(emailAddress)
+                .subject(response.getSubject().orElse(""))
+                .body(response.getBody())
+                .build();
+        Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
+        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {
@@ -528,5 +551,30 @@ public class NotificationService {
         return caseData.getRemovedRepresentative() != null
                 ? String.join(" ", caseData.getRemovedRepresentative().getSolicitorFirstName(),
                 caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
+    }
+
+    CommonNotificationResult doCommonNotificationServiceHandling(
+            final Map<String, ?> personalisation,
+            final Long caseId) throws NotificationClientException {
+        final PersonalisationValidationRule.PersonalisationValidationResult validationResult =
+                personalisationValidationRule.validatePersonalisation(personalisation);
+        final Map<String, String> invalidFields = validationResult.invalidFields();
+        final List<String> htmlFields = validationResult.htmlFields();
+
+        if (!invalidFields.isEmpty()) {
+            log.error("Personalisation validation failed for case: {} fields: {}",
+                    caseId, invalidFields);
+            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
+        } else if (!htmlFields.isEmpty()) {
+            log.info("Personalisation validation found HTML for case: {} fields: {}",
+                    caseId, validationResult.htmlFields());
+            return CommonNotificationResult.FOUND_HTML;
+        }
+        return CommonNotificationResult.ALL_OK;
+    }
+
+    enum CommonNotificationResult {
+        ALL_OK,
+        FOUND_HTML;
     }
 }

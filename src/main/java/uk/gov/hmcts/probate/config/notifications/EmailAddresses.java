@@ -14,4 +14,6 @@ public class EmailAddresses {
     private String smeeAndFordEmail;
 
     private String hmrcEmail;
+
+    private String sealedAndCertifiedEmail;
 }

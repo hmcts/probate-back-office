@@ -55,7 +55,7 @@ class NocEmailAddressNotifyValidationRuleTest {
         List<FieldErrorResponse> validationErrors =
                 nocEmailAddressNotifyValidationRule.validate(SOLICITOR, "");
 
-        assertEquals(1, validationErrors.size());
+        assertEquals(2, validationErrors.size());
         assertEquals("solicitor missing", validationErrors.get(0).getMessage());
     }
 

@@ -9,7 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +24,7 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
 
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
-        Set<FieldErrorResponse> errors = new HashSet<>();
+        Set<FieldErrorResponse> errors = new LinkedHashSet<>();
 
         ccdData.getExecutors().stream()
             .filter(Executor::isApplying)
@@ -32,6 +32,8 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
             .forEach(address -> {
                 if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
                     errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorAddressIsNull"));
+                    errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                            "executorAddressIsNullWelsh"));
                 }
             });
 

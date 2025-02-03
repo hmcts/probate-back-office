@@ -1,0 +1,162 @@
+{
+  "case_details": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "CaseCreated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "case_data": {
+        "caseType": "adColligendaBona",
+        "payments": [
+          {
+            "id": "e2767734-6712-4aa9-a9a8-daa614620a02",
+            "value": {
+              "date": null,
+              "amount": null,
+              "method": "pba",
+              "siteId": null,
+              "status": "Success",
+              "reference": "RC-1590-6786-1063-9991",
+              "transactionId": null
+            }
+          }
+        ],
+        "taskList": "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the Probate practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add Probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add deceased details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add application details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the Probate practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Send documents<br/><details class=\"govuk-details\" data-module=\"govuk-details\">\n  <summary class=\"govuk-details__summary\">\n    <span class=\"govuk-details__summary-text\">\n      View the documents needed by HM Courts and Tribunal Service\n    </span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab) or your reference number 1635154574287286 written on a sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li><li>the inheritance tax form IHT207</li></ul>\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">3. Review application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We will authenticate your documents and match them with your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Examine application</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">Your application will update through any of these case states as it is reviewed by our team:</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>Examining</li>\n<li>Case Matching</li>\n<li>Case selected for Quality Assurance</li>\n<li>Ready to issue</li>\n</ul><hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<h2 class=\"govuk-heading-l\">4. Grant of representation</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">This step is completed by HM Courts and Tribunals Service staff.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days after issuing.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n",
+        "totalFee": "15500",
+        "ihtFormId": "IHT207",
+        "paperForm": "No",
+        "willExists": "No",
+        "bulkPrintId": [],
+        "caseMatches": [],
+        "ihtNetValue": "800000",
+        "solsSOTName": "ppfn ppsn",
+        "solsWillType": "NoWill",
+        "ihtGrossValue": "1000000",
+        "solsPBANumber": {
+          "value": {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          "list_items": [
+            {
+              "code": "PBA0082126",
+              "label": "PBA0082126"
+            },
+            {
+              "code": "PBA0083372",
+              "label": "PBA0083372"
+            }
+          ]
+        },
+        "applicationFee": "15500",
+        "feeForUkCopies": "0",
+        "solsSOTSurname": "ppsn",
+        "applicationType": "Solicitor",
+        "dateOfDeathType": "diedOn",
+        "deceasedAddress": {
+          "County": "Greater London",
+          "Country": "United Kingdom",
+          "PostCode": "EC3A 2AD",
+          "PostTown": "London",
+          "AddressLine1": "Dusted Design Partners Ltd",
+          "AddressLine2": "65-68 Leadenhall Street",
+          "AddressLine3": ""
+        },
+        "deceasedSurname": "Eased",
+        "paragraphDetails": [],
+        "registryLocation": "ctsc",
+        "solsSOTForenames": "ppfn",
+        "boSendToBulkPrint": "Yes",
+        "bulkScanEnvelopes": [],
+        "deceasedForenames": "Dec",
+        "executorsApplying": [],
+        "feeForNonUkCopies": "0",
+        "extraCopiesOfGrant": "0",
+        "solsPaymentMethods": "fee account",
+        "solsSolicitorEmail": "1@1.com",
+        "boDocumentsUploaded": [],
+        "deceasedDateOfBirth": "1900-01-01",
+        "deceasedDateOfDeath": "2020-01-01",
+        "solsSOTNeedToUpdate": "No",
+        "solsSolicitorIsExec": "No",
+        "executorsNotApplying": [],
+        "outsideUKGrantCopies": "0",
+        "solsMinorityInterest": "No",
+        "solsSolicitorAddress": {
+          "County": "Greater London",
+          "Country": "United Kingdom",
+          "PostCode": "EC3A 2AD",
+          "PostTown": "London",
+          "AddressLine1": "Dusted Design Partners Ltd",
+          "AddressLine2": "65-68 Leadenhall Street",
+          "AddressLine3": ""
+        },
+        "deceasedAnyOtherNames": "No",
+        "deceasedMaritalStatus": "marriedCivilPartnership",
+        "solsSolicitorFirmName": "Firm",
+        "ihtFormCompletedOnline": "No",
+        "solsCoversheetDocument": {
+          "document_url": "http://dm-store:8080/documents/ba162370-a736-49cc-97e4-242ff7260be8",
+          "document_filename": "solicitorCoverSheet.pdf",
+          "document_binary_url": "http://dm-store:8080/documents/ba162370-a736-49cc-97e4-242ff7260be8/binary"
+        },
+        "primaryApplicantAddress": {
+          "County": "Greater London",
+          "Country": "United Kingdom",
+          "PostCode": "EC3A 2AD",
+          "PostTown": "London",
+          "AddressLine1": "Frederick Gibberd Partnership",
+          "AddressLine2": "117-121 Curtain Road",
+          "AddressLine3": ""
+        },
+        "primaryApplicantSurname": "Appsn",
+        "solsPBAPaymentReference": "REFERENCE",
+        "solsSolicitorIsApplying": "No",
+        "applicationSubmittedDate": "2021-10-25",
+        "primaryApplicantHasAlias": "No",
+        "solsSolicitorWillSignSOT": "Yes",
+        "primaryApplicantForenames": "Appfn",
+        "probateDocumentsGenerated": [],
+        "solsSolicitorAppReference": "REFERENCE",
+        "deceasedDomicileInEngWales": "Yes",
+        "primaryApplicantIsApplying": "Yes",
+        "solsDeceasedAliasNamesList": [],
+        "solsLegalStatementDocument": {
+          "document_url": "http://dm-store:8080/documents/519beecf-0f0d-4d75-bf98-1e10e9a5c00b",
+          "document_filename": "legalStatementIntestacy.pdf",
+          "document_binary_url": "http://dm-store:8080/documents/519beecf-0f0d-4d75-bf98-1e10e9a5c00b/binary"
+        },
+        "boCaveatStopSendToBulkPrint": "Yes",
+        "primaryApplicantPhoneNumber": "123456789",
+        "boRequestInfoSendToBulkPrint": "Yes",
+        "primaryApplicantEmailAddress": "1@1.com",
+        "probateSotDocumentsGenerated": [],
+        "boCaveatStopEmailNotification": "No",
+        "boGrantReissueSendToBulkPrint": "Yes",
+        "probateNotificationsGenerated": [],
+        "boEmailGrantIssuedNotification": "No",
+        "boEmailRequestInfoNotification": "No",
+        "boAssembleLetterSendToBulkPrint": "Yes",
+        "boEmailDocsReceivedNotification": "No",
+        "boEmailGrantReissuedNotification": "No",
+        "solsApplicantRelationshipToDeceased": "SpouseOrCivil"
+      }
+    }
+  }

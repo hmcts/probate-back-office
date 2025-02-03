@@ -5,11 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.exception.model.InvalidTokenException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -19,6 +17,8 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
@@ -49,9 +49,6 @@ class PaymentControllerUnitTest {
 
     @InjectMocks
     private PaymentController underTest;
-
-    @MockBean
-    private AppInsights appInsights;
 
     private static final String s2sAuthToken = "s2sAuthToken";
 
@@ -85,7 +82,7 @@ class PaymentControllerUnitTest {
 
     @Test
     void shouldUpdateTaskList() {
-        when(callbackResponseTransformerMock.updateTaskList(request)).thenReturn(callbackResponse);
+        when(callbackResponseTransformerMock.updateTaskList(request, Optional.empty())).thenReturn(callbackResponse);
         doNothing().when(caseDataTransformerMock).transformCaseDataForEvidenceHandled(request);
         ResponseEntity<CallbackResponse> response = underTest.updateTaskList(request);
 

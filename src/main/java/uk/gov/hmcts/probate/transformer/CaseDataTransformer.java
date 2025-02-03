@@ -56,7 +56,12 @@ public class CaseDataTransformer {
 
 
     public void transformCaseDataForValidateProbate(CallbackRequest callbackRequest) {
-        final var caseData = callbackRequest.getCaseDetails().getData();
+        final var caseDetails = callbackRequest.getCaseDetails();
+        final var caseData = caseDetails.getData();
+
+        solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
+                caseDetails);
+
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
@@ -119,6 +124,15 @@ public class CaseDataTransformer {
         attachDocumentsTransformer.updateDocsReceivedNotificationSent(callbackRequest.getCaseDetails().getData());
     }
 
+    public void transformIhtFormCaseDataByDeceasedDOD(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
+            resetIhtFormId(caseData);
+        } else {
+            resetIhtFormEstate(caseData);
+        }
+    }
+
     public void transformFormCaseData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
@@ -130,6 +144,9 @@ public class CaseDataTransformer {
                 }
             } else if (NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
                 resetIhtFormAndHmrcLetter(caseData);
+            } else if (caseData.getIhtFormEstate() != null && !caseData.getIhtFormEstate().equals("NA")
+                    && YES.equals(caseData.getIhtFormEstateValuesCompleted())) {
+                resetExceptedEstateFields(caseData);
             }
         } else {
             resetIhtFormEstateCompleted(caseData);

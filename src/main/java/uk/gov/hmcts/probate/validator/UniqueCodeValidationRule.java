@@ -26,8 +26,10 @@ public class UniqueCodeValidationRule {
                 .matches(UNIQUE_CODE_REGEX_PATTERN) || !removeSpaces(caseData.getUniqueProbateCodeId()))) {
             String userMessage = businessValidationMessageRetriever
                     .getMessage("uniqueProbateCode", null, Locale.UK);
+            String userMessageWelsh = businessValidationMessageRetriever
+                    .getMessage("uniqueProbateCodeWelsh", null, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "Unique Probate code is invalid: " + caseDetails.getId());
+                    "Unique Probate code is invalid: " + caseDetails.getId(), userMessageWelsh);
         }
     }
 

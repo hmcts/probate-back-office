@@ -17,6 +17,7 @@ public class PartnersAllRenouncingValidator implements TitleAndClearingPageValid
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String ALL_RENOUNCING = "allRenouncing";
+    private static final String ALL_RENOUNCING_WELSH = "allRenouncingWelsh";
 
     @Override
     public void validate(CaseDetails caseDetails) {
@@ -24,6 +25,7 @@ public class PartnersAllRenouncingValidator implements TitleAndClearingPageValid
         var caseData = caseDetails.getData();
         var args = new String[]{caseDetails.getId().toString()};
         String userMessage = businessValidationMessageRetriever.getMessage(ALL_RENOUNCING, args, Locale.UK);
+        String userMessageWelsh = businessValidationMessageRetriever.getMessage(ALL_RENOUNCING_WELSH, args, Locale.UK);
 
         if (NO.equals(caseData.getSolsSolicitorIsExec())
             && YES.equals(caseData.getSolsSolicitorIsApplying())
@@ -32,7 +34,7 @@ public class PartnersAllRenouncingValidator implements TitleAndClearingPageValid
 
             throw new BusinessValidationException(userMessage,
                 "Probate practitioner cannot be applying if part of a group which is "
-                    + "all renouncing for case id " + caseDetails.getId());
+                    + "all renouncing for case id " + caseDetails.getId(), userMessageWelsh);
         }
     }
 }
