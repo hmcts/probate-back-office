@@ -1979,6 +1979,8 @@ public class CallbackResponseTransformer {
     }
 
     private String getOtherExecutorExists(CaseData caseData) {
+        log.info("getOtherExecutorExists called");
+        log.info("getOtherExecutorExists: " + caseData.getOtherExecutorExists());
         if (PERSONAL.equals(caseData.getApplicationType())) {
             return
                 caseData.getAdditionalExecutorsApplying() == null || caseData.getAdditionalExecutorsApplying().isEmpty()
