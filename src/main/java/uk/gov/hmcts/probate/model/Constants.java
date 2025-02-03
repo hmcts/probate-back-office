@@ -21,6 +21,8 @@ public final class Constants {
     public static final String EXTRACT_PROBATE = "PROBATE";
     public static final String EXTRACT_ADMINISTRATION = "ADMINISTRATION";
     public static final String EXTRACT_ADMON_WILL = "ADMON/WILL";
+
+    public static final String EXTRACT_AD_COLLIGENDA_BONA = "AdCol";
     public static final String PRINCIPAL_REGISTRY = "Principal Registry";
     public static final String DOC_SUBTYPE_WILL = "will";
     public static final String DOC_TYPE_COVERSHEET = "coversheet";

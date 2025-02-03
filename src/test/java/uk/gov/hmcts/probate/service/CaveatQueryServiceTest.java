@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.exception.ClientDataException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
@@ -39,9 +38,6 @@ class CaveatQueryServiceTest {
 
     @Mock
     private HttpHeadersFactory headers;
-
-    @Mock
-    private AppInsights appInsights;
 
     @Mock
     private CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
