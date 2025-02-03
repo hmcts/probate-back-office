@@ -30,14 +30,12 @@ public class DocmosisPdfGenerationService {
     private TemplateProperties templateProperties;
 
 
-    @Value("${docmosis.service.endpoint}/api/render")
+    @Value("${docmosis.service.uri}/api/render")
     private String pdfServiceEndpoint;
 
     @Value("${docmosis.service.accessKey}")
     private String pdfServiceAccessKey;
 
-    @Value("${docmosis.service.uri}")
-    private String pdfServiceUri;
 
     public byte[] generateDocFrom(String templateName, Map<String, Object> placeholders) {
         checkArgument(!isNullOrEmpty(templateName), "document generation template cannot be empty");
@@ -46,8 +44,6 @@ public class DocmosisPdfGenerationService {
         log.info("Making request to docmosis pdf service to generate pdf document with word template [{}], "
                         + "placeholders of size [{}], pdfServiceEndpoint [{}] ",
                 templateName, placeholders.size(), pdfServiceEndpoint);
-
-        log.info("debug log docmosis.service.uri@pdfServiceUri ******-->{}<----", pdfServiceUri);
 
         try {
             ResponseEntity<byte[]> response =
