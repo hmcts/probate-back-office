@@ -1861,10 +1861,11 @@ public class CallbackResponseTransformer {
         if (!YES.equals(caseData.getOtherExecutorExists())) {
             builder
                     .solsAdditionalExecutorList(null);
-            log.info("getOtherExecutorExists called");
-            log.info("getOtherExecutorExists: {}", caseData.getOtherExecutorExists());
         }
-        log.info("post check");
+
+        log.info(caseData.getOtherExecutorExists());
+        log.info(caseData.getAdditionalExecutorsApplying().toString());
+        log.info(caseData.getSolsAdditionalExecutorList().toString());
 
         if (caseData.getPrimaryApplicantAliasReason() != null) {
             if (caseData.getPrimaryApplicantAliasReason().equalsIgnoreCase(OTHER)) {
