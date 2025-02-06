@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -49,6 +51,9 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.validation.Valid;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,7 +97,6 @@ public class DocumentController {
     private final DocumentManagementService documentManagementService;
     private final EvidenceUploadService evidenceUploadService;
     private final UserInfoService userInfoService;
-
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -449,5 +453,84 @@ public class DocumentController {
             @RequestBody WillLodgementCallbackRequest callbackRequest) {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForWillLodgement(callbackRequest);
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.transform(callbackRequest));
+    }
+
+    @PostMapping(path = "/startAmendLegalStatement", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> startAmendLegalStatement(
+            @RequestBody final CallbackRequest callbackRequest) {
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final long caseId = caseDetails.getId();
+
+        log.info("Starting amend legal statement for case: {}", caseId);
+
+        redeclarationSoTValidationRule.validate(caseDetails);
+
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, Optional.empty());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/validateAmendLegalStatement", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> validateAmendLegalStatement(
+            @RequestBody final CallbackRequest callbackRequest) {
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final long caseId = caseDetails.getId();
+
+        log.info("Validating amend legal statement for case: {}", caseId);
+
+        final DocumentLink amendedLegalStatement = caseDetails.getData().getAmendedLegalStatement();
+
+        final Optional<String> validationErr = documentValidation.validateUploadedDocumentIsType(
+                caseId,
+                amendedLegalStatement,
+                MediaType.APPLICATION_PDF);
+
+        if (validationErr.isPresent()) {
+            final String validationMsg = validationErr.get();
+            log.info("case {} validation error: {}", caseId, validationMsg);
+            CallbackResponse err = CallbackResponse.builder().errors(List.of(validationMsg)).build();
+            return ResponseEntity.ok(err);
+        }
+
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/amendLegalStatement", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> amendLegalStatement(
+            @RequestBody final CallbackRequest callbackRequest) {
+        final long caseId = callbackRequest.getCaseDetails().getId();
+        log.info("Amending legal statement for case: {}", caseId);
+
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        final ApplicationType applicationType = caseData.getApplicationType();
+        final DocumentLink amendedLegalStatement = caseData.getAmendedLegalStatement();
+
+        final String baseFileName = switch (applicationType) {
+            case PERSONAL -> "amendedLegalStatement";
+            case SOLICITOR -> {
+                final DocumentType solsDocType = documentGeneratorService.getSolicitorSoTDocType(callbackRequest);
+                final String solsBaseName = solsDocType.getTemplateName();
+                yield new StringBuilder()
+                        .append("amended")
+                        .append(solsBaseName.toUpperCase().substring(0,1))
+                        .append(solsBaseName.substring(1))
+                        .toString();
+            }
+        };
+
+        final String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        final String amendedFileName = new StringBuilder()
+                .append(baseFileName)
+                .append("_")
+                .append(currentDate)
+                .append(".pdf")
+                .toString();
+
+        amendedLegalStatement.setDocumentFilename(amendedFileName);
+
+        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
+        return ResponseEntity.ok(response);
     }
 }

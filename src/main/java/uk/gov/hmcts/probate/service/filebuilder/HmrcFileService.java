@@ -53,7 +53,7 @@ public class HmrcFileService extends BaseFileService {
 
     public File createHmrcFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
         ImmutableList.Builder<String> fileData = prepareFileData(ccdCases, fileName);
-        return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
+        return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName, "HMRC");
     }
 
     private ImmutableList.Builder<String> prepareFileData(List<ReturnedCaseDetails> ccdCases, String fileName) {
