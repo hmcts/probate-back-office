@@ -38,8 +38,8 @@ class StopReasonValidationRuleTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         when(businessValidationMessageRetriever.getMessage(any(), any(), any()))
-                .thenReturn("You cannot use stop reason **NOT TO BE USED (Other)**. " +
-                        "You must select a specific stop reason from the case stop reason list");
+                .thenReturn("You cannot use stop reason **NOT TO BE USED (Other)**. "
+                        + "You must select a specific stop reason from the case stop reason list");
     }
 
     @Test
@@ -70,7 +70,7 @@ class StopReasonValidationRuleTest {
         BusinessValidationException exception = assertThrows(BusinessValidationException.class, () -> {
             stopReasonValidationRule.validate(detailsMock);
         });
-        assertEquals("You cannot use stop reason **NOT TO BE USED (Other)**. " +
-                "You must select a specific stop reason from the case stop reason list", exception.getMessage());
+        assertEquals("You cannot use stop reason **NOT TO BE USED (Other)**. "
+                + "You must select a specific stop reason from the case stop reason list", exception.getMessage());
     }
 }
