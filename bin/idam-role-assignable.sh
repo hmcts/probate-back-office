@@ -15,4 +15,4 @@ curl --request POST \
   --url "${IDAM_URI}/roles" \
   --header "Authorization: AdminApiAuthToken ${authToken}" \
   --header "Content-Type: application/json" \
-  --data '{"id": "'${role}'","name": "'${role}'","description": "'${description}'","assignableRoles": ["ccd-import", "caseworker", "caseworker-probate", "caseworker-probate", "caseworker-probate-issuer", "caseworker-probate-solicitor", "caseworker-probate-authoriser", "caseworker-probate-systemupdate", "caseworker-probate-caseofficer", "caseworker-probate-rparobot", "caseworker-probate-caseadmin", "caseworker-probate-registrar", "caseworker-probate-superuser", "payment"],"conflictingRoles": []}'
+  --data '{"id": "'${role}'","name": "'${role}'","description": "'${description}'","assignableRoles": ["ccd-import", "caseworker", "caseworker-probate", "caseworker-probate", "caseworker-probate-issuer", "caseworker-probate-solicitor", "caseworker-probate-authoriser", "caseworker-probate-systemupdate", "caseworker-probate-caseofficer", "caseworker-probate-rparobot", "caseworker-probate-caseadmin", "caseworker-probate-registrar", "caseworker-probate-superuser", "payment", "TTL_profile"],"conflictingRoles": []}'
