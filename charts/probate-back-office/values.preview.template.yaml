@@ -65,7 +65,9 @@ ccd:
       keyVaults: []
 
   ccd-case-print-service:
+    enabled: true
     nodejs:
+      imagePullPolicy: Always
       disableKeyVaults: true
       autoscaling:
         enabled: false
