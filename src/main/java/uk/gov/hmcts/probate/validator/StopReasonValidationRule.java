@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -11,7 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import java.util.Locale;
 import java.util.Optional;
 
-
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class StopReasonValidationRule {
@@ -29,6 +30,7 @@ public class StopReasonValidationRule {
                         .ifPresent(value -> {
                             String userMessage = businessValidationMessageRetriever.getMessage(
                                     "notAllowedStopReason", null, Locale.UK);
+                            log.info("Forbidden stop reason chosen for case reference {}", caseDetails.getId());
                             throw new BusinessValidationException(userMessage, userMessage);
                         }));
 
