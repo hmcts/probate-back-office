@@ -2,7 +2,7 @@
 
 const intestacyDetailsConfig = require('./intestacyDetails');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
-const grantOfProbateConfig = require("../grantOfProbate/grantOfProbate.json");
+const grantOfProbateConfig = require('../grantOfProbate/grantOfProbate.json');
 
 module.exports = async function () {
     const I = this;
