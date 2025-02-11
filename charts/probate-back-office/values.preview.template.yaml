@@ -51,6 +51,18 @@ ccd:
         - name: "pr-${CHANGE_ID}-user-profile"
         - name: "pr-${CHANGE_ID}-role-assignment"
         - name: "pr-${CHANGE_ID}-probatemandb"
+
+  ccd-case-print-service:
+    enabled: true
+    nodejs:
+      imagePullPolicy: Always
+      disableKeyVaults: true
+      autoscaling:
+        enabled: false
+      environment:
+        IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
+      ingressHost: ccd-case-print-service-${SERVICE_FQDN}
+
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
@@ -64,16 +76,7 @@ ccd:
       ingressIP: ${INGRESS_IP}
       keyVaults: []
 
-  ccd-case-print-service:
-    enabled: true
-    nodejs:
-      imagePullPolicy: Always
-      disableKeyVaults: true
-      autoscaling:
-        enabled: false
-      environment:
-        IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
-      ingressHost: ccd-case-print-service-${SERVICE_FQDN}
+
 
   ccd-data-store-api:
     java:
