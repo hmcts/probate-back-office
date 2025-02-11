@@ -32,6 +32,8 @@ module.exports = async function () {
     await I.fillField({css: '#dateCodicilAdded-day'}, grantOfProbateConfig.page1_codicilDate_day);
     await I.fillField({css: '#dateCodicilAdded-month'}, grantOfProbateConfig.page1_codicilDate_month);
     await I.fillField({css: '#dateCodicilAdded-year'}, grantOfProbateConfig.page1_codicilDate_year);
+    await I.waitForText(grantOfProbateConfig.page1_languagePreferenceLabel);
+    await I.click({css: `#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`});
 
     await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };
