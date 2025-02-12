@@ -69,7 +69,7 @@ class CaseQueryServiceTest {
         MockitoAnnotations.openMocks(this);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
-        when(securityUtils.getCaseworkerToken()).thenReturn("Bearer 123");
+        when(securityUtils.getSchedulerToken()).thenReturn("Bearer 123");
         when(headers.getAuthorizationHeaders()).thenReturn(new HttpHeaders());
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");

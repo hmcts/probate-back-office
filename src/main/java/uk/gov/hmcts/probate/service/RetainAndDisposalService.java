@@ -40,7 +40,7 @@ public class RetainAndDisposalService {
                 log.info("Sending email for case id: {}", caseDetails.getId());
                 try {
                     notificationService.sendDisposalReminderEmail(caseDetails);
-                } catch (NotificationClientException e) {
+                } catch (NotificationClientException | RuntimeException e) {
                     log.info("Error sending email for case id: {}", caseDetails.getId());
                     failedCases.add(caseDetails.getId());
                 }

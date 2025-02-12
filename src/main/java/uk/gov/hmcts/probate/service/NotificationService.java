@@ -330,7 +330,13 @@ public class NotificationService {
     public void sendDisposalReminderEmail(ReturnedCaseDetails caseDetails) throws NotificationClientException {
         log.info("Sending Disposal Reminder email");
         String emailAddress = Optional.ofNullable(caseDetails.getData())
-                .map(this::getEmail)
+                .flatMap(data -> {
+                    try {
+                        return Optional.ofNullable(getEmail(data));
+                    } catch (BadRequestException e) {
+                        return Optional.empty();
+                    }
+                })
                 .orElseGet(() -> getUserEmail(caseDetails.getId()));
 
         if (emailAddress == null) {
@@ -566,14 +572,18 @@ public class NotificationService {
     }
 
     private String getEmail(CaseData caseData) {
-        switch (caseData.getApplicationType()) {
-            case SOLICITOR:
-                return caseData.getSolsSolicitorEmail().toLowerCase();
-            case PERSONAL:
-                return caseData.getPrimaryApplicantEmailAddress().toLowerCase();
-            default:
-                throw new BadRequestException("Unsupported application type");
+        if (caseData == null || caseData.getApplicationType() == null) {
+            throw new BadRequestException("Casedata or ApplicationType is null");
         }
+        return switch (caseData.getApplicationType()) {
+            case SOLICITOR -> Optional.ofNullable(caseData.getSolsSolicitorEmail())
+                    .map(String::toLowerCase)
+                    .orElse(null);
+            case PERSONAL -> Optional.ofNullable(caseData.getPrimaryApplicantEmailAddress())
+                    .map(String::toLowerCase)
+                    .orElse(null);
+            default -> throw new BadRequestException("Unsupported application type");
+        };
     }
 
     private String getUserEmail(Long caseReference) {
