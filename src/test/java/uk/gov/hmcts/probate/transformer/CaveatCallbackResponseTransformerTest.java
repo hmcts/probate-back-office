@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -789,23 +790,22 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformApplicantOrganisationPolicy() {
-        OrganisationPolicy policy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("ABC")
-                        .organisationName("OrgName")
-                        .build())
-                .orgPolicyReference(null)
-                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+    void shouldTransformTTL() {
+        TTL ttl = TTL.builder()
+                .systemTTL(LocalDate.now())
+                .overrideTTL(LocalDate.now())
+                .suspended("No")
                 .build();
-        caveatDataBuilder.applicationType(SOLICITOR);
-        caveatDataBuilder.paperForm("No");
-        caveatDataBuilder.applicantOrganisationPolicy(policy);
+        caveatDataBuilder.applicationType(SOLICITOR)
+                .ttl(ttl);
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatCallbackRequestMock.getCaseDetailsBefore()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getState()).thenReturn("SolsAppUpdated");
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         CaveatCallbackResponse callbackResponse = underTest.rollback(caveatCallbackRequestMock);
-        assertNull(callbackResponse.getCaveatData().getApplicantOrganisationPolicy());
+        assertNull(callbackResponse.getCaveatData().getTtl());
+        assertEquals("SolsAppUpdated", callbackResponse.getCaveatData().getState());
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {

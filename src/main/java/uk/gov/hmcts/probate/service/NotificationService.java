@@ -30,11 +30,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
+import uk.gov.hmcts.probate.service.notification.DisposalReminderPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -92,6 +94,9 @@ public class NotificationService {
     private final DocumentManagementService documentManagementService;
     private final PersonalisationValidationRule personalisationValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
+    private final DisposalReminderPersonalisationService disposalReminderPersonalisationService;
+    private final UserInfoService userInfoService;
+
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
     private Long grantDelayedNotificationPeriodDays;
@@ -322,6 +327,30 @@ public class NotificationService {
         return response;
     }
 
+    public void sendDisposalReminderEmail(ReturnedCaseDetails caseDetails) throws NotificationClientException {
+        log.info("Sending Disposal Reminder email");
+        String emailAddress = Optional.ofNullable(caseDetails.getData())
+                .map(this::getEmail)
+                .orElseGet(() -> getUserEmail(caseDetails.getId()));
+
+        if (emailAddress == null) {
+            throw new NotificationClientException("Email address not found for case ID: " + caseDetails.getId());
+        }
+
+        String templateId = notificationTemplates.getEmail()
+                .get(caseDetails.getData().getLanguagePreference())
+                .get(caseDetails.getData().getApplicationType())
+                .getDisposalReminder();
+
+        Map<String, String> personalisation =
+                disposalReminderPersonalisationService.getDisposalReminderPersonalisation(caseDetails);
+
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("Disposal Reminder email reference response: {}", response.getReference());
+    }
+
     public Document sendEmailWithDocumentAttached(CaseDetails caseDetails, ExecutorsApplyingNotification executor,
                                                   State state) throws NotificationClientException, IOException {
         List<CollectionMember<Document>> probateSotDocumentsGenerated = caseDetails.getData()
@@ -545,6 +574,10 @@ public class NotificationService {
             default:
                 throw new BadRequestException("Unsupported application type");
         }
+    }
+
+    private String getUserEmail(Long caseReference) {
+        return userInfoService.getUserEmailByCaseId(caseReference).orElse(null);
     }
 
     private String removedSolicitorNameForPersonalisation(CaseData caseData) {

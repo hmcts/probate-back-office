@@ -78,7 +78,7 @@ public class CcdClientApi implements CoreCaseDataService {
 
     @Override
     public CaseDetails updateCaseAsCaseworker(CcdCaseType caseType, String caseId, LocalDateTime lastModified,
-                                              CaseData caseData, EventId eventId,
+                                              Object caseData, EventId eventId,
                                               SecurityDTO securityDTO, String description, String summary) {
         log.info("Update case as for caseType: {}, caseId: {}, eventId: {}",
                 caseType.getName(), caseId, eventId.getName());
@@ -156,7 +156,7 @@ public class CcdClientApi implements CoreCaseDataService {
             caseId
         );
     }
-    
+
     private CaseDataContent createCaseDataContent(Object object,
                                                   EventId eventId, StartEventResponse startEventResponse,
                                                   String description, String summary) {

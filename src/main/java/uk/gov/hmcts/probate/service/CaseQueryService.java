@@ -46,7 +46,8 @@ public class CaseQueryService {
     private static final String SERVICE_AUTH = "ServiceAuthorization";
     private static final String AUTHORIZATION = "Authorization";
     private static final String CASE_TYPE_ID = "ctid";
-    private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
+    private static final CaseType CASE_TYPE_GOP = CaseType.GRANT_OF_REPRESENTATION;
+    private static final CaseType CASE_TYPE_CAVEAT = CaseType.CAVEAT;
     private static final String[] STATES_MATCH_GRANT_DELAYED =
         {"BOCaseMatchingExamining", "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
     private static final String[] STATES_MATCH_GRANT_AWAITING_DOCUMENTATION = {"CasePrinted"};
@@ -68,6 +69,12 @@ public class CaseQueryService {
             + "dormant_date_range_query.json";
     private static final String REACTIVATE_DORMANT_QUERY = "templates/elasticsearch/caseMatching/"
             + "reactivate_dormant_date_range_query.json";
+    private static final String DISPOSE_GOP_QUERY = "templates/elasticsearch/caseMatching/"
+            + "dispose_gop_date_range_query.json";
+    private static final String DISPOSE_CAVEAT_QUERY = "templates/elasticsearch/caseMatching/"
+            + "dispose_caveat_date_range_query.json";
+    private static final String DISPOSE_GOP_DELETED_QUERY = "templates/elasticsearch/caseMatching/"
+            + "dispose_gop_deleted_query.json";
     private static final String SORT_COLUMN = "id";
     private final RestTemplate restTemplate;
     private final HttpHeadersFactory headers;
@@ -140,13 +147,19 @@ public class CaseQueryService {
 
     private List<ReturnedCaseDetails> findCaseStateWithinDateRange(String qryFrom, String qry, String startDate,
                                                                    String endDate) {
+        return findCaseStateWithinDateRange(qryFrom, qry, startDate, endDate, CASE_TYPE_GOP);
+    }
+
+    private List<ReturnedCaseDetails> findCaseStateWithinDateRange(String qryFrom, String qry, String startDate,
+                                                                   String endDate, CaseType caseType) {
         String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(qry)
                 .replace(":from,", "0,")
                 .replace(":size", "" + dataExtractPaginationSize)
                 .replace(":fromDate", startDate)
                 .replace(":toDate", endDate);
 
-        return runQueryWithPagination(qryFrom + " findCaseStateWithinDateRange", jsonQuery, startDate, endDate);
+        return runQueryWithPagination(qryFrom + " findCaseStateWithinDateRange",
+                jsonQuery, startDate, endDate, caseType);
     }
 
     public List<ReturnedCaseDetails> findCasesForGrantDelayed(String queryDate) {
@@ -198,6 +211,12 @@ public class CaseQueryService {
 
     private List<ReturnedCaseDetails> runQueryWithPagination(String queryName, String jsonQuery,
                                                              String queryDateStart, String queryDateEnd) {
+        return runQueryWithPagination(queryName, jsonQuery, queryDateStart, queryDateEnd, CASE_TYPE_GOP);
+    }
+
+    private List<ReturnedCaseDetails> runQueryWithPagination(String queryName, String jsonQuery,
+                                                             String queryDateStart, String queryDateEnd,
+                                                             CaseType caseType) {
 
         List<ReturnedCaseDetails> allResults = new ArrayList<>();
         List<ReturnedCaseDetails> pagedResults = new ArrayList<>();
@@ -208,7 +227,7 @@ public class CaseQueryService {
         while (index < total) {
             log.info("Querying for {} from date:{} to date:{}, from index:{} to index:{}", queryName, queryDateStart,
                     queryDateEnd, pageStart, (pageStart + dataExtractPaginationSize));
-            ReturnedCases cases = runQuery(paginatedQry);
+            ReturnedCases cases = runQuery(paginatedQry, caseType);
             total = cases.getTotal();
             pagedResults = cases.getCases();
             if (!CollectionUtils.isEmpty(pagedResults)) {
@@ -227,12 +246,13 @@ public class CaseQueryService {
     }
 
     @Nullable
-    private ReturnedCases runQuery(String jsonQuery) {
-        log.debug("CaseQueryService runQuery: " + jsonQuery);
+    private ReturnedCases runQuery(String jsonQuery, CaseType caseType) {
+        log.debug("CaseQueryService runQuery: " + jsonQuery + " for caseType: " + caseType.getCode());
         URI uri = UriComponentsBuilder
-            .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
-            .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
-            .build().encode().toUri();
+                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost()
+                        + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
+                .queryParam(CASE_TYPE_ID, caseType.getCode())
+                .build().encode().toUri();
 
         HttpHeaders tokenHeaders = null;
         HttpEntity<String> entity;
@@ -269,4 +289,20 @@ public class CaseQueryService {
         return paginatedQry.replaceFirst("\"from\": *\\d*,", "\"from\":" + pageStart + ",");
     }
 
+    public List<ReturnedCaseDetails> findInactiveCaseForDisposalReminder(String fromDate, String toDate) {
+        return findCaseStateWithinDateRange("DisposalReminder", DISPOSE_GOP_QUERY, fromDate, toDate);
+    }
+
+    public List<ReturnedCaseDetails> findInactiveGOPCaseForDisposal(String fromDate, String toDate) {
+        return findCaseStateWithinDateRange("DisposeDraftGOP", DISPOSE_GOP_QUERY, fromDate, toDate);
+    }
+
+    public List<ReturnedCaseDetails> findDeletedGOPCaseForDisposal(String fromDate, String toDate) {
+        return findCaseStateWithinDateRange("DisposeDeletedGOP", DISPOSE_GOP_DELETED_QUERY, fromDate, toDate);
+    }
+
+    public List<ReturnedCaseDetails> findInactiveCaveatCaseForDisposal(String fromDate, String toDate) {
+        return findCaseStateWithinDateRange("DisposeDraftCaveat",
+                DISPOSE_CAVEAT_QUERY, fromDate, toDate, CASE_TYPE_CAVEAT);
+    }
 }

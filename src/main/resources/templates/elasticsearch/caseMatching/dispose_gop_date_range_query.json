@@ -1,0 +1,38 @@
+{
+  "size": :size,
+  "from": :from,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "gte": ":fromDate",
+              "lte": ":toDate"
+            }
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "Pending",
+              "SolAdmonCreated",
+              "SolAppCreatedDeceasedDtls",
+              "SolAppCreatedSolicitorDtls",
+              "SolAppUpdated",
+              "SolProbateCreated",
+              "SolIntestacyCreated"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "id": {
+        "order": "asc"
+      }
+    }
+  ]
+}

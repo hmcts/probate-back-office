@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,7 @@ class ZipFileServiceTest {
 
     private ZipFileService zipFileService;
 
+    private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final List<ByteArrayResource> byteArrayResourceList = new ArrayList<>();
     private final List<ReturnedCaseDetails> returnedCaseDetails = new ArrayList<>();
@@ -137,9 +140,8 @@ class ZipFileServiceTest {
                 .boDocumentsUploaded(willDocuments)
                 .scannedDocuments(scannedWillDocuments)
                 .build();
-        ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(data, null, caseId);
 
-        return returnedCaseDetails;
+        return new ReturnedCaseDetails(data, null, CREATED_DATE, caseId);
     }
 
     @Test

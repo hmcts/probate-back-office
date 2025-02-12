@@ -630,7 +630,9 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(),false);
-        responseCaseDataBuilder.applicantOrganisationPolicy(null);
+        responseCaseDataBuilder
+                .ttl(null)
+                .state(callbackRequest.getCaseDetailsBefore().getState());
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1400,7 +1402,8 @@ public class CallbackResponseTransformer {
             .expectedResponseDate(caseData.getExpectedResponseDate())
             .citizenResponses(caseData.getCitizenResponses())
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
-            .isSaveAndClose(caseData.getIsSaveAndClose());
+            .isSaveAndClose(caseData.getIsSaveAndClose())
+            .ttl(caseData.getTtl());
 
         if (featureToggleService.enableNewAliasTransformation()) {
             handleDeceasedAliases(

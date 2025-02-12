@@ -55,6 +55,7 @@ class SmeeAndFordPersonalisationServiceTest {
 
     private static final Long ID = 1234567812345678L;
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
+    private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
     private static final BigDecimal NET = BigDecimal.valueOf(900000);
 
@@ -225,10 +226,10 @@ class SmeeAndFordPersonalisationServiceTest {
     void shouldMapAllAttributes() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
                 "YesWithoutTypeWill", true, true, true,
-            false, true, false).build(), LAST_MODIFIED, ID);
+            false, true, false).build(), LAST_MODIFIED, CREATED_DATE, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
                 "YesWithoutTypeWill", true, false,
-            false, true, true, true).build(), LAST_MODIFIED, ID);
+            false, true, true, true).build(), LAST_MODIFIED, CREATED_DATE, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -246,10 +247,11 @@ class SmeeAndFordPersonalisationServiceTest {
     void shouldMapAllAttributesWithDelimetersInContents() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
                 "YesWithoutTypeWill", true, true, true,
-            false, true, true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
+            false, true, true)
+                .primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, CREATED_DATE, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
                 "YesWithoutTypeWill", true, false,
-            false, false, true, false).build(), LAST_MODIFIED, ID);
+            false, false, true, false).build(), LAST_MODIFIED, CREATED_DATE, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -267,10 +269,10 @@ class SmeeAndFordPersonalisationServiceTest {
     void shouldMapAllAttributesWithoutAdditionalExecs() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, -1,
                 "YesWithoutTypeWill", true, true, true,
-            false, true, false).build(), LAST_MODIFIED, ID);
+            false, true, false).build(), LAST_MODIFIED, CREATED_DATE, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 0,
                 "YesWithoutTypeWill", true, false,
-            false, false, true, true).build(), LAST_MODIFIED, ID);
+            false, false, true, true).build(), LAST_MODIFIED, CREATED_DATE, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -288,10 +290,10 @@ class SmeeAndFordPersonalisationServiceTest {
     void shouldMapAllAttributesWithExtraAdditionalExecs() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 3,
                 "YesWithoutTypeWill", true, true, true,
-            false, true, true).build(), LAST_MODIFIED, ID);
+            false, true, true).build(), LAST_MODIFIED, CREATED_DATE, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 4,
                 "YesWithoutTypeWill", true, false,
-            false, false, true, false).build(), LAST_MODIFIED, ID);
+            false, false, true, false).build(), LAST_MODIFIED, CREATED_DATE, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -309,10 +311,10 @@ class SmeeAndFordPersonalisationServiceTest {
     void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
                 "No", true, false,
-            true, false, true, false).build(), LAST_MODIFIED, ID);
+            true, false, true, false).build(), LAST_MODIFIED, CREATED_DATE, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
                 "YesWithoutTypeWill", false, true,
-            false, true, true, true).build(), LAST_MODIFIED, ID);
+            false, true, true, true).build(), LAST_MODIFIED, CREATED_DATE, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -330,10 +332,10 @@ class SmeeAndFordPersonalisationServiceTest {
     void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
                 "YesWithoutTypeWill", true, true, true,
-            false, false, true).build(), LAST_MODIFIED, ID);
+            false, false, true).build(), LAST_MODIFIED, CREATED_DATE, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
                 "YesWithoutTypeWill", true, false,
-            false, true, false, false).build(), LAST_MODIFIED, ID);
+            false, true, false, false).build(), LAST_MODIFIED, CREATED_DATE, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -351,10 +353,10 @@ class SmeeAndFordPersonalisationServiceTest {
     void shouldGetSmeeAndFordByteArray() {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
                 "YesWithoutTypeWill", true, true, true,
-                false, false, true).build(), LAST_MODIFIED, ID);
+                false, false, true).build(), LAST_MODIFIED, CREATED_DATE, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
                 "YesWithoutTypeWill", true, false,
-                false, true, false, false).build(), LAST_MODIFIED, ID);
+                false, true, false, false).build(), LAST_MODIFIED, CREATED_DATE, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsPersonal);
@@ -368,7 +370,7 @@ class SmeeAndFordPersonalisationServiceTest {
     void shouldGetWillDocuments() throws IOException {
         returnedCaseDetailsTypeWill = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
                 "YesWithTypeWill", true, false,
-                false, true, true, true).build(), LAST_MODIFIED, ID);
+                false, true, true, true).build(), LAST_MODIFIED, CREATED_DATE, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsTypeWill);
@@ -420,7 +422,8 @@ class SmeeAndFordPersonalisationServiceTest {
                 .probateDocumentsGenerated(new ArrayList<CollectionMember<Document>>())
                 .build();
 
-        ReturnedCaseDetails returnedCaseDetailsTypeOtherNoWill = new ReturnedCaseDetails(caseData, LAST_MODIFIED, ID);
+        ReturnedCaseDetails returnedCaseDetailsTypeOtherNoWill = new ReturnedCaseDetails(caseData, LAST_MODIFIED,
+                CREATED_DATE, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
         cases.add(returnedCaseDetailsTypeOtherNoWill);

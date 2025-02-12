@@ -23,6 +23,8 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,7 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_DELA
 
 class GrantNotificationServiceTest {
 
+    private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     @InjectMocks
     private GrantNotificationService grantNotificationService;
@@ -97,9 +100,9 @@ class GrantNotificationServiceTest {
             .applicationType(ApplicationType.SOLICITOR)
             .build();
 
-        returnedCaseDetails1 = new ReturnedCaseDetails(caseData1, null, Long.valueOf(1));
-        returnedCaseDetails2 = new ReturnedCaseDetails(caseData2, null, Long.valueOf(2));
-        returnedCaseDetails3 = new ReturnedCaseDetails(caseData3, null, Long.valueOf(3));
+        returnedCaseDetails1 = new ReturnedCaseDetails(caseData1, null, CREATED_DATE, Long.valueOf(1));
+        returnedCaseDetails2 = new ReturnedCaseDetails(caseData2, null, CREATED_DATE, Long.valueOf(2));
+        returnedCaseDetails3 = new ReturnedCaseDetails(caseData3, null, CREATED_DATE, Long.valueOf(3));
         returnedCases.add(returnedCaseDetails1);
         returnedCases.add(returnedCaseDetails2);
         returnedCases.add(returnedCaseDetails3);
