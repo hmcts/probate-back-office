@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
+import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -2901,22 +2902,22 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformOrgPolicy() {
-        OrganisationPolicy policy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("ABC")
-                        .organisationName("OrgName")
-                        .build())
-                .orgPolicyReference(null)
-                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+    void shouldTransformTTL() {
+        TTL ttl = TTL.builder()
+                .systemTTL(LocalDate.now())
+                .overrideTTL(LocalDate.now())
+                .suspended("No")
                 .build();
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .applicantOrganisationPolicy(policy);
+                .ttl(ttl);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getState()).thenReturn("Pending");
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getApplicantOrganisationPolicy());
+        assertNull(callbackResponse.getData().getTtl());
+        assertEquals("Pending", callbackResponse.getData().getState());
     }
 
     @Test

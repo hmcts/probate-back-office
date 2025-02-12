@@ -41,7 +41,7 @@ class SmeeAndFordExtractTaskTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        ReflectionTestUtils.setField(smeeAndFordExtractTask, "shcedulerTimerShutdownDelayMinutes", "1");
+        ReflectionTestUtils.setField(smeeAndFordExtractTask, "schedulerTimerShutdownDelayMinutes", "1");
     }
 
     @Test

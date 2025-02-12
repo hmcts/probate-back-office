@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import jakarta.validation.constraints.NotBlank;
@@ -167,6 +168,8 @@ public class CaveatData {
     private String serviceRequestReference;
     private String paymentTaken;
     private String applicationSubmittedBy;
+
+    private TTL ttl;
 
     @Builder.Default
     private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();

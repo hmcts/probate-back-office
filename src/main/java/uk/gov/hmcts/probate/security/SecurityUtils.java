@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.validators.AuthTokenValidator;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
@@ -92,8 +93,10 @@ public class SecurityUtils {
                 .build();
     }
 
+    //TODO
     public SecurityDTO getUserByCaseworkerTokenAndServiceSecurityDTO() {
         String token = getCaseworkerToken();
+        log.info("Caseworker token: {}", token);
         return SecurityDTO.builder()
                 .authorisation(token)
                 .serviceAuthorisation(generateServiceToken())
@@ -150,7 +153,7 @@ public class SecurityUtils {
                                 authRedirectUrl,
                                 username,
                                 password,
-                                "openid profile roles",
+                                "openid profile roles search-user",
                                 null,
                                 null
                         ));
@@ -194,7 +197,7 @@ public class SecurityUtils {
                         authRedirectUrl,
                         username,
                         password,
-                        "openid profile roles",
+                        "openid profile roles search-user",
                         null,
                         null
                 ));
@@ -250,5 +253,16 @@ public class SecurityUtils {
 
     public UserInfo getUserInfo(String authToken) {
         return idamApi.retrieveUserInfo(authToken);
+    }
+
+    public UserDetails getUserDetailsByUserId(String authToken, String userId) {
+        log.info("Getting user details by userId: {} with authToken: {}", userId, authToken);
+        List<UserDetails> userList = idamApi.searchUsers(authToken, getSearchQuery(userId));
+        log.info("User details found: {}", userList.size());
+        return userList.isEmpty() ? null : userList.get(0);
+    }
+
+    private String getSearchQuery(String userId) {
+        return "id:" + userId;
     }
 }
