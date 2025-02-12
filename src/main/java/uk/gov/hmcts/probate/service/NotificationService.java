@@ -575,6 +575,7 @@ public class NotificationService {
         if (caseData == null || caseData.getApplicationType() == null) {
             throw new BadRequestException("Casedata or ApplicationType is null");
         }
+        log.info("getEmail for caseType: {}", caseData.getApplicationType());
         return switch (caseData.getApplicationType()) {
             case SOLICITOR -> Optional.ofNullable(caseData.getSolsSolicitorEmail())
                     .map(String::toLowerCase)
@@ -587,6 +588,7 @@ public class NotificationService {
     }
 
     private String getUserEmail(Long caseReference) {
+        log.info("getUserEmail for caseReference: {}", caseReference);
         return userInfoService.getUserEmailByCaseId(caseReference).orElse(null);
     }
 

@@ -93,8 +93,10 @@ public class SecurityUtils {
                 .build();
     }
 
+    //TODO
     public SecurityDTO getUserByCaseworkerTokenAndServiceSecurityDTO() {
         String token = getCaseworkerToken();
+        log.info("Caseworker token: {}", token);
         return SecurityDTO.builder()
                 .authorisation(token)
                 .serviceAuthorisation(generateServiceToken())
@@ -254,7 +256,10 @@ public class SecurityUtils {
     }
 
     public UserDetails getUserDetailsByUserId(String authToken, String userId) {
-        return idamApi.searchUsers(authToken, getSearchQuery(userId)).get(0);
+        log.info("Getting user details by userId: {} with authToken: {}", userId, authToken);
+        List<UserDetails> userList = idamApi.searchUsers(authToken, getSearchQuery(userId));
+        log.info("User details found: {}", userList.size());
+        return userList.isEmpty() ? null : userList.get(0);
     }
 
     private String getSearchQuery(String userId) {

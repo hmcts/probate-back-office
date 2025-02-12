@@ -44,6 +44,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public Optional<String> getUserEmailByCaseId(Long caseId) {
+        log.info("Getting user email by caseId: {}", caseId);
         return Optional.ofNullable(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO())
                 .flatMap(securityDTO -> auditEventService.getLatestAuditEventByName(
                         String.valueOf(caseId),
