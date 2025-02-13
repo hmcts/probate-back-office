@@ -389,7 +389,9 @@ public class CaveatCallbackResponseTransformer {
     public CaveatCallbackResponse rollback(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
                 getResponseCaveatData(callbackRequest.getCaseDetails());
-        responseCaseDataBuilder.applicantOrganisationPolicy(null);
+        responseCaseDataBuilder
+                .ttl(null)
+                .state(callbackRequest.getCaseDetailsBefore().getState());
         return transformResponse(responseCaseDataBuilder.build());
     }
 

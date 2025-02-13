@@ -13,11 +13,13 @@ import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.validators.AuthTokenValidator;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -150,7 +152,7 @@ public class SecurityUtils {
                                 authRedirectUrl,
                                 username,
                                 password,
-                                "openid profile roles",
+                                "openid profile roles search-user",
                                 null,
                                 null
                         ));
@@ -194,7 +196,7 @@ public class SecurityUtils {
                         authRedirectUrl,
                         username,
                         password,
-                        "openid profile roles",
+                        "openid profile roles search-user",
                         null,
                         null
                 ));
@@ -250,5 +252,18 @@ public class SecurityUtils {
 
     public UserInfo getUserInfo(String authToken) {
         return idamApi.retrieveUserInfo(authToken);
+    }
+
+    public UserDetails getUserDetailsByUserId(String authToken, String userId) {
+        log.info("Getting user details by userId: {}", userId);
+        List<UserDetails> userList = idamApi.searchUsers(authToken, getSearchQuery(userId));
+        log.info("User details found: {}", userList);
+        return !userList.isEmpty() ? userList.get(0) : null;
+    }
+
+    private String getSearchQuery(String userId) {
+        String query = MessageFormat.format("id:{0}", userId);
+        log.info("Getting search query: {}", query);
+        return query;
     }
 }

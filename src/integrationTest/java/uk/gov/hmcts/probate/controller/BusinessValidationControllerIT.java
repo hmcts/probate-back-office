@@ -18,8 +18,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
-import uk.gov.hmcts.probate.model.caseaccess.Organisation;
-import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -30,6 +28,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
@@ -47,6 +46,7 @@ import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -1268,17 +1268,21 @@ class BusinessValidationControllerIT {
 
     @Test
     void shouldValidateRollback() throws Exception {
-        OrganisationPolicy policy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("ABC")
-                        .organisationName("OrgName")
-                        .build())
-                .orgPolicyReference(null)
-                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+        TTL ttl = TTL.builder()
+                .systemTTL(LocalDate.now())
+                .overrideTTL(LocalDate.now())
+                .suspended("No")
                 .build();
-        caseDataBuilder.applicantOrganisationPolicy(policy);
+        caseDataBuilder.ttl(ttl);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        Field caseDetailsField = CaseDetails.class.getDeclaredField("state");
+        caseDetailsField.setAccessible(true);
+        caseDetailsField.set(caseDetails, "Pending");
+
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        Field caseDetailsBeforeField = CallbackRequest.class.getDeclaredField("caseDetailsBefore");
+        caseDetailsBeforeField.setAccessible(true);
+        caseDetailsBeforeField.set(callbackRequest, caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(ROLLBACK).content(json).contentType(MediaType.APPLICATION_JSON))
