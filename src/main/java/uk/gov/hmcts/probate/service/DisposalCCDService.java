@@ -9,6 +9,8 @@ import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 @Slf4j
 @Service
@@ -29,8 +31,8 @@ public class DisposalCCDService {
                                final SecurityDTO securityDTO) {
         log.info("DisposalCCDService dispose GOP Case: " + caseId);
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseId,
-                caseDetails.getLastModified(), caseDetails.getData(), EventId.DISPOSE_CASE, securityDTO,
-                DISPOSE_DRAFT_DESCRIPTION, DISPOSE_DRAFT_SUMMARY);
+                caseDetails.getLastModified(), GrantOfRepresentationData.builder().build(),
+                EventId.DISPOSE_CASE, securityDTO, DISPOSE_DRAFT_DESCRIPTION, DISPOSE_DRAFT_SUMMARY);
     }
 
     public void disposeCaveatCase(final ReturnedCaseDetails caseDetails,
@@ -38,7 +40,7 @@ public class DisposalCCDService {
                                   final SecurityDTO securityDTO) {
         log.info("DisposalCCDService dispose Caveat Case: " + caseId);
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.CAVEAT, caseId,
-                caseDetails.getLastModified(), caseDetails.getData(), EventId.DISPOSE_CASE, securityDTO,
+                caseDetails.getLastModified(), CaveatData.builder().build(), EventId.DISPOSE_CASE, securityDTO,
                 DISPOSE_DRAFT_DESCRIPTION, DISPOSE_DRAFT_SUMMARY);
     }
 }

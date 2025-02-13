@@ -24,7 +24,7 @@ public class DisposalReminderPersonalisationService {
     private static final String PERSONALISATION_LINK_TO_CASE = "link_to_case";
     private static final String CASE_ID_STRING = "<CASE_ID>";
     private static final String CASE_TYPE_STRING = "<CASE_TYPE>";
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMMMM yyyy");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMMM yyyy");
     @Value("${disposal.personalNotificationLink}")
     private String linkToPersonalCase;
     @Value("${disposal.solsNotificationLink}")

@@ -51,7 +51,6 @@ class DisposalCCDServiceTest {
         securityDTO = mock(SecurityDTO.class);
 
         when(caseDetails.getLastModified()).thenReturn(LocalDateTime.of(2018, 10, 11, 13, 14, 20));
-        when(caseDetails.getData()).thenReturn(caseDataMock);
     }
 
     @Test
