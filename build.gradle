@@ -170,7 +170,7 @@ def versions = [
         lombok                          : '1.18.36',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
-        probateCommonsVersion           : '2.0.37',
+        probateCommonsVersion           : '2.0.44',
         probatePactCommonsVersion       : '1.0.2',
         restAssured                     : '5.5.0',
         serenity                        : '4.2.12',
@@ -496,6 +496,7 @@ bootWithCCD {
   environment 'PROBATE_POSTGRESQL_PORT', '6432'
   environment 'PROBATE_POSTGRESQL_USER', 'postgres'
   environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
+  environment 'CASE_DOCUMENT_S2S_AUTHORISED_SERVICES', 'ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,em_npa_app,fprl_dgs_api,dg_docassembly_api,cmc_claim_store,civil_service,civil_general_applications,bulk_scan_orchestrator,ethos_repl_service,et_cos,nfdiv_case_api,divorce_frontend,probate_backend'
 
   if (new Boolean(System.getenv('USE_LOCAL_SUPPORT_SERVICES'))) {
     dependsOn buildBackOfficeXlsx

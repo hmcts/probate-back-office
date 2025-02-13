@@ -638,6 +638,7 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
         caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequest);
+        caseDataTransformer.setApplicationSubmittedDateForPA(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
