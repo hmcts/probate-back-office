@@ -134,12 +134,12 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     @Test
     void shouldTransformCaseCorrectlyPACreate() throws IOException {
         verifyCaseProgressHtmlCwPost("caseprogress/13-casePrinted.json", CASE_PA_CREATE,
-                "/gop/case-printed-html.txt");
+                "/gop/pa-case-printed-html.txt");
     }
 
     @Test
     void shouldRenderSendDocumentsWithCodicilsCasePrinted() throws IOException {
         verifyCaseProgressHtmlCwPost("caseprogress/13-casePrinted.json", TASKLIST_UPDATE_CASEPRINTED_URL,
-                "/gop/case-printed-html.txt");
+                "/gop/pa-case-printed-html.txt");
     }
 }
