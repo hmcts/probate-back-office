@@ -879,9 +879,10 @@ class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDetailsMock.getState()).thenReturn(CASE_PRINTED_NAME);
         ResponseEntity<CallbackResponse> response =  underTest.paCreate(callbackRequestMock, bindingResultMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(caseDataTransformerMock).transformCaseDataForEvidenceHandled(callbackRequestMock);
         verify(caseDataTransformerMock).transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(caseDataTransformerMock).setApplicationSubmittedDateForPA(caseDetailsMock);
     }
 
     @Test
