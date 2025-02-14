@@ -360,6 +360,38 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(
+            path = "/validation-case-stopped",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> validateCaseStopped(
+            @RequestBody final CallbackRequest callbackRequest,
+            final HttpServletRequest request
+    ) {
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        final Long caseId = callbackRequest.getCaseDetails().getId();
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        final List<String> stopReasons = caseData.getBoCaseStopReasonList()
+                .stream()
+                .map(c -> c.getValue().getCaseStopReason())
+                .toList();
+
+        if (stopReasons.contains("Other")) {
+            log.info("case {} is using Other stop reason, rejecting", caseId);
+            final CallbackResponse err = CallbackResponse.builder()
+                    .errors(List.of("Do not use the 'NOT TO BE USED (Other)' stop reason"))
+                    .build();
+            return ResponseEntity.ok(err);
+        }
+
+
+        final Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        final CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/case-stopped", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
