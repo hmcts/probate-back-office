@@ -141,7 +141,7 @@ class ZipFileServiceTest {
                 .scannedDocuments(scannedWillDocuments)
                 .build();
 
-        return new ReturnedCaseDetails(data, null, CREATED_DATE, caseId);
+        return new ReturnedCaseDetails(data, null, CREATED_DATE, caseId, "state");
     }
 
     @Test

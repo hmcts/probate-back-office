@@ -16,7 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(SpringExtension.class)
@@ -47,7 +49,7 @@ class RetainAndDisposalTaskTest {
     }
 
     @Test
-    void shouldExecuteTaskWithCurrentDate_whenAdHocJobDateIsEmpty() {
+    void shouldExecuteTaskWithCurrentDateWhenAdHocJobDateIsEmpty() {
         ReflectionTestUtils.setField(retainAndDisposalTask, "adHocJobDate", "");
 
         retainAndDisposalTask.run();
@@ -63,7 +65,7 @@ class RetainAndDisposalTaskTest {
     }
 
     @Test
-    void shouldExecuteTaskWithAdHocJobDate_whenAdHocJobDateIsProvided() {
+    void shouldExecuteTaskWithAdHocJobDateWhenAdHocJobDateIsProvided() {
         ReflectionTestUtils.setField(retainAndDisposalTask, "adHocJobDate", ADHOC_JOB_DATE);
 
         retainAndDisposalTask.run();
@@ -108,5 +110,19 @@ class RetainAndDisposalTaskTest {
         verify(retainAndDisposalService).sendEmailForInactiveCase(anyString(), anyString(), anyLong());
         verify(retainAndDisposalService)
                 .disposeInactiveCase(anyString(), anyString(), anyString(), anyLong(), anyLong());
+    }
+
+    @Test
+    void shouldSkipDisposalTaskWhenRunDateEqualsSwitchDate() {
+        ReflectionTestUtils.setField(retainAndDisposalTask, "adHocJobDate", SWITCH_DATE);
+
+        retainAndDisposalTask.run();
+
+        verify(dataExtractDateValidator).dateValidator(SWITCH_DATE, SWITCH_DATE);
+        verify(retainAndDisposalService)
+                .sendEmailForInactiveCase(SWITCH_DATE, SWITCH_DATE, Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD));
+        verify(retainAndDisposalService, times(0)).disposeInactiveCase(SWITCH_DATE, ADHOC_JOB_DATE, START_DATE,
+                Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD), Long.parseLong(DISPOSAL_GRACE_PERIOD));
+
     }
 }

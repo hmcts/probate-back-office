@@ -101,6 +101,7 @@ class NotificationServiceIT {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final LocalDateTime LAST_DATE_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
+    private static final String STATE = "state";
     private static final Long CASE_ID = 12345678987654321L;
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private static final byte[] DOC_BYTES = {(byte) 23};
@@ -448,7 +449,7 @@ class NotificationServiceIT {
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocuments)
-            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID));
+            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID, STATE));
 
         exelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -457,7 +458,7 @@ class NotificationServiceIT {
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoWill)
-            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID));
+            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID, STATE));
 
         exelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -466,7 +467,7 @@ class NotificationServiceIT {
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoSubtype)
-            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID));
+            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID, STATE));
 
         caveatRaisedCaseData = new CaveatDetails(CaveatData.builder()
             .applicationType(PERSONAL)
@@ -1705,7 +1706,7 @@ class NotificationServiceIT {
             .put(PERSONALISATION_APPLICANT_NAME, personalGrantDelayedOxford.getData().getPrimaryApplicantFullName());
 
         ReturnedCaseDetails returnedCaseDetails =
-            new ReturnedCaseDetails(personalGrantDelayedOxford.getData(), null, CREATED_DATE, ID);
+            new ReturnedCaseDetails(personalGrantDelayedOxford.getData(), null, CREATED_DATE, ID, STATE);
 
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -1748,7 +1749,7 @@ class NotificationServiceIT {
             .put(PERSONALISATION_APPLICANT_NAME, personalGrantDelayedOxford.getData().getPrimaryApplicantFullName());
 
         ReturnedCaseDetails returnedCaseDetails =
-            new ReturnedCaseDetails(personalGrantDelayedOxford.getData(), null, CREATED_DATE, ID);
+            new ReturnedCaseDetails(personalGrantDelayedOxford.getData(), null, CREATED_DATE, ID, STATE);
 
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -1793,7 +1794,7 @@ class NotificationServiceIT {
             .put(PERSONALISATION_APPLICANT_NAME, solicitorGrantDelayedOxford.getData().getPrimaryApplicantFullName());
 
         ReturnedCaseDetails returnedCaseDetails =
-            new ReturnedCaseDetails(solicitorGrantDelayedOxford.getData(), null, CREATED_DATE, ID);
+            new ReturnedCaseDetails(solicitorGrantDelayedOxford.getData(), null, CREATED_DATE, ID, STATE);
 
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -2194,7 +2195,8 @@ class NotificationServiceIT {
     @Test
     void sendDisposalReminderEmail() throws NotificationClientException {
         ReturnedCaseDetails returnedCaseDetails =
-                new ReturnedCaseDetails(personalGrantDelayedOxford.getData(), LAST_DATE_MODIFIED, CREATED_DATE, ID);
+                new ReturnedCaseDetails(personalGrantDelayedOxford.getData(), LAST_DATE_MODIFIED, CREATED_DATE, ID,
+                        STATE);
         when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
         notificationService.sendDisposalReminderEmail(returnedCaseDetails);
 
@@ -2208,7 +2210,8 @@ class NotificationServiceIT {
     @Test
     void sendSolDisposalReminderEmail() throws NotificationClientException {
         ReturnedCaseDetails returnedCaseDetails =
-                new ReturnedCaseDetails(solicitorGrantDelayedOxford.getData(), LAST_DATE_MODIFIED, CREATED_DATE, ID);
+                new ReturnedCaseDetails(solicitorGrantDelayedOxford.getData(), LAST_DATE_MODIFIED, CREATED_DATE, ID,
+                        STATE);
         when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
         notificationService.sendDisposalReminderEmail(returnedCaseDetails);
 

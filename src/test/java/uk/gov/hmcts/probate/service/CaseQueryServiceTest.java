@@ -39,6 +39,7 @@ class CaseQueryServiceTest {
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
+    private static final String STATE = "state";
 
     @Mock
     private RestTemplate restTemplate;
@@ -80,7 +81,7 @@ class CaseQueryServiceTest {
             .build();
         List<ReturnedCaseDetails> caseList =
             new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, CREATED_DATE, 1L))
+                LAST_MODIFIED, CREATED_DATE, 1L, STATE))
                 .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
 
@@ -189,7 +190,7 @@ class CaseQueryServiceTest {
                 .deceasedSurname("Smith" + (caseIndex + i))
                 .build();
             allReturnedCases.add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, CREATED_DATE, Long.valueOf(caseIndex + i)));
+                LAST_MODIFIED, CREATED_DATE, Long.valueOf(caseIndex + i), STATE));
         }
         List<ReturnedCaseDetails> caseList =
             new ImmutableList.Builder<ReturnedCaseDetails>()
@@ -233,9 +234,9 @@ class CaseQueryServiceTest {
                     .build();
             List<ReturnedCaseDetails> caseList =
                     new ImmutableList.Builder<ReturnedCaseDetails>()
-                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L))
-                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 2L))
-                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 3L))
+                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L, STATE))
+                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 2L, STATE))
+                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 3L, STATE))
                             .build();
             ReturnedCases returnedCases = new ReturnedCases(caseList, 3);
             when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
@@ -337,7 +338,7 @@ class CaseQueryServiceTest {
             .build();
         List<ReturnedCaseDetails> caseList =
             new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, CREATED_DATE, 1L))
+                LAST_MODIFIED, CREATED_DATE, 1L, STATE))
                 .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
         when(restTemplate.postForObject(any(), entityCaptor.capture(), any())).thenReturn(returnedCases);

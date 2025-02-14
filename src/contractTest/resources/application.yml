@@ -558,7 +558,7 @@ disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
   inactivityNotificationPeriod: 90
   disposalGracePeriod: 90
-  switchDate: ${RETENTION_POLICY_START_DATE:2024-03-04}
+  switchDate: ${RETENTION_SWITCH_DATE:2024-03-04}
   startDate: 1900-01-01
   personalNotificationLink: http://localhost:3000
   solsNotificationLink: http://localhost:3001

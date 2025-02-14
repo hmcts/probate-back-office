@@ -62,6 +62,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_NOC_SUBMITTED_DATE = "noc_date";
+    private static final String STATE = "state";
     private static final DateTimeFormatter NOC_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     Registry registry = new Registry();
     @InjectMocks
@@ -130,7 +131,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
             .build();
 
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-        returnedCaseDetails = new ReturnedCaseDetails(caseData, LAST_DATE_MODIFIED, CREATED_DATE, ID);
+        returnedCaseDetails = new ReturnedCaseDetails(caseData, LAST_DATE_MODIFIED, CREATED_DATE, ID, STATE);
 
         exelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -140,7 +141,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocuments)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID));
+            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID, STATE));
 
         exelaCaseDataWithCommas.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -150,7 +151,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocuments)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID));
+            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID, STATE));
 
         exelaCaseDataTypeWill.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -160,7 +161,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsTypeWill)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID));
+            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID, STATE));
 
         exelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -170,7 +171,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoWill)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID));
+            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID, STATE));
 
         exelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -180,7 +181,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoSubtype)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID));
+            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID, STATE));
 
         exelaCaseDataNoDOB.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -189,7 +190,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
             .grantIssuedDate("2019-05-01")
             .scannedDocuments(scannedDocumentsNoSubtype)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID));
+            .build(), LAST_DATE_MODIFIED, CREATED_DATE, ID, STATE));
 
     }
 

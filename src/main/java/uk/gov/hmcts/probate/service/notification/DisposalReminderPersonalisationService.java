@@ -24,21 +24,24 @@ public class DisposalReminderPersonalisationService {
     private static final String PERSONALISATION_LINK_TO_CASE = "link_to_case";
     private static final String CASE_ID_STRING = "<CASE_ID>";
     private static final String CASE_TYPE_STRING = "<CASE_TYPE>";
+    private static final String SOLICITOR_CASE_URL = "/cases/case-details/<CASE_ID>";
+    private static final String PERSONAL_CASE_URL = "/get-case/<CASE_ID>?probateType=<CASE_TYPE>";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMMM yyyy");
     @Value("${disposal.personalNotificationLink}")
-    private String linkToPersonalCase;
+    private String urlPrefixToPersonalCase;
     @Value("${disposal.solsNotificationLink}")
-    private String linkToSolicitorCase;
+    private String urlPrefixSolicitorCase;
 
 
-    public Map<String, String> getDisposalReminderPersonalisation(ReturnedCaseDetails caseDetails) {
+    public Map<String, String> getDisposalReminderPersonalisation(ReturnedCaseDetails caseDetails,
+                                                                  ApplicationType applicationType) {
         log.info("getDisposalReminderPersonalisation");
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put(PERSONALISATION_DATE_CREATED, DATE_FORMAT.format(caseDetails.getCreatedDate()));
         personalisation.put(PERSONALISATION_CASE_ID, caseDetails.getId().toString());
-        personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(caseDetails));
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(caseDetails, applicationType));
         personalisation.put(PERSONALISATION_LINK_TO_CASE, getHyperLink(caseDetails.getId().toString(),
-                caseDetails.getData().getApplicationType(), caseDetails.getData().getCaseType()));
+                applicationType, caseDetails.getData().getCaseType()));
         return personalisation;
     }
 
@@ -51,20 +54,20 @@ public class DisposalReminderPersonalisationService {
     private String getPersonalCaseLink(String caseId, String caseType) {
         log.info("Get personal link for: {} caseType: {}", caseId, caseType);
         return StringUtils.replace(
-                StringUtils.replace(linkToPersonalCase, CASE_ID_STRING, caseId),
+                StringUtils.replace(urlPrefixToPersonalCase + PERSONAL_CASE_URL, CASE_ID_STRING, caseId),
                 CASE_TYPE_STRING, caseType
         );
     }
 
     private String getSolicitorCaseLink(String caseId) {
         log.info("Get personal link for: {}", caseId);
-        return StringUtils.replace(linkToSolicitorCase, CASE_ID_STRING, caseId);
+        return StringUtils.replace(urlPrefixSolicitorCase + SOLICITOR_CASE_URL, CASE_ID_STRING, caseId);
     }
 
-    private String getSolicitorName(ReturnedCaseDetails caseDetails) {
+    private String getSolicitorName(ReturnedCaseDetails caseDetails, ApplicationType applicationType) {
         log.info("Get sol name for case: {}", caseDetails.getId());
         CaseData caseData = caseDetails.getData();
-        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+        if (caseData != null && applicationType.equals(ApplicationType.SOLICITOR)) {
             if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
                 return caseData.getSolsSOTName();
             } else if (!StringUtils.isEmpty(caseData.getSolsSOTForenames()) && !StringUtils

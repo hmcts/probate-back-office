@@ -31,4 +31,7 @@ public class ReturnedCaseDetails {
 
     @NotNull
     private final Long id;
+
+    @JsonProperty
+    private final String state;
 }

@@ -56,6 +56,10 @@ public class RetainAndDisposalTask implements Runnable {
         }
 
         try {
+            if (runDate.equals(switchDate)) {
+                log.info("Skipping dispose inactive case for date {}", runDate);
+                return;
+            }
             log.info("Perform dispose inactive case started");
             retainAndDisposalService.disposeInactiveCase(switchDate, runDate, startDate,
                     Long.parseLong(inactivityNotificationPeriod), Long.parseLong(disposalGracePeriod));

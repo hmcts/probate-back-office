@@ -55,6 +55,7 @@ class HmrcDataExtractServiceTest {
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
+    private static final String STATE = "state";
     private CaseData caseData;
 
     @BeforeEach
@@ -87,7 +88,7 @@ class HmrcDataExtractServiceTest {
     @Test
     void shouldExtractFoundCases() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
-            ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L)).build();
+            ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L, STATE)).build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
 
         hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
@@ -114,7 +115,7 @@ class HmrcDataExtractServiceTest {
     @Test
     void shouldExtractFoundCasesToFrom() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
-            ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L)).build();
+            ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L, STATE)).build();
         when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
 
         hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
@@ -141,7 +142,7 @@ class HmrcDataExtractServiceTest {
     void shouldThrowClientExceptionWhenFindingCases() {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
-                    ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L)).build();
+                    ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L, STATE)).build();
             when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
             when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
 
@@ -157,7 +158,7 @@ class HmrcDataExtractServiceTest {
     void shouldThrowClientExceptionWhenFindingCasesFromTo() {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
-                    ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L)).build();
+                    ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L, STATE)).build();
             when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
             when(emailWithFileService.emailFile(any(), any())).thenReturn(false);
             when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);

@@ -61,6 +61,8 @@ import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PAYMENT_FAILED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_PENDING;
 import static uk.gov.service.notify.NotificationClient.prepareUpload;
 
 @Slf4j
@@ -75,6 +77,7 @@ public class NotificationService {
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final String INVALID_PERSONALISATION_ERROR_MESSAGE =
             "Markdown Link detected in case data, stop sending notification email.";
+    private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
 
     private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
@@ -342,15 +345,18 @@ public class NotificationService {
         if (emailAddress == null) {
             throw new NotificationClientException("Email address not found for case ID: " + caseDetails.getId());
         }
-        log.info("emailAddress: {}", emailAddress);
+        ApplicationType applicationType = getApplicationType(caseDetails);
+        LanguagePreference languagePreference = caseDetails.getData() != null
+                ? caseDetails.getData().getLanguagePreference() : LanguagePreference.ENGLISH;
+        log.info("ApplicationType: {}, LanguagePreference: {}", applicationType, languagePreference);
         String templateId = notificationTemplates.getEmail()
-                .get(caseDetails.getData().getLanguagePreference())
-                .get(caseDetails.getData().getApplicationType())
+                .get(languagePreference)
+                .get(applicationType)
                 .getDisposalReminder();
-
+        log.info("templateId: {}", templateId);
         Map<String, String> personalisation =
-                disposalReminderPersonalisationService.getDisposalReminderPersonalisation(caseDetails);
-
+                disposalReminderPersonalisationService.getDisposalReminderPersonalisation(caseDetails, applicationType);
+        log.info("start sendEmail");
         SendEmailResponse response =
                 notificationClientService.sendEmail(templateId, emailAddress,
                         personalisation, caseDetails.getId().toString());
@@ -590,6 +596,15 @@ public class NotificationService {
     private String getUserEmail(Long caseReference) {
         log.info("getUserEmail for caseReference: {}", caseReference);
         return userInfoService.getUserEmailByCaseId(caseReference).orElse(null);
+    }
+
+    private ApplicationType getApplicationType(ReturnedCaseDetails caseDetails) {
+        if (caseDetails.getData() != null && caseDetails.getData().getApplicationType() != null) {
+            return caseDetails.getData().getApplicationType();
+        } else {
+            return PA_DRAFT_STATE_LIST.contains(caseDetails.getState())
+                    ? ApplicationType.PERSONAL : ApplicationType.SOLICITOR;
+        }
     }
 
     private String removedSolicitorNameForPersonalisation(CaseData caseData) {

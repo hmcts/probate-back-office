@@ -24,6 +24,7 @@ class ExelaCriteriaServiceTest {
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
+    private static final String STATE = "state";
     private ImmutableList.Builder<ReturnedCaseDetails> cases = new ImmutableList.Builder<>();
     private ReturnedCaseDetails case1;
     private ReturnedCaseDetails case2;
@@ -126,14 +127,14 @@ class ExelaCriteriaServiceTest {
                 .deceasedSurname("zurgel")
                 .build();
 
-        case1 = new ReturnedCaseDetails(caseData1, LAST_MODIFIED, CREATED_DATE, 1L);
-        case2 = new ReturnedCaseDetails(caseData2, LAST_MODIFIED, CREATED_DATE, 2L);
-        case3 = new ReturnedCaseDetails(caseData3, LAST_MODIFIED, CREATED_DATE, 3L);
-        case4 = new ReturnedCaseDetails(caseData4, LAST_MODIFIED, CREATED_DATE, 3L);
-        case5 = new ReturnedCaseDetails(caseData5, LAST_MODIFIED, CREATED_DATE, 3L);
-        case6 = new ReturnedCaseDetails(caseData6, LAST_MODIFIED, CREATED_DATE, 3L);
-        case7 = new ReturnedCaseDetails(caseData7, LAST_MODIFIED, CREATED_DATE, 3L);
-        case8 = new ReturnedCaseDetails(caseData8, LAST_MODIFIED, CREATED_DATE, 3L);
+        case1 = new ReturnedCaseDetails(caseData1, LAST_MODIFIED, CREATED_DATE, 1L, STATE);
+        case2 = new ReturnedCaseDetails(caseData2, LAST_MODIFIED, CREATED_DATE, 2L, STATE);
+        case3 = new ReturnedCaseDetails(caseData3, LAST_MODIFIED, CREATED_DATE, 3L, STATE);
+        case4 = new ReturnedCaseDetails(caseData4, LAST_MODIFIED, CREATED_DATE, 3L, STATE);
+        case5 = new ReturnedCaseDetails(caseData5, LAST_MODIFIED, CREATED_DATE, 3L, STATE);
+        case6 = new ReturnedCaseDetails(caseData6, LAST_MODIFIED, CREATED_DATE, 3L, STATE);
+        case7 = new ReturnedCaseDetails(caseData7, LAST_MODIFIED, CREATED_DATE, 3L, STATE);
+        case8 = new ReturnedCaseDetails(caseData8, LAST_MODIFIED, CREATED_DATE, 3L, STATE);
     }
 
     @Test
