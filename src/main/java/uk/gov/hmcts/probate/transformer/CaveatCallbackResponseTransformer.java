@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -42,6 +43,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_WITHDRAWN;
 import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CaveatCallbackResponseTransformer {
@@ -310,7 +312,8 @@ public class CaveatCallbackResponseTransformer {
             .removedRepresentative(caveatData.getRemovedRepresentative())
             .changeOrganisationRequestField(caveatData.getChangeOrganisationRequestField())
             .changeOfRepresentatives(getNullForEmptyRepresentatives(caveatData.getChangeOfRepresentatives()))
-            .paymentConfirmCheckbox(caveatData.getPaymentConfirmCheckbox());
+            .paymentConfirmCheckbox(caveatData.getPaymentConfirmCheckbox())
+            .ttl(caveatData.getTtl());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
@@ -392,6 +395,8 @@ public class CaveatCallbackResponseTransformer {
         responseCaseDataBuilder
                 .ttl(null)
                 .state(callbackRequest.getCaseDetailsBefore().getState());
+        log.info("Rollback case {} to state {}", callbackRequest.getCaseDetails().getId(),
+                callbackRequest.getCaseDetailsBefore().getState());
         return transformResponse(responseCaseDataBuilder.build());
     }
 

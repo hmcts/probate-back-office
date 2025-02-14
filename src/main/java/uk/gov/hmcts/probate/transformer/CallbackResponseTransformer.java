@@ -633,6 +633,7 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder
                 .ttl(null)
                 .state(callbackRequest.getCaseDetailsBefore().getState());
+        log.info("Rollback to state: {}", callbackRequest.getCaseDetailsBefore().getState());
         return transformResponse(responseCaseDataBuilder.build());
     }
 

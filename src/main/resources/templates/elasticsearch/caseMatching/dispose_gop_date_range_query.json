@@ -7,23 +7,9 @@
         {
           "range": {
             "last_modified": {
-              "gte": ":fromDate",
-              "lte": ":toDate"
+              "gte": "2021-01-01",
+              "lte": "2025-03-05"
             }
-          }
-        },
-        {
-          "terms": {
-            "state.keyword": [
-              "Pending",
-              "CasePaymentFailed",
-              "SolAdmonCreated",
-              "SolAppCreatedDeceasedDtls",
-              "SolAppCreatedSolicitorDtls",
-              "SolAppUpdated",
-              "SolProbateCreated",
-              "SolIntestacyCreated"
-            ]
           }
         }
       ]
