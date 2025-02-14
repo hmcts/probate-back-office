@@ -17,9 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDateTime;
 
@@ -42,12 +42,12 @@ class DisposalCCDServiceTest {
     private static final String DESCRIPTION = DisposalCCDService.DISPOSE_DRAFT_DESCRIPTION;
     private static final String SUMMARY = DisposalCCDService.DISPOSE_DRAFT_SUMMARY;
 
-    private ReturnedCaseDetails caseDetails;
+    private CaseDetails caseDetails;
     private SecurityDTO securityDTO;
 
     @BeforeEach
     void setUp() {
-        caseDetails = mock(ReturnedCaseDetails.class);
+        caseDetails = mock(CaseDetails.class);
         securityDTO = mock(SecurityDTO.class);
 
         when(caseDetails.getLastModified()).thenReturn(LocalDateTime.of(2018, 10, 11, 13, 14, 20));

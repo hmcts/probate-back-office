@@ -43,21 +43,24 @@ import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
-import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
@@ -577,7 +580,12 @@ class CallbackResponseTransformerTest {
     Document coversheetMock;
     @Mock
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
-
+    @Mock
+    private SecurityUtils securityUtils;
+    @Mock
+    private SecurityDTO securityDTO;
+    @Mock
+    private AuditEventService auditEventService;
     @Mock
     private FeatureToggleService featureToggleService;
 
@@ -2902,22 +2910,18 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformTTL() {
-        TTL ttl = TTL.builder()
-                .systemTTL(LocalDate.now())
-                .overrideTTL(LocalDate.now())
-                .suspended("No")
-                .build();
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .ttl(ttl);
-
+    void shouldTransformRollbackState() {
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getState()).thenReturn("Pending");
+        caseDataBuilder.applicationType(SOLICITOR);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(auditEventService.getLatestAuditEventByName(any(), any(), any(), any()))
+                .thenReturn(Optional.ofNullable(AuditEvent.builder()
+                        .stateId("SolsAppUpdated")
+                        .createdDate(LocalDateTime.now())
+                        .build()));
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getTtl());
-        assertEquals("Pending", callbackResponse.getData().getState());
+        assertEquals("SolsAppUpdated", callbackResponse.getData().getState());
     }
 
     @Test

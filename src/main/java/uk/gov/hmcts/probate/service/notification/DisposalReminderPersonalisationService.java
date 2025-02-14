@@ -6,12 +6,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,15 +33,16 @@ public class DisposalReminderPersonalisationService {
     private String urlPrefixSolicitorCase;
 
 
-    public Map<String, String> getDisposalReminderPersonalisation(ReturnedCaseDetails caseDetails,
+    public Map<String, String> getDisposalReminderPersonalisation(CaseDetails caseDetails,
                                                                   ApplicationType applicationType) {
         log.info("getDisposalReminderPersonalisation");
         HashMap<String, String> personalisation = new HashMap<>();
+        Map<String, Object> data = caseDetails.getData();
         personalisation.put(PERSONALISATION_DATE_CREATED, DATE_FORMAT.format(caseDetails.getCreatedDate()));
         personalisation.put(PERSONALISATION_CASE_ID, caseDetails.getId().toString());
-        personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(caseDetails, applicationType));
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(data, applicationType));
         personalisation.put(PERSONALISATION_LINK_TO_CASE, getHyperLink(caseDetails.getId().toString(),
-                applicationType, caseDetails.getData().getCaseType()));
+                applicationType, getCaseType(data)));
         return personalisation;
     }
 
@@ -64,17 +65,30 @@ public class DisposalReminderPersonalisationService {
         return StringUtils.replace(urlPrefixSolicitorCase + SOLICITOR_CASE_URL, CASE_ID_STRING, caseId);
     }
 
-    private String getSolicitorName(ReturnedCaseDetails caseDetails, ApplicationType applicationType) {
-        log.info("Get sol name for case: {}", caseDetails.getId());
-        CaseData caseData = caseDetails.getData();
-        if (caseData != null && applicationType.equals(ApplicationType.SOLICITOR)) {
-            if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
-                return caseData.getSolsSOTName();
-            } else if (!StringUtils.isEmpty(caseData.getSolsSOTForenames()) && !StringUtils
-                    .isEmpty(caseData.getSolsSOTSurname())) {
-                return String.join(" ", caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname());
+    private String getSolicitorName(Map<String, Object> data, ApplicationType applicationType) {
+        log.info("Get solicitor name");
+
+        if (data != null && applicationType.equals(ApplicationType.SOLICITOR)) {
+            String solsSOTName = getStringValue(data, "solsSOTName");
+            String solsSOTForenames = getStringValue(data, "solsSOTForenames");
+            String solsSOTSurname = getStringValue(data, "solsSOTSurname");
+
+            if (StringUtils.isNotEmpty(solsSOTName)) {
+                return solsSOTName;
+            } else if (StringUtils.isNotEmpty(solsSOTForenames) && StringUtils.isNotEmpty(solsSOTSurname)) {
+                return String.join(" ", solsSOTForenames, solsSOTSurname);
             }
         }
         return StringUtils.EMPTY;
+    }
+
+    private String getCaseType(Map<String, Object> data) {
+        return getStringValue(data, "caseType");
+    }
+
+    private String getStringValue(Map<String, Object> data, String key) {
+        return Optional.ofNullable(data.get(key))
+                .map(Object::toString)
+                .orElse(StringUtils.EMPTY);
     }
 }

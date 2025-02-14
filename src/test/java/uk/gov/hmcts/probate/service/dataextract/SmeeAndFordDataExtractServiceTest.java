@@ -53,8 +53,7 @@ class SmeeAndFordDataExtractServiceTest {
     private BlobUpload blobUpload;
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
-    private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
-    private static final String STATE = "state";
+
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private CaseData caseData1;
     private CaseData caseData2;
@@ -83,8 +82,8 @@ class SmeeAndFordDataExtractServiceTest {
             .scannedDocuments(scannedDocuments)
             .build();
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
-            .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, CREATED_DATE, 1L, STATE))
-            .add(new ReturnedCaseDetails(caseData2, LAST_MODIFIED, CREATED_DATE, 2L, STATE))
+            .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
+            .add(new ReturnedCaseDetails(caseData2, LAST_MODIFIED, 2L))
             .build();
 
 

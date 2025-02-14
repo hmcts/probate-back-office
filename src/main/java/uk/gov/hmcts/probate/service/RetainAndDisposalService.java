@@ -4,24 +4,37 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.ccd.client.model.SearchResult;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @EnableAsync
 public class RetainAndDisposalService {
-    private final CaseQueryService caseQueryService;
+    private static final String DISPOSE_GOP_QUERY = "templates/elasticsearch/caseMatching/"
+            + "dispose_gop_date_range_query.json";
+    private static final String DISPOSE_CAVEAT_QUERY = "templates/elasticsearch/caseMatching/"
+            + "dispose_caveat_date_range_query.json";
+    private static final String DISPOSE_GOP_DELETED_QUERY = "templates/elasticsearch/caseMatching/"
+            + "dispose_gop_deleted_query.json";
+    private static final String QUERY_NAME_DISPOSE_REMINDER = "DisposalReminder";
+
     private final NotificationService notificationService;
     private final DisposalCCDService disposalCCDService;
     private final SecurityUtils securityUtils;
+    private final ElasticSearchRepository elasticSearchRepository;
 
     public void sendEmailForInactiveCase(String switchDate, String runDate, long inactivityNotificationPeriod) {
         List<Long> failedCases = new ArrayList<>();
@@ -29,14 +42,24 @@ public class RetainAndDisposalService {
             LocalDate switchLocalDate = LocalDate.parse(switchDate);
             LocalDate fromDate = switchLocalDate.minusDays(inactivityNotificationPeriod);
             if (switchDate.equals(runDate)) {
+                log.info("Switch date and run date are same, doubling the period for inactivity notification");
                 fromDate = fromDate.minusDays(inactivityNotificationPeriod);
             }
             LocalDate toDate = switchLocalDate.minusDays(inactivityNotificationPeriod);
             log.info("Start Disposal reminder query fromDate: {}, toDate: {}", fromDate, toDate);
-            List<ReturnedCaseDetails> casesFound =
-                    caseQueryService.findInactiveCaseForDisposalReminder(fromDate.toString(), toDate.toString());
-            log.info("Disposal reminder query executed for date: {}, cases found: {}", runDate, casesFound.size());
-            casesFound.forEach(caseDetails -> {
+            SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+            SearchResult searchResult = elasticSearchRepository
+                .fetchFirstPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
+                    QUERY_NAME_DISPOSE_REMINDER, fromDate.toString(), toDate.toString());
+            log.info("Disposal reminder query executed for date: {}, cases found: {}",
+                runDate, searchResult.getTotal());
+            if (searchResult.getTotal() == 0) {
+                log.info("No cases found for disposal");
+                return;
+            }
+
+            List<CaseDetails> searchResultCases = searchResult.getCases();
+            searchResultCases.forEach(caseDetails -> {
                 log.info("Sending email for case id: {}", caseDetails.getId());
                 try {
                     notificationService.sendDisposalReminderEmail(caseDetails);
@@ -45,10 +68,37 @@ public class RetainAndDisposalService {
                     failedCases.add(caseDetails.getId());
                 }
             });
-            log.info("Fail to send email with cases: {}", failedCases);
+            String searchAfterValue = searchResultCases.get(searchResultCases.size() - 1).getId().toString();
+            log.info("Continuing disposal for searchAfterValue: {}", searchAfterValue);
+
+            boolean keepSearching;
+            do {
+                SearchResult subsequentSearchResult = elasticSearchRepository
+                        .fetchNextPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
+                                searchAfterValue, QUERY_NAME_DISPOSE_REMINDER, fromDate.toString(), toDate.toString());
+                log.info("Fetching next page for searchAfterValue: {}", searchAfterValue);
+
+                keepSearching = subsequentSearchResult != null && !subsequentSearchResult.getCases().isEmpty();
+                if (keepSearching) {
+                    List<CaseDetails> subsequentSearchResultCases = subsequentSearchResult.getCases();
+                    subsequentSearchResultCases.forEach(caseDetails -> {
+                        log.info("Sending email for case id: {}", caseDetails.getId());
+                        try {
+                            notificationService.sendDisposalReminderEmail(caseDetails);
+                        } catch (NotificationClientException | RuntimeException e) {
+                            log.info("Error sending email for case id: {}", caseDetails.getId());
+                            failedCases.add(caseDetails.getId());
+                        }
+                    });
+                    searchAfterValue = subsequentSearchResultCases
+                            .get(subsequentSearchResultCases.size() - 1).getId().toString();
+                }
+            } while (keepSearching);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw e;
+        } finally {
+            log.info("sendEmailForInactiveCase completed. Fail to send email with cases: {}", failedCases);
         }
     }
 
@@ -70,10 +120,11 @@ public class RetainAndDisposalService {
             LocalDate disposalEndDate = runLocalDate.equals(switchLocalDate)
                     ? runLocalDate.minusDays(inactivityNotificationPeriod + disposalGracePeriod + 1) :
                     runLocalDate.minusDays(inactivityNotificationPeriod + disposalGracePeriod);
-            log.info("Start Dispose inactive GOP case initiated for date: {}, fromDate: {}, toDate: {}",
+            log.info("Start disposing inactive GOP cases. runDate: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, disposalEndDate);
             disposeGOPDraftCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases);
-            log.info("Start Dispose inactive Caveat case initiated for date: {}, fromDate: {}, toDate: {}",
+
+            log.info("Start disposing inactive Caveat cases. runDate: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, disposalEndDate);
             disposeCaveatCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases);
         } catch (Exception e) {
@@ -85,61 +136,94 @@ public class RetainAndDisposalService {
     }
 
     private boolean shouldSkipDraftDisposal(String runDate, String switchDate, long disposalInactivePeriod) {
-        LocalDate switchLocalDate = LocalDate.parse(switchDate);
-        LocalDate runLocalDate = LocalDate.parse(runDate);
-
-        return runLocalDate.isBefore(switchLocalDate.plusDays(disposalInactivePeriod));
+        return LocalDate.parse(runDate).isBefore(LocalDate.parse(switchDate).plusDays(disposalInactivePeriod));
     }
 
     private void disposeGOPDraftCase(String disposalStartDate, String disposalEndDate, List<Long> failedCases) {
-        List<ReturnedCaseDetails> casesFound = caseQueryService
-                .findInactiveGOPCaseForDisposal(disposalStartDate, disposalEndDate);
-        log.info("GOP Cases found for Dispose inactive case initiated for date: {}, cases found: {}",
-                disposalStartDate, casesFound.size());
-
-        casesFound.forEach(caseDetails -> {
-            log.info("Disposing GOP draft case for case id: {}", caseDetails.getId());
-            try {
-                SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-                disposalCCDService.disposeGOPCase(caseDetails, caseDetails.getId().toString(), securityDTO);
-            } catch (Exception e) {
-                failedCases.add(caseDetails.getId());
-                log.error("Error disposing GOP case for case id: {}", caseDetails.getId(), e);
-            }
-        });
+        try {
+            SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+            SearchResult searchResult = elasticSearchRepository.fetchFirstPage(securityDTO.getAuthorisation(),
+                    GRANT_OF_REPRESENTATION.getName(), DISPOSE_GOP_QUERY, disposalStartDate, disposalEndDate);
+            log.info("disposeGOPDraftCase query executed cases found: {}",
+                    searchResult.getTotal());
+            processCasesForDisposal(searchResult, failedCases, securityDTO, disposalStartDate, disposalEndDate,
+                    DISPOSE_GOP_QUERY, true);
+        } catch (Exception e) {
+            log.error("Error on disposeGOPDraftCase: {}", e.getMessage(), e);
+        }
     }
 
     private void disposeGOPDeletedCase(String disposalStartDate, String disposalEndDate, List<Long> failedCases) {
-        List<ReturnedCaseDetails> casesFound = caseQueryService
-                .findDeletedGOPCaseForDisposal(disposalStartDate, disposalEndDate);
-        log.info("GOP Cases found for Dispose deleted case initiated for date: {}, cases found: {}",
-                disposalStartDate, casesFound.size());
-
-        casesFound.forEach(caseDetails -> {
-            log.info("Disposing GOP deleted case for case id: {}", caseDetails.getId());
-            try {
-                SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-                disposalCCDService.disposeGOPCase(caseDetails, caseDetails.getId().toString(), securityDTO);
-            } catch (Exception e) {
-                failedCases.add(caseDetails.getId());
-                log.error("Error disposing GOP case for case id: {}", caseDetails.getId(), e);
-            }
-        });
+        try {
+            SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+            SearchResult searchResult = elasticSearchRepository.fetchFirstPage(securityDTO.getAuthorisation(),
+                    GRANT_OF_REPRESENTATION.getName(), DISPOSE_GOP_DELETED_QUERY, disposalStartDate, disposalEndDate);
+            log.info("disposeGOPDeletedCase query executed cases found: {}",
+                    searchResult.getTotal());
+            processCasesForDisposal(searchResult, failedCases, securityDTO, disposalStartDate, disposalEndDate,
+                    DISPOSE_GOP_DELETED_QUERY, true);
+        } catch (Exception e) {
+            log.error("Error on disposeGOPDeletedCase: {}", e.getMessage(), e);
+        }
     }
 
     private void disposeCaveatCase(String disposalStartDate, String disposalEndDate, List<Long> failedCases) {
-        List<ReturnedCaseDetails> casesFound = caseQueryService
-                .findInactiveCaveatCaseForDisposal(disposalStartDate, disposalEndDate);
-        log.info("Caveat Cases found for Dispose inactive case initiated for date: {}, cases found: {}",
-                disposalStartDate, casesFound.size());
-        casesFound.forEach(caseDetails -> {
-            log.info("Disposing GOP Caveat for case id: {}", caseDetails.getId());
+        try {
+            SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+            SearchResult searchResult = elasticSearchRepository.fetchFirstPage(securityDTO.getAuthorisation(),
+                    CAVEAT.getName(), DISPOSE_CAVEAT_QUERY, disposalStartDate, disposalEndDate);
+            log.info("disposeCaveatCase query executed cases found: {}",
+                    searchResult.getTotal());
+            processCasesForDisposal(searchResult, failedCases, securityDTO, disposalStartDate, disposalEndDate,
+                    DISPOSE_CAVEAT_QUERY, false);
+        } catch (Exception e) {
+            log.error("Error on disposeCaveatCase: {}", e.getMessage(), e);
+        }
+    }
+
+    private void processCasesForDisposal(SearchResult searchResult, List<Long> failedCases, SecurityDTO securityDTO,
+                                      String disposalStartDate, String disposalEndDate, String query, boolean isGOP) {
+        if (searchResult == null || searchResult.getTotal() == 0) {
+            log.info("No cases found for disposal: query={}", query);
+            return;
+        }
+
+        List<CaseDetails> searchResultCases = searchResult.getCases();
+        executeCaseDisposal(searchResultCases, failedCases, securityDTO, isGOP);
+
+        String searchAfterValue = searchResultCases.get(searchResultCases.size() - 1).getId().toString();
+        log.info("Continuing disposal for searchAfterValue: {}", searchAfterValue);
+
+        boolean keepSearching;
+        do {
+            SearchResult subsequentSearchResult = elasticSearchRepository
+                    .fetchNextPage(securityDTO.getAuthorisation(), isGOP
+                            ? GRANT_OF_REPRESENTATION.getName()
+                            : CAVEAT.getName(), searchAfterValue, query, disposalStartDate, disposalEndDate);
+            log.info("Fetching next page for searchAfterValue: {}", searchAfterValue);
+
+            keepSearching = subsequentSearchResult != null && !subsequentSearchResult.getCases().isEmpty();
+            if (keepSearching) {
+                List<CaseDetails> subsequentSearchResultCases = subsequentSearchResult.getCases();
+                executeCaseDisposal(subsequentSearchResultCases, failedCases, securityDTO, isGOP);
+                searchAfterValue = subsequentSearchResultCases
+                        .get(subsequentSearchResultCases.size() - 1).getId().toString();
+            }
+        } while (keepSearching);
+    }
+
+    private void executeCaseDisposal(List<CaseDetails> caseDetailsList, List<Long> failedCases,
+                                     SecurityDTO securityDTO, boolean isGOP) {
+        caseDetailsList.forEach(caseDetails -> {
             try {
-                SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-                disposalCCDService.disposeCaveatCase(caseDetails, caseDetails.getId().toString(), securityDTO);
+                if (isGOP) {
+                    disposalCCDService.disposeGOPCase(caseDetails, caseDetails.getId().toString(), securityDTO);
+                } else {
+                    disposalCCDService.disposeCaveatCase(caseDetails, caseDetails.getId().toString(), securityDTO);
+                }
             } catch (Exception e) {
                 failedCases.add(caseDetails.getId());
-                log.error("Error disposing Caveat case for case id: {}", caseDetails.getId(), e);
+                log.error("Error disposing case with ID: {}", caseDetails.getId(), e);
             }
         });
     }

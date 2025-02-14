@@ -1,14 +1,12 @@
 {
-  "size": :size,
-  "from": :from,
   "query": {
     "bool": {
       "filter": [
         {
           "range": {
             "last_modified": {
-              "gte": ":fromDate",
-              "lte": ":toDate"
+              "gte": "%s",
+              "lte": "%s"
             }
           }
         },
@@ -24,6 +22,7 @@
       ]
     }
   },
+  "size": %s,
   "sort": [
     {
       "id": {
@@ -31,4 +30,3 @@
       }
     }
   ]
-}

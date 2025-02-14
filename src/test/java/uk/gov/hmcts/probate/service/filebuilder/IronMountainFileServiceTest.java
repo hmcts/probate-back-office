@@ -38,8 +38,7 @@ class IronMountainFileServiceTest {
     private CaseData builtData;
     private static final String FILE_NAME = "testFile.txt";
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
-    private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
-    private static final String STATE = "state";
+
 
 
     @BeforeEach
@@ -103,7 +102,7 @@ class IronMountainFileServiceTest {
     @Test
     void testIronMountainFileBuilt() throws IOException {
         builtData = caseData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFilePopulated.txt")));
@@ -114,7 +113,7 @@ class IronMountainFileServiceTest {
         caseData.ihtGrossValue(null);
         caseData.ihtNetValue(null);
         builtData = caseData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFilePopulatedZeroIHTs.txt")));
@@ -135,7 +134,7 @@ class IronMountainFileServiceTest {
                 .primaryApplicantAddress(SolsAddress.builder().build())
                 .additionalExecutorsApplying(additionalExecutors);
         builtData = caseData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileEmptyOptionals.txt")));
@@ -145,7 +144,7 @@ class IronMountainFileServiceTest {
     void testPrimaryApplicantAsNoChangesGrantee() throws IOException {
         caseData.primaryApplicantIsApplying("No");
         builtData = caseData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainPrimaryApplicantNo.txt")));
@@ -155,7 +154,7 @@ class IronMountainFileServiceTest {
     void testSolicitorApplicationTypeDisplaysSolicitorInformation() throws IOException {
         caseData.applicationType(ApplicationType.SOLICITOR);
         builtData = caseData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolicitor.txt")));
@@ -166,7 +165,7 @@ class IronMountainFileServiceTest {
         caseData.caseType("adColligendaBona");
         caseData.applicationType(ApplicationType.SOLICITOR);
         builtData = caseData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainAdColligendBona.txt")));
@@ -175,7 +174,7 @@ class IronMountainFileServiceTest {
     @Test
     void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
         builtData = caseData2.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainOneAddressLine.txt")));
@@ -185,7 +184,7 @@ class IronMountainFileServiceTest {
     void testRegistryLocationCtscMapped() throws IOException {
         caseData.registryLocation("ctsc");
         builtData = caseData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileCtsc.txt")));
@@ -197,7 +196,7 @@ class IronMountainFileServiceTest {
         caseData.primaryApplicantIsApplying("No");
         caseData.additionalExecutorsApplying(null);
         builtData = caseData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolAsPrimary.txt")));
@@ -207,7 +206,7 @@ class IronMountainFileServiceTest {
     void testAddExceptionForIncorrectCaseData() throws IOException {
         caseData2.applicationType(null);
         builtData = caseData2.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainExceptionCase.txt")));
@@ -229,7 +228,7 @@ class IronMountainFileServiceTest {
                 .primaryApplicantAddress(SolsAddress.builder().build())
                 .additionalExecutorsApplying(additionalExecutors);
         builtData = caseData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1234567890876L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileEmptyOptionals.txt")));

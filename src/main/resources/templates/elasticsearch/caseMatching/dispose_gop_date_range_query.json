@@ -1,20 +1,19 @@
 {
-  "size": :size,
-  "from": :from,
   "query": {
     "bool": {
       "filter": [
         {
           "range": {
             "last_modified": {
-              "gte": "2021-01-01",
-              "lte": "2025-03-05"
+              "gte": "%s",
+              "lte": "%s"
             }
           }
         }
       ]
     }
   },
+  "size": %s,
   "sort": [
     {
       "id": {
@@ -22,4 +21,3 @@
       }
     }
   ]
-}

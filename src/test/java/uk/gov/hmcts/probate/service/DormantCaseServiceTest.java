@@ -46,8 +46,6 @@ class DormantCaseServiceTest {
     private List<ReturnedCaseDetails> caseList;
     private List<ReturnedCaseDetails> caseList1;
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
-    private static final String STATE = "state";
 
     @BeforeEach
     void setUp() {
@@ -61,9 +59,9 @@ class DormantCaseServiceTest {
                 .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))
                 .build();
         caseList = new ImmutableList.Builder<ReturnedCaseDetails>()
-                .add(new ReturnedCaseDetails(caseData, LocalDateTime.now(ZoneOffset.UTC), CREATED_DATE, 1L, STATE))
+                .add(new ReturnedCaseDetails(caseData, LocalDateTime.now(ZoneOffset.UTC), 1L))
                 .add(new ReturnedCaseDetails(migratedCaseData,
-                        LocalDateTime.now(ZoneOffset.UTC).minusMonths(1), CREATED_DATE, 1L, STATE))
+                        LocalDateTime.now(ZoneOffset.UTC).minusMonths(1), 1L))
                 .build();
         CaseData caseData1 = CaseData.builder()
                 .deceasedSurname("Doe")
@@ -71,7 +69,7 @@ class DormantCaseServiceTest {
                 .minusMonths(1L)))
                 .build();
         caseList1 = new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData1,
-                LocalDateTime.now(ZoneOffset.UTC), CREATED_DATE, 1L, STATE)).build();
+                LocalDateTime.now(ZoneOffset.UTC), 1L)).build();
     }
 
     @Test

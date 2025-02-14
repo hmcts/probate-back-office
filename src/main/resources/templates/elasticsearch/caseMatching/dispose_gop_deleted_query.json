@@ -1,21 +1,20 @@
 {
-  "size": :size,
-  "from": :from,
   "query": {
     "bool": {
       "filter": [
         {
           "range": {
             "last_modified": {
-              "gte": ":fromDate",
-              "lte": ":toDate"
+              "gte": "%s",
+              "lte": "%s"
             }
           }
         },
         {
           "terms": {
             "state.keyword": [
-              "Deleted"
+              "Deleted",
+              "Stopped"
             ]
           }
         }
@@ -29,4 +28,3 @@
       }
     }
   ]
-}

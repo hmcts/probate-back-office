@@ -24,14 +24,6 @@ public class ReturnedCaseDetails {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
     private final LocalDateTime lastModified;
 
-    @JsonProperty(value = "created_date")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
-    private final LocalDateTime createdDate;
-
     @NotNull
     private final Long id;
-
-    @JsonProperty
-    private final String state;
 }

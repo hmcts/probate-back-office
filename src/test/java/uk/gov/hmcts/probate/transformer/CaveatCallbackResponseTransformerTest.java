@@ -30,11 +30,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
@@ -48,6 +51,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -167,12 +171,22 @@ class CaveatCallbackResponseTransformerTest {
     @Mock
     private SolicitorPaymentReferenceDefaulter solicitorPBADefaulterMock;
 
+    @Mock
+    private SecurityUtils securityUtils;
+
+    @Mock
+    private SecurityDTO securityDTO;
+
+    @Mock
+    private AuditEventService auditEventService;
+
     @Spy
     private DocumentTransformer documentTransformer;
 
     private CaveatData.CaveatDataBuilder caveatDataBuilder;
 
     private uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData bulkScanCaveatData;
+
 
     @BeforeEach
     public void setup() {
@@ -790,21 +804,17 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformTTL() {
-        TTL ttl = TTL.builder()
-                .systemTTL(LocalDate.now())
-                .overrideTTL(LocalDate.now())
-                .suspended("No")
-                .build();
-        caveatDataBuilder.applicationType(SOLICITOR)
-                .ttl(ttl);
-
+    void shouldTransformRollbackState() {
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
-        when(caveatCallbackRequestMock.getCaseDetailsBefore()).thenReturn(caveatDetailsMock);
-        when(caveatDetailsMock.getState()).thenReturn("SolsAppUpdated");
+        caveatDataBuilder.applicationType(SOLICITOR);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+        when(auditEventService.getLatestAuditEventByName(any(), any(), any(), any()))
+                .thenReturn(Optional.ofNullable(AuditEvent.builder()
+                        .stateId("SolsAppUpdated")
+                        .createdDate(LocalDateTime.now())
+                        .build()));
         CaveatCallbackResponse callbackResponse = underTest.rollback(caveatCallbackRequestMock);
-        assertNull(callbackResponse.getCaveatData().getTtl());
         assertEquals("SolsAppUpdated", callbackResponse.getCaveatData().getState());
     }
 

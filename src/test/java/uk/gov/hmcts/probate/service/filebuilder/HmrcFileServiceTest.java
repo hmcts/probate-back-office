@@ -37,9 +37,8 @@ import static org.mockito.Mockito.when;
 class HmrcFileServiceTest {
     private static final String FILE_DATE = "20190101-123456";
     private static final String FILE_NAME = "1_20190101.dat";
-    private static final String STATE = "state";
+
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
-    private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
     private FileExtractDateFormatter fileExtractDateFormatter = Mockito.mock(FileExtractDateFormatter.class);
     private ExceptedEstateDateOfDeathChecker expectedEstateDateOfDeathChecker =
             Mockito.mock(ExceptedEstateDateOfDeathChecker.class);
@@ -315,7 +314,7 @@ class HmrcFileServiceTest {
     @Test
     void testHmrcFileBuiltForSolicitor() throws IOException {
         builtData = caseDataSolictor.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1111222233334444L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L);
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcSolicitor.txt")));
@@ -325,7 +324,7 @@ class HmrcFileServiceTest {
     void testAdColligendaBonaCaseType() throws IOException {
         caseDataSolictor.caseType("adColligendaBona");
         builtData = caseDataSolictor.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1111222233334444L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L);
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcAdColligendaBona.txt")));
@@ -334,7 +333,7 @@ class HmrcFileServiceTest {
     @Test
     void testHmrcFileBuiltForPersonal() throws IOException {
         builtData = caseDataPersonal.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 2222333344445555L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonal.txt")));
@@ -343,7 +342,7 @@ class HmrcFileServiceTest {
     @Test
     void testHmrcFileBuiltForPersonalWithEstateId() throws IOException {
         builtData = caseDataPersonalAfterIht.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 2222333344445555L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
         when(expectedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(
                 builtData.getDeceasedDateOfDeath())).thenReturn(true);
@@ -354,7 +353,7 @@ class HmrcFileServiceTest {
     @Test
     void testHmrcFileBuiltForPersonalWithEstateValuesEmpty() throws IOException {
         builtData = caseDataPersonalAfterIhtEstateEmpty.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 2222333344445555L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
         when(expectedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(
                 builtData.getDeceasedDateOfDeath())).thenReturn(true);
@@ -368,7 +367,7 @@ class HmrcFileServiceTest {
         caseDataPersonal.ihtNetValue(null);
         builtData = caseDataPersonal.build();
 
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 2222333344445555L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalZeroIHTs.txt")));
@@ -377,9 +376,9 @@ class HmrcFileServiceTest {
     @Test
     void testHmrcFileBuiltForMultiples() throws IOException {
         builtData = caseDataPersonal.build();
-        caseList.add(new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 2222333344445555L, STATE));
+        caseList.add(new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L));
         builtData = caseDataSolictor.build();
-        caseList.add(new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 1111222233334444L, STATE));
+        caseList.add(new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L));
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcMultipleCases.txt")));
     }
@@ -397,7 +396,7 @@ class HmrcFileServiceTest {
             .boDeceasedTitle("")
             .additionalExecutorsApplying(additionalExecutors);
         builtData = caseDataSolictor.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 3333444455556666L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 3333444455556666L);
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcEmptyOptionals.txt")));
@@ -407,7 +406,7 @@ class HmrcFileServiceTest {
     void testPrimaryApplicantAsNoChangesGrantee() throws IOException {
         caseDataPersonal.primaryApplicantIsApplying("No");
         builtData = caseDataPersonal.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 4444555566667777L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 4444555566667777L);
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPrimaryApplicantNo.txt")));
@@ -416,7 +415,7 @@ class HmrcFileServiceTest {
     @Test
     void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
         builtData = caseDataCarriageReturns.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 5555666677778888L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalReplaced.txt")));
@@ -425,7 +424,7 @@ class HmrcFileServiceTest {
     @Test
     void testMissingAddressIsReplacedWithSpace() throws IOException {
         builtData = caseDataMissingData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 5555666677778888L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingAddresses.txt")));
@@ -435,7 +434,7 @@ class HmrcFileServiceTest {
     void testMissingIHTReplacedWithX() throws IOException {
         caseDataMissingData.ihtFormId(null);
         builtData = caseDataMissingData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 5555666677778888L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
         caseList.add(createdCase);
         String expected = FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingIHT.txt");
 
@@ -447,7 +446,7 @@ class HmrcFileServiceTest {
     void testOtherIHTRefusesCaseRow() throws IOException {
         caseDataMissingData.ihtFormId("OTHER");
         builtData = caseDataMissingData.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, CREATED_DATE, 5555666677778888L, STATE);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
         caseList.add(createdCase);
         String expected = FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingCase.txt");
 

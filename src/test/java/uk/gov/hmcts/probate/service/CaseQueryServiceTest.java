@@ -38,8 +38,6 @@ import static org.mockito.Mockito.when;
 class CaseQueryServiceTest {
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
-    private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
-    private static final String STATE = "state";
 
     @Mock
     private RestTemplate restTemplate;
@@ -70,7 +68,7 @@ class CaseQueryServiceTest {
         MockitoAnnotations.openMocks(this);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
-        when(securityUtils.getSchedulerToken()).thenReturn("Bearer 123");
+        when(securityUtils.getCaseworkerToken()).thenReturn("Bearer 123");
         when(headers.getAuthorizationHeaders()).thenReturn(new HttpHeaders());
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
@@ -81,7 +79,7 @@ class CaseQueryServiceTest {
             .build();
         List<ReturnedCaseDetails> caseList =
             new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, CREATED_DATE, 1L, STATE))
+                LAST_MODIFIED, 1L))
                 .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
 
@@ -190,7 +188,7 @@ class CaseQueryServiceTest {
                 .deceasedSurname("Smith" + (caseIndex + i))
                 .build();
             allReturnedCases.add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, CREATED_DATE, Long.valueOf(caseIndex + i), STATE));
+                LAST_MODIFIED, Long.valueOf(caseIndex + i)));
         }
         List<ReturnedCaseDetails> caseList =
             new ImmutableList.Builder<ReturnedCaseDetails>()
@@ -234,9 +232,9 @@ class CaseQueryServiceTest {
                     .build();
             List<ReturnedCaseDetails> caseList =
                     new ImmutableList.Builder<ReturnedCaseDetails>()
-                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L, STATE))
-                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 2L, STATE))
-                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 3L, STATE))
+                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L))
+                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 2L))
+                            .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 3L))
                             .build();
             ReturnedCases returnedCases = new ReturnedCases(caseList, 3);
             when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
@@ -338,7 +336,7 @@ class CaseQueryServiceTest {
             .build();
         List<ReturnedCaseDetails> caseList =
             new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, CREATED_DATE, 1L, STATE))
+                LAST_MODIFIED, 1L))
                 .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
         when(restTemplate.postForObject(any(), entityCaptor.capture(), any())).thenReturn(returnedCases);
@@ -371,53 +369,5 @@ class CaseQueryServiceTest {
             when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
             caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");
         });
-    }
-
-    @Test
-    void findCasesWithDateRangeReturnsCaseListDisposalGop() {
-        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
-        ReturnedCases returnedCases1 = getReturnedCases(1, 0, 3);
-        ReturnedCases returnedCases2 = getReturnedCases(1, 1, 3);
-        ReturnedCases returnedCases3 = getReturnedCases(1, 2, 3);
-        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
-                returnedCases3);
-        List<ReturnedCaseDetails> cases = caseQueryService
-                .findInactiveGOPCaseForDisposal("2019-01-01", "2019-02-05");
-
-        assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
-    }
-
-    @Test
-    void findCasesWithDateRangeReturnsCaseListDisposalCaveat() {
-        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
-        ReturnedCases returnedCases1 = getReturnedCases(1, 0, 3);
-        ReturnedCases returnedCases2 = getReturnedCases(1, 1, 3);
-        ReturnedCases returnedCases3 = getReturnedCases(1, 2, 3);
-        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
-                returnedCases3);
-        List<ReturnedCaseDetails> cases = caseQueryService
-                .findInactiveCaveatCaseForDisposal("2019-01-01", "2019-02-05");
-
-        assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
-    }
-
-    @Test
-    void findCasesWithDateRangeReturnsCaseListDisposalReminder() {
-        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
-        ReturnedCases returnedCases1 = getReturnedCases(1, 0, 3);
-        ReturnedCases returnedCases2 = getReturnedCases(1, 1, 3);
-        ReturnedCases returnedCases3 = getReturnedCases(1, 2, 3);
-        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
-                returnedCases3);
-        List<ReturnedCaseDetails> cases = caseQueryService
-                .findInactiveCaseForDisposalReminder("2019-01-01", "2019-02-05");
-
-        assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
     }
 }

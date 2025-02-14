@@ -4,13 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
-import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 @Slf4j
 @Service
@@ -26,20 +28,20 @@ public class DisposalCCDService {
         this.ccdClientApi = ccdClientApi;
     }
 
-    public void disposeGOPCase(final ReturnedCaseDetails caseDetails,
+    public void disposeGOPCase(final CaseDetails caseDetails,
                                final String caseId,
                                final SecurityDTO securityDTO) {
         log.info("DisposalCCDService dispose GOP Case: " + caseId);
-        ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseId,
+        ccdClientApi.updateCaseAsCaseworker(GRANT_OF_REPRESENTATION, caseId,
                 caseDetails.getLastModified(), GrantOfRepresentationData.builder().build(),
                 EventId.DISPOSE_CASE, securityDTO, DISPOSE_DRAFT_DESCRIPTION, DISPOSE_DRAFT_SUMMARY);
     }
 
-    public void disposeCaveatCase(final ReturnedCaseDetails caseDetails,
+    public void disposeCaveatCase(final CaseDetails caseDetails,
                                   final String caseId,
                                   final SecurityDTO securityDTO) {
         log.info("DisposalCCDService dispose Caveat Case: " + caseId);
-        ccdClientApi.updateCaseAsCaseworker(CcdCaseType.CAVEAT, caseId,
+        ccdClientApi.updateCaseAsCaseworker(CAVEAT, caseId,
                 caseDetails.getLastModified(), CaveatData.builder().build(), EventId.DISPOSE_CASE, securityDTO,
                 DISPOSE_DRAFT_DESCRIPTION, DISPOSE_DRAFT_SUMMARY);
     }

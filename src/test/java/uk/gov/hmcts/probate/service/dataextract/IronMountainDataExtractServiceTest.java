@@ -43,9 +43,8 @@ class IronMountainDataExtractServiceTest {
     @InjectMocks
     private IronMountainDataExtractService ironMountainDataExtractService;
 
-    private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
-    private static final String STATE = "state";
+
     private CaseData caseData;
 
     @BeforeEach
@@ -73,7 +72,7 @@ class IronMountainDataExtractServiceTest {
     @Test
     void shouldExtractFoundCases() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
-            ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L, STATE)).build();
+            ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
 
         ironMountainDataExtractService.performIronMountainExtractForDate("2000-12-31");
@@ -100,7 +99,7 @@ class IronMountainDataExtractServiceTest {
     void shouldThrowClientExceptionWhenFindingCases() {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
-                    ReturnedCaseDetails(caseData, LAST_MODIFIED, CREATED_DATE, 1L, STATE)).build();
+                    ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
             when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
             when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
 

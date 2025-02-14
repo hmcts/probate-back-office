@@ -330,24 +330,31 @@ public class NotificationService {
         return response;
     }
 
-    public void sendDisposalReminderEmail(ReturnedCaseDetails caseDetails) throws NotificationClientException {
+    public void sendDisposalReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
+            throws NotificationClientException {
         log.info("Sending Disposal Reminder email");
-        String emailAddress = Optional.ofNullable(caseDetails.getData())
-                .flatMap(data -> {
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("Case data is null for case ID: {}", caseDetails.getId());
+            return;
+        }
+        String emailAddress = Optional.of(data)
+                .flatMap(caseData -> {
                     try {
-                        return Optional.ofNullable(getEmail(data));
+                        return Optional.ofNullable(getEmail(caseData));
                     } catch (BadRequestException e) {
                         return Optional.empty();
                     }
                 })
                 .orElseGet(() -> getUserEmail(caseDetails.getId()));
-
         if (emailAddress == null) {
             throw new NotificationClientException("Email address not found for case ID: " + caseDetails.getId());
         }
         ApplicationType applicationType = getApplicationType(caseDetails);
-        LanguagePreference languagePreference = caseDetails.getData() != null
-                ? caseDetails.getData().getLanguagePreference() : LanguagePreference.ENGLISH;
+        LanguagePreference languagePreference = Optional.ofNullable(data.get("languagePreference"))
+                .map(Object::toString)
+                .map(LanguagePreference::valueOf)
+                .orElse(LanguagePreference.ENGLISH);
         log.info("ApplicationType: {}, LanguagePreference: {}", applicationType, languagePreference);
         String templateId = notificationTemplates.getEmail()
                 .get(languagePreference)
@@ -593,18 +600,41 @@ public class NotificationService {
         };
     }
 
+    private String getEmail(Map<String, Object> caseData) {
+        String applicationType = Optional.ofNullable(caseData.get("applicationType"))
+                .map(Object::toString)
+                .orElseThrow(() -> new BadRequestException("ApplicationType is missing in case data"));
+
+        log.info("getEmail for caseType: {}", applicationType);
+
+        return switch (applicationType.toUpperCase()) {
+            case "SOLICITOR" -> Optional.ofNullable(caseData.get("solsSolicitorEmail"))
+                    .map(Object::toString)
+                    .map(String::toLowerCase)
+                    .orElse(null);
+            case "PERSONAL" -> Optional.ofNullable(caseData.get("primaryApplicantEmailAddress"))
+                    .map(Object::toString)
+                    .map(String::toLowerCase)
+                    .orElse(null);
+            default -> throw new BadRequestException("Unsupported application type: " + applicationType);
+        };
+    }
+
     private String getUserEmail(Long caseReference) {
         log.info("getUserEmail for caseReference: {}", caseReference);
         return userInfoService.getUserEmailByCaseId(caseReference).orElse(null);
     }
 
-    private ApplicationType getApplicationType(ReturnedCaseDetails caseDetails) {
-        if (caseDetails.getData() != null && caseDetails.getData().getApplicationType() != null) {
-            return caseDetails.getData().getApplicationType();
-        } else {
-            return PA_DRAFT_STATE_LIST.contains(caseDetails.getState())
-                    ? ApplicationType.PERSONAL : ApplicationType.SOLICITOR;
+    private ApplicationType getApplicationType(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails) {
+        if (caseDetails == null || caseDetails.getData() == null) {
+            return ApplicationType.PERSONAL;
         }
+        return Optional.ofNullable(caseDetails.getData().get("applicationType"))
+                .map(Object::toString)
+                .map(ApplicationType::fromString)
+                .orElseGet(() -> PA_DRAFT_STATE_LIST.contains(caseDetails.getState())
+                        ? ApplicationType.PERSONAL
+                        : ApplicationType.SOLICITOR);
     }
 
     private String removedSolicitorNameForPersonalisation(CaseData caseData) {

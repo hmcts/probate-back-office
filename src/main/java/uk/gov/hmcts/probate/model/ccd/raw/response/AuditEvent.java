@@ -35,4 +35,7 @@ public class AuditEvent {
     @JsonProperty("created_date")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime createdDate;
+
+    @JsonProperty("state_id")
+    private String stateId;
 }
