@@ -15,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.reform.auth.checker.core.SubjectResolver;
 import uk.gov.hmcts.reform.auth.checker.core.service.Service;
 import uk.gov.hmcts.reform.auth.checker.core.user.User;
@@ -59,9 +58,6 @@ class SecurityConfigurationIT {
 
     @MockBean
     private UserRequestAuthorizer<User> userRequestAuthorizer;
-
-    @MockBean
-    private AppInsights appInsights;
 
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;

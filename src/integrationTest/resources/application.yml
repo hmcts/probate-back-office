@@ -159,9 +159,11 @@ notifications:
           caveatRaised: "pa-caveat-raised"
           caveatExtend: "pa-ctsc-caveat-extend"
           requestInformation: "pa-request-information"
+          requestInformationByPost: "pa-request-information-by-post"
           redeclarationSot: "pa-redeclaration-sot"
           grantDelayed: "pa-grantDelayed"
           grantAwaitingDocumentation: "pa-grantAwaitingDoc"
+          sealedAndCertified: "sealed-and-certified"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -183,6 +185,7 @@ notifications:
           grantDelayed: "sols-grantDelayed"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc"
           noticeOfChangeReceived: "sols-noc"
+          sealedAndCertified: "sealed-and-certified"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -201,9 +204,11 @@ notifications:
           caveatRaised: "pa-caveat-raised-welsh"
           caveatExtend: "pa-ctsc-caveat-extend-welsh"
           requestInformation: "pa-request-information-welsh"
+          requestInformationByPost: "pa-request-information-by-post-welsh"
           redeclarationSot: "pa-redeclaration-sot-welsh"
           grantDelayed: "pa-grantDelayed-welsh"
           grantAwaitingDocumentation: "pa-grantAwaitingDoc-welsh"
+          sealedAndCertified: "sealed-and-certified"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -224,6 +229,7 @@ notifications:
           grantDelayed: "sols-grantDelayed-welsh"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc-welsh"
           noticeOfChangeReceived: "sols-noc"
+          sealedAndCertified: "sealed-and-certified"
 
 documents:
   templates:
@@ -234,38 +240,46 @@ documents:
             intestacy: INTESTACY_GRANT_REISSUE
             admonWill: ADMON_WILL_GRANT_REISSUE
             gop: DIGITAL_GRANT_REISSUE
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_REISSUE
           grant:
             intestacy: INTESTACY_GRANT
             admonWill: ADMON_WILL_GRANT
             gop: DIGITAL_GRANT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT
         preview:
           reissue:
             intestacy: INTESTACY_GRANT_REISSUE_DRAFT
             admonWill: ADMON_WILL_GRANT_REISSUE_DRAFT
             gop: DIGITAL_GRANT_REISSUE_DRAFT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT
           grant:
             intestacy: INTESTACY_GRANT_DRAFT
             admonWill: ADMON_WILL_GRANT_DRAFT
             gop: DIGITAL_GRANT_DRAFT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_DRAFT
       welsh:
         final:
           reissue:
             intestacy: WELSH_INTESTACY_GRANT_REISSUE
             admonWill: WELSH_ADMON_WILL_GRANT_REISSUE
             gop: WELSH_DIGITAL_GRANT_REISSUE
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE
           grant:
             intestacy: WELSH_INTESTACY_GRANT
             admonWill: WELSH_ADMON_WILL_GRANT
             gop: WELSH_DIGITAL_GRANT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT
         preview:
           reissue:
             intestacy: WELSH_INTESTACY_GRANT_REISSUE_DRAFT
             admonWill: WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT
             gop: WELSH_DIGITAL_GRANT_REISSUE_DRAFT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT
           grant:
             intestacy: WELSH_INTESTACY_GRANT_DRAFT
             admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
             gop: WELSH_DIGITAL_GRANT_DRAFT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT
 
 registry:
   registries:
@@ -406,6 +420,7 @@ idam-s2s-auth:
 excelaEmail: exela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
+sealedAndCertifiedEmail: SealedAndCertified@probate-test.com
 
 data-extract:
   pagination:
@@ -446,11 +461,6 @@ ld:
     key: ${LD_USER_KEY:off}
     firstName: Probate
     lastName: Backend
-
-azure:
-  app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
-  application-insights:
-    instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
 
 aca:
   api:

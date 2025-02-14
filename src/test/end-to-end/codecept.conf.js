@@ -54,9 +54,24 @@ exports.config = {
     },
     'mocha': {
         'reporterOptions': {
-            'reportDir': testConfig.TestOutputDir,
-            'reportName': 'index',
-            'inlineAssets': true
+            'codeceptjs-cli-reporter': {
+                stdout: '-',
+                options: {steps: true}
+            },
+            'mocha-junit-reporter': {
+                stdout: '-',
+                options: {
+                    mochaFile: `${testConfig.TestOutputDir}/result.xml`
+                }
+            },
+            'mochawesome': {
+                stdout: `${testConfig.TestOutputDir}/console.log`,
+                options: {
+                    'reportDir': testConfig.TestOutputDir,
+                    'reportName': 'index',
+                    'inlineAssets': true
+                }
+            }
         }
     },
     'name': 'Codecept Tests'

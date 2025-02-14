@@ -3,6 +3,7 @@
 const admonWillDetailsConfig = require('./admonWillDetails');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const testConfig = require('src/test/config.js');
+const grantOfProbateConfig = require('../grantOfProbate/grantOfProbate.json');
 
 module.exports = async function () {
     const I = this;
@@ -32,6 +33,7 @@ module.exports = async function () {
     await I.fillField({css: '#dateCodicilAdded-day'}, admonWillDetailsConfig.page1_codicilDate_day);
     await I.fillField({css: '#dateCodicilAdded-month'}, admonWillDetailsConfig.page1_codicilDate_month);
     await I.fillField({css: '#dateCodicilAdded-year'}, admonWillDetailsConfig.page1_codicilDate_year);
+    await I.click({css: `#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`});
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

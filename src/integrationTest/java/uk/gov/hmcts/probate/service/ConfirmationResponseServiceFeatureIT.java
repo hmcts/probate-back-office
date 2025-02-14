@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
@@ -79,9 +78,6 @@ class ConfirmationResponseServiceFeatureIT {
     private final TestUtils testUtils = new TestUtils();
     @Autowired
     private ConfirmationResponseService confirmationResponseService;
-
-    @MockBean
-    private AppInsights appInsights;
 
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
