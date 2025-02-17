@@ -29,7 +29,6 @@ public class RetainAndDisposalService {
             + "dispose_caveat_date_range_query.json";
     private static final String DISPOSE_GOP_DELETED_QUERY = "templates/elasticsearch/caseMatching/"
             + "dispose_gop_deleted_query.json";
-    private static final String QUERY_NAME_DISPOSE_REMINDER = "DisposalReminder";
 
     private final NotificationService notificationService;
     private final DisposalCCDService disposalCCDService;
@@ -50,7 +49,7 @@ public class RetainAndDisposalService {
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
             SearchResult searchResult = elasticSearchRepository
                 .fetchFirstPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
-                    QUERY_NAME_DISPOSE_REMINDER, fromDate.toString(), toDate.toString());
+                        DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
             log.info("Disposal reminder query executed for date: {}, cases found: {}",
                 runDate, searchResult.getTotal());
             if (searchResult.getTotal() == 0) {
@@ -75,7 +74,7 @@ public class RetainAndDisposalService {
             do {
                 SearchResult subsequentSearchResult = elasticSearchRepository
                         .fetchNextPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
-                                searchAfterValue, QUERY_NAME_DISPOSE_REMINDER, fromDate.toString(), toDate.toString());
+                                searchAfterValue, DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
                 log.info("Fetching next page for searchAfterValue: {}", searchAfterValue);
 
                 keepSearching = subsequentSearchResult != null && !subsequentSearchResult.getCases().isEmpty();
