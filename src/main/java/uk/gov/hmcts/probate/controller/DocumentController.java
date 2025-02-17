@@ -424,6 +424,17 @@ public class DocumentController {
                 callbackRequest.getCaseDetails().getData().getDocumentUploadIssue(),
                 callbackRequest.getCaseDetails().getData().getIsSaveAndClose()
         );
+        if ("Yes".equalsIgnoreCase(callbackRequest.getCaseDetails().getData().getCitizenResponseCheckbox())) {
+            final String currApplSubDate = callbackRequest.getCaseDetails().getData().getApplicationSubmittedDate();
+            if (currApplSubDate != null) {
+                final LocalDate currAsDate = LocalDate.parse(currApplSubDate);
+                final LocalDate nextDate = currAsDate.minusDays(1);
+                final String nextDateStr = nextDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+                log.info("Setting subDate from {} to {} for case {}", currApplSubDate, nextDateStr, callbackRequest
+                        .getCaseDetails().getId());
+                callbackRequest.getCaseDetails().getData().setApplicationSubmittedDate(nextDateStr);
+            }
+        }
         return ResponseEntity.ok(callbackResponseTransformer.transformCitizenHubResponse(callbackRequest));
     }
 
