@@ -140,7 +140,7 @@ public class CallbackResponseTransformer {
     private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection", "boCorrection");
     private static final List<String> ROLLBACK_STATE_LIST = List.of("Pending", "CasePaymentFailed", "SolAdmonCreated",
             "SolAppCreatedDeceasedDtls", "SolAppCreatedSolicitorDtls", "SolAppUpdated", "SolProbateCreated",
-            "SolIntestacyCreated", "Deleted");
+            "SolIntestacyCreated", "Deleted", "Stopped");
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -639,7 +639,7 @@ public class CallbackResponseTransformer {
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(),false);
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        auditEventService.getLatestAuditEventByName(
+        auditEventService.getLatestAuditEventByState(
                         callbackRequest.getCaseDetails().getId().toString(), ROLLBACK_STATE_LIST,
                         securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation())
                 .ifPresent(auditEvent -> {

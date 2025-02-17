@@ -2915,7 +2915,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         caseDataBuilder.applicationType(SOLICITOR);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(auditEventService.getLatestAuditEventByName(any(), any(), any(), any()))
+        when(auditEventService.getLatestAuditEventByState(any(), any(), any(), any()))
                 .thenReturn(Optional.ofNullable(AuditEvent.builder()
                         .stateId("SolsAppUpdated")
                         .createdDate(LocalDateTime.now())

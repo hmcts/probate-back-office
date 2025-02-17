@@ -398,7 +398,7 @@ public class CaveatCallbackResponseTransformer {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
                 getResponseCaveatData(callbackRequest.getCaseDetails());
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        auditEventService.getLatestAuditEventByName(
+        auditEventService.getLatestAuditEventByState(
                 callbackRequest.getCaseDetails().getId().toString(), ROLLBACK_STATE_LIST,
                 securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation())
             .ifPresent(auditEvent -> {

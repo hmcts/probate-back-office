@@ -23,7 +23,8 @@ class AuditEventServiceTest {
     private static final String USER_TOKEN = "USER_TOKEN";
     private static final String SERVICE_TOKEN = "SERVICE_TOKEN";
     private static final String CASE_ID = "1111";
-    private static final String EVENT_NAME = "Pending";
+    private static final String EVENT_NAME = "updateDraft";
+    private static final String STATE_NAME = "Pending";
 
     @Mock
     private CaseDataApiV2 caseDataApi;
@@ -35,7 +36,7 @@ class AuditEventServiceTest {
     @InjectMocks
     private AuditEventService auditEventService;
 
-    private static final LocalDateTime A_LOCAL_DATE_TIME = LocalDateTime.now();
+    private static final LocalDateTime LOCAL_DATE_TIME = LocalDateTime.now();
 
     @BeforeEach
     void setup() {
@@ -45,12 +46,12 @@ class AuditEventServiceTest {
 
     @Test
     void shouldGetAuditEventByName() {
-        AuditEvent expectedAuditEvent = buildAuditEvent("Pending", A_LOCAL_DATE_TIME);
+        AuditEvent expectedAuditEvent = buildAuditEvent("updateDraft", STATE_NAME, LOCAL_DATE_TIME);
 
         List<AuditEvent> auditEventList = List.of(
                 expectedAuditEvent,
-                buildAuditEvent("Deleted", A_LOCAL_DATE_TIME),
-                buildAuditEvent("Disposed", A_LOCAL_DATE_TIME));
+                buildAuditEvent("CasePrinted",STATE_NAME, LOCAL_DATE_TIME),
+                buildAuditEvent("Disposed", STATE_NAME, LOCAL_DATE_TIME));
 
         when(auditEventsResponse.getAuditEvents()).thenReturn(auditEventList);
 
@@ -62,12 +63,12 @@ class AuditEventServiceTest {
 
     @Test
     void shouldGetLatestInstanceOfAuditEventByName() {
-        AuditEvent expectedAuditEvent = buildAuditEvent(EVENT_NAME, A_LOCAL_DATE_TIME);
+        AuditEvent expectedAuditEvent = buildAuditEvent(EVENT_NAME, STATE_NAME, LOCAL_DATE_TIME);
 
         List<AuditEvent> auditEventList = List.of(
-                buildAuditEvent(EVENT_NAME, A_LOCAL_DATE_TIME.minusMinutes(3)),
+                buildAuditEvent(EVENT_NAME, STATE_NAME, LOCAL_DATE_TIME.minusMinutes(3)),
                 expectedAuditEvent,
-                buildAuditEvent(EVENT_NAME, A_LOCAL_DATE_TIME.minusMinutes(2)));
+                buildAuditEvent(EVENT_NAME, STATE_NAME, LOCAL_DATE_TIME.minusMinutes(2)));
 
         when(auditEventsResponse.getAuditEvents()).thenReturn(auditEventList);
         Optional<AuditEvent> actualAuditEvent
@@ -79,8 +80,8 @@ class AuditEventServiceTest {
     @Test
     void shouldReturnEmptyOptionalIfAuditEventWithNameCannotBeFound() {
         List<AuditEvent> auditEventList = List.of(
-                buildAuditEvent("Deleted", A_LOCAL_DATE_TIME),
-                buildAuditEvent("Disposed", A_LOCAL_DATE_TIME));
+                buildAuditEvent("keepDraft", STATE_NAME, LOCAL_DATE_TIME),
+                buildAuditEvent("disposeCase", STATE_NAME, LOCAL_DATE_TIME));
 
         when(auditEventsResponse.getAuditEvents()).thenReturn(auditEventList);
 
@@ -100,12 +101,39 @@ class AuditEventServiceTest {
         assertThat(actualAuditEvent).isEmpty();
     }
 
-    private AuditEvent buildAuditEvent(String eventId, LocalDateTime createdDate) {
+    private AuditEvent buildAuditEvent(String eventId, String stateId, LocalDateTime createdDate) {
         return AuditEvent.builder()
                 .id(eventId)
+                .stateId(stateId)
                 .userFirstName("Tom")
                 .userLastName("Jones")
                 .createdDate(createdDate)
                 .build();
+    }
+
+    @Test
+    void shouldGetLatestInstanceOfAuditEventByState() {
+        AuditEvent expectedAuditEvent = buildAuditEvent(EVENT_NAME, STATE_NAME, LOCAL_DATE_TIME);
+
+        List<AuditEvent> auditEventList = List.of(
+                buildAuditEvent(EVENT_NAME, STATE_NAME, LOCAL_DATE_TIME.minusMinutes(3)),
+                expectedAuditEvent,
+                buildAuditEvent(EVENT_NAME, STATE_NAME, LOCAL_DATE_TIME.minusMinutes(2)));
+
+        when(auditEventsResponse.getAuditEvents()).thenReturn(auditEventList);
+        Optional<AuditEvent> actualAuditEvent
+                = auditEventService.getLatestAuditEventByState(CASE_ID, List.of(STATE_NAME), USER_TOKEN, SERVICE_TOKEN);
+
+        assertThat(actualAuditEvent).isPresent().contains(expectedAuditEvent);
+    }
+
+    @Test
+    void shouldReturnEmptyOptionalIfAuditEventsIsEmptyWhenGetEventByState() {
+        when(auditEventsResponse.getAuditEvents()).thenReturn(List.of());
+
+        Optional<AuditEvent> actualAuditEvent
+                = auditEventService.getLatestAuditEventByState(CASE_ID, List.of(STATE_NAME), USER_TOKEN, SERVICE_TOKEN);
+
+        assertThat(actualAuditEvent).isEmpty();
     }
 }
