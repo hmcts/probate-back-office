@@ -53,6 +53,7 @@ class SmeeAndFordDataExtractServiceTest {
     private BlobUpload blobUpload;
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
+
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private CaseData caseData1;
     private CaseData caseData2;

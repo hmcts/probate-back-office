@@ -1,0 +1,32 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "PAAppCreated",
+              "SolAppCreated",
+              "SolAppUpdated"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "size": %s,
+  "sort": [
+    {
+      "id": {
+        "order": "asc"
+      }
+    }
+  ]

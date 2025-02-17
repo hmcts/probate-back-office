@@ -31,4 +31,5 @@ public class EmailTemplates {
     private String hmrcExtract;
     private String noticeOfChangeReceived;
     private String sealedAndCertified;
+    private String disposalReminder;
 }

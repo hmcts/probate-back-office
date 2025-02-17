@@ -61,6 +61,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_NOC_SUBMITTED_DATE = "noc_date";
+
     private static final DateTimeFormatter NOC_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     Registry registry = new Registry();
     @InjectMocks
