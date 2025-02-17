@@ -49,7 +49,7 @@ public class RetainAndDisposalService {
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
             SearchResult searchResult = elasticSearchRepository
                 .fetchFirstPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
-                        DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
+                        DISPOSE_GOP_QUERY, "1900-01-01", runDate);
             log.info("Disposal reminder query executed for date: {}, cases found: {}",
                 runDate, searchResult.getTotal());
             if (searchResult.getTotal() == 0) {
@@ -74,7 +74,7 @@ public class RetainAndDisposalService {
             do {
                 SearchResult subsequentSearchResult = elasticSearchRepository
                         .fetchNextPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
-                                searchAfterValue, DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
+                                searchAfterValue, DISPOSE_GOP_QUERY, "1900-01-01", runDate);
                 log.info("Fetching next page for searchAfterValue: {}", searchAfterValue);
 
                 keepSearching = subsequentSearchResult != null && !subsequentSearchResult.getCases().isEmpty();
