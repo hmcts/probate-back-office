@@ -742,4 +742,7 @@ public class CaseData extends CaseDataParent {
         this.setPrimaryApplicantPhoneNumber(null);
     }
 
+    public void clearAdditionalExecutorList() {
+        getSolsAdditionalExecutorList().clear();
+    }
 }
