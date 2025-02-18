@@ -55,7 +55,6 @@ ccd:
         - name: "pr-${CHANGE_ID}-probatemandb"
 
   ccd-case-print-service:
-    enabled: true
     nodejs:
       imagePullPolicy: Always
       disableKeyVaults: true
