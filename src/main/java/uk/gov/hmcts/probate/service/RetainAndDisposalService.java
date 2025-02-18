@@ -108,21 +108,22 @@ public class RetainAndDisposalService {
             log.info("Start Dispose Deleted case initiated for date: {}, fromDate: {}, toDate: {}",
                     runDate, startDate, runDate);
             disposeGOPDeletedCase(startDate, runDate, failedCases);
-            if (shouldSkipDraftDisposal(runDate, switchDate, disposalGracePeriod)) {
-                log.info("Skipping draft disposal for runDate: {} ", runDate);
-                return;
-            }
 
             LocalDate disposalStartDate = LocalDate.parse(startDate);
             LocalDate disposalEndDate = LocalDate.parse(runDate)
                     .minusDays(inactivityNotificationPeriod + disposalGracePeriod);
-            log.info("Start disposing inactive GOP cases. runDate: {}, fromDate: {}, toDate: {}",
-                    runDate, disposalStartDate, disposalEndDate);
-            disposeGOPDraftCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases);
 
             log.info("Start disposing inactive Caveat cases. runDate: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, disposalEndDate);
             disposeCaveatCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases);
+
+            if (shouldSkipGOPDraftDisposal(runDate, switchDate, disposalGracePeriod)) {
+                log.info("Skipping draft disposal for runDate: {} ", runDate);
+                return;
+            }
+            log.info("Start disposing inactive GOP cases. runDate: {}, fromDate: {}, toDate: {}",
+                    runDate, disposalStartDate, disposalEndDate);
+            disposeGOPDraftCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw e;
@@ -131,7 +132,7 @@ public class RetainAndDisposalService {
         }
     }
 
-    private boolean shouldSkipDraftDisposal(String runDate, String switchDate, long disposalInactivePeriod) {
+    private boolean shouldSkipGOPDraftDisposal(String runDate, String switchDate, long disposalInactivePeriod) {
         return LocalDate.parse(runDate).isBefore(LocalDate.parse(switchDate).plusDays(disposalInactivePeriod));
     }
 
