@@ -112,13 +112,10 @@ public class RetainAndDisposalService {
                 log.info("Skipping draft disposal for runDate: {} ", runDate);
                 return;
             }
-            LocalDate switchLocalDate = LocalDate.parse(switchDate);
-            LocalDate runLocalDate = LocalDate.parse(runDate);
 
             LocalDate disposalStartDate = LocalDate.parse(startDate);
-            LocalDate disposalEndDate = runLocalDate.equals(switchLocalDate)
-                    ? runLocalDate.minusDays(inactivityNotificationPeriod + disposalGracePeriod + 1) :
-                    runLocalDate.minusDays(inactivityNotificationPeriod + disposalGracePeriod);
+            LocalDate disposalEndDate = LocalDate.parse(runDate)
+                    .minusDays(inactivityNotificationPeriod + disposalGracePeriod);
             log.info("Start disposing inactive GOP cases. runDate: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, disposalEndDate);
             disposeGOPDraftCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases);

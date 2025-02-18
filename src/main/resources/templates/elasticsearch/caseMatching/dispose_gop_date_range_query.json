@@ -9,6 +9,20 @@
               "lte": "%s"
             }
           }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "Pending",
+              "CasePaymentFailed",
+              "SolAdmonCreated",
+              "SolAppCreatedDeceasedDtls",
+              "SolAppCreatedSolicitorDtls",
+              "SolAppUpdated",
+              "SolProbateCreated",
+              "SolIntestacyCreated"
+            ]
+          }
         }
       ]
     }

@@ -15,7 +15,8 @@
             "state.keyword": [
               "PAAppCreated",
               "SolAppCreated",
-              "SolAppUpdated"
+              "SolAppUpdated",
+              "CasePaymentFailed"
             ]
           }
         }
