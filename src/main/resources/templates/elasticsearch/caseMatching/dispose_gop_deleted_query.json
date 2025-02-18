@@ -23,8 +23,6 @@
   },
   "sort": [
     {
-      "id": {
-        "order": "asc"
-      }
+      "reference.keyword": "asc"
     }
   ]
