@@ -10,12 +10,12 @@
             }
           }
         }
-      ],
-      "sort": [
-        {
-          "reference.keyword": "asc"
-        }
       ]
     }
   },
   "size": %s,
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]
