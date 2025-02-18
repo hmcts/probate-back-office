@@ -257,13 +257,10 @@ public class SecurityUtils {
     public UserDetails getUserDetailsByUserId(String authToken, String userId) {
         log.info("Getting user details by userId: {}", userId);
         List<UserDetails> userList = idamApi.searchUsers(authToken, getSearchQuery(userId));
-        log.info("User details found: {}", userList);
         return !userList.isEmpty() ? userList.get(0) : null;
     }
 
     private String getSearchQuery(String userId) {
-        String query = MessageFormat.format("id:{0}", userId);
-        log.info("Getting search query: {}", query);
-        return query;
+        return MessageFormat.format("id:{0}", userId);
     }
 }

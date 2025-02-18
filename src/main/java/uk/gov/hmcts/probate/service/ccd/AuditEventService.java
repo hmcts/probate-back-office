@@ -18,8 +18,7 @@ public class AuditEventService {
 
     public Optional<AuditEvent> getLatestAuditEventByName(String caseId, List<String> eventName,
                                                           String userToken, String authToken) {
-        log.info("Getting latest audit event for caseId: {}, userToker: {}, authToken: {}",
-                caseId, userToken, authToken);
+        log.info("Getting latest audit event for caseId: {}", caseId);
         AuditEventsResponse auditEventsResponse
                 = caseDataApi.getAuditEvents(userToken, authToken, false, caseId);
         log.info("auditEventsResponse AuditEvents().size(): {}", auditEventsResponse.getAuditEvents().size());
@@ -30,8 +29,7 @@ public class AuditEventService {
 
     public Optional<AuditEvent> getLatestAuditEventByState(String caseId, List<String> stateName,
                                                           String userToken, String authToken) {
-        log.info("Getting latest audit event for caseId: {}, userToker: {}, authToken: {}",
-                caseId, userToken, authToken);
+        log.info("Getting latest audit event for caseId: {}", caseId);
         AuditEventsResponse auditEventsResponse
                 = caseDataApi.getAuditEvents(userToken, authToken, false, caseId);
         log.info("auditEventsResponse AuditEvents().size(): {}", auditEventsResponse.getAuditEvents().size());
