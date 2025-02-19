@@ -15,7 +15,7 @@
   <strong>Record type:</strong> PA<br>
 </p>
 <p>
-  <strong>Date digital application submitted:</strong> {{ case_data.applicationSubmittedDate | date("DD/MM/YYYY") }}
+  <strong>Date digital application submitted:</strong> {{ 3 | date("DD/MM/YYYY") }}
 </p>
 <pre>
 <table border="0">
@@ -26,9 +26,25 @@
     <td colspan="2">Deceased first name(s):</td>
     <td>{% if case_data.deceasedForenames %}{{ case_data.deceasedForenames }}{% endif %}</td>
   </tr>
+    <tr>
+    <td colspan="2">Is the deceased name written the same way as on the will?:</td>
+    <td>{% if case_data.deceasedAnyOtherNameOnWill %}{{ case_data.deceasedAnyOtherNameOnWill }}{% endif %}</td>
+  </tr>
+    <tr>
+    <td colspan="2">Enter their first name(s) as it appears on the will:</td>
+    <td>{% if case_data.deceasedAliasFirstNameOnWill %}{{ case_data.deceasedAliasFirstNameOnWill }}{% endif %}</td>
+  </tr>
+    <tr>
+    <td colspan="2">Enter their last name(s) as it appears on the will:</td>
+    <td>{% if case_data.deceasedAliasLastNameOnWill %}{{ case_data.deceasedAliasLastNameOnWill }}{% endif %}</td>
+  </tr>
   <tr>
     <td colspan="2">Deceased last name:</td>
     <td>{% if case_data.deceasedSurname %}{{ case_data.deceasedSurname }}{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Was the deceased domiciled in England or Wales at the time of their death?</td>
+    <td>{% if case_data.deceasedDomicileInEngWales%}{{ case_data.deceasedDomicileInEngWales}}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2" valign="top">Names used by the deceased for other assets:</td>

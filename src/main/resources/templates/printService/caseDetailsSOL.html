@@ -113,6 +113,10 @@
       <td>{% if case_data.solsSolicitorFirmName %}{{ case_data.solsSolicitorFirmName }}{% endif %}</td>
     </tr>
     <tr>
+      <td colspan="2">Address of your firm or where the applicant operates:</td>
+      <td>{% if case_data.solsSolicitorAddress %}{{address(case_data.solsSolicitorAddress)}}{% endif %}</td>
+    </tr>
+    <tr>
       <td colspan="2">Solicitor firm address:</td>
       <td>{% if case_data.solsSolicitorAddress %}{{address(case_data.solsSolicitorAddress)}}{% endif %}</td>
     </tr>
@@ -141,6 +145,18 @@
     <tr>
       <td colspan="2">Deceased first name(s):</td>
       <td>{% if case_data.deceasedForenames %}{{ case_data.deceasedForenames }}{% endif %}</td>
+    </tr>
+    <tr>
+      <td colspan="2">Is the deceased name written the same way as on the will?</td>
+      <td>{% if case_data.deceasedAnyOtherNameOnWill %}{{ case_data.deceasedAnyOtherNameOnWill }}{% endif %}</td>
+    </tr>
+    <tr>
+      <td colspan="2">Enter their first name(s) as it appears on the will</td>
+      <td>{% if case_data.deceasedAliasFirstNameOnWill %}{{ case_data.deceasedAliasFirstNameOnWill }}{% endif %}</td>
+    </tr>
+    <tr>
+      <td colspan="2">Enter their last name(s) as it appears on the will</td>
+      <td>{% if case_data.deceasedAliasLastNameOnWill %}{{ case_data.deceasedAliasLastNameOnWill }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Deceased last name:</td>
@@ -174,6 +190,11 @@
       <td colspan="2">In what country was the deceased domiciled at the date of death?</td>
       <td>{% if case_data.domicilityCountry %}{{ case_data.domicilityCountry }}{% endif %}</td>
     </tr>
+    <tr>
+      <td colspan="2">Deceased Alias Names</td>
+      <td>{% if case_data.deceasedAliasNameList %}{{ case_data.deceasedAliasNameList }}{% endif %}</td>
+    </tr>
+
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
     </tr>
@@ -282,6 +303,7 @@
     {% endif %}
 
     <tr>
+
       <td colspan="3"><strong>Estate details</strong></td>
     </tr>
     <tr>
@@ -360,6 +382,23 @@
       <td colspan="2">Application Type:</td>
       <td>{{ case_data.applicationType }}</td>
     </tr>
+      <tr>
+      <td colspan="2">Have you received a letter from HMRC with a unique probate code relating to this application? (UK):</td>
+      <td>{% if case_data.hmrcLetterId %}{{ case_data.hmrcLetterId }}{% endif %}</td>
+    </tr>
+     <tr>
+      <td colspan="2">Enter the unique probate code (UK):</td>
+      <td>{% if case_data.uniqueProbateCodeId %}{{ case_data.uniqueProbateCodeId }}{% endif %}</td>
+    </tr>
+     <tr>
+      <td colspan="2">Did the deceased have a late spouse or civil partner? (UK):</td>
+      <td>{% if case_data.deceasedHadLateSpouseOrCivilPartner %}{{ case_data.deceasedHadLateSpouseOrCivilPartner }}{% endif %}</td>
+    </tr>
+     <tr>
+      <td colspan="2">Are you claiming the unused IHT allowance (‘nil-rate band’) of the deceased’s late spouse or civil partner? (UK):</td>
+      <td>{% if case_data.ihtUnusedAllowanceClaimed %}{{ case_data.ihtUnusedAllowanceClaimed }}{% endif %}</td>
+    </tr>
+
   </table>
 </pre>
 </body>
