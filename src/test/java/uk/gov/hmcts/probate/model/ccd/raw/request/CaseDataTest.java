@@ -1009,7 +1009,6 @@ class CaseDataTest {
 
         CaseData caseData = CaseData.builder()
                 .solsAdditionalExecutorList(additionalExecutorsList)
-                .otherExecutorExists(YES)
                 .build();
 
         caseData.clearAdditionalExecutorList();
