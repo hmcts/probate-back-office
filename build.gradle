@@ -505,7 +505,9 @@ bootWithCCD {
     environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
   } else {
     doFirst() {
-      "sh bin/variables/load-local-environment-variables.sh".execute()
+      // if we don't waitFor() then this may start booting the jvm before these
+      // have been gathered
+      "sh bin/variables/load-local-environment-variables.sh".execute().waitFor()
     }
 
     if (project.file('./.aat-env').exists()) {
