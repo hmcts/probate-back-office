@@ -98,7 +98,7 @@ class CaseDataTest {
     private AutoCloseable closeableMocks;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
 
         closeableMocks = openMocks(this);
 

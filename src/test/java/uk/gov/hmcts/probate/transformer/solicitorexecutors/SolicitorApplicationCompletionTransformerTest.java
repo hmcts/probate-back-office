@@ -79,7 +79,7 @@ class SolicitorApplicationCompletionTransformerTest {
     private static final String NOT_APPLICABLE = "NotApplicable";
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         additionalExecutorApplying = new ArrayList<>();
         additionalExecutorApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
