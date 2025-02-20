@@ -170,7 +170,7 @@ def versions = [
         lombok                          : '1.18.36',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
-        probateCommonsVersion           : '2.0.27',
+        probateCommonsVersion           : '2.0.53',
         probatePactCommonsVersion       : '1.0.2',
         restAssured                     : '5.5.0',
         serenity                        : '4.2.12',
@@ -253,6 +253,7 @@ dependencies {
   implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.5'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.10.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
+  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
   implementation group: 'org.pitest', name: 'pitest', version: '1.18.1'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.24.0'

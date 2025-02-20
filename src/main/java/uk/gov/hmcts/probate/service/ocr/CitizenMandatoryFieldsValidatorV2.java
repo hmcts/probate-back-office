@@ -34,7 +34,7 @@ public class CitizenMandatoryFieldsValidatorV2 {
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
         if (FALSE.equalsIgnoreCase(ocrFieldValues.get(IHT_400421_COMPLETED.getKey()))) {
-            mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, IHT_207_COMPLETED);
+            //mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, IHT_207_COMPLETED);
             if (FALSE.equalsIgnoreCase(ocrFieldValues.get(IHT_207_COMPLETED.getKey()))) {
                 mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, DIED_AFTER_SWITCH_DATE);
 
@@ -64,8 +64,8 @@ public class CitizenMandatoryFieldsValidatorV2 {
                 mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
                         IHT_UNUSED_ALLOWANCE);
             }
-            mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
-                    IHT_ESTATE_GROSS, IHT_ESTATE_NET, IHT_ESTATE_NQV);
+            /*mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
+                    IHT_ESTATE_GROSS, IHT_ESTATE_NET, IHT_ESTATE_NQV);*/
         } else if (isNotBlank(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()))) {
             mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings,
                     IHT_205_COMPLETED_ONLINE);

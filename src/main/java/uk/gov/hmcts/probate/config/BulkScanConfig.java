@@ -10,4 +10,6 @@ import org.springframework.stereotype.Component;
 public class BulkScanConfig {
 
     private String postcode;
+    private String ihtForm;
+    private String grossNetValue;
 }
