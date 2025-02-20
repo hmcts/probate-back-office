@@ -56,6 +56,7 @@ import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.Pre1900DOBValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
+import uk.gov.hmcts.probate.validator.StopReasonValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
@@ -185,6 +186,8 @@ class BusinessValidationUnitTest {
     @Mock
     private UniqueCodeValidationRule uniqueCodeValidationRule;
     @Mock
+    private StopReasonValidationRule stopReasonValidationRule;
+    @Mock
     private NaValidationRule naValidationRule;
     @Mock
     private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
@@ -225,6 +228,7 @@ class BusinessValidationUnitTest {
             ihtEstateValidationRule,
             ihtValidationRule,
             uniqueCodeValidationRule,
+            stopReasonValidationRule,
             naValidationRule,
             solicitorPostcodeValidationRule,
             caseworkersSolicitorPostcodeValidationRule,
