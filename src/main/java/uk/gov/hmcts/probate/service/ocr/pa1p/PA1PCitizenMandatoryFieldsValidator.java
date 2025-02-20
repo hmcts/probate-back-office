@@ -82,7 +82,7 @@ public class PA1PCitizenMandatoryFieldsValidator {
                 }
             });
 
-        citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
+        //citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
     }
 
     private void addWarningsFormVersion3(Map<String, String> ocrFieldValues, List<String> warnings) {

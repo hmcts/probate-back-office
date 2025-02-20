@@ -294,17 +294,27 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "solsWillTypeReason", source = "ocrFields.solsWillTypeReason")
 
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
+
     @BeforeMapping
     default void setDefaultIhtForm(ExceptionRecordOCRFields ocrFields,
                                    @MappingTarget GrantOfRepresentationData caseData,
                                    @Context BulkScanConfig bulkScanConfig, @Context ExceptedEstateDateOfDeathChecker
                                                exceptedEstateDateOfDeathChecker) {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+            addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
+                    ocrFields.getDeceasedDiedOnAfterSwitchDate());
+            if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())) {
+                ocrFields.setDeceasedDiedOnAfterSwitchDate("TRUE");
+            } else {
+                ocrFields.setDeceasedDiedOnAfterSwitchDate("FALSE");
+            }
+        }
         if (isFormVersion3AndSwitchDateValid(ocrFields)) {
             setDefaultValues(ocrFields, modifiedFields, bulkScanConfig);
             if (isIhtFormsNotCompleted(ocrFields)) {
                 addModifiedField(modifiedFields, "iht400Completed", ocrFields.getIht400Completed());
-                ocrFields.setIht400Completed("true");
+                ocrFields.setIht400Completed("TRUE");
             }
         } else if (isFormVersion2AndSwitchDateValid(ocrFields, exceptedEstateDateOfDeathChecker)) {
             setDefaultValues(ocrFields, modifiedFields, bulkScanConfig);
@@ -381,34 +391,34 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
                     ocrFields.setIht205completedOnline(bulkScanConfig.getIhtForm());
                     break;
             }
-        } else if("true".equalsIgnoreCase(fieldValue)){
+        } else if ("true".equalsIgnoreCase(fieldValue)) {
             switch (fieldName) {
                 case "iht400421Completed":
-                    if(isBlank(ocrFields.getIht421grossValue())) {
+                    if (isBlank(ocrFields.getIht421grossValue())) {
                         addModifiedField(modifiedList, "iht421grossValue", ocrFields.getIht421grossValue());
                         ocrFields.setIht421grossValue(bulkScanConfig.getGrossNetValue());
                     };
-                    if(isBlank(ocrFields.getIht421netValue())) {
+                    if (isBlank(ocrFields.getIht421netValue())) {
                         addModifiedField(modifiedList, "iht421netValue", ocrFields.getIht421netValue());
                         ocrFields.setIht421netValue(bulkScanConfig.getGrossNetValue());
                     }
                     break;
                 case "iht207Completed":
-                    if(isBlank(ocrFields.getIht207grossValue())) {
+                    if (isBlank(ocrFields.getIht207grossValue())) {
                         addModifiedField(modifiedList, "iht207grossValue", ocrFields.getIht207grossValue());
                         ocrFields.setIht207grossValue(bulkScanConfig.getGrossNetValue());
                     }
-                    if(isBlank(ocrFields.getIht207netValue())) {
+                    if (isBlank(ocrFields.getIht207netValue())) {
                         addModifiedField(modifiedList, "iht207netValue", ocrFields.getIht207netValue());
                         ocrFields.setIht207netValue(bulkScanConfig.getGrossNetValue());
                     }
                     break;
                 case "iht205Completed":
-                    if(isBlank(ocrFields.getIhtGrossValue205())) {
+                    if (isBlank(ocrFields.getIhtGrossValue205())) {
                         addModifiedField(modifiedList, "ihtGrossValue205", ocrFields.getIhtGrossValue205());
                         ocrFields.setIhtGrossValue205(bulkScanConfig.getGrossNetValue());
                     }
-                    if(isBlank(ocrFields.getIhtNetValue205())) {
+                    if (isBlank(ocrFields.getIhtNetValue205())) {
                         addModifiedField(modifiedList, "ihtNetValue205", ocrFields.getIhtNetValue205());
                         ocrFields.setIhtNetValue205(bulkScanConfig.getGrossNetValue());
                     }
@@ -419,11 +429,11 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
                                 .getIhtReferenceNumber());
                         ocrFields.setIhtReferenceNumber("1234");
                     }
-                    if(isBlank(ocrFields.getIhtGrossValue205())) {
+                    if (isBlank(ocrFields.getIhtGrossValue205())) {
                         addModifiedField(modifiedList, "ihtGrossValue205", ocrFields.getIhtGrossValue205());
                         ocrFields.setIhtGrossValue205(bulkScanConfig.getGrossNetValue());
                     }
-                    if(isBlank(ocrFields.getIhtNetValue205())) {
+                    if (isBlank(ocrFields.getIhtNetValue205())) {
                         addModifiedField(modifiedList, "ihtNetValue205", ocrFields.getIhtNetValue205());
                         ocrFields.setIhtNetValue205(bulkScanConfig.getGrossNetValue());
                     }

@@ -83,7 +83,7 @@ public class CommonMandatoryFieldsValidatorV3 {
         boolean iht421WarningsAdded = false;
         if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_FORM_NOT_REQUIRED))) {
             if (diedOnAfterSwitchDate) {
-                //addWarningsForIHTForms(IHT_FORM_NOT_REQUIRED, ocrFieldValues, warnings, iht421WarningsAdded);
+                addWarningsForIHTForms(IHT_FORM_NOT_REQUIRED, ocrFieldValues, warnings, iht421WarningsAdded);
             } else {
                 mandatoryFieldsValidatorUtils.addWarning(
                         "Option \"I did not have to submit any forms to HMRC.\" (exceptedEstate) is not applicable"
@@ -98,17 +98,17 @@ public class CommonMandatoryFieldsValidatorV3 {
             submittedForm.add(IHT400_COMPLETED);
         }
         if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT400421_COMPLETED))) {
-            /*iht421WarningsAdded =
-                    addWarningsForIHTForms(IHT400421_COMPLETED, ocrFieldValues, warnings, iht421WarningsAdded);*/
+            iht421WarningsAdded =
+                    addWarningsForIHTForms(IHT400421_COMPLETED, ocrFieldValues, warnings, iht421WarningsAdded);
             submittedForm.add(IHT400421_COMPLETED);
         }
         if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT207_COMPLETED))) {
-            //addWarningsForIHTForms(IHT207_COMPLETED, ocrFieldValues, warnings, iht421WarningsAdded);
+            addWarningsForIHTForms(IHT207_COMPLETED, ocrFieldValues, warnings, iht421WarningsAdded);
             submittedForm.add(IHT207_COMPLETED);
         }
         if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT205_COMPLETED))) {
             if (!diedOnAfterSwitchDate) {
-                //addWarningsForIHTForms(IHT205_COMPLETED, ocrFieldValues, warnings, iht421WarningsAdded);
+                addWarningsForIHTForms(IHT205_COMPLETED, ocrFieldValues, warnings, iht421WarningsAdded);
             } else {
                 mandatoryFieldsValidatorUtils.addWarning(
                         "Option \"IHT205\" (iht205completed) is not applicable "

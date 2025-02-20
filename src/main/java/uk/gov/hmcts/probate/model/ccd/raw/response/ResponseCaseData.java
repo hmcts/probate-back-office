@@ -112,6 +112,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String paymentReferenceNumber;
     private final DocumentLink solsLegalStatementDocument;
     private final DocumentLink statementOfTruthDocument;
+    private final DocumentLink amendedLegalStatement;
     private final DocumentLink solsCoversheetDocument;
     private final List<CollectionMember<Document>> probateDocumentsGenerated;
     private final List<CollectionMember<Document>> probateNotificationsGenerated;
@@ -181,6 +182,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String paperForm;
     private final String channelChoice;
     private final String languagePreferenceWelsh;
+    private final RegistrarEscalateReason registrarEscalateReason;
 
     //paper form case creator fields
     private final String primaryApplicantSecondPhoneNumber;
