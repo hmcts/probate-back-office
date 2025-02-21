@@ -202,7 +202,7 @@ class OCRFieldModifierUtilsTest {
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
 
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = oCRFieldModifierUtils.setDefaultValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("TRUE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
@@ -220,7 +220,7 @@ class OCRFieldModifierUtilsTest {
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
 
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = oCRFieldModifierUtils.setDefaultValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
@@ -238,7 +238,7 @@ class OCRFieldModifierUtilsTest {
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
 
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = oCRFieldModifierUtils.setDefaultValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
@@ -257,7 +257,7 @@ class OCRFieldModifierUtilsTest {
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
 
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = oCRFieldModifierUtils.setDefaultValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
@@ -273,7 +273,7 @@ class OCRFieldModifierUtilsTest {
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
 
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = oCRFieldModifierUtils.setDefaultValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("TRUE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
