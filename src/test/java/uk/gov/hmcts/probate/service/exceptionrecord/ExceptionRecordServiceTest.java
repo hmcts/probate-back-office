@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveat
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordGrantOfRepresentationMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor;
+import uk.gov.hmcts.probate.service.ocr.OCRFieldModifierUtils;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -88,6 +89,8 @@ class ExceptionRecordServiceTest {
 
     @Mock
     private BulkScanConfig bulkScanConfig;
+    @Mock
+    private OCRFieldModifierUtils oCRFieldModifierUtils;
 
     @InjectMocks
     private OCRFieldExtractor ocrFieldExtractor;
@@ -157,7 +160,8 @@ class ExceptionRecordServiceTest {
                 testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorSingleExecutorPA1A.json");
 
         exceptionRecordPayloadPA1PMissingValue =
-                testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1PMissingPostcode.json");
+                testUtils.getStringFromFile(
+                        "expectedExceptionRecordDataCitizenSingleExecutorPA1PMissingSwitchDate.json");
 
         erRequestCaveat = getObjectMapper().readValue(exceptionRecordPayloadPA8A, ExceptionRecordRequest.class);
 
@@ -465,11 +469,12 @@ class ExceptionRecordServiceTest {
         List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ModifiedOCRField>> modifiedOCRFieldList =
                 new ArrayList<>();
         ModifiedOCRField modifiedOCRField = ModifiedOCRField.builder()
-                .fieldName("deceasedAddressPostCode")
-                .originalValue(null)
+                .fieldName("deceasedDiedOnAfterSwitchDate")
+                .originalValue("")
                 .build();
         modifiedOCRFieldList
                 .add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember(null, modifiedOCRField));
+        when(oCRFieldModifierUtils.setDefaultValues(any())).thenReturn(modifiedOCRFieldList);
         SuccessfulTransformationResponse response =
                 erService
                         .createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbateMissingValue,
@@ -479,7 +484,7 @@ class ExceptionRecordServiceTest {
         assertEquals(RegistryLocation.CTSC, grantOfRepresentationDataResponse.getRegistryLocation());
         assertEquals(ApplicationType.PERSONAL, grantOfRepresentationDataResponse.getApplicationType());
         assertEquals(GrantType.GRANT_OF_PROBATE, grantOfRepresentationDataResponse.getGrantType());
-        assertEquals("deceasedAddressPostCode", grantOfRepresentationDataResponse
+        assertEquals("deceasedDiedOnAfterSwitchDate", grantOfRepresentationDataResponse
                 .getModifiedOCRFieldList().get(0).getValue().getFieldName());
         assertEquals("", grantOfRepresentationDataResponse
                 .getModifiedOCRFieldList().get(0).getValue().getOriginalValue());

@@ -25,12 +25,15 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveat
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordGrantOfRepresentationMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptionRecordCaseDataValidator;
+import uk.gov.hmcts.probate.service.ocr.OCRFieldModifierUtils;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -72,6 +75,9 @@ public class ExceptionRecordService {
 
     @Autowired
     CallbackResponseTransformer grantOfRepresentationTransformer;
+
+    @Autowired
+    private OCRFieldModifierUtils ocrFieldModifierUtils;
 
     public SuccessfulTransformationResponse createCaveatCaseFromExceptionRecord(
         ExceptionRecordRequest erRequest,
@@ -119,6 +125,10 @@ public class ExceptionRecordService {
         try {
             log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
                     erRequest.getExceptionRecordId());
+
+            List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                    .setDefaultValues(erRequest.getOCRFieldsObject());
+
             GrantOfRepresentationData grantOfRepresentationData =
                     erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
@@ -127,7 +137,7 @@ public class ExceptionRecordService {
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
-            grantOfRepresentationData.setModifiedOCRFieldList(erRequest.getModifiedFields());
+            grantOfRepresentationData.setModifiedOCRFieldList(modifiedFields);
 
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");
