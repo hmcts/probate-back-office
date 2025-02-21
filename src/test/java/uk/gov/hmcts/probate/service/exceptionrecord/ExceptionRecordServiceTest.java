@@ -52,6 +52,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
@@ -470,7 +471,7 @@ class ExceptionRecordServiceTest {
                 new ArrayList<>();
         ModifiedOCRField modifiedOCRField = ModifiedOCRField.builder()
                 .fieldName("deceasedDiedOnAfterSwitchDate")
-                .originalValue("")
+                .originalValue(null)
                 .build();
         modifiedOCRFieldList
                 .add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember(null, modifiedOCRField));
@@ -486,7 +487,7 @@ class ExceptionRecordServiceTest {
         assertEquals(GrantType.GRANT_OF_PROBATE, grantOfRepresentationDataResponse.getGrantType());
         assertEquals("deceasedDiedOnAfterSwitchDate", grantOfRepresentationDataResponse
                 .getModifiedOCRFieldList().get(0).getValue().getFieldName());
-        assertEquals("", grantOfRepresentationDataResponse
+        assertNull(grantOfRepresentationDataResponse
                 .getModifiedOCRFieldList().get(0).getValue().getOriginalValue());
     }
 }
