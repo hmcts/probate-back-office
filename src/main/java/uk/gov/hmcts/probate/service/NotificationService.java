@@ -351,9 +351,12 @@ public class NotificationService {
             throw new NotificationClientException("Email address not found for case ID: " + caseDetails.getId());
         }
         ApplicationType applicationType = getApplicationType(caseDetails);
-        LanguagePreference languagePreference = Optional.ofNullable(data.get("languagePreference"))
+
+        LanguagePreference languagePreference = Optional.ofNullable(
+                caseDetails.getData().get("languagePreferenceWelsh"))
                 .map(Object::toString)
-                .map(LanguagePreference::valueOf)
+                .filter("Yes"::equalsIgnoreCase)
+                .map(yes -> LanguagePreference.WELSH)
                 .orElse(LanguagePreference.ENGLISH);
         log.info("ApplicationType: {}, LanguagePreference: {}", applicationType, languagePreference);
         String templateId = notificationTemplates.getEmail()
