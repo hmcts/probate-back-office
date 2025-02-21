@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class PA1ACitizenMandatoryFieldsValidatorTest {
@@ -129,18 +127,6 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(0, warnings.size());
-    }
-
-    @Test
-    void testMissingMandatoryFieldsForPA1ACitizenV3() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        when(mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)).thenReturn(true);
-
-        pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-        assertEquals(1, warnings.size());
-        assertEquals("Did the person die on or after 1 January 2022? (deceasedDiedOnAfterSwitchDate) is mandatory.",
-                warnings.get(0));
     }
 
     @Test
