@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
+import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsApplying;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsNotApplying;
@@ -38,12 +39,12 @@ import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.SolsPaymentMethods;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
-
 import java.util.List;
 
 @Mapper(componentModel = "spring",
         imports = {StringUtils.class, ApplicationType.class},
-        uses = {ApplicationTypeMapper.class,
+        uses = {BulkScanConfig.class,
+                ApplicationTypeMapper.class,
                 OCRFieldAddressMapper.class,
                 OCRFieldAdditionalExecutorsApplyingMapper.class,
                 OCRFieldAdditionalExecutorsNotApplyingMapper.class,
