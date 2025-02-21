@@ -90,7 +90,7 @@ class ExceptionRecordServiceTest {
     @Mock
     private BulkScanConfig bulkScanConfig;
     @Mock
-    private OCRFieldModifierUtils oCRFieldModifierUtils;
+    private OCRFieldModifierUtils ocrFieldModifierUtils;
 
     @InjectMocks
     private OCRFieldExtractor ocrFieldExtractor;
@@ -474,7 +474,7 @@ class ExceptionRecordServiceTest {
                 .build();
         modifiedOCRFieldList
                 .add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember(null, modifiedOCRField));
-        when(oCRFieldModifierUtils.setDefaultValues(any())).thenReturn(modifiedOCRFieldList);
+        when(ocrFieldModifierUtils.setDefaultValues(any())).thenReturn(modifiedOCRFieldList);
         SuccessfulTransformationResponse response =
                 erService
                         .createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbateMissingValue,
