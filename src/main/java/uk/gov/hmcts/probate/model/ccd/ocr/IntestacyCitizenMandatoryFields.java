@@ -13,8 +13,6 @@ public enum IntestacyCitizenMandatoryFields {
     DECEASED_DOB("deceasedDateOfBirth", "Deceased date of birth"),
     DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
     DECEASED_ANY_OTHER_NAMES("deceasedAnyOtherNames", "Did the deceased have assets in any other names?"),
-    DECEASED_DIED_ON_AFTER_SWITCH_DATE("deceasedDiedOnAfterSwitchDate",
-            "Did the person die on or after 1 January 2022?", "3"),
     DECEASED_DOMICILE_IN_ENG_WALES("deceasedDomicileInEngWales",
             "Was the deceased domiciled in England or Wales at the time of their death?"),
     FORM_VERSION("formVersion", "Form version"),
