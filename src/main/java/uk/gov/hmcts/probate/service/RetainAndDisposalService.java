@@ -38,13 +38,14 @@ public class RetainAndDisposalService {
     public void sendEmailForInactiveCase(String switchDate, String runDate, long inactivityNotificationPeriod) {
         List<Long> failedCases = new ArrayList<>();
         try {
-            LocalDate switchLocalDate = LocalDate.parse(switchDate);
-            LocalDate fromDate = switchLocalDate.minusDays(inactivityNotificationPeriod);
+            LocalDate runDateDate = LocalDate.parse(runDate);
+            LocalDate fromDate = runDateDate.minusDays(inactivityNotificationPeriod);
+            LocalDate toDate = runDateDate.minusDays(inactivityNotificationPeriod);
             if (switchDate.equals(runDate)) {
                 log.info("Switch date and run date are same, doubling the period for inactivity notification");
                 fromDate = fromDate.minusDays(inactivityNotificationPeriod);
             }
-            LocalDate toDate = switchLocalDate.minusDays(inactivityNotificationPeriod);
+
             log.info("Start Disposal reminder query fromDate: {}, toDate: {}", fromDate, toDate);
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
             SearchResult searchResult = elasticSearchRepository
