@@ -15,7 +15,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
-
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -108,9 +109,9 @@ public class SmeeAndFordPersonalisationService {
                 data.append(getPrimaryApplicantName(currentCaseData));
                 data.append(DELIMITER);
                 data.append(getFullAddress(currentCaseData.getPrimaryApplicantAddress()));
-                data.append(currentCaseData.getIhtGrossValue().toString());
+                data.append(truncateValue(currentCaseData.getIhtGrossValue()));
                 data.append(DELIMITER);
-                data.append(currentCaseData.getIhtNetValue().toString());
+                data.append(truncateValue(currentCaseData.getIhtNetValue()));
                 data.append(DELIMITER);
                 data.append(getSolicitorDetails(currentCaseData));
                 data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfBirth()));
@@ -365,6 +366,13 @@ public class SmeeAndFordPersonalisationService {
             return data;
         }
         return data.substring(0, data.lastIndexOf(COMMA));
+    }
+    private String truncateValue(BigDecimal value) {
+            if (value!=null){
+            BigDecimal truncatedValue = value.divide(DIVISOR, RoundingMode.FLOOR);
+            return FORMAT.format(truncatedValue);
+        }
+        return "0";
     }
 
     private String removeLastNewLine(String data) {
