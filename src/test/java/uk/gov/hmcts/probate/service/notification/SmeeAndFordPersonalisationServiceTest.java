@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -429,5 +430,18 @@ class SmeeAndFordPersonalisationServiceTest {
 
         assertThat(personalisation.get("caseData"), not(containsString("ScannedOtherFileName")));
         assertThat(personalisation.get("caseData"), not(containsString("ScannedCopyWillFileName")));
+    }
+
+    @Test
+    void shouldTruncateValueCorrectly() throws Exception {
+        Method method = SmeeAndFordPersonalisationService.class.getDeclaredMethod("truncateValue", BigDecimal.class);
+        method.setAccessible(true);
+
+        BigDecimal value = new BigDecimal("1234567");
+        String expectedTruncatedValue = "12,345";
+
+        String truncatedValue = (String) method.invoke(smeeAndFordPersonalisationService, value);
+
+        assertThat(truncatedValue, is(expectedTruncatedValue));
     }
 }
