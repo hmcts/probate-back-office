@@ -11,6 +11,11 @@
           "match": {
             "state": "Pending"
           }
+        },
+        {
+          "match": {
+            "state": "SolAppUpdated"
+          }
         }
       ],
       "should": [
