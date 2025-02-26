@@ -2212,7 +2212,7 @@ class NotificationServiceIT {
                 .id(ID)
                 .build();
         when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
-        notificationService.sendDisposalReminderEmail(returnedCaseDetails);
+        notificationService.sendDisposalReminderEmail(returnedCaseDetails, false);
 
         verify(notificationClient).sendEmail(
                 eq("pa-disposal-reminder"),
@@ -2237,7 +2237,7 @@ class NotificationServiceIT {
                         .build();
         when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
         when(userInfoService.getUserEmailByCaseId(ID)).thenReturn(Optional.of("primary-idam-email@probate-test.com"));
-        notificationService.sendDisposalReminderEmail(returnedCaseDetails);
+        notificationService.sendDisposalReminderEmail(returnedCaseDetails, false);
 
         verify(notificationClient).sendEmail(
                 eq("pa-disposal-reminder"),
@@ -2263,7 +2263,7 @@ class NotificationServiceIT {
         when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
         when(userInfoService.getUserEmailByCaseId(ID)).thenReturn(Optional.empty());
         NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
-                notificationService.sendDisposalReminderEmail(returnedCaseDetails));
+                notificationService.sendDisposalReminderEmail(returnedCaseDetails, false));
         assertEquals("Email address not found for case ID: " + ID, exception.getMessage());
     }
 
@@ -2279,7 +2279,7 @@ class NotificationServiceIT {
                 .id(ID)
                 .build();
         when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
-        notificationService.sendDisposalReminderEmail(returnedCaseDetails);
+        notificationService.sendDisposalReminderEmail(returnedCaseDetails, false);
 
         verify(notificationClient).sendEmail(
                 eq("sol-disposal-reminder"),
@@ -2296,7 +2296,7 @@ class NotificationServiceIT {
                         .lastModified(LAST_DATE_MODIFIED)
                         .id(ID)
                         .build();
-        notificationService.sendDisposalReminderEmail(returnedCaseDetails);
+        notificationService.sendDisposalReminderEmail(returnedCaseDetails, false);
 
         verify(notificationClient, never()).sendEmail(
                 eq("pa-disposal-reminder"),
