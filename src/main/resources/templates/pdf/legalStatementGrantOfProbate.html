@@ -586,6 +586,7 @@
                         {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}lacks capacity to manage their affairs under the Mental Capacity Act 2005 and is unable to act as an executor.{% endif %}
             </span></p>
             {% endif %}
+            {% endfor %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
             <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
@@ -596,7 +597,6 @@
                 at the date of death of the deceased have renounced probate.</span></p>
             {% endif %}
 
-            {% endfor %}
             {% else %}
                 {% if case_details.case_data.titleAndClearingType != "TCTPartAllRenouncing"
                     and case_details.case_data.titleAndClearingType != "TCTPartSuccAllRenouncing"
