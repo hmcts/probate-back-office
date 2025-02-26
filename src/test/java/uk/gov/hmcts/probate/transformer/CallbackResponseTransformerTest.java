@@ -47,16 +47,20 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
@@ -576,7 +580,12 @@ class CallbackResponseTransformerTest {
     Document coversheetMock;
     @Mock
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
-
+    @Mock
+    private SecurityUtils securityUtils;
+    @Mock
+    private SecurityDTO securityDTO;
+    @Mock
+    private AuditEventService auditEventService;
     @Mock
     private FeatureToggleService featureToggleService;
 
@@ -2901,22 +2910,18 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformOrgPolicy() {
-        OrganisationPolicy policy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("ABC")
-                        .organisationName("OrgName")
-                        .build())
-                .orgPolicyReference(null)
-                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
-                .build();
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .applicantOrganisationPolicy(policy);
-
+    void shouldTransformRollbackState() {
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        caseDataBuilder.applicationType(SOLICITOR);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(auditEventService.getLatestAuditEventByState(any(), any(), any(), any()))
+                .thenReturn(Optional.ofNullable(AuditEvent.builder()
+                        .stateId("SolsAppUpdated")
+                        .createdDate(LocalDateTime.now())
+                        .build()));
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getApplicantOrganisationPolicy());
+        assertEquals("SolsAppUpdated", callbackResponse.getData().getState());
     }
 
     @Test

@@ -230,6 +230,8 @@ logging:
     console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
 
 idam:
+  api:
+    url: ${IDAM_SERVICE_HOST:http://localhost:5000}
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
@@ -272,6 +274,7 @@ notifications:
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
+          disposalReminder: "2e29cce0-66d9-458a-82a3-20aa0e4d5112"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -297,6 +300,8 @@ notifications:
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
           noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
+          disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
+          caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
@@ -321,6 +326,7 @@ notifications:
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          disposalReminder: "34fe5d9d-c57b-4bc2-9ceb-008e82cd5594"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -345,6 +351,8 @@ notifications:
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
           noticeOfChangeReceived: "4f1f3c47-1d84-4584-b251-2a77d64510f2"
+          disposalReminder: "bd041f52-5f87-4d90-87ab-302e20e7215d"
+          caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
 
 documents:
   templates:
@@ -518,7 +526,11 @@ auth:
       baseUrl: ${IDAM_SERVICE_HOST:http://localhost:5000}
       api: /details
 
-core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
+core_case_data:
+  api:
+    url: ${services.coreCaseData.baseUrl:http://localhost:4452}
+  elasticsearch:
+    querySize: 500
 
 excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
 
@@ -555,7 +567,7 @@ blobstorage:
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
-shcedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
+schedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
 
 feature:
   blobstorage:
@@ -593,3 +605,13 @@ reactivate_dormant:
 
 grand_delay:
   number_of_weeks: 12
+
+disposal:
+  adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
+  inactivityNotificationPeriod: ${INACTIVITY_NOTIFICATION_PERIOD:90}
+  disposalGracePeriod: ${DISPOSAL_GRACE_PERIOD:90}
+  switchDate: ${RETENTION_SWITCH_DATE:2025-03-04}
+  startDate: 1900-01-01
+  personalNotificationLink: ${FRONTEND_URL:http://localhost:3000}
+  solsNotificationLink: ${MANAGE_CASE_URL:http://localhost:3001}
+

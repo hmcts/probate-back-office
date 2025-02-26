@@ -1,0 +1,17 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-approver", "ReadOnly": "N", "AccessProfiles": "caseworker-approver"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-probate-issuer", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-issuer"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-probate-caseadmin", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-caseadmin"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-probate-caseofficer", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-caseofficer"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-probate-registrar", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-registrar"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-probate-superuser", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-superuser"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-probate-systemupdate", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-systemupdate,TTL_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-probate-scheduler", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-scheduler,TTL_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:citizen", "ReadOnly": "N", "AccessProfiles": "citizen"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-probate-solicitor", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-solicitor"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-caa", "ReadOnly": "N", "AccessProfiles": "caseworker-caa"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-probate-pcqextractor", "ReadOnly": "Y", "AccessProfiles": "caseworker-probate-pcqextractor"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "[CREATOR]", "ReadOnly": "N", "AccessProfiles": "[CREATOR]"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "[APPLICANTSOLICITOR]", "ReadOnly": "N", "AccessProfiles": "[APPLICANTSOLICITOR]"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:cft-ttl-manager", "ReadOnly": "N", "AccessProfiles": "TTL_profile"}
+]
