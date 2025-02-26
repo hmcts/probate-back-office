@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.any;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.doThrow;
@@ -79,9 +80,11 @@ class RetainAndDisposalServiceTest {
 
     @Test
     void shouldSendEmailsForInactiveCasesSuccessfully() throws NotificationClientException {
-        retainAndDisposalService.sendEmailForInactiveCase(SWITCH_DATE, RUN_DATE, NOTIFICATION_INACTIVE_PERIOD);
+        retainAndDisposalService.sendEmailForInactiveCase(SWITCH_DATE, RUN_DATE, NOTIFICATION_INACTIVE_PERIOD,
+                false);
 
-        verify(notificationService, times(1)).sendDisposalReminderEmail(mockCaseDetails);
+        verify(notificationService, times(1)).sendDisposalReminderEmail(mockCaseDetails,
+                false);
         verify(elasticSearchRepository, times(1))
                 .fetchFirstPage(any(), any(), any(), any(), any());
         verify(elasticSearchRepository, times(1))
@@ -90,9 +93,11 @@ class RetainAndDisposalServiceTest {
 
     @Test
     void shouldSendEmailsForInactiveCasesSuccessfullyWhenSwitchDateSameAsRunDate() throws NotificationClientException {
-        retainAndDisposalService.sendEmailForInactiveCase(RUN_DATE, RUN_DATE, NOTIFICATION_INACTIVE_PERIOD);
+        retainAndDisposalService.sendEmailForInactiveCase(RUN_DATE, RUN_DATE, NOTIFICATION_INACTIVE_PERIOD,
+                false);
 
-        verify(notificationService, times(1)).sendDisposalReminderEmail(mockCaseDetails);
+        verify(notificationService, times(1)).sendDisposalReminderEmail(mockCaseDetails,
+                false);
         verify(elasticSearchRepository, times(1))
                 .fetchFirstPage(any(), any(), any(), any(), any());
         verify(elasticSearchRepository, times(1))
@@ -102,11 +107,11 @@ class RetainAndDisposalServiceTest {
     @Test
     void shouldHandleNotificationExceptionGracefully() throws NotificationClientException {
         doThrow(new NotificationClientException("Email failed")).when(notificationService)
-                .sendDisposalReminderEmail(any());
+                .sendDisposalReminderEmail(any(), anyBoolean());
 
         assertDoesNotThrow(() -> retainAndDisposalService
-                .sendEmailForInactiveCase(SWITCH_DATE, RUN_DATE, NOTIFICATION_INACTIVE_PERIOD));
-        verify(notificationService, times(1)).sendDisposalReminderEmail(any());
+                .sendEmailForInactiveCase(SWITCH_DATE, RUN_DATE, NOTIFICATION_INACTIVE_PERIOD, false));
+        verify(notificationService, times(1)).sendDisposalReminderEmail(any(), anyBoolean());
     }
 
     @Test
@@ -117,7 +122,7 @@ class RetainAndDisposalServiceTest {
                         NOTIFICATION_INACTIVE_PERIOD, DISPOSAL_GRACE_PERIOD);
 
         verify(disposalCCDService, times(2)).disposeGOPCase(any(), any(), any());
-        verify(disposalCCDService, times(1)).disposeCaveatCase(any(), any(), any());
+        verify(disposalCCDService, times(3)).disposeCaveatCase(any(), any(), any());
     }
 
     @Test
@@ -143,9 +148,10 @@ class RetainAndDisposalServiceTest {
         SearchResult emptySearchResult = SearchResult.builder().total(0).cases(Collections.emptyList()).build();
         when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any())).thenReturn(emptySearchResult);
 
-        retainAndDisposalService.sendEmailForInactiveCase(SWITCH_DATE, RUN_DATE, NOTIFICATION_INACTIVE_PERIOD);
+        retainAndDisposalService.sendEmailForInactiveCase(SWITCH_DATE, RUN_DATE, NOTIFICATION_INACTIVE_PERIOD,
+                false);
 
-        verify(notificationService, never()).sendDisposalReminderEmail(any());
+        verify(notificationService, never()).sendDisposalReminderEmail(any(), anyBoolean());
         verify(elasticSearchRepository, times(1))
                 .fetchFirstPage(any(), any(), any(), any(), any());
     }

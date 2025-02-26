@@ -91,12 +91,13 @@ public class RetainAndDisposalService {
                 SearchResult subsequentSearchResult;
                 if (isCaveat) {
                     subsequentSearchResult = elasticSearchRepository
-                            .fetchFirstPage(securityDTO.getAuthorisation(), CAVEAT.getName(),
-                                    DISPOSE_CAVEAT_PP_QUERY, fromDate.toString(), toDate.toString());
+                            .fetchNextPage(securityDTO.getAuthorisation(), CAVEAT.getName(),
+                                    searchAfterValue, DISPOSE_CAVEAT_PP_QUERY, fromDate.toString(), toDate.toString());
+
                 } else {
                     subsequentSearchResult = elasticSearchRepository
-                            .fetchFirstPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
-                                    DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
+                            .fetchNextPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
+                                    searchAfterValue, DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
                 }
                 log.info("Fetching next page for searchAfterValue: {}", searchAfterValue);
 
@@ -134,8 +135,8 @@ public class RetainAndDisposalService {
 
             log.info("Start Dispose Deleted case initiated for date: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, disposalEndDate);
-            disposeGOPDeletedCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases);
-
+            disposeDeletedCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases, true);
+            disposeDeletedCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases, false);
 
             log.info("Start disposing inactive PA Caveat cases. runDate: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, disposalEndDate);
@@ -177,17 +178,19 @@ public class RetainAndDisposalService {
         }
     }
 
-    private void disposeGOPDeletedCase(String disposalStartDate, String disposalEndDate, List<Long> failedCases) {
+    private void disposeDeletedCase(String disposalStartDate, String disposalEndDate, List<Long> failedCases,
+                                    boolean isGOP) {
         try {
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
             SearchResult searchResult = elasticSearchRepository.fetchFirstPage(securityDTO.getAuthorisation(),
-                    GRANT_OF_REPRESENTATION.getName(), DISPOSE_GOP_DELETED_QUERY, disposalStartDate, disposalEndDate);
-            log.info("disposeGOPDeletedCase query executed cases found: {}",
-                    searchResult.getTotal());
+                    isGOP ? GRANT_OF_REPRESENTATION.getName() : CAVEAT.getName(), DISPOSE_GOP_DELETED_QUERY,
+                    disposalStartDate, disposalEndDate);
+            log.info("disposeDeletedCase query executed cases found: {} is GOP: {}",
+                    searchResult.getTotal(), isGOP );
             processCasesForDisposal(searchResult, failedCases, securityDTO, disposalStartDate, disposalEndDate,
-                    DISPOSE_GOP_DELETED_QUERY, true);
+                    DISPOSE_GOP_DELETED_QUERY, isGOP);
         } catch (Exception e) {
-            log.error("Error on disposeGOPDeletedCase: {}", e.getMessage(), e);
+            log.error("Error on disposeDeletedCase: {}", e.getMessage(), e);
         }
     }
 

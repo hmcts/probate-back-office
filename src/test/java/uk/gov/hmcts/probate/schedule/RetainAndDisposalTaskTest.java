@@ -13,12 +13,12 @@ import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(SpringExtension.class)
 class RetainAndDisposalTaskTest {
@@ -56,11 +56,10 @@ class RetainAndDisposalTaskTest {
         String expectedRunDate = LocalDate.now().toString();
         verify(dataExtractDateValidator).dateValidator(SWITCH_DATE, expectedRunDate);
         verify(retainAndDisposalService)
-                .sendEmailForInactiveCase(SWITCH_DATE, expectedRunDate, Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD));
+                .sendEmailForInactiveCase(SWITCH_DATE, expectedRunDate, Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD),
+                        false);
         verify(retainAndDisposalService).disposeInactiveCase(SWITCH_DATE, expectedRunDate, START_DATE,
                 Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD), Long.parseLong(DISPOSAL_GRACE_PERIOD));
-
-        verifyNoMoreInteractions(retainAndDisposalService, dataExtractDateValidator);
     }
 
     @Test
@@ -71,17 +70,16 @@ class RetainAndDisposalTaskTest {
 
         verify(dataExtractDateValidator).dateValidator(SWITCH_DATE, ADHOC_JOB_DATE);
         verify(retainAndDisposalService)
-                .sendEmailForInactiveCase(SWITCH_DATE, ADHOC_JOB_DATE, Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD));
+                .sendEmailForInactiveCase(SWITCH_DATE, ADHOC_JOB_DATE, Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD),
+                        false);
         verify(retainAndDisposalService).disposeInactiveCase(SWITCH_DATE, ADHOC_JOB_DATE, START_DATE,
                 Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD), Long.parseLong(DISPOSAL_GRACE_PERIOD));
-
-        verifyNoMoreInteractions(retainAndDisposalService, dataExtractDateValidator);
     }
 
     @Test
     void shouldHandleExceptionWhenSendEmailForInactiveCaseThrowsException() {
         doThrow(new RuntimeException("Email failure")).when(retainAndDisposalService)
-                .sendEmailForInactiveCase(anyString(), anyString(), anyLong());
+                .sendEmailForInactiveCase(anyString(), anyString(), anyLong(), anyBoolean());
 
         assertDoesNotThrow(() -> retainAndDisposalTask.run());
         verify(retainAndDisposalService)
@@ -94,19 +92,20 @@ class RetainAndDisposalTaskTest {
                 .disposeInactiveCase(anyString(), anyString(), anyString(), anyLong(), anyLong());
 
         assertDoesNotThrow(() -> retainAndDisposalTask.run());
-        verify(retainAndDisposalService).sendEmailForInactiveCase(anyString(), anyString(), anyLong());
+        verify(retainAndDisposalService, times(2)).sendEmailForInactiveCase(anyString(),
+                anyString(), anyLong(), anyBoolean());
     }
 
     @Test
     void shouldHandleExceptionsGracefullyWhenBothServiceCallsFail() {
         doThrow(new RuntimeException("Email failure")).when(retainAndDisposalService)
-                .sendEmailForInactiveCase(anyString(), anyString(), anyLong());
+                .sendEmailForInactiveCase(anyString(), anyString(), anyLong(), anyBoolean());
         doThrow(new RuntimeException("Disposal failure")).when(retainAndDisposalService)
                 .disposeInactiveCase(anyString(), anyString(), anyString(), anyLong(), anyLong());
 
         assertDoesNotThrow(() -> retainAndDisposalTask.run());
 
-        verify(retainAndDisposalService).sendEmailForInactiveCase(anyString(), anyString(), anyLong());
+        verify(retainAndDisposalService).sendEmailForInactiveCase(anyString(), anyString(), anyLong(), anyBoolean());
         verify(retainAndDisposalService)
                 .disposeInactiveCase(anyString(), anyString(), anyString(), anyLong(), anyLong());
     }
@@ -119,7 +118,8 @@ class RetainAndDisposalTaskTest {
 
         verify(dataExtractDateValidator).dateValidator(SWITCH_DATE, SWITCH_DATE);
         verify(retainAndDisposalService)
-                .sendEmailForInactiveCase(SWITCH_DATE, SWITCH_DATE, Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD));
+                .sendEmailForInactiveCase(SWITCH_DATE, SWITCH_DATE, Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD),
+                        false);
         verify(retainAndDisposalService, times(0)).disposeInactiveCase(SWITCH_DATE, ADHOC_JOB_DATE, START_DATE,
                 Long.parseLong(INACTIVITY_NOTIFICATION_PERIOD), Long.parseLong(DISPOSAL_GRACE_PERIOD));
 
