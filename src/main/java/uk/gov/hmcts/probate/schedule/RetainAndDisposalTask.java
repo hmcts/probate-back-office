@@ -47,9 +47,14 @@ public class RetainAndDisposalTask implements Runnable {
         log.info("Calling send email for inactive case for date {}, with inactive period {}",
                 runDate, inactivityNotificationPeriod);
         try {
-            log.info("Perform send email for inactive case started");
+            log.info("Perform send email for inactive gop case started");
             retainAndDisposalService
-                    .sendEmailForInactiveCase(switchDate, runDate, Long.parseLong(inactivityNotificationPeriod));
+                    .sendEmailForInactiveCase(switchDate, runDate, Long.parseLong(inactivityNotificationPeriod),
+                            true);
+            log.info("Perform send email for inactive caveat case started");
+            retainAndDisposalService
+                    .sendEmailForInactiveCase(switchDate, runDate, Long.parseLong(inactivityNotificationPeriod),
+                            false);
             log.info("Perform send email for inactive case finished");
         } catch (Exception e) {
             log.error("Error on RetainAndDisposalTask Scheduler send email task {}", e.getMessage());

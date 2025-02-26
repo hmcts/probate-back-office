@@ -11,11 +11,15 @@
           }
         },
         {
-          "terms": {
+          "match": {
+            "data.applicationType.keyword": "Personal"
+          }
+        },
+        {
+          "terms":
+
             "state.keyword": [
               "PAAppCreated",
-              "SolAppCreated",
-              "SolAppUpdated",
               "CasePaymentFailed"
             ]
           }

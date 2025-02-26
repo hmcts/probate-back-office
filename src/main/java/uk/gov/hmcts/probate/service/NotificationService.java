@@ -330,7 +330,8 @@ public class NotificationService {
         return response;
     }
 
-    public void sendDisposalReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
+    public void sendDisposalReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
+                                          boolean isCaveat)
             throws NotificationClientException {
         log.info("Sending Disposal Reminder email");
         Map<String, Object> data = caseDetails.getData();
@@ -341,7 +342,7 @@ public class NotificationService {
         String emailAddress = Optional.of(data)
                 .flatMap(caseData -> {
                     try {
-                        return Optional.ofNullable(getEmail(caseData));
+                        return Optional.ofNullable(isCaveat ? getEmailCaveat(caseData) : getEmail(caseData));
                     } catch (BadRequestException e) {
                         return Optional.empty();
                     }
@@ -587,6 +588,22 @@ public class NotificationService {
         return response;
     }
 
+    private String getEmailCaveat(Map<String, Object> caseData) {
+        String applicationType = Optional.ofNullable(caseData.get("applicationType"))
+                .map(Object::toString)
+                .orElseThrow(() -> new BadRequestException("ApplicationType is missing in case data"));
+
+        log.info("getEmail for caseType: {}", applicationType);
+
+        return switch (applicationType.toUpperCase()) {
+            case "SOLICITOR" -> Optional.ofNullable(caseData.get("caveatorEmailAddress"))
+                    .map(Object::toString)
+                    .map(String::toLowerCase)
+                    .orElse(null);
+            default -> throw new BadRequestException("Unsupported application type: " + applicationType);
+        };
+    }
+
     private String getEmail(CaseData caseData) {
         if (caseData == null || caseData.getApplicationType() == null) {
             throw new BadRequestException("Casedata or ApplicationType is null");
@@ -602,6 +619,7 @@ public class NotificationService {
             default -> throw new BadRequestException("Unsupported application type");
         };
     }
+
 
     private String getEmail(Map<String, Object> caseData) {
         String applicationType = Optional.ofNullable(caseData.get("applicationType"))

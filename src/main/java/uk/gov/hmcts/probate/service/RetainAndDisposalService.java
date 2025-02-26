@@ -25,8 +25,10 @@ import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION
 public class RetainAndDisposalService {
     private static final String DISPOSE_GOP_QUERY = "templates/elasticsearch/caseMatching/"
             + "dispose_gop_date_range_query.json";
-    private static final String DISPOSE_CAVEAT_QUERY = "templates/elasticsearch/caseMatching/"
-            + "dispose_caveat_date_range_query.json";
+    private static final String DISPOSE_CAVEAT_PA_QUERY = "templates/elasticsearch/caseMatching/"
+            + "dispose_caveat_pa_date_range_query.json";
+    private static final String DISPOSE_CAVEAT_PP_QUERY = "templates/elasticsearch/caseMatching/"
+            + "dispose_caveat_pp_date_range_query.json";
     private static final String DISPOSE_GOP_DELETED_QUERY = "templates/elasticsearch/caseMatching/"
             + "dispose_gop_deleted_query.json";
 
@@ -35,7 +37,8 @@ public class RetainAndDisposalService {
     private final SecurityUtils securityUtils;
     private final ElasticSearchRepository elasticSearchRepository;
 
-    public void sendEmailForInactiveCase(String switchDate, String runDate, long inactivityNotificationPeriod) {
+    public void sendEmailForInactiveCase(String switchDate, String runDate, long inactivityNotificationPeriod,
+                                         boolean isCaveat) {
         List<Long> failedCases = new ArrayList<>();
         try {
             LocalDate runDateDate = LocalDate.parse(runDate);
@@ -48,9 +51,21 @@ public class RetainAndDisposalService {
 
             log.info("Start Disposal reminder query fromDate: {}, toDate: {}", fromDate, toDate);
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-            SearchResult searchResult = elasticSearchRepository
-                .fetchFirstPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
-                        DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
+            SearchResult searchResult;
+            if (isCaveat) {
+                log.info("Start sending email for inactive Caveat cases. runDate: {}, fromDate: {}, toDate: {}",
+                        runDate, fromDate, toDate);
+                searchResult = elasticSearchRepository
+                        .fetchFirstPage(securityDTO.getAuthorisation(), CAVEAT.getName(),
+                                DISPOSE_CAVEAT_PP_QUERY, fromDate.toString(), toDate.toString());
+            } else {
+                log.info("Start sending email for inactive GOP cases. runDate: {}, fromDate: {}, toDate: {}",
+                        runDate, fromDate, toDate);
+                searchResult = elasticSearchRepository
+                        .fetchFirstPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
+                                DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
+            }
+
             log.info("Disposal reminder query executed for date: {}, cases found: {}",
                 runDate, searchResult.getTotal());
             if (searchResult.getTotal() == 0) {
@@ -62,7 +77,7 @@ public class RetainAndDisposalService {
             searchResultCases.forEach(caseDetails -> {
                 log.info("Sending email for case id: {}", caseDetails.getId());
                 try {
-                    notificationService.sendDisposalReminderEmail(caseDetails);
+                    notificationService.sendDisposalReminderEmail(caseDetails, isCaveat);
                 } catch (NotificationClientException | RuntimeException e) {
                     log.info("Error sending email for case id: {}", caseDetails.getId());
                     failedCases.add(caseDetails.getId());
@@ -73,9 +88,16 @@ public class RetainAndDisposalService {
 
             boolean keepSearching;
             do {
-                SearchResult subsequentSearchResult = elasticSearchRepository
-                        .fetchNextPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
-                                searchAfterValue, DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
+                SearchResult subsequentSearchResult;
+                if (isCaveat) {
+                    subsequentSearchResult = elasticSearchRepository
+                            .fetchFirstPage(securityDTO.getAuthorisation(), CAVEAT.getName(),
+                                    DISPOSE_CAVEAT_PP_QUERY, fromDate.toString(), toDate.toString());
+                } else {
+                    subsequentSearchResult = elasticSearchRepository
+                            .fetchFirstPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
+                                    DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
+                }
                 log.info("Fetching next page for searchAfterValue: {}", searchAfterValue);
 
                 keepSearching = subsequentSearchResult != null && !subsequentSearchResult.getCases().isEmpty();
@@ -84,7 +106,7 @@ public class RetainAndDisposalService {
                     subsequentSearchResultCases.forEach(caseDetails -> {
                         log.info("Sending email for case id: {}", caseDetails.getId());
                         try {
-                            notificationService.sendDisposalReminderEmail(caseDetails);
+                            notificationService.sendDisposalReminderEmail(caseDetails, isCaveat);
                         } catch (NotificationClientException | RuntimeException e) {
                             log.info("Error sending email for case id: {}", caseDetails.getId());
                             failedCases.add(caseDetails.getId());
@@ -115,9 +137,9 @@ public class RetainAndDisposalService {
             disposeGOPDeletedCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases);
 
 
-            log.info("Start disposing inactive Caveat cases. runDate: {}, fromDate: {}, toDate: {}",
+            log.info("Start disposing inactive PA Caveat cases. runDate: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, disposalEndDate);
-            disposeCaveatCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases);
+            disposeCaveatCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases, false);
 
             if (shouldSkipGOPDraftDisposal(runDate, switchDate, disposalGracePeriod)) {
                 log.info("Skipping draft disposal for runDate: {} ", runDate);
@@ -126,6 +148,9 @@ public class RetainAndDisposalService {
             log.info("Start disposing inactive GOP cases. runDate: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, disposalEndDate);
             disposeGOPDraftCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases);
+            log.info("Start disposing inactive PP caveat cases. runDate: {}, fromDate: {}, toDate: {}",
+                    runDate, disposalStartDate, disposalEndDate);
+            disposeCaveatCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases, true);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw e;
@@ -166,15 +191,17 @@ public class RetainAndDisposalService {
         }
     }
 
-    private void disposeCaveatCase(String disposalStartDate, String disposalEndDate, List<Long> failedCases) {
+    private void disposeCaveatCase(String disposalStartDate, String disposalEndDate, List<Long> failedCases,
+                                   boolean isPP) {
         try {
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
             SearchResult searchResult = elasticSearchRepository.fetchFirstPage(securityDTO.getAuthorisation(),
-                    CAVEAT.getName(), DISPOSE_CAVEAT_QUERY, disposalStartDate, disposalEndDate);
+                    CAVEAT.getName(), isPP ? DISPOSE_CAVEAT_PP_QUERY : DISPOSE_CAVEAT_PA_QUERY,
+                    disposalStartDate, disposalEndDate);
             log.info("disposeCaveatCase query executed cases found: {}",
                     searchResult.getTotal());
             processCasesForDisposal(searchResult, failedCases, securityDTO, disposalStartDate, disposalEndDate,
-                    DISPOSE_CAVEAT_QUERY, false);
+                    isPP ? DISPOSE_CAVEAT_PP_QUERY : DISPOSE_CAVEAT_PA_QUERY, false);
         } catch (Exception e) {
             log.error("Error on disposeCaveatCase: {}", e.getMessage(), e);
         }
