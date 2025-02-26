@@ -360,10 +360,19 @@ public class NotificationService {
                 .map(yes -> LanguagePreference.WELSH)
                 .orElse(LanguagePreference.ENGLISH);
         log.info("ApplicationType: {}, LanguagePreference: {}", applicationType, languagePreference);
-        String templateId = notificationTemplates.getEmail()
-                .get(languagePreference)
-                .get(applicationType)
-                .getDisposalReminder();
+        String templateId;
+        if (isCaveat) {
+            templateId = notificationTemplates.getEmail()
+                    .get(languagePreference)
+                    .get(applicationType)
+                    .getCaveatDisposalReminder();
+        } else {
+            templateId = notificationTemplates.getEmail()
+                    .get(languagePreference)
+                    .get(applicationType)
+                    .getDisposalReminder();
+        }
+
         log.info("templateId: {}", templateId);
         Map<String, String> personalisation =
                 disposalReminderPersonalisationService.getDisposalReminderPersonalisation(caseDetails, applicationType);
