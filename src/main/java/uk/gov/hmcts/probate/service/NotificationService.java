@@ -129,15 +129,7 @@ public class NotificationService {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
         }
 
-        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
-            if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
-                personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
-            } else if (!StringUtils.isEmpty(caseData.getSolsSOTForenames()) && !StringUtils
-                    .isEmpty(caseData.getSolsSOTSurname())) {
-                personalisation.replace(PERSONALISATION_APPLICANT_NAME,
-                        String.join(" ", caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()));
-            }
-        }
+        updatePersonalisationForSolicitor(caseData, personalisation);
 
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
@@ -164,11 +156,25 @@ public class NotificationService {
                 grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                         registry);
 
+        updatePersonalisationForSolicitor(caseData, personalisation);
+
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
         TemplatePreview previewResponse =
                 notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
         return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
+    }
+
+    private void updatePersonalisationForSolicitor(CaseData caseData, Map<String, Object> personalisation) {
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
+                personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
+            } else if (!StringUtils.isEmpty(caseData.getSolsSOTForenames()) && !StringUtils
+                    .isEmpty(caseData.getSolsSOTSurname())) {
+                personalisation.replace(PERSONALISATION_APPLICANT_NAME,
+                        String.join(" ", caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()));
+            }
+        }
     }
 
     public Document sendSealedAndCertifiedEmail(CaseDetails caseDetails) throws NotificationClientException {
