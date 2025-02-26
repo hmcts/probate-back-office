@@ -133,9 +133,12 @@ public class RetainAndDisposalService {
             LocalDate disposalEndDate = LocalDate.parse(runDate)
                     .minusDays(inactivityNotificationPeriod + disposalGracePeriod);
 
-            log.info("Start Dispose Deleted case initiated for date: {}, fromDate: {}, toDate: {}",
+            log.info("Start Dispose Gop Deleted case initiated for date: {}, fromDate: {}, toDate: {}",
                     runDate, disposalStartDate, disposalEndDate);
             disposeDeletedCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases, true);
+
+            log.info("Start Dispose Caveat Deleted case initiated for date: {}, fromDate: {}, toDate: {}",
+                    runDate, disposalStartDate, disposalEndDate);
             disposeDeletedCase(disposalStartDate.toString(), disposalEndDate.toString(), failedCases, false);
 
             log.info("Start disposing inactive PA Caveat cases. runDate: {}, fromDate: {}, toDate: {}",
@@ -186,7 +189,7 @@ public class RetainAndDisposalService {
                     isGOP ? GRANT_OF_REPRESENTATION.getName() : CAVEAT.getName(), DISPOSE_GOP_DELETED_QUERY,
                     disposalStartDate, disposalEndDate);
             log.info("disposeDeletedCase query executed cases found: {} is GOP: {}",
-                    searchResult.getTotal(), isGOP );
+                    searchResult.getTotal(), isGOP);
             processCasesForDisposal(searchResult, failedCases, securityDTO, disposalStartDate, disposalEndDate,
                     DISPOSE_GOP_DELETED_QUERY, isGOP);
         } catch (Exception e) {
