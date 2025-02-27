@@ -19,8 +19,7 @@
           "terms":
 
             "state.keyword": [
-              "PAAppCreated",
-              "CasePaymentFailed"
+              "PAAppCreated"
             ]
           }
         }
