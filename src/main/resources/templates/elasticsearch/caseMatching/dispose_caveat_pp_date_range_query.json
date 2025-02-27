@@ -17,11 +17,7 @@
         },
         {
           "terms": {
-            "state.keyword": [
-              "SolAppCreated",
-              "SolAppUpdated",
-              "CasePaymentFailed"
-            ]
+            "state.keyword": "SolAppCreated"
           }
         }
       ]
