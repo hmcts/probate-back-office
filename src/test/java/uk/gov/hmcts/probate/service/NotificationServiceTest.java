@@ -9,6 +9,10 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
@@ -23,6 +27,7 @@ import uk.gov.hmcts.probate.validator.PersonalisationValidationRule.Personalisat
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.TemplatePreview;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +35,10 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 class NotificationServiceTest {
 
@@ -70,6 +78,10 @@ class NotificationServiceTest {
     private PersonalisationValidationRule personalisationValidationRuleMock;
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
+    @Mock
+    private NotificationClientService notificationClientService;
+    @Mock
+    private GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
 
     @InjectMocks
     private NotificationService notificationService;
@@ -134,5 +146,31 @@ class NotificationServiceTest {
         final var result = notificationService.doCommonNotificationServiceHandling(dummyPersonalisation, dummyCaseId);
 
         assertEquals(CommonNotificationResult.ALL_OK, result);
+    }
+
+    @Test
+    void shouldUpdatePersonalisationForSolicitor() throws NotificationClientException {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getRegistryLocation()).thenReturn("oxford");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getChannelChoice()).thenReturn("Digital");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+
+        Map<String, Object> personalisation = mock(Map.class);
+        when(grantOfRepresentationPersonalisationService.getPersonalisation((CaseDetails) any(), any()))
+                .thenReturn(personalisation);
+        when(notificationClientService.emailPreview(any(), any(), any())).thenReturn(mock(TemplatePreview.class));
+        final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
+        final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
+                Map.of(),
+                List.of());
+
+        when(personalisationValidationRuleMock.validatePersonalisation(dummyPersonalisation))
+                .thenReturn(mockResult);
+
+        notificationService.emailPreview(caseDetails);
     }
 }
