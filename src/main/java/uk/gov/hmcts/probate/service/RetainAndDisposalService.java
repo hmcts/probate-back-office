@@ -51,13 +51,19 @@ public class RetainAndDisposalService {
 
             log.info("Start Disposal reminder query fromDate: {}, toDate: {}", fromDate, toDate);
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-            final String caseTypeName = isCaveat ? CAVEAT.getName() : GRANT_OF_REPRESENTATION.getName();
+            String caseTypeName = GRANT_OF_REPRESENTATION.getName();
+            String esQueryString = DISPOSE_GOP_QUERY;
+            if (isCaveat) {
+                caseTypeName = CAVEAT.getName();
+                esQueryString = DISPOSE_CAVEAT_PA_QUERY;
+            }
+
             log.info("Start sending email for inactive {} cases runDate: {}, fromDate: {}, toDate: {}",
                     caseTypeName, runDate, fromDate, toDate);
             SearchResult searchResult = elasticSearchRepository.fetchFirstPage(
                     securityDTO.getAuthorisation(),
                     caseTypeName,
-                    isCaveat ? DISPOSE_CAVEAT_PP_QUERY : DISPOSE_GOP_QUERY,
+                    esQueryString,
                     fromDate.toString(), toDate.toString());
 
             log.info("Disposal reminder query executed for date: {}, cases found: {}",
@@ -86,7 +92,7 @@ public class RetainAndDisposalService {
                         .fetchNextPage(securityDTO.getAuthorisation(),
                                 caseTypeName,
                                 searchAfterValue,
-                                isCaveat ? DISPOSE_CAVEAT_PP_QUERY : DISPOSE_GOP_QUERY,
+                                esQueryString,
                                 fromDate.toString(), toDate.toString());
 
                 log.info("Fetching next page for searchAfterValue: {}", searchAfterValue);
