@@ -32,11 +32,13 @@ import uk.gov.service.notify.TemplatePreview;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class NotificationServiceTest {
@@ -77,8 +79,6 @@ class NotificationServiceTest {
     private PersonalisationValidationRule personalisationValidationRuleMock;
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
-    @Mock
-    private NotificationClientService notificationClientService;
     @Mock
     private GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
 
@@ -157,19 +157,22 @@ class NotificationServiceTest {
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
         when(caseData.getChannelChoice()).thenReturn("Digital");
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+        when(caseData.getSolsSOTName()).thenReturn("OtherName");
 
-        Map<String, Object> personalisation = mock(Map.class);
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "FirstName");
         when(grantOfRepresentationPersonalisationService.getPersonalisation((CaseDetails) any(), any()))
                 .thenReturn(personalisation);
-        when(notificationClientService.emailPreview(any(), any(), any())).thenReturn(mock(TemplatePreview.class));
-        final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
         final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
                 Map.of(),
                 List.of());
 
-        when(personalisationValidationRuleMock.validatePersonalisation(dummyPersonalisation))
+        when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
                 .thenReturn(mockResult);
+        when(notificationClientServiceMock.emailPreview(any(), any(), any())).thenReturn(mock(TemplatePreview.class));
 
         notificationService.emailPreview(caseDetails);
+
+        verify(notificationClientServiceMock).emailPreview(any(), any(), any());
     }
 }
