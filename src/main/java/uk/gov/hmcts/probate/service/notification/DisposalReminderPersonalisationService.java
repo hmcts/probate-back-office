@@ -55,7 +55,7 @@ public class DisposalReminderPersonalisationService {
     private String getPersonalCaseLink(String caseId, String caseType) {
         String caseTypeLink = Optional.ofNullable(caseType).filter("intestacy"::equalsIgnoreCase)
                 .map(intestacy -> "INTESTACY")
-                .orElse("PA");;
+                .orElse("PA");
         log.info("Get personal link for: {} caseTypeLink: {}", caseId, caseTypeLink);
         return StringUtils.replace(
                 StringUtils.replace(urlPrefixToPersonalCase + PERSONAL_CASE_URL, CASE_ID_STRING, caseId),

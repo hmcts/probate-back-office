@@ -73,6 +73,7 @@ public class NotificationService {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
+    private static final String APPLICATION_TYPE = "applicationType";
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final String INVALID_PERSONALISATION_ERROR_MESSAGE =
@@ -598,11 +599,11 @@ public class NotificationService {
     }
 
     private String getEmailCaveat(Map<String, Object> caseData) {
-        String applicationType = Optional.ofNullable(caseData.get("applicationType"))
+        String applicationType = Optional.ofNullable(caseData.get(APPLICATION_TYPE))
                 .map(Object::toString)
                 .orElseThrow(() -> new BadRequestException("ApplicationType is missing in case data"));
 
-        log.info("getEmail for caseType: {}", applicationType);
+        log.info("getEmailCaveat for caseType: {}", applicationType);
 
         return switch (applicationType.toUpperCase()) {
             case "SOLICITOR" -> Optional.ofNullable(caseData.get("caveatorEmailAddress"))
@@ -631,7 +632,7 @@ public class NotificationService {
 
 
     private String getEmail(Map<String, Object> caseData) {
-        String applicationType = Optional.ofNullable(caseData.get("applicationType"))
+        String applicationType = Optional.ofNullable(caseData.get(APPLICATION_TYPE))
                 .map(Object::toString)
                 .orElseThrow(() -> new BadRequestException("ApplicationType is missing in case data"));
 
@@ -659,7 +660,7 @@ public class NotificationService {
         if (caseDetails == null || caseDetails.getData() == null) {
             return ApplicationType.PERSONAL;
         }
-        return Optional.ofNullable(caseDetails.getData().get("applicationType"))
+        return Optional.ofNullable(caseDetails.getData().get(APPLICATION_TYPE))
                 .map(Object::toString)
                 .map(ApplicationType::fromString)
                 .orElseGet(() -> PA_DRAFT_STATE_LIST.contains(caseDetails.getState())
