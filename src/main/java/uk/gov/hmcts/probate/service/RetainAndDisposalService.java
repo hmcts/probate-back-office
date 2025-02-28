@@ -51,20 +51,14 @@ public class RetainAndDisposalService {
 
             log.info("Start Disposal reminder query fromDate: {}, toDate: {}", fromDate, toDate);
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-            SearchResult searchResult;
-            if (isCaveat) {
-                log.info("Start sending email for inactive Caveat cases. runDate: {}, fromDate: {}, toDate: {}",
-                        runDate, fromDate, toDate);
-                searchResult = elasticSearchRepository
-                        .fetchFirstPage(securityDTO.getAuthorisation(), CAVEAT.getName(),
-                                DISPOSE_CAVEAT_PP_QUERY, fromDate.toString(), toDate.toString());
-            } else {
-                log.info("Start sending email for inactive GOP cases. runDate: {}, fromDate: {}, toDate: {}",
-                        runDate, fromDate, toDate);
-                searchResult = elasticSearchRepository
-                        .fetchFirstPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
-                                DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
-            }
+            final String caseTypeName = isCaveat ? CAVEAT.getName() : GRANT_OF_REPRESENTATION.getName();
+            log.info("Start sending email for inactive {} cases runDate: {}, fromDate: {}, toDate: {}",
+                    caseTypeName, runDate, fromDate, toDate);
+            SearchResult searchResult = elasticSearchRepository.fetchFirstPage(
+                    securityDTO.getAuthorisation(),
+                    caseTypeName,
+                    isCaveat ? DISPOSE_CAVEAT_PP_QUERY : DISPOSE_GOP_QUERY,
+                    fromDate.toString(), toDate.toString());
 
             log.info("Disposal reminder query executed for date: {}, cases found: {}",
                 runDate, searchResult.getTotal());
@@ -88,17 +82,13 @@ public class RetainAndDisposalService {
 
             boolean keepSearching;
             do {
-                SearchResult subsequentSearchResult;
-                if (isCaveat) {
-                    subsequentSearchResult = elasticSearchRepository
-                            .fetchNextPage(securityDTO.getAuthorisation(), CAVEAT.getName(),
-                                    searchAfterValue, DISPOSE_CAVEAT_PP_QUERY, fromDate.toString(), toDate.toString());
+                SearchResult subsequentSearchResult = elasticSearchRepository
+                        .fetchNextPage(securityDTO.getAuthorisation(),
+                                caseTypeName,
+                                searchAfterValue,
+                                isCaveat ? DISPOSE_CAVEAT_PP_QUERY : DISPOSE_GOP_QUERY,
+                                fromDate.toString(), toDate.toString());
 
-                } else {
-                    subsequentSearchResult = elasticSearchRepository
-                            .fetchNextPage(securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
-                                    searchAfterValue, DISPOSE_GOP_QUERY, fromDate.toString(), toDate.toString());
-                }
                 log.info("Fetching next page for searchAfterValue: {}", searchAfterValue);
 
                 keepSearching = subsequentSearchResult != null && !subsequentSearchResult.getCases().isEmpty();
