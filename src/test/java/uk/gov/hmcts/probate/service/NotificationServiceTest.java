@@ -79,8 +79,6 @@ class NotificationServiceTest {
     private PersonalisationValidationRule personalisationValidationRuleMock;
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
-    @Mock
-    private GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
 
     @InjectMocks
     private NotificationService notificationService;
@@ -161,7 +159,7 @@ class NotificationServiceTest {
 
         HashMap<String, Object> personalisation = new HashMap<>();
         personalisation.put("applicant_name", "FirstName");
-        when(grantOfRepresentationPersonalisationService.getPersonalisation((CaseDetails) any(), any()))
+        when(grantOfRepresentationPersonalisationServiceMock.getPersonalisation((CaseDetails) any(), any()))
                 .thenReturn(personalisation);
         final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
                 Map.of(),
