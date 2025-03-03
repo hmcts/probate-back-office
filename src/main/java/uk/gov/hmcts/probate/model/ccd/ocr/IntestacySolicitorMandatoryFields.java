@@ -21,8 +21,8 @@ public enum IntestacySolicitorMandatoryFields {
     SOLICITOR_APP_REFERENCE("solsSolicitorAppReference", "Solictor application reference"),
     SOLICITOR_EMAIL_ADDRESS("solsSolicitorEmail", "Solictor email address"),
     FORM_VERSION("formVersion", "Form version"),
-    IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "1", "2"),
-    IHT_NET_VALUE("ihtNetValue", "Net value of the estate", "1", "2");
+    IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "1"),
+    IHT_NET_VALUE("ihtNetValue", "Net value of the estate", "1");
 
     private final String key;
     private final String value;
