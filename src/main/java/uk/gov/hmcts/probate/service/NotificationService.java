@@ -165,7 +165,7 @@ public class NotificationService {
         return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
     }
 
-    private void updatePersonalisationForSolicitor(CaseData caseData, Map<String, Object> personalisation) {
+     void updatePersonalisationForSolicitor(CaseData caseData, Map<String, Object> personalisation) {
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
             if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
                 personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());

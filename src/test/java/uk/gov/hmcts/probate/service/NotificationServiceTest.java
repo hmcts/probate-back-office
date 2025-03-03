@@ -29,8 +29,6 @@ import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.TemplatePreview;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -178,8 +176,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void shouldUpdatePersonalisationWithSolicitorName() throws NoSuchMethodException,
-            InvocationTargetException, IllegalAccessException {
+    void shouldUpdatePersonalisationWithSolicitorName() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -190,17 +187,13 @@ class NotificationServiceTest {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("applicant_name", "Old Name");
 
-        Method method = NotificationService.class.getDeclaredMethod("updatePersonalisationForSolicitor",
-                CaseData.class, Map.class);
-        method.setAccessible(true);
-        method.invoke(notificationService, caseData, personalisation);
+        notificationService.updatePersonalisationForSolicitor(caseData, personalisation);
 
         assertEquals("John Doe", personalisation.get("applicant_name"));
     }
 
     @Test
-    void shouldUpdatePersonalisationWithSolicitorForenamesAndSurname() throws NoSuchMethodException,
-            InvocationTargetException, IllegalAccessException {
+    void shouldUpdatePersonalisationWithSolicitorForenamesAndSurname() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -212,17 +205,13 @@ class NotificationServiceTest {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("applicant_name", "Old Name");
 
-        Method method = NotificationService.class.getDeclaredMethod("updatePersonalisationForSolicitor",
-                CaseData.class, Map.class);
-        method.setAccessible(true);
-        method.invoke(notificationService, caseData, personalisation);
+        notificationService.updatePersonalisationForSolicitor(caseData, personalisation);
 
         assertEquals("John Doe", personalisation.get("applicant_name"));
     }
 
     @Test
-    void shouldNotUpdatePersonalisationWhenApplicationTypeIsNotSolicitor() throws NoSuchMethodException,
-            InvocationTargetException, IllegalAccessException {
+    void shouldNotUpdatePersonalisationWhenApplicationTypeIsNotSolicitor() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -234,10 +223,7 @@ class NotificationServiceTest {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("applicant_name", "Old Name");
 
-        Method method = NotificationService.class.getDeclaredMethod("updatePersonalisationForSolicitor",
-                CaseData.class, Map.class);
-        method.setAccessible(true);
-        method.invoke(notificationService, caseData, personalisation);
+        notificationService.updatePersonalisationForSolicitor(caseData, personalisation);
 
         assertEquals("Old Name", personalisation.get("applicant_name"));
     }
