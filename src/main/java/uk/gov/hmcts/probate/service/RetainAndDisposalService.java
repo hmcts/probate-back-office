@@ -64,7 +64,7 @@ public class RetainAndDisposalService {
                     securityDTO.getAuthorisation(),
                     caseTypeName,
                     esQueryString,
-                    "1900-01-01", toDate.toString());
+                    fromDate.toString(), toDate.toString());
 
             log.info("Disposal reminder query executed for date: {}, cases found: {}",
                 runDate, searchResult.getTotal());
@@ -93,7 +93,7 @@ public class RetainAndDisposalService {
                                 caseTypeName,
                                 searchAfterValue,
                                 esQueryString,
-                                "1900-01-01", toDate.toString());
+                                fromDate.toString(), toDate.toString());
 
                 log.info("Fetching next page for searchAfterValue: {}", searchAfterValue);
 
