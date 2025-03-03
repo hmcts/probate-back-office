@@ -92,6 +92,7 @@ public class NotificationService {
     private final DocumentManagementService documentManagementService;
     private final PersonalisationValidationRule personalisationValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
+    private final FeatureToggleService featureToggleService;
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
     private Long grantDelayedNotificationPeriodDays;
@@ -439,14 +440,24 @@ public class NotificationService {
 
     private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
                                           DocumentType docType) {
+        final String body;
+        if (featureToggleService.enableNotificationPreview()) {
+            body = pdfManagementService.rerenderAsXhtml(response.getHtml().orElseThrow());
+        } else {
+            body = response.getBody();
+        }
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
-                .body(response.getBody())
+                .body(body)
                 .build();
         Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
-        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
+        if (featureToggleService.enableNotificationPreview()) {
+            return pdfManagementService.generateAndUpload(sentEmail, docType);
+        } else {
+            return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
+        }
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {
