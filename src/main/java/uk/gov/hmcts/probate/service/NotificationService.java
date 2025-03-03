@@ -507,24 +507,14 @@ public class NotificationService {
 
     private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
                                           DocumentType docType) {
-        final String body;
-        if (featureToggleService.enableNotificationPreview()) {
-            body = pdfManagementService.rerenderAsXhtml(response.getHtml().orElseThrow());
-        } else {
-            body = response.getBody();
-        }
+        final String body = pdfManagementService.rerenderAsXhtml(response.getHtml().orElseThrow());
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
                 .body(body)
                 .build();
-        Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
-        if (featureToggleService.enableNotificationPreview()) {
-            return pdfManagementService.generateAndUpload(sentEmail, docType);
-        } else {
-            return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
-        }
+        return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {
