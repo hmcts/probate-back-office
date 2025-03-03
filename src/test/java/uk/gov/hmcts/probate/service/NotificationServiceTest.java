@@ -29,13 +29,14 @@ import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.TemplatePreview;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -172,5 +173,71 @@ class NotificationServiceTest {
         notificationService.emailPreview(caseDetails);
 
         verify(notificationClientServiceMock).emailPreview(any(), any(), any());
+        assertEquals("OtherName", personalisation.get("applicant_name"));
+    }
+
+    @Test
+    void shouldUpdatePersonalisationWithSolicitorName() throws NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+        when(caseData.getSolsSOTName()).thenReturn("John Doe");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "Old Name");
+
+        Method method = NotificationService.class.getDeclaredMethod("updatePersonalisationForSolicitor",
+                CaseData.class, Map.class);
+        method.setAccessible(true);
+        method.invoke(notificationService, caseData, personalisation);
+
+        assertEquals("John Doe", personalisation.get("applicant_name"));
+    }
+
+    @Test
+    void shouldUpdatePersonalisationWithSolicitorForenamesAndSurname() throws NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+        when(caseData.getSolsSOTForenames()).thenReturn("John");
+        when(caseData.getSolsSOTSurname()).thenReturn("Doe");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "Old Name");
+
+        Method method = NotificationService.class.getDeclaredMethod("updatePersonalisationForSolicitor",
+                CaseData.class, Map.class);
+        method.setAccessible(true);
+        method.invoke(notificationService, caseData, personalisation);
+
+        assertEquals("John Doe", personalisation.get("applicant_name"));
+    }
+
+    @Test
+    void shouldNotUpdatePersonalisationWhenApplicationTypeIsNotSolicitor() throws NoSuchMethodException,
+            InvocationTargetException, IllegalAccessException {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+        when(caseData.getSolsSOTForenames()).thenReturn("John");
+        when(caseData.getSolsSOTSurname()).thenReturn("Doe");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "Old Name");
+
+        Method method = NotificationService.class.getDeclaredMethod("updatePersonalisationForSolicitor",
+                CaseData.class, Map.class);
+        method.setAccessible(true);
+        method.invoke(notificationService, caseData, personalisation);
+
+        assertEquals("Old Name", personalisation.get("applicant_name"));
     }
 }
