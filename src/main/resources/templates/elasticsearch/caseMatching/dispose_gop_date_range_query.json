@@ -13,6 +13,7 @@
         {
           "terms": {
             "state.keyword": [
+              "Dormant","CasePrinted",
               "Pending",
               "SolAdmonCreated",
               "SolAppCreatedDeceasedDtls",
