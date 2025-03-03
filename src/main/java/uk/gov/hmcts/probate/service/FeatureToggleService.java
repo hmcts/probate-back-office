@@ -52,4 +52,12 @@ public class FeatureToggleService {
     public boolean enableNewAliasTransformation() {
         return this.isFeatureToggleOn("probate-enable-new-alias-transformation", false);
     }
+
+    public boolean enableNotificationPreview() {
+        return this.isFeatureToggleOn("probate-enable-notification-preview", false);
+    }
+
+    public boolean enableNotificationPersist() {
+        return this.isFeatureToggleOn("probate-enable-notification-persist", false);
+    }
 }
