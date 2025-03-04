@@ -30,11 +30,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
+import uk.gov.hmcts.probate.service.notification.DisposalReminderPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -59,6 +61,8 @@ import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PAYMENT_FAILED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_PENDING;
 import static uk.gov.service.notify.NotificationClient.prepareUpload;
 
 @Slf4j
@@ -69,10 +73,12 @@ public class NotificationService {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
+    private static final String APPLICATION_TYPE = "applicationType";
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final String INVALID_PERSONALISATION_ERROR_MESSAGE =
             "Markdown Link detected in case data, stop sending notification email.";
+    private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
 
     private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
@@ -92,6 +98,9 @@ public class NotificationService {
     private final DocumentManagementService documentManagementService;
     private final PersonalisationValidationRule personalisationValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
+    private final DisposalReminderPersonalisationService disposalReminderPersonalisationService;
+    private final UserInfoService userInfoService;
+
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
     private Long grantDelayedNotificationPeriodDays;
@@ -322,6 +331,59 @@ public class NotificationService {
         return response;
     }
 
+    public void sendDisposalReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
+                                          boolean isCaveat)
+            throws NotificationClientException {
+        log.info("Sending Disposal Reminder email");
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("Case data is null for case ID: {}", caseDetails.getId());
+            return;
+        }
+        String emailAddress = Optional.of(data)
+                .flatMap(caseData -> {
+                    try {
+                        return Optional.ofNullable(isCaveat ? getEmailCaveat(caseData) : getEmail(caseData));
+                    } catch (BadRequestException e) {
+                        return Optional.empty();
+                    }
+                })
+                .orElseGet(() -> getUserEmail(caseDetails.getId()));
+        if (emailAddress == null) {
+            throw new NotificationClientException("Email address not found for case ID: " + caseDetails.getId());
+        }
+        ApplicationType applicationType = getApplicationType(caseDetails);
+
+        LanguagePreference languagePreference = Optional.ofNullable(
+                caseDetails.getData().get("languagePreferenceWelsh"))
+                .map(Object::toString)
+                .filter("Yes"::equalsIgnoreCase)
+                .map(yes -> LanguagePreference.WELSH)
+                .orElse(LanguagePreference.ENGLISH);
+        log.info("ApplicationType: {}, LanguagePreference: {}", applicationType, languagePreference);
+        String templateId;
+        if (isCaveat) {
+            templateId = notificationTemplates.getEmail()
+                    .get(languagePreference)
+                    .get(applicationType)
+                    .getCaveatDisposalReminder();
+        } else {
+            templateId = notificationTemplates.getEmail()
+                    .get(languagePreference)
+                    .get(applicationType)
+                    .getDisposalReminder();
+        }
+
+        log.info("templateId: {}", templateId);
+        Map<String, String> personalisation =
+                disposalReminderPersonalisationService.getDisposalReminderPersonalisation(caseDetails, applicationType);
+        log.info("start sendEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("Disposal Reminder email reference response: {}", response.getReference());
+    }
+
     public Document sendEmailWithDocumentAttached(CaseDetails caseDetails, ExecutorsApplyingNotification executor,
                                                   State state) throws NotificationClientException, IOException {
         List<CollectionMember<Document>> probateSotDocumentsGenerated = caseDetails.getData()
@@ -536,15 +598,74 @@ public class NotificationService {
         return response;
     }
 
+    private String getEmailCaveat(Map<String, Object> caseData) {
+        String applicationType = Optional.ofNullable(caseData.get(APPLICATION_TYPE))
+                .map(Object::toString)
+                .orElseThrow(() -> new BadRequestException("ApplicationType is missing in case data"));
+
+        log.info("getEmailCaveat for caseType: {}", applicationType);
+
+        return switch (applicationType.toUpperCase()) {
+            case "SOLICITOR" -> Optional.ofNullable(caseData.get("caveatorEmailAddress"))
+                    .map(Object::toString)
+                    .map(String::toLowerCase)
+                    .orElse(null);
+            default -> throw new BadRequestException("Unsupported application type: " + applicationType);
+        };
+    }
+
     private String getEmail(CaseData caseData) {
-        switch (caseData.getApplicationType()) {
-            case SOLICITOR:
-                return caseData.getSolsSolicitorEmail().toLowerCase();
-            case PERSONAL:
-                return caseData.getPrimaryApplicantEmailAddress().toLowerCase();
-            default:
-                throw new BadRequestException("Unsupported application type");
+        if (caseData == null || caseData.getApplicationType() == null) {
+            throw new BadRequestException("Casedata or ApplicationType is null");
         }
+        log.info("getEmail for caseType: {}", caseData.getApplicationType());
+        return switch (caseData.getApplicationType()) {
+            case SOLICITOR -> Optional.ofNullable(caseData.getSolsSolicitorEmail())
+                    .map(String::toLowerCase)
+                    .orElse(null);
+            case PERSONAL -> Optional.ofNullable(caseData.getPrimaryApplicantEmailAddress())
+                    .map(String::toLowerCase)
+                    .orElse(null);
+            default -> throw new BadRequestException("Unsupported application type");
+        };
+    }
+
+
+    private String getEmail(Map<String, Object> caseData) {
+        String applicationType = Optional.ofNullable(caseData.get(APPLICATION_TYPE))
+                .map(Object::toString)
+                .orElseThrow(() -> new BadRequestException("ApplicationType is missing in case data"));
+
+        log.info("getEmail for caseType: {}", applicationType);
+
+        return switch (applicationType.toUpperCase()) {
+            case "SOLICITOR" -> Optional.ofNullable(caseData.get("solsSolicitorEmail"))
+                    .map(Object::toString)
+                    .map(String::toLowerCase)
+                    .orElse(null);
+            case "PERSONAL" -> Optional.ofNullable(caseData.get("primaryApplicantEmailAddress"))
+                    .map(Object::toString)
+                    .map(String::toLowerCase)
+                    .orElse(null);
+            default -> throw new BadRequestException("Unsupported application type: " + applicationType);
+        };
+    }
+
+    private String getUserEmail(Long caseReference) {
+        log.info("getUserEmail for caseReference: {}", caseReference);
+        return userInfoService.getUserEmailByCaseId(caseReference).orElse(null);
+    }
+
+    private ApplicationType getApplicationType(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails) {
+        if (caseDetails == null || caseDetails.getData() == null) {
+            return ApplicationType.PERSONAL;
+        }
+        return Optional.ofNullable(caseDetails.getData().get(APPLICATION_TYPE))
+                .map(Object::toString)
+                .map(ApplicationType::fromString)
+                .orElseGet(() -> PA_DRAFT_STATE_LIST.contains(caseDetails.getState())
+                        ? ApplicationType.PERSONAL
+                        : ApplicationType.SOLICITOR);
     }
 
     private String removedSolicitorNameForPersonalisation(CaseData caseData) {
