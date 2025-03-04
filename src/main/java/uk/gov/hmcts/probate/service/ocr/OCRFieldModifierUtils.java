@@ -54,7 +54,7 @@ public class OCRFieldModifierUtils {
                     addModifiedField(modifiedFields, "probateGrossValueIht400",
                             ocrFields.getProbateGrossValueIht400());
                     ocrFields.setProbateGrossValueIht400(bulkScanConfig.getGrossNetValue());
-                   log.info("Setting probateGrossValueIht400 to {}", ocrFields.getProbateGrossValueIht400());
+                    log.info("Setting probateGrossValueIht400 to {}", ocrFields.getProbateGrossValueIht400());
                 }
                 if (isBlank(ocrFields.getProbateNetValueIht400())) {
                     addModifiedField(modifiedFields, "probateNetValueIht400",
