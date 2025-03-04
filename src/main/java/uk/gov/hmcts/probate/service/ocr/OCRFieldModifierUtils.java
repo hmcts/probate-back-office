@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.ocr;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OCRFieldModifierUtils {
@@ -21,14 +23,17 @@ public class OCRFieldModifierUtils {
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     public List<CollectionMember<ModifiedOCRField>> setDefaultValues(ExceptionRecordOCRFields ocrFields) {
+
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new
                 ArrayList<>();
         if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
             addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
                     ocrFields.getDeceasedDiedOnAfterSwitchDate());
             if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())) {
+                log.info("Setting deceasedDiedOnAfterSwitchDate to TRUE");
                 ocrFields.setDeceasedDiedOnAfterSwitchDate("TRUE");
             } else {
+                log.info("Setting deceasedDiedOnAfterSwitchDate to TRUE");
                 ocrFields.setDeceasedDiedOnAfterSwitchDate("FALSE");
             }
         }
@@ -106,12 +111,15 @@ public class OCRFieldModifierUtils {
             switch (fieldName) {
                 case "iht400421Completed":
                     ocrFields.setIht400421Completed(bulkScanConfig.getIhtForm());
+                    log.info("Setting iht400421Completed to {}", ocrFields.getIht400421Completed());
                     break;
                 case "iht207Completed":
                     ocrFields.setIht207Completed(bulkScanConfig.getIhtForm());
+                    log.info("Setting iht207Completed to {}", ocrFields.getIht207Completed());
                     break;
                 case "iht205Completed":
                     ocrFields.setIht205Completed(bulkScanConfig.getIhtForm());
+                    log.info("Setting iht205Completed to {}", ocrFields.getIht205Completed());
                     break;
                 case "iht205completedOnline":
                     ocrFields.setIht205completedOnline(bulkScanConfig.getIhtForm());
