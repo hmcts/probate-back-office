@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 import uk.gov.hmcts.probate.model.exceptionrecord.ResponseCaveatDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
@@ -126,11 +127,16 @@ public class ExceptionRecordService {
             log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
                     erRequest.getExceptionRecordId());
 
+            ExceptionRecordOCRFields exceptionRecordOCRFields = erRequest.getOCRFieldsObject();
+
             List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                    .setDefaultValues(erRequest.getOCRFieldsObject());
+                    .setDefaultValues(exceptionRecordOCRFields);
+
+            log.info("Modified OCR Fields: {}", modifiedFields);
+            log.info("OCR Fields: {}", erRequest);
 
             GrantOfRepresentationData grantOfRepresentationData =
-                    erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
+                    erGrantOfRepresentationMapper.toCcdData(exceptionRecordOCRFields, grantType);
 
             ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
 
