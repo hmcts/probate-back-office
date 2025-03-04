@@ -1391,6 +1391,7 @@ public class CallbackResponseTransformer {
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
             .modifiedOCRFieldList(caseData.getModifiedOCRFieldList())
+            .autoCaseWarnings(caseData.getAutoCaseWarnings())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
             .lastModifiedCaseworkerForenames(caseData.getLastModifiedCaseworkerForenames())
             .lastModifiedCaseworkerSurname(caseData.getLastModifiedCaseworkerSurname())

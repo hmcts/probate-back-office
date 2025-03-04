@@ -414,4 +414,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String isSaveAndClose;
     private final String informationNeededByPostSwitch;
     private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
+    private final List<String> autoCaseWarnings;
 }
