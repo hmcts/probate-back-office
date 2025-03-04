@@ -213,12 +213,12 @@ public class ExceptionRecordOCRFields {
     private String iht205Completed;
     private String iht205completedOnline;
     private final String exceptedEstate;
-    private final String iht400process;
+    private String iht400process;
     private final String ihtCode;
     private final String ihtGrossValueExceptedEstate;
     private final String ihtNetValueExceptedEstate;
-    private final String probateGrossValueIht400;
-    private final String probateNetValueIht400;
+    private String probateGrossValueIht400;
+    private String probateNetValueIht400;
     private String iht421grossValue;
     private String iht421netValue;
     private String iht207grossValue;

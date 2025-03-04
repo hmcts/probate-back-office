@@ -32,9 +32,11 @@ public class OCRFieldModifierUtils {
             if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())) {
                 log.info("Setting deceasedDiedOnAfterSwitchDate to TRUE");
                 ocrFields.setDeceasedDiedOnAfterSwitchDate("TRUE");
+                log.info("Setting deceasedDiedOnAfterSwitchDate {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
             } else {
-                log.info("Setting deceasedDiedOnAfterSwitchDate to TRUE");
+                log.info("Setting deceasedDiedOnAfterSwitchDate to FALSE");
                 ocrFields.setDeceasedDiedOnAfterSwitchDate("FALSE");
+                log.info("Setting deceasedDiedOnAfterSwitchDate {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
             }
         }
         if (isFormVersion3AndSwitchDateValid(ocrFields)) {
@@ -42,6 +44,24 @@ public class OCRFieldModifierUtils {
             if (isIhtFormsNotCompleted(ocrFields)) {
                 addModifiedField(modifiedFields, "iht400Completed", ocrFields.getIht400Completed());
                 ocrFields.setIht400Completed("TRUE");
+                log.info("Setting iht400Completed to {}", ocrFields.getIht400Completed());
+                if (isBlank(ocrFields.getIht400process())) {
+                    addModifiedField(modifiedFields, "iht400process", ocrFields.getIht400process());
+                    ocrFields.setIht400process("TRUE");
+                    log.info("Setting iht400process to {}", ocrFields.getIht400process());
+                }
+                if (isBlank(ocrFields.getProbateGrossValueIht400())) {
+                    addModifiedField(modifiedFields, "probateGrossValueIht400",
+                            ocrFields.getProbateGrossValueIht400());
+                    ocrFields.setProbateGrossValueIht400(bulkScanConfig.getGrossNetValue());
+                   log.info("Setting probateGrossValueIht400 to {}", ocrFields.getProbateGrossValueIht400());
+                }
+                if (isBlank(ocrFields.getProbateNetValueIht400())) {
+                    addModifiedField(modifiedFields, "probateNetValueIht400",
+                            ocrFields.getProbateNetValueIht400());
+                    ocrFields.setProbateNetValueIht400(bulkScanConfig.getGrossNetValue());
+                    log.info("Setting probateNetValueIht400 to {}", ocrFields.getProbateNetValueIht400());
+                }
             }
         }
         if (isFormVersion2AndSwitchDateValid(ocrFields, exceptedEstateDateOfDeathChecker)) {
@@ -131,30 +151,36 @@ public class OCRFieldModifierUtils {
                     if (isBlank(ocrFields.getIht421grossValue())) {
                         addModifiedField(modifiedList, "iht421grossValue", ocrFields.getIht421grossValue());
                         ocrFields.setIht421grossValue(bulkScanConfig.getGrossNetValue());
+                        log.info("Setting iht421grossValue to {}", ocrFields.getIht421grossValue());
                     }
                     if (isBlank(ocrFields.getIht421netValue())) {
                         addModifiedField(modifiedList, "iht421netValue", ocrFields.getIht421netValue());
                         ocrFields.setIht421netValue(bulkScanConfig.getGrossNetValue());
+                        log.info("Setting iht421netValue to {}", ocrFields.getIht421netValue());
                     }
                     break;
                 case "iht207Completed":
                     if (isBlank(ocrFields.getIht207grossValue())) {
                         addModifiedField(modifiedList, "iht207grossValue", ocrFields.getIht207grossValue());
                         ocrFields.setIht207grossValue(bulkScanConfig.getGrossNetValue());
+                        log.info("Setting iht207grossValue to {}", ocrFields.getIht207grossValue());
                     }
                     if (isBlank(ocrFields.getIht207netValue())) {
                         addModifiedField(modifiedList, "iht207netValue", ocrFields.getIht207netValue());
                         ocrFields.setIht207netValue(bulkScanConfig.getGrossNetValue());
+                        log.info("Setting iht207netValue to {}", ocrFields.getIht207netValue());
                     }
                     break;
                 case "iht205Completed":
                     if (isBlank(ocrFields.getIhtGrossValue205())) {
                         addModifiedField(modifiedList, "ihtGrossValue205", ocrFields.getIhtGrossValue205());
                         ocrFields.setIhtGrossValue205(bulkScanConfig.getGrossNetValue());
+                        log.info("Setting ihtGrossValue205 to {}", ocrFields.getIhtGrossValue205());
                     }
                     if (isBlank(ocrFields.getIhtNetValue205())) {
                         addModifiedField(modifiedList, "ihtNetValue205", ocrFields.getIhtNetValue205());
                         ocrFields.setIhtNetValue205(bulkScanConfig.getGrossNetValue());
+                        log.info("Setting ihtNetValue205 to {}", ocrFields.getIhtNetValue205());
                     }
                     break;
                 case "iht205completedOnline":
