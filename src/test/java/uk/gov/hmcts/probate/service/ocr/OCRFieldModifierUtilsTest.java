@@ -281,4 +281,38 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetQualifyingValue());
     }
+
+    @Test
+    void shouldReturnWarningWhenMoreThanOneIHTFormIsTrue() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .exceptedEstate("TRUE")
+                .iht400Completed("TRUE")
+                .iht400process("FALSE")
+                .iht400421Completed("FALSE")
+                .iht207Completed("FALSE")
+                .iht205Completed("FALSE")
+                .build();
+
+        List<String> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
+
+        assertEquals(1, warnings.size());
+        assertEquals("More than one IHT form is marked as TRUE. Only one form should be selected as TRUE.",
+                warnings.get(0));
+    }
+
+    @Test
+    void shouldReturnNoWarningWhenOnlyOneIHTFormIsTrue() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .exceptedEstate("TRUE")
+                .iht400Completed("FALSE")
+                .iht400process("FALSE")
+                .iht400421Completed("FALSE")
+                .iht207Completed("FALSE")
+                .iht205Completed("FALSE")
+                .build();
+
+        List<String> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
+
+        assertEquals(0, warnings.size());
+    }
 }

@@ -132,6 +132,8 @@ public class ExceptionRecordService {
             List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
                     .setDefaultValues(exceptionRecordOCRFields);
 
+            List<String> autoCaseWarnings = ocrFieldModifierUtils.checkWarnings(exceptionRecordOCRFields);
+
             log.info("Modified OCR Fields: {}", modifiedFields);
             log.info("OCR Fields: {}", erRequest);
 
@@ -144,6 +146,8 @@ public class ExceptionRecordService {
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
             grantOfRepresentationData.setModifiedOCRFieldList(modifiedFields);
+
+            grantOfRepresentationData.setAutoCaseWarnings(autoCaseWarnings);
 
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");

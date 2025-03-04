@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -21,6 +22,12 @@ public class OCRFieldModifierUtils {
 
     private final BulkScanConfig bulkScanConfig;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    public static final String IHT_FORM_NOT_REQUIRED = "exceptedEstate";
+    public static final String IHT400_COMPLETED = "iht400completed";
+    public static final String IHT_400_PROCESS = "iht400process";
+    public static final String IHT400421_COMPLETED = "iht400421completed";
+    public static final String IHT207_COMPLETED = "iht207completed";
+    public static final String IHT205_COMPLETED = "iht205completed";
 
     public List<CollectionMember<ModifiedOCRField>> setDefaultValues(ExceptionRecordOCRFields ocrFields) {
 
@@ -210,5 +217,24 @@ public class OCRFieldModifierUtils {
                 .originalValue(originalValue)
                 .build();
         modifiedList.add(new CollectionMember<>(null, modifiedOCRField));
+    }
+
+    public List<String> checkWarnings(ExceptionRecordOCRFields ocrFields) {
+        List<String> warnings = new ArrayList<>();
+        long ihtFormCount = Stream.of(
+                        ocrFields.getExceptedEstate(),
+                        ocrFields.getIht400Completed(),
+                        ocrFields.getIht400process(),
+                        ocrFields.getIht400421Completed(),
+                        ocrFields.getIht207Completed(),
+                        ocrFields.getIht205Completed()
+                )
+                .filter("TRUE"::equalsIgnoreCase)
+                .count();
+
+        if (ihtFormCount > 1) {
+            warnings.add("More than one IHT form is marked as TRUE. Only one form should be selected as TRUE.");
+        }
+        return warnings;
     }
 }
