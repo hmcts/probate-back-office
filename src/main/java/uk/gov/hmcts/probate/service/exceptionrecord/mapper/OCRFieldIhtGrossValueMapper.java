@@ -29,6 +29,8 @@ public class OCRFieldIhtGrossValueMapper {
     }
 
     private Long getGrossValueVersion3(ExceptionRecordOCRFields ocrFields) {
+        log.info("get DeceasedDiedOnAfterSwitchDate {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        log.info("get the iht400 value {}", ocrFields.getIht400Completed());
         if (TRUE.equalsIgnoreCase(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
             if (TRUE.equalsIgnoreCase(ocrFields.getIht400421Completed())) {
                 return OCRFieldIhtMoneyMapper.poundsToPennies("Iht421grossValue", ocrFields.getIht421grossValue());
@@ -55,6 +57,10 @@ public class OCRFieldIhtGrossValueMapper {
     }
 
     private Long getIht400GrossValue(ExceptionRecordOCRFields ocrFields) {
+
+        log.info("get the gross value from iht400 {}, {}", ocrFields.getProbateGrossValueIht400(),
+                ocrFields.getProbateNetValueIht400());
+        log.info("get the iht process value from iht400 {}", ocrFields.getIht400process());
         if (TRUE.equalsIgnoreCase(ocrFields.getIht400process())) {
             return OCRFieldIhtMoneyMapper.poundsToPennies("ProbateGrossValueIht400",
                     ocrFields.getProbateGrossValueIht400());
