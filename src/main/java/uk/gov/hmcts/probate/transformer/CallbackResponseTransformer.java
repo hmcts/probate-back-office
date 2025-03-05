@@ -1474,6 +1474,15 @@ public class CallbackResponseTransformer {
                     .build();
             log.info("{}: Adding {} at start", caseRef, beforeName);
             newSolsDecAliases.add(new CollectionMember<>(null, beforeAlias));
+
+            final String currentDom = caseData.getDeceasedDomicileInEngWales();
+            if (YES.equals(currentDom)) {
+                log.info("{}: domE&W: {}, set No", caseRef, currentDom);
+                builder.deceasedDomicileInEngWales(NO);
+            } else {
+                log.info("{}: domE&W: {}, set Yes", caseRef, currentDom);
+                builder.deceasedDomicileInEngWales(YES);
+            }
         }
 
         if (solsDecAliases != null) {
@@ -1510,6 +1519,16 @@ public class CallbackResponseTransformer {
                     .build();
             log.info("{}: Adding {} at end", caseRef, afterName);
             newSolsDecAliases.add(new CollectionMember<>(null, afterAlias));
+
+
+            final String currentDom = caseData.getDeceasedDomicileInEngWales();
+            if (YES.equals(currentDom)) {
+                log.info("{}: domE&W: {}, set No", caseRef, currentDom);
+                builder.deceasedDomicileInEngWales(NO);
+            } else {
+                log.info("{}: domE&W: {}, set Yes", caseRef, currentDom);
+                builder.deceasedDomicileInEngWales(YES);
+            }
         }
 
         Set<String> seenAliasNames = new HashSet<>();
@@ -1527,7 +1546,9 @@ public class CallbackResponseTransformer {
                 .append("]")
                 .toString();
         log.info("{}: Resulting list: {}", caseRef, after);
+
         builder.solsDeceasedAliasNamesList(list);
+
     }
 
     List<CollectionMember<AliasName>> convertAliasOnWillToSolsDecAliasList(
