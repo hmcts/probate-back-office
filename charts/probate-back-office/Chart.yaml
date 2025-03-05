@@ -17,7 +17,7 @@ dependencies:
       - probate-ccd-stack
   - name: xui-webapp
     version: ~1.0.0
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: xui-webapp.enabled
   - name: aac-manage-case-assignment
     version: ~0.2.0
