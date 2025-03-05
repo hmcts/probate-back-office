@@ -293,11 +293,11 @@ class OCRFieldModifierUtilsTest {
                 .iht205Completed("FALSE")
                 .build();
 
-        List<String> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
+        List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
 
         assertEquals(1, warnings.size());
         assertEquals("More than one IHT form is marked as TRUE. Only one form should be selected as TRUE.",
-                warnings.get(0));
+                warnings.get(0).getValue());
     }
 
     @Test
@@ -311,7 +311,7 @@ class OCRFieldModifierUtilsTest {
                 .iht205Completed("FALSE")
                 .build();
 
-        List<String> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
+        List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
 
         assertEquals(0, warnings.size());
     }
