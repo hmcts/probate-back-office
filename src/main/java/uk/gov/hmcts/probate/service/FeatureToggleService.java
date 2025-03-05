@@ -47,7 +47,7 @@ public class FeatureToggleService {
     }
 
     public boolean enableNewAliasTransformation() {
-        return this.isFeatureToggleOn("probate-enable-new-alias-transformation", false);
+        return this.isFeatureToggleOn("probate-enable-new-alias-transformation", true);
     }
 
     public boolean enableAmendLegalStatementFiletypeCheck() {
