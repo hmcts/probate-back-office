@@ -45,26 +45,7 @@ import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
-import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
-import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
-import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
-import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
-import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
-import uk.gov.hmcts.probate.validator.IHTValidationRule;
-import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
-import uk.gov.hmcts.probate.validator.NaValidationRule;
-import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
-import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
-import uk.gov.hmcts.probate.validator.Pre1900DOBValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
-import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
-import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
-import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
-import uk.gov.hmcts.probate.validator.StopReasonValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.*;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -128,6 +109,7 @@ public class BusinessValidationController {
     private final RegistrarDirectionService registrarDirectionService;
     private final Pre1900DOBValidationRule pre1900DOBValidationRule;
     private final AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
+    private final ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
 
@@ -185,17 +167,17 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/sols-created", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> createSolsCaseWithOrganisation(
-        @RequestHeader(value = "Authorization") String authToken,
-        @RequestBody CallbackRequest request) {
+            @RequestHeader(value = "Authorization") String authToken,
+            @RequestBody CallbackRequest request) {
         logRequest("/sols-created", request);
         return ResponseEntity.ok(callbackResponseTransformer.createSolsCase(request, authToken));
     }
 
     @PostMapping(path = "/sols-access", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> solicitorAccess(
-        @RequestHeader(value = "Authorization") String authToken,
-        @RequestParam(value = "caseTypeId") String caseTypeId,
-        @RequestBody CallbackRequest request) {
+            @RequestHeader(value = "Authorization") String authToken,
+            @RequestParam(value = "caseTypeId") String caseTypeId,
+            @RequestBody CallbackRequest request) {
         assignCaseAccessService.assignCaseAccess(authToken, request.getCaseDetails().getId().toString(), caseTypeId);
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
         return ResponseEntity.ok(afterSubmitCallbackResponse);
@@ -204,10 +186,10 @@ public class BusinessValidationController {
     @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidate(
-        @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody
+            @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody
             CallbackRequest callbackRequest,
-        BindingResult bindingResult,
-        HttpServletRequest request) {
+            BindingResult bindingResult,
+            HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         caseDataTransformer.transformFormCaseData(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
@@ -228,9 +210,9 @@ public class BusinessValidationController {
     @PostMapping(path = "/sols-validate-probate", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateProbate(
-        @Validated({ApplicationProbateGroup.class}) @RequestBody CallbackRequest callbackRequest,
-        BindingResult bindingResult,
-        HttpServletRequest request) {
+            @Validated({ApplicationProbateGroup.class}) @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
@@ -242,7 +224,7 @@ public class BusinessValidationController {
             caseDataTransformer.transformCaseDataForValidateProbate(callbackRequest);
 
             Optional<String> newState =
-                stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
+                    stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState,
                     LEGAL_STATEMENT_PROBATE_TRUST_CORPS, GRANT_OF_PROBATE_NAME);
         }
@@ -252,9 +234,9 @@ public class BusinessValidationController {
     @PostMapping(path = "/sols-validate-intestacy", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateIntestacy(
-        @Validated({ApplicationIntestacyGroup.class}) @RequestBody CallbackRequest callbackRequest,
-        BindingResult bindingResult,
-        HttpServletRequest request) {
+            @Validated({ApplicationIntestacyGroup.class}) @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
@@ -263,9 +245,9 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState =
-                stateChangeService.getChangedStateForIntestacyUpdate(callbackRequest.getCaseDetails().getData());
+                    stateChangeService.getChangedStateForIntestacyUpdate(callbackRequest.getCaseDetails().getData());
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_INTESTACY,
-                INTESTACY_NAME);
+                    INTESTACY_NAME);
         }
         return ResponseEntity.ok(response);
     }
@@ -310,9 +292,9 @@ public class BusinessValidationController {
     @PostMapping(path = "/sols-validate-admon", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateAdmon(
-        @Validated({ApplicationAdmonGroup.class}) @RequestBody CallbackRequest callbackRequest,
-        BindingResult bindingResult,
-        HttpServletRequest request) {
+            @Validated({ApplicationAdmonGroup.class}) @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
@@ -325,10 +307,23 @@ public class BusinessValidationController {
             caseDataTransformer.transformCaseDataForValidateAdmon(callbackRequest);
 
             Optional<String> newState =
-                stateChangeService.getChangedStateForAdmonUpdate(callbackRequest.getCaseDetails().getData());
+                    stateChangeService.getChangedStateForAdmonUpdate(callbackRequest.getCaseDetails().getData());
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_ADMON,
-                ADMON_WILL_NAME);
+                    ADMON_WILL_NAME);
         }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-validate-no-executors", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> solsValidateProbatePage4(@RequestBody CallbackRequest callbackRequest) {
+        zeroApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
+
+        if (response.getErrors().isEmpty()) {
+            callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
+        }
+
         return ResponseEntity.ok(response);
     }
 
