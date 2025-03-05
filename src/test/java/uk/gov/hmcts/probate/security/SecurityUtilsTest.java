@@ -278,4 +278,25 @@ class SecurityUtilsTest {
 
         assertEquals(List.of("caseworker-probate"), roles);
     }
+
+    @Test
+    void shouldGetUserInfo() {
+        UserInfo userInfo = UserInfo.builder().build();
+        when(idamApi.retrieveUserInfo(USER_TOKEN)).thenReturn(userInfo);
+        UserInfo userInfoResponse = securityUtils.getUserInfo(USER_TOKEN);
+        assertEquals(userInfo, userInfoResponse);
+    }
+
+    @Test
+    void shouldGetUserDetailsById() {
+        uk.gov.hmcts.reform.idam.client.models.UserDetails userDetails =
+                uk.gov.hmcts.reform.idam.client.models.UserDetails.builder()
+                        .id("1234")
+                        .email("test@probate.com")
+                        .build();
+        when(idamApi.searchUsers(USER_TOKEN, "id:1234")).thenReturn(List.of(userDetails));
+        uk.gov.hmcts.reform.idam.client.models.UserDetails userDetailsResponse  =
+                securityUtils.getUserDetailsByUserId(USER_TOKEN, "1234");
+        assertEquals(userDetails, userDetailsResponse);
+    }
 }
