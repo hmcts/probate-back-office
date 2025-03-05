@@ -319,7 +319,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(),
                         callbackRequest.getEventId(),
-                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        caseworkerInfo,
                         false);
         responseCaseDataBuilder.evidenceHandled(YES);
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -906,7 +906,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(),
                         callbackRequest.getEventId(),
-                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        caseworkerInfo,
                         doTransform);
 
         if (letterId != null) {
