@@ -12,7 +12,7 @@ dependencies:
     repository: 'oci://hmctspublic.azurecr.io/helm'
   - name: ccd
     version: 9.2.1
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     tags:
       - probate-ccd-stack
   - name: xui-webapp
