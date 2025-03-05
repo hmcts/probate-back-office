@@ -133,6 +133,8 @@ public class ExceptionRecordService {
                     .setDefaultValues(exceptionRecordOCRFields);
 
             List<String> autoCaseWarnings = ocrFieldModifierUtils.checkWarnings(exceptionRecordOCRFields);
+
+            log.info("AutoCaseWarnings: {}", autoCaseWarnings);
             GrantOfRepresentationData grantOfRepresentationData =
                     erGrantOfRepresentationMapper.toCcdData(exceptionRecordOCRFields, grantType);
 
@@ -140,7 +142,7 @@ public class ExceptionRecordService {
 
             grantOfRepresentationData.setModifiedOCRFieldList(modifiedFields);
 
-            grantOfRepresentationData.setAutoCaseWarnings(autoCaseWarnings);
+            //grantOfRepresentationData.setAutoCaseWarnings(autoCaseWarnings);
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
