@@ -18,15 +18,9 @@ public class InformationRequestCorrespondenceService {
 
     private final NotificationService notificationService;
 
-    public List<Document> emailInformationRequest(CaseDetails caseDetails) {
-        try {
-            final Document notification = notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails);
-            log.info("Successful response for request for information email for case id {} ", caseDetails.getId());
-            return List.of(notification);
-        } catch (NotificationClientException e) {
-            log.error(e.getMessage());
-            // this feels wrong - do we not want to alert the caller that the email sending has failed?
-            return List.of();
-        }
+    public List<Document> emailInformationRequest(CaseDetails caseDetails) throws NotificationClientException {
+        final Document notification = notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails);
+        log.info("Successful response for request for information email for case id {} ", caseDetails.getId());
+        return List.of(notification);
     }
 }
