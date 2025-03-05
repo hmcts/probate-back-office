@@ -219,8 +219,8 @@ public class OCRFieldModifierUtils {
         modifiedList.add(new CollectionMember<>(null, modifiedOCRField));
     }
 
-    public List<String> checkWarnings(ExceptionRecordOCRFields ocrFields) {
-        List<String> warnings = new ArrayList<>();
+    public List<CollectionMember<String>> checkWarnings(ExceptionRecordOCRFields ocrFields) {
+        List<CollectionMember<String>> warnings = new ArrayList<>();
         long ihtFormCount = Stream.of(
                         ocrFields.getExceptedEstate(),
                         ocrFields.getIht400Completed(),
@@ -233,7 +233,8 @@ public class OCRFieldModifierUtils {
                 .count();
 
         if (ihtFormCount > 1) {
-            warnings.add("More than one IHT form is marked as TRUE. Only one form should be selected as TRUE.");
+            warnings.add(new CollectionMember<>(null,
+                    "More than one IHT form is marked as TRUE. Only one form should be selected as TRUE."));
         }
         return warnings;
     }

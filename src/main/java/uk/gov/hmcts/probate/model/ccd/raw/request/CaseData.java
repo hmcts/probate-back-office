@@ -631,7 +631,7 @@ public class CaseData extends CaseDataParent {
     private List<CollectionMember<CitizenResponse>> citizenResponses;
 
     private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
-    private final List<String> autoCaseWarnings;
+    private final List<CollectionMember<String>> autoCaseWarnings;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
