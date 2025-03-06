@@ -30,8 +30,9 @@ public class ZeroApplyingExecutorsValidationRule {
                 && NO.equals(caseData.getSolsSolicitorIsExec())
                 && NO.equals(caseData.getSolsSolicitorIsApplying())) {
             throw new BusinessValidationException(userMessage,
-                "There must be at least one executor applying. You have not added " +
-                        "an applying probate practitioner or any executors for case id " + caseDetails.getId(), userMessageWelsh);
+                "There must be at least one executor applying. You have not added "
+                        + "an applying probate practitioner or any executors for case id "
+                        + caseDetails.getId(), userMessageWelsh);
         }
     }
 }
