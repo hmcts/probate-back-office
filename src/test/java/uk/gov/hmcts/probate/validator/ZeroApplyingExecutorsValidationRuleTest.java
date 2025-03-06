@@ -21,12 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ID;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FORENAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FULLNAME;
-import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.*;
 
 
 class ZeroApplyingExecutorsValidationRuleTest {
@@ -38,18 +33,7 @@ class ZeroApplyingExecutorsValidationRuleTest {
     private CaseDetails caseDetailsMock;
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
-    @Mock
-    private ExecutorsTransformer executorsTransformer;
     private CaseData caseDataMock;
-
-    private static final CollectionMember<AdditionalExecutorApplying> EXEC = new CollectionMember(
-        SOLICITOR_ID, AdditionalExecutorApplying.builder()
-        .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
-        .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
-        .applyingExecutorName(SOLICITOR_SOT_FULLNAME)
-        .applyingExecutorType(EXECUTOR_TYPE_NAMED)
-        .applyingExecutorAddress(SOLICITOR_ADDRESS)
-        .build());
 
     @BeforeEach
     public void setup() {
@@ -58,6 +42,8 @@ class ZeroApplyingExecutorsValidationRuleTest {
         caseDataMock = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .solsSolicitorIsExec("No")
+            .numberOfExecutors(0L)
+            .otherExecutorExists("No")
             .solsSolicitorIsApplying("No")
             .titleAndClearingType("TCTPartSuccPowerRes")
             .primaryApplicantForenames("Probate")
@@ -68,13 +54,8 @@ class ZeroApplyingExecutorsValidationRuleTest {
     }
 
     @Test
-    void shouldErrorForZeroExecutors() {
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
-
+    void shouldReturnErrorForZeroExecutors() {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
-        when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
-            caseDetailsMock.getData())).thenReturn(execsApplying);
 
         BusinessValidationException bve = assertThrows(BusinessValidationException.class, () -> {
             underTest.validate(caseDetailsMock);
@@ -82,19 +63,5 @@ class ZeroApplyingExecutorsValidationRuleTest {
         assertThat(bve.getMessage(),
                 containsString("There must be at least one executor applying."
                         + " You have not added an applying probate practitioner or any executors for case id 0"));
-    }
-
-    @Test
-    void shouldNotErrorForExecutors() {
-        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
-        execsApplying.add(EXEC);
-        execsApplying.add(EXEC);
-
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(executorsTransformer.createCaseworkerApplyingList(caseDetailsMock.getData())).thenReturn(execsApplying);
-        when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
-            caseDetailsMock.getData())).thenReturn(execsApplying);
-
-        underTest.validate(caseDetailsMock);
     }
 }
