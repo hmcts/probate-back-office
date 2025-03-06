@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.validator;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,8 +12,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
+import java.util.Optional;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -53,7 +57,9 @@ class ZeroApplyingExecutorsValidationRuleTest {
         BusinessValidationException bve = assertThrows(BusinessValidationException.class, () -> {
             underTest.validate(caseDetailsMock);
         });
-
+        assertEquals("No", caseDataMock.getOtherExecutorExists());
+        assertEquals("No", caseDataMock.getSolsSolicitorIsExec());
+        assertEquals("No", caseDataMock.getSolsSolicitorIsApplying());
         assertThat(bve.getMessage(),
                 containsString("There must be at least one executor applying."
                         + " You have not added an applying probate practitioner or any executors for case id 0"));
