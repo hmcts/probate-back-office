@@ -21,12 +21,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.util.CommonVariables.*;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ID;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FORENAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FULLNAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
+
 
 class ZeroApplyingExecutorsValidationRuleTest {
 
     @InjectMocks
-    private NumberOfApplyingExecutorsValidationRule underTest;
+    private ZeroApplyingExecutorsValidationRule underTest;
 
     @Mock
     private CaseDetails caseDetailsMock;
