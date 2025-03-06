@@ -38,10 +38,13 @@ public class ZeroApplyingExecutorsValidationRule {
 
         List<String> executors = Arrays.asList(execsApplyingNames.split(","));
 
-        if (executors.isEmpty() && 0 == caseData.getNumberOfExecutors()
-                                && NO.equals(caseData.getOtherExecutorExists())
-                                && NO.equals(caseData.getSolsSolicitorIsExec())
-                                && NO.equals(caseData.getSolsSolicitorIsApplying())) {
+        if (execsApplyingNames.equals("None")
+                && executors.size() == 1
+                && executors.get(0).equals("None")
+                && caseData.getNumberOfExecutors() == 0
+                && NO.equals(caseData.getOtherExecutorExists())
+                && NO.equals(caseData.getSolsSolicitorIsExec())
+                && NO.equals(caseData.getSolsSolicitorIsApplying())) {
             throw new BusinessValidationException(userMessage,
                 "There must be at least one executor applying. You have not added " +
                         "an applying probate practitioner or any executors for case id " + caseDetails.getId(), userMessageWelsh);
