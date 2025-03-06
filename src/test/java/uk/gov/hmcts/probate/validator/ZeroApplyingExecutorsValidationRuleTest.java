@@ -53,6 +53,7 @@ class ZeroApplyingExecutorsValidationRuleTest {
         BusinessValidationException bve = assertThrows(BusinessValidationException.class, () -> {
             underTest.validate(caseDetailsMock);
         });
+
         assertThat(bve.getMessage(),
                 containsString("There must be at least one executor applying."
                         + " You have not added an applying probate practitioner or any executors for case id 0"));
