@@ -206,10 +206,10 @@ public class BusinessValidationController {
     @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidate(
-            @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody
+        @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody
             CallbackRequest callbackRequest,
-            BindingResult bindingResult,
-            HttpServletRequest request) {
+        BindingResult bindingResult,
+        HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         caseDataTransformer.transformFormCaseData(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
@@ -218,7 +218,7 @@ public class BusinessValidationController {
         if (response.getErrors().isEmpty()) {
             if (YES.equals(details.getData().getHmrcLetterId()) || null == details.getData().getHmrcLetterId()) {
                 Optional<String> newState =
-                        stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
+                    stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
                 response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
             } else {
                 response = callbackResponseTransformer.transformCase(callbackRequest, Optional.empty());
@@ -244,9 +244,9 @@ public class BusinessValidationController {
             caseDataTransformer.transformCaseDataForValidateProbate(callbackRequest);
 
             Optional<String> newState =
-                    stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
+                stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState,
-                    LEGAL_STATEMENT_PROBATE_TRUST_CORPS, GRANT_OF_PROBATE_NAME);
+                LEGAL_STATEMENT_PROBATE_TRUST_CORPS, GRANT_OF_PROBATE_NAME);
         }
         return ResponseEntity.ok(response);
     }
