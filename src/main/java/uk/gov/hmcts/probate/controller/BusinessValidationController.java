@@ -338,13 +338,7 @@ public class BusinessValidationController {
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateProbatePage4(@RequestBody CallbackRequest callbackRequest) {
         zeroApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
-        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
-
-        if (response.getErrors().isEmpty()) {
-            callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
-        }
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty()));
     }
 
     @PostMapping(path = "/sols-validate-iht400", consumes = APPLICATION_JSON_VALUE,
