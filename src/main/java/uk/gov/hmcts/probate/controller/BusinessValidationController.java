@@ -63,6 +63,7 @@ import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
+import uk.gov.hmcts.probate.validator.StopReasonValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
@@ -116,6 +117,7 @@ public class BusinessValidationController {
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private final IHTValidationRule ihtValidationRule;
     private final UniqueCodeValidationRule uniqueCodeValidationRule;
+    private final StopReasonValidationRule stopReasonValidationRule;
     private final NaValidationRule naValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
@@ -504,6 +506,14 @@ public class BusinessValidationController {
         CallbackResponse response = callbackResponseTransformer
             .superUserMakeCaseDormant(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/validate-stop-reason", produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> validateStopReason(@RequestBody CallbackRequest callbackRequest,
+                                                                      HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        stopReasonValidationRule.validate(callbackRequest.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, Optional.empty()));
     }
 
     @PostMapping(path = "/validate-unique-code", produces = {APPLICATION_JSON_VALUE})

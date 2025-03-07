@@ -9,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
@@ -22,7 +23,6 @@ import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule.PersonalisationValidationResult;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.service.notify.NotificationClient;
-import uk.gov.service.notify.NotificationClientException;
 
 import java.util.Collections;
 import java.util.List;
@@ -98,12 +98,13 @@ class NotificationServiceTest {
         when(personalisationValidationRuleMock.validatePersonalisation(dummyPersonalisation))
                 .thenReturn(mockResult);
 
-        assertThrows(NotificationClientException.class, () ->
+        assertThrows(RequestInformationParameterException.class, () ->
                 notificationService.doCommonNotificationServiceHandling(dummyPersonalisation, dummyCaseId));
     }
 
     @Test
-    void givenPersonalisationWithHtml_whenCommonValidation_thenReturnsHtmlFound() throws NotificationClientException {
+    void givenPersonalisationWithHtml_whenCommonValidation_thenReturnsHtmlFound()
+            throws RequestInformationParameterException {
         final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
         final Long dummyCaseId = 1L;
 
@@ -120,7 +121,8 @@ class NotificationServiceTest {
     }
 
     @Test
-    void givenPersonalisationWithNoIssue_whenCommonValidation_thenReturnsAllOk() throws NotificationClientException {
+    void givenPersonalisationWithNoIssue_whenCommonValidation_thenReturnsAllOk()
+            throws RequestInformationParameterException {
         final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
         final Long dummyCaseId = 1L;
 

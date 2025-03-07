@@ -56,6 +56,7 @@ class SmeeAndFordPersonalisationServiceTest {
 
     private static final Long ID = 1234567812345678L;
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
+
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
     private static final BigDecimal NET = BigDecimal.valueOf(900000);
 
@@ -247,7 +248,8 @@ class SmeeAndFordPersonalisationServiceTest {
     void shouldMapAllAttributesWithDelimetersInContents() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
                 "YesWithoutTypeWill", true, true, true,
-            false, true, true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
+            false, true, true)
+                .primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
                 "YesWithoutTypeWill", true, false,
             false, false, true, false).build(), LAST_MODIFIED, ID);

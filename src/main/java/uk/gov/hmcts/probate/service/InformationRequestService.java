@@ -26,8 +26,9 @@ public class InformationRequestService {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
 
-    public CallbackResponse handleInformationRequest(CallbackRequest callbackRequest,
-                                                     Optional<UserInfo> caseworkerInfo) {
+    public CallbackResponse handleInformationRequest(
+            final CallbackRequest callbackRequest,
+            final Optional<UserInfo> caseworkerInfo) throws NotificationClientException {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         CCDData dataForEmailAddress = CCDData.builder()
                 .applicationType(caseData.getApplicationType().name())
