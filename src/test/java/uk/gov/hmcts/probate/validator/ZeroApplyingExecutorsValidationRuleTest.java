@@ -73,7 +73,6 @@ class ZeroApplyingExecutorsValidationRuleTest {
 
     @Test
     void shouldNotThrowExceptionWhenExecutorsExist() {
-        // Override the default setup for this test
         caseDataMock = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .solsSolicitorIsExec("No")
