@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +26,11 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.Constants.*;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_ORIGINAL_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -105,9 +108,9 @@ public class SmeeAndFordPersonalisationService {
                 data.append(getPrimaryApplicantName(currentCaseData));
                 data.append(DELIMITER);
                 data.append(getFullAddress(currentCaseData.getPrimaryApplicantAddress()));
-                data.append(truncateValue(currentCaseData.getIhtGrossValue()));
+                data.append(getPoundValue(currentCaseData.getIhtGrossValue()));
                 data.append(DELIMITER);
-                data.append(truncateValue(currentCaseData.getIhtNetValue()));
+                data.append(getPoundValue(currentCaseData.getIhtNetValue()));
                 data.append(DELIMITER);
                 data.append(getSolicitorDetails(currentCaseData));
                 data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfBirth()));
@@ -363,16 +366,16 @@ public class SmeeAndFordPersonalisationService {
         }
         return data.substring(0, data.lastIndexOf(COMMA));
     }
-    private String truncateValue(BigDecimal value) {
-            if (value != null) {
-                BigDecimal truncatedValue = value.divide(DIVISOR, RoundingMode.FLOOR);
-                return FORMAT.format(truncatedValue);
-            }
-        return null;
-    }
 
     private String removeLastNewLine(String data) {
         return data.substring(0, data.lastIndexOf(NEW_LINE));
+    }
+
+    private String getPoundValue(BigDecimal value) {
+        if (value == null || value.toString().length() < 2) {
+            return "0";
+        }
+        return value.toString().substring(0, value.toString().length() - 2);
     }
 
 }

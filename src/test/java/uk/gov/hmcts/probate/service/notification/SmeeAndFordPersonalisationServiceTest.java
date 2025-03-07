@@ -21,7 +21,6 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -60,6 +59,8 @@ class SmeeAndFordPersonalisationServiceTest {
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
     private static final BigDecimal NET = BigDecimal.valueOf(900000);
 
+    private static final BigDecimal GROSS_WITH_DECIMAL = BigDecimal.valueOf(1000000.34);
+    private static final BigDecimal NET_WITH_DECIMAL = BigDecimal.valueOf(900000.56);
     private TestUtils testUtils = new TestUtils();
 
     @BeforeEach
@@ -435,15 +436,43 @@ class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    void shouldTruncateValueCorrectly() throws Exception {
-        Method method = SmeeAndFordPersonalisationService.class.getDeclaredMethod("truncateValue", BigDecimal.class);
-        method.setAccessible(true);
+    void shouldGetPoundValueCase() {
+        CaseData caseData = CaseData.builder()
+                .registryLocation("Registry Address")
+                .grantIssuedDate("2021-12-31")
+                .deceasedForenames("Jack")
+                .deceasedSurname("Michelson")
+                .boDeceasedHonours("OBE")
+                .deceasedAliasNameList(null)
+                .solsDeceasedAliasNamesList(null)
+                .caseType("gop")
+                .applicationType(PERSONAL)
+                .deceasedDateOfDeath(LocalDate.of(2020, 12, 31))
+                .deceasedAddress(buildAddress("Dec"))
+                .additionalExecutorsApplying(null)
+                .primaryApplicantForenames("PrimaryFN")
+                .primaryApplicantSurname("PrimarySN1 PrimarySN2")
+                .primaryApplicantAlias("PrimaryAlias")
+                .primaryApplicantAddress(buildAddress("Prim"))
+                .ihtGrossValue(GROSS_WITH_DECIMAL)
+                .ihtNetValue(NET_WITH_DECIMAL)
+                .deceasedDateOfBirth(LocalDate.of(2000, 12, 1))
+                .solsSolicitorFirmName("")
+                .solsSolicitorAddress(null)
+                .solsSolicitorAppReference(null)
+                .registryLocation("Cardiff")
+                .willHasCodicils(NO)
+                .probateDocumentsGenerated(new ArrayList<CollectionMember<Document>>())
+                .build();
 
-        BigDecimal value = new BigDecimal("1234567");
-        String expectedTruncatedValue = "12,345";
+        ReturnedCaseDetails returnedCaseDetailsTypeOtherNoWill = new ReturnedCaseDetails(caseData, LAST_MODIFIED, ID);
 
-        String truncatedValue = (String) method.invoke(smeeAndFordPersonalisationService, value);
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsTypeOtherNoWill);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+                "fromDate", "toDate");
 
-        assertThat(truncatedValue, is(expectedTruncatedValue));
+        assertThat(personalisation.get("caseData"), containsString("1000000"));
+        assertThat(personalisation.get("caseData"), containsString("900000"));
     }
 }
