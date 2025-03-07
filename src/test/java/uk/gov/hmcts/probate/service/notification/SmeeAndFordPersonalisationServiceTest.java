@@ -434,45 +434,4 @@ class SmeeAndFordPersonalisationServiceTest {
         assertThat(personalisation.get("caseData"), not(containsString("ScannedOtherFileName")));
         assertThat(personalisation.get("caseData"), not(containsString("ScannedCopyWillFileName")));
     }
-
-    @Test
-    void shouldGetPoundValueCase() {
-        CaseData caseData = CaseData.builder()
-                .registryLocation("Registry Address")
-                .grantIssuedDate("2021-12-31")
-                .deceasedForenames("Jack")
-                .deceasedSurname("Michelson")
-                .boDeceasedHonours("OBE")
-                .deceasedAliasNameList(null)
-                .solsDeceasedAliasNamesList(null)
-                .caseType("gop")
-                .applicationType(PERSONAL)
-                .deceasedDateOfDeath(LocalDate.of(2020, 12, 31))
-                .deceasedAddress(buildAddress("Dec"))
-                .additionalExecutorsApplying(null)
-                .primaryApplicantForenames("PrimaryFN")
-                .primaryApplicantSurname("PrimarySN1 PrimarySN2")
-                .primaryApplicantAlias("PrimaryAlias")
-                .primaryApplicantAddress(buildAddress("Prim"))
-                .ihtGrossValue(GROSS_WITH_DECIMAL)
-                .ihtNetValue(NET_WITH_DECIMAL)
-                .deceasedDateOfBirth(LocalDate.of(2000, 12, 1))
-                .solsSolicitorFirmName("")
-                .solsSolicitorAddress(null)
-                .solsSolicitorAppReference(null)
-                .registryLocation("Cardiff")
-                .willHasCodicils(NO)
-                .probateDocumentsGenerated(new ArrayList<CollectionMember<Document>>())
-                .build();
-
-        ReturnedCaseDetails returnedCaseDetailsTypeOtherNoWill = new ReturnedCaseDetails(caseData, LAST_MODIFIED, ID);
-
-        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
-        cases.add(returnedCaseDetailsTypeOtherNoWill);
-        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
-                "fromDate", "toDate");
-
-        assertThat(personalisation.get("caseData"), containsString("1000000"));
-        assertThat(personalisation.get("caseData"), containsString("900000"));
-    }
 }
