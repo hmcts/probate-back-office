@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -119,7 +120,6 @@ class CaseDataTransformerTest {
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequestMock);
         verify(evidenceHandledTransformer, times(0)).updateEvidenceHandled(caseDataMock);
     }
-
 
     @Test
     void shouldTransformEvidenceHandledForManualCreateByCWCasePrinted() {
@@ -322,6 +322,15 @@ class CaseDataTransformerTest {
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
         caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
         assertThat(caseDataMock.getIhtFormEstate(), CoreMatchers.is(nullValue()));
+    }
+
+    @Test
+    void shouldSetApplicationSubmittedDate() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL).build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        caseDataTransformer.setApplicationSubmittedDateForPA(caseDetailsMock);
+        assertEquals(LocalDate.now().toString(),
+                caseDetailsMock.getData().getApplicationSubmittedDate());
     }
 
 }

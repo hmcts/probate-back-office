@@ -9,6 +9,8 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+
 @ExtendWith(SerenityJUnit5Extension.class)
 public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
 
@@ -50,6 +52,12 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
     void verifyPersonalGenerateWelshGrantIntestacy() throws IOException {
         verifyPersonalWelshGrantText("personalPayloadGrantIntestacyWelsh.json",
             "expectedDocumentGrantIntestacyWelsh.txt");
+    }
+
+    @Test
+    void verifyPersonalGenerateWelshGrantAdColligenda() throws IOException {
+        verifyPersonalWelshGrantText("personalPayloadGrantAdColligendaWelsh.json",
+                "expectedDocumentGrantAdColligendaWelsh.txt");
     }
 
     private void verifyPersonalWelshGrantText(String payload, String expectedFile) throws IOException {

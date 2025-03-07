@@ -39,6 +39,7 @@ import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
+import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
@@ -55,6 +56,7 @@ import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.Pre1900DOBValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
+import uk.gov.hmcts.probate.validator.StopReasonValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
@@ -73,6 +75,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -183,11 +186,15 @@ class BusinessValidationUnitTest {
     @Mock
     private UniqueCodeValidationRule uniqueCodeValidationRule;
     @Mock
+    private StopReasonValidationRule stopReasonValidationRule;
+    @Mock
     private NaValidationRule naValidationRule;
     @Mock
     private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
     @Mock
     private BusinessValidationMessageService businessValidationMessageServiceMock;
+    @Mock
+    private AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
     @Mock
     private UserInfoService userInfoServiceMock;
 
@@ -221,6 +228,7 @@ class BusinessValidationUnitTest {
             ihtEstateValidationRule,
             ihtValidationRule,
             uniqueCodeValidationRule,
+            stopReasonValidationRule,
             naValidationRule,
             solicitorPostcodeValidationRule,
             caseworkersSolicitorPostcodeValidationRule,
@@ -230,6 +238,7 @@ class BusinessValidationUnitTest {
             handOffLegacyTransformer,
             registrarDirectionServiceMock,
             pre1900DOBValidationRuleMock,
+            adColligendaBonaCaseTypeValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock);
 
@@ -874,9 +883,10 @@ class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDetailsMock.getState()).thenReturn(CASE_PRINTED_NAME);
         ResponseEntity<CallbackResponse> response =  underTest.paCreate(callbackRequestMock, bindingResultMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(caseDataTransformerMock).transformCaseDataForEvidenceHandled(callbackRequestMock);
         verify(caseDataTransformerMock).transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(caseDataTransformerMock).setApplicationSubmittedDateForPA(caseDetailsMock);
     }
 
     @Test
@@ -915,6 +925,7 @@ class BusinessValidationUnitTest {
                 bindingResultMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(adColligendaBonaCaseTypeValidationRule, times(1)).validate(caseDetailsMock);
         verify(caseDataTransformerMock).transformCaseDataForEvidenceHandledForManualCreateByCW(callbackRequestMock);
     }
 
@@ -990,6 +1001,17 @@ class BusinessValidationUnitTest {
                 underTest.changeCaseState(callbackRequestMock, httpServletRequest);
         verify(callbackResponseTransformerMock, times(1))
                 .transferToState(callbackRequestMock, CASEWORKER_USERINFO);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    void shouldResolveCaveatState() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.resolveCaveatStopState(callbackRequestMock,httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .transferCaveatStopState(eq(callbackRequestMock), any());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

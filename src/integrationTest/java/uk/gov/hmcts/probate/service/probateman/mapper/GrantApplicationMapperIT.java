@@ -5,9 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
@@ -39,8 +37,6 @@ class GrantApplicationMapperIT {
     private static final Long NET_ESTATE = 9000L;
     private static final Long NET_ESTATE_TRANSFORMED = 900000L;
     private static final String SOLICITOR_REFERENCE = "SolRef1";
-    @MockBean
-    AppInsights appInsights;
     @Value("${ccd.gateway.host}")
     private String printServiceHost;
     @Value("${printservice.legacyPath}")

@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -123,9 +122,6 @@ class NotificationControllerIT {
     private BulkPrintService bulkPrintService;
 
     private EventValidationService eventValidationService;
-
-    @MockBean
-    private AppInsights appInsights;
 
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;

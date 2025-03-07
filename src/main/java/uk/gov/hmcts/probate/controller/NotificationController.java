@@ -199,7 +199,8 @@ public class NotificationController {
     }
 
     @PostMapping(path = "/stopped-information-request")
-    public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> informationRequest(
+            @RequestBody final CallbackRequest callbackRequest) throws NotificationClientException {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo));
     }
@@ -236,7 +237,6 @@ public class NotificationController {
         BindingResult bindingResult,
         HttpServletRequest request) throws NotificationClientException {
         logRequest(request.getRequestURI(), callbackRequest);
-        log.info("start-delayed-notify-period started");
         notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
         notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
         caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequest);

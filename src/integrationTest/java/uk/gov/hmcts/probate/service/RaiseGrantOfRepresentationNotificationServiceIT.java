@@ -11,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -66,8 +65,6 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
     BulkPrintService bulkPrintService;
     @Autowired
     private RaiseGrantOfRepresentationNotificationService handleGrantReceivedNotification;
-    @MockBean
-    private AppInsights appInsights;
     @MockBean
     private SendEmailResponse sendEmailResponse;
     @MockBean

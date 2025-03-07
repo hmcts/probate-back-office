@@ -11,7 +11,9 @@ public enum DocumentCaseType {
     @JsonProperty("admonWill")
     ADMON_WILL("admonWill"),
     @JsonProperty("gop")
-    GOP("gop");
+    GOP("gop"),
+    @JsonProperty("adColligendaBona")
+    AD_COLLIGENDA_BONA("adColligendaBona");
 
     private final String caseType;
 

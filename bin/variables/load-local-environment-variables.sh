@@ -48,6 +48,7 @@ echo "SOL_USER_EMAIL=$(az keyvault secret show --vault-name probate-aat -o tsv -
 echo "SOL_USER_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name solicitorUserPass)" >> .aat-env
 echo "SOL2_USER_EMAIL=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name solicitor2UserEmail)" >> .aat-env
 echo "SOL2_USER_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name solicitor2UserPass)" >> .aat-env
+echo "PROBATE_NOTIFY_KEY="$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name probate-bo-govNotifyApiKey)" >> .aat-env
 
 # xui variables fetched from rpx-aat vault:
 echo "XUI_SYSTEM_USER_NAME=$(az keyvault secret show --vault-name rpx-aat -o tsv --query value --name system-user-name)" >> .aat-env

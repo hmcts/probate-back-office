@@ -85,6 +85,7 @@ module.exports = function () {
         seeCaseDetails: steps.caseDetails.caseDetails,
         dontSeeCaseDetails: steps.caseDetails.checkCaseDetailsDoNotAppear,
         seeTabDetails: steps.caseProgress.tabDetails,
+        seeTabDetailsBilingual: steps.caseProgress.tabDetailsBilingual,
         seeUpdatesOnCase: steps.caseDetails.caseDetailsUpdated,
         chooseNextStep: steps.nextStep.nextStep,
         printCase: steps.printCase.printCase,

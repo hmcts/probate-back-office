@@ -32,9 +32,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
@@ -76,6 +79,8 @@ import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
@@ -92,6 +97,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
@@ -131,6 +138,9 @@ public class CallbackResponseTransformer {
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final String IHT400 = "IHT400";
     private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection", "boCorrection");
+    private static final List<String> ROLLBACK_STATE_LIST = List.of("Pending", "CasePaymentFailed", "SolAdmonCreated",
+            "SolAppCreatedDeceasedDtls", "SolAppCreatedSolicitorDtls", "SolAppUpdated", "SolProbateCreated",
+            "SolIntestacyCreated", "Deleted", "Stopped");
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -146,6 +156,8 @@ public class CallbackResponseTransformer {
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final FeatureToggleService featureToggleService;
+    private final AuditEventService auditEventService;
+    private final SecurityUtils securityUtils;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -307,7 +319,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(),
                         callbackRequest.getEventId(),
-                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        caseworkerInfo,
                         false);
         responseCaseDataBuilder.evidenceHandled(YES);
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -391,9 +403,11 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, AD_COLLIGENDA_BONA_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT)
-                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)) {
+                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_AD_COLLIGENDA_BONA_GRANT)) {
 
             String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
             responseCaseDataBuilder
@@ -420,13 +434,16 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, AD_COLLIGENDA_BONA_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
-                || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)) {
+                || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE)) {
             if (letterId != null) {
                 var documentTypes = new DocumentType[] {
                     DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
-                    WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE
+                    AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE,
+                    WELSH_INTESTACY_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE
                 };
                 String templateName = getTemplateName(documents, documentTypes);
                 CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
@@ -477,9 +494,11 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, AD_COLLIGENDA_BONA_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT)
-                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)) {
+                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_AD_COLLIGENDA_BONA_GRANT)) {
 
             responseCaseDataBuilder
                     .bulkPrintSendLetterId(letterId)
@@ -488,16 +507,19 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, AD_COLLIGENDA_BONA_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, STATEMENT_OF_TRUTH)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_STATEMENT_OF_TRUTH)
                 || documentTransformer.hasDocumentWithType(documents, DocumentType.OTHER)) {
             if (letterId != null) {
                 var documentTypes = new DocumentType[] {
                     DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
-                    WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE,
+                    AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE,
+                    WELSH_INTESTACY_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE,
                     STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH, DocumentType.OTHER
                 };
                 String templateName = getTemplateName(documents, documentTypes);
@@ -603,11 +625,28 @@ public class CallbackResponseTransformer {
                 .getData().getTransferToState()), caseworkerInfo);
     }
 
+    public CallbackResponse transferCaveatStopState(
+            final CallbackRequest callbackRequest,
+            final Optional<UserInfo> caseworkerInfo) {
+        return transformWithConditionalStateChange(
+                callbackRequest,
+                Optional.of(callbackRequest.getCaseDetails().getData().getResolveCaveatStopState()),
+                caseworkerInfo);
+    }
+
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(),false);
-        responseCaseDataBuilder.applicantOrganisationPolicy(null);
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        auditEventService.getLatestAuditEventByState(
+                        callbackRequest.getCaseDetails().getId().toString(), ROLLBACK_STATE_LIST,
+                        securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation())
+                .ifPresent(auditEvent -> {
+                    log.info("Audit event found: Case ID = {}, Event State = {}",
+                            callbackRequest.getCaseDetails().getId(), auditEvent.getStateId());
+                    responseCaseDataBuilder.state(auditEvent.getStateId());
+                });
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -867,7 +906,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(),
                         callbackRequest.getEventId(),
-                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        caseworkerInfo,
                         doTransform);
 
         if (letterId != null) {
@@ -1256,6 +1295,7 @@ public class CallbackResponseTransformer {
             .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
             .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
             .statementOfTruthDocument(caseData.getStatementOfTruthDocument())
+            .amendedLegalStatement(caseData.getAmendedLegalStatement())
             .boStopDetailsDeclarationParagraph(caseData.getBoStopDetailsDeclarationParagraph())
             .executorsApplyingNotifications(caseData.getExecutorsApplyingNotifications())
             .boEmailRequestInfoNotification(caseData.getBoEmailRequestInfoNotification())
@@ -1376,7 +1416,8 @@ public class CallbackResponseTransformer {
             .expectedResponseDate(caseData.getExpectedResponseDate())
             .citizenResponses(caseData.getCitizenResponses())
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
-            .isSaveAndClose(caseData.getIsSaveAndClose());
+            .isSaveAndClose(caseData.getIsSaveAndClose())
+            .ttl(caseData.getTtl());
 
         if (featureToggleService.enableNewAliasTransformation()) {
             handleDeceasedAliases(

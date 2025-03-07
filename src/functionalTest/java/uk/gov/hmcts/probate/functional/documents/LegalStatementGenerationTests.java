@@ -8,8 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SerenityJUnit5Extension.class)
 public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
@@ -18,15 +18,20 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     private static final String DECLARATION_CIVIL_WORDING =
         "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence "
             + "provided is deliberately untruthful or dishonest, as well as revocation of the grant";
+    private static final String DECLARATION_CIVIL_WORDING_WELSH = "gellir dwyn achos dirmyg llys yn erbyn y sawl sy’n "
+            + "llofnodi isod os canfyddir bod y dystiolaeth a ddarparwyd yn fwriadol anwir neu’n anonest, yn ogystal â "
+            + "diddymu’r grant";
     private static final String CODICIL_DATES = " with codicil signed and dated 3rd March 2020, and codicil signed"
         + " and dated 5th March 2020, and codicil signed and dated 6th March 2020";
     private static final String DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC =
         "criminal proceedings for fraud may be brought against me if I am found to have been deliberately untruthful "
             + "or dishonest";
     private static final String LEGAL_STATEMENT = "Legal statement";
+    private static final String LEGAL_STATEMENT_WELSH = "Datganiad cyfreithiol";
     private static final String AUTHORISED_SOLICITOR =
         "They have authorised Firm Name to sign a statement of truth on their behalf.";
     private static final String LEGAL_STATEMENT_DIED_ON = "died on";
+    private static final String LEGAL_STATEMENT_GOP_WELSH = "grant profiant";
     private static final String LEGAL_STATEMENT_GOP = "grant of probate";
     private static final String PRIMARY_APPLICANT_STATEMENT =
         "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement";
@@ -40,8 +45,11 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
             + " of addressline 1, addressline 2, addressline 3, posttown, county, postcode, country";
 
     private static final String LEGAL_STATEMENT_INTESTATE = "intestate";
+    private static final String LEGAL_STATEMENT_INTESTATE_WELSH = "heb ewyllys";
     private static final String LEGAL_STATEMENT_ADMON_WILL =
         "Administrators Applying for Letters of Administration (with will annexed)";
+    private static final String LEGAL_STATEMENT_ADMON_WILL_WELSH =
+            "Gweinyddwyr yn Gwneud Cais am Lythyrau Gweinyddu (pan fydd yna ewyllys)";
     private static final String FURTHER_EVIDENCE = "Further evidence";
     private static final String DOMICILITY_SENTENCE_UK = "The gross value for the estate in the United Kingdom amounts";
     private static final String DOMICILITY_SENTENCE_NON_UK = "The gross value for the estate in England and Wales";
@@ -65,11 +73,16 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     private static final String SOLE_PRIN_OTHER_PARTNERS = "solicitorSolPartner.json";
     private static final String SOLE_PRIN_OTHER_PARTNERS_SINGLE = "solicitorSolePrinSingleExec.json";
     private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD = "solicitorPDFPayloadProbateSingleExecutor.json";
+    private static final String DEFAULT_SOLS_PDF_PROBATE_WELSH_PAYLOAD
+            = "solicitorPDFPayloadProbateSingleExecutorLanguageWelsh.json";
     private static final String MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD =
         "solicitorPDFPayloadProbateMultipleExecutors.json";
     private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
+    private static final String DEFAULT_SOLS_PDF_INTESTACY_WELSH_PAYLOAD
+            = "solicitorPDFPayloadIntestacyLanguageWelsh.json";
     private static final String CODICILS_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFIntestacyCodicils.json";
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
+    private static final String DEFAULT_SOLS_PDF_ADMON_WELSH_PAYLOAD = "solicitorPDFPayloadAdmonWillLanguageWelsh.json";
     private static final String ADMON_PAYLOAD_WILL_AND_CODICILS_DATES =
         "solicitorPDFPayloadAdmonWillWithWillAndCodicilDates.json";
     private static final String ADMON_PAYLOAD_WILL_AND_ONE_CODICILS =
@@ -97,6 +110,22 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         assertTrue(!response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_GOP));
+        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
+
+        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+    }
+
+    @Test
+    void verifySuccessForGetPdfLegalStatementProbateForLanguagePreferenceBilingual() throws IOException {
+        final String response = generateSotDocument(DEFAULT_SOLS_PDF_PROBATE_WELSH_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(LEGAL_STATEMENT_WELSH));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(LEGAL_STATEMENT_GOP));
+        assertTrue(response.contains(LEGAL_STATEMENT_GOP_WELSH));
         assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
@@ -131,6 +160,21 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
+    void verifySuccessForGetPdfLegalStatementIntestacyForLanguagePreferenceBilingual() throws IOException {
+        final String response = generateSotDocument(DEFAULT_SOLS_PDF_INTESTACY_WELSH_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(LEGAL_STATEMENT_WELSH));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA));
+        assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
+        assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE_WELSH));
+    }
+
+    @Test
     void verifySuccessForGetPdfLegalStatementAdmonWillSols() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(LEGAL_STATEMENT));
@@ -138,6 +182,21 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
+
+        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+    }
+
+    @Test
+    void verifySuccessForGetPdfLegalStatementAdmonWillSolsForLanguagePreferenceBilingual() throws IOException {
+        final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_WELSH_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(LEGAL_STATEMENT_WELSH));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
+        assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL_WELSH));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
     }

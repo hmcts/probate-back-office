@@ -8,7 +8,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStandard/caseProgressConfig');
 const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
 const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
-const documentUploadSolTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/documentUploadSolTabConfig');
+const documentUploadSolTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/documentUploadSolTabConfigBilingual');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Case Progress - Reenter Deceased Details';
@@ -56,7 +56,9 @@ Scenario(scenarioName, async function ({I}) {
             {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
             {locator: {css: '#originalWillSignedDate-month'}, text: '10'},
             {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
-            {locator: {css: '#willHasCodicils_No'}}]);
+            {locator: {css: '#willHasCodicils_No'}},
+            {locator: {css: '#languagePreferenceWelsh_Yes'}}
+        ]);
 
         await I.logInfo(scenarioName, 'Dispense with notice and clearing type');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
@@ -233,7 +235,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
 
-        await I.seeTabDetails(caseRef, documentUploadSolTabConfig, caseProgressConfig);
+        await I.seeTabDetailsBilingual(caseRef, documentUploadSolTabConfig, caseProgressConfig);
         await I.clickTab('Case Progress');
 
         await I.caseProgressCheckCaseProgressTab({

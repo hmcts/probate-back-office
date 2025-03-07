@@ -75,6 +75,11 @@ public class PDFManagementService {
                     .setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
                         .getGrantSignatureEncryptedFile()));
                 break;
+            case AD_COLLIGENDA_BONA_GRANT:
+                callbackRequest.getCaseDetails()
+                        .setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
+                                .getGrantSignatureEncryptedFile()));
+                break;
             default:
                 break;
         }
