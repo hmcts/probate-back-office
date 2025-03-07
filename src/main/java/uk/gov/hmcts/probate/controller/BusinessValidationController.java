@@ -282,6 +282,7 @@ public class BusinessValidationController {
 
         validateTitleAndClearingPage(callbackRequest);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        zeroApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
         caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequest);
         CallbackResponse response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
@@ -332,13 +333,6 @@ public class BusinessValidationController {
                 ADMON_WILL_NAME);
         }
         return ResponseEntity.ok(response);
-    }
-
-    @PostMapping(path = "/sols-validate-no-executors", consumes = APPLICATION_JSON_VALUE,
-            produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> solsValidateProbatePage4(@RequestBody CallbackRequest callbackRequest) {
-        zeroApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
-        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty()));
     }
 
     @PostMapping(path = "/sols-validate-iht400", consumes = APPLICATION_JSON_VALUE,
