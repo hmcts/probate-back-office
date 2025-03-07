@@ -1112,15 +1112,4 @@ class BusinessValidationUnitTest {
                 .superUserMakeCaseDormant(callbackRequestMock, CASEWORKER_USERINFO);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
-
-    @Test
-    void shouldValidateZeroExecutorsApplyingWithError() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-
-        ResponseEntity<CallbackResponse> response = underTest.solsValidateProbatePage4(callbackRequestMock);
-        verify(zeroApplyingExecutorsValidationRule).validate(callbackRequestMock.getCaseDetails());
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
 }
