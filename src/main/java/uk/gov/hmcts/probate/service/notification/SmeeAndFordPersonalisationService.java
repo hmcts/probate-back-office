@@ -15,7 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
-
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -108,9 +108,9 @@ public class SmeeAndFordPersonalisationService {
                 data.append(getPrimaryApplicantName(currentCaseData));
                 data.append(DELIMITER);
                 data.append(getFullAddress(currentCaseData.getPrimaryApplicantAddress()));
-                data.append(currentCaseData.getIhtGrossValue().toString());
+                data.append(getPoundValue(currentCaseData.getIhtGrossValue()));
                 data.append(DELIMITER);
-                data.append(currentCaseData.getIhtNetValue().toString());
+                data.append(getPoundValue(currentCaseData.getIhtNetValue()));
                 data.append(DELIMITER);
                 data.append(getSolicitorDetails(currentCaseData));
                 data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfBirth()));
@@ -369,6 +369,13 @@ public class SmeeAndFordPersonalisationService {
 
     private String removeLastNewLine(String data) {
         return data.substring(0, data.lastIndexOf(NEW_LINE));
+    }
+
+    private String getPoundValue(BigDecimal value) {
+        if (value == null || value.toString().length() < 2) {
+            return "0";
+        }
+        return value.toString().substring(0, value.toString().length() - 2);
     }
 
 }
