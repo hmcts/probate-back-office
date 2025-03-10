@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -9,8 +10,9 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.util.Locale;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ZeroApplyingExecutorsValidationRule {
@@ -25,10 +27,11 @@ public class ZeroApplyingExecutorsValidationRule {
         String userMessage = businessValidationMessageRetriever.getMessage(NO_EXECUTORS, args, Locale.UK);
         String userMessageWelsh = businessValidationMessageRetriever.getMessage(NO_EXECUTORS_WELSH, args, Locale.UK);
 
-        if (caseData.getNumberOfExecutors() == 0L
-                && NO.equals(caseData.getOtherExecutorExists())
-                && NO.equals(caseData.getSolsSolicitorIsExec())
-                && NO.equals(caseData.getSolsSolicitorIsApplying())) {
+        //!YES because caseField getters can return null as journey may not have reached there
+        if (!YES.equals(caseData.getSolsSolicitorIsExec())
+                && !YES.equals(caseData.getSolsSolicitorIsApplying())
+                && !YES.equals(caseData.getOtherExecutorExists())
+                && (YES.equals(caseData.getAppointExec()) || YES.equals(caseData.getAppointExecNo()))) {
             throw new BusinessValidationException(userMessage,
                 "There must be at least one executor applying. You have not added "
                         + "an applying probate practitioner or any executors for case id "
