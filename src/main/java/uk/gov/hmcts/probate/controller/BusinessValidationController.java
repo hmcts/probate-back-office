@@ -220,7 +220,7 @@ public class BusinessValidationController {
         if (response.getErrors().isEmpty()) {
             if (YES.equals(details.getData().getHmrcLetterId()) || null == details.getData().getHmrcLetterId()) {
                 Optional<String> newState =
-                    stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
+                        stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
                 response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
             } else {
                 response = callbackResponseTransformer.transformCase(callbackRequest, Optional.empty());
@@ -250,7 +250,7 @@ public class BusinessValidationController {
             Optional<String> newState =
                 stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState,
-                LEGAL_STATEMENT_PROBATE_TRUST_CORPS, GRANT_OF_PROBATE_NAME);
+                    LEGAL_STATEMENT_PROBATE_TRUST_CORPS, GRANT_OF_PROBATE_NAME);
         }
         return ResponseEntity.ok(response);
     }
@@ -269,9 +269,9 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState =
-                    stateChangeService.getChangedStateForIntestacyUpdate(callbackRequest.getCaseDetails().getData());
+                stateChangeService.getChangedStateForIntestacyUpdate(callbackRequest.getCaseDetails().getData());
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_INTESTACY,
-                    INTESTACY_NAME);
+                INTESTACY_NAME);
         }
         return ResponseEntity.ok(response);
     }
