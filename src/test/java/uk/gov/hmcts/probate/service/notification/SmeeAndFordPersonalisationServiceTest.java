@@ -59,8 +59,6 @@ class SmeeAndFordPersonalisationServiceTest {
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
     private static final BigDecimal NET = BigDecimal.valueOf(900000);
 
-    private static final BigDecimal GROSS_WITH_DECIMAL = BigDecimal.valueOf(1000000.34);
-    private static final BigDecimal NET_WITH_DECIMAL = BigDecimal.valueOf(900000.56);
     private TestUtils testUtils = new TestUtils();
 
     @BeforeEach
