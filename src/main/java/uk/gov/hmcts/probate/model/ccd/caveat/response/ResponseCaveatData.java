@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseCaveatData {
 
+    private final String state;
     private final ApplicationType applicationType;
     private final String registryLocation;
 
@@ -119,4 +121,5 @@ public class ResponseCaveatData {
     private final ChangeOrganisationRequest changeOrganisationRequestField;
     private String matches;
     private final List<String> paymentConfirmCheckbox;
+    private final TTL ttl;
 }

@@ -1,0 +1,33 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "match": {
+            "data.applicationType.keyword": "Solicitor"
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "SolAppCreated"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "size": %s,
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]
