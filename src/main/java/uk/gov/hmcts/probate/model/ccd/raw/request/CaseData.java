@@ -747,4 +747,30 @@ public class CaseData extends CaseDataParent {
         this.setPrimaryApplicantPhoneNumber(null);
     }
 
+    public String getIhtGrossValuePounds() {
+        return getPoundValue(ihtGrossValue);
+    }
+
+    public String getIhtNetValuePounds() {
+        return getPoundValue(ihtNetValue);
+    }
+
+    public String getIhtEstateGrossValuePounds() {
+        return getPoundValue(ihtEstateGrossValue);
+    }
+
+    public String getIhtEstateNetValuePounds() {
+        return getPoundValue(ihtEstateNetValue);
+    }
+
+    public String getIhtEstateNetQualifyingValuePounds() {
+        return getPoundValue(ihtEstateNetQualifyingValue);
+    }
+
+    private String getPoundValue(BigDecimal value) {
+        if (value == null || value.toString().length() < 2) {
+            return "0";
+        }
+        return value.toString().substring(0, value.toString().length() - 2);
+    }
 }
