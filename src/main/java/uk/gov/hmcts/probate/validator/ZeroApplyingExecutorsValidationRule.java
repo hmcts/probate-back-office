@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.util.Locale;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Slf4j
 @Component
@@ -28,9 +29,11 @@ public class ZeroApplyingExecutorsValidationRule {
         String userMessageWelsh = businessValidationMessageRetriever.getMessage(NO_EXECUTORS_WELSH, args, Locale.UK);
 
         //!YES because caseField getters can return null as journey may not have reached there
-        if (!YES.equals(caseData.getSolsSolicitorIsExec())
+        if (null != caseData.getOtherExecutorExists()
+                && !YES.equals(caseData.getPrimaryApplicantIsApplying())
+                && !YES.equals(caseData.getSolsSolicitorIsExec())
                 && !YES.equals(caseData.getSolsSolicitorIsApplying())
-                && !YES.equals(caseData.getOtherExecutorExists())
+                && NO.equals(caseData.getOtherExecutorExists())
                 && (YES.equals(caseData.getAppointExec()) || YES.equals(caseData.getAppointExecNo()))) {
             throw new BusinessValidationException(userMessage,
                 "There must be at least one executor applying. You have not added "
