@@ -45,6 +45,7 @@ import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
@@ -132,6 +133,7 @@ public class BusinessValidationController {
     private final ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
+    private final SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformer;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
@@ -238,6 +240,8 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        zeroApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
 
@@ -282,7 +286,6 @@ public class BusinessValidationController {
 
         validateTitleAndClearingPage(callbackRequest);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
-        zeroApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
         caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequest);
         CallbackResponse response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
