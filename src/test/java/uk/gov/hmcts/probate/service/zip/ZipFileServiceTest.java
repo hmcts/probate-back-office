@@ -137,9 +137,8 @@ class ZipFileServiceTest {
                 .boDocumentsUploaded(willDocuments)
                 .scannedDocuments(scannedWillDocuments)
                 .build();
-        ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(data, null, caseId);
 
-        return returnedCaseDetails;
+        return new ReturnedCaseDetails(data, null, caseId);
     }
 
     @Test

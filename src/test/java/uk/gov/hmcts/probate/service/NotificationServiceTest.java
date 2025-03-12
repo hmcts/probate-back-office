@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
@@ -107,12 +108,13 @@ class NotificationServiceTest {
         when(personalisationValidationRuleMock.validatePersonalisation(dummyPersonalisation))
                 .thenReturn(mockResult);
 
-        assertThrows(NotificationClientException.class, () ->
+        assertThrows(RequestInformationParameterException.class, () ->
                 notificationService.doCommonNotificationServiceHandling(dummyPersonalisation, dummyCaseId));
     }
 
     @Test
-    void givenPersonalisationWithHtml_whenCommonValidation_thenReturnsHtmlFound() throws NotificationClientException {
+    void givenPersonalisationWithHtml_whenCommonValidation_thenReturnsHtmlFound()
+            throws RequestInformationParameterException {
         final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
         final Long dummyCaseId = 1L;
 
@@ -129,7 +131,8 @@ class NotificationServiceTest {
     }
 
     @Test
-    void givenPersonalisationWithNoIssue_whenCommonValidation_thenReturnsAllOk() throws NotificationClientException {
+    void givenPersonalisationWithNoIssue_whenCommonValidation_thenReturnsAllOk()
+            throws RequestInformationParameterException {
         final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
         final Long dummyCaseId = 1L;
 
