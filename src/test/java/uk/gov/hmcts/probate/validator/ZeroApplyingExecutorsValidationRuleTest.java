@@ -18,6 +18,8 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 
 class ZeroApplyingExecutorsValidationRuleTest {
@@ -44,7 +46,9 @@ class ZeroApplyingExecutorsValidationRuleTest {
         caseDataMock = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
                 .solsSolicitorIsExec("No")
+                .appointExec("Yes")
                 .numberOfExecutors(0L)
+                .primaryApplicantIsApplying("No")
                 .otherExecutorExists("No")
                 .solsSolicitorIsApplying("No")
                 .titleAndClearingType("TCTPartSuccPowerRes")
@@ -59,9 +63,9 @@ class ZeroApplyingExecutorsValidationRuleTest {
 
         String[] args = {"0"};
         when(businessValidationMessageRetriever.getMessage(NO_EXECUTORS, args, Locale.UK))
-                .thenReturn("User message for no executors");
+                .thenReturn("There must be at least one executor applying. You have not added an applying probate practitioner or any executors");
         when(businessValidationMessageRetriever.getMessage(NO_EXECUTORS_WELSH, args, Locale.UK))
-                .thenReturn("Welsh user message for no executors");
+                .thenReturn("There must be at least one executor applying. You have not added an applying probate practitioner or any executors Welsh");
 
         BusinessValidationException bve = assertThrows(BusinessValidationException.class, () -> {
             underTest.validate(caseDetailsMock);
