@@ -49,7 +49,11 @@ public class PrepareNocService {
         ChangeOrganisationRequest changeOrganisationRequest = getChangeOrganisationRequest(caseData);
         List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
         log.info("Change of Representatives before for case {} ", caseDetails.getId().toString());
-        ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData, changeOrganisationRequest);
+        Optional<SolicitorUser> solicitorDetails = findSolicitorDetails(securityUtils
+                        .getUserBySchedulerTokenAndServiceSecurityDTO(),
+                changeOrganisationRequest, caseDetails.getId().toString());
+        ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData, changeOrganisationRequest,
+                solicitorDetails);
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after for case {} ", caseDetails.getId().toString());
         representatives.sort((m1, m2) -> {
@@ -57,8 +61,7 @@ public class PrepareNocService {
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
             return dt2.compareTo(dt1);
         });
-        getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
-                        changeOrganisationRequest, caseData, caseDetails.getId().toString());
+        setNewSolicitorDetails(solicitorDetails, caseData, changeOrganisationRequest);
         SolsAddress solsAddress =
                 getNewSolicitorAddress(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest.getOrganisationToAdd().getOrganisationID(),
@@ -92,21 +95,22 @@ public class PrepareNocService {
         return null;
     }
 
-    private void getNewSolicitorDetails(SecurityDTO securityDTO,
-                                                           ChangeOrganisationRequest changeOrganisationRequest,
-                                                       Map<String, Object> caseData, String id) {
-        FindUsersByOrganisation organisationUser = findOrganisationDetails(securityDTO, changeOrganisationRequest, id);
-        Optional<SolicitorUser> solicitorDetails = Optional.empty();
-        if (null != organisationUser
-                && null != organisationUser.getUsers()
-                && !organisationUser.getUsers().isEmpty()) {
-            solicitorDetails = organisationUser.getUsers()
+    private Optional<SolicitorUser> findSolicitorDetails(SecurityDTO securityDTO,
+                                                         ChangeOrganisationRequest changeOrganisationRequest,
+                                                         String caseId) {
+        FindUsersByOrganisation organisationUser = findOrganisationDetails(securityDTO, changeOrganisationRequest,
+                caseId);
+        if (organisationUser != null && organisationUser.getUsers() != null && !organisationUser.getUsers().isEmpty()) {
+            return organisationUser.getUsers()
                     .stream()
-                    .filter(x -> changeOrganisationRequest.getCreatedBy().equalsIgnoreCase(
-                            x.getEmail()))
+                    .filter(x -> changeOrganisationRequest.getCreatedBy().equalsIgnoreCase(x.getEmail()))
                     .findFirst();
         }
+        return Optional.empty();
+    }
 
+    private void setNewSolicitorDetails(Optional<SolicitorUser> solicitorDetails, Map<String, Object> caseData,
+                                        ChangeOrganisationRequest changeOrganisationRequest) {
         if (solicitorDetails.isPresent()) {
             SolicitorUser solicitorUser = solicitorDetails.get();
             caseData.put("solsSOTForenames", solicitorUser.getFirstName());
@@ -143,9 +147,10 @@ public class PrepareNocService {
     }
 
     public ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData,
-                                                              ChangeOrganisationRequest changeOrganisationRequest) {
+                                                              ChangeOrganisationRequest changeOrganisationRequest,
+                                                              Optional<SolicitorUser> solicitorDetails) {
         RemovedRepresentative removeRepresentative = setRemovedRepresentative(caseData, changeOrganisationRequest);
-        AddedRepresentative addRepresentative = setAddRepresentative(changeOrganisationRequest);
+        AddedRepresentative addRepresentative = setAddRepresentative(changeOrganisationRequest, solicitorDetails);
         return ChangeOfRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
                 .addedRepresentative(addRepresentative)
@@ -153,11 +158,14 @@ public class PrepareNocService {
                 .build();
     }
 
-    private AddedRepresentative setAddRepresentative(ChangeOrganisationRequest changeOrganisationRequest) {
+    private AddedRepresentative setAddRepresentative(ChangeOrganisationRequest changeOrganisationRequest,
+                                                     Optional<SolicitorUser> solicitorDetails) {
         return AddedRepresentative.builder()
                 .organisationID(changeOrganisationRequest.getOrganisationToAdd().getOrganisationID())
                 .updatedBy(changeOrganisationRequest.getCreatedBy())
                 .updatedVia("NOC")
+                .solicitorFirstName(solicitorDetails.isPresent() ? solicitorDetails.get().getFirstName() : "")
+                .solicitorLastName(solicitorDetails.isPresent() ? solicitorDetails.get().getLastName() : "")
                 .build();
     }
 
