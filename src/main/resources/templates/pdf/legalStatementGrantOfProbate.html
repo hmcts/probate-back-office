@@ -542,6 +542,15 @@
             {% endif %}
 
             {% endfor %}
+            <p>{% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
+                {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
+                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                at the date of death of the deceased have renounced probate.{% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
+                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                at the date of death of the deceased have renounced probate.{% endif %}</p>
+
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
             <p>The executor{% if multipleOtherPartners > 1%}s{% endif %} {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes" %}
                 {{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }},{% endif %}
@@ -586,7 +595,6 @@
                         {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}lacks capacity to manage their affairs under the Mental Capacity Act 2005 and is unable to act as an executor.{% endif %}
             </span></p>
             {% endif %}
-
             {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
             <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.</span></p>
@@ -595,15 +603,9 @@
                 that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.</span></p>
             {% endif %}
-
             {% endfor %}
             {% else %}
-                {% if case_details.case_data.titleAndClearingType != "TCTPartAllRenouncing"
-                    and case_details.case_data.titleAndClearingType != "TCTPartSuccAllRenouncing"
-                    and case_details.case_data.titleAndClearingType != "TCTPartOthersRenouncing"
-                    and case_details.case_data.titleAndClearingType != "TCTPartSuccOthersRenouncing" %}
-                    <p>None.</p>
-                {% endif %}
+            <p>None.</p>
             {% endif %}
         </td>
     </tr>
@@ -917,6 +919,14 @@
                 to whom power is to be reserved.
             </span></p>
             {% endif %}
+            {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+            <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                at the date of death of the deceased have renounced probate.</span></p>
+            {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+            <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                at the date of death of the deceased have renounced probate.</span></p>
+            {% endif %}
             {% else %}
             <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
                         {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
@@ -933,7 +943,7 @@
         </td>
     </tr>
     <tr>
-        <td  colspan="2">
+        <td colspan="2">
             <p>{% if (multipleExecutors) %}We{% else %}I{% endif %} authorise
                 {{ case_details.case_data.solsSolicitorFirmName }} to send on
                 {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf what
