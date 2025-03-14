@@ -52,7 +52,7 @@ public class PrepareNocCaveatService {
                 securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                 changeOrganisationRequest, caseDetails.getId().toString());
         ChangeOfRepresentative representative = prepareNocService.buildChangeOfRepresentative(caseData,
-                changeOrganisationRequest, solicitorDetails);
+                changeOrganisationRequest, solicitorDetails, representatives);
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after for case {} : {} ", caseDetails.getId().toString(), representatives);
         representatives.sort((m1, m2) -> {
