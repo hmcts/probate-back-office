@@ -178,8 +178,8 @@ public class PrepareNocService {
                                                            List<CollectionMember<ChangeOfRepresentative>>
                                                                    representatives) {
         RemovedRepresentative removed;
-        if (CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase((String) caseData.get("channelChoice")) &&
-                representatives.isEmpty()) {
+        if (CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase((String) caseData.get("channelChoice"))
+                && representatives.isEmpty()) {
             return null;
         }
         if (caseData.get("caveatorEmailAddress") != null) {
