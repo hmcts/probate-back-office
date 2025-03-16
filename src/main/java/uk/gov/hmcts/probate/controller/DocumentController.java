@@ -424,6 +424,10 @@ public class DocumentController {
                 callbackRequest.getCaseDetails().getData().getDocumentUploadIssue(),
                 callbackRequest.getCaseDetails().getData().getIsSaveAndClose()
         );
+        log.info("Citizen Hub Response for caseId: {}  applSubmDate: {}",
+                callbackRequest.getCaseDetails().getId(),
+                callbackRequest.getCaseDetails().getData().getApplicationSubmittedDate()
+        );
         return ResponseEntity.ok(callbackResponseTransformer.transformCitizenHubResponse(callbackRequest));
     }
 
