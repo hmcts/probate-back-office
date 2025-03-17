@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
 import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
@@ -31,6 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.caseaccess.DecisionRequest.decisionRequest;
 
 @Slf4j
@@ -54,7 +56,7 @@ public class PrepareNocService {
                         .getUserBySchedulerTokenAndServiceSecurityDTO(),
                 changeOrganisationRequest, caseDetails.getId().toString());
         ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData, changeOrganisationRequest,
-                solicitorDetails, representatives);
+                solicitorDetails, representatives, caseDetails.getCaseTypeId());
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after for case {} ", caseDetails.getId().toString());
         representatives.sort((m1, m2) -> {
@@ -151,9 +153,9 @@ public class PrepareNocService {
                                                               ChangeOrganisationRequest changeOrganisationRequest,
                                                               Optional<SolicitorUser> solicitorDetails,
                                                               List<CollectionMember<ChangeOfRepresentative>>
-                                                                      representatives) {
+                                                                      representatives, String caseTypeId) {
         RemovedRepresentative removeRepresentative = setRemovedRepresentative(caseData, changeOrganisationRequest,
-                representatives);
+                representatives, caseTypeId);
         AddedRepresentative addRepresentative = setAddRepresentative(changeOrganisationRequest, solicitorDetails);
         return ChangeOfRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
@@ -176,13 +178,15 @@ public class PrepareNocService {
     private RemovedRepresentative setRemovedRepresentative(Map<String, Object> caseData,
                                                            ChangeOrganisationRequest changeOrganisationRequest,
                                                            List<CollectionMember<ChangeOfRepresentative>>
-                                                                   representatives) {
+                                                                   representatives, String caseTypeId) {
         RemovedRepresentative removed;
-        if (CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase((String) caseData.get("channelChoice"))
-                && representatives.isEmpty()) {
+        if (representatives.isEmpty() && (
+                (CaseType.GRANT_OF_REPRESENTATION.name().equals(caseTypeId)
+                        && CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase((String) caseData.get("channelChoice")))
+                        || (CaseType.CAVEAT.name().equals(caseTypeId)
+                        && YES.equalsIgnoreCase((String) caseData.get("paperForm"))))) {
             return null;
-        }
-        if (caseData.get("caveatorEmailAddress") != null) {
+        } else if (CaseType.CAVEAT.name().equals(caseTypeId) && caseData.get("caveatorEmailAddress") != null) {
             removed = RemovedRepresentative.builder()
                     .organisationID(changeOrganisationRequest.getOrganisationToRemove().getOrganisationID())
                     .solicitorEmail(caseData.get("caveatorEmailAddress").toString())

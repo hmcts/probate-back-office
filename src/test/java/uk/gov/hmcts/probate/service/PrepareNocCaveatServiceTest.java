@@ -104,7 +104,7 @@ class PrepareNocCaveatServiceTest {
                 .users(Collections.singletonList(solicitorUser)).build();
         when(organisationApi.findSolicitorOrganisation(anyString(), anyString(), anyString()))
                 .thenReturn(organisationUser);
-        when(prepareNocServiceMock.buildChangeOfRepresentative(any(), any(), any(), any()))
+        when(prepareNocServiceMock.buildChangeOfRepresentative(any(), any(), any(), any(), any()))
                 .thenReturn(changeOfRepresentative);
         when(objectMapper.convertValue(caseData.get("removedRepresentative"),
                 RemovedRepresentative.class)).thenReturn(removed);
