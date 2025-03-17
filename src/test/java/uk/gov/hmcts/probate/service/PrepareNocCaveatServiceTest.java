@@ -128,7 +128,7 @@ class PrepareNocCaveatServiceTest {
     @Test
      void testApplyDecision() {
         CallbackRequest request = CallbackRequest.builder()
-                .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
+                .caseDetails(CaseDetails.builder().data(caseData).id(0L).caseTypeId("Caveat").build())
                 .build();
         underTest.applyDecision(request, "testAuth");
         verify(organisationApi, times(1))
