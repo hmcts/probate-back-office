@@ -181,12 +181,12 @@ public class PrepareNocService {
                                                                    representatives, String caseTypeId) {
         RemovedRepresentative removed;
         if (representatives.isEmpty() && (
-                (CaseType.GRANT_OF_REPRESENTATION.name().equals(caseTypeId)
+                (CaseType.GRANT_OF_REPRESENTATION.getCode().equals(caseTypeId)
                         && CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase((String) caseData.get("channelChoice")))
-                        || (CaseType.CAVEAT.name().equals(caseTypeId)
+                        || (CaseType.CAVEAT.getCode().equals(caseTypeId)
                         && YES.equalsIgnoreCase((String) caseData.get("paperForm"))))) {
             return null;
-        } else if (CaseType.CAVEAT.name().equals(caseTypeId) && caseData.get("caveatorEmailAddress") != null) {
+        } else if (CaseType.CAVEAT.getCode().equals(caseTypeId) && caseData.get("caveatorEmailAddress") != null) {
             removed = RemovedRepresentative.builder()
                     .organisationID(changeOrganisationRequest.getOrganisationToRemove().getOrganisationID())
                     .solicitorEmail(caseData.get("caveatorEmailAddress").toString())
