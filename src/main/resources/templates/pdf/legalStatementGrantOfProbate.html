@@ -165,9 +165,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            {% set notApplyingWelshCount = 0 %}
             {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
-            {% set notApplyingWelshCount = notApplyingWelshCount + 1 %}
 
             {% if executor.value.applyingExecutorType == "Named" %}
             <p>
@@ -197,12 +195,6 @@
                 yn y cwmni {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
                 a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
                 ar ddyddiad marwolaeth yr unigolyn a fu farw.</p>
-            {% endif %}
-
-            {% if notApplyingWelshCount == case_details.case_data.executorsApplyingLegalStatement|length %}
-                <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} arall sy’n rhannu elw
-                    yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }}
-                    yn ymwrthod â’i hawl i gael profiant.</p>
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
@@ -257,7 +249,9 @@
     <tr>
         <td colspan="2">
             {% if case_details.case_data.executorsNotApplyingLegalStatement|length>0 %}
+            {% set notApplyingWelshCount = 0 %}
             {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
+            {% set notApplyingWelshCount = notApplyingWelshCount + 1 %}
             {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
             {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
             <p><span>Mae rhybudd o’r cais hwn ar {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
@@ -278,9 +272,22 @@
                         {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}nid oes ganddynt y gallu meddyliol i reoli eu materion dan Ddeddf Galluedd Meddyliol 2005 ac nid ydynt yn gallu gweithredu fel ysgutor.{% endif %}
             </span></p>
             {% endif %}
+
+            {% if notApplyingWelshCount == case_details.case_data.executorsApplyingLegalStatement|length
+                and case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing"
+                or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+                    <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} arall sy’n rhannu elw
+                    yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }} yn ymwrthod â’i hawl i gael profiant.</p>
+            {% endif %}
+
             {% endfor %}
             {% else %}
-            <p>Dim.</p>
+                {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} arall sy’n rhannu elw
+                        yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }} yn ymwrthod â’i hawl i gael profiant.</p>
+                {% else %}
+                    <p>Dim.</p>
+                {% endif %}
             {% endif %}
         </td>
     </tr>
@@ -485,10 +492,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            {% set notApplyingCount = 0 %}
             {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
-            {% set notApplyingCount = notApplyingCount + 1 %}
-
             {% if executor.value.applyingExecutorType == "Named" %}
             <p>
                 {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}an{% else %}the{% endif %} executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
@@ -520,11 +524,6 @@
                 in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
                 that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
                 at the date of death of the deceased.</p>
-            {% endif %}
-
-            {% if notApplyingCount == case_details.case_data.executorsApplyingLegalStatement|length %}
-            <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
-                in the firm {{ case_details.case_data.nameOfSucceededFirm }} are renouncing their right to probate.</p>
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
@@ -581,7 +580,11 @@
     <tr>
         <td colspan="2">
             {% if case_details.case_data.executorsNotApplyingLegalStatement|length>0 %}
+
+            {% set executorsNotApplyingCount = 0 %}
             {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
+            {% set executorsNotApplyingCount = executorsNotApplyingCount + 1 %}
+
             {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
             {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
             <p><span>Notice of this application has on the {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
@@ -603,17 +606,22 @@
                         {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}lacks capacity to manage their affairs under the Mental Capacity Act 2005 and is unable to act as an executor.{% endif %}
             </span></p>
             {% endif %}
-            {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
-            <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.</span></p>
-            {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-            <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.</span></p>
+
+            {% if executorsNotApplyingCount == case_details.case_data.executorsApplyingLegalStatement|length
+                and case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing"
+                or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                    are renouncing their right to probate.</p>
             {% endif %}
+
             {% endfor %}
             {% else %}
-            <p>None.</p>
+                {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                        are renouncing their right to probate.</p>
+                {% else %}
+                    <p>None.</p>
+                {% endif %}
             {% endif %}
         </td>
     </tr>
@@ -821,9 +829,8 @@
     </tr>
     <tr>
         <td colspan="2">
-            {% set notApplyingCount = 0 %}
             {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
-            {% set notApplyingCount = notApplyingCount + 1 %}
+
             {% if executor.value.applyingExecutorType == "Named" %}
             <p>
                 {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}an{% else %}the{% endif %} executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
@@ -857,12 +864,6 @@
                 at the date of death of the deceased.</p>
             {% endif %}
 
-            {% if notApplyingCount == case_details.case_data.executorsApplyingLegalStatement|length %}
-                <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
-                in the firm {{ case_details.case_data.nameOfSucceededFirm }} are renouncing their right to probate.</p>
-            {% endif %}
-
-
             {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
             <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
@@ -884,6 +885,7 @@
             <p> {{ executor.value.applyingExecutorName }} is acting on behalf of {{ case_details.case_data.trustCorpName }}
                 trust corporation. They hold the position of {{ executor.value.applyingExecutorTrustCorpPosition }} as per the resolution.</p>
             {% endif %}
+
             {% endfor %}
             <p>{% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
                 {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
@@ -916,7 +918,9 @@
     <tr>
         <td colspan="2">
             {% if case_details.case_data.executorsNotApplyingLegalStatement|length>0 %}
+            {% set executorsNotApplyingCount = 0 %}
             {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
+            {% set executorsNotApplyingCount = executorsNotApplyingCount + 1 %}
             {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
             {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
             <p><span>Notice of this application has on the {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
@@ -929,14 +933,6 @@
                 to whom power is to be reserved.
             </span></p>
             {% endif %}
-            {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
-            <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.</span></p>
-            {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-            <p><span>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.</span></p>
-            {% endif %}
             {% else %}
             <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
                         {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
@@ -946,9 +942,22 @@
                         {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}lacks capacity to manage their affairs under the Mental Capacity Act 2005 and is unable to act as an executor.{% endif %}
             </span></p>
             {% endif %}
+
+            {% if executorsNotApplyingCount == case_details.case_data.executorsNotApplyingLegalStatement|length %}
+                {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                    are renouncing their right to probate.</p>
+                {% endif %}
+            {% endif %}
+
             {% endfor %}
             {% else %}
-            <p>None.</p>
+                {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                        are renouncing their right to probate.</p>
+                {% else %}
+                    <p>None.</p>
+                {% endif %}
             {% endif %}
         </td>
     </tr>
