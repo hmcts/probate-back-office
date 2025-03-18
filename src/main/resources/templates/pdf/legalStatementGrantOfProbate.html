@@ -249,9 +249,9 @@
     <tr>
         <td colspan="2">
             {% if case_details.case_data.executorsNotApplyingLegalStatement|length>0 %}
-            {% set notApplyingWelshCount = 0 %}
+            {% set welshExecutorsNotApplyingCount = 0 %}
             {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
-            {% set notApplyingWelshCount = notApplyingWelshCount + 1 %}
+            {% set welshExecutorsNotApplyingCount = welshExecutorsNotApplyingCount + 1 %}
             {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
             {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
             <p><span>Mae rhybudd o’r cais hwn ar {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
@@ -273,11 +273,11 @@
             </span></p>
             {% endif %}
 
-            {% if notApplyingWelshCount == case_details.case_data.executorsApplyingLegalStatement|length
-                and case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing"
-                or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+            {% if welshExecutorsNotApplyingCount == case_details.case_data.executorsApplyingLegalStatement|length %}
+                {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
                     <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} arall sy’n rhannu elw
                     yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }} yn ymwrthod â’i hawl i gael profiant.</p>
+                {% endif %}
             {% endif %}
 
             {% endfor %}
@@ -607,11 +607,11 @@
             </span></p>
             {% endif %}
 
-            {% if executorsNotApplyingCount == case_details.case_data.executorsApplyingLegalStatement|length
-                and case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing"
-                or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+            {% if executorsNotApplyingCount == case_details.case_data.executorsNotApplyingLegalStatement|length %}
+                {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
                     <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
                     are renouncing their right to probate.</p>
+                {% endif %}
             {% endif %}
 
             {% endfor %}
