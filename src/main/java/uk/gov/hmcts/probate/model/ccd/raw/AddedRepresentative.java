@@ -16,4 +16,5 @@ public class AddedRepresentative {
     private final String solicitorFirstName;
     private final String solicitorLastName;
     private final String updatedVia;
+    private final String channelChoice;
 }

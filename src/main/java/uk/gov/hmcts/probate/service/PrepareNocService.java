@@ -156,7 +156,8 @@ public class PrepareNocService {
                                                                       representatives, String caseTypeId) {
         RemovedRepresentative removeRepresentative = setRemovedRepresentative(caseData, changeOrganisationRequest,
                 representatives, caseTypeId);
-        AddedRepresentative addRepresentative = setAddRepresentative(changeOrganisationRequest, solicitorDetails);
+        AddedRepresentative addRepresentative = setAddRepresentative(caseData, changeOrganisationRequest,
+                solicitorDetails, caseTypeId);
         return ChangeOfRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
                 .addedRepresentative(addRepresentative)
@@ -164,15 +165,33 @@ public class PrepareNocService {
                 .build();
     }
 
-    private AddedRepresentative setAddRepresentative(ChangeOrganisationRequest changeOrganisationRequest,
-                                                     Optional<SolicitorUser> solicitorDetails) {
+    private AddedRepresentative setAddRepresentative(Map<String, Object> caseData,
+                                                     ChangeOrganisationRequest changeOrganisationRequest,
+                                                     Optional<SolicitorUser> solicitorDetails, String caseTypeId) {
+        String channelChoice = determineChannelChoice(caseData, caseTypeId);
         return AddedRepresentative.builder()
                 .organisationID(changeOrganisationRequest.getOrganisationToAdd().getOrganisationID())
                 .updatedBy(changeOrganisationRequest.getCreatedBy())
                 .updatedVia("NOC")
                 .solicitorFirstName(solicitorDetails.isPresent() ? solicitorDetails.get().getFirstName() : "")
                 .solicitorLastName(solicitorDetails.isPresent() ? solicitorDetails.get().getLastName() : "")
+                .channelChoice(channelChoice)
                 .build();
+    }
+
+    private String determineChannelChoice(Map<String, Object> caseData, String caseTypeId) {
+        String channelChoice = null;
+        if (CaseType.GRANT_OF_REPRESENTATION.getCode().equals(caseTypeId)) {
+            channelChoice = (String) caseData.get("channelChoice");
+        } else if (CaseType.CAVEAT.getCode().equals(caseTypeId)) {
+            String paperForm = (String) caseData.get("paperForm");
+            if (YES.equalsIgnoreCase(paperForm)) {
+                channelChoice = "BulkScan";
+            } else {
+                channelChoice = "Digital";
+            }
+        }
+        return channelChoice;
     }
 
     private RemovedRepresentative setRemovedRepresentative(Map<String, Object> caseData,
