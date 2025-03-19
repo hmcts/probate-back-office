@@ -65,12 +65,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NEWCASTLE;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED_INTESTACY;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_GRANT_ISSUED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.EDGE_CASE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 
@@ -353,6 +355,11 @@ public class DocumentController {
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
+        if (callbackRequest.getCaseDetails().getState().equals(BO_GRANT_ISSUED_NAME)) {
+            log.info("document uploads to case {} at state {} set HSE to NO",
+                    callbackRequest.getCaseDetails().getId(),BO_GRANT_ISSUED_NAME);
+            callbackRequest.getCaseDetails().getData().setEvidenceHandled(NO);
+        }
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);

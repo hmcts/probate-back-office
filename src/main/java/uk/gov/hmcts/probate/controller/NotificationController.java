@@ -56,6 +56,7 @@ import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
@@ -63,6 +64,7 @@ import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.NOC;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_GRANT_ISSUED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
 @RequiredArgsConstructor
@@ -250,6 +252,11 @@ public class NotificationController {
             && (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState()))) {
             document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
             caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
+        }
+        if (callbackRequest.getCaseDetails().getState().equals(BO_GRANT_ISSUED_NAME)) {
+            log.info("attach scanned doc to case {} at state {} set HSE to NO",
+                    callbackRequest.getCaseDetails().getId(),BO_GRANT_ISSUED_NAME);
+            callbackRequest.getCaseDetails().getData().setEvidenceHandled(NO);
         }
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer

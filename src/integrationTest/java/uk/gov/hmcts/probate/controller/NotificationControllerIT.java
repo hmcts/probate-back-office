@@ -157,6 +157,7 @@ class NotificationControllerIT {
     private List<String> errors = new ArrayList<>();
     private CallbackResponse errorResponse;
     private CallbackResponse successfulResponse;
+    private CallbackResponse evidenceHandledNoResponse;
 
     @BeforeEach
     public void setUp() throws NotificationClientException, BadRequestException {
@@ -165,6 +166,8 @@ class NotificationControllerIT {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         successfulResponse =
             CallbackResponse.builder().data(ResponseCaseData.builder().deceasedForenames("Bob").build()).build();
+        evidenceHandledNoResponse =
+            CallbackResponse.builder().data(ResponseCaseData.builder().evidenceHandled("No").build()).build();
         List<Document> docList = new ArrayList<>();
         docList.add(EMPTY_DOC);
 
@@ -678,6 +681,19 @@ class NotificationControllerIT {
         verify(caseDataTransformer).transformCaseDataForDocsReceivedNotificationSent(any());
         verify(evidenceUploadService).updateLastEvidenceAddedDate(any());
         verify(notificationService).sendEmail(any(), any());
+    }
+
+    @Test
+    void shouldHandleEvidenceToNoForAttachScannedDocGrantIssued() throws Exception {
+        String payload = testUtils.getStringFromFile("personalGrantIssuedPayloadNotifications.json");
+        when(callbackResponseTransformer
+                .transformCaseForAttachScannedDocs(any(), any(), any())).thenReturn(evidenceHandledNoResponse);
+        mockMvc.perform(post(START_GRANT_DELAYED_NOTIFICATION_DATE)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));
     }
 
     @Test
