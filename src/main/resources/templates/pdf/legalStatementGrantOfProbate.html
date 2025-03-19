@@ -276,7 +276,7 @@
             {% if welshExecutorsNotApplyingCount == case_details.case_data.executorsApplyingLegalStatement|length %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
                     <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} arall sy’n rhannu elw
-                    yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }} yn ymwrthod â’i hawl i gael profiant.</p>
+                    yn y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }} yn ymwrthod â’i hawl i gael profiant.</p>
                 {% endif %}
             {% endif %}
 
@@ -617,7 +617,7 @@
             {% endfor %}
             {% else %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                         are renouncing their right to probate.</p>
                 {% else %}
                     <p>None.</p>
@@ -945,7 +945,7 @@
 
             {% if executorsNotApplyingCount == case_details.case_data.executorsNotApplyingLegalStatement|length %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                     are renouncing their right to probate.</p>
                 {% endif %}
             {% endif %}
