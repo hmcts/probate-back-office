@@ -609,7 +609,12 @@
 
             {% if executorsNotApplyingCount == case_details.case_data.executorsNotApplyingLegalStatement|length %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                    {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                        {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                    {% else %}
+                        {{ case_details.case_data.nameOfFirmNamedInWill }}
+                    {% endif %}
                     are renouncing their right to probate.</p>
                 {% endif %}
             {% endif %}
@@ -617,7 +622,12 @@
             {% endfor %}
             {% else %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                        {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                            {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                        {% else %}
+                            {{ case_details.case_data.nameOfFirmNamedInWill }}
+                        {% endif %}
                         are renouncing their right to probate.</p>
                 {% else %}
                     <p>None.</p>
@@ -945,7 +955,12 @@
 
             {% if executorsNotApplyingCount == case_details.case_data.executorsNotApplyingLegalStatement|length %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                    {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                        {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                    {% else %}
+                        {{ case_details.case_data.nameOfFirmNamedInWill }}
+                    {% endif %}
                     are renouncing their right to probate.</p>
                 {% endif %}
             {% endif %}
@@ -953,8 +968,13 @@
             {% endfor %}
             {% else %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
-                        are renouncing their right to probate.</p>
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                        {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                            {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                        {% else %}
+                            {{ case_details.case_data.nameOfFirmNamedInWill }}
+                        {% endif %}
+                        {{ case_details.case_data.nameOfSucceededFirm }} are renouncing their right to probate.</p>
                 {% else %}
                     <p>None.</p>
                 {% endif %}
