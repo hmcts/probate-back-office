@@ -1,0 +1,28 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "Deleted",
+              "Stopped"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]

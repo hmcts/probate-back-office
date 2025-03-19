@@ -18,8 +18,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
-import uk.gov.hmcts.probate.model.caseaccess.Organisation;
-import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -35,17 +33,22 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.PrepareNocService;
 import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.math.BigDecimal;
@@ -235,6 +238,14 @@ class BusinessValidationControllerIT {
     private PrepareNocService prepareNocService;
     @MockBean
     private UserInfoService userInfoService;
+    @MockBean
+    private SecurityUtils securityUtils;
+    @MockBean
+    private AuditEventService auditEventService;
+    @MockBean
+    private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
+
+
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
@@ -1310,15 +1321,17 @@ class BusinessValidationControllerIT {
 
     @Test
     void shouldValidateRollback() throws Exception {
-        OrganisationPolicy policy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("ABC")
-                        .organisationName("OrgName")
-                        .build())
-                .orgPolicyReference(null)
-                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
                 .build();
-        caseDataBuilder.applicantOrganisationPolicy(policy);
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventService.getLatestAuditEventByName(any(), any(), any(), any()))
+                .thenReturn(Optional.ofNullable(AuditEvent.builder()
+                        .stateId("SolsAppUpdated")
+                        .createdDate(LocalDateTime.now())
+                        .build()));
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
