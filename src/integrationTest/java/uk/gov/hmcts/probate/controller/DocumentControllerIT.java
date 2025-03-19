@@ -875,6 +875,16 @@ class DocumentControllerIT {
     }
 
     @Test
+    void shouldHandleEvidenceToNoForDocumentUploadGrantIssued() throws Exception {
+        String payload = testUtils.getStringFromFile("documentUploadGrantIssuedEvidenceHandledNo.json");
+
+        mockMvc.perform(post("/document/evidenceAdded")
+                        .content(payload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));
+    }
+
+    @Test
     void shouldUpdateLastEvidenceAddedDateRobotOngoing() throws Exception {
         String payload = testUtils.getStringFromFile("digitalCase.json");
         mockMvc.perform(post("/document/evidenceAddedRPARobot")
