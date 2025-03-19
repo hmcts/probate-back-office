@@ -37,6 +37,7 @@ import static org.mockito.Mockito.when;
 class HmrcFileServiceTest {
     private static final String FILE_DATE = "20190101-123456";
     private static final String FILE_NAME = "1_20190101.dat";
+
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private FileExtractDateFormatter fileExtractDateFormatter = Mockito.mock(FileExtractDateFormatter.class);
     private ExceptedEstateDateOfDeathChecker expectedEstateDateOfDeathChecker =

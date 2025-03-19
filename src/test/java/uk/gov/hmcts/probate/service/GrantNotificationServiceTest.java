@@ -40,6 +40,7 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_DELA
 class GrantNotificationServiceTest {
 
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
+
     @InjectMocks
     private GrantNotificationService grantNotificationService;
 

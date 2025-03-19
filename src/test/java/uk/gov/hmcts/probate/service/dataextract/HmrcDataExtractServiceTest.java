@@ -54,6 +54,7 @@ class HmrcDataExtractServiceTest {
 
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
+
     private CaseData caseData;
 
     @BeforeEach
