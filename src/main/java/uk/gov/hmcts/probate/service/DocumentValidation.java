@@ -89,7 +89,7 @@ public class DocumentValidation {
      * @return An empty Optional if document is of expected type, or a descriptive error String if not.
      */
     public Optional<String> validateUploadedDocumentIsType(
-            final long caseId,
+            final Long caseId,
             final DocumentLink uploadedDocumentLink,
             final MediaType expectedType) {
 
