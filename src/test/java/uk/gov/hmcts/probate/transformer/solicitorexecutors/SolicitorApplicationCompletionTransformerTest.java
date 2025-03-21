@@ -79,7 +79,7 @@ class SolicitorApplicationCompletionTransformerTest {
     private static final String NOT_APPLICABLE = "NotApplicable";
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         additionalExecutorApplying = new ArrayList<>();
         additionalExecutorApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
@@ -380,5 +380,20 @@ class SolicitorApplicationCompletionTransformerTest {
                 caseDetails);
 
         verify(caseData, times(0)).clearPrimaryApplicant();
+    }
+
+    @Test
+    void givenNoAdditionalExecutorsCausesAdditionalExecutorsIsExplicitlyCleared() {
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
+
+        when(caseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
+        when(caseData.getTitleAndClearingType()).thenReturn("");
+        when(caseData.getOtherExecutorExists()).thenReturn(NO);
+
+        solicitorApplicationCompletionTransformer.clearAdditionalExecutorWhenUpdatingApplicantDetails(caseDetails);
+
+        verify(caseData, times(1)).clearAdditionalExecutorList();
+        assertEquals(0, caseDetails.getData().getSolsAdditionalExecutorList().size());
     }
 }
