@@ -61,15 +61,15 @@ class ZeroApplyingExecutorsValidationRuleTest {
 
         String[] args = {"0"};
         when(businessValidationMessageRetriever.getMessage(NO_EXECUTORS, args, Locale.UK))
-                .thenReturn("You need to add at least 1 other partner that acts as an executor");
+                .thenReturn("There must be at least one executor applying");
         when(businessValidationMessageRetriever.getMessage(NO_EXECUTORS_WELSH, args, Locale.UK))
-                .thenReturn("Mae angen i chi ychwanegu o leiaf un partner arall sy''n gweithredu fel ysgutor");
+                .thenReturn("Rhaid bod o leiaf un ysgutor yn gwneud cais");
 
         BusinessValidationException bve = assertThrows(BusinessValidationException.class, () -> {
             underTest.validate(caseDetailsMock);
         });
         assertThat(bve.getMessage(),
-                containsString("You need to add at least 1 other partner that acts as an executor for case id 0"));
+                containsString("There must be at least one executor applying for case id 0"));
     }
 
     @Test

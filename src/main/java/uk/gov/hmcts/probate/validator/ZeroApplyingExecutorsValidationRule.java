@@ -18,8 +18,8 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 @RequiredArgsConstructor
 public class ZeroApplyingExecutorsValidationRule {
 
-    private static final String NO_EXECUTORS = "partnersNeeded";
-    private static final String NO_EXECUTORS_WELSH = "partnersNeededWelsh";
+    private static final String NO_EXECUTORS = "zeroExecutors";
+    private static final String NO_EXECUTORS_WELSH = "zeroExecutorsWelsh";
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     public void validate(CaseDetails caseDetails) {
@@ -36,7 +36,7 @@ public class ZeroApplyingExecutorsValidationRule {
                 && NO.equals(caseData.getOtherExecutorExists())
                 && (YES.equals(caseData.getAppointExec()) || YES.equals(caseData.getAppointExecNo()))) {
             throw new BusinessValidationException(userMessage,
-                "You need to add at least 1 other partner that acts as an executor for case id "
+                "There must be at least one executor applying for case id "
                         + caseDetails.getId(), userMessageWelsh);
         }
     }
