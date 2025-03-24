@@ -60,6 +60,7 @@ import uk.gov.hmcts.probate.validator.StopReasonValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.ZeroApplyingExecutorsValidationRule;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -197,6 +198,8 @@ class BusinessValidationUnitTest {
     private AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
     @Mock
     private UserInfoService userInfoServiceMock;
+    @Mock
+    private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -239,6 +242,7 @@ class BusinessValidationUnitTest {
             registrarDirectionServiceMock,
             pre1900DOBValidationRuleMock,
             adColligendaBonaCaseTypeValidationRule,
+            zeroApplyingExecutorsValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock);
 
