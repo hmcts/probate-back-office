@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
@@ -97,6 +98,7 @@ public class DocumentController {
     private final DocumentManagementService documentManagementService;
     private final EvidenceUploadService evidenceUploadService;
     private final UserInfoService userInfoService;
+    private final FeatureToggleService featureToggleService;
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -479,16 +481,20 @@ public class DocumentController {
 
         final DocumentLink amendedLegalStatement = caseDetails.getData().getAmendedLegalStatement();
 
-        final Optional<String> validationErr = documentValidation.validateUploadedDocumentIsType(
-                caseId,
-                amendedLegalStatement,
-                MediaType.APPLICATION_PDF);
+        if (featureToggleService.enableAmendLegalStatementFiletypeCheck()) {
+            final Optional<String> validationErr = documentValidation.validateUploadedDocumentIsType(
+                    caseId,
+                    amendedLegalStatement,
+                    MediaType.APPLICATION_PDF);
 
-        if (validationErr.isPresent()) {
-            final String validationMsg = validationErr.get();
-            log.info("case {} validation error: {}", caseId, validationMsg);
-            CallbackResponse err = CallbackResponse.builder().errors(List.of(validationMsg)).build();
-            return ResponseEntity.ok(err);
+            if (validationErr.isPresent()) {
+                final String validationMsg = validationErr.get();
+                log.info("case {} validation error: {}", caseId, validationMsg);
+                CallbackResponse err = CallbackResponse.builder().errors(List.of(validationMsg)).build();
+                return ResponseEntity.ok(err);
+            }
+        } else {
+            log.info("Skipping legal statement filetype validation in case {}", caseId);
         }
 
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
