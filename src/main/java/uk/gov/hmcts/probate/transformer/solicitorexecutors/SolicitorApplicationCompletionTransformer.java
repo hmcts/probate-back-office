@@ -99,7 +99,8 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
     }
 
     public void clearAdditionalExecutorWhenUpdatingApplicantDetails(CaseDetails caseDetails) {
-        if (NO.equals(caseDetails.getData().getOtherExecutorExists())) {
+        if (NO.equals(caseDetails.getData().getOtherExecutorExists())
+                && caseDetails.getData().getSolsAdditionalExecutorList() != null) {
             caseDetails.getData().clearAdditionalExecutorList();
         }
     }
