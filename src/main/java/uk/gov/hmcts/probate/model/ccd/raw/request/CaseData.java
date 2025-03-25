@@ -748,8 +748,6 @@ public class CaseData extends CaseDataParent {
     }
 
     public void clearAdditionalExecutorList() {
-        if (getSolsAdditionalExecutorList() != null) {
-            getSolsAdditionalExecutorList().clear();
-        }
+        getSolsAdditionalExecutorList().clear();
     }
 }
