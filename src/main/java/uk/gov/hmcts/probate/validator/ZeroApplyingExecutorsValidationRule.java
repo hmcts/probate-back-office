@@ -32,6 +32,8 @@ public class ZeroApplyingExecutorsValidationRule {
         if (null != caseData.getOtherExecutorExists()
                 && !YES.equals(caseData.getPrimaryApplicantIsApplying())
                 && !caseData.getOtherPartnersApplyingAsExecutors().isEmpty()
+                && !caseData.getAdditionalExecutorsTrustCorpList().isEmpty()
+                && !caseData.getOtherPartnersApplyingAsExecutors().isEmpty()
                 && !YES.equals(caseData.getSolsSolicitorIsExec())
                 && !YES.equals(caseData.getSolsSolicitorIsApplying())
                 && NO.equals(caseData.getOtherExecutorExists())
