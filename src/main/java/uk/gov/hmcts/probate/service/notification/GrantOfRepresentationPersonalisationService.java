@@ -183,19 +183,8 @@ public class GrantOfRepresentationPersonalisationService {
         StringBuilder data = new StringBuilder();
 
         for (ReturnedCaseDetails currentCase : cases) {
-            try {
-                data.append(currentCase.getId().toString());
-                data.append(", ");
-                data.append(parseDelimiters(currentCase.getData().getDeceasedForenames()));
-                data.append(", ");
-                data.append(parseDelimiters(currentCase.getData().getDeceasedSurname()));
-                data.append("\n");
-            } catch (Exception e) {
-                data.append(currentCase.getId().toString());
-                data.append(", ");
-                data.append(e.toString());
-                data.append("\n");
-            }
+            getCaseData(data, currentCase.getId(), currentCase.getData().getDeceasedForenames(),
+                    currentCase.getData().getDeceasedSurname());
         }
         return data;
     }
@@ -204,21 +193,26 @@ public class GrantOfRepresentationPersonalisationService {
         StringBuilder data = new StringBuilder();
 
         for (ReturnedCaveatDetails currentCase : cases) {
-            try {
-                data.append(currentCase.getId().toString());
-                data.append(", ");
-                data.append(parseDelimiters(currentCase.getData().getDeceasedForenames()));
-                data.append(", ");
-                data.append(parseDelimiters(currentCase.getData().getDeceasedSurname()));
-                data.append("\n");
-            } catch (Exception e) {
-                data.append(currentCase.getId().toString());
-                data.append(", ");
-                data.append(e.toString());
-                data.append("\n");
-            }
+            getCaseData(data, currentCase.getId(), currentCase.getData().getDeceasedForenames(),
+                    currentCase.getData().getDeceasedSurname());
         }
         return data;
+    }
+
+    private void getCaseData(StringBuilder data, Long id, String deceasedForenames, String deceasedSurname) {
+        try {
+            data.append(id.toString());
+            data.append(", ");
+            data.append(parseDelimiters(deceasedForenames));
+            data.append(", ");
+            data.append(parseDelimiters(deceasedSurname));
+            data.append("\n");
+        } catch (Exception e) {
+            data.append(id.toString());
+            data.append(", ");
+            data.append(e.toString());
+            data.append("\n");
+        }
     }
 
     private String parseDelimiters(String value) {

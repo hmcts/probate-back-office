@@ -28,20 +28,20 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task FetchDraftCasesWithPaymentTask started");
-        String fromDate = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
-        String toDate = fromDate;
+        String startDate = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+        String endDate = startDate;
         if (StringUtils.isNotEmpty(adHocJobFromDate)) {
-            fromDate = adHocJobFromDate;
-            toDate = StringUtils.isNotEmpty(adHocJobToDate) ? adHocJobToDate : adHocJobFromDate;
-            log.info("Running FetchDraftCasesWithPaymentTask with Adhoc dates {} {}", fromDate, toDate);
+            startDate = adHocJobFromDate;
+            endDate = StringUtils.isNotEmpty(adHocJobToDate) ? adHocJobToDate : adHocJobFromDate;
+            log.info("Running FetchDraftCasesWithPaymentTask with Adhoc dates {} {}", startDate, endDate);
         }
-        log.info("Calling perform fetch draft cases wth payment done from date, to date {} {}", fromDate, toDate);
+        log.info("Calling perform fetch draft cases wth payment done from date, to date {} {}", startDate, endDate);
         try {
-            dataExtractDateValidator.dateValidator(fromDate, toDate);
+            dataExtractDateValidator.dateValidator(startDate, endDate);
             log.info("Perform send email for GOR draft cases wth payment  from date started");
-            fetchDraftCaseService.fetchCases(fromDate, toDate, false);
+            fetchDraftCaseService.fetchCases(startDate, endDate, false);
             log.info("Perform send email for Caveat draft cases wth payment  from date started");
-            fetchDraftCaseService.fetchCases(fromDate, toDate, true);
+            fetchDraftCaseService.fetchCases(startDate, endDate, true);
             log.info("Perform fetch draft cases with payment from date finished");
         } catch (ApiClientException e) {
             log.error(e.getMessage());
