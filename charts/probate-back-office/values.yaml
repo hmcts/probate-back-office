@@ -44,7 +44,6 @@ java:
     PAYMENT_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     ACA_SERVICE_API_BASEURL: http://aac-manage-case-assignment-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-
     PROBATE_POSTGRESQL_USER: pgadmin
     PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-flexible-db-{{ .Values.global.environment }}.postgres.database.azure.com
     PROBATE_POSTGRESQL_DATABASE: probatemandb
@@ -53,6 +52,8 @@ java:
     ADHOC_JOB_DATE:
     JOB_SHUTDOWN_DELAY: 10
     BACK_OFFICE_BASEURL: http://probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    MANAGE_CASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
+    FRONTEND_URL: https://probate.{{ .Values.global.environment }}.platform.hmcts.net
   keyVaults:
     probate:
       secrets:

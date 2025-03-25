@@ -60,7 +60,8 @@ class DormantCaseServiceTest {
                 .build();
         caseList = new ImmutableList.Builder<ReturnedCaseDetails>()
                 .add(new ReturnedCaseDetails(caseData, LocalDateTime.now(ZoneOffset.UTC), 1L))
-                .add(new ReturnedCaseDetails(migratedCaseData, LocalDateTime.now(ZoneOffset.UTC).minusMonths(1), 1L))
+                .add(new ReturnedCaseDetails(migratedCaseData,
+                        LocalDateTime.now(ZoneOffset.UTC).minusMonths(1), 1L))
                 .build();
         CaseData caseData1 = CaseData.builder()
                 .deceasedSurname("Doe")

@@ -32,9 +32,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
@@ -135,6 +138,9 @@ public class CallbackResponseTransformer {
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final String IHT400 = "IHT400";
     private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection", "boCorrection");
+    private static final List<String> ROLLBACK_STATE_LIST = List.of("Pending", "CasePaymentFailed", "SolAdmonCreated",
+            "SolAppCreatedDeceasedDtls", "SolAppCreatedSolicitorDtls", "SolAppUpdated", "SolProbateCreated",
+            "SolIntestacyCreated", "Deleted", "Stopped");
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -150,6 +156,8 @@ public class CallbackResponseTransformer {
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final FeatureToggleService featureToggleService;
+    private final AuditEventService auditEventService;
+    private final SecurityUtils securityUtils;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -311,7 +319,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(),
                         callbackRequest.getEventId(),
-                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        caseworkerInfo,
                         false);
         responseCaseDataBuilder.evidenceHandled(YES);
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -630,7 +638,15 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(),false);
-        responseCaseDataBuilder.applicantOrganisationPolicy(null);
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        auditEventService.getLatestAuditEventByState(
+                        callbackRequest.getCaseDetails().getId().toString(), ROLLBACK_STATE_LIST,
+                        securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation())
+                .ifPresent(auditEvent -> {
+                    log.info("Audit event found: Case ID = {}, Event State = {}",
+                            callbackRequest.getCaseDetails().getId(), auditEvent.getStateId());
+                    responseCaseDataBuilder.state(auditEvent.getStateId());
+                });
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -890,7 +906,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(),
                         callbackRequest.getEventId(),
-                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        caseworkerInfo,
                         doTransform);
 
         if (letterId != null) {
@@ -1400,8 +1416,9 @@ public class CallbackResponseTransformer {
             .expectedResponseDate(caseData.getExpectedResponseDate())
             .citizenResponses(caseData.getCitizenResponses())
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
+            .isSaveAndClose(caseData.getIsSaveAndClose())
             .executorsNamed(caseData.getExecutorsNamed())
-            .isSaveAndClose(caseData.getIsSaveAndClose());
+            .ttl(caseData.getTtl());
 
         if (featureToggleService.enableNewAliasTransformation()) {
             handleDeceasedAliases(
