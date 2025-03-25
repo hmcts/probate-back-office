@@ -7,10 +7,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -18,6 +23,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.util.CommonVariables.*;
 
 
 class ZeroApplyingExecutorsValidationRuleTest {
@@ -31,12 +37,32 @@ class ZeroApplyingExecutorsValidationRuleTest {
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private CaseData caseDataMock;
 
+    private List<CollectionMember<AdditionalExecutorTrustCorps>> trustCorpsExecutorList;
+    private List<CollectionMember<AdditionalExecutorTrustCorps>> emptyTrustCorpsExecutorList;
+
+    private List<CollectionMember<AdditionalExecutorPartners>> partnerExecutorList;
+    private List<CollectionMember<AdditionalExecutorPartners>> emptyPartnerExecutorList;
+
     private static final String NO_EXECUTORS = "zeroExecutors";
     private static final String NO_EXECUTORS_WELSH = "zeroExecutorsWelsh";
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
+
+        trustCorpsExecutorList = new ArrayList<>();
+        trustCorpsExecutorList.add(new CollectionMember(EXEC_ID,
+                AdditionalExecutorTrustCorps.builder()
+                        .additionalExecForenames(EXEC_FIRST_NAME)
+                        .additionalExecLastname(EXEC_SURNAME)
+                        .additionalExecutorTrustCorpPosition(EXEC_TRUST_CORP_POS)
+                        .build()));
+
+        partnerExecutorList = new ArrayList<>();
+        partnerExecutorList.add(PARTNER_EXEC);
+
+        emptyPartnerExecutorList = new ArrayList<>();
+        emptyTrustCorpsExecutorList = new ArrayList<>();
     }
 
     @Test
@@ -54,6 +80,8 @@ class ZeroApplyingExecutorsValidationRuleTest {
                 .primaryApplicantSurname("Practitioner")
                 .anyOtherApplyingPartners("No")
                 .registryLocation("Bristol")
+                .otherPartnersApplyingAsExecutors(emptyPartnerExecutorList)
+                .additionalExecutorsTrustCorpList(emptyTrustCorpsExecutorList)
                 .build();
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -85,6 +113,8 @@ class ZeroApplyingExecutorsValidationRuleTest {
                 .primaryApplicantSurname("Practitioner")
                 .anyOtherApplyingPartners("No")
                 .registryLocation("Bristol")
+                .otherPartnersApplyingAsExecutors(partnerExecutorList)
+                .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .build();
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);

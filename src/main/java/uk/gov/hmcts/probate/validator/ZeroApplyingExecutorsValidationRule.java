@@ -31,8 +31,8 @@ public class ZeroApplyingExecutorsValidationRule {
         //!YES because caseField getters can return null as journey may not have reached there
         if (null != caseData.getOtherExecutorExists()
                 && !YES.equals(caseData.getPrimaryApplicantIsApplying())
-                && !caseData.getOtherPartnersApplyingAsExecutors().isEmpty()
-                && !caseData.getAdditionalExecutorsTrustCorpList().isEmpty()
+                && caseData.getOtherPartnersApplyingAsExecutors().isEmpty()
+                && caseData.getAdditionalExecutorsTrustCorpList().isEmpty()
                 && !YES.equals(caseData.getSolsSolicitorIsExec())
                 && !YES.equals(caseData.getSolsSolicitorIsApplying())
                 && NO.equals(caseData.getOtherExecutorExists())
