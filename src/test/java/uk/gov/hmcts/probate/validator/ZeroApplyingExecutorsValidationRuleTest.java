@@ -23,7 +23,11 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.util.CommonVariables.*;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_SURNAME;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
+import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 
 
 class ZeroApplyingExecutorsValidationRuleTest {
