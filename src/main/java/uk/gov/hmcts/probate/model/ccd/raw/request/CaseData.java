@@ -774,6 +774,7 @@ public class CaseData extends CaseDataParent {
         }
         final BigDecimal poundsValue = value.divideToIntegralValue(BigDecimal.valueOf(100L));
         return poundsValue.toString();
+    }
       
     public void clearAdditionalExecutorList() {
         getSolsAdditionalExecutorList().clear();
