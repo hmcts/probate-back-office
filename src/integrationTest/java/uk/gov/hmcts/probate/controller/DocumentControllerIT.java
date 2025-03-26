@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.BulkPrintService;
@@ -141,6 +142,9 @@ class DocumentControllerIT {
     @MockBean
     private CaseDocumentClient caseDocumentClient;
 
+    @MockBean
+    private FeatureToggleService featureToggleService;
+
     @BeforeEach
     public void setUp() throws NotificationClientException {
         final Document document = Document.builder()
@@ -234,6 +238,8 @@ class DocumentControllerIT {
                 .thenCallRealMethod();
 
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
+
+        when(featureToggleService.enableAmendLegalStatementFiletypeCheck()).thenReturn(true);
     }
 
     @Test

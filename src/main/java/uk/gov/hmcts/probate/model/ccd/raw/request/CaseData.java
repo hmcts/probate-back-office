@@ -630,6 +630,7 @@ public class CaseData extends CaseDataParent {
     private final String expectedResponseDate;
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
+    private final String executorsNamed;
 
     private TTL ttl;
 
@@ -773,5 +774,8 @@ public class CaseData extends CaseDataParent {
         }
         final BigDecimal poundsValue = value.divideToIntegralValue(BigDecimal.valueOf(100L));
         return poundsValue.toString();
+      
+    public void clearAdditionalExecutorList() {
+        getSolsAdditionalExecutorList().clear();
     }
 }
