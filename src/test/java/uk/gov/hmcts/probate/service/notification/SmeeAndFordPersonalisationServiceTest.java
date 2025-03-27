@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.util.TestUtils;
 
@@ -49,6 +50,9 @@ class SmeeAndFordPersonalisationServiceTest {
     @Mock
     private FileSystemResourceService fileSystemResourceService;
 
+    @Mock
+    private FeatureToggleService featureToggleService;
+
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
     private ReturnedCaseDetails returnedCaseDetailsSolicitor;
     private ReturnedCaseDetails returnedCaseDetailsTypeWill;
@@ -58,6 +62,7 @@ class SmeeAndFordPersonalisationServiceTest {
 
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
     private static final BigDecimal NET = BigDecimal.valueOf(900000);
+    private static final String SMEE_AND_FORD_POUND_VALUE_TOGGLE = "probate-smee-ford-pound-value";
 
     private TestUtils testUtils = new TestUtils();
 
@@ -78,6 +83,8 @@ class SmeeAndFordPersonalisationServiceTest {
                 + "applicant Country|Gross|Net|Solicitor Name|Solicitor Reference|Solicitor Address|Solicitor Town|"
                 + "Solicitor County|Solicitor Postcode|Solicitor Country|date of birth|Field which alerts us to "
                 + "Codicil being present|pdf file name field for Wills|pdf for Digital Grant");
+        when(featureToggleService.isFeatureToggleOn(
+                SMEE_AND_FORD_POUND_VALUE_TOGGLE, false)).thenReturn(true);
     }
 
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType,
