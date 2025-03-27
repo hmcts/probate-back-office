@@ -103,7 +103,6 @@ public class FetchDraftCaseService {
         SecurityDTO securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
         PaymentsResponse response = serviceRequestClient.retrievePayments(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), SERVICE_NAME, caseId);
-        log.info("PaymentsResponse: {}", response);
 
         boolean isPaymentSuccessful = response.getPayments().stream()
                 .anyMatch(payment -> "success".equalsIgnoreCase(payment.getStatus()));

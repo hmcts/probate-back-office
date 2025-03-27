@@ -716,7 +716,7 @@ public class NotificationService {
         String reference = LocalDateTime.now().format(EXELA_DATE);
         log.info("start sendEmail for Draft cases with payment status as Success");
         SendEmailResponse response = notificationClientService.sendEmail(templateId,
-                emailAddresses.getSealedAndCertifiedEmail(), personalisation, reference);
+                emailAddresses.getDraftCaseWithPaymentEmail(), personalisation, reference);
         log.info("Draft cases email reference response: {}", response.getReference());
     }
 

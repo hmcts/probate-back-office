@@ -499,6 +499,7 @@ data-extract:
 
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFord@probate-test.com}
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
+draftCaseWithPaymentEmail: ${DRAFT_CASES_WITH_PAYMENT_EMAIL:draftCases@probate-test.com}
 
 welsh:
   months:
