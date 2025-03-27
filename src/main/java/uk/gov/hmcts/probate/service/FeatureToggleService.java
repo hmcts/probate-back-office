@@ -53,6 +53,14 @@ public class FeatureToggleService {
         return this.isFeatureToggleOn("probate-enable-new-alias-transformation", false);
     }
 
+    public boolean enableNotificationPreview() {
+        return this.isFeatureToggleOn("probate-enable-notification-preview", false);
+    }
+
+    public boolean enableNotificationPersist() {
+        return this.isFeatureToggleOn("probate-enable-notification-persist", false);
+    }
+
     public boolean enableAmendLegalStatementFiletypeCheck() {
         return this.isFeatureToggleOn("enable-amend-legal-statement-filetype-check", false);
     }

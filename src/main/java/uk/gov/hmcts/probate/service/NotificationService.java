@@ -100,6 +100,7 @@ public class NotificationService {
     private final DisposalReminderPersonalisationService disposalReminderPersonalisationService;
     private final UserInfoService userInfoService;
 
+    private final FeatureToggleService featureToggleService;
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
     private Long grantDelayedNotificationPeriodDays;
@@ -506,14 +507,14 @@ public class NotificationService {
 
     private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
                                           DocumentType docType) {
+        final String body = pdfManagementService.rerenderAsXhtml(response.getHtml().orElseThrow());
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
-                .body(response.getBody())
+                .body(body)
                 .build();
-        Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
-        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
+        return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {
