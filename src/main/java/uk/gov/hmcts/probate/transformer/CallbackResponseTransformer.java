@@ -1476,7 +1476,37 @@ public class CallbackResponseTransformer {
 
         List<CollectionMember<AliasName>> newSolsDecAliases = new ArrayList<>();
 
+        final String decTitle = caseData.getBoDeceasedTitle();
+        if ("ADD_FIRST".equals(decTitle)) {
+            final String beforeName = "BEFORE_" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            final AliasName beforeAlias = AliasName.builder()
+                    .solsAliasname(beforeName)
+                    .build();
+            log.info("{}: Adding {} at start", caseRef, beforeName);
+            newSolsDecAliases.add(new CollectionMember<>(null, beforeAlias));
+
+            final String currentDom = caseData.getDeceasedDomicileInEngWales();
+            if (YES.equals(currentDom)) {
+                log.info("{}: domE&W: {}, set No", caseRef, currentDom);
+                builder.deceasedDomicileInEngWales(NO);
+            } else {
+                log.info("{}: domE&W: {}, set Yes", caseRef, currentDom);
+                builder.deceasedDomicileInEngWales(YES);
+            }
+        }
+
         if (solsDecAliases != null) {
+            final StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            final String collected = solsDecAliases.stream()
+                    .map(v -> v.getValue().getSolsAliasname() + ", ")
+                    .collect(
+                            () -> sb,
+                            StringBuilder::append,
+                            StringBuilder::append)
+                    .append("]")
+                    .toString();
+            log.info("{}: Before collection: {}", caseRef, collected);
             newSolsDecAliases.addAll(solsDecAliases);
         }
 
@@ -1492,12 +1522,43 @@ public class CallbackResponseTransformer {
                     decAliasFNOnWill,
                     decAliasLNOnWill));
         }
+        if ("ADD_LAST".equals(decTitle)) {
+            final String afterName = "AFTER_" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            final AliasName afterAlias = AliasName.builder()
+                    .solsAliasname(afterName)
+                    .build();
+            log.info("{}: Adding {} at end", caseRef, afterName);
+            newSolsDecAliases.add(new CollectionMember<>(null, afterAlias));
+
+
+            final String currentDom = caseData.getDeceasedDomicileInEngWales();
+            if (YES.equals(currentDom)) {
+                log.info("{}: domE&W: {}, set No", caseRef, currentDom);
+                builder.deceasedDomicileInEngWales(NO);
+            } else {
+                log.info("{}: domE&W: {}, set Yes", caseRef, currentDom);
+                builder.deceasedDomicileInEngWales(YES);
+            }
+        }
 
         Set<String> seenAliasNames = new HashSet<>();
 
-        builder.solsDeceasedAliasNamesList(newSolsDecAliases.stream()
+        final List<CollectionMember<AliasName>> list = newSolsDecAliases.stream()
                 .filter(a -> seenAliasNames.add(a.getValue().getSolsAliasname()))
-                .toList());
+                .toList();
+        final StringBuilder sb = new StringBuilder();
+        final String after = list.stream()
+                .map(v -> v.getValue().getSolsAliasname() + ", ")
+                .collect(
+                        () -> sb,
+                        StringBuilder::append,
+                        StringBuilder::append)
+                .append("]")
+                .toString();
+        log.info("{}: Resulting list: {}", caseRef, after);
+
+        builder.solsDeceasedAliasNamesList(list);
+
     }
 
     List<CollectionMember<AliasName>> convertAliasOnWillToSolsDecAliasList(
