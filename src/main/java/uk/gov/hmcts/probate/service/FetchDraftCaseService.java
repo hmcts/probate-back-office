@@ -55,11 +55,7 @@ public class FetchDraftCaseService {
             }
 
             if (!successfulPaymentCases.isEmpty()) {
-                try {
-                    notificationService.sendEmailForGORSuccessfulPayment(successfulPaymentCases, startDate, endDate);
-                } catch (NotificationClientException e) {
-                    log.error("NotificationClientException: {}", e.getMessage());
-                }
+                sendGORSuccessfulPaymentNotification(successfulPaymentCases, startDate, endDate);
             }
         } catch (Exception e) {
             log.error("FetchGORCases method error {}", e.getMessage());
@@ -88,14 +84,28 @@ public class FetchDraftCaseService {
             }
 
             if (!successfulPaymentCases.isEmpty()) {
-                try {
-                    notificationService.sendEmailForCaveatSuccessfulPayment(successfulPaymentCases, startDate, endDate);
-                } catch (NotificationClientException e) {
-                    log.error("NotificationClientException: {}", e.getMessage());
-                }
+                sendCaveatSuccessfulPaymentNotification(successfulPaymentCases, startDate, endDate);
             }
         } catch (Exception e) {
             log.error("FetchDraftCase method error {}", e.getMessage());
+        }
+    }
+
+    private void sendCaveatSuccessfulPaymentNotification(List<ReturnedCaveatDetails> successfulPaymentCases,
+                                                         String startDate, String endDate) {
+        try {
+            notificationService.sendEmailForCaveatSuccessfulPayment(successfulPaymentCases, startDate, endDate);
+        } catch (NotificationClientException e) {
+            log.error("NotificationClientException: {}", e.getMessage());
+        }
+    }
+
+    private void sendGORSuccessfulPaymentNotification(List<ReturnedCaseDetails> successfulPaymentCases,
+                                                      String startDate, String endDate) {
+        try {
+            notificationService.sendEmailForGORSuccessfulPayment(successfulPaymentCases, startDate, endDate);
+        } catch (NotificationClientException e) {
+            log.error("NotificationClientException: {}", e.getMessage());
         }
     }
 
