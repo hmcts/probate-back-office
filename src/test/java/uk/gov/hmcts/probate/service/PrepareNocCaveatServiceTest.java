@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,12 +88,23 @@ class PrepareNocCaveatServiceTest {
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address Line1").proAddressLine2("Line2")
                 .proCountry("United Kingdom").proPostCode("sw2").proCounty("county").build();
         caseData.put("caveatorAddress",address);
+        securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH")
+                .serviceAuthorisation("S2S")
+                .build();
         ChangeOfRepresentative changeOfRepresentative  = ChangeOfRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
                 .addedRepresentative(AddedRepresentative.builder().organisationID("12")
                         .updatedBy("abc.gmail.com").build())
                 .removedRepresentative(removed).build();
-        when(prepareNocServiceMock.buildChangeOfRepresentative(caseData, changeRequest))
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        SolicitorUser solicitorUser = SolicitorUser.builder()
+                .firstName("Sol2First").lastName("Sol2LastName").email("sol2@gmail.com").build();
+        FindUsersByOrganisation organisationUser = FindUsersByOrganisation.builder()
+                .users(Collections.singletonList(solicitorUser)).build();
+        when(organisationApi.findSolicitorOrganisation(anyString(), anyString(), anyString()))
+                .thenReturn(organisationUser);
+        when(prepareNocServiceMock.buildChangeOfRepresentative(any(), any(), any(), any(), any()))
                 .thenReturn(changeOfRepresentative);
         when(objectMapper.convertValue(caseData.get("removedRepresentative"),
                 RemovedRepresentative.class)).thenReturn(removed);
@@ -111,24 +123,12 @@ class PrepareNocCaveatServiceTest {
                 .contactInformation(Arrays.asList(contactInformationResponse)).build();
         when(organisationApi.findOrganisationByOrgId(anyString(), anyString(), anyString()))
                 .thenReturn(organisationEntityResponse);
-
-        securityDTO = SecurityDTO.builder()
-                .authorisation("AUTH")
-                .serviceAuthorisation("S2S")
-                .build();
-
-        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
-        FindUsersByOrganisation organisationUser = FindUsersByOrganisation.builder()
-                .users(Arrays.asList(SolicitorUser.builder()
-                        .firstName("Sol2First").lastName("Sol2LastName").email("sol2@gmail.com").build())).build();
-        when(organisationApi.findSolicitorOrganisation(anyString(), anyString(), anyString()))
-                .thenReturn(organisationUser);
     }
 
     @Test
      void testApplyDecision() {
         CallbackRequest request = CallbackRequest.builder()
-                .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
+                .caseDetails(CaseDetails.builder().data(caseData).id(0L).caseTypeId("Caveat").build())
                 .build();
         underTest.applyDecision(request, "testAuth");
         verify(organisationApi, times(1))
