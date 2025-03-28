@@ -42,6 +42,7 @@ def secrets = [
                 secret('smeeAndFordEmail', 'SMEE_AND_FORD_EMAIL'),
                 secret('hmrcEmail', 'HMRC_EMAIL'),
                 secret('sealedAndCertifiedEmail', 'SEALED_AND_CERTIFIED_EMAIL'),
+                secret('draftCaseWithPaymentEmail', 'DRAFT_CASES_WITH_PAYMENT_EMAIL'),
                 secret('ftpSignature', 'FTP_SIGNATURE'),
                 secret('ftpEnv', 'FTP_ENV'),
                 secret('probate-bo-grantSignatureKey', 'PDF_SERVICE_GRANTSIGNATURESECRETKEY'),
