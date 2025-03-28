@@ -68,8 +68,7 @@ class FetchDraftCaseServiceTest {
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(paymentsResponse);
 
-        assertDoesNotThrow(() -> fetchDraftCaseService.fetchCases("2023-01-01", "2023-01-31",
-                false));
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchGORCases("2023-01-01", "2023-01-31"));
 
         verify(notificationService, times(1)).sendEmailForGORSuccessfulPayment(anyList(),
                 anyString(), anyString());
@@ -86,8 +85,7 @@ class FetchDraftCaseServiceTest {
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(paymentsResponse);
 
-        assertDoesNotThrow(() -> fetchDraftCaseService.fetchCases("2023-01-01", "2023-01-31",
-                true));
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchCaveatCases("2023-01-01", "2023-01-31"));
 
         verify(notificationService, times(1)).sendEmailForCaveatSuccessfulPayment(anyList(),
                 anyString(), anyString());
@@ -104,8 +102,7 @@ class FetchDraftCaseServiceTest {
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(paymentsResponse);
 
-        assertDoesNotThrow(() -> fetchDraftCaseService.fetchCases("2023-01-01", "2023-01-31",
-                false));
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchGORCases("2023-01-01", "2023-01-31"));
 
         verify(notificationService, never()).sendEmailForGORSuccessfulPayment(anyList(), anyString(), anyString());
     }
@@ -114,8 +111,7 @@ class FetchDraftCaseServiceTest {
     void fetchCasesWithNoDraftCases() throws NotificationClientException {
         when(caseQueryService.findDraftCases(anyString(), anyString())).thenReturn(Collections.emptyList());
 
-        assertDoesNotThrow(() -> fetchDraftCaseService.fetchCases("2023-01-01", "2023-01-31",
-                false));
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchGORCases("2023-01-01", "2023-01-31"));
 
         verify(notificationService, never()).sendEmailForGORSuccessfulPayment(anyList(), anyString(), anyString());
     }
@@ -134,8 +130,7 @@ class FetchDraftCaseServiceTest {
         doThrow(new NotificationClientException("Error")).when(notificationService)
                 .sendEmailForGORSuccessfulPayment(anyList(), anyString(), anyString());
 
-        assertDoesNotThrow(() -> fetchDraftCaseService.fetchCases("2023-01-01", "2023-01-31",
-                false));
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchGORCases("2023-01-01", "2023-01-31"));
 
         verify(notificationService, times(1))
                 .sendEmailForGORSuccessfulPayment(anyList(), anyString(), anyString());

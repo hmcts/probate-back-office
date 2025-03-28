@@ -39,9 +39,9 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
         try {
             dataExtractDateValidator.dateValidator(startDate, endDate);
             log.info("Perform send email for GOR draft cases wth payment  from date started");
-            fetchDraftCaseService.fetchCases(startDate, endDate, false);
+            fetchDraftCaseService.fetchGORCases(startDate, endDate);
             log.info("Perform send email for Caveat draft cases wth payment  from date started");
-            fetchDraftCaseService.fetchCases(startDate, endDate, true);
+            fetchDraftCaseService.fetchCaveatCases(startDate, endDate);
             log.info("Perform fetch draft cases with payment from date finished");
         } catch (ApiClientException e) {
             log.error(e.getMessage());

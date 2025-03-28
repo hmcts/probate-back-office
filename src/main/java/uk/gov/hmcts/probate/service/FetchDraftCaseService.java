@@ -27,14 +27,6 @@ public class FetchDraftCaseService {
     private final NotificationService notificationService;
     private final CaveatQueryService caveatQueryService;
 
-    public void fetchCases(String startDate, String endDate, boolean isCaveat) {
-        if (isCaveat) {
-            fetchCaveatCases(startDate, endDate);
-        } else {
-            fetchGORCases(startDate, endDate);
-        }
-    }
-
     public void fetchGORCases(String startDate, String endDate) {
         try {
             log.info("Fetch GOR cases upto date: {}", endDate);
