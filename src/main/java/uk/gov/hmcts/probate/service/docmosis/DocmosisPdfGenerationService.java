@@ -30,7 +30,7 @@ public class DocmosisPdfGenerationService {
     private TemplateProperties templateProperties;
 
 
-    @Value("${docmosis.service.endpoint}/rs/render")
+    @Value("${docmosis.service.endpoint}/api/render")
     private String pdfServiceEndpoint;
 
     @Value("${docmosis.service.accessKey}")
