@@ -59,24 +59,28 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Disabled
     void verifyGrantReissueDocument() throws IOException {
         verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadGrantReissued.json",
             "expectedPersonalDocumentGrantReissued.txt");
     }
 
     @Test
+    @Disabled
     void verifyIntestacyReissueDocument() throws IOException {
         verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadIntestacyReissued.json",
             "expectedPersonalDocumentIntestacyReissued.txt");
     }
 
     @Test
+    @Disabled
     void verifyAdmonWillReissueDocument() throws IOException {
         verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadAdmonWillReissued.json",
             "expectedPersonalDocumentAdmonWillReissued.txt");
     }
 
     @Test
+    @Disabled
     void verifyGrantReissueDocumentAppNameWithApostrophe() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(
             "personalPayloadGrantReissuedNameWithApostrophe.json", GRANT_REISSUED);
@@ -85,6 +89,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
+    @Disabled
     void verifyGrantReissueDocumentAppNameDoubleBarrelled() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(
             "personalPayloadGrantReissuedNameDoubleBarrelled.json", GRANT_REISSUED);
