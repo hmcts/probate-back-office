@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -52,6 +53,7 @@ public class SmeeAndFordPersonalisationService {
     private static final String NEW_LINE = "\n";
     private static final String SPACE = " ";
     private static final String COMMA = ",";
+    private static final String DEFAULT_PENCE = "00";
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT, INTESTACY_GRANT,
         WELSH_DIGITAL_GRANT, WELSH_ADMON_WILL_GRANT, WELSH_INTESTACY_GRANT, AD_COLLIGENDA_BONA_GRANT,
         WELSH_AD_COLLIGENDA_BONA_GRANT};
@@ -108,9 +110,9 @@ public class SmeeAndFordPersonalisationService {
                 data.append(getPrimaryApplicantName(currentCaseData));
                 data.append(DELIMITER);
                 data.append(getFullAddress(currentCaseData.getPrimaryApplicantAddress()));
-                data.append(currentCaseData.getIhtGrossValue().toString());
+                data.append(getReplacedPenceValue(currentCaseData.getIhtGrossValue()));
                 data.append(DELIMITER);
-                data.append(currentCaseData.getIhtNetValue().toString());
+                data.append(getReplacedPenceValue(currentCaseData.getIhtNetValue()));
                 data.append(DELIMITER);
                 data.append(getSolicitorDetails(currentCaseData));
                 data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfBirth()));
@@ -369,6 +371,14 @@ public class SmeeAndFordPersonalisationService {
 
     private String removeLastNewLine(String data) {
         return data.substring(0, data.lastIndexOf(NEW_LINE));
+    }
+
+    private String getReplacedPenceValue(BigDecimal value) {
+        if (value == null) {
+            return "0";
+        }
+        final BigDecimal poundsValue = value.divideToIntegralValue(BigDecimal.valueOf(100L));
+        return poundsValue.toString() + DEFAULT_PENCE;
     }
 
 }

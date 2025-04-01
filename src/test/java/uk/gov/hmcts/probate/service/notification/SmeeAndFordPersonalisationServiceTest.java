@@ -56,8 +56,8 @@ class SmeeAndFordPersonalisationServiceTest {
     private static final Long ID = 1234567812345678L;
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
 
-    private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
-    private static final BigDecimal NET = BigDecimal.valueOf(900000);
+    private static final BigDecimal GROSS = BigDecimal.valueOf(1000099);
+    private static final BigDecimal NET = BigDecimal.valueOf(900001);
 
     private TestUtils testUtils = new TestUtils();
 
