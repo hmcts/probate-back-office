@@ -1425,12 +1425,6 @@ public class CallbackResponseTransformer {
                     builder,
                     caseData,
                     caseDetails.getId());
-        } else {
-            builder.solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData));
-
-            builder.deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill());
-            builder.deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill());
-            builder.deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill());
         }
 
         if (transform) {
