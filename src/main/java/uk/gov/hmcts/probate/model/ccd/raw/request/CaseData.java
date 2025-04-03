@@ -774,6 +774,7 @@ public class CaseData extends CaseDataParent {
         }
         return value.toString().substring(0, value.toString().length() - 2);
     }
+
     public void clearAdditionalExecutorList() {
         getSolsAdditionalExecutorList().clear();
     }
