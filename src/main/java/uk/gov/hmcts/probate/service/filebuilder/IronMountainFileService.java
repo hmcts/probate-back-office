@@ -60,8 +60,8 @@ public class IronMountainFileService extends BaseFileService {
                 .add(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data.getPrimaryApplicantSurname() :
                     data.getSolsSolicitorFirmName());
             addAddress(fileData, applicantAddress);
-            fileData.add(getPoundValue(data.getIhtGrossValue()));
-            fileData.add(getPoundValue(data.getIhtNetValue()));
+            fileData.add(data.getIhtGrossValuePounds());
+            fileData.add(data.getIhtNetValuePounds());
             fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
             fileData.add(registryLocationCheck(data.getRegistryLocation()));
             fileData.add("\n");
