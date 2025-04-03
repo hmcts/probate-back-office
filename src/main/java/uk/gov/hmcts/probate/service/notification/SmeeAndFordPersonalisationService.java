@@ -27,13 +27,13 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_ORIGINAL_WILL;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
-import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
