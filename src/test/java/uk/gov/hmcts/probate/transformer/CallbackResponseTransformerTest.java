@@ -58,7 +58,6 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -586,8 +585,6 @@ class CallbackResponseTransformerTest {
     private SecurityDTO securityDTO;
     @Mock
     private AuditEventService auditEventService;
-    @Mock
-    private FeatureToggleService featureToggleService;
 
     @BeforeEach
     public void setup() {
@@ -5016,8 +5013,6 @@ class CallbackResponseTransformerTest {
                 DEC_ALIAS_NAME_CM,
                 SOL_DEC_ALIAS_NAME_CM);
         final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
-
-        when(featureToggleService.enableNewAliasTransformation()).thenReturn(true);
 
         try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
             respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
