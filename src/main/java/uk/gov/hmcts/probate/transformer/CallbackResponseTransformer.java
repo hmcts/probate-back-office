@@ -1417,6 +1417,7 @@ public class CallbackResponseTransformer {
             .citizenResponses(caseData.getCitizenResponses())
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
             .isSaveAndClose(caseData.getIsSaveAndClose())
+            .executorsNamed(caseData.getExecutorsNamed())
             .ttl(caseData.getTtl());
 
         if (featureToggleService.enableNewAliasTransformation()) {
