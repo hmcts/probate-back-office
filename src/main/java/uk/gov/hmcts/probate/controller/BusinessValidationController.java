@@ -61,9 +61,11 @@ import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.Pre1900DOBValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
+import uk.gov.hmcts.probate.validator.StopReasonValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.ZeroApplyingExecutorsValidationRule;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -116,6 +118,7 @@ public class BusinessValidationController {
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private final IHTValidationRule ihtValidationRule;
     private final UniqueCodeValidationRule uniqueCodeValidationRule;
+    private final StopReasonValidationRule stopReasonValidationRule;
     private final NaValidationRule naValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
@@ -126,6 +129,7 @@ public class BusinessValidationController {
     private final RegistrarDirectionService registrarDirectionService;
     private final Pre1900DOBValidationRule pre1900DOBValidationRule;
     private final AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
+    private final ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
 
@@ -234,6 +238,8 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        zeroApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
 
@@ -506,6 +512,14 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/validate-stop-reason", produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> validateStopReason(@RequestBody CallbackRequest callbackRequest,
+                                                                      HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        stopReasonValidationRule.validate(callbackRequest.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, Optional.empty()));
+    }
+
     @PostMapping(path = "/validate-unique-code", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateUniqueProbateCode(@RequestBody CallbackRequest callbackRequest,
                                                                       HttpServletRequest request) {
@@ -628,6 +642,7 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
         caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequest);
+        caseDataTransformer.setApplicationSubmittedDateForPA(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }

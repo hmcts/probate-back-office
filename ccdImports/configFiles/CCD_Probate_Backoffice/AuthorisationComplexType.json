@@ -16,5 +16,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation.OrganisationID", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation.OrganisationName", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "PrepopulateToUsersOrganisation", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "PrepopulateToUsersOrganisation", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "TTL", "ListElementCode": "SystemTTL", "UserRole": "TTL_profile", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "TTL", "ListElementCode": "OverrideTTL", "UserRole": "TTL_profile", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "TTL", "ListElementCode": "Suspended", "UserRole": "TTL_profile", "CRUD": "CRU"}
 ]

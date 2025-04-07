@@ -40,7 +40,8 @@ public class CftLibConfig implements CFTLibConfigurer {
             "citizen",
             "caseworker-caa",
             "caseworker-probate-rparobot",
-            "caseworker-approver"
+            "caseworker-approver",
+            "TTL_profile"
         );
 
         try {
