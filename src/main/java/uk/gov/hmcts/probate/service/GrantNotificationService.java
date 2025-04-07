@@ -121,8 +121,7 @@ public class GrantNotificationService {
         return caseId;
     }
 
-    private boolean
-    hasCaseSinceBeenUpdated(ReturnedCaseDetails foundCase, EventId sentEvent) {
+    private boolean hasCaseSinceBeenUpdated(ReturnedCaseDetails foundCase, EventId sentEvent) {
         CaseDetails caseDetails =
             ccdClientApi.readForCaseWorker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
                 securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
