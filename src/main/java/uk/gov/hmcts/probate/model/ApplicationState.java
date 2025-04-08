@@ -19,7 +19,7 @@ public enum ApplicationState {
 
 
     BO_CASE_STOPPED("BOCaseStopped","Case stopped"),
-    CAVEAT_PERMENANT("BOCaveatPermenant", "Caveat permenant"),
+    CAVEAT_PERMENANT("BOCaveatPermenant", "Caveat stop"),
     REGISTRAR_ESCALATION("BORegistrarEscalation", "Registrar escalation"),
 
     CASE_QA("BOCaseQA", "Case selected for QA"),

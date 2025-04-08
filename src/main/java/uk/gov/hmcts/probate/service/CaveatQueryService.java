@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.exception.ClientDataException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
@@ -32,8 +31,6 @@ import java.util.Locale;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
 
 @Service
 @RequiredArgsConstructor
@@ -47,9 +44,9 @@ public class CaveatQueryService {
     private static final String PA_APP_CREATED = "PAAppCreated";
     private static final String STATE = "state";
     private static final String CAVEAT_NOT_FOUND_CODE = "caveatNotFound";
+    private static final String CAVEAT_NOT_FOUND_CODE_WELSH = "caveatNotFoundWelsh";
 
     private final RestTemplate restTemplate;
-    private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
@@ -73,8 +70,10 @@ public class CaveatQueryService {
         if (foundCaveats.size() != 1) {
             String[] args = {caveatId};
             String userMessage = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE, args, Locale.UK);
+            String userMessageWelsh = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE_WELSH, args,
+                    Locale.UK);
             throw new BusinessValidationException(userMessage,
-                "Could not find any caveats for the entered caveat id: " + caveatId);
+                "Could not find any caveats for the entered caveat id: " + caveatId, userMessageWelsh);
         }
         return foundCaveats.get(0).getData();
     }
@@ -104,14 +103,11 @@ public class CaveatQueryService {
         try {
             returnedCaveats = nonNull(restTemplate.postForObject(uri, entity, ReturnedCaveats.class));
         } catch (HttpClientErrorException e) {
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION.toString(),
-                appInsights.trackingMap("exception", e.getMessage()));
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
 
-        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", uri.toString()));
         return returnedCaveats.getCaveats();
     }
 }

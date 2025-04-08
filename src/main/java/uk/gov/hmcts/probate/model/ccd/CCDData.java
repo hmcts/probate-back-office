@@ -47,4 +47,5 @@ public class CCDData implements Serializable {
     private final String dispenseWithNotice;
     private final String dispenseWithNoticeSupportingDocs;
     private final String englishWill;
+    private final String channelChoice;
 }

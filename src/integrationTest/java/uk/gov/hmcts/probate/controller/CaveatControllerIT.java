@@ -17,10 +17,14 @@ import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
@@ -29,7 +33,10 @@ import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.service.notify.NotificationClientException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -74,6 +81,10 @@ class CaveatControllerIT {
     private PaymentsService paymentsService;
     @MockBean
     private ServiceRequestTransformer serviceRequestTransformer;
+    @MockBean
+    private SecurityUtils securityUtils;
+    @MockBean
+    private AuditEventService auditEventService;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -184,7 +195,11 @@ class CaveatControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this caveator. Add an email address or contact them by post."))
+                .value("There is no email address for this caveator. Add an email address or contact them "
+                        + "by post."))
+            .andExpect(jsonPath("$.errors[1]")
+                .value("Nid oes cyfeiriad e-bost ar gyfer yr cafeatydd hwn. Ychwanegwch gyfeiriad e-bost "
+                                + "neu cysylltwch â nhw drwy'r post."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
@@ -226,6 +241,9 @@ class CaveatControllerIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Bulk Print is currently unavailable please contact support desk."))
+            .andExpect(jsonPath("$.errors[1]")
+                        .value("Nid yw Argraffu Swmp ar gael ar hyn o bryd, cysylltwch â'r ddesg "
+                                + "gymorth."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
@@ -251,7 +269,11 @@ class CaveatControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this caveator. Add an email address or contact them by post."))
+                    .value("There is no email address for this caveator. Add an email address or contact them "
+                        + "by post."))
+            .andExpect(jsonPath("$.errors[1]")
+                    .value("Nid oes cyfeiriad e-bost ar gyfer yr cafeatydd hwn. Ychwanegwch gyfeiriad e-bost "
+                                + "neu cysylltwch â nhw drwy'r post."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
@@ -297,6 +319,8 @@ class CaveatControllerIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Cannot extend an already expired caveat."))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Ni ellir ymestyn cafeat sydd eisoes wedi dod i ben."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
@@ -314,6 +338,8 @@ class CaveatControllerIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Cannot extend a caveat that is more than 1 month from expiry."))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Ni ellir ymestyn cafeat sy'n fwy na 1 mis o?r dyddiad dod i ben."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
@@ -370,6 +396,17 @@ class CaveatControllerIT {
 
     @Test
     void shouldRollback() throws Exception {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventService.getLatestAuditEventByName(any(), any(), any(), any()))
+                .thenReturn(Optional.ofNullable(AuditEvent.builder()
+                        .stateId("SolsAppUpdated")
+                        .createdDate(LocalDateTime.now())
+                        .build()));
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotificationsOrgPolicy.json");
         mockMvc.perform(post(ROLLBACK).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

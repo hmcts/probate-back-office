@@ -25,8 +25,10 @@ public class NaValidationRule {
                 && NOT_APPLICABLE_VALUE.equalsIgnoreCase(caseData.getIhtFormEstate())) {
             String userMessage = businessValidationMessageRetriever
                     .getMessage("ihtFormEstateNa", null, Locale.UK);
+            String userMessageWelsh = businessValidationMessageRetriever
+                    .getMessage("ihtFormEstateNaWelsh", null, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "NA selection is invalid: " + caseDetails.getId());
+                    "NA selection is invalid: " + caseDetails.getId(), userMessageWelsh);
         }
     }
 }

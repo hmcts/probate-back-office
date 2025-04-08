@@ -10,7 +10,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -19,7 +18,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
 import uk.gov.hmcts.probate.service.DateFormatterService;
-import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.SendEmailResponse;
@@ -62,8 +60,6 @@ class CaveatPersonalisationServiceIT {
     private CoreCaseDataApi coreCaseDataApi;
     @MockBean
     private CaveatQueryService caveatQueryServiceMock;
-    @MockBean
-    private AppInsights appInsights;
     @MockBean
     private SendEmailResponse sendEmailResponse;
     @Mock

@@ -10,4 +10,8 @@ public class PaperApplicationException extends BusinessValidationException {
     public PaperApplicationException(String userMessage, String message) {
         super(userMessage, message);
     }
+
+    public PaperApplicationException(String userMessage, String message, String... userMessageParameters) {
+        super(userMessage, message, userMessageParameters);
+    }
 }

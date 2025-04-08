@@ -37,6 +37,7 @@ import static org.mockito.Mockito.when;
 class HmrcFileServiceTest {
     private static final String FILE_DATE = "20190101-123456";
     private static final String FILE_NAME = "1_20190101.dat";
+
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private FileExtractDateFormatter fileExtractDateFormatter = Mockito.mock(FileExtractDateFormatter.class);
     private ExceptedEstateDateOfDeathChecker expectedEstateDateOfDeathChecker =
@@ -317,6 +318,16 @@ class HmrcFileServiceTest {
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcSolicitor.txt")));
+    }
+
+    @Test
+    void testAdColligendaBonaCaseType() throws IOException {
+        caseDataSolictor.caseType("adColligendaBona");
+        builtData = caseDataSolictor.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L);
+        caseList.add(createdCase);
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+                is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcAdColligendaBona.txt")));
     }
 
     @Test

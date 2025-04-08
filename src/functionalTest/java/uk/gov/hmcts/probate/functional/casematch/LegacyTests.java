@@ -34,6 +34,7 @@ public class LegacyTests extends CaseSearchTestBase {
         response.then().assertThat().statusCode(200);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
+        assertThat(jsonPath.get("errors[1]"), is(equalTo(ERROR_MSG_WELSH)));
     }
 
     @Test
@@ -42,6 +43,7 @@ public class LegacyTests extends CaseSearchTestBase {
         response.then().assertThat().statusCode(200);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
+        assertThat(jsonPath.get("errors[1]"), is(equalTo(ERROR_MSG_WELSH)));
     }
 
     @Test
@@ -50,6 +52,7 @@ public class LegacyTests extends CaseSearchTestBase {
         response.then().assertThat().statusCode(200);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
+        assertThat(jsonPath.get("errors[1]"), is(equalTo(ERROR_MSG_WELSH)));
     }
 
     @Test
@@ -58,6 +61,7 @@ public class LegacyTests extends CaseSearchTestBase {
         response.then().assertThat().statusCode(200);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("errors[0]"), is(equalTo(ERROR_MSG)));
+        assertThat(jsonPath.get("errors[1]"), is(equalTo(ERROR_MSG_WELSH)));
     }
 
     @Test

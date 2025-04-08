@@ -32,6 +32,9 @@ class ExecutorsAddressPostcodeValidationRule implements SolExecutorDetailsValida
                 if (address == null || Strings.isNullOrEmpty(address.getPostCode())) {
                     errors
                         .add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorPostcodeIsNull"));
+                    errors
+                            .add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                                    "executorPostcodeIsNullWelsh"));
                 }
             });
 

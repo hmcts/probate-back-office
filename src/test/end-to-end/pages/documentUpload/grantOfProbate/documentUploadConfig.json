@@ -1,6 +1,6 @@
 {
   "waitForText" : "Upload Documents",
-  "documentType": ["Email", "Correspondence", "Will", "Codicil", "Uploaded Legal Statement", "Other", "Death Certificate"],
+  "documentType": ["Email", "Correspondence", "Will", "Codicil", "Uploaded Legal Statement", "Death Certificate", "Citizen hub upload", "Other"],
   "documentTypeSelected": "Email",
   "fileToUploadUrl":"uploadDocuments/test_file_for_document_upload.png",
   "filename": "test_file_for_document_upload.png",

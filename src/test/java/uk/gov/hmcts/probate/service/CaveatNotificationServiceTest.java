@@ -716,7 +716,7 @@ class CaveatNotificationServiceTest {
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()
-            .errors(Arrays.asList("bulkPrintResponseNull")).build();
+            .errors(Arrays.asList("bulkPrintResponseNull", "bulkPrintResponseNullWelsh")).build();
         Document document = Document.builder().documentFileName("withdrawn.doc").build();
 
         when(caveatDocmosisService.caseDataAsPlaceholders(eq(caveatCallbackRequest.getCaseDetails())))
@@ -793,7 +793,7 @@ class CaveatNotificationServiceTest {
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()
-            .errors(Arrays.asList("notifyApplicantNoEmailPA")).build();
+            .errors(Arrays.asList("notifyApplicantNoEmailPA", "notifyApplicantNoEmailPAWelsh")).build();
         Document document = Document.builder().build();
         when(notificationService.sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails))).thenReturn(document);
         when(eventValidationService.validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class)))

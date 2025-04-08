@@ -70,6 +70,14 @@ public class GrantOfRepresentationPersonalisationService {
         return personalisation;
     }
 
+    public Map<String, Object> getSealedAndCertifiedPersonalisation(Long caseId, String deceasedName) {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseId.toString());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, deceasedName);
+
+        return personalisation;
+    }
+
     public Map<String, Object> getNocPersonalisation(Long caseId, String solicitorName, String deceasedName) {
         HashMap<String, Object> personalisation = new HashMap<>();
 

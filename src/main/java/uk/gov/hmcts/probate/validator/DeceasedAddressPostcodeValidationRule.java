@@ -28,6 +28,8 @@ class DeceasedAddressPostcodeValidationRule implements SolExecutorDetailsValidat
         SolsAddress address = ccdData.getDeceased().getAddress();
         if (address == null || Strings.isNullOrEmpty(address.getPostCode())) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "deceasedPostcodeIsNull"));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "deceasedPostcodeIsNullWelsh"));
         }
 
         return new ArrayList<>(errors);

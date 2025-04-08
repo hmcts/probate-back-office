@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.exception.ClientDataException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
@@ -45,9 +44,6 @@ class CaseQueryServiceTest {
 
     @Mock
     private HttpHeadersFactory headers;
-
-    @Mock
-    private AppInsights appInsights;
 
     @Mock
     private CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;

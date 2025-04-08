@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import org.json.JSONObject;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,12 +20,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
@@ -36,27 +40,36 @@ class EmailWithFileServiceTest {
     @Mock
     private EmailAddresses emailAddresses;
 
+    @Mock
+    private EmailValidationService emailValidationService;
+
     @InjectMocks
     private EmailWithFileService emailWithFileService;
 
+    private AutoCloseable closeableMocks;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        emailWithFileService = new EmailWithFileService(notificationClient, emailAddresses);
+        closeableMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeableMocks.close();
     }
 
     @Test
     void testEmailFile_Success() throws IOException, NotificationClientException {
-        JSONObject jsonObject = new JSONObject().put("testKey", "testValue");
-        when(emailAddresses.getHmrcEmail()).thenReturn("hmrc@example.com");
-        mockStatic(NotificationClient.class);
-        when(NotificationClient.prepareUpload(any(byte[].class), anyBoolean(), any(RetentionPeriodDuration.class)))
-            .thenReturn(jsonObject);
-        SendEmailResponse mockResponse = mock(SendEmailResponse.class);
-        when(notificationClient.sendEmail(any(), any(), any(), any(), any())).thenReturn(mockResponse);
-        File file = ResourceUtils.getFile(FileUtils.class.getResource("/files/hmrcPersonal.txt"));
-        assertTrue(emailWithFileService.emailFile(file,"dateStr"));
-
+        try (final var mockStatic = mockStatic(NotificationClient.class)) {
+            JSONObject jsonObject = new JSONObject().put("testKey", "testValue");
+            when(emailAddresses.getHmrcEmail()).thenReturn("hmrc@example.com");
+            when(NotificationClient.prepareUpload(any(byte[].class), anyBoolean(), any(RetentionPeriodDuration.class)))
+                    .thenReturn(jsonObject);
+            SendEmailResponse mockResponse = mock(SendEmailResponse.class);
+            when(notificationClient.sendEmail(any(), any(), any(), any(), any())).thenReturn(mockResponse);
+            File file = ResourceUtils.getFile(FileUtils.class.getResource("/files/hmrcPersonal.txt"));
+            assertTrue(emailWithFileService.emailFile(file, "dateStr"));
+        }
     }
 
     /**
@@ -85,5 +98,33 @@ class EmailWithFileServiceTest {
             assertFalse(emailWithFileService.emailFile(file, "dateStr"));
             verifyNoInteractions(notificationClient);
         }
+    }
+
+    @Test
+    void givenMultipleEmails_whenOneFails_thenRemainderSent() throws IOException, NotificationClientException {
+        final JSONObject jsonObject = new JSONObject().put("testKey", "testValue");
+
+        final String hmrcEmails = "hmrc@example.com;hmrc2@example.com;hmrc3@example.com";
+        final SendEmailResponse mockResponse = mock(SendEmailResponse.class);
+        final NotificationClientException mockException = mock(NotificationClientException.class);
+
+        try (final var mockStatic = mockStatic(NotificationClient.class)) {
+            when(emailAddresses.getHmrcEmail()).thenReturn(hmrcEmails);
+            when(NotificationClient.prepareUpload(any(), anyBoolean(), any()))
+                    .thenReturn(jsonObject);
+            when(notificationClient.sendEmail(any(), any(), any(), any(), any()))
+                    .thenReturn(mockResponse)
+                    .thenThrow(mockException)
+                    .thenReturn(mockResponse);
+
+            File file = ResourceUtils.getFile(FileUtils.class.getResource("/files/hmrcPersonal.txt"));
+
+            final boolean allSuccess = emailWithFileService.emailFile(file,"dateStr");
+
+            assertAll(
+                    () -> verify(notificationClient, times(3)).sendEmail(any(), any(), any(), any(), any()),
+                    () -> assertFalse(allSuccess, "Expected failure reported due to exception from Notify client"));
+        }
+
     }
 }

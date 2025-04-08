@@ -59,7 +59,9 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             {locator: {css: '#originalWillSignedDate-day'}, text: '10'},
             {locator: {css: '#originalWillSignedDate-month'}, text: '10'},
             {locator: {css: '#originalWillSignedDate-year'}, text: '2018'},
-            {locator: {css: '#willHasCodicils_No'}}]);
+            {locator: {css: '#willHasCodicils_No'}},
+            {locator: {css: '#languagePreferenceWelsh_No'}}
+        ]);
 
         await I.logInfo(scenarioName, 'Dispense with notice and clearing type');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
@@ -146,6 +148,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Escalate to registrar', caseRef);
+        await I.caseProgressSelectEscalateReason();
         await I.caseProgressClickSubmitAndSignOut();
 
         await I.logInfo(scenarioName, 'Check progress tab for Case escalated', caseRef);

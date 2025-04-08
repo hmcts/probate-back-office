@@ -44,7 +44,7 @@ class CaseworkersSolicitorPostcodeValidationRuleTest {
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
-        assertEquals(1, validationError.size());
+        assertEquals(2, validationError.size());
         assertEquals(fieldErrorResponse, validationError.get(0));
         assertEquals("somecode", validationError.get(0).getCode());
     }

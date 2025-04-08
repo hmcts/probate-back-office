@@ -5,9 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.model.probateman.WillLodgement;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
@@ -31,8 +29,6 @@ class WillLodgementMapperIT {
     private static final String SURNAME = "WLSN";
     private static final LocalDate DATE_OF_BIRTH = LocalDate.of(1999, 1, 1);
     private static final LocalDate DATE_OF_DEATH = LocalDate.of(2018, 1, 1);
-    @MockBean
-    AppInsights appInsights;
     @Value("${ccd.gateway.host}")
     private String printServiceHost;
     @Value("${printservice.legacyPath}")

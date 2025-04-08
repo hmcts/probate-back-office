@@ -10,7 +10,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -62,6 +61,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_NOC_SUBMITTED_DATE = "noc_date";
+
     private static final DateTimeFormatter NOC_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     Registry registry = new Registry();
     @InjectMocks
@@ -72,8 +72,6 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private CoreCaseDataApi coreCaseDataApi;
     @MockBean
     private CaveatQueryService caveatQueryServiceMock;
-    @MockBean
-    private AppInsights appInsights;
     @MockBean
     private SendEmailResponse sendEmailResponse;
     @Mock

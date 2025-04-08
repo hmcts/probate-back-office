@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.microsoft.applicationinsights.attach.ApplicationInsights;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,7 @@ public class BusinessRulesValidationApplication implements CommandLineRunner {
     private ScheduledTaskRunner taskRunner;
 
     public static void main(final String[] args) {
+        ApplicationInsights.attach();
         final var application = new SpringApplication(BusinessRulesValidationApplication.class);
         final var instance = application.run(args);
 

@@ -12,7 +12,6 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -31,6 +30,7 @@ class EmailAddressNotifyApplicantValidationRuleTest {
     private CCDData ccdData;
     private FieldErrorResponse fieldErrorResponsePrimary;
     private FieldErrorResponse fieldErrorResponseSolicitor;
+    private FieldErrorResponse fieldErrorResponseSolicitor2;
 
     @BeforeEach
     public void setUp() {
@@ -44,8 +44,13 @@ class EmailAddressNotifyApplicantValidationRuleTest {
         fieldErrorResponseSolicitor = FieldErrorResponse.builder()
             .message("solicitor missing")
             .build();
+        fieldErrorResponseSolicitor2 = FieldErrorResponse.builder()
+                .message("notifyApplicantNoEmailSOLSWelsh")
+                .build();
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailSOLS"))
             .thenReturn(fieldErrorResponseSolicitor);
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailSOLSWelsh"))
+                .thenReturn(fieldErrorResponseSolicitor2);
     }
 
     @Test
@@ -79,7 +84,7 @@ class EmailAddressNotifyApplicantValidationRuleTest {
             .build();
         List<FieldErrorResponse> validationErrors = emailAddressNotifyApplicantValidationRule.validate(ccdData);
 
-        assertTrue(validationErrors.size() == 1);
+        assertTrue(validationErrors.size() == 2);
 
     }
 
@@ -90,8 +95,8 @@ class EmailAddressNotifyApplicantValidationRuleTest {
             .build();
         List<FieldErrorResponse> validationErrors = emailAddressNotifyApplicantValidationRule.validate(ccdData);
 
-        assertTrue(validationErrors.size() == 1);
-        assertEquals(validationErrors.get(0).getMessage(), "solicitor missing");
+        assertTrue(validationErrors.size() == 2);
+        assertTrue(validationErrors.contains(fieldErrorResponseSolicitor));
     }
 
 }
