@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -51,6 +52,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
+import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
@@ -72,6 +74,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.ANSWER_NO;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
 @Jacksonized
@@ -370,7 +373,7 @@ public class CaseData extends CaseDataParent {
     private final String boExaminationChecklistQ1;
     private final String boExaminationChecklistQ2;
     private final String boExaminationChecklistRequestQA;
-    private final String applicationSubmittedDate;
+    private String applicationSubmittedDate;
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
     private String evidenceHandled;
     private transient String attachDocuments;
@@ -627,6 +630,9 @@ public class CaseData extends CaseDataParent {
     private final String expectedResponseDate;
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
+    private final String executorsNamed;
+
+    private TTL ttl;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
@@ -742,4 +748,7 @@ public class CaseData extends CaseDataParent {
         this.setPrimaryApplicantPhoneNumber(null);
     }
 
+    public void clearAdditionalExecutorList() {
+        getSolsAdditionalExecutorList().clear();
+    }
 }

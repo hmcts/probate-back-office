@@ -15,11 +15,11 @@ import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.exception.SocketException;
+import uk.gov.hmcts.probate.exception.TextFileBuilderException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +40,6 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String SERVER_ERROR = "Server Error";
     public static final String CONNECTION_ERROR = "Connection error";
     public static final String UNAUTHORISED_DATA_EXTRACT_ERROR = "Unauthorised access to Data-Extract error";
-
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handle(BadRequestException exception) {
@@ -93,16 +92,6 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
     }
 
-    @ExceptionHandler(value = NotificationClientException.class)
-    public ResponseEntity<ErrorResponse> handle(NotificationClientException exception) {
-        log.warn("Notification service exception", exception);
-        ErrorResponse errorResponse =
-            new ErrorResponse(SERVICE_UNAVAILABLE.value(), CLIENT_ERROR, exception.getMessage());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
-    }
-
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<ErrorResponse> handle(NotFoundException exception) {
         log.warn("Not found exception", exception);
@@ -131,6 +120,15 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         ValidationResponse validationResponse =
             ValidationResponse.builder().status(ValidationResponseStatus.ERRORS).errors(errors).build();
         return ResponseEntity.ok(validationResponse);
+    }
+
+    @ExceptionHandler(TextFileBuilderException.class)
+    public ResponseEntity<CallbackResponse> handle(TextFileBuilderException exception) {
+        log.error("Error from TestFileBuilderService", exception);
+
+        List<String> errors = List.of(exception.getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
+        return ResponseEntity.ok(callbackResponse);
     }
 
 }

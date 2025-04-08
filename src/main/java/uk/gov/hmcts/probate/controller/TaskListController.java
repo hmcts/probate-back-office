@@ -38,6 +38,7 @@ public class TaskListController {
     public ResponseEntity<CallbackResponse> updateCasePrinted(@RequestBody CallbackRequest request) {
         caseDataTransformer.transformCaseDataForEvidenceHandled(request);
         caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(request);
+        caseDataTransformer.setApplicationSubmittedDateForPA(request.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request, caseworkerInfo));
     }

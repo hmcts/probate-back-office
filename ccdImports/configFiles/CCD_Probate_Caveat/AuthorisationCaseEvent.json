@@ -512,6 +512,7 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "serviceRequestPaymentSuccess", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "serviceRequestPaymentFailed", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "disposeCase", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "applyForCaveat", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "paymentSuccessApp", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
@@ -609,6 +610,7 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "serviceRequestPaymentSuccess", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "serviceRequestPaymentFailed", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "disposeCase", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "applyForCaveat", "UserRole": "citizen", "CRUD": "C"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"},
@@ -674,5 +676,6 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "nocRequest", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "nocRequest", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
-  {"CaseTypeID": "Caveat", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"}
+  {"CaseTypeID": "Caveat", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "manageCaseTTL", "UserRole": "TTL_profile", "CRUD": "CRU"}
 ]

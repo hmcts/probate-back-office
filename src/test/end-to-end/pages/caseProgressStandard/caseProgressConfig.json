@@ -45,6 +45,7 @@
     "PBAANumber": "PBA0082126",
     "PaymentReference": "E2E Case Progress PBA Payment Reference",
     "documentType": "Digital Grant",
-    "filename": "digitalGrant.pdf"
+    "filename": "digitalGrant.pdf",
+    "filenameBilingual": "welshDigitalGrant.pdf"
 }
 

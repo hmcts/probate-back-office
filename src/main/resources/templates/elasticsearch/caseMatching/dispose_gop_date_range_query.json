@@ -1,0 +1,34 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "Pending",
+              "SolAdmonCreated",
+              "SolAppCreatedDeceasedDtls",
+              "SolAppCreatedSolicitorDtls",
+              "SolAppUpdated",
+              "SolProbateCreated",
+              "SolIntestacyCreated"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "size": %s,
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]
