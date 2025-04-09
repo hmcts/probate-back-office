@@ -59,7 +59,6 @@ public class SmeeAndFordPersonalisationService {
     private static final String SUBJECT = "Smee And Ford Data extract from :fromDate to :toDate";
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/SmeeAndFordHeaderRow.csv";
     private static final String APPLICATION_TYPE_PERSONAL = "Personally";
-    private static final String SMEE_AND_FORD_POUND_VALUE_TOGGLE = "probate-smee-ford-pound-value";
 
     private final FileSystemResourceService fileSystemResourceService;
     private final FeatureToggleService featureToggleService;
@@ -111,10 +110,10 @@ public class SmeeAndFordPersonalisationService {
                 data.append(getPrimaryApplicantName(currentCaseData));
                 data.append(DELIMITER);
                 data.append(getFullAddress(currentCaseData.getPrimaryApplicantAddress()));
-                data.append(isPoundValueFeatureToggleOn()
+                data.append(featureToggleService.isPoundValueFeatureToggleOn()
                         ? currentCaseData.getIhtGrossValuePounds() : currentCaseData.getIhtGrossValue().toString());
                 data.append(DELIMITER);
-                data.append(isPoundValueFeatureToggleOn()
+                data.append(featureToggleService.isPoundValueFeatureToggleOn()
                         ? currentCaseData.getIhtNetValuePounds() : currentCaseData.getIhtNetValue().toString());
                 data.append(DELIMITER);
                 data.append(getSolicitorDetails(currentCaseData));
@@ -376,8 +375,4 @@ public class SmeeAndFordPersonalisationService {
         return data.substring(0, data.lastIndexOf(NEW_LINE));
     }
 
-    private boolean isPoundValueFeatureToggleOn() {
-        return featureToggleService.isFeatureToggleOn(
-                SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
-    }
 }
