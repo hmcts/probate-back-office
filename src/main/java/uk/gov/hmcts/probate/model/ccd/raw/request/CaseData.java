@@ -630,6 +630,7 @@ public class CaseData extends CaseDataParent {
     private final String expectedResponseDate;
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
+    private final String executorsNamed;
 
     private TTL ttl;
 
@@ -745,6 +746,10 @@ public class CaseData extends CaseDataParent {
 
         this.setPrimaryApplicantEmailAddress(null);
         this.setPrimaryApplicantPhoneNumber(null);
+    }
+
+    public void clearAdditionalExecutorList() {
+        getSolsAdditionalExecutorList().clear();
     }
 
     public String getIhtGrossValuePounds() {
