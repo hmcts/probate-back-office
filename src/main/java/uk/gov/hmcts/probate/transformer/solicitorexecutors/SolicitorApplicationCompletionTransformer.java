@@ -88,7 +88,8 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
                     caseId,
                     titleAndClearingType);
 
-            caseData.clearPrimaryApplicant();}
+            caseData.clearPrimaryApplicant();
+        }
     }
 
     public void clearAdditionalExecutorWhenUpdatingApplicantDetails(CaseDetails caseDetails) {
