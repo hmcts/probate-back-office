@@ -45,6 +45,7 @@ public class FeatureToggleService {
     public boolean isFeatureToggleOn(String featureToggleCode, boolean defaultValue) {
         return this.ldClient.boolVariation(featureToggleCode, this.ldContext, defaultValue);
     }
+
     public boolean enableAmendLegalStatementFiletypeCheck() {
         return this.isFeatureToggleOn("enable-amend-legal-statement-filetype-check", false);
     }
