@@ -769,10 +769,11 @@ public class CaseData extends CaseDataParent {
     }
 
     private String getPoundValue(BigDecimal value) {
-        if (value == null || value.toString().length() < 2) {
+        if (value == null) {
             return "0";
         }
-        return value.toString().substring(0, value.toString().length() - 2);
+        final BigDecimal poundsValue = value.divideToIntegralValue(BigDecimal.valueOf(100L));
+        return poundsValue.toString();
     }
 
     public void clearAdditionalExecutorList() {
