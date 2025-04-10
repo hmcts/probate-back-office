@@ -16,5 +16,8 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation.OrganisationID", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation.OrganisationName", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "PrepopulateToUsersOrganisation", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "PrepopulateToUsersOrganisation", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "TTL", "ListElementCode": "SystemTTL", "UserRole": "TTL_profile", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "TTL", "ListElementCode": "OverrideTTL", "UserRole": "TTL_profile", "CRUD": "CRU"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "TTL", "ListElementCode": "Suspended", "UserRole": "TTL_profile", "CRUD": "CRU"}
 ]

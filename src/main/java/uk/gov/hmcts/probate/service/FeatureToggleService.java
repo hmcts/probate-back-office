@@ -11,6 +11,7 @@ public class FeatureToggleService {
 
     private final LDClient ldClient;
     private final LDContext ldContext;
+    private static final String SMEE_AND_FORD_POUND_VALUE_TOGGLE = "probate-smee-ford-pound-value";
 
 
     @Autowired
@@ -51,5 +52,14 @@ public class FeatureToggleService {
 
     public boolean enableNewAliasTransformation() {
         return this.isFeatureToggleOn("probate-enable-new-alias-transformation", false);
+    }
+
+    public boolean enableAmendLegalStatementFiletypeCheck() {
+        return this.isFeatureToggleOn("enable-amend-legal-statement-filetype-check", false);
+    }
+
+    public boolean isPoundValueFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
     }
 }

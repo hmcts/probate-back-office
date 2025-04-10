@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -51,6 +52,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
+import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
@@ -74,6 +76,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.ANSWER_NO;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
 @Jacksonized
@@ -629,6 +632,9 @@ public class CaseData extends CaseDataParent {
     private final String expectedResponseDate;
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
+    private final String executorsNamed;
+
+    private TTL ttl;
 
     private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
     private final List<CollectionMember<String>> autoCaseWarnings;
@@ -747,4 +753,35 @@ public class CaseData extends CaseDataParent {
         this.setPrimaryApplicantPhoneNumber(null);
     }
 
+    public String getIhtGrossValuePounds() {
+        return getPoundValue(ihtGrossValue);
+    }
+
+    public String getIhtNetValuePounds() {
+        return getPoundValue(ihtNetValue);
+    }
+
+    public String getIhtEstateGrossValuePounds() {
+        return getPoundValue(ihtEstateGrossValue);
+    }
+
+    public String getIhtEstateNetValuePounds() {
+        return getPoundValue(ihtEstateNetValue);
+    }
+
+    public String getIhtEstateNetQualifyingValuePounds() {
+        return getPoundValue(ihtEstateNetQualifyingValue);
+    }
+
+    private String getPoundValue(BigDecimal value) {
+        if (value == null) {
+            return "0";
+        }
+        final BigDecimal poundsValue = value.divideToIntegralValue(BigDecimal.valueOf(100L));
+        return poundsValue.toString();
+    }
+
+    public void clearAdditionalExecutorList() {
+        getSolsAdditionalExecutorList().clear();
+    }
 }

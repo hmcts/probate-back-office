@@ -113,9 +113,9 @@ docmosis:
     welshStatementOfTruth:
       templateName: FL-PRB-SOT-WEL-00236.doc
     assembledLetter:
-      templateName: FL-PRB-GNO-ENG-00133-DTSPB-2638.docx
+      templateName: FL-PRB-GNO-ENG-00238.docx
     blankLetter:
-      templateName: FL-PRB-GNO-ENG-01040.docx
+      templateName: FL-PRB-GNO-ENG-01041.docx
     welshDigitalGrant:
       templateName: FL-PRB-GRP-WEL-00236.doc
     welshIntestacyGrant:
@@ -230,6 +230,8 @@ logging:
     console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
 
 idam:
+  api:
+    url: ${IDAM_SERVICE_HOST:http://localhost:5000}
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
@@ -265,13 +267,15 @@ notifications:
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "c871adf7-c902-4a18-934f-abeb504ab5d9"
-          requestInformationByPost: "8eca356b-ce59-400b-8b43-d470bb1b6be7"
+          requestInformationByPost: "a657ba93-bfc0-4d71-a5f8-2e474e111701"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
           grantIssuedIntestacy: "9a10802b-f449-486c-ae40-b76d1cbe78eb"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
+          disposalReminder: "2e29cce0-66d9-458a-82a3-20aa0e4d5112"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -289,7 +293,7 @@ notifications:
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
-          requestInformation: "7567b568-0df4-4b2a-88a0-232693e3fa00"
+          requestInformation: "8d115656-d54e-4650-b7ec-80db83c29503"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
@@ -297,6 +301,9 @@ notifications:
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
           noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
+          disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
+          caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
@@ -315,12 +322,14 @@ notifications:
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "3d9ee152-ffbd-4eee-a781-951e708c9c81"
-          requestInformationByPost: "d51cdb17-3e65-4c0e-ad2e-c228c97d8012"
+          requestInformationByPost: "f53d0465-bba5-4d55-801a-78478689f968"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
           grantIssuedIntestacy: "37adbe0b-a119-44be-b094-f62cbbbe2178"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          disposalReminder: "34fe5d9d-c57b-4bc2-9ceb-008e82cd5594"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -338,13 +347,16 @@ notifications:
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
-          requestInformation: "98233470-7aa6-4165-bf62-a663dc9f3c53"
+          requestInformation: "0d99b3a1-52ca-4e00-b113-a24c67316f2c"
           redeclarationSot: "c34256d7-c8f5-451c-b7a6-1a9580622f1c"
           grantIssuedIntestacy: "9863cfe5-240b-42ed-912b-188a5f7e1e76"
           caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
           noticeOfChangeReceived: "4f1f3c47-1d84-4584-b251-2a77d64510f2"
+          disposalReminder: "bd041f52-5f87-4d90-87ab-302e20e7215d"
+          caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
 
 documents:
   templates:
@@ -518,7 +530,11 @@ auth:
       baseUrl: ${IDAM_SERVICE_HOST:http://localhost:5000}
       api: /details
 
-core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
+core_case_data:
+  api:
+    url: ${services.coreCaseData.baseUrl:http://localhost:4452}
+  elasticsearch:
+    querySize: 500
 
 excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
 
@@ -531,6 +547,7 @@ smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFordData@probate-test.com}
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
 
 sealedAndCertifiedEmail: ${SEALED_AND_CERTIFIED_EMAIL:sealedAndCertified@probate-test.com}
+draftCaseWithPaymentEmail: ${DRAFT_CASES_WITH_PAYMENT_EMAIL:draftCases@probate-test.com}
 
 welsh:
   months:
@@ -555,7 +572,7 @@ blobstorage:
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
-shcedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
+schedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
 
 feature:
   blobstorage:
@@ -599,3 +616,13 @@ bulkscan:
     postcode: MI55 1NG
     ihtForm: FALSE
     grossNetValue: 1.11
+    
+disposal:
+  adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
+  inactivityNotificationPeriod: ${INACTIVITY_NOTIFICATION_PERIOD:90}
+  disposalGracePeriod: ${DISPOSAL_GRACE_PERIOD:90}
+  switchDate: ${RETENTION_SWITCH_DATE:2025-03-04}
+  startDate: 1900-01-01
+  personalNotificationLink: ${FRONTEND_URL:http://localhost:3000}
+  solsNotificationLink: ${MANAGE_CASE_URL:http://localhost:3001}
+ 
