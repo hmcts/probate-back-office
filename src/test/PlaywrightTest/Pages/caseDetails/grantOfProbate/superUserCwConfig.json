@@ -1,0 +1,6 @@
+{
+  "waitForText": "Change DOB",
+  "newDob": "1965-04-03",
+  "newState_waitForText": "Change state",
+  "newState": "1: CasePrinted"
+}

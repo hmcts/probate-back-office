@@ -134,7 +134,7 @@ exports.BasePage = class BasePage {
             }
             let eventSummaryPrefix = nextStep;
             eventSummaryPrefix = eventSummaryPrefix.replace(/\s+/g, '_').toLowerCase() + '_';
-            if (dataConfigKeys) {
+            if (dataConfigKeys && nextStep !== 'Change state') {
                 await expect(this.page.getByText(eventSummaryPrefix + dataConfigFile.summary)).toBeVisible();
                 await expect(this.page.getByText(eventSummaryPrefix + dataConfigFile.comment)).toBeVisible();
             }
