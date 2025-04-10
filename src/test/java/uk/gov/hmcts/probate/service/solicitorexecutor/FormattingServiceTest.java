@@ -31,9 +31,10 @@ class FormattingServiceTest {
     }
 
     @Test
-    void shouldReturnEmptyStringIfEmptyString() {
-        final String result = FormattingService.capitaliseEachWord("");
-        assertEquals("", result);
+    void shouldThrowIfEmptyString() {
+        assertThrows(
+                FormattingService.FormattingServiceException.class,
+                () -> FormattingService.capitaliseEachWord(""));
     }
 
     @Test
@@ -56,17 +57,17 @@ class FormattingServiceTest {
     }
 
     @Test
-    void shouldReturnUppercasedStringIfPreceedingSpaces() {
-        final String result = FormattingService.capitaliseEachWord("  first");
-
-        assertEquals("First", result);
+    void shouldThrowIfPreceedingSpaces() {
+        assertThrows(
+                FormattingService.FormattingServiceException.class,
+                () -> FormattingService.capitaliseEachWord("  first"));
     }
 
     @Test
-    void shouldReturnUppercasedStringIfWrappedSpaces() {
-        final String result = FormattingService.capitaliseEachWord("  first  ");
-
-        assertEquals("First", result);
+    void shouldThrowIfWrappedSpaces() {
+        assertThrows(
+                FormattingService.FormattingServiceException.class,
+                () -> FormattingService.capitaliseEachWord("  first  "));
     }
 
     @Test
