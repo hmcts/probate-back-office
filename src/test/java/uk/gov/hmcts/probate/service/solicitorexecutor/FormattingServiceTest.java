@@ -1,8 +1,12 @@
 package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class FormattingServiceTest {
     @Test
@@ -24,5 +28,51 @@ class FormattingServiceTest {
         final String result = FormattingService.capitaliseEachWord("martin o'neill");
 
         assertEquals("Martin O'neill", result);
+    }
+
+    @Test
+    void shouldReturnEmptyStringIfEmptyString() {
+        final String result = FormattingService.capitaliseEachWord("");
+        assertEquals("", result);
+    }
+
+    @Test
+    void shouldReturnEmptyStringIfSpaceString() {
+        final String result = FormattingService.capitaliseEachWord(" ");
+        assertEquals("", result);
+    }
+
+    @Test
+    void shouldReturnNullStringIfNullString() {
+        final String result = FormattingService.capitaliseEachWord(null);
+        assertEquals(null, result);
+    }
+
+    @Test
+    void shouldReturnUppercasedStringIfTrailingSpaces() {
+        final String result = FormattingService.capitaliseEachWord("first  ");
+
+        assertEquals("First", result);
+    }
+
+    @Test
+    void shouldReturnUppercasedStringIfPreceedingSpaces() {
+        final String result = FormattingService.capitaliseEachWord("  first");
+
+        assertEquals("First", result);
+    }
+
+    @Test
+    void shouldReturnUppercasedStringIfWrappedSpaces() {
+        final String result = FormattingService.capitaliseEachWord("  first  ");
+
+        assertEquals("First", result);
+    }
+
+    @Test
+    void shouldReturnSingleSpacesWhenMultipleProvided() {
+        final String result = FormattingService.capitaliseEachWord("first  second");
+
+        assertEquals("First Second", result);
     }
 }
