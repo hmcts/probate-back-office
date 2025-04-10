@@ -17,8 +17,13 @@ exports.SignInPage = class SignInPage extends BasePage {
         await expect(this.page.getByRole('heading', {name: 'Sign in', exact: true}, {timeout: 6000})).toBeVisible();
         await expect(this.usernameLocator).toBeVisible();
         await expect(this.passwordLocator).toBeVisible();
-        await this.page.locator('#username').fill(useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvCwUser);
-        await this.page.locator('#password').fill(useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvCwPassword);
+        if (useProfessionalUser === 'superUser') {
+            await this.page.locator('#username').fill(testConfig.TestEnvSuperCwUser);
+            await this.page.locator('#password').fill(testConfig.TestEnvSuperCwPassword);
+        } else {
+            await this.page.locator('#username').fill(useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvCwUser);
+            await this.page.locator('#password').fill(useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvCwPassword);
+        }
         //await this.page.waitForSelector(this.submitButtonLocator, signInDelay);
         await expect(this.submitButtonLocator).toBeEnabled();
         await this.submitButtonLocator.click();

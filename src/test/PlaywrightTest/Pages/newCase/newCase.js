@@ -39,9 +39,8 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
         this.deceasedDomicileEngLocator = this.page.locator('#deceasedDomicileInEngWales_Yes');
         this.deceasedAliasLocator = page.getByRole('group', {name: `${createGrantOfProbateConfig.page1_deceasedAnyOtherName}`}).getByLabel(`${createGrantOfProbateConfig.page1_deceasedAnyOtherNamesNo}`);
         this.ihtPageWaitForTextLocator = page.getByRole('heading', {name: `${createGrantOfProbateConfig.EE_waitForText}`});
-        this.iht205Locator = this.page.locator(caseProgressConfig.IHT205Label);
-        this.iht400421Locator = this.page.locator(caseProgressConfig.IHT400421Label);
-        this.iht400Locator = this.page.locator(caseProgressConfig.IHT400Label);
+        this.iht205Locator = this.page.getByText(caseProgressConfig.IHT205Label);
+        this.iht400Locator = this.page.getByText(caseProgressConfig.IHT400Label);
         this.pcLocator = this.page.locator(`xpath=${createGrantOfProbateConfig.UKpostcodeLink}`);
         this.pcLocator2 = this.page.locator(`xpath=${createGrantOfProbateConfig.UKpostcodeLink2}`);
         this.page4waitForTextLocator = this.page.locator(createGrantOfProbateConfig.page4_waitForText);
@@ -337,9 +336,8 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
             await this.page.locator(`#deceasedHadLateSpouseOrCivilPartner_${createGrantOfProbateConfig.EE_deceasedHadLateSpouseOrCivilPartnerYes}`).click();
             await this.page.locator(`#ihtUnusedAllowanceClaimed_${createGrantOfProbateConfig.EE_ihtUnusedAllowanceClaimed_No}`).click();
         } else {
-            await expect(this.iht205Locator).toBeVisible();
-            await expect(this.iht400Locator).toBeVisible();
-            await expect(this.iht400421Locator).toBeVisible();
+            await expect(this.page.getByText(caseProgressConfig.IHT205Label)).toBeVisible();
+            await expect(this.page.locator('#ihtFormId').getByText(caseProgressConfig.IHT400Label)).toBeVisible();
             await this.page.locator(`#ihtFormId-${caseProgressConfig.IHT400Option}`).click();
         }
 
@@ -576,21 +574,6 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
             await this.page.locator('#ihtNetValue')
                 .fill(createGrantofProbateAmendConfig.EE_ihtEstateNetValue);
             await this.waitForNavigationToComplete(commonConfig.continueButton);
-
-            // await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
-            // await I.click(`#ihtFormEstateValuesCompleted_${createGrantOfProbateConfig.EE_ihtFormEstateValueCompletedYes}`);
-
-            // await I.click(`#ihtFormEstate-${createGrantOfProbateConfig.EE_ihtFormEstate400}`);
-
-            // await I.waitForNavigationToComplete(commonConfig.continueButton);
-
-            // await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
-
-            // await I.fillField('#ihtGrossValue', createGrantOfProbateConfig.EE_ihtEstateGrossValue);
-            // await I.fillField('#ihtNetValue', createGrantOfProbateConfig.EE_ihtEstateNetValue);
-
-            // await I.waitForNavigationToComplete(commonConfig.continueButton);
-
         }
     }
 
@@ -605,5 +588,15 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
 
         await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await this.waitForSubmitNavigationToComplete();
+    }
+
+    async enterIhtDetails(caseProgressConfig, optionValue) {
+        await expect(this.page.locator(`${caseProgressConfig.ihtHmrcLetter}_${optionValue}`)).toBeVisible();
+        await this.page.locator(`${caseProgressConfig.ihtHmrcLetter}_${optionValue}`).click();
+        if (optionValue === 'Yes') {
+            await expect(this.page.locator(`${caseProgressConfig.hmrcCodeTextBox}`)).toBeEnabled();
+            await this.page.locator(`${caseProgressConfig.hmrcCodeTextBox}`).fill(caseProgressConfig.uniqueHmrcCode);
+        }
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 };
