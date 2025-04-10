@@ -1,7 +1,9 @@
 package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -51,6 +53,15 @@ public class FormattingService {
         if (name == null) {
             return null;
         }
+
+        final String[] parts = name.split("\\s+");
+        if (Arrays.stream(parts).anyMatch(String::isEmpty)) {
+            final StringBuilder errBuilder = new StringBuilder();
+            errBuilder.append("One of the provided inputs for capitalisation is an empty string: [\"");
+            errBuilder.append(Arrays.stream(parts).collect(Collectors.joining("\", \"")));
+            errBuilder.append("\"]");
+            throw new FormattingServiceException(errBuilder.toString());
+        }
         return Arrays.stream(name.split("\\s+"))
                 .map(t -> t.substring(0, 1).toUpperCase() + t.substring(1))
                 .collect(Collectors.joining(" "));
@@ -60,4 +71,9 @@ public class FormattingService {
         return firstNames + " " + surname;
     }
 
+    public static class FormattingServiceException extends BusinessValidationException {
+        FormattingServiceException(String userMessage) {
+            super(userMessage, "exception when capitalising words");
+        }
+    }
 }
