@@ -124,17 +124,24 @@ public class ExecutorListMapperService {
             CaseData caseData) {
         return caseData.getOtherPartnersApplyingAsExecutors()
                 .stream()
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
-                        .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
-                        .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()))
-                        .applyingExecutorLastName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
-                        .applyingExecutorName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()
-                                + " " + exec.getValue().getAdditionalExecLastname()))
-                        .build()))
+                .map(exec -> {
+                    final String applExecFNames = capitalize(
+                            exec.getValue().getAdditionalExecForenames(),
+                            "Additional Partner Executor forenames");
+                    final String applExecLName = capitalize(
+                            exec.getValue().getAdditionalExecLastname(),
+                            "Additional Partner Executor last name");
+                    final String applExecName = applExecFNames + " " + applExecLName;
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorApplying.builder()
+                                    .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
+                                    .applyingExecutorFirstName(applExecFNames)
+                                    .applyingExecutorLastName(applExecLName)
+                                    .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
+                                    .applyingExecutorName(applExecName)
+                                    .build());
+                })
                 .collect(Collectors.toList());
     }
 
@@ -148,7 +155,7 @@ public class ExecutorListMapperService {
                             "Not Applying Executor Name");
                     final String dispWNoticeLeaveGiven = caseData.getDispenseWithNoticeLeaveGiven();
                     final LocalDate dispWNoticeLeaveGivenDate = caseData.getDispenseWithNoticeLeaveGivenDate();
-                    
+
                     return new CollectionMember<>(
                             exec.getId(),
                             AdditionalExecutorNotApplying.builder()
