@@ -16,4 +16,6 @@ public class EmailAddresses {
     private String hmrcEmail;
 
     private String sealedAndCertifiedEmail;
+
+    private String draftCaseWithPaymentEmail;
 }

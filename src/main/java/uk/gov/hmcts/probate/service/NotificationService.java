@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -260,6 +261,30 @@ public class NotificationService {
         return getSentEmailDocument(state, emailAddress, response);
     }
 
+    public void sendEmailForGORSuccessfulPayment(List<ReturnedCaseDetails> cases, String fromDate, String toDate)
+            throws NotificationClientException {
+        log.info("Sending email for Draft cases with payment status as Success");
+        ApplicationType applicationType = cases.get(0).getData().getApplicationType();
+
+        String templateId = getTemplateId(applicationType);
+        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService
+                .getGORDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate);
+
+        sendEmailForDraftCases(templateId, personalisation);
+    }
+
+    public void sendEmailForCaveatSuccessfulPayment(List<ReturnedCaveatDetails> cases, String fromDate, String toDate)
+            throws NotificationClientException {
+        log.info("Sending email for Draft cases with payment status as Success");
+        ApplicationType applicationType = cases.get(0).getData().getApplicationType();
+
+        String templateId = getTemplateId(applicationType);
+        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService
+                .getCaveatDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate);
+
+        sendEmailForDraftCases(templateId, personalisation);
+    }
+
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
         throws NotificationClientException {
 
@@ -388,6 +413,7 @@ public class NotificationService {
                         personalisation, caseDetails.getId().toString());
         log.info("Disposal Reminder email reference response: {}", response.getReference());
     }
+
 
     public Document sendEmailWithDocumentAttached(CaseDetails caseDetails, ExecutorsApplyingNotification executor,
                                                   State state) throws NotificationClientException, IOException {
@@ -677,6 +703,21 @@ public class NotificationService {
         return caseData.getRemovedRepresentative() != null
                 ? String.join(" ", caseData.getRemovedRepresentative().getSolicitorFirstName(),
                 caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
+    }
+
+    private String getTemplateId(ApplicationType applicationType) {
+        return notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
+                .get(applicationType)
+                .getDraftCasePaymentSuccess();
+    }
+
+    private void sendEmailForDraftCases(String templateId, Map<String, Object> personalisation)
+            throws NotificationClientException {
+        String reference = LocalDateTime.now().format(EXELA_DATE);
+        log.info("start sendEmail for Draft cases with payment status as Success");
+        SendEmailResponse response = notificationClientService.sendEmail(templateId,
+                emailAddresses.getDraftCaseWithPaymentEmail(), personalisation, reference);
+        log.info("Draft cases email reference response: {}", response.getReference());
     }
 
     CommonNotificationResult doCommonNotificationServiceHandling(
