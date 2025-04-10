@@ -30,10 +30,10 @@ const {
     convertTokens
 } = require('@date-fns/upgrade/v2');
 
-test.describe('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker', () => {
-    test('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker',
+test.describe('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker', () => {
+    test('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker',
         async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
-            const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker';
+            const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker';
 
             // BO Grant of Representation (Personal): Case created -> Grant issued
 
