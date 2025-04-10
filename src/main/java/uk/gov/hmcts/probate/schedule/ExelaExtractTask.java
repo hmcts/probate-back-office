@@ -28,7 +28,7 @@ public class ExelaExtractTask implements Runnable {
 
     @Override
     public void run() {
-        log.info("Scheduled task ExelaExtractTask started to extract data for Hmrc");
+        log.info("Scheduled task ExelaExtractTask started to extract data for Exela");
         String fromDate = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
         String toDate = fromDate;
         if (StringUtils.isNotEmpty(adHocJobStartDate)) {

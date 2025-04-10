@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import uk.gov.hmcts.probate.config.CustomRequestScopeAttr;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.service.GrantNotificationService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
@@ -26,6 +28,7 @@ public class GrantDelayedExtractTask implements Runnable {
     public String adHocJobFromDate;
 
     public void run() {
+        RequestContextHolder.setRequestAttributes(new CustomRequestScopeAttr());
         log.info("Scheduled task GrantDelayedExtractTask started to extract data for Grant Delayed Job");
         String fromDate = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
         if (StringUtils.isNotEmpty(adHocJobFromDate)) {
