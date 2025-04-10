@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -94,18 +95,27 @@ public class ExecutorListMapperService {
             CaseData caseData) {
         return caseData.getAdditionalExecutorsTrustCorpList()
                 .stream()
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
-                        .applyingExecutorAddress(caseData.getTrustCorpAddress())
-                        .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()))
-                        .applyingExecutorLastName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()
-                                        + " " + exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
-                        .applyingExecutorTrustCorpPosition(exec.getValue().getAdditionalExecutorTrustCorpPosition())
-                        .build()))
+                .map(exec -> {
+                    final String applExecFNames = capitalize(
+                            exec.getValue().getAdditionalExecForenames(),
+                            "Applying executor forenames");
+                    final String applExecLName = capitalize(
+                            exec.getValue().getAdditionalExecLastname(),
+                            "Applying executor last name");
+                    final String applExecName = applExecFNames + " " + applExecLName;
+                    final String applExecTCPosition = exec.getValue().getAdditionalExecutorTrustCorpPosition();
+
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorApplying.builder()
+                                    .applyingExecutorAddress(caseData.getTrustCorpAddress())
+                                    .applyingExecutorFirstName(applExecFNames)
+                                    .applyingExecutorLastName(applExecLName)
+                                    .applyingExecutorName(applExecName)
+                                    .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
+                                    .applyingExecutorTrustCorpPosition(applExecTCPosition)
+                                    .build());
+                })
                 .collect(Collectors.toList());
     }
 
@@ -178,14 +188,29 @@ public class ExecutorListMapperService {
                 .collect(Collectors.toList());
     }
 
+    private String capitalize(final String input, final String description) {
+        try {
+            return FormattingService.capitaliseEachWord(input);
+        } catch (FormattingService.FormattingServiceException fse) {
+            throw new ExecutorListMapperServiceException(description, fse);
+        }
+    }
+
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
+        final String capSolSotFnames = capitalize(
+                caseData.getSolsSOTForenames(),
+                "Solicitor Statement of Truth Forenames");
+        final String capSolSotSname = capitalize(
+                caseData.getSolsSOTSurname(),
+                "Solicitor Statement of Truth Surnames");
+        final String capSolSotName = capSolSotFnames + " " + capSolSotSname;
+
         // Create applying executor collection member containing solicitor names
         return new CollectionMember<>(SOLICITOR_ID, AdditionalExecutorApplying.builder()
-                .applyingExecutorFirstName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()))
-                .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getSolsSOTSurname()))
-                .applyingExecutorName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()
-                        + " " + caseData.getSolsSOTSurname()))
+                .applyingExecutorFirstName(capSolSotFnames)
+                .applyingExecutorLastName(capSolSotSname)
+                .applyingExecutorName(capSolSotName)
                 .applyingExecutorType(getSolExecType(caseData))
                 .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
                 .applyingExecutorTrustCorpPosition(
@@ -251,6 +276,14 @@ public class ExecutorListMapperService {
         }
 
         return executorType;
+    }
+
+    public class ExecutorListMapperServiceException extends BusinessValidationException {
+        public ExecutorListMapperServiceException(
+                final String description,
+                final FormattingService.FormattingServiceException cause) {
+            super(description, cause);
+        }
     }
 
 }
