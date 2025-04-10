@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
