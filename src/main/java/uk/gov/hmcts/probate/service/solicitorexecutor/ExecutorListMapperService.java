@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -141,15 +142,23 @@ public class ExecutorListMapperService {
             CaseData caseData) {
         return caseData.getDispenseWithNoticeOtherExecsList()
                 .stream()
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
-                        .notApplyingExecutorName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getNotApplyingExecutorName()))
-                        .notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_REASON)
-                        .notApplyingExecutorDispenseWithNotice(caseData.getDispenseWithNotice())
-                        .notApplyingExecutorDispenseWithNoticeLeaveGiven(caseData.getDispenseWithNoticeLeaveGiven())
-                        .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(
-                                caseData.getDispenseWithNoticeLeaveGivenDate())
-                        .build()))
+                .map(exec -> {
+                    final String notApplExecName = capitalize(
+                            exec.getValue().getNotApplyingExecutorName(),
+                            "Not Applying Executor Name");
+                    final String dispWNoticeLeaveGiven = caseData.getDispenseWithNoticeLeaveGiven();
+                    final LocalDate dispWNoticeLeaveGivenDate = caseData.getDispenseWithNoticeLeaveGivenDate();
+                    
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorNotApplying.builder()
+                                    .notApplyingExecutorName(notApplExecName)
+                                    .notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_REASON)
+                                    .notApplyingExecutorDispenseWithNotice(caseData.getDispenseWithNotice())
+                                    .notApplyingExecutorDispenseWithNoticeLeaveGiven(dispWNoticeLeaveGiven)
+                                    .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(dispWNoticeLeaveGivenDate)
+                                    .build());
+                })
                 .collect(Collectors.toList());
     }
 
