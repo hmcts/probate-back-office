@@ -1,6 +1,7 @@
 {
   "addComment": "Add Comment",
   "uploadDocument": "Upload Documents",
+  "changeDOB": "Change DOB",
   "generateGrantPreview": "Generate grant preview",
   "selectForQa": "Select for QA",
   "attachScanDocs": "Attach scanned docs",

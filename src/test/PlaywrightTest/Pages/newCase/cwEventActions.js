@@ -12,6 +12,7 @@ const handleEvidenceConfig = require('../handleEvidence/handleEvidenceConfig');
 // const createGrantOfProbateConfig = require('../../../end-to-end/pages/createGrantOfProbate/createGrantOfProbateConfig.json');
 const createCaseConfig = require('../createCase/createCaseConfig.json');
 const issueGrantConfig = require('../issueGrant/issueGrantConfig');
+const newConfig = require('../caseDetails/grantOfProbate/superUserCwConfig');
 // const createGrantOfProbateConfig = require('../createGrantOfProbateManual/createGrantOfProbateManualConfig.json');
 
 exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
@@ -44,6 +45,8 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         this.addCaseStopReasonLocator = this.page.locator('div.panel button');
         this.caseStopReasonLocator = this.page.locator('#boCaseStopReasonList_0_caseStopReason');
         this.resolveStopLocator = this.page.locator('#resolveStopState');
+        this.newStateLocator = this.page.locator('#transferToState');
+        this.newDobLocator = this.page.locator('#deceasedDob');
         this.issueGrantHeadingLocator = this.page.getByRole('heading', {name: issueGrantConfig.waitForText});
         this.bulkPrintLocator = this.page.locator(`#boSendToBulkPrint_${issueGrantConfig.list1_text}`);
         this.emailGrantIssueNotificationLocator = this.page.locator(`#boEmailGrantIssuedNotification_${issueGrantConfig.list2_text}`);
@@ -143,8 +146,6 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await expect(this.page.locator(`${documentUploadConfig.id}_0_DocumentLink`)).toBeVisible();
         await expect(this.page.locator(`${documentUploadConfig.id}_0_DocumentLink`)).toBeEnabled();
         await this.page.waitForTimeout(3);
-        // await this.uploadDocumentLocator.focus();
-        // await this.uploadDocumentLocator.click();
         await this.page.locator(`${documentUploadConfig.id}_0_DocumentLink`).setInputFiles(`${documentUploadConfig.fileToUploadUrl}`);
         await this.waitForUploadToBeCompleted();
         await this.page.waitForTimeout(testConfig.DocumentUploadDelay);
@@ -169,6 +170,17 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         // small delay to allow hidden vars to be set
         await this.page.waitForTimeout(testConfig.DocumentUploadDelay);
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async uploadLegalStatement(caseRef, documentUploadConfig) {
+        await expect(this.page.getByRole('heading', {name: documentUploadConfig.legalStatement_waitForText, exact: true})).toBeVisible();
+        await expect(this.page.getByText(caseRef)).toBeVisible();
+        await expect(this.page.locator(`${documentUploadConfig.uploadLegalStatementId}`)).toBeVisible();
+        await expect(this.page.locator(`${documentUploadConfig.uploadLegalStatementId}`)).toBeEnabled();
+        await this.page.waitForTimeout(3);
+        await this.page.locator(`${documentUploadConfig.uploadLegalStatementId}`).setInputFiles(`${documentUploadConfig.fileToUploadUrl}`);
+        await this.waitForUploadToBeCompleted();
+        await this.page.waitForTimeout(testConfig.DocumentUploadDelay);
     }
 
     async emailCaveator(caseRef) {
@@ -245,6 +257,22 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.bulkPrintLocator.click();
         await expect(this.emailGrantIssueNotificationLocator).toBeEnabled();
         await this.emailGrantIssueNotificationLocator.click();
+        await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
+        await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async enterNewDob(updatedDoB) {
+        await expect(this.page.getByRole('heading', {name: newConfig.waitForText})).toBeVisible();
+        await expect(this.newDobLocator).toBeEnabled();
+        await this.newDobLocator.fill(updatedDoB);
+        await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
+        await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async chooseNewState(newState) {
+        await expect(this.page.getByRole('heading', {name: newConfig.newState_waitForText})).toBeVisible();
+        await expect(this.newStateLocator).toBeEnabled();
+        await this.newStateLocator.selectOption({label: `${newState}`});
         await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
     }
