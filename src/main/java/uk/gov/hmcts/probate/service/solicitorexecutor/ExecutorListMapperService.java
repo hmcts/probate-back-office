@@ -179,18 +179,25 @@ public class ExecutorListMapperService {
         return caseData.getSolsAdditionalExecutorList()
                 .stream()
                 .filter(exec -> YES.equals(exec.getValue().getAdditionalApplying()))
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
-                        .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
-                        .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()))
-                        .applyingExecutorLastName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()
-                                + " " + exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorType(EXECUTOR_TYPE_NAMED)
-                        .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
-                        .build()))
+                .map(exec -> {
+                    final String applExecFNames = capitalize(
+                            exec.getValue().getAdditionalExecForenames(),
+                            "additional executor forenames");
+                    final String applExecLName = capitalize(
+                            exec.getValue().getAdditionalExecLastname(),
+                            "additional executor last name");
+                    final String applExecName = applExecFNames + " " + applExecLName;
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorApplying.builder()
+                                    .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
+                                    .applyingExecutorFirstName(applExecFNames)
+                                    .applyingExecutorLastName(applExecLName)
+                                    .applyingExecutorName(applExecName)
+                                    .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                                    .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
+                                    .build());
+                })
                 .collect(Collectors.toList());
     }
 
