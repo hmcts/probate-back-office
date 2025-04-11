@@ -256,22 +256,26 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(
             CaseData caseData, String collectionMemberId) {
+        final String pApplFNames = capitalize(caseData.getPrimaryApplicantForenames(),"Primary applicant forenames");
+        final String pApplLName = capitalize(caseData.getPrimaryApplicantSurname(), "Primary applicant surname");
+        final String pAppName = capitalize(caseData.getPrimaryApplicantFullName(), "Primary applicant full name");
         // Create applying executor collection member containing primary applicant names
-        return new CollectionMember<>(collectionMemberId, AdditionalExecutorApplying.builder()
-                .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
-                        caseData.getPrimaryApplicantForenames()))
-                .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantSurname()))
-                .applyingExecutorName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantFullName()))
-                .applyingExecutorType(getSolExecType(caseData))
-                .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
-                .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
-                .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
-                .applyingExecutorTrustCorpPosition(
-                        getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())
-                        && NO.equals(caseData.getSolsSolicitorIsExec())
-                        && YES.equals(caseData.getSolsSolicitorIsApplying())
-                                ? caseData.getProbatePractitionersPositionInTrust() : null)
-                .build());
+        return new CollectionMember<>(
+                collectionMemberId,
+                AdditionalExecutorApplying.builder()
+                        .applyingExecutorFirstName(pApplFNames)
+                        .applyingExecutorLastName(pApplLName)
+                        .applyingExecutorName(pAppName)
+                        .applyingExecutorType(getSolExecType(caseData))
+                        .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
+                        .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
+                        .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
+                        .applyingExecutorTrustCorpPosition(
+                                getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())
+                                && NO.equals(caseData.getSolsSolicitorIsExec())
+                                && YES.equals(caseData.getSolsSolicitorIsApplying())
+                                        ? caseData.getProbatePractitionersPositionInTrust() : null)
+                        .build());
     }
 
     public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
