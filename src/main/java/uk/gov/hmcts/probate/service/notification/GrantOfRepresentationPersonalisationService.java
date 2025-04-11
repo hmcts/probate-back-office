@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -47,6 +48,9 @@ public class GrantOfRepresentationPersonalisationService {
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_NOC_SUBMITTED_DATE = "noc_date";
     private static final String PERSONALISATION_OLD_SOLICITOR_NAME = "old_solicitor_name";
+    private static final String PERSONALISATION_DRAFT_NAME = "draftName";
+    private static final String PERSONALISATION_CASE_TYPE = "caseType";
+    private static final String SUBJECT = "Draft cases with payment success extract from :fromDate to :toDate";
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     public Map<String, Object> getPersonalisation(CaseDetails caseDetails, Registry registry) {
@@ -87,6 +91,37 @@ public class GrantOfRepresentationPersonalisationService {
         personalisation.put(PERSONALISATION_DECEASED_NAME, deceasedName);
 
         return personalisation;
+    }
+
+    public Map<String, Object> getGORDraftCaseWithPaymentPersonalisation(List<ReturnedCaseDetails> cases,
+                                                                         String fromDate, String toDate) {
+        HashMap<String, Object> personalisation = new HashMap<>();
+
+        StringBuilder data = getDraftCasesBuiltData(cases);
+
+        personalisation.put(PERSONALISATION_DRAFT_NAME, getSubject(fromDate, toDate));
+        personalisation.put(PERSONALISATION_CASE_TYPE, "Grant of Representation");
+        personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
+
+        return personalisation;
+    }
+
+    public Map<String, Object> getCaveatDraftCaseWithPaymentPersonalisation(List<ReturnedCaveatDetails> cases,
+                                                                            String fromDate, String toDate) {
+        HashMap<String, Object> personalisation = new HashMap<>();
+
+        StringBuilder data = getCaveatDraftCasesBuiltData(cases);
+
+        personalisation.put(PERSONALISATION_DRAFT_NAME, getSubject(fromDate, toDate));
+        personalisation.put(PERSONALISATION_CASE_TYPE, "Caveat");
+        personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
+
+        return personalisation;
+    }
+
+    private String getSubject(String fromDate, String toDate) {
+        return SUBJECT.replace(":fromDate", fromDate)
+                .replace(":toDate", toDate);
     }
 
     public Map<String, Object> addSingleAddressee(Map<String, Object> currentMap, String addressee) {
@@ -142,6 +177,42 @@ public class GrantOfRepresentationPersonalisationService {
             }
         }
         return data;
+    }
+
+    private StringBuilder getDraftCasesBuiltData(List<ReturnedCaseDetails> cases) {
+        StringBuilder data = new StringBuilder();
+
+        for (ReturnedCaseDetails currentCase : cases) {
+            getCaseData(data, currentCase.getId(), currentCase.getData().getDeceasedForenames(),
+                    currentCase.getData().getDeceasedSurname());
+        }
+        return data;
+    }
+
+    private StringBuilder getCaveatDraftCasesBuiltData(List<ReturnedCaveatDetails> cases) {
+        StringBuilder data = new StringBuilder();
+
+        for (ReturnedCaveatDetails currentCase : cases) {
+            getCaseData(data, currentCase.getId(), currentCase.getData().getDeceasedForenames(),
+                    currentCase.getData().getDeceasedSurname());
+        }
+        return data;
+    }
+
+    private void getCaseData(StringBuilder data, Long id, String deceasedForenames, String deceasedSurname) {
+        try {
+            data.append(id.toString());
+            data.append(", ");
+            data.append(parseDelimiters(deceasedForenames));
+            data.append(", ");
+            data.append(parseDelimiters(deceasedSurname));
+            data.append("\n");
+        } catch (Exception e) {
+            data.append(id.toString());
+            data.append(", ");
+            data.append(e.toString());
+            data.append("\n");
+        }
     }
 
     private String parseDelimiters(String value) {

@@ -275,6 +275,7 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
           disposalReminder: "2e29cce0-66d9-458a-82a3-20aa0e4d5112"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -302,6 +303,7 @@ notifications:
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
           disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
           caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
@@ -327,6 +329,7 @@ notifications:
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
           disposalReminder: "34fe5d9d-c57b-4bc2-9ceb-008e82cd5594"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -353,6 +356,7 @@ notifications:
           noticeOfChangeReceived: "4f1f3c47-1d84-4584-b251-2a77d64510f2"
           disposalReminder: "bd041f52-5f87-4d90-87ab-302e20e7215d"
           caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
 
 documents:
   templates:
@@ -543,6 +547,7 @@ smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFordData@probate-test.com}
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
 
 sealedAndCertifiedEmail: ${SEALED_AND_CERTIFIED_EMAIL:sealedAndCertified@probate-test.com}
+draftCaseWithPaymentEmail: ${DRAFT_CASES_WITH_PAYMENT_EMAIL:draftCases@probate-test.com}
 
 welsh:
   months:
