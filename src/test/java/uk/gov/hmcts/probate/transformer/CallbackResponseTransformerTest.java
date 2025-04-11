@@ -58,7 +58,6 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -586,8 +585,6 @@ class CallbackResponseTransformerTest {
     private SecurityDTO securityDTO;
     @Mock
     private AuditEventService auditEventService;
-    @Mock
-    private FeatureToggleService featureToggleService;
 
     @BeforeEach
     public void setup() {
@@ -4575,10 +4572,16 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock, CASEWORKER_USERINFO);
 
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
-        assertEquals("John Doe",
+        assertEquals(SOLS_ALIAS_NAME,
                 callbackResponse.getData()
                         .getSolsDeceasedAliasNamesList()
                         .get(0)
+                        .getValue()
+                        .getSolsAliasname());
+        assertEquals("John Doe",
+                callbackResponse.getData()
+                        .getSolsDeceasedAliasNamesList()
+                        .get(1)
                         .getValue()
                         .getSolsAliasname());
         assertEquals(2, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
@@ -4943,9 +4946,9 @@ class CallbackResponseTransformerTest {
             underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
         }
 
-        verify(builderSpy).deceasedAnyOtherNameOnWill(NO);
-        verify(builderSpy).deceasedAliasFirstNameOnWill(WILL_ALIAS_FN);
-        verify(builderSpy).deceasedAliasLastNameOnWill(WILL_ALIAS_LN);
+        verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
+        verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
+        verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
         verify(builderSpy, never()).deceasedAliasNamesList(any());
 
@@ -4972,7 +4975,6 @@ class CallbackResponseTransformerTest {
         final boolean transform = false;
 
         final Set<CollectionMember<AliasName>> expAliases = Set.of(
-                WILL_ALIAS_NAME_CM,
                 DEC_ALIAS_NAME_CM,
                 SOL_DEC_ALIAS_NAME_CM);
         final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
@@ -4983,9 +4985,9 @@ class CallbackResponseTransformerTest {
             underTest.getResponseCaseData(caseDetailsMock, eventId, Optional.empty(), transform);
         }
 
-        verify(builderSpy).deceasedAnyOtherNameOnWill(YES);
-        verify(builderSpy).deceasedAliasFirstNameOnWill(WILL_ALIAS_FN);
-        verify(builderSpy).deceasedAliasLastNameOnWill(WILL_ALIAS_LN);
+        verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
+        verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
+        verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
 
         verify(builderSpy, never()).deceasedAliasNamesList(any());
 
@@ -5016,8 +5018,6 @@ class CallbackResponseTransformerTest {
                 DEC_ALIAS_NAME_CM,
                 SOL_DEC_ALIAS_NAME_CM);
         final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
-
-        when(featureToggleService.enableNewAliasTransformation()).thenReturn(true);
 
         try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
             respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
