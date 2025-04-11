@@ -50,11 +50,11 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await createCasePage.selectNewCase();
             await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor_manual);
             await basePage.logInfo(scenarioName, 'enterGrantOfProbateManualPage1');
-            await createCasePage.enterGrantOfProbateManualPage1('create', unique_deceased_user, createGrantOfProbateConfig.page1_deceasedDod_year);
+            await createCasePage.enterGrantOfProbateManualPage1('create', createGrantOfProbateConfig, unique_deceased_user, createGrantOfProbateConfig.page1_deceasedDod_year);
             await basePage.logInfo(scenarioName, 'enterGrantOfProbateManualPage2');
             await createCasePage.enterGrantOfProbateManualPage2('create');
             await basePage.logInfo(scenarioName, 'enterGrantOfProbateManualPage3');
-            await createCasePage.enterGrantOfProbateManualPage3('create');
+            await createCasePage.enterGrantOfProbateManualPage3('create', createGrantOfProbateConfig);
             await createCasePage.checkMyAnswers(nextStepName);
             let endState;
 
@@ -64,11 +64,11 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await createCasePage.selectNewCase();
             await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor_manual);
             await basePage.logInfo(scenarioName, 'enterGrantOfProbateManualPage1');
-            await createCasePage.enterGrantOfProbateManualPage1('create', unique_deceased_user, createGrantOfProbateConfig.page1_deceasedDod_year);
+            await createCasePage.enterGrantOfProbateManualPage1('create', createGrantOfProbateConfig, unique_deceased_user, createGrantOfProbateConfig.page1_deceasedDod_year);
             await basePage.logInfo(scenarioName, 'enterGrantOfProbateManualPage2');
             await createCasePage.enterGrantOfProbateManualPage2('create');
             await basePage.logInfo(scenarioName, 'enterGrantOfProbateManualPage3');
-            await createCasePage.enterGrantOfProbateManualPage3('create');
+            await createCasePage.enterGrantOfProbateManualPage3('create', createGrantOfProbateConfig);
             await createCasePage.checkMyAnswers(nextStepName);
             endState = 'Awaiting documentation';
 

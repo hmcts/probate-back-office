@@ -50,6 +50,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         this.issueGrantHeadingLocator = this.page.getByRole('heading', {name: issueGrantConfig.waitForText});
         this.bulkPrintLocator = this.page.locator(`#boSendToBulkPrint_${issueGrantConfig.list1_text}`);
         this.emailGrantIssueNotificationLocator = this.page.locator(`#boEmailGrantIssuedNotification_${issueGrantConfig.list2_text}`);
+        this.probateManPrint_waitForText = this.page.getByRole('heading', {name: 'Grant Application'});
     }
 
     async chooseNextStep(nextStep) {
@@ -109,6 +110,89 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
             await this.waitForNavigationToComplete(commonConfig.continueButton);
         }
         await this.page.waitForTimeout(testConfig.CaseMatchesCompletionDelay);
+    }
+
+    async selectProbateManCaseMatchesForGrantOfProbate(caseRef, nextStepName) {
+        await expect(this.page.getByText(nextStepName)).toBeVisible();
+        await expect(this.page.getByText(caseRef)).toBeVisible();
+        await this.page.waitForTimeout(testConfig.CaseMatchesInitialDelay);
+
+        const numOfElements = await this.btnLocator.count();
+
+        // await I.wait(testConfig.CaseMatchesInitialDelay);
+
+        // const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
+
+        if (numOfElements > 0) {
+            await expect((this.caseMatchLocator).nth(1)).toBeVisible();
+            await expect(this.caseMatchValidLocator).toBeVisible();
+        }
+        // const legacyApplication = this.page.locator('#caseMatches_%s_%s > fieldset > ccd-field-read:nth-child(2) > div > ccd-field-read-label > div > dl > dd');
+        const legacyApplicationTypeText = 'Legacy LEGACY APPLICATION';
+        /* eslint-disable no-await-in-loop */
+        for (let i=numOfElements; i>=0; i--) {
+            const currentCaseLocator = (i-1).toString();
+            const legacyApplication = `#caseMatches_${currentCaseLocator}_${currentCaseLocator} > fieldset > ccd-field-read:nth-child(2) > div > ccd-field-read-label > div > dl > dd`;
+
+            await this.page.waitForTimeout(testConfig.CaseMatchesLocateRemoveButtonDelay);
+            /* eslint-disable no-await-in-loop */
+            const text = await this.page.locator(legacyApplication)
+                .filter({hasText: legacyApplicationTypeText})
+                .textContent();
+
+            if (text === legacyApplicationTypeText) {
+                // eslint-disable-next-line no-unused-vars
+                if (!testConfig.TestAutoDelayEnabled) {
+                    /* eslint-disable no-await-in-loop */
+                    await this.page.waitForTimeout(testConfig.ManualDelayShort);
+                }
+                const caseMatchesValidYesLocatorNew = `#caseMatches_${currentCaseLocator}_valid_Yes`;
+                this.caseMatchesImportLocatorNew = this.page.locator(`#caseMatches_${currentCaseLocator}_doImport_No`);
+                /* eslint-disable no-await-in-loop */
+                await expect(this.page.locator(caseMatchesValidYesLocatorNew)).toBeVisible();
+                /* eslint-disable no-await-in-loop */
+                await this.page.locator(caseMatchesValidYesLocatorNew).scrollIntoViewIfNeeded();
+                /* eslint-disable no-await-in-loop */
+                await expect(this.page.locator(caseMatchesValidYesLocatorNew)).toBeEnabled();
+                /* eslint-disable no-await-in-loop */
+                await this.page.locator(caseMatchesValidYesLocatorNew).click();
+                /* eslint-disable no-await-in-loop */
+                await expect(this.caseMatchesImportLocatorNew).toBeVisible();
+                /* eslint-disable no-await-in-loop */
+                await this.caseMatchesImportLocatorNew.click();
+                break;
+            }
+        }
+        await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+        await this.page.waitForTimeout(testConfig.CaseMatchesCompletionDelay);
+    }
+
+    async verifyProbateManCcdCaseNumber() {
+        const probateManCaseUrlXpath = '//span[contains(text(),\'print/probateManTypes/GRANT_APPLICATION/cases\')]';
+
+        let caseUrl = await this.page.locator(probateManCaseUrlXpath)
+            .first()
+            .textContent();
+
+        if (caseUrl.includes('ccd-api-gateway-web')) {
+            caseUrl = caseUrl.replace(/http(s?):\/\/.*?\/print/, testConfig.TestBackOfficeUrl + '/print');
+        }
+
+        await this.page.goto(caseUrl);
+        await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+        await expect(this.probateManPrint_waitForText).toBeVisible();
+        // this.amOnLoadedPage(caseUrl);
+        // await I.wait(testConfig.ManualDelayMedium);
+        // await I.waitForText('Grant Application', 600);
+        const ccdCaseNoTextXpath = 'xpath=/html/body/pre/table/tbody/tr[3]/td[1]'; // //td[text()='Ccd Case No:']
+        const ccdCaseNoText = await this.page.locator(ccdCaseNoTextXpath).textContent();
+        const ccdCaseNoValueXpath = 'xpath=/html/body/pre/table/tbody/tr[3]/td[2]';
+        if (ccdCaseNoText === 'Ccd Case No:') {
+            await expect(this.page.locator(ccdCaseNoValueXpath)).toBeVisible();
+        } else {
+            // eslint-disable-next-line no-undef
+            throw new Exception(`Ccd Case No: text xpath changed on probate man case url ${caseUrl} Page, please verify and update both text and value locators`);
+        }
     }
 
     async enterEventSummary(caseRef, nextStepName) {
