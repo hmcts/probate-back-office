@@ -4,12 +4,13 @@
   "page1_list2_application_type": "Personal",
   "page1_applicationSubmittedDate_day": "03",
   "page1_applicationSubmittedDate_month": "03",
-  "page1_applicationSubmittedDate_year": "1970",
+  "page1_applicationSubmittedDate_year": "2024",
   "page1_applicationSubmittedDate_long": "3 Mar 1970",
   "page1_list3_case_type": "Grant of Probate",
   "page1_extraCopiesOfGrant": "1",
   "page1_outsideUKGrantCopies": "1",
   "page1_optionNo": "No",
+  "page1_optionChannelChoiceCW": "Paper Form",
   "page1_otherExecutorExistsNo": "No",
 
   "page1_amend_waitForText": "Amend case details",
@@ -61,7 +62,7 @@
 
   "page3_waitForText": "PA1P/PA1A/Solicitors Manual",
   "ihtForm400": "IHT400",
-  "IhtGrossValue" : "500",
-  "IhtNetValue" : "400",
+  "EE_ihtEstateGrossValue" : "500",
+  "EE_ihtEstateNetValue" : "400",
   "ihtHmrcCode" : "CTS04052311043tpps8e9"
 }
