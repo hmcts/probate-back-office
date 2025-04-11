@@ -611,6 +611,12 @@ reactivate_dormant:
 grand_delay:
   number_of_weeks: 12
 
+bulkscan:
+  default-value:
+    postcode: MI55 1NG
+    ihtForm: FALSE
+    grossNetValue: 1.11
+    
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
   inactivityNotificationPeriod: ${INACTIVITY_NOTIFICATION_PERIOD:90}
@@ -619,4 +625,4 @@ disposal:
   startDate: 1900-01-01
   personalNotificationLink: ${FRONTEND_URL:http://localhost:3000}
   solsNotificationLink: ${MANAGE_CASE_URL:http://localhost:3001}
-
+ 

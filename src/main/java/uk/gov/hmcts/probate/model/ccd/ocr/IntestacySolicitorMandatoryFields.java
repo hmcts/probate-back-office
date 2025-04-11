@@ -10,9 +10,6 @@ public enum IntestacySolicitorMandatoryFields {
     DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
     DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
     DECEASED_ADDRESS_LINE1("deceasedAddressLine1", "Deceased address line 1"),
-    DECEASED_ADDRESS_POSTCODE("deceasedAddressPostCode", "Deceased postcode"),
-    DECEASED_DIED_ON_AFTER_SWITCH_DATE("deceasedDiedOnAfterSwitchDate",
-            "Did the person die on or after 1 January 2022?", "3"),
     DECEASED_DOB("deceasedDateOfBirth", "Deceased date of birth"),
     DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
     DECEASED_ANY_OTHER_NAMES("deceasedAnyOtherNames", "Did the deceased have assets in any other names?"),
@@ -24,8 +21,8 @@ public enum IntestacySolicitorMandatoryFields {
     SOLICITOR_APP_REFERENCE("solsSolicitorAppReference", "Solictor application reference"),
     SOLICITOR_EMAIL_ADDRESS("solsSolicitorEmail", "Solictor email address"),
     FORM_VERSION("formVersion", "Form version"),
-    IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "1", "2"),
-    IHT_NET_VALUE("ihtNetValue", "Net value of the estate", "1", "2");
+    IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "1"),
+    IHT_NET_VALUE("ihtNetValue", "Net value of the estate", "1");
 
     private final String key;
     private final String value;
