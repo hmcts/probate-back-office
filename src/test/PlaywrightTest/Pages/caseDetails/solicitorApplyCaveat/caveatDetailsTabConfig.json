@@ -1,0 +1,18 @@
+{
+    "tabName": "Caveat details",
+    "fields": [
+      "Is this a paper form?"
+    ],
+    "dataKeys": [
+      "optionNo"
+    ],
+    "completedApplication": {
+      "fields": [
+        "Caveat expiry date"
+      ],
+      "dataKeys": [
+        "caveat_expiry_date"
+      ]
+    }
+}
+

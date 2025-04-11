@@ -1,0 +1,9 @@
+{
+  "tabName": "Caveat details",
+  "fields": [
+    "Caveat expiry date"
+  ],
+  "dataKeys": [
+    "caveat_expiry_date"
+  ]
+}
