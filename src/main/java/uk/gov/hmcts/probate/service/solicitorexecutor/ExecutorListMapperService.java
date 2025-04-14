@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -224,15 +223,6 @@ public class ExecutorListMapperService {
                 .collect(Collectors.toList());
     }
 
-    private String capitalize(final String input, final String description) {
-        try {
-            return FormattingService.capitaliseEachWord(input);
-        } catch (FormattingService.FormattingServiceException fse) {
-            log.info("Exception when capitalizing", fse);
-            throw new ExecutorListMapperServiceException(description, fse);
-        }
-    }
-
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
         final String capSolSotFnames = FormattingService.capitaliseEachWord(
@@ -326,14 +316,6 @@ public class ExecutorListMapperService {
         }
 
         return executorType;
-    }
-
-    public class ExecutorListMapperServiceException extends BusinessValidationException {
-        public ExecutorListMapperServiceException(
-                final String description,
-                final FormattingService.FormattingServiceException cause) {
-            super(description, cause);
-        }
     }
 
 }
