@@ -12,4 +12,6 @@ public class BulkScanConfig {
     private String postcode;
     private String ihtForm;
     private String grossNetValue;
+    private String primaryApplicantForenames;
+    private String primaryApplicantSurname;
 }
