@@ -63,7 +63,9 @@ public class FormattingService {
                     .append("] is an empty string: [\"")
                     .append(Arrays.stream(parts).collect(Collectors.joining("\", \"")))
                     .append("\"]");
-            throw new FormattingServiceException(errBuilder.toString());
+            final FormattingServiceException fse = new FormattingServiceException(errBuilder.toString());
+            log.info("One of the components of an input is an empty string", fse);
+            throw fse;
         }
         return Arrays.stream(input.split("\\s+"))
                 .map(t -> t.substring(0, 1).toUpperCase() + t.substring(1))
