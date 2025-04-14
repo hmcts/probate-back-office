@@ -161,7 +161,7 @@ gitProperties {
 def versions = [
         authCheckerLib                  : '3.1.0',
         ccdClient                       : '5.0.5',
-        commonsIO                       : '2.18.0',
+        commonsIO                       : '2.19.0',
         commonsValidator                : '1.9.0',
         documentClient                  : '1.8.1',
         elasticSearchVersion            : '7.17.24',
