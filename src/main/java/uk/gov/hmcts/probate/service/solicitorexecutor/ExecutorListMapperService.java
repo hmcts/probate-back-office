@@ -228,6 +228,7 @@ public class ExecutorListMapperService {
         try {
             return FormattingService.capitaliseEachWord(input);
         } catch (FormattingService.FormattingServiceException fse) {
+            log.info("Exception when capitalizing", fse);
             throw new ExecutorListMapperServiceException(description, fse);
         }
     }
