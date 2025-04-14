@@ -3,9 +3,6 @@ package uk.gov.hmcts.probate.exception;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
-
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BusinessValidationException extends RuntimeException {
@@ -23,17 +20,6 @@ public class BusinessValidationException extends RuntimeException {
         super(message);
         this.userMessage = userMessage;
         this.additionalMessages = additionalMessages;
-    }
-
-    protected BusinessValidationException(final String userMessage, BusinessValidationException cause) {
-        super(cause.getMessage(), cause);
-        this.userMessage = userMessage;
-
-        // trust me
-        this.additionalMessages = (String[]) Stream.concat(
-                Stream.of(cause.userMessage),
-                Arrays.stream(cause.additionalMessages))
-                .toArray();
     }
 
     public String getUserMessage() {
