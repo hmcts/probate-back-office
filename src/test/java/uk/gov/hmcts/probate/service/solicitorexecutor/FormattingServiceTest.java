@@ -8,21 +8,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class FormattingServiceTest {
     @Test
     void shouldCapitaliseONeillCorrectlyLowercaseM() {
-        final String result = FormattingService.capitaliseEachWord("martin O'Neill");
+        final String result = FormattingService.capitaliseEachWord("martin O'Neill", "");
 
         assertEquals("Martin O'Neill", result);
     }
 
     @Test
     void shouldCapitaliseONeillCorrectlyLowercaseO() {
-        final String result = FormattingService.capitaliseEachWord("martin o'Neill");
+        final String result = FormattingService.capitaliseEachWord("martin o'Neill", "");
 
         assertEquals("Martin O'Neill", result);
     }
 
     @Test
     void shouldCapitaliseONeillCorrectlyLowercaseNO() {
-        final String result = FormattingService.capitaliseEachWord("martin o'neill");
+        final String result = FormattingService.capitaliseEachWord("martin o'neill", "");
 
         assertEquals("Martin O'neill", result);
     }
@@ -31,24 +31,24 @@ class FormattingServiceTest {
     void shouldThrowIfEmptyString() {
         assertThrows(
                 FormattingService.FormattingServiceException.class,
-                () -> FormattingService.capitaliseEachWord(""));
+                () -> FormattingService.capitaliseEachWord("", ""));
     }
 
     @Test
     void shouldReturnEmptyStringIfSpaceString() {
-        final String result = FormattingService.capitaliseEachWord(" ");
+        final String result = FormattingService.capitaliseEachWord(" ", "");
         assertEquals("", result);
     }
 
     @Test
     void shouldReturnNullStringIfNullString() {
-        final String result = FormattingService.capitaliseEachWord(null);
+        final String result = FormattingService.capitaliseEachWord(null, "");
         assertEquals(null, result);
     }
 
     @Test
     void shouldReturnUppercasedStringIfTrailingSpaces() {
-        final String result = FormattingService.capitaliseEachWord("first  ");
+        final String result = FormattingService.capitaliseEachWord("first  ", "");
 
         assertEquals("First", result);
     }
@@ -57,19 +57,19 @@ class FormattingServiceTest {
     void shouldThrowIfPreceedingSpaces() {
         assertThrows(
                 FormattingService.FormattingServiceException.class,
-                () -> FormattingService.capitaliseEachWord("  first"));
+                () -> FormattingService.capitaliseEachWord("  first", ""));
     }
 
     @Test
     void shouldThrowIfWrappedSpaces() {
         assertThrows(
                 FormattingService.FormattingServiceException.class,
-                () -> FormattingService.capitaliseEachWord("  first  "));
+                () -> FormattingService.capitaliseEachWord("  first  ", ""));
     }
 
     @Test
     void shouldReturnSingleSpacesWhenMultipleProvided() {
-        final String result = FormattingService.capitaliseEachWord("first  second");
+        final String result = FormattingService.capitaliseEachWord("first  second", "");
 
         assertEquals("First Second", result);
     }

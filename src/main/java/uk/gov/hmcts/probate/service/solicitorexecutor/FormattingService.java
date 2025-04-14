@@ -30,7 +30,7 @@ public class FormattingService {
         execs.forEach(exec -> names.append(exec.getValue().getApplyingExecutorName()).append(", "));
         names.append(finalName);
 
-        return capitaliseEachWord(names.toString());
+        return capitaliseEachWord(names.toString(), "Executors applying names");
     }
 
     // Create a formatted string including all not applying execs
@@ -45,23 +45,27 @@ public class FormattingService {
         execs.forEach(exec -> names.append(exec.getValue().getNotApplyingExecutorName()).append(", "));
         names.append(finalName);
 
-        return capitaliseEachWord(names.toString());
+        return capitaliseEachWord(names.toString(),  "Executors not applying names");
     }
 
-    public static String capitaliseEachWord(String name) {
-        if (name == null) {
+    public static String capitaliseEachWord(
+            final String input,
+            final String description) {
+        if (input == null) {
             return null;
         }
 
-        final String[] parts = name.split("\\s+");
+        final String[] parts = input.split("\\s+");
         if (Arrays.stream(parts).anyMatch(String::isEmpty)) {
             final StringBuilder errBuilder = new StringBuilder();
-            errBuilder.append("One of the provided inputs for capitalisation is an empty string: [\"");
-            errBuilder.append(Arrays.stream(parts).collect(Collectors.joining("\", \"")));
-            errBuilder.append("\"]");
+            errBuilder.append("One of the provided inputs for capitalisation of [")
+                    .append(description)
+                    .append("] is an empty string: [\"")
+                    .append(Arrays.stream(parts).collect(Collectors.joining("\", \"")))
+                    .append("\"]");
             throw new FormattingServiceException(errBuilder.toString());
         }
-        return Arrays.stream(name.split("\\s+"))
+        return Arrays.stream(input.split("\\s+"))
                 .map(t -> t.substring(0, 1).toUpperCase() + t.substring(1))
                 .collect(Collectors.joining(" "));
     }

@@ -71,7 +71,7 @@ public class ExecutorListMapperService {
     }
 
     private CollectionMember<AdditionalExecutorNotApplying> mapFromSolicitorToNotApplyingExecutor(CaseData caseData) {
-        final String capSolSotName = capitalize(
+        final String capSolSotName = FormattingService.capitaliseEachWord(
                 caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname(),
                 "Not applying Solicitor - Statement of Truth Name");
         AdditionalExecutorNotApplying exec = AdditionalExecutorNotApplying.builder()
@@ -88,7 +88,7 @@ public class ExecutorListMapperService {
                 new ArrayList<>(caseData.getAdditionalExecutorsApplying());
         // Update list
         tempList.forEach(exec -> {
-            final String capApplExecName = capitalize(
+            final String capApplExecName = FormattingService.capitaliseEachWord(
                     exec.getValue().getApplyingExecutorFirstName()
                             + " " + exec.getValue().getApplyingExecutorLastName(),
                     "Additional applying executor"
@@ -104,10 +104,10 @@ public class ExecutorListMapperService {
         return caseData.getAdditionalExecutorsTrustCorpList()
                 .stream()
                 .map(exec -> {
-                    final String applExecFNames = capitalize(
+                    final String applExecFNames = FormattingService.capitaliseEachWord(
                             exec.getValue().getAdditionalExecForenames(),
                             "Applying executor forenames");
-                    final String applExecLName = capitalize(
+                    final String applExecLName = FormattingService.capitaliseEachWord(
                             exec.getValue().getAdditionalExecLastname(),
                             "Applying executor last name");
                     final String applExecName = applExecFNames + " " + applExecLName;
@@ -132,10 +132,10 @@ public class ExecutorListMapperService {
         return caseData.getOtherPartnersApplyingAsExecutors()
                 .stream()
                 .map(exec -> {
-                    final String applExecFNames = capitalize(
+                    final String applExecFNames = FormattingService.capitaliseEachWord(
                             exec.getValue().getAdditionalExecForenames(),
                             "Additional Partner Executor forenames");
-                    final String applExecLName = capitalize(
+                    final String applExecLName = FormattingService.capitaliseEachWord(
                             exec.getValue().getAdditionalExecLastname(),
                             "Additional Partner Executor last name");
                     final String applExecName = applExecFNames + " " + applExecLName;
@@ -157,7 +157,7 @@ public class ExecutorListMapperService {
         return caseData.getDispenseWithNoticeOtherExecsList()
                 .stream()
                 .map(exec -> {
-                    final String notApplExecName = capitalize(
+                    final String notApplExecName = FormattingService.capitaliseEachWord(
                             exec.getValue().getNotApplyingExecutorName(),
                             "Not Applying Executor Name");
                     final String dispWNoticeLeaveGiven = caseData.getDispenseWithNoticeLeaveGiven();
@@ -182,10 +182,10 @@ public class ExecutorListMapperService {
                 .stream()
                 .filter(exec -> YES.equals(exec.getValue().getAdditionalApplying()))
                 .map(exec -> {
-                    final String applExecFNames = capitalize(
+                    final String applExecFNames = FormattingService.capitaliseEachWord(
                             exec.getValue().getAdditionalExecForenames(),
                             "additional executor forenames");
-                    final String applExecLName = capitalize(
+                    final String applExecLName = FormattingService.capitaliseEachWord(
                             exec.getValue().getAdditionalExecLastname(),
                             "additional executor last name");
                     final String applExecName = applExecFNames + " " + applExecLName;
@@ -209,7 +209,7 @@ public class ExecutorListMapperService {
                 .stream()
                 .filter(exec -> exec.getValue().getAdditionalApplying().equals(NO))
                 .map(exec -> {
-                    final String nApplExecName = capitalize(
+                    final String nApplExecName = FormattingService.capitaliseEachWord(
                             exec.getValue().getAdditionalExecForenames()
                                     + " " + exec.getValue().getAdditionalExecLastname(),
                             "additional executor name");
@@ -235,10 +235,10 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
-        final String capSolSotFnames = capitalize(
+        final String capSolSotFnames = FormattingService.capitaliseEachWord(
                 caseData.getSolsSOTForenames(),
                 "Solicitor Statement of Truth Forenames");
-        final String capSolSotSname = capitalize(
+        final String capSolSotSname = FormattingService.capitaliseEachWord(
                 caseData.getSolsSOTSurname(),
                 "Solicitor Statement of Truth Surnames");
         final String capSolSotName = capSolSotFnames + " " + capSolSotSname;
@@ -265,9 +265,15 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(
             CaseData caseData, String collectionMemberId) {
-        final String pApplFNames = capitalize(caseData.getPrimaryApplicantForenames(),"Primary applicant forenames");
-        final String pApplLName = capitalize(caseData.getPrimaryApplicantSurname(), "Primary applicant surname");
-        final String pAppName = capitalize(caseData.getPrimaryApplicantFullName(), "Primary applicant full name");
+        final String pApplFNames = FormattingService.capitaliseEachWord(
+                caseData.getPrimaryApplicantForenames(),
+                "Primary applicant forenames");
+        final String pApplLName = FormattingService.capitaliseEachWord(
+                caseData.getPrimaryApplicantSurname(),
+                "Primary applicant surname");
+        final String pAppName = FormattingService.capitaliseEachWord(
+                caseData.getPrimaryApplicantFullName(),
+                "Primary applicant full name");
         // Create applying executor collection member containing primary applicant names
         return new CollectionMember<>(
                 collectionMemberId,
@@ -295,7 +301,7 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
             CaseData caseData, String collectionMemberId) {
-        final String capPriApplName = capitalize(
+        final String capPriApplName = FormattingService.capitaliseEachWord(
                 caseData.getPrimaryApplicantFullName(),
                 "Primary applicant full name");
         // Create not applying executor collection member containing primary applicant names
