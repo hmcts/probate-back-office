@@ -295,9 +295,12 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
             CaseData caseData, String collectionMemberId) {
+        final String capPriApplName = capitalize(
+                caseData.getPrimaryApplicantFullName(),
+                "Primary applicant full name");
         // Create not applying executor collection member containing primary applicant names
         return new CollectionMember<>(collectionMemberId, AdditionalExecutorNotApplying.builder()
-                .notApplyingExecutorName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantFullName()))
+                .notApplyingExecutorName(capPriApplName)
                 .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
                 .notApplyingExecutorNameOnWill(caseData.getSolsExecutorAliasNames())
                 .build());
