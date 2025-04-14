@@ -206,13 +206,19 @@ public class ExecutorListMapperService {
         return caseData.getSolsAdditionalExecutorList()
                 .stream()
                 .filter(exec -> exec.getValue().getAdditionalApplying().equals(NO))
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
-                        .notApplyingExecutorName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()
-                                + " " + exec.getValue().getAdditionalExecLastname()))
-                        .notApplyingExecutorReason(exec.getValue().getAdditionalExecReasonNotApplying())
-                        .notApplyingExecutorNameOnWill(exec.getValue().getAdditionalExecAliasNameOnWill())
-                        .build()))
+                .map(exec -> {
+                    final String nApplExecName = capitalize(
+                            exec.getValue().getAdditionalExecForenames()
+                                    + " " + exec.getValue().getAdditionalExecLastname(),
+                            "additional executor name");
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorNotApplying.builder()
+                                    .notApplyingExecutorName(nApplExecName)
+                                    .notApplyingExecutorReason(exec.getValue().getAdditionalExecReasonNotApplying())
+                                    .notApplyingExecutorNameOnWill(exec.getValue().getAdditionalExecAliasNameOnWill())
+                                    .build());
+                })
                 .collect(Collectors.toList());
     }
 
