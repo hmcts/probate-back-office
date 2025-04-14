@@ -232,7 +232,7 @@ dependencies {
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.30.0'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.6.2'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-runtime-attach', version: '3.6.2'
-  implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.0'
+  implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.1'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
