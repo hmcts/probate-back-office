@@ -71,11 +71,13 @@ public class ExecutorListMapperService {
     }
 
     private CollectionMember<AdditionalExecutorNotApplying> mapFromSolicitorToNotApplyingExecutor(CaseData caseData) {
+        final String capSolSotName = capitalize(
+                caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname(),
+                "Not applying Solicitor - Statement of Truth Name");
         AdditionalExecutorNotApplying exec = AdditionalExecutorNotApplying.builder()
-            .notApplyingExecutorName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()
-                    + " " + caseData.getSolsSOTSurname()))
-            .notApplyingExecutorReason(caseData.getSolsSolicitorNotApplyingReason())
-            .build();
+                .notApplyingExecutorName(capSolSotName)
+                .notApplyingExecutorReason(caseData.getSolsSolicitorNotApplyingReason())
+                .build();
 
         return new CollectionMember<>(SOLICITOR_ID, exec);
     }
