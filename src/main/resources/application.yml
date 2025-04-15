@@ -616,7 +616,9 @@ bulkscan:
     postcode: MI55 1NG
     ihtForm: FALSE
     grossNetValue: 1.11
-    
+    primaryApplicantForenames: MISSING
+    primaryApplicantSurname: MISSING
+
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
   inactivityNotificationPeriod: ${INACTIVITY_NOTIFICATION_PERIOD:90}
