@@ -1,0 +1,35 @@
+{
+  "tabName": "Change of representatives",
+  "fields": [
+    "Change Of Representatives 1",
+    "Date Triggered",
+    "Removed Representative",
+    "Organization Id",
+    "Solicitor First Name",
+    "Solicitor Last Name",
+    "Solicitor EmailAddress",
+    "Organization",
+    "Name",
+    "Address",
+    "Added Representative",
+    "Organization Id",
+    "Updated By",
+    "Update via"
+  ],
+  "dataKeys": [
+    "nocTriggeredDate",
+    "removed_orgId",
+    "removed_solicitorFirstName",
+    "removed_solicitorLastName",
+    "removed_solicitorEmailAddress",
+    "removed_orgName",
+    "address_line1",
+    "address_line2",
+    "address_town",
+    "address_country",
+    "address_postcode",
+    "added_orgId",
+    "updatedBy",
+    "updatedVia"
+  ]
+}
