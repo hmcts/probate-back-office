@@ -10,36 +10,36 @@ import lombok.Data;
 public class ExceptionRecordOCRFields {
 
     // Caveats
-    private final String caveatorForenames;
-    private final String caveatorSurnames;
+    private String caveatorForenames;
+    private String caveatorSurnames;
     private final String caveatorEmailAddress;
-    private final String caveatorAddressLine1;
+    private String caveatorAddressLine1;
     private final String caveatorAddressLine2;
     private final String caveatorAddressTown;
     private final String caveatorAddressCounty;
-    private final String caveatorAddressPostCode;
-    private final String solsSolicitorRepresentativeName;
+    private String caveatorAddressPostCode;
+    private String solsSolicitorRepresentativeName;
     private final String dxNumber;
     private final String practitionerAcceptsServiceByEmail;
-    private final String solsSolicitorFirmName;
-    private final String solsSolicitorAppReference;
-    private final String solsSolicitorAddressLine1;
-    private final String solsSolicitorAddressLine2;
-    private final String solsSolicitorAddressTown;
+    private String solsSolicitorFirmName;
+    private String solsSolicitorAppReference;
+    private String solsSolicitorAddressLine1;
+    private String solsSolicitorAddressLine2;
+    private String solsSolicitorAddressTown;
     private final String solsSolicitorAddressCounty;
-    private final String solsSolicitorAddressPostCode;
-    private final String solsSolicitorEmail;
-    private final String solsSolicitorPhoneNumber;
-    private final String deceasedForenames;
-    private final String deceasedSurname;
-    private final String deceasedDateOfDeath;
-    private final String deceasedDateOfBirth;
-    private final String deceasedAnyOtherNames;
-    private final String deceasedAddressLine1;
+    private String solsSolicitorAddressPostCode;
+    private String solsSolicitorEmail;
+    private String solsSolicitorPhoneNumber;
+    private String deceasedForenames;
+    private String deceasedSurname;
+    private String deceasedDateOfDeath;
+    private String deceasedDateOfBirth;
+    private String deceasedAnyOtherNames;
+    private String deceasedAddressLine1;
     private final String deceasedAddressLine2;
     private final String deceasedAddressTown;
     private final String deceasedAddressCounty;
-    private final String deceasedAddressPostCode;
+    private String deceasedAddressPostCode;
     private final String caseReference;
     //new form PA8A
     private final String caveatorPhoneNumber;
@@ -50,7 +50,7 @@ public class ExceptionRecordOCRFields {
     private final String probateFeeAccountNumber;
     private final String probateFeeAccountReference;
     private final String bilingualCorrespondenceRequested;
-    private final String legalRepresentative;
+    private String legalRepresentative;
 
     // PA1A and PA1P
     private final String extraCopiesOfGrant;
@@ -65,11 +65,11 @@ public class ExceptionRecordOCRFields {
     private String primaryApplicantSurname;
     private final String primaryApplicantHasAlias;
     private final String primaryApplicantAlias;
-    private final String primaryApplicantAddressLine1;
+    private String primaryApplicantAddressLine1;
     private final String primaryApplicantAddressLine2;
     private final String primaryApplicantAddressTown;
     private final String primaryApplicantAddressCounty;
-    private final String primaryApplicantAddressPostCode;
+    private String primaryApplicantAddressPostCode;
     private final String primaryApplicantPhoneNumber;
     private final String primaryApplicantSecondPhoneNumber;
     private final String primaryApplicantEmailAddress;
@@ -101,7 +101,7 @@ public class ExceptionRecordOCRFields {
     private final String executorsApplying2applyingExecutorDifferentNameToWill;
     private final String executorsApplying2applyingExecutorOtherNames;
     private final String solsSolicitorIsApplying;
-    private final String deceasedDomicileInEngWales;
+    private String deceasedDomicileInEngWales;
     private final String deceasedMartialStatus;
     private final String dateOfMarriageOrCP;
     private final String dateOfDivorcedCPJudicially;
