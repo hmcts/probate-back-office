@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.get;
-import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.getDefaultPostcodeIfInvalid;
+import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.*;
 
 @Data
 public class ExceptionRecordRequest {
@@ -100,7 +99,8 @@ public class ExceptionRecordRequest {
             .paperPaymentMethod(get(ocrFields, "paperPaymentMethod"))
             .paymentReferenceNumberPaperform(get(ocrFields, "paymentReferenceNumberPaperform"))
             .solsFeeAccountNumber(get(ocrFields, "solsFeeAccountNumber"))
-            .primaryApplicantForenames(get(ocrFields, "primaryApplicantForenames", "primaryApplicantMiddleNames"))
+            //.primaryApplicantForenames(get(ocrFields, "primaryApplicantForenames", "primaryApplicantMiddleNames"))
+            .primaryApplicantForenames(getPrimaryApplicantForenamesIfInvalid(ocrFields, "primaryApplicantForenames", "primaryApplicantMiddleNames"))
             .primaryApplicantSurname(get(ocrFields, "primaryApplicantSurname"))
             .primaryApplicantAddressLine1(get(ocrFields, "primaryApplicantAddressLine1"))
             .primaryApplicantAddressLine2(get(ocrFields, "primaryApplicantAddressLine2"))
