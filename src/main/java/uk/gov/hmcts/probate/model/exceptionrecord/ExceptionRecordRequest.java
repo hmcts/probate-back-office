@@ -3,11 +3,14 @@ package uk.gov.hmcts.probate.model.exceptionrecord;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.get;
+import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.*;
 
 @Data
 public class ExceptionRecordRequest {
@@ -24,6 +27,7 @@ public class ExceptionRecordRequest {
     private final List<OCRField> ocrFields;
     private final String envelopeId;
     private final Boolean isAutomatedProcess;
+    private List<CollectionMember<ModifiedOCRField>> modifiedFields;
 
     public ExceptionRecordRequest(
         @JsonProperty("exception_record_id") String exceptionRecordId,
@@ -51,40 +55,41 @@ public class ExceptionRecordRequest {
         this.ocrFields = ocrFields;
         this.envelopeId = envelopeId;
         this.isAutomatedProcess = isAutomatedProcess;
+        this.modifiedFields = new ArrayList<>();
     }
 
     public ExceptionRecordOCRFields getOCRFieldsObject() {
 
         return ExceptionRecordOCRFields.builder()
-            .caveatorForenames(get(ocrFields, "caveatorForenames", "caveatorMiddleNames"))
-            .caveatorSurnames(get(ocrFields, "caveatorSurnames"))
+            .caveatorForenames(get(ocrFields, "caveatorForenames", "caveatorMiddleNames", modifiedFields))
+            .caveatorSurnames(get(ocrFields, "caveatorSurnames"), modifiedFields)
             .caveatorEmailAddress(get(ocrFields, "caveatorEmailAddress"))
-            .caveatorAddressLine1(get(ocrFields, "caveatorAddressLine1"))
+            .caveatorAddressLine1(get(ocrFields, "caveatorAddressLine1"), modifiedFields)
             .caveatorAddressLine2(get(ocrFields, "caveatorAddressLine2"))
             .caveatorAddressTown(get(ocrFields, "caveatorAddressTown"))
             .caveatorAddressCounty(get(ocrFields, "caveatorAddressCounty"))
-            .caveatorAddressPostCode(get(ocrFields, "caveatorAddressPostCode"))
-            .deceasedForenames(get(ocrFields, "deceasedForenames", "deceasedMiddleNames"))
-            .deceasedSurname(get(ocrFields, "deceasedSurname"))
-            .deceasedAnyOtherNames(get(ocrFields, "deceasedAnyOtherNames"))
-            .deceasedAddressLine1(get(ocrFields, "deceasedAddressLine1"))
+            .caveatorAddressPostCode(get(ocrFields, "caveatorAddressPostCode"), modifiedFields)
+            .deceasedForenames(get(ocrFields, "deceasedForenames", "deceasedMiddleNames", modifiedFields))
+            .deceasedSurname(get(ocrFields, "deceasedSurname"), modifiedFields)
+            .deceasedAnyOtherNames(get(ocrFields, "deceasedAnyOtherNames"), modifiedFields)
+            .deceasedAddressLine1(get(ocrFields, "deceasedAddressLine1"), modifiedFields)
             .deceasedAddressLine2(get(ocrFields, "deceasedAddressLine2"))
             .deceasedAddressTown(get(ocrFields, "deceasedAddressTown"))
             .deceasedAddressCounty(get(ocrFields, "deceasedAddressCounty"))
-            .deceasedAddressPostCode(get(ocrFields, "deceasedAddressPostCode"))
-            .deceasedDateOfBirth(get(ocrFields, "deceasedDateOfBirth"))
+            .deceasedAddressPostCode(getDefaultPostcodeIfInvalid(ocrFields, "deceasedAddressPostCode", modifiedFields))
+            .deceasedDateOfBirth(get(ocrFields, "deceasedDateOfBirth", modifiedFields))
             .deceasedDateOfDeath(get(ocrFields, "deceasedDateOfDeath"))
-            .solsSolicitorRepresentativeName(get(ocrFields, "solsSolicitorRepresentativeName"))
-            .solsSolicitorFirmName(get(ocrFields, "solsSolicitorFirmName"))
-            .solsSolicitorAppReference(get(ocrFields, "solsSolicitorAppReference"))
+            .solsSolicitorRepresentativeName(get(ocrFields, "solsSolicitorRepresentativeName", modifiedFields))
+            .solsSolicitorFirmName(get(ocrFields, "solsSolicitorFirmName", modifiedFields))
+            .solsSolicitorAppReference(get(ocrFields, "solsSolicitorAppReference", modifiedFields))
             .solsFeeAccountNumber(get(ocrFields, "solsFeeAccountNumber"))
-            .solsSolicitorAddressLine1(get(ocrFields, "solsSolicitorAddressLine1"))
-            .solsSolicitorAddressLine2(get(ocrFields, "solsSolicitorAddressLine2"))
-            .solsSolicitorAddressTown(get(ocrFields, "solsSolicitorAddressTown"))
-            .solsSolicitorAddressCounty(get(ocrFields, "solsSolicitorAddressCounty"))
-            .solsSolicitorAddressPostCode(get(ocrFields, "solsSolicitorAddressPostCode"))
-            .solsSolicitorEmail(get(ocrFields, "solsSolicitorEmail"))
-            .solsSolicitorPhoneNumber(get(ocrFields, "solsSolicitorPhoneNumber"))
+            .solsSolicitorAddressLine1(get(ocrFields, "solsSolicitorAddressLine1", modifiedFields))
+            .solsSolicitorAddressLine2(get(ocrFields, "solsSolicitorAddressLine2", modifiedFields))
+            .solsSolicitorAddressTown(get(ocrFields, "solsSolicitorAddressTown", modifiedFields))
+            .solsSolicitorAddressCounty(get(ocrFields, "solsSolicitorAddressCounty", modifiedFields))
+            .solsSolicitorAddressPostCode(get(ocrFields, "solsSolicitorAddressPostCode", modifiedFields))
+            .solsSolicitorEmail(get(ocrFields, "solsSolicitorEmail", modifiedFields))
+            .solsSolicitorPhoneNumber(get(ocrFields, "solsSolicitorPhoneNumber", modifiedFields))
             .caseReference(get(ocrFields, "caseReference"))
             .extraCopiesOfGrant(get(ocrFields, "extraCopiesOfGrant"))
             .outsideUKGrantCopies(get(ocrFields, "outsideUKGrantCopies"))
@@ -94,13 +99,13 @@ public class ExceptionRecordRequest {
             .paperPaymentMethod(get(ocrFields, "paperPaymentMethod"))
             .paymentReferenceNumberPaperform(get(ocrFields, "paymentReferenceNumberPaperform"))
             .solsFeeAccountNumber(get(ocrFields, "solsFeeAccountNumber"))
-            .primaryApplicantForenames(get(ocrFields, "primaryApplicantForenames", "primaryApplicantMiddleNames"))
-            .primaryApplicantSurname(get(ocrFields, "primaryApplicantSurname"))
-            .primaryApplicantAddressLine1(get(ocrFields, "primaryApplicantAddressLine1"))
+            .primaryApplicantForenames(getDefaultPrimaryApplicantForenamesIfInvalid(ocrFields, "primaryApplicantForenames", "primaryApplicantMiddleNames", modifiedFields))
+            .primaryApplicantSurname(get(ocrFields, "primaryApplicantSurname", modifiedFields))
+            .primaryApplicantAddressLine1(getDefaultPrimaryApplicantAddressLine1(ocrFields, "primaryApplicantAddressLine1", modifiedFields))
             .primaryApplicantAddressLine2(get(ocrFields, "primaryApplicantAddressLine2"))
             .primaryApplicantAddressTown(get(ocrFields, "primaryApplicantAddressTown"))
             .primaryApplicantAddressCounty(get(ocrFields, "primaryApplicantAddressCounty"))
-            .primaryApplicantAddressPostCode(get(ocrFields, "primaryApplicantAddressPostCode"))
+            .primaryApplicantAddressPostCode(get(ocrFields, "primaryApplicantAddressPostCode"), modifiedFields)
             .primaryApplicantPhoneNumber(get(ocrFields, "primaryApplicantPhoneNumber"))
             .primaryApplicantSecondPhoneNumber(get(ocrFields, "primaryApplicantSecondPhoneNumber"))
             .primaryApplicantEmailAddress(get(ocrFields, "primaryApplicantEmailAddress"))
@@ -158,17 +163,17 @@ public class ExceptionRecordRequest {
             .executorsApplying2applyingExecutorOtherNames(
                 get(ocrFields, "executorsApplying_2_applyingExecutorOtherNames"))
             .solsSolicitorIsApplying(get(ocrFields, "solsSolicitorIsApplying"))
-            .solsSolicitorRepresentativeName(get(ocrFields, "solsSolicitorRepresentativeName"))
+            .solsSolicitorRepresentativeName(get(ocrFields, "solsSolicitorRepresentativeName", modifiedFields))
             .solsSolicitorFirmName(get(ocrFields, "solsSolicitorFirmName"))
-            .solsSolicitorAppReference(get(ocrFields, "solsSolicitorAppReference"))
-            .solsSolicitorAddressLine1(get(ocrFields, "solsSolicitorAddressLine1"))
-            .solsSolicitorAddressLine2(get(ocrFields, "solsSolicitorAddressLine2"))
-            .solsSolicitorAddressTown(get(ocrFields, "solsSolicitorAddressTown"))
+            .solsSolicitorAppReference(get(ocrFields, "solsSolicitorAppReference"), modifiedFields) //Y
+            .solsSolicitorAddressLine1(get(ocrFields, "solsSolicitorAddressLine1"), modifiedFields) //Y
+            .solsSolicitorAddressLine2(get(ocrFields, "solsSolicitorAddressLine2"), modifiedFields) //Y
+            .solsSolicitorAddressTown(get(ocrFields, "solsSolicitorAddressTown"), modifiedFields) //Y
             .solsSolicitorAddressCounty(get(ocrFields, "solsSolicitorAddressCounty"))
-            .solsSolicitorAddressPostCode(get(ocrFields, "solsSolicitorAddressPostCode"))
-            .solsSolicitorEmail(get(ocrFields, "solsSolicitorEmail"))
-            .solsSolicitorPhoneNumber(get(ocrFields, "solsSolicitorPhoneNumber"))
-            .deceasedDomicileInEngWales(get(ocrFields, "deceasedDomicileInEngWales"))
+            .solsSolicitorAddressPostCode(get(ocrFields, "solsSolicitorAddressPostCode"), modifiedFields) //Y
+            .solsSolicitorEmail(get(ocrFields, "solsSolicitorEmail"), modifiedFields) //Y
+            .solsSolicitorPhoneNumber(get(ocrFields, "solsSolicitorPhoneNumber"), modifiedFields) //Y
+            .deceasedDomicileInEngWales(get(ocrFields, "deceasedDomicileInEngWales"), modifiedFields) //Y
             .deceasedMartialStatus(get(ocrFields, "deceasedMartialStatus"))
             .dateOfMarriageOrCP(get(ocrFields, "dateOfMarriageOrCP"))
             .dateOfDivorcedCPJudicially(get(ocrFields, "dateOfDivorcedCPJudicially"))
@@ -310,7 +315,7 @@ public class ExceptionRecordRequest {
             .probateFeeAccountNumber(get(ocrFields, "probateFeeAccountNumber"))
             .probateFeeAccountReference(get(ocrFields, "probateFeeAccountReference"))
             .bilingualCorrespondenceRequested(get(ocrFields, "bilingualCorrespondenceRequested"))
-            .legalRepresentative(get(ocrFields, "legalRepresentative"))
+            .legalRepresentative(get(ocrFields, "legalRepresentative", modifiedFields)) //
             .dxNumber(get(ocrFields, "dxNumber"))
             .practitionerAcceptsServiceByEmail(get(ocrFields, "practitionerAcceptsServiceByEmail"))
             .build();
