@@ -613,11 +613,33 @@ grand_delay:
 
 bulkscan:
   default-value:
+    caveatorForenames: MISSING
+    caveatorSurname: MISSING
+    caveatorAddressLine1: MISSING
+    caveatorAddressPostCode: MI55 ING
+    deceasedForenames: MISSING
+    deceasedSurname: MISSING
+    deceasedAnyOtherNames: TRUE
+    deceasedAddressLine1: MISSING
     postcode: MI55 1NG
-    ihtForm: FALSE
-    grossNetValue: 1.11
+    deceasedDateOfBirth: 01011900
+    solsSolicitorRepresentativeName: <solsSolicitorFirmName>
+    solsSolicitorFirmName: MISSING
     primaryApplicantForenames: MISSING
     primaryApplicantSurname: MISSING
+    primaryApplicantAddressLine1: MISSING
+    primaryApplicantAddressPostCode: MI55 1NG
+    solsSolicitorAppReference: <deceasedSurname>
+    solsSolicitorAddressLine1: <N/A if address building, street and postcode are populated>
+    solsSolicitorAddressLine2: <N/A if address building, street and postcode are populated>
+    solsSolicitorAddressTown: <N/A if address building, street and postcode are populated>
+    solsSolicitorAddressPostCode: MI55 1NG
+    solsSolicitorEmail: contactprobate@justice.gov.uk <remove after case creation>
+    solsSolicitorPhoneNumber: 1234
+    deceasedDomicileInEngWales: TRUE
+    legalRepresentative: TRUE
+    ihtForm: FALSE
+    grossNetValue: 1.11
 
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
