@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -170,7 +171,9 @@ class NotificationServiceTest {
 
         when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
                 .thenReturn(mockResult);
-        when(notificationClientServiceMock.emailPreview(any(), any(), any())).thenReturn(mock(TemplatePreview.class));
+        final TemplatePreview preview = mock(TemplatePreview.class);
+        when(notificationClientServiceMock.emailPreview(any(), any(), any())).thenReturn(preview);
+        when(preview.getHtml()).thenReturn(Optional.of("<html />"));
 
         notificationService.emailPreview(caseDetails);
 
