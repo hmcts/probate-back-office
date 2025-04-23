@@ -29,6 +29,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -151,7 +152,8 @@ class ExelaDataExtractServiceTest {
                     .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
                     .build();
             when(exelaCriteriaService.getFilteredCases(any())).thenReturn(filteredCases);
-            when(notificationService.sendExelaEmail(any())).thenThrow(NotificationClientException.class);
+            doThrow(NotificationClientException.class)
+                    .when(notificationService).sendExelaEmail(any());
 
             exelaDataExtractService.performExelaExtractForDate("2000-12-31");
         });
@@ -164,7 +166,8 @@ class ExelaDataExtractServiceTest {
                     .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
                     .build();
             when(exelaCriteriaService.getFilteredCases(any())).thenReturn(filteredCases);
-            when(notificationService.sendExelaEmail(any())).thenThrow(NotificationClientException.class);
+            doThrow(NotificationClientException.class)
+                    .when(notificationService).sendExelaEmail(any());
 
             exelaDataExtractService.performExelaExtractForDateRange("2000-12-30", "2000-12-31");
         });
