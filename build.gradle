@@ -347,6 +347,7 @@ dependencies {
 
 configurations.all {
   exclude group: 'commons-logging', module: 'commons-logging'
+  exclude group: 'com.vaadin.external.google', module: 'android-json'
 }
 
 tasks.withType(JavaCompile) {
