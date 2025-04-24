@@ -8,6 +8,16 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "bulkscan.default-value")
 public class BulkScanConfig {
+    // TODO - Remove unneeded non-generic fields
+
+    private String postcode;
+    private String name;
+    private String names;
+    private String addressLine;
+    private String dob;
+    private String solsSolicitorIsApplying;
+    private String email;
+    private String phone;
 
     //Caveat
     private String caveatorForenames;
@@ -19,7 +29,7 @@ public class BulkScanConfig {
     private String deceasedSurname;
     private String deceasedAnyOtherNames;
     private String deceasedAddressLine1;
-    private String postcode; // deceasedAddressPostCode
+    private String deceasedAddressPostCode;
     private String deceasedDateOfBirth;
     private String solsSolicitorRepresentativeName;
     private String solsSolicitorFirmName;
@@ -30,6 +40,7 @@ public class BulkScanConfig {
     private String primaryApplicantAddressLine1;
     private String primaryApplicantAddressPostCode;
 
+    private String solsSolicitorFirstName;
     private String solsSolicitorAppReference;
     private String solsSolicitorAddressLine1;
     private String solsSolicitorAddressLine2;
