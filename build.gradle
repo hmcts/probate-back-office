@@ -180,7 +180,7 @@ def versions = [
         springBootStarterHateoas        : '3.3.10',
         springCloud                     : '4.1.4',
         springCloudStarterNetflixHystrix: '4.1.3',
-        springDocOpenUi                 : '2.6.0',
+        springDocOpenUi                 : '2.8.6',
         springSecurityVersion           : '6.4.5'
 ]
 
