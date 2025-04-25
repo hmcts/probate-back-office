@@ -12,11 +12,9 @@
             }
           }
         },
-        {
-          "match": {
-            "state": "PAAppCreated"
-          }
-        }
+        {"match": {"state": "PAAppCreated"}},
+        {"match": {"state": "CasePaymentFailed"}},
+        {"match": {"state": "Pending"}}
       ]
     }
   },
