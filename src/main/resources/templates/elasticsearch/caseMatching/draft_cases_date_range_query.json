@@ -12,9 +12,15 @@
             }
           }
         },
-        {"match": {"state": "PAAppCreated"}},
-        {"match": {"state": "CasePaymentFailed"}},
-        {"match": {"state": "Pending"}}
+        {
+          "terms": {
+            "state.keyword": [
+              "PAAppCreated",
+              "CasePaymentFailed",
+              "Pending"
+            ]
+          }
+        }
       ]
     }
   },
