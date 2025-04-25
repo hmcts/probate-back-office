@@ -51,6 +51,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         this.bulkPrintLocator = this.page.locator(`#boSendToBulkPrint_${issueGrantConfig.list1_text}`);
         this.emailGrantIssueNotificationLocator = this.page.locator(`#boEmailGrantIssuedNotification_${issueGrantConfig.list2_text}`);
         this.probateManPrint_waitForText = this.page.getByRole('heading', {name: 'Grant Application'});
+        this.willWithdrawReasonLocator = this.page.locator('#withdrawalReason');
     }
 
     async chooseNextStep(nextStep) {
@@ -101,7 +102,12 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
                 await delay(100);
             }
         });
-        await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+        if (nextStepName === 'Match application') {
+            await this.waitForNavigationToComplete(commonConfig.continueButton);
+        } else {
+            await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+        }
+
         if (skipMatchingInfo) {
             await expect(this.summaryLocator).toBeVisible();
             if (!testConfig.TestAutoDelayEnabled) {
@@ -359,5 +365,19 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.newStateLocator.selectOption({label: `${newState}`});
         await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async selectWithdrawalReason(caseRef, withdrawalConfig) {
+        await expect(this.page.getByText(withdrawalConfig.waitForText)).toBeVisible();
+        await expect(this.page.getByText(caseRef)).toBeVisible();
+        await this.willWithdrawReasonLocator.selectOption({label: `${withdrawalConfig.list1_text}`});
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
+        // await I.waitForText(withdrawalConfig.waitForText, testConfig.WaitForTextTimeout);
+
+        // await I.see(caseRef);
+
+        // await I.selectOption('#withdrawalReason', withdrawalConfig.list1_text);
+
+        // await I.waitForNavigationToComplete(commonConfig.continueButton);
     }
 };
