@@ -8,6 +8,7 @@ exports.BasePage = class BasePage {
         this.page = page;
         this.rejectLocator = page.getByRole('button', {name: 'Reject analytics cookies'});
         this.continueButtonLocator = page.getByRole('button', {name: 'Continue'});
+        this.saveAndContinueButtonLocator = page.getByRole('button', {name: 'Save and continue'});
         this.submitButtonLocator = page.getByRole('button', {name: 'Submit'});
         this.goButtonLocator = page.getByRole('button', {name: 'Go'});
     }
@@ -61,11 +62,17 @@ exports.BasePage = class BasePage {
         await navigationPromise;
     }
 
-    async waitForSubmitNavigationToComplete() {
+    async waitForSubmitNavigationToComplete(buttonName) {
         const navigationPromise = this.page.waitForNavigation();
-        await expect(this.submitButtonLocator).toBeVisible();
-        await expect(this.submitButtonLocator).toBeEnabled();
-        this.submitButtonLocator.click();
+        if (buttonName === 'Save and continue') {
+            await expect(this.saveAndContinueButtonLocator).toBeVisible();
+            await expect(this.saveAndContinueButtonLocator).toBeEnabled();
+            this.saveAndContinueButtonLocator.click();
+        } else {
+            await expect(this.submitButtonLocator).toBeVisible();
+            await expect(this.submitButtonLocator).toBeEnabled();
+            this.submitButtonLocator.click();
+        }
         await navigationPromise;
     }
 
