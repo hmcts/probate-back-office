@@ -84,7 +84,7 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await basePage.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateConfig);
 
             nextStepName = 'Handle supplementary evidence';
-            await basePage.logInfo(scenarioName, nextStepConfig, caseRef);
+            await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepConfig.handleSupEvidence);
             await cwEventActionsPage.handleEvidence(caseRef);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
