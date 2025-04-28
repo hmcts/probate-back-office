@@ -31,7 +31,7 @@ const {
 test.describe('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker', () => {
     test('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker',
         async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
-            const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker';
+            const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker';
             // BO Grant of Representation (Personal): Case created -> Grant issued
 
             // get unique suffix for names - in order to match only against 1 case
@@ -83,14 +83,14 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             //await I.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateConfig);
 
             nextStepName = 'Registrar\'s decision';
-            await basePage.logInfo(scenarioName, nextStepConfig, caseRef);
+            await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.registrarsDecision(caseRef);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             await basePage.seeCaseDetails(caseRef, registrarsDecisionTabConfig, registrarsDecisionConfig);
 
             nextStepName = 'Handle supplementary evidence';
-            await basePage.logInfo(scenarioName, nextStepConfig, caseRef);
+            await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepConfig.handleSupEvidence);
             await cwEventActionsPage.handleEvidence(caseRef);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);

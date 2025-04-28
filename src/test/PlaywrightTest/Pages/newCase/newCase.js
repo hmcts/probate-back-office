@@ -7,7 +7,7 @@ const commonConfig = require('../common/commonConfig');
 const checkYourAnswersConfig = require('../checkYourAnswers/checkYourAnswersConfig');
 const eventSummaryConfig = require('../eventSummary/eventSummaryConfig');
 const createGrantOfProbateConfig = require('../createGrantOfProbateManual/createGrantOfProbateManualConfig');
-const createGrantofProbateAmendConfig = require('../createGrantofProbate/createGrantOfProbateConfig');
+const createGrantofProbateAmendConfig = require('../createGrantOfProbate/createGrantOfProbateConfig');
 const caseProgressConfig = require('../caseProgressStandard/caseProgressConfig');
 const createWillLodgementConfig = require('../createWillLodgement/createWillLodgementConfig.json');
 
