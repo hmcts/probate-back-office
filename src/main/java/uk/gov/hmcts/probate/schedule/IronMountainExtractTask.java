@@ -23,27 +23,31 @@ public class IronMountainExtractTask implements Runnable {
         this.scheduleDates = extractScheduleDates;
     }
 
+    /// Note that the log messages here are used for alerting/monitoring
     @Override
     public void run() {
-        log.info("Scheduled task IronMountainExtractTask started to extract data for IronMountain");
+        log.info("Scheduled task IronMountainExtractTask");
 
+        final String descr;
         final String fromDate;
         if (scheduleDates.hasValue()) {
+            descr = "ad hoc date";
             fromDate = scheduleDates.getFromDate();
-            log.info("IronMountainExtractTask has ad hoc date: {}", fromDate);
         } else {
             fromDate = scheduleDates.getYesterday();
-            log.info("IronMountainExtractTask has no ad hoc date so default to yesterday: {}", fromDate);
+            descr = "default dates (yesterday)";
         }
+        log.info("Running IronMountainExtractTask with {}: {}", descr, fromDate);
 
         try {
             dataExtractionDateValidator.dateValidator(fromDate);
-            log.info("Perform iron mountain data extract from date started");
+
+            log.info("Starting IronMountainExtractTask with {}: {}", descr, fromDate);
             ironMountainDataExtractService.performIronMountainExtractForDate(fromDate);
-            log.info("Perform iron mountain data extract from date finished");
+            log.info("Finished IronMountainExtractTask with {}: {}", descr, fromDate);
         } catch (RuntimeException e) {
-            log.error("Exception within on IronMountainExtractTask Scheduler", e);
+            final String errMsg = String.format("Exception in IronMountainExtractTask with %s: %s", descr, fromDate);
+            log.error(errMsg, e);
         }
     }
-
 }
