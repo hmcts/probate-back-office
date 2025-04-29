@@ -423,4 +423,34 @@ class TemplateServiceIT {
             LanguagePreference.ENGLISH, CaseOrigin.CITIZEN,null, null);
         assertEquals("sol-application-received", response);
     }
+
+    @Test
+    void getFirstStopReminder() {
+        String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.ENGLISH,
+                CHANNEL_CHOICE_DIGITAL, NO);
+        assertEquals("pa-first-stop-reminder-for-hub", response);
+
+        response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.ENGLISH,
+                CHANNEL_CHOICE_DIGITAL, YES);
+        assertEquals("pa-first-stop-reminder", response);
+
+        response = templateService.getStopReminderTemplateId(SOLICITOR, LanguagePreference.ENGLISH,
+                CHANNEL_CHOICE_DIGITAL, null);
+        assertEquals("sol-first-stop-reminder", response);
+    }
+
+    @Test
+    void getFirstStopReminderWelsh() {
+        String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.WELSH,
+                CHANNEL_CHOICE_DIGITAL, NO);
+        assertEquals("pa-first-stop-reminder-for-hub-welsh", response);
+
+        response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.WELSH,
+                CHANNEL_CHOICE_DIGITAL, YES);
+        assertEquals("pa-first-stop-reminder-welsh", response);
+
+        response = templateService.getStopReminderTemplateId(SOLICITOR, LanguagePreference.WELSH,
+                CHANNEL_CHOICE_DIGITAL, null);
+        assertEquals("sol-first-stop-reminder-welsh", response);
+    }
 }
