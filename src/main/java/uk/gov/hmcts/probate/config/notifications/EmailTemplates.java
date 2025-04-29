@@ -34,4 +34,6 @@ public class EmailTemplates {
     private String disposalReminder;
     private String caveatDisposalReminder;
     private String draftCasePaymentSuccess;
+    private String firstStopReminder;
+    private String firstStopReminderForHub;
 }
