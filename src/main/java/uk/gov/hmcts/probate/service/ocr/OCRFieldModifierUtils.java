@@ -119,7 +119,7 @@ public class OCRFieldModifierUtils {
             }
         }
 
-        // TODO - If addressLine1 and Postcode are blank, what should this be? MISSING?
+        // TODO - If addressLine1 and Postcode are blank, what should this be? MISSING? Or nothing at all?
         if (isBlank(ocrFields.getSolsSolicitorAddressTown())) {
             addModifiedField(modifiedFields, "solsSolicitorAddressLine2", ocrFields.getSolsSolicitorAddressTown());
             if (isBlank(ocrFields.getSolsSolicitorAddressLine1()) && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
