@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.DateFormatterService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
@@ -267,16 +268,18 @@ class ExecutorsTransformerTest {
 
         // We only need these to construct the SolicitorXformer object, we verifyNoInteractions to confirm
         final var dateFormatterMock = mock(DateFormatterService.class);
+        final var featureToggleMock = mock(FeatureToggleService.class);
 
         final var solXformer = new SolicitorApplicationCompletionTransformer(
                 executorListMapperSpy,
-                dateFormatterMock);
+                dateFormatterMock,
+                featureToggleMock);
         solXformer.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
         assertAll(
                 () -> assertEquals(0, caseData.getAdditionalExecutorsApplying().size()),
                 () -> assertEquals(1, caseData.getAdditionalExecutorsNotApplying().size()),
-                () -> verifyNoInteractions(dateFormatterMock)
+                () -> verifyNoInteractions(dateFormatterMock, featureToggleMock)
         );
     }
 

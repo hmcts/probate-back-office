@@ -30,7 +30,6 @@ import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -2305,31 +2304,5 @@ class NotificationServiceIT {
                 eq("primary@probate-test.com"),
                 any(),
                 anyString());
-    }
-
-    @Test
-    void sendEmailForGORSuccessfulPayment() throws NotificationClientException {
-        CaseData caseData = CaseData.builder()
-                .applicationType(SOLICITOR).languagePreferenceWelsh("No").build();
-        List<ReturnedCaseDetails> cases = List.of(new ReturnedCaseDetails(caseData, null, ID));
-        String fromDate = "2022-01-01";
-        String toDate = "2022-01-31";
-
-        notificationService.sendEmailForGORSuccessfulPayment(cases, fromDate, toDate);
-
-        verify(notificationClient).sendEmail(any(), any(), any(), any());
-    }
-
-    @Test
-    void sendEmailForCaveatSuccessfulPayment() throws NotificationClientException {
-        CaveatData caseData = CaveatData.builder()
-                .applicationType(SOLICITOR).languagePreferenceWelsh("No").build();
-        List<ReturnedCaveatDetails> cases = List.of(new ReturnedCaveatDetails(caseData, null, ID));
-        String fromDate = "2022-01-01";
-        String toDate = "2022-01-31";
-
-        notificationService.sendEmailForCaveatSuccessfulPayment(cases, fromDate, toDate);
-
-        verify(notificationClient).sendEmail(any(), any(), any(), any());
     }
 }

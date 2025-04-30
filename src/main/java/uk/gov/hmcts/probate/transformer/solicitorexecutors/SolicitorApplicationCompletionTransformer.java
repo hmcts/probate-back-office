@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.DateFormatterService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.math.BigDecimal;
@@ -23,12 +24,16 @@ import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_NONE_OF_TH
 // for caseworker or solicitor journeys
 public class SolicitorApplicationCompletionTransformer extends LegalStatementExecutorTransformer {
 
+    private final FeatureToggleService featureToggleService;
+
     private static final String NOT_APPLICABLE = "NotApplicable";
 
     public SolicitorApplicationCompletionTransformer(
             final ExecutorListMapperService executorListMapperService,
-            final DateFormatterService dateFormatterService) {
+            final DateFormatterService dateFormatterService,
+            final FeatureToggleService featureToggleService) {
         super(executorListMapperService, dateFormatterService);
+        this.featureToggleService = featureToggleService;
     }
 
     /**
@@ -68,27 +73,28 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
     }
 
     public void clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(CaseDetails caseDetails) {
+        if (featureToggleService.enableDuplicateExecutorFiltering()) {
+            final var caseId = caseDetails.getId();
+            final var caseData = caseDetails.getData();
 
-        final var caseId = caseDetails.getId();
-        final var caseData = caseDetails.getData();
+            final var titleAndClearingType = caseData.getTitleAndClearingType();
+            final var caseType = caseData.getCaseType();
 
-        final var titleAndClearingType = caseData.getTitleAndClearingType();
-        final var caseType = caseData.getCaseType();
+            final var primaryApplicantApplying = caseData.isPrimaryApplicantApplying();
+            final var isNotNoneOfTheseTCT = titleAndClearingType != null
+                    && !TITLE_AND_CLEARING_NONE_OF_THESE.equalsIgnoreCase(titleAndClearingType);
+            final var isGrantOfProbate = CASE_TYPE_GRANT_OF_PROBATE.equalsIgnoreCase(caseType);
 
-        final var primaryApplicantApplying = caseData.isPrimaryApplicantApplying();
-        final var isNotNoneOfTheseTCT = titleAndClearingType != null
-                && !TITLE_AND_CLEARING_NONE_OF_THESE.equalsIgnoreCase(titleAndClearingType);
-        final var isGrantOfProbate = CASE_TYPE_GRANT_OF_PROBATE.equalsIgnoreCase(caseType);
+            if (isNotNoneOfTheseTCT
+                    && primaryApplicantApplying
+                    && isGrantOfProbate) {
+                log.info("In GrantOfProbate case {} we have primary applicant applying for non-NoneOfThese "
+                        + "TitleAndClearingType {}, clear PrimaryApplicant fields",
+                        caseId,
+                        titleAndClearingType);
 
-        if (isNotNoneOfTheseTCT
-                && primaryApplicantApplying
-                && isGrantOfProbate) {
-            log.info("In GrantOfProbate case {} we have primary applicant applying for non-NoneOfThese "
-                    + "TitleAndClearingType {}, clear PrimaryApplicant fields",
-                    caseId,
-                    titleAndClearingType);
-
-            caseData.clearPrimaryApplicant();
+                caseData.clearPrimaryApplicant();
+            }
         }
     }
 

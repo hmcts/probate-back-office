@@ -12,10 +12,15 @@
     "eslint-src": "NODE_PATH=. eslint ./src",
     "eslint-test": "NODE_PATH=. eslint ./src/test",
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
-    "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --grep '@crossbrowser' --reporter mocha-multi",
-    "test:functional": "yarn playwright install && NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-workers 3 -c ./src/test/end-to-end/ --reporter mocha-multi",
+    "test-crossbrowser-e2e": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true ./node_modules/codeceptjs/bin/codecept.js run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --grep '@crossbrowser'",
+    "test:functional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-workers 3 -c ./src/test/end-to-end/",
     "test:fullfunctional-pr": "E2E_TEST_PATH='./paths/**/pr_specific/*.js' ./bin/run-e2e-tests.sh",
-    "test:fullfunctional": "E2E_TEST_PATH='./paths/**/*.js' ./bin/run-e2e-tests.sh",
+    "test:fullfunctional": "yarn playwright install chromium && yarn playwright test --project=chromium",
+    "test:fullfunctionalChrome": "yarn playwright install chromium && yarn playwright test --project=chromium",
+    "test:fullfunctionalWebkit": "yarn playwright install webkit && yarn playwright test --project=webkit",
+    "test:fullfunctionalFirefox": "yarn playwright install firefox && yarn playwright test --project=firefox",
+    "test:functional-ipadPro11": "yarn playwright install webkit  && yarn playwright test --project=ipadPro11 ",
+    "test:functional-galaxyS4": "yarn playwright install chromium  && yarn playwright test --project=GalaxyS4 ",
     "test:fullfunctional-cw": "E2E_TEST_PATH='./paths/caseworker/*.js' ./bin/run-e2e-tests.sh",
     "test:fullfunctional-nightly": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --project=chromium --project=webkit --project=firefox",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
@@ -32,6 +37,8 @@
     "test-e2e-grantOfProbate-sol-paper-form-yes": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker_xui_issues/grantOfProbateSolPath-PaperFormYes.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-gop-sol-create-cw-amend": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/multiuser/gopApplyAsSolAmendAsCw.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-willLodgement": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/willLodgementPath.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-cw-willLodgement-Playwright-PoC": "npx playwright test Path/willLodgementPath.spec.js --headed",
+    "test-e2e-cw-grantOfProbateProbateManCaseMatch-Playwright-PoC": "npx playwright test Path/grantOfProbateProbateManCaseMatchPath.spec.js --headed",
     "test-e2e-sol-applyCaveat": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/pr_specific/applyCaveat.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-sol-applyCaveat-Playwright": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test && npx playwright test Path/caveatPath3.spec.js --project=chromium --project=webkit --project=firefox --retries=3 --debug",
     "test-e2e-cw-applyCaveat-Playwright-PoC": "npx playwright test Path/caveatPath.spec.js --headed",
@@ -53,7 +60,10 @@
     "test-e2e-caseProgressStandard": "E2E_TEST_PATH=./paths/caseprogress/pr_specific/caseProgressStandardPath.js E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
     "test-e2e-caseProgressReenter": "E2E_TEST_PATH=./paths/caseprogress/caseProgressReenterPath.js E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps --reporter mochawesome",
     "test-e2e-caseProgressAppStopped": "E2E_TEST_PATH=./paths/caseprogress/caseProgressApplicationStoppedPath.js E2E_TEST_TIME_TO_WAIT_FOR_TEXT=0 E2E_AUTO_DELAY_ENABLED=false BO_E2E_TEST_ACTION_WAIT_TIME=0 NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps --reporter mochawesome",
-    "fortifyScan": "./gradlew -p ./ fortifyScan"
+    "fortifyScan": "./gradlew -p ./ fortifyScan",
+    "prepare": "husky install",
+    "yarn-update": "yarn set version 4.x",
+    "install-dependencies": "/usr/bin/yarn install --silent"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.9.1",
@@ -80,9 +90,9 @@
     "mochawesome": "^7.1.3",
     "moment": "^2.29.1",
     "nock": "^13.0.7",
-    "nodemon": "^3.0.0",
+    "nodemon": "^2.0.7",
     "nsp": "^3.2.1",
-    "pa11y": "^8.0.0",
+    "pa11y": "^5.3.0",
     "phantomjs-prebuilt": "^2.1.13",
     "playwright": "^1.23.2",
     "proxyquire": "^2.1.3",
@@ -96,12 +106,14 @@
     "supertest": "^6.1.3",
     "unirest": "^0.6.0",
     "uuid": "^8.3.2",
-    "watch": "^1.0.2",
+    "watch": "^0.13.0",
     "webdriverio": "^7.30.2",
     "when": "^3.7.7"
   },
   "resolutions": {
+    "yargs-parser": "^20.2.9",
     "http-cache-semantics": ">=4.1.1"
   },
-  "packageManager": "yarn@4.9.1"
+  "packageManager": "yarn@4.6.0",
+  "license": "MIT"
 }
