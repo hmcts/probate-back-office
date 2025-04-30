@@ -73,7 +73,7 @@ public class OCRFieldExtractor {
                     .originalValue(response)
                     .build();
             modifiedFields.add(new CollectionMember<>(null, modifiedOCRField));
-            return bulkScanConfig.getDeceasedAddressPostCode();
+            return bulkScanConfig.getPostcode();
         }
 
         return response;
@@ -158,7 +158,7 @@ public class OCRFieldExtractor {
                 .findFirst()
                 .orElse(null);
 
-        if (null == response || isInvalidDateOfBirth(response)) {
+        if (null == response) {// || isInvalidDateOfBirth(response)) {
             log.warn("Invalid or missing date of birth for field '{}'", name);
             ModifiedOCRField modifiedOCRField = ModifiedOCRField.builder()
                     .fieldName(name)
@@ -187,13 +187,36 @@ public class OCRFieldExtractor {
                     .originalValue(response)
                     .build();
             modifiedFields.add(new CollectionMember<>(null, modifiedOCRField));
-            return bulkScanConfig.getDob();
+            return get(ocrFields, "deceasedSurname");
+            //return bulkScanConfig.getDeceasedSurname();
         }
 
         return response;
     }
 
-    public static String getDefaultRepresentativeNameIfInvalid(List<OCRField> ocrFields, String name,
+    public static String getDefaultSolsSolicitorIsApplyingIfInvalid(List<OCRField> ocrFields, String name,
+                                                                   List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        String response = ocrFields
+                .stream()
+                .filter(it -> it.getName().equals(name) && it.getValue() != null)
+                .map(it -> it.getValue().trim().toUpperCase())
+                .findFirst()
+                .orElse(null);
+
+        if (null == response) {
+            log.warn("Invalid or missing information whether legal representative is applying for field '{}'", name);
+            ModifiedOCRField modifiedOCRField = ModifiedOCRField.builder()
+                    .fieldName(name)
+                    .originalValue(response)
+                    .build();
+            modifiedFields.add(new CollectionMember<>(null, modifiedOCRField));
+            return bulkScanConfig.getSolsSolicitorIsApplying();
+        }
+
+        return response;
+    }
+
+    public static String getDefaultRepresentativeFirmNameIfInvalid(List<OCRField> ocrFields, String name,
                                                                List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         String response = ocrFields
                 .stream()
@@ -209,7 +232,7 @@ public class OCRFieldExtractor {
                     .originalValue(response)
                     .build();
             modifiedFields.add(new CollectionMember<>(null, modifiedOCRField));
-            return bulkScanConfig.getName();
+            return get(ocrFields, "solsSolicitorFirmName");
         }
 
         return response;
@@ -253,7 +276,7 @@ public class OCRFieldExtractor {
                     .originalValue(response)
                     .build();
             modifiedFields.add(new CollectionMember<>(null, modifiedOCRField));
-            return bulkScanConfig.getSolsSolicitorPhoneNumber();
+            return bulkScanConfig.getPhone();
         }
 
         return response;
@@ -281,7 +304,7 @@ public class OCRFieldExtractor {
         return response;
     }
 
-    public static String getDefaultLegalRepresentativeIfInvalid(List<OCRField> ocrFields, String name,
+    public static String getDefaultLegalRepresentativePersonNameIfInvalid(List<OCRField> ocrFields, String name,
                                                         List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         String response = ocrFields
                 .stream()
@@ -297,13 +320,13 @@ public class OCRFieldExtractor {
                     .originalValue(response)
                     .build();
             modifiedFields.add(new CollectionMember<>(null, modifiedOCRField));
-            return bulkScanConfig.getLegalRepresentative();
+            return bulkScanConfig.getName();
         }
 
         return response;
     }
 
-    public static String getDefaultSolsSolicitorAddressTownIfInvalid(List<OCRField> ocrFields, String name,
+    public static String getDefaultSolsSolicitorRepresentativeNameIfInvalid(List<OCRField> ocrFields, String name,
                                                         List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         String response = ocrFields
                 .stream()
@@ -319,7 +342,31 @@ public class OCRFieldExtractor {
                     .originalValue(response)
                     .build();
             modifiedFields.add(new CollectionMember<>(null, modifiedOCRField));
-            return bulkScanConfig.getLegalRepresentative();
+            //Auto populate postcode if possible otherwise
+            //return bulkScanConfig.getLegalRepresentative();
+            return get(ocrFields, "solsSolicitorRepresentativeName");
+        }
+
+        return response;
+    }
+
+    public static String getDefaultDeceasedAnyOtherNamesIfInvalid(List<OCRField> ocrFields, String name,
+                                                                     List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        String response = ocrFields
+                .stream()
+                .filter(it -> it.getName().equals(name) && it.getValue() != null)
+                .map(it -> it.getValue().trim().toUpperCase())
+                .findFirst()
+                .orElse(null);
+
+        if (null == response) {
+            log.warn("Invalid or missing other names for field '{}'", name);
+            ModifiedOCRField modifiedOCRField = ModifiedOCRField.builder()
+                    .fieldName(name)
+                    .originalValue(response)
+                    .build();
+            modifiedFields.add(new CollectionMember<>(null, modifiedOCRField));
+            return "FALSE";
         }
 
         return response;
@@ -327,10 +374,5 @@ public class OCRFieldExtractor {
 
     private static boolean isInvalidPostCode(final String postCode) {
         return !postCode.matches(POSTCODE_REGEX_PATTERN);
-    }
-
-    private static boolean isInvalidDateOfBirth(final String dob) {
-        return false;
-        //return !dob.matches(DATE_OF_BIRTH_REGEX_PATTERN);
     }
 }
