@@ -173,7 +173,7 @@ def versions = [
         probateCommonsVersion           : '2.0.57',
         probatePactCommonsVersion       : '1.0.2',
         restAssured                     : '5.5.1',
-        serenity                        : '4.2.12',
+        serenity                        : '4.2.22',
         serenityreporter                : '4.2.22',
         serviceAuthVersion              : '5.3.0',
         springBootVersion               : '3.3.10',
