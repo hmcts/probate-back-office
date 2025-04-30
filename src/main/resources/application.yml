@@ -614,40 +614,24 @@ grand_delay:
 bulkscan:
   default-value:
     name: MISSING
-    names: MISSING
     postcode: MI55 ING
-    addressLine: MISSING
     dob: 01011990
     email: contactprobate@justice.gov.uk
-    phone: 01011900
-
-    caveatorForenames: MISSING
-    caveatorSurname: MISSING
-    caveatorAddressLine1: MISSING
-    caveatorAddressPostCode: MI55 ING
-    deceasedForenames: MISSING
-    deceasedSurname: MISSING
+    phone: 1234
     deceasedAnyOtherNames: FALSE
-    deceasedAddressLine1: MISSING
-    deceasedAddressPostCode: MI55 1NG
-    deceasedDateOfBirth: 01011900
-    solsSolicitorRepresentativeName: <solsSolicitorFirmName>
-    solsSolicitorFirmName: MISSING
-    primaryApplicantForenames: MISSING
-    primaryApplicantSurname: MISSING
-    primaryApplicantAddressLine1: MISSING
-    primaryApplicantAddressPostCode: MI55 1NG
-    solsSolicitorAppReference: <deceasedSurname>
-    solsSolicitorAddressLine1: <N/A if address building, street and postcode are populated>
-    solsSolicitorAddressLine2: <N/A if address building, street and postcode are populated>
-    solsSolicitorAddressTown: <N/A if address building, street and postcode are populated>
-    solsSolicitorAddressPostCode: MI55 1NG
-    solsSolicitorEmail: contactprobate@justice.gov.uk <remove after case creation>
     solsSolicitorPhoneNumber: 1234
     deceasedDomicileInEngWales: TRUE
     legalRepresentative: TRUE
     ihtForm: FALSE
     grossNetValue: 1.11
+    solsSolicitorIsApplying: TRUE if sols details are present
+
+    solsSolicitorRepresentativeName: defaults to <solsSolicitorFirmName>
+    solsSolicitorAppReference: <deceasedSurname>
+    solsSolicitorAddressLine1: <N/A if address building, street and postcode are populated>
+    solsSolicitorAddressLine2: <N/A if address building, street and postcode are populated>
+    solsSolicitorAddressTown: <N/A if address building, street and postcode are populated>
+    solsSolicitorEmail: contactprobate@justice.gov.uk <remove after case creation>
 
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
