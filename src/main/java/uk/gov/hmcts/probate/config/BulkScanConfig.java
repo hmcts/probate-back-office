@@ -8,27 +8,25 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "bulkscan.default-value")
 public class BulkScanConfig {
-    // TODO - Remove unneeded non-generic fields
-
-    // Generic fields
     private String postcode;
     private String name;
     private String names;
     private String addressLine;
     private String dob;
-    private String solsSolicitorIsApplying;
-    private String email;
+    private String solsSolicitorIsApplying; //True if sols details are present (no default)
+    private String email; //Remove after case creation
     private String phone;
-    private String solsSolicitorRepresentativeName;
-    //Used
+
     private String deceasedAnyOtherNames;
     private String deceasedDateOfBirth;
-    private String solsSolicitorFirmName;
-
-    private String solsSolicitorAppReference;
-    private String solsSolicitorAddressTown;
-    private String solsSolicitorAddressPostCode;
     private String deceasedDomicileInEngWales;
+
+    private String solsSolicitorRepresentativeName; //sols Firm name if empty (no default)
+    private String solsSolicitorFirmName;
+    private String solsSolicitorAppReference; //Deceased surname if empty (no default)
+    private String solsSolicitorAddressLine1; //N/A if address building, street and postcode are populated
+    private String solsSolicitorAddressLine2; //N/A if address building, street and postcode are populated
+    private String solsSolicitorAddressTown; //N/A if address building, street and postcode are populated
 
     private String legalRepresentative;
     private String ihtForm;
