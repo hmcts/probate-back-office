@@ -76,7 +76,6 @@ class OCRFieldExtractorTest {
     private static final String INVALID_SOLS_SOLICITOR_REPRESENTATIVE_NAME_VALUE = "";
     private static final String DEFAULT_SOLS_SOLICITOR_REPRESENTATIVE_NAME_VALUE = "Firm Name";
 
-
     private List<OCRField> ocrFields = new ArrayList<>();
 
     @BeforeEach
@@ -583,7 +582,7 @@ class OCRFieldExtractorTest {
     @Test
     void getDefaultSolsSolicitorIsApplyingIfNull() {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
-        String response = OCRFieldExtractor.getDefaultDomiciledInEngWalesIfInvalid(ocrFields, SOME_KEY_WITH_NULL_VALUE,
+        String response = OCRFieldExtractor.getDefaultSolsSolicitorIsApplyingIfInvalid(ocrFields, SOME_KEY_WITH_NULL_VALUE,
                 modifiedFields);
         assertEquals(DEFAULT_SOLS_SOLICITOR_IS_APPLYING_VALUE, response);
         assertEquals(SOME_KEY_WITH_NULL_VALUE, modifiedFields.get(0).getValue().getFieldName());
@@ -593,7 +592,7 @@ class OCRFieldExtractorTest {
     @Test
     void getDefaultSolsSolicitorIsApplyingIfNoValue() {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
-        String response = OCRFieldExtractor.getDefaultDomiciledInEngWalesIfInvalid(ocrFields, SOME_KEY_WITH_NO_VALUE,
+        String response = OCRFieldExtractor.getDefaultSolsSolicitorIsApplyingIfInvalid(ocrFields, SOME_KEY_WITH_NO_VALUE,
                 modifiedFields);
         assertEquals(DEFAULT_SOLS_SOLICITOR_IS_APPLYING_VALUE, response);
         assertEquals(SOME_KEY_WITH_NO_VALUE, modifiedFields.get(0).getValue().getFieldName());
@@ -604,7 +603,7 @@ class OCRFieldExtractorTest {
     @Test
     void getDefaultSolsSolicitorIsApplyingIfEmptyValue() {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
-        String response = OCRFieldExtractor.getDefaultDomiciledInEngWalesIfInvalid(ocrFields, SOME_KEY_WITH_EMPTY_VALUE,
+        String response = OCRFieldExtractor.getDefaultSolsSolicitorIsApplyingIfInvalid(ocrFields, SOME_KEY_WITH_EMPTY_VALUE,
                 modifiedFields);
         assertEquals(DEFAULT_SOLS_SOLICITOR_IS_APPLYING_VALUE, response);
         assertEquals(SOME_KEY_WITH_EMPTY_VALUE, modifiedFields.get(0).getValue().getFieldName());
@@ -615,7 +614,7 @@ class OCRFieldExtractorTest {
     @Test
     void getDefaultSolsSolicitorIsApplyingIfInvalid() {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
-        String response = OCRFieldExtractor.getDefaultDomiciledInEngWalesIfInvalid(ocrFields, FIRST_NAME_KEY,
+        String response = OCRFieldExtractor.getDefaultSolsSolicitorIsApplyingIfInvalid(ocrFields, FIRST_NAME_KEY,
                 modifiedFields);
         assertEquals(DEFAULT_SOLS_SOLICITOR_IS_APPLYING_VALUE, response);
         assertEquals(FIRST_NAME_KEY, modifiedFields.get(0).getValue().getFieldName());
@@ -625,7 +624,7 @@ class OCRFieldExtractorTest {
     @Test
     void getSolsSolicitorIsApplyingIfNotNull() {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
-        String response = OCRFieldExtractor.getDefaultDomiciledInEngWalesIfInvalid(ocrFields, VALID_SOLS_SOLICITOR_IS_APPLYING_KEY,
+        String response = OCRFieldExtractor.getDefaultSolsSolicitorIsApplyingIfInvalid(ocrFields, VALID_SOLS_SOLICITOR_IS_APPLYING_KEY,
                 modifiedFields);
         assertEquals(VALID_SOLS_SOLICITOR_IS_APPLYING_VALUE, response);
         assertTrue(modifiedFields.isEmpty());
@@ -674,7 +673,6 @@ class OCRFieldExtractorTest {
         assertEquals(FIRST_NAME_VALUE.toUpperCase(), modifiedFields.get(0).getValue().getOriginalValue());
     }
 
-    //Caps?
     @Test
     void getSolsSolicitorRepresentativeNameIfNotNull() {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
