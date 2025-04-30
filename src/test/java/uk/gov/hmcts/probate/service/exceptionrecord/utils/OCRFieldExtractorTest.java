@@ -72,7 +72,7 @@ class OCRFieldExtractorTest {
     private static final String DEFAULT_SOLS_SOLICITOR_IS_APPLYING_VALUE = "TRUE";
 
     private static final String VALID_SOLS_SOLICITOR_REPRESENTATIVE_NAME_KEY = "solsSolicitorRepresentativeName";
-    private static final String VALID_SOLS_SOLICITOR_REPRESENTATIVE_NAME_VALUE = "Bork Bork Associates";
+    private static final String VALID_SOLS_SOLICITOR_REPRESENTATIVE_NAME_VALUE = "BORK BORK ASSOCIATES";
     private static final String INVALID_SOLS_SOLICITOR_REPRESENTATIVE_NAME_VALUE = "";
     private static final String DEFAULT_SOLS_SOLICITOR_REPRESENTATIVE_NAME_VALUE = "Firm Name";
 
@@ -680,7 +680,7 @@ class OCRFieldExtractorTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
         String response = OCRFieldExtractor.getDefaultDomiciledInEngWalesIfInvalid(ocrFields, VALID_SOLS_SOLICITOR_REPRESENTATIVE_NAME_KEY,
                 modifiedFields);
-        assertEquals(VALID_SOLS_SOLICITOR_REPRESENTATIVE_NAME_VALUE.toUpperCase(), response);
+        assertEquals(VALID_SOLS_SOLICITOR_REPRESENTATIVE_NAME_VALUE, response);
         assertTrue(modifiedFields.isEmpty());
     }
 }
