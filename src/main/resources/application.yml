@@ -619,19 +619,11 @@ bulkscan:
     email: contactprobate@justice.gov.uk
     phone: 1234
     deceasedAnyOtherNames: FALSE
-    solsSolicitorPhoneNumber: 1234
     deceasedDomicileInEngWales: TRUE
     legalRepresentative: TRUE
     ihtForm: FALSE
     grossNetValue: 1.11
-    solsSolicitorIsApplying: TRUE if sols details are present
-
-    solsSolicitorRepresentativeName: defaults to <solsSolicitorFirmName>
-    solsSolicitorAppReference: <deceasedSurname>
-    solsSolicitorAddressLine1: <N/A if address building, street and postcode are populated>
-    solsSolicitorAddressLine2: <N/A if address building, street and postcode are populated>
-    solsSolicitorAddressTown: <N/A if address building, street and postcode are populated>
-    solsSolicitorEmail: contactprobate@justice.gov.uk <remove after case creation>
+    solsSolicitorIsApplying: TRUE
 
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
