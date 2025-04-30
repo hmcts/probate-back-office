@@ -15,7 +15,7 @@
     "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --grep '@crossbrowser' --reporter mocha-multi",
     "test:functional": "yarn playwright install && NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-workers 3 -c ./src/test/end-to-end/ --reporter mocha-multi",
     "test:fullfunctional-pr": "E2E_TEST_PATH='./paths/**/pr_specific/*.js' ./bin/run-e2e-tests.sh",
-    "test:fullfunctional": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --project=chromium --project=webkit --project=firefox",
+    "test:fullfunctional": "E2E_TEST_PATH='./paths/**/*.js' ./bin/run-e2e-tests.sh",
     "test:fullfunctional-cw": "E2E_TEST_PATH='./paths/caseworker/*.js' ./bin/run-e2e-tests.sh",
     "test:fullfunctional-nightly": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --project=chromium --project=webkit --project=firefox",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
