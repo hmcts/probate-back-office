@@ -91,7 +91,7 @@ public class OCRFieldModifierUtils {
         if (isBlank(ocrFields.getSolsSolicitorAppReference())) {
             addModifiedField(modifiedFields, "solsSolicitorAppReference", ocrFields.getSolsSolicitorAppReference());
             if (isNotBlank(ocrFields.getDeceasedSurname())) {
-                ocrFields.setSolsSolicitorAppReference(bulkScanConfig.getDeceasedSurname());
+                ocrFields.setSolsSolicitorAppReference(bulkScanConfig.getName());
                 log.info("Setting legal representative to deceased surname {}", ocrFields.getSolsSolicitorAppReference());
             }
         }
@@ -102,7 +102,7 @@ public class OCRFieldModifierUtils {
             addModifiedField(modifiedFields, "solsSolicitorAddressLine1", ocrFields.getSolsSolicitorAddressLine1());
             if (isNotBlank(ocrFields.getSolsSolicitorAddressLine1())) {
                 // Add auto population from postcode code here
-                ocrFields.setSolsSolicitorAddressLine1(bulkScanConfig.getSolsSolicitorAddressLine1());
+                ocrFields.setSolsSolicitorAddressLine1(bulkScanConfig.getAddressLine());
                 log.info("Setting solicitor firm address line 1 to {}", ocrFields.getSolsSolicitorAddressLine1());
             } else {
                 ocrFields.setSolsSolicitorAddressLine1(bulkScanConfig.getName());
