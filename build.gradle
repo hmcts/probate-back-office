@@ -8,7 +8,7 @@ plugins {
   id 'info.solidsoft.pitest' version '1.15.0'
   id 'jacoco'
   id 'project-report'
-  id 'au.com.dius.pact' version '4.6.16'
+  id 'au.com.dius.pact' version '4.6.17'
   id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.22'
   id 'org.sonarqube' version '6.1.0.5360'
   id 'com.github.hmcts.rse-cft-lib' version '0.19.1668'
@@ -173,7 +173,7 @@ def versions = [
         probateCommonsVersion           : '2.0.57',
         probatePactCommonsVersion       : '1.0.2',
         restAssured                     : '5.5.1',
-        serenity                        : '4.2.12',
+        serenity                        : '4.2.22',
         serenityreporter                : '4.2.22',
         serviceAuthVersion              : '5.3.0',
         springBootVersion               : '3.3.10',
