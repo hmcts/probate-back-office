@@ -78,14 +78,14 @@ public class ExceptionRecordRequest {
             .deceasedAddressCounty(get(ocrFields, "deceasedAddressCounty"))
             .deceasedAddressPostCode(getDefaultPostcodeIfInvalid(ocrFields, "deceasedAddressPostCode", modifiedFields))
             .deceasedDateOfBirth(getDefaultDateOfBirthIfInvalid(ocrFields, "deceasedDateOfBirth", modifiedFields))
-            .deceasedDateOfDeath(get(ocrFields, "deceasedDateOfDeath"))
+            .deceasedDateOfDeath(get(ocrFields, "deceasedDateOfDeath")) //Do we plan on using this?
             .solsSolicitorRepresentativeName(getDefaultSolsSolicitorRepresentativeNameIfInvalid(ocrFields, "solsSolicitorRepresentativeName", modifiedFields))
             .solsSolicitorFirmName(getDefaultNameIfInvalid(ocrFields, "solsSolicitorFirmName", modifiedFields))
             .solsSolicitorAppReference(getDefaultSolsAppReferenceIfInvalid(ocrFields, "solsSolicitorAppReference", modifiedFields))
             .solsFeeAccountNumber(get(ocrFields, "solsFeeAccountNumber"))
             .solsSolicitorAddressLine1(getDefaultAddressLineIfInvalid(ocrFields, "solsSolicitorAddressLine1", modifiedFields))
-            .solsSolicitorAddressLine2(get(ocrFields, "solsSolicitorAddressLine2"))
-            .solsSolicitorAddressTown(getDefaultNameIfInvalid(ocrFields, "solsSolicitorAddressTown", modifiedFields))
+            .solsSolicitorAddressLine2(get(ocrFields, "solsSolicitorAddressLine2")) // Needs to be added
+            .solsSolicitorAddressTown(getDefaultNameIfInvalid(ocrFields, "solsSolicitorAddressTown", modifiedFields)) // Only filled if address building, street and postcode are not populated
             .solsSolicitorAddressCounty(getDefaultNameIfInvalid(ocrFields, "solsSolicitorAddressCounty", modifiedFields))
             .solsSolicitorAddressPostCode(getDefaultPostcodeIfInvalid(ocrFields, "solsSolicitorAddressPostCode", modifiedFields))
             .solsSolicitorEmail(getDefaultEmailIfInvalid(ocrFields, "solsSolicitorEmail", modifiedFields))
@@ -305,7 +305,7 @@ public class ExceptionRecordRequest {
             .probateFeeAccountNumber(get(ocrFields, "probateFeeAccountNumber"))
             .probateFeeAccountReference(get(ocrFields, "probateFeeAccountReference"))
             .bilingualCorrespondenceRequested(get(ocrFields, "bilingualCorrespondenceRequested"))
-            .legalRepresentative(getDefaultLegalRepresentativePersonNameIfInvalid(ocrFields, "legalRepresentative", modifiedFields))
+            .legalRepresentative(getDefaultLegalRepresentativeIfInvalid(ocrFields, "legalRepresentative", modifiedFields)) //What is this field? Unlikely to be needed
             .dxNumber(get(ocrFields, "dxNumber"))
             .practitionerAcceptsServiceByEmail(get(ocrFields, "practitionerAcceptsServiceByEmail"))
             .build();
