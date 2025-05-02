@@ -18,7 +18,6 @@ public class BulkScanConfig {
     private String phone;
 
     private String deceasedAnyOtherNames;
-    private String deceasedDateOfBirth;
     private String deceasedDomicileInEngWales;
 
     private String solsSolicitorRepresentativeName; //sols Firm name if empty (no default)
