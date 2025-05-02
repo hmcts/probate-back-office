@@ -32,7 +32,7 @@ public class ExceptionRecordOCRFields {
     private String solsSolicitorPhoneNumber;
     private String deceasedForenames;
     private String deceasedSurname;
-    private String deceasedDateOfDeath;
+    private final String deceasedDateOfDeath;
     private String deceasedDateOfBirth;
     private String deceasedAnyOtherNames;
     private String deceasedAddressLine1;
@@ -50,7 +50,7 @@ public class ExceptionRecordOCRFields {
     private final String probateFeeAccountNumber;
     private final String probateFeeAccountReference;
     private final String bilingualCorrespondenceRequested;
-    private String legalRepresentative;
+    private final String legalRepresentative;
 
     // PA1A and PA1P
     private final String extraCopiesOfGrant;
@@ -100,7 +100,7 @@ public class ExceptionRecordOCRFields {
     private final String executorsApplying2applyingExecutorEmail;
     private final String executorsApplying2applyingExecutorDifferentNameToWill;
     private final String executorsApplying2applyingExecutorOtherNames;
-    private final String solsSolicitorIsApplying;
+    private String solsSolicitorIsApplying;
     private String deceasedDomicileInEngWales;
     private final String deceasedMartialStatus;
     private final String dateOfMarriageOrCP;
