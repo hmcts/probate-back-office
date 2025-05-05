@@ -41,6 +41,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 
 class PrepareNocServiceTest {
 
@@ -127,6 +128,62 @@ class PrepareNocServiceTest {
         verify(assignCaseAccessClient, times(1))
                 .applyDecision(anyString(), anyString(), any(
                 DecisionRequest.class));
+    }
+
+    @Test
+    void testApplyDecisionForBulkScanCases() {
+        caseData.put("changeOfRepresentatives",null);
+        caseData.put("channelChoice",CHANNEL_CHOICE_BULKSCAN);
+        when(objectMapper.convertValue(any(), any(TypeReference.class))).thenReturn(null);
+        CallbackRequest request = CallbackRequest.builder()
+                .caseDetails(CaseDetails.builder().data(caseData).caseTypeId("GrantOfRepresentation").id(0L).build())
+                .build();
+
+        underTest.applyDecision(request, "testAuth");
+        verify(organisationApi, times(1))
+                .findOrganisationByOrgId(anyString(), anyString(), anyString());
+        verify(organisationApi, times(1))
+                .findSolicitorOrganisation(anyString(), anyString(), anyString());
+        verify(assignCaseAccessClient, times(1))
+                .applyDecision(anyString(), anyString(), any(
+                        DecisionRequest.class));
+    }
+
+    @Test
+    void testApplyDecisionForCaveatBulkScanCases() {
+        caseData.put("changeOfRepresentatives",null);
+        caseData.put("paperForm","Yes");
+        when(objectMapper.convertValue(any(), any(TypeReference.class))).thenReturn(null);
+        CallbackRequest request = CallbackRequest.builder()
+                .caseDetails(CaseDetails.builder().data(caseData).caseTypeId("Caveat").id(0L).build())
+                .build();
+
+        underTest.applyDecision(request, "testAuth");
+        verify(organisationApi, times(1))
+                .findOrganisationByOrgId(anyString(), anyString(), anyString());
+        verify(organisationApi, times(1))
+                .findSolicitorOrganisation(anyString(), anyString(), anyString());
+        verify(assignCaseAccessClient, times(1))
+                .applyDecision(anyString(), anyString(), any(
+                        DecisionRequest.class));
+    }
+
+    @Test
+    void testApplyDecisionForCaveatDigitalCases() {
+        caseData.put("paperForm","Yes");
+        caseData.put("caveatorEmailAddress", "testEmail@gmail.com");
+        CallbackRequest request = CallbackRequest.builder()
+                .caseDetails(CaseDetails.builder().data(caseData).caseTypeId("Caveat").id(0L).build())
+                .build();
+
+        underTest.applyDecision(request, "testAuth");
+        verify(organisationApi, times(1))
+                .findOrganisationByOrgId(anyString(), anyString(), anyString());
+        verify(organisationApi, times(1))
+                .findSolicitorOrganisation(anyString(), anyString(), anyString());
+        verify(assignCaseAccessClient, times(1))
+                .applyDecision(anyString(), anyString(), any(
+                        DecisionRequest.class));
     }
 
     @Test
