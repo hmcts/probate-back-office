@@ -276,8 +276,10 @@ notifications:
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
           disposalReminder: "2e29cce0-66d9-458a-82a3-20aa0e4d5112"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
-          firstStopReminder: "f3d0ab70-3fed-4590-ab53-108f6adbea9c"
-          firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
+          firstStopReminder: "3c4d8cae-2992-4950-95ab-2d1fd7e8ad7d"
+          firstStopReminderForHub: "a2856f90-39a7-4ff4-9107-13f9b053485c"
+          secondStopReminder: "66de5dc4-bd56-4169-813d-648bdcb36498"
+          secondStopReminderForHub: "284a9158-2386-411d-b92e-693932e53885"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -306,7 +308,8 @@ notifications:
           disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
           caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
-          firstStopReminder: "eed3eae4-3f01-4d0b-a68f-5b0ab149e328"
+          firstStopReminder: "9089ab1d-abe7-4bee-a777-b4bcb7d85ea1"
+          secondStopReminder: "2b57f57d-e492-4648-b92d-0c604df722e9"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
