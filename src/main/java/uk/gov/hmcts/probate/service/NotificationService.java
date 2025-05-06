@@ -767,7 +767,8 @@ public class NotificationService {
         FOUND_HTML;
     }
 
-    public Document sendStopReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails , boolean isFirstStopReminder)
+    public Document sendStopReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
+                                          boolean isFirstStopReminder)
             throws NotificationClientException {
         log.info("Sending email for case id: {}", caseDetails.getId());
         Map<String, Object> data = caseDetails.getData();

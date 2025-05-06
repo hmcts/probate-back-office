@@ -46,18 +46,17 @@ public class SendNotificationsTask implements Runnable {
         try {
             if (!featureToggleService.isFirstStopReminderFeatureToggleOn()) {
                 log.info("Feature toggle FirstStopReminderFeatureToggle is off, skipping task");
-                return;
             } else {
-                log.info("Calling Send Stop Reminder from date, to date {} {}", firstStopReminderdate, firstStopReminderdate);
+                log.info("Calling Send Stop Reminder from date, to date {} {}",
+                        firstStopReminderdate, firstStopReminderdate);
                 dataExtractDateValidator.dateValidator(firstStopReminderdate, firstStopReminderdate);
                 log.info("Perform Send Stop Reminder (8-week) started");
-                automatedNotificationService.sendStopReminder(firstStopReminderdate, true);
+                //automatedNotificationService.sendStopReminder(firstStopReminderdate, true);
                 log.info("Perform Send Stop Reminder (8-week) finished");
 
             }
             if (!featureToggleService.isSecondStopReminderFeatureToggleOn()) {
                 log.info("Feature toggle SecondStopReminderFeatureToggle is off, skipping task");
-                return;
             } else {
                 dataExtractDateValidator.dateValidator(secondStopReminderdate, secondStopReminderdate);
                 log.info("Perform Send Stop Reminder (12-week) started");
