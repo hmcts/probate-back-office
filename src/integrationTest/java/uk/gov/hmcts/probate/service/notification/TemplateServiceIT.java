@@ -426,30 +426,30 @@ class TemplateServiceIT {
     @Test
     void getFirstStopReminder() {
         String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.ENGLISH,
-                CHANNEL_CHOICE_DIGITAL, NO);
+                CHANNEL_CHOICE_DIGITAL, NO, true);
         assertEquals("pa-first-stop-reminder-for-hub", response);
 
         response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.ENGLISH,
-                CHANNEL_CHOICE_DIGITAL, YES);
+                CHANNEL_CHOICE_DIGITAL, YES, true);
         assertEquals("pa-first-stop-reminder", response);
 
         response = templateService.getStopReminderTemplateId(SOLICITOR, LanguagePreference.ENGLISH,
-                CHANNEL_CHOICE_DIGITAL, null);
+                CHANNEL_CHOICE_DIGITAL, null, true);
         assertEquals("sol-first-stop-reminder", response);
     }
 
     @Test
     void getFirstStopReminderWelsh() {
         String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.WELSH,
-                CHANNEL_CHOICE_DIGITAL, NO);
+                CHANNEL_CHOICE_DIGITAL, NO, true);
         assertEquals("pa-first-stop-reminder-for-hub-welsh", response);
 
         response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.WELSH,
-                CHANNEL_CHOICE_DIGITAL, YES);
+                CHANNEL_CHOICE_DIGITAL, YES, true);
         assertEquals("pa-first-stop-reminder-welsh", response);
 
         response = templateService.getStopReminderTemplateId(SOLICITOR, LanguagePreference.WELSH,
-                CHANNEL_CHOICE_DIGITAL, null);
+                CHANNEL_CHOICE_DIGITAL, null, true);
         assertEquals("sol-first-stop-reminder-welsh", response);
     }
 }

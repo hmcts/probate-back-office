@@ -2348,7 +2348,7 @@ class NotificationServiceIT {
                         .id(ID)
                         .build();
         when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
-        notificationService.sendFirstStopReminderEmail(returnedCaseDetails);
+        notificationService.sendStopReminderEmail(returnedCaseDetails, true);
 
         verify(notificationClient).sendEmail(
                 eq("pa-first-stop-reminder"),
@@ -2372,7 +2372,7 @@ class NotificationServiceIT {
                         .id(ID)
                         .build();
         NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
-                notificationService.sendFirstStopReminderEmail(returnedCaseDetails));
+                notificationService.sendStopReminderEmail(returnedCaseDetails, true));
         assertEquals("Email address not found for case ID: " + ID, exception.getMessage());
     }
 
@@ -2388,7 +2388,7 @@ class NotificationServiceIT {
                         .id(ID)
                         .build();
         when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
-        notificationService.sendFirstStopReminderEmail(returnedCaseDetails);
+        notificationService.sendStopReminderEmail(returnedCaseDetails, true);
 
         verify(notificationClient).sendEmail(
                 eq("sol-first-stop-reminder"),
