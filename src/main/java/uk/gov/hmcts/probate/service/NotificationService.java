@@ -716,9 +716,9 @@ public class NotificationService {
         if (caseDetails == null || caseDetails.getData() == null) {
             return NO;
         }
-        return Optional.ofNullable(caseDetails.getData().get(CHANNEL_CHOICE))
+        return Optional.ofNullable(caseDetails.getData().get(INFORMATION_NEEDED_BY_POST))
                 .map(Object::toString)
-                .orElse(CHANNEL_CHOICE_DIGITAL);
+                .orElse(NO);
     }
 
     private String removedSolicitorNameForPersonalisation(CaseData caseData) {

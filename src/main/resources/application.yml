@@ -627,6 +627,6 @@ disposal:
   solsNotificationLink: ${MANAGE_CASE_URL:http://localhost:3001}
 
 automated_notification:
-  stopReminder:
+  stop_reminder:
     first_notification_days: 56
     second_notification_days: 28

@@ -26,6 +26,7 @@ public class AutomatedNotificationService {
     private final NotificationService notificationService;
     private final SecurityUtils securityUtils;
     private final ElasticSearchRepository elasticSearchRepository;
+    private final AutomatedNotificationCCDService automatedNotificationCCDService;
 
     private static final String FIRST_STOP_REMINDER_QUERY = "templates/elasticsearch/caseMatching/"
             + "first_stop_reminder_query.json";
@@ -50,6 +51,8 @@ public class AutomatedNotificationService {
             searchResultCases.forEach(caseDetails -> {
                 try {
                     Document sentEmail = notificationService.sendFirstStopReminderEmail(caseDetails);
+                    automatedNotificationCCDService.saveNotification(caseDetails,
+                            caseDetails.getId().toString(), securityDTO, sentEmail);
                 } catch (NotificationClientException | RuntimeException e) {
                     log.info("Error sending email for case id: {}", caseDetails.getId());
                     failedCases.add(caseDetails.getId());
@@ -76,6 +79,8 @@ public class AutomatedNotificationService {
                         log.info("Sending email for case id: {}", caseDetails.getId());
                         try {
                             Document sentEmail = notificationService.sendFirstStopReminderEmail(caseDetails);
+                            automatedNotificationCCDService.saveNotification(caseDetails,
+                                    caseDetails.getId().toString(), securityDTO, sentEmail);
                         } catch (NotificationClientException | RuntimeException e) {
                             log.info("Error sending email for case id: {}", caseDetails.getId());
                             failedCases.add(caseDetails.getId());
@@ -88,7 +93,6 @@ public class AutomatedNotificationService {
             log.info("Perform sendFirstStopReminder finished");
         } catch (Exception e) {
             log.error("Error on SendNotificationsTask Scheduler sendFirstStopReminder task {}", e.getMessage());
-            throw e;
         } finally {
             log.info("Fail to sendFirstStopReminder with cases: {}", failedCases);
         }

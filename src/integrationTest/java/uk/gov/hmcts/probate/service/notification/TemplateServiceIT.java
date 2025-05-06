@@ -402,7 +402,6 @@ class TemplateServiceIT {
 
     @Test
     void getApplicationReceivedPACaseworkerOriginWelsh() {
-
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
             LanguagePreference.WELSH, CaseOrigin.CASEWORKER,CHANNEL_CHOICE_PAPERFORM, null);
         assertEquals("pa-application-received-cw-welsh", response);
