@@ -44,7 +44,7 @@ public class AutomatedNotificationService {
             log.info("sendFirstStopReminder query executed for date: {}, cases found: {}",
                     date, searchResult.getTotal());
             if (searchResult.getTotal() == 0) {
-                log.info("No cases found for disposal");
+                log.info("No cases found for Stop Reminder");
                 return;
             }
             List<CaseDetails> searchResultCases = searchResult.getCases();
