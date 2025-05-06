@@ -37,13 +37,13 @@ class SendNotificationsTaskTest {
 
     @InjectMocks
     private SendNotificationsTask sendNotificationsTask;
-    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(56));
-    private final String fromDate = "2022-09-05";
+    private static final String DATE = DATE_FORMAT.format(LocalDate.now().minusDays(56));
+    private static final String FROM_DATE = "2022-09-05";
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() {
         ReflectionTestUtils.setField(sendNotificationsTask, "firstNotificationDays", 56);
-        ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", fromDate);
+        ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", FROM_DATE);
         when(featureToggleService.isFeatureToggleOn("probate-cron-first-stop-reminder", false))
                 .thenReturn(true);
     }
@@ -55,16 +55,16 @@ class SendNotificationsTaskTest {
         sendNotificationsTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform Send Stop Reminder (8-week) finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(fromDate, fromDate);
-        verify(automatedNotificationService).sendFirstStopReminder(fromDate);
+        verify(dataExtractDateValidator).dateValidator(FROM_DATE, FROM_DATE);
+        verify(automatedNotificationService).sendFirstStopReminder(FROM_DATE);
     }
 
     @Test
     void shouldThrowClientExceptionWithBadRequestForSendFirstReminderWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
-                .dateValidator(fromDate, fromDate);
+                .dateValidator(FROM_DATE, FROM_DATE);
         sendNotificationsTask.run();
-        verify(dataExtractDateValidator).dateValidator(fromDate,fromDate);
+        verify(dataExtractDateValidator).dateValidator(FROM_DATE,FROM_DATE);
         verifyNoInteractions(automatedNotificationService);
     }
 
@@ -72,8 +72,8 @@ class SendNotificationsTaskTest {
     void shouldSendFirstReminderWithDefaultPeriodIfNoAdhocJobDate() {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", null);
         sendNotificationsTask.run();
-        verify(dataExtractDateValidator).dateValidator(date, date);
-        verify(automatedNotificationService).sendFirstStopReminder(date);
+        verify(dataExtractDateValidator).dateValidator(DATE, DATE);
+        verify(automatedNotificationService).sendFirstStopReminder(DATE);
     }
 
     @Test

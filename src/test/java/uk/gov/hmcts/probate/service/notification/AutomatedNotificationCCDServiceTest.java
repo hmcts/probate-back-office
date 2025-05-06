@@ -7,7 +7,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
-public class AutomatedNotificationCCDServiceTest {
+class AutomatedNotificationCCDServiceTest {
     @Mock
     private CcdClientApi ccdClientApi;
 
@@ -53,14 +52,11 @@ public class AutomatedNotificationCCDServiceTest {
 
     private CaseDetails caseDetails;
     private SecurityDTO securityDTO;
-    private Document sentEmail;
 
     @BeforeEach
     void setUp() {
         caseDetails = mock(CaseDetails.class);
         securityDTO = mock(SecurityDTO.class);
-        sentEmail = Document.builder()
-                .documentFileName("AutomatedNotification").documentType(SENT_EMAIL).build();
         when(caseDetails.getLastModified()).thenReturn(LAST_MODIFIED);
     }
 
@@ -76,9 +72,9 @@ public class AutomatedNotificationCCDServiceTest {
         verify(ccdClientApi).updateCaseAsCaseworker(
                 eq(CASE_TYPE_GOP), eq(CASE_ID), eq(LAST_MODIFIED),
                 captor.capture(),
-                eq(EventId.AUTOMATED_NOTIFICATION), eq(securityDTO),
-                eq(AutomatedNotificationCCDService.EVENT_DESCRIPTION),
-                eq(AutomatedNotificationCCDService.EVENT_SUMMARY)
+                eq(EVENT_ID), eq(securityDTO),
+                eq(DESCRIPTION),
+                eq(SUMMARY)
         );
 
         CaseData cd = captor.getValue();
@@ -106,9 +102,9 @@ public class AutomatedNotificationCCDServiceTest {
         verify(ccdClientApi).updateCaseAsCaseworker(
                 eq(GRANT_OF_REPRESENTATION), eq(CASE_ID), eq(LAST_MODIFIED),
                 captor.capture(),
-                eq(EventId.AUTOMATED_NOTIFICATION), eq(securityDTO),
-                eq(AutomatedNotificationCCDService.EVENT_DESCRIPTION),
-                eq(AutomatedNotificationCCDService.EVENT_SUMMARY)
+                eq(EVENT_ID), eq(securityDTO),
+                eq(DESCRIPTION),
+                eq(SUMMARY)
         );
 
         CaseData cd = captor.getValue();

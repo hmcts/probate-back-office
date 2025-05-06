@@ -73,7 +73,7 @@ public class AutomatedNotificationPersonalisationService {
                 localDateToWelshStringConverter.convert(dateOfDeath));
         personalisation.put(PERSONALISATION_CASE_ID, caseDetails.getId().toString());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
-                getStringValue(caseData, "boStopDetailsDeclarationParagraph"));
+                getStringValue(caseData, PERSONALISATION_CASE_STOP_DETAILS_DEC));
         personalisation.put(PERSONALISATION_LINK_TO_CASE, getHyperLink(caseDetails.getId().toString(),
                 applicationType, getCaseType(caseData)));
         return personalisation;
@@ -148,8 +148,11 @@ public class AutomatedNotificationPersonalisationService {
     private String normaliseDate(String s) {
         if (s.startsWith("[") && s.endsWith("]")) {
             String inner = s.substring(1, s.length() - 1);
-            String[] parts = inner.split("\\s*,\\s*");
+            String[] parts = inner.split(",", -1);
             if (parts.length == 3) {
+                for (int i = 0; i < parts.length; i++) {
+                    parts[i] = parts[i].strip();
+                }
                 return String.join("-", parts);
             }
         }
