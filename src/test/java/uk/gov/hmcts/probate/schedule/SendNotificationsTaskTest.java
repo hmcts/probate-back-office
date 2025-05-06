@@ -39,12 +39,13 @@ class SendNotificationsTaskTest {
     private SendNotificationsTask sendNotificationsTask;
     private static final String DATE = DATE_FORMAT.format(LocalDate.now().minusDays(56));
     private static final String FROM_DATE = "2022-09-05";
+    private static final String FIRST_STOP_REMINDER_DATE = LocalDate.parse(FROM_DATE).minusDays(56).toString();
 
     @BeforeEach
     void setUp() {
         ReflectionTestUtils.setField(sendNotificationsTask, "firstNotificationDays", 56);
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", FROM_DATE);
-        when(featureToggleService.isFeatureToggleOn("probate-cron-first-stop-reminder", false))
+        when(featureToggleService.isFirstStopReminderFeatureToggleOn())
                 .thenReturn(true);
     }
 
@@ -55,16 +56,16 @@ class SendNotificationsTaskTest {
         sendNotificationsTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform Send Stop Reminder (8-week) finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(FROM_DATE, FROM_DATE);
-        verify(automatedNotificationService).sendFirstStopReminder(FROM_DATE);
+        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER_DATE);
+        verify(automatedNotificationService).sendStopReminder(FIRST_STOP_REMINDER_DATE, true);
     }
 
     @Test
     void shouldThrowClientExceptionWithBadRequestForSendFirstReminderWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
-                .dateValidator(FROM_DATE, FROM_DATE);
+                .dateValidator(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER_DATE);
         sendNotificationsTask.run();
-        verify(dataExtractDateValidator).dateValidator(FROM_DATE,FROM_DATE);
+        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE,FIRST_STOP_REMINDER_DATE);
         verifyNoInteractions(automatedNotificationService);
     }
 
@@ -73,12 +74,12 @@ class SendNotificationsTaskTest {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", null);
         sendNotificationsTask.run();
         verify(dataExtractDateValidator).dateValidator(DATE, DATE);
-        verify(automatedNotificationService).sendFirstStopReminder(DATE);
+        verify(automatedNotificationService).sendStopReminder(DATE, true);
     }
 
     @Test
     void shouldNotSendFirstReminderWhenToggleOff() {
-        when(featureToggleService.isFeatureToggleOn("probate-cron-first-stop-reminder", false))
+        when(featureToggleService.isFirstStopReminderFeatureToggleOn())
                 .thenReturn(false);
         sendNotificationsTask.run();
         verifyNoInteractions(dataExtractDateValidator);

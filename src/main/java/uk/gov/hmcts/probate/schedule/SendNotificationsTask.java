@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
@@ -20,11 +21,13 @@ public class SendNotificationsTask implements Runnable {
     private final DataExtractDateValidator dataExtractDateValidator;
     private final AutomatedNotificationService automatedNotificationService;
     private final FeatureToggleService featureToggleService;
-    private static final String FIRST_STOP_REMINDER_TOGGLE = "probate-cron-first-stop-reminder";
 
 
     @Value("${automated_notification.stop_reminder.first_notification_days}")
     private int firstNotificationDays;
+
+    @Value("${automated_notification.stop_reminder.second_notification_days}")
+    private int secondNotificationDays;
 
     @Value("${adhocSchedulerJobDate}")
     public String adHocJobDate;
@@ -32,30 +35,42 @@ public class SendNotificationsTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task SendNotificationsTask started");
-        String date = DATE_FORMAT.format(LocalDate.now().minusDays(firstNotificationDays));
+        String firstStopReminderdate = DATE_FORMAT.format(LocalDate.now().minusDays(firstNotificationDays));
+        String secondStopReminderdate = DATE_FORMAT.format(LocalDate.now().minusDays(secondNotificationDays));
         if (StringUtils.isNotEmpty(adHocJobDate)) {
-            date = adHocJobDate;
-            log.info("Running SendNotificationsTask with Adhoc dates {}", date);
+            log.info("Running SendNotificationsTask with Adhoc dates {}", adHocJobDate);
+            firstStopReminderdate = LocalDate.parse(adHocJobDate).minusDays(firstNotificationDays).toString();
+            secondStopReminderdate = LocalDate.parse(adHocJobDate).minusDays(secondNotificationDays).toString();
         }
-        log.info("Calling Send Stop Reminder (8-week) from date, to date {} {}", date, date);
+
         try {
-            if (!isFirstStopReminderFeatureToggleOn()) {
-                log.info("Feature toggle {} is off, skipping task", FIRST_STOP_REMINDER_TOGGLE);
+            if (!featureToggleService.isFirstStopReminderFeatureToggleOn()) {
+                log.info("Feature toggle FirstStopReminderFeatureToggle is off, skipping task");
                 return;
+            } else {
+                log.info("Calling Send Stop Reminder from date, to date {} {}", firstStopReminderdate, firstStopReminderdate);
+                dataExtractDateValidator.dateValidator(firstStopReminderdate, firstStopReminderdate);
+                log.info("Perform Send Stop Reminder (8-week) started");
+                automatedNotificationService.sendStopReminder(firstStopReminderdate, true);
+                log.info("Perform Send Stop Reminder (8-week) finished");
+
             }
-            dataExtractDateValidator.dateValidator(date, date);
-            log.info("Perform Send Stop Reminder (8-week) started");
-            automatedNotificationService.sendFirstStopReminder(date);
-            log.info("Perform Send Stop Reminder (8-week) finished");
+            if (!featureToggleService.isSecondStopReminderFeatureToggleOn()) {
+                log.info("Feature toggle SecondStopReminderFeatureToggle is off, skipping task");
+                return;
+            } else {
+                dataExtractDateValidator.dateValidator(secondStopReminderdate, secondStopReminderdate);
+                log.info("Perform Send Stop Reminder (12-week) started");
+                automatedNotificationService.sendStopReminder(secondStopReminderdate, false);
+                log.info("Perform Send Stop Reminder (12-week) finished");
+
+            }
         } catch (ApiClientException e) {
             log.error(e.getMessage());
         } catch (Exception e) {
-            log.error("Error on SendNotificationsTask Scheduler Send Stop Reminder (8-week) task {}", e.getMessage());
+            log.error("Error on SendNotificationsTask Scheduler Send Stop Reminder task {}", e.getMessage());
         }
     }
 
-    private boolean isFirstStopReminderFeatureToggleOn() {
-        return featureToggleService.isFeatureToggleOn(
-                FIRST_STOP_REMINDER_TOGGLE, false);
-    }
+
 }

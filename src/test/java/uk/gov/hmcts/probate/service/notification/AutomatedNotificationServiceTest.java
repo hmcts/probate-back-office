@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.notification;
 
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.any;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.doThrow;
@@ -77,9 +78,9 @@ class AutomatedNotificationServiceTest {
 
     @Test
     void shouldSendFirstStopReminderSuccessfully() throws NotificationClientException {
-        automatedNotificationService.sendFirstStopReminder(JOB_DATE);
+        automatedNotificationService.sendStopReminder(JOB_DATE, true);
 
-        verify(notificationService, times(1)).sendFirstStopReminderEmail(mockCaseDetails);
+        verify(notificationService, times(1)).sendStopReminderEmail(mockCaseDetails, true);
         verify(elasticSearchRepository, times(1))
                 .fetchFirstPage(any(), any(), any(), any(), any());
         verify(elasticSearchRepository, times(1))
@@ -89,11 +90,11 @@ class AutomatedNotificationServiceTest {
     @Test
     void shouldHandleNotificationExceptionGracefully() throws NotificationClientException {
         doThrow(new NotificationClientException("Email failed")).when(notificationService)
-                .sendFirstStopReminderEmail(any());
+                .sendStopReminderEmail(any(), anyBoolean());
 
         assertDoesNotThrow(() -> automatedNotificationService
-                .sendFirstStopReminder(JOB_DATE));
-        verify(notificationService, times(1)).sendFirstStopReminderEmail(any());
+                .sendStopReminder(JOB_DATE, true));
+        verify(notificationService, times(1)).sendStopReminderEmail(any(), anyBoolean());
     }
 
     @Test
@@ -101,7 +102,7 @@ class AutomatedNotificationServiceTest {
         when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any()))
                 .thenThrow(new RuntimeException("ElasticSearch error"));
         assertDoesNotThrow(() -> automatedNotificationService
-                .sendFirstStopReminder(JOB_DATE));
+                .sendStopReminder(JOB_DATE, true));
         verify(automatedNotificationCCDService, never()).saveNotification(any(), any(), any(), any());
     }
 
@@ -110,9 +111,9 @@ class AutomatedNotificationServiceTest {
         SearchResult emptySearchResult = SearchResult.builder().total(0).cases(Collections.emptyList()).build();
         when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any())).thenReturn(emptySearchResult);
 
-        automatedNotificationService.sendFirstStopReminder(JOB_DATE);
+        automatedNotificationService.sendStopReminder(JOB_DATE, true);
 
-        verify(notificationService, never()).sendFirstStopReminderEmail(any());
+        verify(notificationService, never()).sendStopReminderEmail(any(), anyBoolean());
         verify(elasticSearchRepository, times(1))
                 .fetchFirstPage(any(), any(), any(), any(), any());
     }

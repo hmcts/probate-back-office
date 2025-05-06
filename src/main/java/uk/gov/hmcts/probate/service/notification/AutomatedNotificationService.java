@@ -30,27 +30,29 @@ public class AutomatedNotificationService {
 
     private static final String FIRST_STOP_REMINDER_QUERY = "templates/elasticsearch/caseMatching/"
             + "first_stop_reminder_query.json";
+    private static final String SECOND_STOP_REMINDER_QUERY = "templates/elasticsearch/caseMatching/"
+            + "second_stop_reminder_query.json";
 
-    public void sendFirstStopReminder(String date) {
+    public void sendStopReminder(String date, boolean isFirstStop) {
         List<Long> failedCases = new ArrayList<>();
         try {
-            log.info("sendFirstStopReminder for date {}", date);
+            log.info("sendStopReminder for date {} isFirstStop {} ", date, isFirstStop);
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
             SearchResult searchResult = elasticSearchRepository.fetchFirstPage(
                     securityDTO.getAuthorisation(),
                     GRANT_OF_REPRESENTATION.getName(),
-                    FIRST_STOP_REMINDER_QUERY,
+                    isFirstStop ? FIRST_STOP_REMINDER_QUERY : SECOND_STOP_REMINDER_QUERY,
                     date, date);
-            log.info("sendFirstStopReminder query executed for date: {}, cases found: {}",
+            log.info("sendStopReminder query executed for date: {}, cases found: {}",
                     date, searchResult.getTotal());
             if (searchResult.getTotal() == 0) {
-                log.info("No cases found for disposal");
+                log.info("No cases found for sendStopReminder");
                 return;
             }
             List<CaseDetails> searchResultCases = searchResult.getCases();
             searchResultCases.forEach(caseDetails -> {
                 try {
-                    Document sentEmail = notificationService.sendFirstStopReminderEmail(caseDetails);
+                    Document sentEmail = notificationService.sendStopReminderEmail(caseDetails, isFirstStop);
                     automatedNotificationCCDService.saveNotification(caseDetails,
                             caseDetails.getId().toString(), securityDTO, sentEmail);
                 } catch (NotificationClientException | RuntimeException e) {
@@ -59,7 +61,7 @@ public class AutomatedNotificationService {
                 }
             });
             String searchAfterValue = searchResultCases.get(searchResultCases.size() - 1).getId().toString();
-            log.info("Continuing sendFirstStopReminder for searchAfterValue: {}", searchAfterValue);
+            log.info("Continuing sendStopReminder for searchAfterValue: {}", searchAfterValue);
 
             boolean keepSearching;
             do {
@@ -67,7 +69,7 @@ public class AutomatedNotificationService {
                         .fetchNextPage(securityDTO.getAuthorisation(),
                                 GRANT_OF_REPRESENTATION.getName(),
                                 searchAfterValue,
-                                FIRST_STOP_REMINDER_QUERY,
+                                isFirstStop ? FIRST_STOP_REMINDER_QUERY : SECOND_STOP_REMINDER_QUERY,
                                 date, date);
 
                 log.info("Fetching next page for searchAfterValue: {}", searchAfterValue);
@@ -78,7 +80,7 @@ public class AutomatedNotificationService {
                     subsequentSearchResultCases.forEach(caseDetails -> {
                         log.info("Sending email for case id: {}", caseDetails.getId());
                         try {
-                            Document sentEmail = notificationService.sendFirstStopReminderEmail(caseDetails);
+                            Document sentEmail = notificationService.sendStopReminderEmail(caseDetails, isFirstStop);
                             automatedNotificationCCDService.saveNotification(caseDetails,
                                     caseDetails.getId().toString(), securityDTO, sentEmail);
                         } catch (NotificationClientException | RuntimeException e) {
@@ -90,11 +92,11 @@ public class AutomatedNotificationService {
                             .getLast().getId().toString();
                 }
             } while (keepSearching);
-            log.info("Perform sendFirstStopReminder finished");
+            log.info("Perform sendStopReminder finished");
         } catch (Exception e) {
             log.error("Error on SendNotificationsTask Scheduler sendFirstStopReminder task {}", e.getMessage());
         } finally {
-            log.info("Fail to sendFirstStopReminder with cases: {}", failedCases);
+            log.info("Fail to sendStopReminder with cases: {}", failedCases);
         }
     }
 }

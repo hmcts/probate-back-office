@@ -767,7 +767,7 @@ public class NotificationService {
         FOUND_HTML;
     }
 
-    public Document sendFirstStopReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
+    public Document sendStopReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails , boolean isFirstStopReminder)
             throws NotificationClientException {
         log.info("Sending email for case id: {}", caseDetails.getId());
         Map<String, Object> data = caseDetails.getData();
@@ -787,7 +787,7 @@ public class NotificationService {
                 .map(yes -> LanguagePreference.WELSH)
                 .orElse(LanguagePreference.ENGLISH);
         String templateId = templateService.getStopReminderTemplateId(applicationType, languagePreference,
-                getChannelChoice(caseDetails), getInformationNeededByPost(caseDetails));
+                getChannelChoice(caseDetails), getInformationNeededByPost(caseDetails), isFirstStopReminder);
         log.info("templateId: {}", templateId);
         Map<String, String> personalisation =
                 automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);

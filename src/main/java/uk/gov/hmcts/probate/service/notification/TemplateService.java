@@ -27,7 +27,6 @@ public class TemplateService {
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
                                 LanguagePreference languagePreference) {
         return getTemplateId(state, applicationType, registryLocation, languagePreference, null, null, null);
-
     }
 
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
@@ -99,15 +98,14 @@ public class TemplateService {
     }
 
     public String getStopReminderTemplateId(ApplicationType applicationType, LanguagePreference languagePreference,
-                                String channelChoice, String informationNeededByPost) {
-        log.info("getStopReminderTemplateId channelChoice: {}, informationNeededByPost: {}",
-            channelChoice, informationNeededByPost);
+                                String channelChoice, String informationNeededByPost, boolean isFirstStopReminder) {
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
         if (ApplicationType.SOLICITOR.equals(applicationType)
             || requestInfoByPostForPersonalApplication(channelChoice, applicationType, informationNeededByPost)) {
             return emailTemplates.getFirstStopReminder();
         } else {
-            return emailTemplates.getFirstStopReminderForHub();
+            return isFirstStopReminder ?  emailTemplates.getFirstStopReminderForHub()
+                    : emailTemplates.getSecondStopReminder();
         }
     }
 }

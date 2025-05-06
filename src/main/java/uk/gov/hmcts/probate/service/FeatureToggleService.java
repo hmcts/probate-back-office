@@ -12,6 +12,8 @@ public class FeatureToggleService {
     private final LDClient ldClient;
     private final LDContext ldContext;
     private static final String SMEE_AND_FORD_POUND_VALUE_TOGGLE = "probate-smee-ford-pound-value";
+    private static final String FIRST_STOP_REMINDER_TOGGLE = "probate-cron-first-stop-reminder";
+    private static final String SECOND_STOP_REMINDER_TOGGLE = "probate-cron-second-stop-reminder";
 
 
     @Autowired
@@ -57,5 +59,15 @@ public class FeatureToggleService {
     public boolean isPoundValueFeatureToggleOn() {
         return this.isFeatureToggleOn(
                 SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
+    }
+
+    public boolean isFirstStopReminderFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
+    }
+
+    public boolean isSecondStopReminderFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                SECOND_STOP_REMINDER_TOGGLE, false);
     }
 }
