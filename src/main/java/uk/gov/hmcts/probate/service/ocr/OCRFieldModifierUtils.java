@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
+import uk.gov.hmcts.probate.service.EmailValidationService;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
@@ -23,6 +24,7 @@ public class OCRFieldModifierUtils {
 
     private final BulkScanConfig bulkScanConfig;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    private final EmailValidationService emailValidationService;
     public static final String IHT_FORM_NOT_REQUIRED = "exceptedEstate";
     public static final String IHT400_COMPLETED = "iht400completed";
     public static final String IHT_400_PROCESS = "iht400process";
@@ -67,17 +69,17 @@ public class OCRFieldModifierUtils {
             addModifiedField(modifiedFields, "solsSolicitorIsApplying", ocrFields.getSolsSolicitorIsApplying());
             //Add further fields depending on what constitutes sols details being present
             if (isNotBlank(ocrFields.getSolsSolicitorRepresentativeName()) &&
-                isNotBlank(ocrFields.getSolsSolicitorFirmName())) {
-
-                    ocrFields.setLegalRepresentative("TRUE");
-                    log.info("Setting solicitor is applying to TRUE");
+                    isNotBlank(ocrFields.getSolsSolicitorFirmName()) &&
+                    isNotBlank(ocrFields.getSolsSolicitorEmail())) {
+                ocrFields.setSolsSolicitorIsApplying("TRUE");
+                 log.info("Setting solicitor is applying to TRUE");
             }
         }
 
         if (isBlank(ocrFields.getSolsSolicitorRepresentativeName())) {
             addModifiedField(modifiedFields, "solsSolicitorRepresentativeName", ocrFields.getSolsSolicitorFirmName());
             if (isNotBlank(ocrFields.getSolsSolicitorFirmName())) {
-                ocrFields.setSolsSolicitorRepresentativeName(bulkScanConfig.getSolsSolicitorFirmName());
+                ocrFields.setSolsSolicitorRepresentativeName(ocrFields.getSolsSolicitorFirmName());
                 log.info("Setting solicitor representative name to {}", ocrFields.getSolsSolicitorFirmName());
             }
         }
@@ -91,7 +93,7 @@ public class OCRFieldModifierUtils {
         if (isBlank(ocrFields.getSolsSolicitorAppReference())) {
             addModifiedField(modifiedFields, "solsSolicitorAppReference", ocrFields.getSolsSolicitorAppReference());
             if (isNotBlank(ocrFields.getDeceasedSurname())) {
-                ocrFields.setSolsSolicitorAppReference(bulkScanConfig.getName());
+                ocrFields.setSolsSolicitorAppReference(ocrFields.getDeceasedSurname());
                 log.info("Setting legal representative to deceased surname {}", ocrFields.getSolsSolicitorAppReference());
             }
         }
@@ -121,7 +123,7 @@ public class OCRFieldModifierUtils {
 
         // TODO - If addressLine1 and Postcode are blank, what should this be? MISSING? Or nothing at all?
         if (isBlank(ocrFields.getSolsSolicitorAddressTown())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressLine2", ocrFields.getSolsSolicitorAddressTown());
+            addModifiedField(modifiedFields, "solsSolicitorAddressTown", ocrFields.getSolsSolicitorAddressTown());
             if (isBlank(ocrFields.getSolsSolicitorAddressLine1()) && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
                 ocrFields.setSolsSolicitorAddressTown(bulkScanConfig.getName());
                 log.info("Setting solicitor town or city to {}", ocrFields.getSolsSolicitorAddressTown());
@@ -135,7 +137,8 @@ public class OCRFieldModifierUtils {
         }
 
         // TODO - How to remove email after case submission? (As per requirements)
-        if (isBlank(ocrFields.getSolsSolicitorEmail())) {
+        if (isBlank(ocrFields.getSolsSolicitorEmail())
+                && emailValidationService.validateEmailAddress(ocrFields.getSolsSolicitorEmail())) {
             addModifiedField(modifiedFields, "solsSolicitorEmail", ocrFields.getSolsSolicitorEmail());
             ocrFields.setSolsSolicitorEmail(bulkScanConfig.getEmail());
             log.info("Setting solicitor email to {}", ocrFields.getSolsSolicitorEmail());
@@ -156,13 +159,19 @@ public class OCRFieldModifierUtils {
         if (isBlank(ocrFields.getDeceasedAddressLine1())) {
             addModifiedField(modifiedFields, "deceasedAddressLine1", ocrFields.getDeceasedAddressLine1());
             ocrFields.setDeceasedAddressLine1(bulkScanConfig.getName());
-            log.info("Setting deceased address line 1 to {}", ocrFields.getDeceasedAddressLine1());
+                log.info("Setting deceased address line 1 to {}", ocrFields.getDeceasedAddressLine1());
         }
 
         if (isBlank(ocrFields.getDeceasedAddressPostCode())) {
             addModifiedField(modifiedFields, "deceasedAddressPostCode", ocrFields.getDeceasedAddressPostCode());
             ocrFields.setDeceasedAddressPostCode(bulkScanConfig.getPostcode());
             log.info("Setting deceased postcode to {}", ocrFields.getDeceasedAddressPostCode());
+        }
+
+        if (isBlank(ocrFields.getDeceasedDateOfBirth())) {
+            addModifiedField(modifiedFields, "deceasedDateOfBirth", ocrFields.getDeceasedDateOfBirth());
+            ocrFields.setDeceasedDateOfBirth(bulkScanConfig.getDob());
+            log.info("Setting deceased date of birth to {}", ocrFields.getDeceasedDateOfBirth());
         }
 
         if (isBlank(ocrFields.getDeceasedAnyOtherNames())) {
@@ -177,19 +186,6 @@ public class OCRFieldModifierUtils {
             log.info("Setting deceased domiciled in Eng/Wales to TRUE");
         }
 
-        if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
-            addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
-                    ocrFields.getDeceasedDiedOnAfterSwitchDate());
-            if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())) {
-                log.info("Setting deceasedDiedOnAfterSwitchDate to TRUE");
-                ocrFields.setDeceasedDiedOnAfterSwitchDate("TRUE");
-                log.info("Setting deceasedDiedOnAfterSwitchDate {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
-            } else {
-                log.info("Setting deceasedDiedOnAfterSwitchDate to FALSE");
-                ocrFields.setDeceasedDiedOnAfterSwitchDate("FALSE");
-                log.info("Setting deceasedDiedOnAfterSwitchDate {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
-            }
-        }
         if (isFormVersion3AndSwitchDateValid(ocrFields)) {
             setDefaultIHTValues(ocrFields, modifiedFields, bulkScanConfig);
             if (isIhtFormsNotCompleted(ocrFields)) {
