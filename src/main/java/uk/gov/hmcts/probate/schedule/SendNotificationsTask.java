@@ -51,7 +51,7 @@ public class SendNotificationsTask implements Runnable {
                         firstStopReminderdate, firstStopReminderdate);
                 dataExtractDateValidator.dateValidator(firstStopReminderdate, firstStopReminderdate);
                 log.info("Perform Send Stop Reminder (8-week) started");
-                //automatedNotificationService.sendStopReminder(firstStopReminderdate, true);
+                automatedNotificationService.sendStopReminder(firstStopReminderdate, true);
                 log.info("Perform Send Stop Reminder (8-week) finished");
 
             }
