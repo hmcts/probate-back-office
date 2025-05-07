@@ -32,7 +32,7 @@ public class ExceptionRecordOCRFields {
     private String solsSolicitorPhoneNumber;
     private String deceasedForenames;
     private String deceasedSurname;
-    private final String deceasedDateOfDeath;
+    private String deceasedDateOfDeath;
     private String deceasedDateOfBirth;
     private String deceasedAnyOtherNames;
     private String deceasedAddressLine1;
@@ -212,7 +212,7 @@ public class ExceptionRecordOCRFields {
     private String iht207Completed;
     private String iht205Completed;
     private String iht205completedOnline;
-    private final String exceptedEstate;
+    private String exceptedEstate; //final?
     private String iht400process;
     private final String ihtCode;
     private final String ihtGrossValueExceptedEstate;
@@ -227,6 +227,6 @@ public class ExceptionRecordOCRFields {
     private String ihtNetValue205;
 
     //common
-    private final String formVersion;
+    private String formVersion; //Final?
 
 }
