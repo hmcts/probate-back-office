@@ -83,11 +83,11 @@ public class OCRFieldModifierUtils {
             addModifiedField(modifiedFields, "solsSolicitorIsApplying",
                     ocrFields.getSolsSolicitorIsApplying());
             //Add further fields depending on what constitutes sols details being present
-            if (isNotBlank(ocrFields.getSolsSolicitorRepresentativeName()) &&
-                    isNotBlank(ocrFields.getSolsSolicitorFirmName()) &&
-                    isNotBlank(ocrFields.getSolsSolicitorEmail())) {
+            if (isNotBlank(ocrFields.getSolsSolicitorRepresentativeName())
+                    && isNotBlank(ocrFields.getSolsSolicitorFirmName())
+                    && isNotBlank(ocrFields.getSolsSolicitorEmail())) {
                 ocrFields.setSolsSolicitorIsApplying("TRUE");
-                 log.info("Setting solicitor is applying to TRUE");
+                log.info("Setting solicitor is applying to TRUE");
             }
         }
 
@@ -162,7 +162,6 @@ public class OCRFieldModifierUtils {
 
         // TODO - How to remove email after case submission? (As per requirements)
         if (isBlank(ocrFields.getSolsSolicitorEmail())) {
-                //&& emailValidationService.validateEmailAddress(ocrFields.getSolsSolicitorEmail())) {
             addModifiedField(modifiedFields, "solsSolicitorEmail",
                     ocrFields.getSolsSolicitorEmail());
             ocrFields.setSolsSolicitorEmail(bulkScanConfig.getEmail());
@@ -185,7 +184,7 @@ public class OCRFieldModifierUtils {
         if (isBlank(ocrFields.getDeceasedAddressLine1())) {
             addModifiedField(modifiedFields, "deceasedAddressLine1", ocrFields.getDeceasedAddressLine1());
             ocrFields.setDeceasedAddressLine1(bulkScanConfig.getName());
-                log.info("Setting deceased address line 1 to {}", ocrFields.getDeceasedAddressLine1());
+            log.info("Setting deceased address line 1 to {}", ocrFields.getDeceasedAddressLine1());
         }
 
         if (isBlank(ocrFields.getDeceasedAddressPostCode())) {
