@@ -24,7 +24,7 @@ public class OCRFieldModifierUtils {
 
     private final BulkScanConfig bulkScanConfig;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
-    private final EmailValidationService emailValidationService;
+    //private final EmailValidationService emailValidationService;
     public static final String IHT_FORM_NOT_REQUIRED = "exceptedEstate";
     public static final String IHT400_COMPLETED = "iht400completed";
     public static final String IHT_400_PROCESS = "iht400process";
@@ -35,6 +35,18 @@ public class OCRFieldModifierUtils {
     public List<CollectionMember<ModifiedOCRField>> setDefaultValues(ExceptionRecordOCRFields ocrFields) {
 
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+
+        if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+            addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
+                    ocrFields.getDeceasedDiedOnAfterSwitchDate());
+            if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())) {
+                ocrFields.setDeceasedDiedOnAfterSwitchDate("TRUE");
+                log.info("Setting deceasedDiedOnAfterSwitchDate to {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+            } else {
+                ocrFields.setDeceasedDiedOnAfterSwitchDate("FALSE");
+                log.info("Setting deceasedDiedOnAfterSwitchDate to {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+            }
+        }
 
         if (isBlank(ocrFields.getPrimaryApplicantForenames())) {
             addModifiedField(modifiedFields, "primaryApplicantForenames", ocrFields.getPrimaryApplicantForenames());
@@ -137,8 +149,8 @@ public class OCRFieldModifierUtils {
         }
 
         // TODO - How to remove email after case submission? (As per requirements)
-        if (isBlank(ocrFields.getSolsSolicitorEmail())
-                && emailValidationService.validateEmailAddress(ocrFields.getSolsSolicitorEmail())) {
+        if (isBlank(ocrFields.getSolsSolicitorEmail())) {
+                //&& emailValidationService.validateEmailAddress(ocrFields.getSolsSolicitorEmail())) {
             addModifiedField(modifiedFields, "solsSolicitorEmail", ocrFields.getSolsSolicitorEmail());
             ocrFields.setSolsSolicitorEmail(bulkScanConfig.getEmail());
             log.info("Setting solicitor email to {}", ocrFields.getSolsSolicitorEmail());
@@ -218,15 +230,18 @@ public class OCRFieldModifierUtils {
             if (isBlank(ocrFields.getIhtEstateGrossValue())) {
                 addModifiedField(modifiedFields, "ihtEstateGrossValue", ocrFields.getIhtEstateGrossValue());
                 ocrFields.setIhtEstateGrossValue(bulkScanConfig.getGrossNetValue());
+                log.info("Setting ihtEstateGrossValue to {}", ocrFields.getIhtEstateGrossValue());
             }
             if (isBlank(ocrFields.getIhtEstateNetValue())) {
                 addModifiedField(modifiedFields, "ihtEstateNetValue", ocrFields.getIhtEstateNetValue());
                 ocrFields.setIhtEstateNetValue(bulkScanConfig.getGrossNetValue());
+                log.info("Setting ihtEstateNetValue to {}", ocrFields.getIhtEstateNetValue());
             }
             if (isBlank(ocrFields.getIhtEstateNetQualifyingValue())) {
                 addModifiedField(modifiedFields, "ihtEstateNetQualifyingValue", ocrFields
                         .getIhtEstateNetQualifyingValue());
                 ocrFields.setIhtEstateNetQualifyingValue(bulkScanConfig.getGrossNetValue());
+                log.info("Setting ihtEstateNetQualifyingValue to {}", ocrFields.getIhtEstateNetQualifyingValue());
             }
         }
         return modifiedFields;
