@@ -4,7 +4,7 @@
       "filter": [
         {
           "range": {
-            "data.lastModifiedDateForDormant": {
+            "data.firstStopReminderSentDate": {
               "gte": "%s",
               "lte": "%s"
             }
