@@ -1,0 +1,30 @@
+{
+    "tabName": "Applicant details",
+    "fields": [
+        "Executors that are applying",
+        "Executors that are applying 1",
+        "Executor type",
+        "Executor name",
+        "First name(s) of executor",
+        "Last name(s) of executor",
+        "Executor address",
+        "Executors not applying",
+        "Executors not applying 1",
+        "Reason executor is not applying",
+        "Is a dispense with notice required?",
+        "Has leave already been given to dispense with notice?"
+    ],
+    "dataKeys": [
+        "page2_dispenseWithNotice",
+        "page2_positionInTrustCorp",
+        "page2_executorFirstName",
+        "page2_executorSurname",
+        "address_line1",
+        "address_line2",
+        "address_line3",
+        "address_town",
+        "address_country",
+        "address_postcode",
+        "page3_dispenseWithNoticeName"
+    ]
+}
