@@ -789,7 +789,7 @@ public class NotificationService {
                 .orElse(LanguagePreference.ENGLISH);
         String templateId = templateService.getStopReminderTemplateId(applicationType, languagePreference,
                 getChannelChoice(caseDetails), getInformationNeededByPost(caseDetails), isFirstStopReminder);
-        log.info("templateId: {}", templateId);
+        log.info("sendStopReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
         Map<String, String> personalisation =
                 automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
         log.info("start sendEmail");

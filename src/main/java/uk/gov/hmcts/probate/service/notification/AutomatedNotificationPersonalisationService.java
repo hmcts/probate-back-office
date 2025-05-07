@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -23,10 +25,12 @@ public class AutomatedNotificationPersonalisationService {
 
     private static final String PERSONALISATION_DATE_CREATED = "date_created";
     private static final String PERSONALISATION_CASE_ID = "case_ref";
+    private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
     private static final String PERSONALISATION_LINK_TO_CASE = "link_to_case";
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
+    private static final String PERSONALISATION_RESPOND_DATE = "respond_date";
     private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
     private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
@@ -63,6 +67,9 @@ public class AutomatedNotificationPersonalisationService {
         log.info("getPersonalisation");
         Map<String, Object> caseData = caseDetails.getData();
         HashMap<String, String> personalisation = new HashMap<>();
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
+
+        personalisation.put(PERSONALISATION_RESPOND_DATE, DATE_FORMAT.format(LocalDate.now().minusDays(14)));
         personalisation.put(PERSONALISATION_APPLICANT_NAME, getPrimaryApplicantName(caseData));
         personalisation.put(PERSONALISATION_DECEASED_NAME, getDeceasedFullName(caseData));
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(caseData, applicationType));

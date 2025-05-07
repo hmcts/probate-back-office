@@ -35,12 +35,12 @@ public class SendNotificationsTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task SendNotificationsTask started");
-        String firstStopReminderdate = DATE_FORMAT.format(LocalDate.now().minusDays(firstNotificationDays));
-        String secondStopReminderdate = DATE_FORMAT.format(LocalDate.now().minusDays(secondNotificationDays));
+        String firstStopReminderDate = DATE_FORMAT.format(LocalDate.now().minusDays(firstNotificationDays));
+        String secondStopReminderDate = DATE_FORMAT.format(LocalDate.now().minusDays(secondNotificationDays));
         if (StringUtils.isNotEmpty(adHocJobDate)) {
             log.info("Running SendNotificationsTask with Adhoc dates {}", adHocJobDate);
-            firstStopReminderdate = LocalDate.parse(adHocJobDate).minusDays(firstNotificationDays).toString();
-            secondStopReminderdate = LocalDate.parse(adHocJobDate).minusDays(secondNotificationDays).toString();
+            firstStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(firstNotificationDays).toString();
+            secondStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(secondNotificationDays).toString();
         }
 
         try {
@@ -48,19 +48,19 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Feature toggle FirstStopReminderFeatureToggle is off, skipping task");
             } else {
                 log.info("Calling Send Stop Reminder from date, to date {} {}",
-                        firstStopReminderdate, firstStopReminderdate);
-                dataExtractDateValidator.dateValidator(firstStopReminderdate, firstStopReminderdate);
+                        firstStopReminderDate, firstStopReminderDate);
+                dataExtractDateValidator.dateValidator(firstStopReminderDate, firstStopReminderDate);
                 log.info("Perform Send Stop Reminder (8-week) started");
-                automatedNotificationService.sendStopReminder(firstStopReminderdate, true);
+                automatedNotificationService.sendStopReminder(firstStopReminderDate, true);
                 log.info("Perform Send Stop Reminder (8-week) finished");
 
             }
             if (!featureToggleService.isSecondStopReminderFeatureToggleOn()) {
                 log.info("Feature toggle SecondStopReminderFeatureToggle is off, skipping task");
             } else {
-                dataExtractDateValidator.dateValidator(secondStopReminderdate, secondStopReminderdate);
+                dataExtractDateValidator.dateValidator(secondStopReminderDate, secondStopReminderDate);
                 log.info("Perform Send Stop Reminder (12-week) started");
-                automatedNotificationService.sendStopReminder(secondStopReminderdate, false);
+                automatedNotificationService.sendStopReminder(secondStopReminderDate, false);
                 log.info("Perform Send Stop Reminder (12-week) finished");
 
             }

@@ -101,11 +101,12 @@ public class TemplateService {
                                 String channelChoice, String informationNeededByPost, boolean isFirstStopReminder) {
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
         if (ApplicationType.SOLICITOR.equals(applicationType)
-            || requestInfoByPostForPersonalApplication(channelChoice, applicationType, informationNeededByPost)) {
-            return emailTemplates.getFirstStopReminder();
-        } else {
-            return isFirstStopReminder ?  emailTemplates.getFirstStopReminderForHub()
+                || requestInfoByPostForPersonalApplication(channelChoice, applicationType, informationNeededByPost)) {
+            return isFirstStopReminder ?  emailTemplates.getFirstStopReminder()
                     : emailTemplates.getSecondStopReminder();
+        } else {
+            return isFirstStopReminder ? emailTemplates.getFirstStopReminderForHub()
+                    : emailTemplates.getSecondStopReminderForHub();
         }
     }
 }
