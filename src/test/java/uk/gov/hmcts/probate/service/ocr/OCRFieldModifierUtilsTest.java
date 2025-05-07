@@ -227,7 +227,7 @@ class OCRFieldModifierUtilsTest {
 
     //TODO
     @Test
-    void should_Not_AutoFill_SolsSolicitorAddressTown_With_SOMETHING_When_Empty_And_Address_Street_And_Postcode_Exist() {
+    void should_Not_AutoFill_SolsSolicitorAddressTown_With_X_When_Empty_And_Address_Street_And_Postcode_Exist() {
         ocrFields.setSolsSolicitorAddressTown("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
