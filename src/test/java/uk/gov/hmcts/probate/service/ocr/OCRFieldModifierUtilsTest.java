@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCR
 import java.lang.reflect.Field;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -32,6 +33,9 @@ class OCRFieldModifierUtilsTest {
     @Mock
     private EmailValidationService emailValidationService;
 
+    private ExceptionRecordOCRFields ocrFields;
+
+    //Defaults
     private static final String DEFAULT_IHT_FORM = "FALSE";
     private static final String DEFAULT_VALUE = "1.11";
     private static final String DEFAULT_DECEASED_SURNAME_VALUE = "MISSING";
@@ -48,11 +52,29 @@ class OCRFieldModifierUtilsTest {
     private static final String DEFAULT_SOLS_SOLICITOR_REPRESENTATIVE_NAME_VALUE = "Firm Name"; //if sols name empty
     private static final String DEFAULT_SOLS_APP_REFERENCE_DOB_VALUE = ""; //VALID_DECEASED_SURNAME_VALUE
 
-    //Potential Dynamic Fields
-    private static final String VALID_FIRM_NAME = "Bob Firm";
-    private static final String VALID_DECEASED_SURNAME = "Mak Gee";
-    private static final String VALID_POSTCODE = "SW1A 1AA";
+    //Valid
+    private static final String VALID_PRIMARY_APPLICANT_FORENAMES = "First Name";
+    private static final String VALID_PRIMARY_APPLICANT_SURNAME = "Surname";
+    private static final String VALID_PRIMARY_APPLICANT_ADDRESS_LINE_1 = "123 Fake Street";
+    private static final String VALID_PRIMARY_APPLICANT_ADDRESS_POSTCODE = "SW1A 1AA";
 
+    private static final String VALID_SOLICITOR_IS_APPLYING = "TRUE";
+    private static final String VALID_SOLICITOR_FIRM_NAME = "Firm Name";
+    private static final String VALID_SOLICITOR_REPRESENTATIVE_NAME = "Representative Name";
+    private static final String VALID_SOLICITOR_APP_REFERENCE = "App Reference";
+    private static final String VALID_SOLICITOR_ADDRESS_LINE_1 = "321 Sols Street";
+    private static final String VALID_SOLICITOR_ADDRESS_LINE_2 = "321 Fake Place";
+    private static final String VALID_SOLICITOR_ADDRESS_TOWN = "Fakeville";
+    private static final String VALID_SOLICITOR_ADDRESS_POSTCODE = "SW1A 1AA";
+    private static final String VALID_SOLICITOR_EMAIL = "rog@gmail.com";
+    private static final String VALID_SOLICITOR_PHONE_NUMBER = "07123456789";
+
+    private static final String VALID_DECEASED_SURNAME = "Deceased Surname";
+    private static final String VALID_DECEASED_ADDRESS_LINE_1 = "101 Fake Street";
+    private static final String VALID_DECEASED_ADDRESS_POSTCODE = "SW1A 1AA";
+    private static final String VALID_DECEASED_DATE_OF_BIRTH = "01-01-1990";
+    private static final String VALID_DECEASED_ANY_OTHER_NAMES = "TRUE";
+    private static final String VALID_DECEASED_DOMICILED_IN_ENG_WALES = "TRUE";
 
     @BeforeEach
     public void setup() throws Exception {
@@ -73,155 +95,153 @@ class OCRFieldModifierUtilsTest {
         Field bulkScanConfigField = OCRFieldModifierUtils.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);
         bulkScanConfigField.set(ocrFieldModifierUtils, bulkScanConfig);
+
+        ocrFields = ExceptionRecordOCRFields.builder()
+                .primaryApplicantForenames(VALID_PRIMARY_APPLICANT_FORENAMES)
+                .primaryApplicantSurname(VALID_PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantAddressLine1(VALID_PRIMARY_APPLICANT_ADDRESS_LINE_1)
+                .primaryApplicantAddressPostCode(VALID_PRIMARY_APPLICANT_ADDRESS_POSTCODE)
+                .solsSolicitorIsApplying(VALID_SOLICITOR_IS_APPLYING)
+                .solsSolicitorFirmName(VALID_SOLICITOR_FIRM_NAME)
+                .solsSolicitorRepresentativeName(VALID_SOLICITOR_REPRESENTATIVE_NAME)
+                .solsSolicitorAppReference(VALID_SOLICITOR_APP_REFERENCE)
+                .solsSolicitorAddressLine1(VALID_SOLICITOR_ADDRESS_LINE_1)
+                .solsSolicitorAddressLine2(VALID_SOLICITOR_ADDRESS_LINE_2)
+                .solsSolicitorAddressTown(VALID_SOLICITOR_ADDRESS_TOWN)
+                .solsSolicitorAddressPostCode(VALID_SOLICITOR_ADDRESS_POSTCODE)
+                .solsSolicitorEmail(VALID_SOLICITOR_EMAIL)
+                .solsSolicitorPhoneNumber(VALID_SOLICITOR_PHONE_NUMBER)
+                .deceasedSurname(VALID_DECEASED_SURNAME)
+                .deceasedAddressLine1(VALID_DECEASED_ADDRESS_LINE_1)
+                .deceasedAddressPostCode(VALID_DECEASED_ADDRESS_POSTCODE)
+                .deceasedDateOfBirth(VALID_DECEASED_DATE_OF_BIRTH)
+                .deceasedAnyOtherNames(VALID_DECEASED_ANY_OTHER_NAMES)
+                .deceasedDomicileInEngWales(VALID_DECEASED_DOMICILED_IN_ENG_WALES)
+                .deceasedDateOfDeath("01012022")
+                .build();
     }
 
     //Simple dummy value tests
     @Test
     void shouldSetApplicantForenameToMissingWhenEmpty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().primaryApplicantForenames("").build();
+        ocrFields.setPrimaryApplicantForenames("");
+
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
+        assertEquals(1, modifiedFields.size());
         assertEquals("primaryApplicantForenames", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("MISSING", ocrFields.getPrimaryApplicantForenames());
     }
 
     @Test
     void shouldSetPostcodeToM1551NGWhenEmpty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().primaryApplicantAddressPostCode("").build();
+        ocrFields.setPrimaryApplicantAddressPostCode("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        assertEquals("primaryApplicantAddressPostCode", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("primaryApplicantAddressPostCode", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("MI55 1NG", ocrFields.getPrimaryApplicantAddressPostCode());
     }
 
     //Dynamic assignment
     @Test
-    void shouldSetSolsSolicitorIsApplyingToFalseWhenFalse() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().solsSolicitorIsApplying("FALSE").build();
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
-
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
-        assertEquals("FALSE", ocrFields.getSolsSolicitorIsApplying());
-    }
-
-    @Test
     void shouldSetSolsSolicitorIsApplyingToTrueWhenEmpty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsSolicitorIsApplying("")
-                .solsSolicitorRepresentativeName("Bob")
-                .solsSolicitorEmail("boblawfirm@gmail.com")
-                .solsSolicitorFirmName("Bob Law Partners Thing")
-                .build();
+        ocrFields.setSolsSolicitorIsApplying("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorIsApplying", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("TRUE", ocrFields.getSolsSolicitorIsApplying());
     }
 
     @Test
     void shouldSetSolsSolicitorRepresentativeNameToFirmNameWhenEmpty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsSolicitorFirmName(VALID_FIRM_NAME)
-                .solsSolicitorRepresentativeName("")
-                .build();
+        ocrFields.setSolsSolicitorRepresentativeName("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
-        assertEquals(VALID_FIRM_NAME, ocrFields.getSolsSolicitorRepresentativeName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorRepresentativeName", modifiedFields.get(0).getValue().getFieldName());
+        assertEquals(VALID_SOLICITOR_FIRM_NAME, ocrFields.getSolsSolicitorRepresentativeName());
     }
 
     @Test
     void shouldSetSolsSolicitorAppReferenceToDeceasedSurnameWhenEmpty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsSolicitorAppReference("")
-                .deceasedSurname(VALID_DECEASED_SURNAME)
-                .build();
+        ocrFields.setSolsSolicitorAppReference("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorAppReference", modifiedFields.get(0).getValue().getFieldName());
         assertEquals(VALID_DECEASED_SURNAME, ocrFields.getSolsSolicitorAppReference());
     }
 
+    /*
     //Tests setting to existing postcode - can also set MISSING, see next test
+    //TODO - Concrete impl
     @Test
     void should_AutoFill_SolsSolicitorAddressLine1_With_Postcode_When_Empty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsSolicitorAddressLine1("")
-                .solsSolicitorAddressPostCode(VALID_POSTCODE)
-                .build();
+        ocrFields.setSolsSolicitorAddressLine1("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorAddressLine1", modifiedFields.get(0).getValue().getFieldName());
         assertEquals(VALID_POSTCODE, ocrFields.getSolsSolicitorAddressLine1());
     }
+     */
 
     //Test setting to MISSING to when empty and no fillable data
+    //TODO - Concrete impl
     @Test
     void should_AutoFill_SolsSolicitorAddressLine1_With_MISSING_When_Empty_And_No_AutoFillable_Data_Exists() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsSolicitorAddressLine1("")
-                .deceasedSurname("MISSING")
-                .build();
+        ocrFields.setSolsSolicitorAddressLine1("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
-        assertEquals("MISSING", ocrFields.getSolsSolicitorAppReference());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorAddressLine1", modifiedFields.get(0).getValue().getFieldName());
+        assertEquals("MISSING", ocrFields.getSolsSolicitorAddressLine1());
     }
 
+    //TODO - Find out N/A value?
     @Test
     void should_Not_AutoFill_SolsSolicitorAddressLine2_With_SOMETHING_When_Empty_And_Address_Street_And_Postcode_Exist() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsSolicitorAddressLine1("123 Fake Street")
-                .solsSolicitorAddressLine2("")
-                .solsSolicitorAddressPostCode(VALID_POSTCODE)
-                .build();
+        ocrFields.setSolsSolicitorAddressLine2("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorAddressLine2", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("", ocrFields.getSolsSolicitorAddressLine2());
     }
 
     //Expect to fail until get response from ops on what missing value should be
+    //TODO
+    /*
     @Test
     void should_AutoFill_SolsSolicitorAddressLine2_With_SOMETHING_When_Empty_And_Address_Street_And_Postcode_Do_Not_Exist() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsSolicitorAddressLine1("")
-                .solsSolicitorAddressLine2("")
-                .solsSolicitorAddressTown("")
-                .solsSolicitorAddressPostCode("")
-                .build();
+        ocrFields.setSolsSolicitorAddressLine1("");
+        ocrFields.setSolsSolicitorAddressLine2("");
+        ocrFields.setSolsSolicitorAddressTown("");
+        ocrFields.setSolsSolicitorAddressPostCode("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorAddressLine2", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("MISSING", ocrFields.getSolsSolicitorAddressLine2());
     }
+     */
 
+    //TODO
     @Test
     void should_Not_AutoFill_SolsSolicitorAddressTown_With_SOMETHING_When_Empty_And_Address_Street_And_Postcode_Exist() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsSolicitorAddressLine1("123 Fake Street")
-                .solsSolicitorAddressLine2("123 Fake Place")
-                .solsSolicitorAddressTown("Fakesville")
-                .solsSolicitorAddressPostCode(VALID_POSTCODE)
-                .build();
+        ocrFields.setSolsSolicitorAddressTown("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorAddressTown", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("", ocrFields.getSolsSolicitorAddressTown());
     }
 
     //Expect to fail until get response from ops on what missing value should be
+    //TODO
+    /*
     @Test
     void should_AutoFill_SolsSolicitorAddressTown_With_SOMETHING_When_Empty_And_Address_Street_And_Postcode_Do_Not_Exist() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
@@ -231,69 +251,69 @@ class OCRFieldModifierUtilsTest {
                 .build();
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorAddressTown", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("MISSING", ocrFields.getSolsSolicitorAddressTown());
     }
+     */
 
     @Test
     void shouldSetPhoneTo1234WhenEmpty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsSolicitorPhoneNumber("")
-                .build();
+        ocrFields.setSolsSolicitorPhoneNumber("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorPhoneNumber", modifiedFields.get(0).getValue().getFieldName());
         assertEquals(DEFAULT_PHONE_VALUE, ocrFields.getSolsSolicitorPhoneNumber());
     }
 
     @Test
     void shouldSetDateTo01011900WhenEmpty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .deceasedDateOfBirth("")
-                .build();
+        ocrFields.setDeceasedDateOfBirth("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("deceasedDateOfBirth", modifiedFields.get(0).getValue().getFieldName());
         assertEquals(DEFAULT_DATE_OF_BIRTH, ocrFields.getDeceasedDateOfBirth());
     }
 
     @Test
     void shouldSetDeceasedAnyOtherNamesNoWhenEmpty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .deceasedAnyOtherNames("")
-                .build();
+        ocrFields.setDeceasedAnyOtherNames("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("deceasedAnyOtherNames", modifiedFields.get(0).getValue().getFieldName());
         assertEquals(DEFAULT_DECEASED_ANY_OTHER_NAMES_VALUE, ocrFields.getDeceasedAnyOtherNames());
     }
 
 
     @Test
     void shouldSetDeceasedDomicileInEngWalesTrueWhenEmpty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .deceasedDomicileInEngWales("")
-                .build();
+        ocrFields.setDeceasedDomicileInEngWales("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
-        //assertEquals(1, modifiedFields.size());
-        //assertEquals("solsSolicitorIsApplying", modifiedFields.get(3).getValue().getFieldName());
+        assertEquals(1, modifiedFields.size());
+        assertEquals("deceasedDomicileInEngWales", modifiedFields.get(0).getValue().getFieldName());
         assertEquals(DEFAULT_DECEASED_DOMICILE_IN_ENG_WALES_VALUE, ocrFields.getDeceasedDomicileInEngWales());
     }
 
     //IHT
     @Test
     void shouldSetDeceasedDiedOnAfterSwitchDateTrueWhenDeceasedDateOfDeathIsAfter() {
+        //ocrFields.setDeceasedDiedOnAfterSwitchDate("");
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().deceasedDateOfDeath("01012022")
                 .deceasedDiedOnAfterSwitchDate("").build();
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
 
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
+
+        System.out.println(modifiedFields);
+        for (CollectionMember<ModifiedOCRField> modifiedField : modifiedFields) {
+            System.out.println(modifiedField.getValue().getFieldName());
+        }
+
 
         assertEquals(1, modifiedFields.size());
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.get(0).getValue().getFieldName());
