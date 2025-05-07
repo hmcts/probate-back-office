@@ -188,7 +188,7 @@ class OCRFieldModifierUtilsTest {
     //Test setting to MISSING to when empty and no fillable data
     //TODO - Concrete impl
     @Test
-    void should_AutoFill_SolsSolicitorAddressLine1_With_MISSING_When_Empty_And_No_AutoFillable_Data_Exists() {
+    void should_AutoFill_SolsSolicitorAddressLine1_With_Missing_When_Empty_And_No_AutoFillable_Data_Exists() {
         ocrFields.setSolsSolicitorAddressLine1("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
@@ -199,7 +199,7 @@ class OCRFieldModifierUtilsTest {
 
     //TODO - Find out N/A value?
     @Test
-    void should_Not_AutoFill_SolsSolicitorAddressLine2_With_SOMETHING_When_Empty_And_Address_Street_And_Postcode_Exist() {
+    void should_Not_AutoFill_SolsSolicitorAddressLine2_With_X_When_Empty_And_Address_Street_And_Postcode_Exist() {
         ocrFields.setSolsSolicitorAddressLine2("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
@@ -212,7 +212,7 @@ class OCRFieldModifierUtilsTest {
     //TODO
     /*
     @Test
-    void should_AutoFill_SolsSolicitorAddressLine2_With_SOMETHING_When_Empty_And_Address_Street_And_Postcode_Do_Not_Exist() {
+    void should_AutoFill_SolsSolicitorAddressLine2_With_X_When_Empty_And_Address_Street_And_Postcode_Do_Not_Exist() {
         ocrFields.setSolsSolicitorAddressLine1("");
         ocrFields.setSolsSolicitorAddressLine2("");
         ocrFields.setSolsSolicitorAddressTown("");
@@ -223,7 +223,7 @@ class OCRFieldModifierUtilsTest {
         assertEquals("solsSolicitorAddressLine2", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("MISSING", ocrFields.getSolsSolicitorAddressLine2());
     }
-     */
+    */
 
     //TODO
     @Test
@@ -240,7 +240,7 @@ class OCRFieldModifierUtilsTest {
     //TODO
     /*
     @Test
-    void should_AutoFill_SolsSolicitorAddressTown_With_SOMETHING_When_Empty_And_Address_Street_And_Postcode_Do_Not_Exist() {
+    void should_AutoFill_SolsSolicitorAddressTown_With_X_When_Empty_And_Address_Street_And_Postcode_Do_Not_Exist() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .solsSolicitorAddressLine1("")
                 .solsSolicitorAddressLine2("")
@@ -252,7 +252,7 @@ class OCRFieldModifierUtilsTest {
         assertEquals("solsSolicitorAddressTown", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("MISSING", ocrFields.getSolsSolicitorAddressTown());
     }
-     */
+    */
 
     @Test
     void shouldSetPhoneTo1234WhenEmpty() {
