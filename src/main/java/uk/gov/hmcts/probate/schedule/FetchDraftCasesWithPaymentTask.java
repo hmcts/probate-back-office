@@ -28,7 +28,7 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task FetchDraftCasesWithPaymentTask started");
-        String startDate = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+        String startDate = DATE_FORMAT.format(LocalDate.now().minusDays(180L));
         String endDate = startDate;
         if (StringUtils.isNotEmpty(adHocJobFromDate)) {
             startDate = adHocJobFromDate;
