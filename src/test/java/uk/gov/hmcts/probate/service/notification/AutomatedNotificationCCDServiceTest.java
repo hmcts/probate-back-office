@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.notification;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -66,7 +67,7 @@ class AutomatedNotificationCCDServiceTest {
 
         Document sentEmail = mock(Document.class);
 
-        automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail);
+        automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, true);
 
         ArgumentCaptor<CaseData> captor = ArgumentCaptor.forClass(CaseData.class);
         verify(ccdClientApi).updateCaseAsCaseworker(
@@ -85,6 +86,30 @@ class AutomatedNotificationCCDServiceTest {
     }
 
     @Test
+    void shouldFirstStopReminderSentDateNull_secondStopReminder() {
+        when(caseDetails.getData()).thenReturn(new HashMap<>());
+
+        Document sentEmail = mock(Document.class);
+
+        automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, false);
+
+        ArgumentCaptor<CaseData> captor = ArgumentCaptor.forClass(CaseData.class);
+        verify(ccdClientApi).updateCaseAsCaseworker(
+                eq(CASE_TYPE_GOP), eq(CASE_ID), eq(LAST_MODIFIED),
+                captor.capture(),
+                eq(EVENT_ID), eq(securityDTO),
+                eq(DESCRIPTION),
+                eq(SUMMARY)
+        );
+
+        CaseData cd = captor.getValue();
+        assertNotNull(cd.getProbateNotificationsGenerated());
+        assertEquals(1, cd.getProbateNotificationsGenerated().size());
+        assertSame(sentEmail, cd.getProbateNotificationsGenerated().getFirst().getValue());
+        assertNull(cd.getFirstStopReminderSentDate());
+    }
+
+    @Test
     void shouldAppendToExistingNotifications() {
         Document existingEmail = mock(Document.class);
         CollectionMember<Document> existingMember = new CollectionMember<>("id1", existingEmail);
@@ -96,7 +121,7 @@ class AutomatedNotificationCCDServiceTest {
 
         Document sentEmail = mock(Document.class);
 
-        automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail);
+        automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, true);
 
         ArgumentCaptor<CaseData> captor = ArgumentCaptor.forClass(CaseData.class);
         verify(ccdClientApi).updateCaseAsCaseworker(

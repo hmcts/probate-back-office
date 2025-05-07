@@ -34,21 +34,29 @@ public class AutomatedNotificationCCDService {
     public void saveNotification(final CaseDetails caseDetails,
                                  final String caseId,
                                  final SecurityDTO securityDTO,
-                                 final Document sentEmail) {
+                                 final Document sentEmail,
+                                 final boolean isFirstStopReminder) {
 
         log.info("AutomatedNotificationCCDService saveNotification to Case: " + caseId);
         ccdClientApi.updateCaseAsCaseworker(GRANT_OF_REPRESENTATION, caseId,
-                caseDetails.getLastModified(), buildCaseData(caseDetails, sentEmail),
+                caseDetails.getLastModified(), buildCaseData(caseDetails, sentEmail, isFirstStopReminder),
                 EventId.AUTOMATED_NOTIFICATION, securityDTO, EVENT_DESCRIPTION, EVENT_SUMMARY);
     }
 
-    private CaseData buildCaseData(CaseDetails caseDetails, Document sentEmail) {
+    private CaseData buildCaseData(CaseDetails caseDetails, Document sentEmail, boolean isFirstStopReminder) {
         List<CollectionMember<Document>> notifications = getNotifications(caseDetails);
         notifications.add(new CollectionMember<>(null, sentEmail));
-        return CaseData.builder()
-                .probateNotificationsGenerated(notifications)
-                .firstStopReminderSentDate(LocalDate.now())
-                .build();
+        if (isFirstStopReminder) {
+            return CaseData.builder()
+                    .probateNotificationsGenerated(notifications)
+                    .firstStopReminderSentDate(LocalDate.now())
+                    .build();
+        } else {
+            return CaseData.builder()
+                    .probateNotificationsGenerated(notifications)
+                    .build();
+        }
+
     }
 
     @SuppressWarnings("unchecked")

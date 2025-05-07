@@ -103,7 +103,7 @@ class AutomatedNotificationServiceTest {
                 .thenThrow(new RuntimeException("ElasticSearch error"));
         assertDoesNotThrow(() -> automatedNotificationService
                 .sendStopReminder(JOB_DATE, true));
-        verify(automatedNotificationCCDService, never()).saveNotification(any(), any(), any(), any());
+        verify(automatedNotificationCCDService, never()).saveNotification(any(), any(), any(), any(), anyBoolean());
     }
 
     @Test
