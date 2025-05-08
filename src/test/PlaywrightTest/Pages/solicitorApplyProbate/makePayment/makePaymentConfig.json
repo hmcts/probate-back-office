@@ -9,7 +9,7 @@
   "page2_pBAANumber": "PBA0082126",
   "page2_paymentReference": "E2E PBA Payment Reference",
   "paymentStatusConfirmText": "Payment successful",
-  "serviceRequestLink": "View service request",
+  "serviceRequestLink": "View service requests",
   "paymentStatus": "Paid",
   "eventHistoryTab": "Event History",
   "caseProgressTab": "Case Progress",

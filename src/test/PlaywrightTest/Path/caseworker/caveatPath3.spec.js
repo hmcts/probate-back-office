@@ -1,28 +1,28 @@
 // @ts-check
-const {test, expect} = require('../Fixtures/fixtures');
+const {test, expect} = require('../../Fixtures/fixtures');
 const dateFns = require('date-fns');
 
-const createCaseConfig = require('../Pages/createCase/createCaseConfig.json');
-const eventSummaryConfig = require('../Pages/eventSummary/eventSummaryConfig.json');
+const createCaseConfig = require('../../Pages/createCase/createCaseConfig.json');
+const eventSummaryConfig = require('../../Pages/eventSummary/eventSummaryConfig.json');
 
-const createCaveatConfig = require('../Pages/createCaveat/createCaveatConfig.json');
-const emailCaveatorConfig = require('../Pages/emailNotifications/caveat/emailCaveatorConfig.json');
-const reopenCaveatConfig = require('../Pages/reopenningCases/caveat/reopenCaveatConfig.json');
-const caseMatchesConfig = require('../Pages/caseMatches/caveat/caseMatchesConfig.json');
-const documentUploadConfig = require('../Pages/documentUpload/caveat/documentUploadConfig.json');
+const createCaveatConfig = require('../../Pages/createCaveat/createCaveatConfig.json');
+const emailCaveatorConfig = require('../../Pages/emailNotifications/caveat/emailCaveatorConfig.json');
+const reopenCaveatConfig = require('../../Pages/reopenningCases/caveat/reopenCaveatConfig.json');
+const caseMatchesConfig = require('../../Pages/caseMatches/caveat/caseMatchesConfig.json');
+const documentUploadConfig = require('../../Pages/documentUpload/caveat/documentUploadConfig.json');
 
-const historyTabConfig = require('../Pages/caseDetails/caveat/historyTabConfig.json');
+const historyTabConfig = require('../../Pages/caseDetails/caveat/historyTabConfig.json');
 
-const caseDetailsTabConfig = require('../Pages/caseDetails/caveat/caseDetailsTabConfig.json');
-const deceasedDetailsTabConfig = require('../Pages/caseDetails/caveat/deceasedDetailsTabConfig.json');
-const caveatorDetailsTabConfig = require('../Pages/caseDetails/caveat/caveatorDetailsTabConfig.json');
-const caveatDetailsTabConfig = require('../Pages/caseDetails/caveat/caveatDetailsTabConfig.json');
-const caveatDetailsTabReopenConfig = require('../Pages/caseDetails/caveat/caveatDetailsTabReopenConfig.json');
+const caseDetailsTabConfig = require('../../Pages/caseDetails/caveat/caseDetailsTabConfig.json');
+const deceasedDetailsTabConfig = require('../../Pages/caseDetails/caveat/deceasedDetailsTabConfig.json');
+const caveatorDetailsTabConfig = require('../../Pages/caseDetails/caveat/caveatorDetailsTabConfig.json');
+const caveatDetailsTabConfig = require('../../Pages/caseDetails/caveat/caveatDetailsTabConfig.json');
+const caveatDetailsTabReopenConfig = require('../../Pages/caseDetails/caveat/caveatDetailsTabReopenConfig.json');
 
-const documentsTabEmailCaveatorConfig = require('../Pages/caseDetails/caveat/documentsTabEmailCaveatorConfig.json');
+const documentsTabEmailCaveatorConfig = require('../../Pages/caseDetails/caveat/documentsTabEmailCaveatorConfig.json');
 // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
 // const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
-const documentsTabUploadDocumentConfig = require('../Pages/caseDetails/caveat/documentsTabUploadDocumentConfig.json');
+const documentsTabUploadDocumentConfig = require('../../Pages/caseDetails/caveat/documentsTabUploadDocumentConfig.json');
 
 const {
     legacyParse,

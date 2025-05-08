@@ -1,20 +1,20 @@
 // @ts-check
-const {test} = require('../Fixtures/fixtures');
+const {test} = require('../../Fixtures/fixtures');
 
-const {testConfig} = require ('../Configs/config');
-const createCaseConfig = require('../Pages/createCase/createCaseConfig');
+const {testConfig} = require ('../../Configs/config');
+const createCaseConfig = require('../../Pages/createCase/createCaseConfig.json');
 
-const caseMatchesConfig = require('../Pages/caseMatches/grantOfProbate/probateManCaseMatchesConfig');
-const createGrantOfProbateManualProbateManCaseConfig = require('../Pages/createGrantOfProbateManualForProbateMan/createGrantOfProbateManualProbateManCaseConfig');
-const eventSummaryConfig = require('../Pages/eventSummary/eventSummaryConfig');
-const applicantDetailsTabConfig = require('../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE');
-const caseDetailsTabConfig = require('../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigProbateMan');
+const caseMatchesConfig = require('../../Pages/caseMatches/grantOfProbate/probateManCaseMatchesConfig.json');
+const createGrantOfProbateManualProbateManCaseConfig = require('../../Pages/createGrantOfProbateManualForProbateMan/createGrantOfProbateManualProbateManCaseConfig.json');
+const eventSummaryConfig = require('../../Pages/eventSummary/eventSummaryConfig.json');
+const applicantDetailsTabConfig = require('../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json');
+const caseDetailsTabConfig = require('../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigProbateMan.json');
 
-const caseMatchesTabConfig = require('../Pages/caseDetails/grantOfProbate/probateManCaseMatchesTabConfig');
-const deceasedTabConfig = require('../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE');
-const historyTabConfig = require('../Pages/caseDetails/grantOfProbate/historyTabConfig');
-const copiesTabConfig = require('../Pages/caseDetails/grantOfProbate/copiesTabConfig');
-const caseProgressConfig = require('../Pages/caseProgressStandard/caseProgressConfig');
+const caseMatchesTabConfig = require('../../Pages/caseDetails/grantOfProbate/probateManCaseMatchesTabConfig.json');
+const deceasedTabConfig = require('../../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE.json');
+const historyTabConfig = require('../../Pages/caseDetails/grantOfProbate/historyTabConfig.json');
+const copiesTabConfig = require('../../Pages/caseDetails/grantOfProbate/copiesTabConfig.json');
+const caseProgressConfig = require('../../Pages/caseProgressStandard/caseProgressConfig.json');
 
 test.describe('Caseworker Grant of Representation - probateman case match', () => {
     test('Caseworker Grant of Representation - probateman case match',

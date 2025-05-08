@@ -3,6 +3,7 @@ const {BasePage} = require('../Pages/utility/basePage');
 const {SignInPage} = require('../Pages/IDAM/signIn');
 const {CreateCasePage} = require('../Pages/newCase/newCase');
 const {CwEventActionsPage} = require('../Pages/newCase/cwEventActions');
+const {SolCreateCasePage} = require('../Pages/newCase/solNewCase');
 
 exports.test = base.test.extend({
     basePage: async ({page}, use) => {
@@ -19,6 +20,10 @@ exports.test = base.test.extend({
 
     cwEventActionsPage: async ({page}, use) => {
         await use(new CwEventActionsPage(page));
+    },
+
+    solCreateCasePage: async ({page}, use) => {
+        await use(new SolCreateCasePage(page));
     },
 
 });

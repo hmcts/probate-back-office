@@ -1,33 +1,33 @@
 // @ts-check
-const {test} = require('../Fixtures/fixtures');
+const {test} = require('../../Fixtures/fixtures');
 
 const dateFns = require('date-fns');
 
 // const testConfig = require('src/test/config');
-const createCaseConfig = require('../Pages/createCase/createCaseConfig.json');
-const eventSummaryConfig = require('../Pages/eventSummary/eventSummaryConfig');
+const createCaseConfig = require('../../Pages/createCase/createCaseConfig.json');
+const eventSummaryConfig = require('../../Pages/eventSummary/eventSummaryConfig.json');
 
-const createWillLodgementConfig = require('../Pages/createWillLodgement/createWillLodgementConfig');
-const documentUploadConfig = require('../Pages/documentUpload/willLodgement/documentUploadConfig');
-const generateDepositReceiptConfig = require('../Pages/generateDepositReceipt/generateDepositReceiptConfig');
-const caseMatchesConfig = require('../Pages/caseMatches/willLodgement/caseMatchesConfig');
-const withdrawWillConfig = require('../Pages/withdrawal/willLodgement/withdrawalConfig');
+const createWillLodgementConfig = require('../../Pages/createWillLodgement/createWillLodgementConfig.json');
+const documentUploadConfig = require('../../Pages/documentUpload/willLodgement/documentUploadConfig.json');
+const generateDepositReceiptConfig = require('../../Pages/generateDepositReceipt/generateDepositReceiptConfig.json');
+const caseMatchesConfig = require('../../Pages/caseMatches/willLodgement/caseMatchesConfig.json');
+const withdrawWillConfig = require('../../Pages/withdrawal/willLodgement/withdrawalConfig.json');
 
-const historyTabConfig = require('../Pages/caseDetails/willLodgement/historyTabConfig');
+const historyTabConfig = require('../../Pages/caseDetails/willLodgement/historyTabConfig.json');
 
-const caseDetailsTabConfig = require('../Pages/caseDetails/willLodgement/caseDetailsTabConfig');
-const testatorTabConfig = require('../Pages/caseDetails/willLodgement/testatorTabConfig');
-const executorTabConfig = require('../Pages/caseDetails/willLodgement/executorTabConfig');
+const caseDetailsTabConfig = require('../../Pages/caseDetails/willLodgement/caseDetailsTabConfig.json');
+const testatorTabConfig = require('../../Pages/caseDetails/willLodgement/testatorTabConfig.json');
+const executorTabConfig = require('../../Pages/caseDetails/willLodgement/executorTabConfig.json');
 
-const caseDetailsTabUpdateConfig = require('../Pages/caseDetails/willLodgement/caseDetailsTabUpdateConfig');
-const testatorTabUpdateConfig = require('../Pages/caseDetails/willLodgement/testatorTabUpdateConfig');
-const executorTabUpdateConfig = require('../Pages/caseDetails/willLodgement/executorTabUpdateConfig');
+const caseDetailsTabUpdateConfig = require('../../Pages/caseDetails/willLodgement/caseDetailsTabUpdateConfig.json');
+const testatorTabUpdateConfig = require('../../Pages/caseDetails/willLodgement/testatorTabUpdateConfig.json');
+const executorTabUpdateConfig = require('../../Pages/caseDetails/willLodgement/executorTabUpdateConfig.json');
 
-const documentsTabUploadDocumentConfig = require('../Pages/caseDetails/willLodgement/documentsTabUploadDocumentConfig');
-const documentsTabGenerateDepositReceiptConfig = require('../Pages/caseDetails/willLodgement/documentsTabGenerateDepositReceiptConfig');
+const documentsTabUploadDocumentConfig = require('../../Pages/caseDetails/willLodgement/documentsTabUploadDocumentConfig.json');
+const documentsTabGenerateDepositReceiptConfig = require('../../Pages/caseDetails/willLodgement/documentsTabGenerateDepositReceiptConfig.json');
 
-const caseMatchesTabConfig = require('../Pages/caseDetails/willLodgement/caseMatchesTabConfig');
-const willWithdrawalDetailsTabConfig = require('../Pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig');
+const caseMatchesTabConfig = require('../../Pages/caseDetails/willLodgement/caseMatchesTabConfig.json');
+const willWithdrawalDetailsTabConfig = require('../../Pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig.json');
 
 const {
     legacyParse,

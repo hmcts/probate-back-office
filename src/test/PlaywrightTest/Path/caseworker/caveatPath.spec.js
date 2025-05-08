@@ -1,33 +1,33 @@
-const {test} = require('../Fixtures/fixtures');
+const {test} = require('../../Fixtures/fixtures');
 const dateFns = require('date-fns');
 
-const createCaseConfig = require('../Pages/createCase/createCaseConfig.json');
-const eventSummaryConfig = require('../Pages/eventSummary/eventSummaryConfig.json');
+const createCaseConfig = require('../../Pages/createCase/createCaseConfig.json');
+const eventSummaryConfig = require('../../Pages/eventSummary/eventSummaryConfig.json');
 
-const createCaveatConfig = require('../Pages/createCaveat/createCaveatConfig.json');
-const emailCaveatorConfig = require('../Pages/emailNotifications/caveat/emailCaveatorConfig.json');
-const caseMatchesConfig = require('../Pages/caseMatches/caveat/caseMatchesConfig.json');
-const caseMatchesTabConfig = require('../Pages/caseDetails/caveat/caseMatchesTabConfig');
+const createCaveatConfig = require('../../Pages/createCaveat/createCaveatConfig.json');
+const emailCaveatorConfig = require('../../Pages/emailNotifications/caveat/emailCaveatorConfig.json');
+const caseMatchesConfig = require('../../Pages/caseMatches/caveat/caseMatchesConfig.json');
+const caseMatchesTabConfig = require('../../Pages/caseDetails/caveat/caseMatchesTabConfig.json');
 
-const documentUploadConfig = require('../Pages/documentUpload/caveat/documentUploadConfig');
+const documentUploadConfig = require('../../Pages/documentUpload/caveat/documentUploadConfig.json');
 
-const historyTabConfig = require('../Pages/caseDetails/caveat/historyTabConfig');
+const historyTabConfig = require('../../Pages/caseDetails/caveat/historyTabConfig.json');
 
-const caseDetailsTabConfig = require('../Pages/caseDetails/caveat/caseDetailsTabConfig');
-const deceasedDetailsTabConfig = require('../Pages/caseDetails/caveat/deceasedDetailsTabConfig');
-const caveatorDetailsTabConfig = require('../Pages/caseDetails/caveat/caveatorDetailsTabConfig');
-const caveatDetailsTabConfig = require('../Pages/caseDetails/caveat/caveatDetailsTabConfig');
+const caseDetailsTabConfig = require('../../Pages/caseDetails/caveat/caseDetailsTabConfig.json');
+const deceasedDetailsTabConfig = require('../../Pages/caseDetails/caveat/deceasedDetailsTabConfig.json');
+const caveatorDetailsTabConfig = require('../../Pages/caseDetails/caveat/caveatorDetailsTabConfig.json');
+const caveatDetailsTabConfig = require('../../Pages/caseDetails/caveat/caveatDetailsTabConfig.json');
 
-const caseDetailsTabUpdateConfig = require('../Pages/caseDetails/caveat/caseDetailsTabUpdateConfig');
-const deceasedDetailsTabUpdateConfig = require('../Pages/caseDetails/caveat/deceasedDetailsTabUpdateConfig');
-const caveatorDetailsTabUpdateConfig = require('../Pages/caseDetails/caveat/caveatorDetailsTabUpdateConfig');
-const caveatDetailsTabUpdateConfig = require('../Pages/caseDetails/caveat/caveatDetailsTabUpdateConfig');
+const caseDetailsTabUpdateConfig = require('../../Pages/caseDetails/caveat/caseDetailsTabUpdateConfig.json');
+const deceasedDetailsTabUpdateConfig = require('../../Pages/caseDetails/caveat/deceasedDetailsTabUpdateConfig.json');
+const caveatorDetailsTabUpdateConfig = require('../../Pages/caseDetails/caveat/caveatorDetailsTabUpdateConfig.json');
+const caveatDetailsTabUpdateConfig = require('../../Pages/caseDetails/caveat/caveatDetailsTabUpdateConfig.json');
 
-const documentsTabEmailCaveatorConfig = require('../Pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
-const documentsTabUploadDocumentConfig = require('../Pages/caseDetails/caveat/documentsTabUploadDocumentConfig');
+const documentsTabEmailCaveatorConfig = require('../../Pages/caseDetails/caveat/documentsTabEmailCaveatorConfig.json');
+const documentsTabUploadDocumentConfig = require('../../Pages/caseDetails/caveat/documentsTabUploadDocumentConfig.json');
 
-const registrarsDecisionConfig = require('../Pages/caseDetails/caveat/registrarsDecisionConfig');
-const registrarsDecisionTabConfig = require('../Pages/caseDetails/caveat/registrarsDecisionTabConfig');
+const registrarsDecisionConfig = require('../../Pages/caseDetails/caveat/registrarsDecisionConfig.json');
+const registrarsDecisionTabConfig = require('../../Pages/caseDetails/caveat/registrarsDecisionTabConfig.json');
 
 const {
     legacyParse,

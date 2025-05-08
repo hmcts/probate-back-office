@@ -1,29 +1,29 @@
 // @ts-check
-const {test} = require('../Fixtures/fixtures');
+const {test} = require('../../Fixtures/fixtures');
 const dateFns = require('date-fns');
 
-const createCaseConfig = require('../Pages/createCase/createCaseConfig.json');
-const eventSummaryConfig = require('../Pages/eventSummary/eventSummaryConfig.json');
-const caseMatchesConfig = require('../Pages/caseMatches/grantOfProbate/caseMatchesConfigEE');
+const createCaseConfig = require('../../Pages/createCase/createCaseConfig.json');
+const eventSummaryConfig = require('../../Pages/eventSummary/eventSummaryConfig.json');
+const caseMatchesConfig = require('../../Pages/caseMatches/grantOfProbate/caseMatchesConfigEE.json');
 
 // const testConfig = require('src/test/config');
 //const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 // const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfigEE');
-const createGrantOfProbateConfig = require('../Pages/createGrantOfProbateManual/createGrantOfProbateManualConfig');
-const documentUploadConfig = require('../Pages/documentUpload/grantOfProbate/documentUploadConfig');
+const createGrantOfProbateConfig = require('../../Pages/createGrantOfProbateManual/createGrantOfProbateManualConfig.json');
+const documentUploadConfig = require('../../Pages/documentUpload/grantOfProbate/documentUploadConfig.json');
 //const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
-const issueGrantConfig = require('../Pages/issueGrant/issueGrantConfig');
-const applicantDetailsTabConfig = require('../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE');
-const caseDetailsTabConfig = require('../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigEE');
-const caseMatchesTabConfig = require('../Pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
-const deceasedTabConfig = require('../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE');
-const documentUploadTabConfig = require('../Pages/caseDetails/grantOfProbate/documentUploadTabConfig');
-const grantNotificationsTabConfig = require('../Pages/caseDetails/grantOfProbate/grantNotificationsTabConfig');
-const historyTabConfig = require('../Pages/caseDetails/grantOfProbate/historyTabConfig');
-const copiesTabConfig = require('../Pages/caseDetails/grantOfProbate/copiesTabConfig');
-const ihtTabConfig = require('../Pages/caseDetails/grantOfProbate/ihtTabConfig');
-const ihtTabConfigUpdate = require('../Pages/caseDetails/grantOfProbate/ihtUpdateTabConfig');
-const nextStepConfig = require('../Pages/nextStep/nextStepConfig.json');
+const issueGrantConfig = require('../../Pages/issueGrant/issueGrantConfig.json');
+const applicantDetailsTabConfig = require('../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json');
+const caseDetailsTabConfig = require('../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigEE.json');
+const caseMatchesTabConfig = require('../../Pages/caseDetails/grantOfProbate/caseMatchesTabConfig.json');
+const deceasedTabConfig = require('../../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE.json');
+const documentUploadTabConfig = require('../../Pages/caseDetails/grantOfProbate/documentUploadTabConfig.json');
+const grantNotificationsTabConfig = require('../../Pages/caseDetails/grantOfProbate/grantNotificationsTabConfig.json');
+const historyTabConfig = require('../../Pages/caseDetails/grantOfProbate/historyTabConfig.json');
+const copiesTabConfig = require('../../Pages/caseDetails/grantOfProbate/copiesTabConfig.json');
+const ihtTabConfig = require('../../Pages/caseDetails/grantOfProbate/ihtTabConfig.json');
+const ihtTabConfigUpdate = require('../../Pages/caseDetails/grantOfProbate/ihtUpdateTabConfig.json');
+const nextStepConfig = require('../../Pages/nextStep/nextStepConfig.json');
 
 const {
     legacyParse,
