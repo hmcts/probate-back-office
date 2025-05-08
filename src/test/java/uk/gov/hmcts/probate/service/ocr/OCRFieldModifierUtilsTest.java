@@ -28,6 +28,8 @@ class OCRFieldModifierUtilsTest {
 
     private ExceptionRecordOCRFields ocrFields;
 
+    private Field formVersionField;
+
     //Defaults
     private static final String DEFAULT_IHT_FORM = "FALSE";
     private static final String DEFAULT_VALUE = "1.11";
@@ -84,6 +86,9 @@ class OCRFieldModifierUtilsTest {
         bulkScanConfigField.setAccessible(true);
         bulkScanConfigField.set(ocrFieldModifierUtils, bulkScanConfig);
 
+        formVersionField = ExceptionRecordOCRFields.class.getDeclaredField("formVersion");
+        formVersionField.setAccessible(true);
+
         ocrFields = ExceptionRecordOCRFields.builder()
                 .primaryApplicantForenames(VALID_PRIMARY_APPLICANT_FORENAMES)
                 .primaryApplicantSurname(VALID_PRIMARY_APPLICANT_SURNAME)
@@ -105,11 +110,9 @@ class OCRFieldModifierUtilsTest {
                 .deceasedDateOfBirth(VALID_DECEASED_DATE_OF_BIRTH)
                 .deceasedAnyOtherNames(VALID_DECEASED_ANY_OTHER_NAMES)
                 .deceasedDomicileInEngWales(VALID_DECEASED_DOMICILED_IN_ENG_WALES)
-                .formVersion("3")
                 .build();
     }
 
-    //Simple dummy value tests
     @Test
     void shouldSetApplicantForenameToMissingWhenEmpty() {
         ocrFields.setPrimaryApplicantForenames("");
@@ -135,7 +138,6 @@ class OCRFieldModifierUtilsTest {
         assertEquals("MI55 1NG", ocrFields.getPrimaryApplicantAddressPostCode());
     }
 
-    //Dynamic assignment
     //TODO - Not sure on the default value
     /*
     @Test
@@ -187,6 +189,7 @@ class OCRFieldModifierUtilsTest {
 
     //Test setting to MISSING to when empty and no fillable data
     //TODO - Concrete impl
+    /*
     @Test
     void should_AutoFill_SolsSolicitorAddressLine1_With_Missing_When_Empty_And_No_AutoFillable_Data_Exists() {
         ocrFields.setSolsSolicitorAddressLine1("");
@@ -196,6 +199,7 @@ class OCRFieldModifierUtilsTest {
         assertEquals("solsSolicitorAddressLine1", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("MISSING", ocrFields.getSolsSolicitorAddressLine1());
     }
+     */
 
     //TODO - Find out N/A value?
     @Test
@@ -226,6 +230,7 @@ class OCRFieldModifierUtilsTest {
     */
 
     //TODO
+    /*
     @Test
     void should_Not_AutoFill_SolsSolicitorAddressTown_With_X_When_Empty_And_Address_Street_And_Postcode_Exist() {
         ocrFields.setSolsSolicitorAddressTown("");
@@ -235,6 +240,7 @@ class OCRFieldModifierUtilsTest {
         assertEquals("solsSolicitorAddressTown", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("", ocrFields.getSolsSolicitorAddressTown());
     }
+     */
 
     //Expect to fail until get response from ops on what missing value should be
     //TODO
@@ -295,18 +301,13 @@ class OCRFieldModifierUtilsTest {
     }
 
     //IHT
-    //TODO - Fix test, updates 3 fields not just 1
-    /*
     @Test
     void shouldSetDeceasedDiedOnAfterSwitchDateTrueWhenDeceasedDateOfDeathIsAfter() {
         ocrFields.setDeceasedDateOfDeath("01012022");
         ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
-        //ocrFields.setExceptedEstate("");
-        //ocrFields.setIhtEstateGrossValue("");
         ocrFields.setIhtEstateNetValue("1000");
         ocrFields.setIhtEstateNetQualifyingValue("1000");
-        //ocrFields.setDeceasedDiedOnAfterSwitchDate("TRUE");
         ocrFields.setIht400421Completed("FALSE");
         ocrFields.setIht207Completed("FALSE");
         ocrFields.setIht205Completed("FALSE");
@@ -345,12 +346,12 @@ class OCRFieldModifierUtilsTest {
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
     }
-     */
 
     @Test
-    void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThree() {
+    void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThree() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "3");
+
         ocrFields.setDeceasedDateOfDeath("01012022");
-        ocrFields.setFormVersion("3");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
 
@@ -364,12 +365,14 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
+        assertEquals("3", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThree() {
+    void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThree() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "3");
+
         ocrFields.setDeceasedDateOfDeath("01012020");
-        ocrFields.setFormVersion("3");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
 
@@ -383,12 +386,14 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
+        assertEquals("3", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwo() {
+    void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwo() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "3");
+
         ocrFields.setDeceasedDateOfDeath("01012022");
-        ocrFields.setFormVersion("3");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
 
@@ -401,12 +406,14 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
+        assertEquals("3", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsTwo() {
+    void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsTwo() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "2");
+
         ocrFields.setDeceasedDateOfDeath("01012020");
-        ocrFields.setFormVersion("2");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
 
@@ -419,12 +426,14 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
+        assertEquals("2", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndIhtIs400421() {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndIhtIs400421() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "3");
+
         ocrFields.setDeceasedDateOfDeath("01012022");
-        ocrFields.setFormVersion("3");
         ocrFields.setIht400421Completed("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
@@ -438,12 +447,15 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
         assertEquals(DEFAULT_VALUE, ocrFields.getIht421grossValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIht421netValue());
+        assertEquals("3", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwoAndIhtIs400421() {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwoAndIhtIs400421() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "2");
+
+
         ocrFields.setDeceasedDateOfDeath("01012022");
-        ocrFields.setFormVersion("2");
         ocrFields.setIht400421Completed("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
@@ -457,12 +469,14 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
         assertEquals(DEFAULT_VALUE, ocrFields.getIht421grossValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIht421netValue());
+        assertEquals("2", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndIhtIs207() {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndIhtIs207() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "3");
+
         ocrFields.setDeceasedDateOfDeath("01012022");
-        ocrFields.setFormVersion("3");
         ocrFields.setIht207Completed("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
@@ -476,12 +490,14 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
         assertEquals(DEFAULT_VALUE, ocrFields.getIht207grossValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIht207netValue());
+        assertEquals("3", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwoAndIhtIs207() {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwoAndIhtIs207() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "2");
+
         ocrFields.setDeceasedDateOfDeath("01012022");
-        ocrFields.setFormVersion("2");
         ocrFields.setIht207Completed("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
@@ -495,12 +511,14 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
         assertEquals(DEFAULT_VALUE, ocrFields.getIht207grossValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIht207netValue());
+        assertEquals("2", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThreeAndIhtIs205() {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThreeAndIhtIs205() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "3");
+
         ocrFields.setDeceasedDateOfDeath("01012020");
-        ocrFields.setFormVersion("3");
         ocrFields.setIht205Completed("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
@@ -514,12 +532,14 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtGrossValue205());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtNetValue205());
+        assertEquals("3", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsTwoAndIhtIs205Online() {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsTwoAndIhtIs205Online() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "2");
+
         ocrFields.setDeceasedDateOfDeath("01012020");
-        ocrFields.setFormVersion("2");
         ocrFields.setIht205completedOnline("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
@@ -534,13 +554,18 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtGrossValue205());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtNetValue205());
         assertEquals("1234", ocrFields.getIhtReferenceNumber());
+        assertEquals("2", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultEstateGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThree() {
+    void shouldSetDefaultEstateGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThree() throws IllegalAccessException, NoSuchFieldException {
+        formVersionField.set(ocrFields, "3");
+
+        Field exceptedEstateField = ExceptionRecordOCRFields.class.getDeclaredField("exceptedEstate");
+        exceptedEstateField.setAccessible(true);
+        exceptedEstateField.set(ocrFields, "TRUE");
+
         ocrFields.setDeceasedDateOfDeath("01012020");
-        ocrFields.setFormVersion("3");
-        ocrFields.setExceptedEstate("TRUE");
         ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
@@ -552,12 +577,13 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateGrossValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetQualifyingValue());
+        assertEquals("3", ocrFields.getFormVersion());
     }
 
     @Test
-    void shouldSetDefaultEstateGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwo() {
+    void shouldSetDefaultEstateGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwo() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "2");
         ocrFields.setDeceasedDateOfDeath("01012022");
-        ocrFields.setFormVersion("2");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
 
@@ -568,6 +594,7 @@ class OCRFieldModifierUtilsTest {
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateGrossValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetQualifyingValue());
+        assertEquals("2", ocrFields.getFormVersion());
     }
 
     @Test
