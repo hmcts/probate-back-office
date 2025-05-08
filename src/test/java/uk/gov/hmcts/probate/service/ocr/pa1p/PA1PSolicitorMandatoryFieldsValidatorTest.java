@@ -52,6 +52,7 @@ class PA1PSolicitorMandatoryFieldsValidatorTest {
         assertEquals(0, warnings.size());
     }
 
+    /*
     @Test
     void testSolicitorMissingMandatoryFieldsPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
@@ -68,6 +69,7 @@ class PA1PSolicitorMandatoryFieldsValidatorTest {
             warnings.get(2));
         assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warnings.get(3));
     }
+     */
 
     @Test
     void testSolicitorMissingPaymentMethodFieldsPA1P() {

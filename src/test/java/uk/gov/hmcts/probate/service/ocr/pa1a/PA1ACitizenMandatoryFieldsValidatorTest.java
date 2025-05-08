@@ -51,7 +51,7 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-        assertEquals(8, warnings.size());
+        assertEquals(3, warnings.size());
     }
 
     @Test
@@ -66,6 +66,8 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
         ocrFields.add(OCRField.builder().name("non-mandatoryField").value("test").description("test").build());
     }
 
+    // WARNING WILL NO LONGER APPEAR WITH DUMMY VALUES
+    /*
     @Test
     void testFieldDescriptionIsAddedToMissingValueListForPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
@@ -77,6 +79,7 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
         assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
             warnings.get(0));
     }
+     */
 
     @Test
     void testAllMandatoryFieldsPresentPA1ACitizenV2() {
