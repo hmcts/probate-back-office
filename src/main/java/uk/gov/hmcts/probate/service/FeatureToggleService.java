@@ -14,6 +14,7 @@ public class FeatureToggleService {
     private static final String SMEE_AND_FORD_POUND_VALUE_TOGGLE = "probate-smee-ford-pound-value";
     private static final String IRON_MOUNTAIN_IN_BACK_OFFICE = "probate-iron-mountain-in-back-office";
     private static final String EXELA_IN_BACK_OFFICE = "probate-exela-in-back-office";
+    private static final String USE_COMMONS_PDF_GEN = "probate-use-commons-pdf-gen";
 
 
     @Autowired
@@ -63,5 +64,9 @@ public class FeatureToggleService {
 
     public boolean isExelaInBackOffice() {
         return this.isFeatureToggleOn(EXELA_IN_BACK_OFFICE, false);
+    }
+
+    public boolean useCommonsPdfGen() {
+        return this.isFeatureToggleOn(USE_COMMONS_PDF_GEN, false);
     }
 }
