@@ -430,7 +430,8 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndIhtIs400421() throws IllegalAccessException {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndIhtIs400421()
+            throws IllegalAccessException {
         formVersionField.set(ocrFields, "3");
 
         ocrFields.setDeceasedDateOfDeath("01012022");
@@ -451,7 +452,8 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwoAndIhtIs400421() throws IllegalAccessException {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwoAndIhtIs400421()
+            throws IllegalAccessException {
         formVersionField.set(ocrFields, "2");
 
 
@@ -473,7 +475,8 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndIhtIs207() throws IllegalAccessException {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndIhtIs207()
+            throws IllegalAccessException {
         formVersionField.set(ocrFields, "3");
 
         ocrFields.setDeceasedDateOfDeath("01012022");
@@ -494,7 +497,8 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwoAndIhtIs207() throws IllegalAccessException {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwoAndIhtIs207()
+            throws IllegalAccessException {
         formVersionField.set(ocrFields, "2");
 
         ocrFields.setDeceasedDateOfDeath("01012022");
@@ -515,7 +519,8 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThreeAndIhtIs205() throws IllegalAccessException {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThreeAndIhtIs205()
+            throws IllegalAccessException {
         formVersionField.set(ocrFields, "3");
 
         ocrFields.setDeceasedDateOfDeath("01012020");
@@ -536,7 +541,8 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsTwoAndIhtIs205Online() throws IllegalAccessException {
+    void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsTwoAndIhtIs205Online()
+            throws IllegalAccessException {
         formVersionField.set(ocrFields, "2");
 
         ocrFields.setDeceasedDateOfDeath("01012020");
@@ -558,7 +564,8 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetDefaultEstateGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThree() throws IllegalAccessException, NoSuchFieldException {
+    void shouldSetDefaultEstateGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThree()
+            throws IllegalAccessException, NoSuchFieldException {
         formVersionField.set(ocrFields, "3");
 
         Field exceptedEstateField = ExceptionRecordOCRFields.class.getDeclaredField("exceptedEstate");
@@ -581,7 +588,8 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetDefaultEstateGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwo() throws IllegalAccessException {
+    void shouldSetDefaultEstateGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwo()
+            throws IllegalAccessException {
         formVersionField.set(ocrFields, "2");
         ocrFields.setDeceasedDateOfDeath("01012022");
 
