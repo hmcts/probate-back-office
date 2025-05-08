@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -9,16 +10,18 @@ import lombok.Getter;
 @Getter
 public enum DocumentType {
     @JsonProperty("legalStatementAdmon")
-    LEGAL_STATEMENT_ADMON("legalStatementAdmon"),
+    LEGAL_STATEMENT_ADMON("legalStatementAdmon", "legal_statement_admon/original.html"),
 
     @JsonProperty("legalStatementProbate")
-    LEGAL_STATEMENT_PROBATE("legalStatementProbate"),
+    LEGAL_STATEMENT_PROBATE("legalStatementProbate", "legal_statement_probate/original.html"),
 
     @JsonProperty("legalStatementGrantOfProbate")
-    LEGAL_STATEMENT_PROBATE_TRUST_CORPS("legalStatementGrantOfProbate"),
+    LEGAL_STATEMENT_PROBATE_TRUST_CORPS(
+            "legalStatementGrantOfProbate",
+            "legal_statement_grant_of_probate/original.html"),
 
     @JsonProperty("legalStatementIntestacy")
-    LEGAL_STATEMENT_INTESTACY("legalStatementIntestacy"),
+    LEGAL_STATEMENT_INTESTACY("legalStatementIntestacy", "legal_statement_intestacy/original.html"),
 
     @JsonProperty("legalStatement")
     LEGAL_STATEMENT("legalStatement"),
@@ -27,43 +30,43 @@ public enum DocumentType {
     UPLOADED_LEGAL_STATEMENT("uploadedLegalStatement"),
 
     @JsonProperty("digitalGrant")
-    DIGITAL_GRANT("digitalGrant"),
+    DIGITAL_GRANT("digitalGrant", "digital_grant/original.html"),
 
     @JsonProperty("grantCover")
-    GRANT_COVER("grantCover"),
+    GRANT_COVER("grantCover", "grant_cover/original.html"),
 
     @JsonProperty("solicitorCoverSheet")
-    SOLICITOR_COVERSHEET("solicitorCoverSheet"),
+    SOLICITOR_COVERSHEET("solicitorCoverSheet", "solicitor_cover_sheet/original.html"),
 
     @JsonProperty("blank")
-    BLANK("blank"),
+    BLANK("blank", "blank/original.html"),
 
     @JsonProperty("digitalGrantDraft")
-    DIGITAL_GRANT_DRAFT("digitalGrantDraft"),
+    DIGITAL_GRANT_DRAFT("digitalGrantDraft", "digital_grant_draft/original.html"),
 
     @JsonProperty("willLodgementDepositReceipt")
-    WILL_LODGEMENT_DEPOSIT_RECEIPT("willLodgementDepositReceipt"),
+    WILL_LODGEMENT_DEPOSIT_RECEIPT("willLodgementDepositReceipt", "will_lodgement_deposit_receipt/original.html"),
 
     @JsonProperty("intestacyGrant")
-    INTESTACY_GRANT("intestacyGrant"),
+    INTESTACY_GRANT("intestacyGrant", "intestacy_grant/original.html"),
 
     @JsonProperty("intestacyGrantDraft")
-    INTESTACY_GRANT_DRAFT("intestacyGrantDraft"),
+    INTESTACY_GRANT_DRAFT("intestacyGrantDraft", "intestacy_grant_draft/original.html"),
 
     @JsonProperty("admonWillGrant")
-    ADMON_WILL_GRANT("admonWillGrant"),
+    ADMON_WILL_GRANT("admonWillGrant", "admon_will_grant/original.html"),
 
     @JsonProperty("admonWillGrantDraft")
-    ADMON_WILL_GRANT_DRAFT("admonWillGrantDraft"),
+    ADMON_WILL_GRANT_DRAFT("admonWillGrantDraft", "admon_will_grant_draft/original.html"),
 
     @JsonProperty("adColligendaBonaGrant")
-    AD_COLLIGENDA_BONA_GRANT("adColligendaBonaGrant"),
+    AD_COLLIGENDA_BONA_GRANT("adColligendaBonaGrant", "ad_colligenda_bona_grant/original.html"),
 
     @JsonProperty("adColligendaBonaGrantDraft")
-    AD_COLLIGENDA_BONA_GRANT_DRAFT("adColligendaBonaGrantDraft"),
+    AD_COLLIGENDA_BONA_GRANT_DRAFT("adColligendaBonaGrantDraft", "ad_colligenda_bona_grant_draft/original.html"),
 
     @JsonProperty("sentEmail")
-    SENT_EMAIL("sentEmail"),
+    SENT_EMAIL("sentEmail", "sent_email/original.html"),
 
     @JsonProperty("email")
     EMAIL("email"),
@@ -117,7 +120,7 @@ public enum DocumentType {
     GRANT_COVERSHEET("grantCoversheet"),
 
     @JsonProperty("digitalGrantReissueDraft")
-    DIGITAL_GRANT_REISSUE_DRAFT("digitalGrantReissueDraft"),
+    DIGITAL_GRANT_REISSUE_DRAFT("digitalGrantReissueDraft", "digital_grant_reissue_draft/original.html"),
 
     @JsonProperty("intestacyGrantReissueDraft")
     INTESTACY_GRANT_REISSUE_DRAFT("intestacyGrantReissueDraft"),
@@ -129,7 +132,7 @@ public enum DocumentType {
     AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT("adColligendaBonaGrantReissueDraft"),
 
     @JsonProperty("digitalGrantReissue")
-    DIGITAL_GRANT_REISSUE("digitalGrantReissue"),
+    DIGITAL_GRANT_REISSUE("digitalGrantReissue", "digital_grant_reissue/original.html"),
 
     @JsonProperty("intestacyGrantReissue")
     INTESTACY_GRANT_REISSUE("intestacyGrantReissue"),
@@ -204,9 +207,18 @@ public enum DocumentType {
     WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE("welshAdColligendaBonaGrantReissue");
 
     private final String templateName;
+    private final Optional<String> commonsTemplateName;
 
-    DocumentType(String templateName) {
+    DocumentType(
+            final String templateName,
+            final String commonsTemplateName) {
         this.templateName = templateName;
+        this.commonsTemplateName = Optional.of(commonsTemplateName);
+    }
+
+    DocumentType(final String templateName) {
+        this.templateName = templateName;
+        this.commonsTemplateName = Optional.empty();
     }
 
     private static Map<String, DocumentType> map = new HashMap<>();
