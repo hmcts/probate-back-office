@@ -74,21 +74,13 @@ public class OCRFieldModifierUtils {
             log.info("Setting primary applicant postcode to {}", ocrFields.getPrimaryApplicantAddressPostCode());
         }
 
-        // TODO - Are we happy to not supply any value if no sols info is included?
-        // TODO - Also, what constitutes sols info?
-        // could be easier to check if sols info is blank and then set FALSE
-        // need to confirm which data is necessary because if x info is missing we will end up with FALSE.
-        // e.g a full name and address exists but what if an email is missing? Confirm which details MUST exist
-        if (isBlank(ocrFields.getSolsSolicitorIsApplying())) {
+        if (isBlank(ocrFields.getSolsSolicitorIsApplying())
+                && isNotBlank(ocrFields.getSolsSolicitorRepresentativeName())
+                && isNotBlank(ocrFields.getSolsSolicitorEmail())) {
             addModifiedField(modifiedFields, "solsSolicitorIsApplying",
                     ocrFields.getSolsSolicitorIsApplying());
-            //Add further fields depending on what constitutes sols details being present
-            if (isNotBlank(ocrFields.getSolsSolicitorRepresentativeName())
-                    && isNotBlank(ocrFields.getSolsSolicitorFirmName())
-                    && isNotBlank(ocrFields.getSolsSolicitorEmail())) {
-                ocrFields.setSolsSolicitorIsApplying("TRUE");
-                log.info("Setting solicitor is applying to TRUE");
-            }
+            ocrFields.setSolsSolicitorIsApplying("TRUE");
+            log.info("Setting solicitor is applying to TRUE");
         }
 
         if (isBlank(ocrFields.getSolsSolicitorRepresentativeName())) {
@@ -116,8 +108,7 @@ public class OCRFieldModifierUtils {
             }
         }
 
-        // TODO - Populate field from postcode if possible
-        // If only address in postcode we can grab 1st line I imagine
+        // TODO - Populate fields from postcode
         if (isBlank(ocrFields.getSolsSolicitorAddressLine1())) {
             addModifiedField(modifiedFields, "solsSolicitorAddressLine1",
                     ocrFields.getSolsSolicitorAddressLine1());
@@ -131,7 +122,7 @@ public class OCRFieldModifierUtils {
             }
         }
 
-        // TODO - If addressLine1 and Postcode are blank, what should this be? MISSING?
+        // TODO - If addressLine1 and Postcode are blank, what should this be? (Awaiting Response from Operations)
         if (isBlank(ocrFields.getSolsSolicitorAddressLine2())) {
             addModifiedField(modifiedFields, "solsSolicitorAddressLine2",
                     ocrFields.getSolsSolicitorAddressLine2());
@@ -142,7 +133,7 @@ public class OCRFieldModifierUtils {
             }
         }
 
-        // TODO - If addressLine1 and Postcode are blank, what should this be? MISSING? Or nothing at all?
+        // TODO - If addressLine1 and Postcode are blank, what should this be? (Awaiting Response from Operations)
         if (isBlank(ocrFields.getSolsSolicitorAddressTown())) {
             addModifiedField(modifiedFields, "solsSolicitorAddressTown",
                     ocrFields.getSolsSolicitorAddressTown());
@@ -160,7 +151,6 @@ public class OCRFieldModifierUtils {
             log.info("Setting solicitor postcode to {}", ocrFields.getSolsSolicitorAddressPostCode());
         }
 
-        // TODO - How to remove email after case submission? (As per requirements)
         if (isBlank(ocrFields.getSolsSolicitorEmail())) {
             addModifiedField(modifiedFields, "solsSolicitorEmail",
                     ocrFields.getSolsSolicitorEmail());

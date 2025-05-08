@@ -138,20 +138,15 @@ class OCRFieldModifierUtilsTest {
         assertEquals("MI55 1NG", ocrFields.getPrimaryApplicantAddressPostCode());
     }
 
-    //TODO - Not sure on the default value
-    /*
     @Test
     void shouldSetSolsSolicitorIsApplyingToTrueWhenEmpty() {
         ocrFields.setSolsSolicitorIsApplying("");
-        when(bulkScanConfig.getName()).thenReturn(DEFAULT_DECEASED_SURNAME_VALUE);
-
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultValues(ocrFields);
 
         assertEquals(1, modifiedFields.size());
         assertEquals("solsSolicitorIsApplying", modifiedFields.get(0).getValue().getFieldName());
         assertEquals("TRUE", ocrFields.getSolsSolicitorIsApplying());
     }
-     */
 
     @Test
     void shouldSetSolsSolicitorRepresentativeNameToFirmNameWhenEmpty() {
