@@ -212,7 +212,7 @@ public class ExceptionRecordOCRFields {
     private String iht207Completed;
     private String iht205Completed;
     private String iht205completedOnline;
-    private String exceptedEstate; //final?
+    private final String exceptedEstate;
     private String iht400process;
     private final String ihtCode;
     private final String ihtGrossValueExceptedEstate;
@@ -227,6 +227,6 @@ public class ExceptionRecordOCRFields {
     private String ihtNetValue205;
 
     //common
-    private String formVersion; //Final?
+    private final String formVersion;
 
 }
