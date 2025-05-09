@@ -52,16 +52,15 @@ public class PDFGeneratorService {
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
         byte[] postResult;
         try {
-            final String templateName = documentType.getTemplateName();
-            log.info("Generate pdf from template {}", templateName);
-
-            if (templateName.equals("digitalGrant")) {
-                log.info("using alternate templating?");
+            if (documentType == DocumentType.DIGITAL_GRANT) {
                 postResult = pdfTemplateService.generate(
                         "digital_grant/main.html",
                         Locale.UK,
                         asMap(pdfGenerationData));
             } else {
+                final String templateName = documentType.getTemplateName();
+                log.info("Generate pdf from template {}", templateName);
+
                 postResult = generateFromHtml(templateName, pdfGenerationData);
                 log.info("Generated from templates with bytes size {}", postResult != null ? postResult.length : "0");
             }
