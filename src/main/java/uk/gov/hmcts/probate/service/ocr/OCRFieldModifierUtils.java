@@ -194,14 +194,50 @@ public class OCRFieldModifierUtils {
             addModifiedField(modifiedFields, "deceasedAnyOtherNames",
                     ocrFields.getDeceasedAnyOtherNames());
             ocrFields.setDeceasedAnyOtherNames("FALSE");
-            log.info("Setting deceased any other names to FALSE");
+            log.info("Setting deceased any other names to {}", ocrFields.getDeceasedAnyOtherNames());
         }
 
         if (isBlank(ocrFields.getDeceasedDomicileInEngWales())) {
             addModifiedField(modifiedFields, "deceasedDomicileInEngWales",
                     ocrFields.getDeceasedDomicileInEngWales());
             ocrFields.setDeceasedDomicileInEngWales("TRUE");
-            log.info("Setting deceased domiciled in Eng/Wales to TRUE");
+            log.info("Setting deceased domiciled in Eng/Wales to {}", ocrFields.getDeceasedDomicileInEngWales());
+        }
+
+        if (isBlank(ocrFields.getCaveatorForenames())) {
+            addModifiedField(modifiedFields, "caveatorForenames", ocrFields.getCaveatorForenames());
+            ocrFields.setCaveatorForenames(bulkScanConfig.getName());
+            log.info("Setting caveator forename(s) to {}", ocrFields.getCaveatorForenames());
+        }
+
+        if (isBlank(ocrFields.getCaveatorSurnames())) {
+            addModifiedField(modifiedFields, "caveatorSurnames", ocrFields.getCaveatorSurnames());
+            ocrFields.setCaveatorSurnames(bulkScanConfig.getName());
+            log.info("Setting caveator surname to {}", ocrFields.getCaveatorSurnames());
+        }
+
+        if (isBlank(ocrFields.getCaveatorAddressLine1())) {
+            addModifiedField(modifiedFields, "caveatorAddressLine1", ocrFields.getCaveatorAddressLine1());
+            ocrFields.setCaveatorAddressLine1(bulkScanConfig.getName());
+            log.info("Setting caveator address line 1 to {}", ocrFields.getCaveatorAddressLine1());
+        }
+
+        if (isBlank(ocrFields.getCaveatorAddressPostCode())) {
+            addModifiedField(modifiedFields, "caveatorAddressPostCode", ocrFields.getCaveatorAddressPostCode());
+            ocrFields.setCaveatorAddressPostCode(bulkScanConfig.getPostcode());
+            log.info("Setting caveator address postcode to {}", ocrFields.getCaveatorAddressPostCode());
+        }
+
+        if (isBlank(ocrFields.getDeceasedForenames())) {
+            addModifiedField(modifiedFields, "deceasedForenames", ocrFields.getDeceasedForenames());
+            ocrFields.setDeceasedForenames(bulkScanConfig.getName());
+            log.info("Setting deceased forename(s) to {}", ocrFields.getDeceasedForenames());
+        }
+
+        if (isBlank(ocrFields.getDeceasedSurname())) {
+            addModifiedField(modifiedFields, "deceasedSurnames", ocrFields.getDeceasedSurname());
+            ocrFields.setDeceasedSurname(bulkScanConfig.getName());
+            log.info("Setting deceased surname to {}", ocrFields.getDeceasedSurname());
         }
 
         if (isFormVersion3AndSwitchDateValid(ocrFields)) {
