@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import uk.gov.hmcts.probate.exception.NoSecurityContextException;
 import uk.gov.hmcts.probate.exception.model.InvalidTokenException;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
@@ -70,11 +72,45 @@ public class SecurityUtils {
     private List<String> allowedToUpdateDetails;
 
     public SecurityDTO getSecurityDTO() {
+        String authorisation = getHeader(AUTHORIZATION);
+        String userId = getHeader(USER_ID);
+
+        if (StringUtils.isBlank(authorisation) || StringUtils.isBlank(userId)) {
+            log.warn("No authorisation or userId found in request, checking SecurityContext");
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null) {
+                authorisation = getAuthCredentials(auth);
+                userId = getAuthPrincipal(auth);
+            }
+        }
+
+        if (StringUtils.isBlank(authorisation) || StringUtils.isBlank(userId)) {
+            log.error("No authorisation or userId found in SecurityContext or request");
+            throw new NoSecurityContextException();
+        }
+
         return SecurityDTO.builder()
-            .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
-            .userId(httpServletRequest.getHeader(USER_ID))
-            .serviceAuthorisation(generateServiceToken())
-            .build();
+                .authorisation(authorisation)
+                .userId(userId)
+                .serviceAuthorisation(generateServiceToken())
+                .build();
+    }
+
+    private String getHeader(String headerName) {
+        try {
+            return httpServletRequest != null ? httpServletRequest.getHeader(headerName) : null;
+        } catch (IllegalStateException e) {
+            log.warn("HttpServletRequest not available");
+            return null;
+        }
+    }
+
+    private String getAuthCredentials(Authentication auth) {
+        return auth.getCredentials() != null ? auth.getCredentials().toString() : null;
+    }
+
+    private String getAuthPrincipal(Authentication auth) {
+        return (auth.getPrincipal() instanceof String principal) ? principal : null;
     }
 
     public SecurityDTO getUserAndServiceSecurityDTO() {
@@ -115,6 +151,20 @@ public class SecurityUtils {
             .getUsername();
     }
 
+    public String getUserIdFromHttpRequest() {
+        try {
+            if (httpServletRequest != null) {
+                String userId = httpServletRequest.getHeader(USER_ID);
+                if (StringUtils.isNotBlank(userId)) {
+                    return userId;
+                }
+            }
+        } catch (IllegalStateException e) {
+            log.warn("HttpServletRequest not available, falling back to SecurityContext");
+        }
+        return this.getUserId();
+    }
+
     public String generateServiceToken() {
         return authTokenGenerator.generate();
     }
@@ -128,6 +178,11 @@ public class SecurityUtils {
     public void setSecurityContextUserAsCaseworker() {
         SecurityContextHolder.getContext()
                 .setAuthentication(new UsernamePasswordAuthenticationToken(caseworkerUserName, getCaseworkerToken()));
+    }
+
+    public void setSecurityContextUserAsScheduler() {
+        SecurityContextHolder.getContext()
+                .setAuthentication(new UsernamePasswordAuthenticationToken(schedulerUserName, getSchedulerToken()));
     }
 
     public String getCaseworkerToken() {
