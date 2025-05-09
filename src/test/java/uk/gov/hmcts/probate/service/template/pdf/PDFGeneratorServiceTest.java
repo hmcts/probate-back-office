@@ -31,6 +31,7 @@ import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 
 @ExtendWith(MockitoExtension.class)
@@ -123,6 +124,11 @@ class PDFGeneratorServiceTest {
             when(pdfServiceClient.generateFromHtml(any(), any())).thenThrow(pdfServiceClientExceptionMock);
             underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
         });
+    }
+
+    @Test
+    void coverDigitalGrant() {
+            underTest.generatePdf(DIGITAL_GRANT, "{\"data\":\"value\"}");
     }
 
     @Test
