@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.TestSecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.gov.hmcts.probate.exception.NoSecurityContextException;
 import uk.gov.hmcts.probate.exception.model.InvalidTokenException;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
@@ -326,4 +327,72 @@ class SecurityUtilsTest {
         assertEquals(AUTH_CLIENT_ID, dto.getUserId());
         assertEquals(SERVICE_TOKEN, dto.getServiceAuthorisation());
     }
+
+    @Test
+    void shouldThrowExceptionWhenNoHeaderAndNoSecurityContext() {
+        when(httpServletRequestMock.getHeader("Authorization")).thenReturn(null);
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn(null);
+
+        SecurityContextHolder.clearContext();
+
+        assertThrows(NoSecurityContextException.class, () -> {
+            securityUtils.getSecurityDTO();
+        });
+    }
+
+    @Test
+    void shouldFallbackToSecurityContextIfHeaderMissing() {
+        when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH_HEADER");
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn(null);
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("userFromContext", "tokenFromContext")
+        );
+
+        when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKEN);
+
+        SecurityDTO dto = securityUtils.getSecurityDTO();
+
+        assertEquals("tokenFromContext", dto.getAuthorisation());
+        assertEquals("userFromContext", dto.getUserId());
+        assertEquals(SERVICE_TOKEN, dto.getServiceAuthorisation());
+    }
+
+    @Test
+    void shouldReturnUserIdFromHttpServletRequest() {
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn("request-user");
+
+        String userId = securityUtils.getUserIdFromHttpRequest();
+
+        assertEquals("request-user", userId);
+    }
+
+    @Test
+    void shouldFallbackToSecurityContextWhenUserIdHeaderIsBlank() {
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn("  ");
+
+        ServiceAndUserDetails principal = new ServiceAndUserDetails("fallback-user",
+                USER_TOKEN, Collections.emptyList(), "test-service");
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, USER_TOKEN);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String userId = securityUtils.getUserIdFromHttpRequest();
+
+        assertEquals("fallback-user", userId);
+    }
+
+    @Test
+    void shouldFallbackToSecurityContextWhenHttpRequestThrows() {
+        when(httpServletRequestMock.getHeader("user-id")).thenThrow(new IllegalStateException("not bound"));
+
+        ServiceAndUserDetails principal = new ServiceAndUserDetails("context-user",
+                USER_TOKEN, Collections.emptyList(), "test-service");
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, USER_TOKEN);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String userId = securityUtils.getUserIdFromHttpRequest();
+
+        assertEquals("context-user", userId);
+    }
+
 }

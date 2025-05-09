@@ -151,6 +151,20 @@ public class SecurityUtils {
             .getUsername();
     }
 
+    public String getUserIdFromHttpRequest() {
+        try {
+            if (httpServletRequest != null) {
+                String userId = httpServletRequest.getHeader(USER_ID);
+                if (StringUtils.isNotBlank(userId)) {
+                    return userId;
+                }
+            }
+        } catch (IllegalStateException e) {
+            log.warn("HttpServletRequest not available, falling back to SecurityContext");
+        }
+        return this.getUserId();
+    }
+
     public String generateServiceToken() {
         return authTokenGenerator.generate();
     }

@@ -116,6 +116,7 @@ class PDFManagementServiceTest {
 
     @BeforeEach
     public void setUp() {
+        when(securityUtils.getUserIdFromHttpRequest()).thenReturn("mock-user");
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetails);
         when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetails);
         when(pdfServiceConfiguration.getGrantSignatureEncryptedFile()).thenReturn("image.png");
@@ -370,5 +371,6 @@ class PDFManagementServiceTest {
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(BINARY_URL, response.getDocumentLink().getDocumentBinaryUrl());
         assertEquals(SELF_URL, response.getDocumentLink().getDocumentUrl());
+        assertEquals("mock-user", response.getDocumentGeneratedBy());
     }
 }

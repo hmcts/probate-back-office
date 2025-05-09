@@ -158,7 +158,7 @@ public class PDFManagementService {
                 .documentLink(documentLink)
                 .documentType(documentType)
                 .documentDateAdded(LocalDate.now())
-                .documentGeneratedBy(getUserId())
+                .documentGeneratedBy(securityUtils.getUserIdFromHttpRequest())
                 .build();
         } catch (IOException e) {
             log.error(e.getMessage(), e);
@@ -193,12 +193,5 @@ public class PDFManagementService {
         return decryptedFileAsBase64String(pdfServiceConfiguration.getGrantSignatureEncryptedFile());
     }
 
-    private String getUserId() {
-        try {
-            return httpServletRequest.getHeader(USER_ID);
-        } catch (IllegalStateException e) {
-            log.warn("HttpServletRequest not available, falling back to SecurityContext");
-            return securityUtils.getUserId();
-        }
-    }
+
 }
