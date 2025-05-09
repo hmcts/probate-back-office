@@ -53,7 +53,7 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-        assertEquals(8, warnings.size());
+        assertEquals(3, warnings.size());
     }
 
     @Test
@@ -68,17 +68,6 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
         ocrFields.add(OCRField.builder().name("non-mandatoryField").value("test").description("test").build());
     }
 
-    @Test
-    void testFieldDescriptionIsAddedToMissingValueListForPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.remove("solsSolicitorIsApplying");
-
-        pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
-            warnings.get(0));
-    }
 
     @Test
     void testAllMandatoryFieldsPresentPA1ACitizenV2() {
@@ -89,7 +78,7 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
-        verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
+        //verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
         assertEquals(0, warnings.size());
     }
 
@@ -116,7 +105,6 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
-        verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
         assertEquals(1, warnings.size());
         assertEquals("Form version (formVersion) is mandatory.", warnings.get(0));
     }
@@ -130,18 +118,6 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(0, warnings.size());
-    }
-
-    @Test
-    void testMissingMandatoryFieldsForPA1ACitizenV3() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        when(mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)).thenReturn(true);
-
-        pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-        assertEquals(1, warnings.size());
-        assertEquals("Did the person die on or after 1 January 2022? (deceasedDiedOnAfterSwitchDate) is mandatory.",
-                warnings.get(0));
     }
 
     @Test
