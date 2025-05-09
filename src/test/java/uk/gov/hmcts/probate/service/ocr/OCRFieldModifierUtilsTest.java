@@ -59,12 +59,19 @@ class OCRFieldModifierUtilsTest {
     private static final String VALID_SOLICITOR_EMAIL = "rog@gmail.com";
     private static final String VALID_SOLICITOR_PHONE_NUMBER = "07123456789";
 
+    private static final String VALID_DECEASED_FORENAMES = "Deceased Forenames";
     private static final String VALID_DECEASED_SURNAME = "Deceased Surname";
     private static final String VALID_DECEASED_ADDRESS_LINE_1 = "101 Fake Street";
     private static final String VALID_DECEASED_ADDRESS_POSTCODE = "SW1A 1AA";
     private static final String VALID_DECEASED_DATE_OF_BIRTH = "01-01-1990";
     private static final String VALID_DECEASED_ANY_OTHER_NAMES = "TRUE";
     private static final String VALID_DECEASED_DOMICILED_IN_ENG_WALES = "TRUE";
+
+    private static final String VALID_CAVEATOR_FORENAMES = "Bob";
+    private static final String VALID_CAVEATOR_SURNAME = "Builder";
+    private static final String VALID_CAVEATOR_ADDRESS_LINE_1 = "987 Street";
+    private static final String VALID_CAVEATOR_ADDRESS_POSTCODE = "SW1A 1AA";
+
 
     @BeforeEach
     public void setup() throws Exception {
@@ -104,12 +111,17 @@ class OCRFieldModifierUtilsTest {
                 .solsSolicitorAddressPostCode(VALID_SOLICITOR_ADDRESS_POSTCODE)
                 .solsSolicitorEmail(VALID_SOLICITOR_EMAIL)
                 .solsSolicitorPhoneNumber(VALID_SOLICITOR_PHONE_NUMBER)
+                .deceasedForenames(VALID_DECEASED_FORENAMES)
                 .deceasedSurname(VALID_DECEASED_SURNAME)
                 .deceasedAddressLine1(VALID_DECEASED_ADDRESS_LINE_1)
                 .deceasedAddressPostCode(VALID_DECEASED_ADDRESS_POSTCODE)
                 .deceasedDateOfBirth(VALID_DECEASED_DATE_OF_BIRTH)
                 .deceasedAnyOtherNames(VALID_DECEASED_ANY_OTHER_NAMES)
                 .deceasedDomicileInEngWales(VALID_DECEASED_DOMICILED_IN_ENG_WALES)
+                .caveatorForenames(VALID_CAVEATOR_FORENAMES)
+                .caveatorSurnames(VALID_CAVEATOR_SURNAME)
+                .caveatorAddressLine1(VALID_CAVEATOR_ADDRESS_LINE_1)
+                .caveatorAddressPostCode(VALID_CAVEATOR_ADDRESS_POSTCODE)
                 .build();
     }
 
