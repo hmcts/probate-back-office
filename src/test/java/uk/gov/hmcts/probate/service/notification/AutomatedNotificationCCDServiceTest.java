@@ -3,13 +3,16 @@ package uk.gov.hmcts.probate.service.notification;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,14 +20,17 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,7 +45,7 @@ class AutomatedNotificationCCDServiceTest {
     private CcdClientApi ccdClientApi;
 
     @Mock
-    private CaseData caseDataMock;
+    private ObjectMapper objectMapper;
 
     @InjectMocks
     private AutomatedNotificationCCDService automatedNotificationCCDService;
@@ -62,14 +68,14 @@ class AutomatedNotificationCCDServiceTest {
     }
 
     @Test
-    void shouldAddNotificationAndUpdateCaseWhenNoExisting_notifications() {
+    void shouldAddNotificationAndUpdateCaseWhenNoExistingNotifications() {
         when(caseDetails.getData()).thenReturn(new HashMap<>());
 
-        Document sentEmail = mock(Document.class);
+        Document sentEmail = createMockDocument("newEmail.pdf");
 
         automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, true);
 
-        ArgumentCaptor<CaseData> captor = ArgumentCaptor.forClass(CaseData.class);
+        ArgumentCaptor<GrantOfRepresentationData> captor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
         verify(ccdClientApi).updateCaseAsCaseworker(
                 eq(CASE_TYPE_GOP), eq(CASE_ID), eq(LAST_MODIFIED),
                 captor.capture(),
@@ -78,22 +84,23 @@ class AutomatedNotificationCCDServiceTest {
                 eq(SUMMARY)
         );
 
-        CaseData cd = captor.getValue();
+        GrantOfRepresentationData cd = captor.getValue();
         assertNotNull(cd.getProbateNotificationsGenerated());
         assertEquals(1, cd.getProbateNotificationsGenerated().size());
-        assertSame(sentEmail, cd.getProbateNotificationsGenerated().getFirst().getValue());
+        assertEquals(sentEmail.getDocumentFileName(),
+                cd.getProbateNotificationsGenerated().getFirst().getValue().getDocumentFileName());
         assertEquals(LocalDate.now(), cd.getFirstStopReminderSentDate());
     }
 
     @Test
-    void shouldFirstStopReminderSentDateNull_secondStopReminder() {
+    void shouldFirstStopReminderSentDateNullSecondStopReminder() {
         when(caseDetails.getData()).thenReturn(new HashMap<>());
 
-        Document sentEmail = mock(Document.class);
+        Document sentEmail = createMockDocument("newEmail.pdf");
 
         automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, false);
 
-        ArgumentCaptor<CaseData> captor = ArgumentCaptor.forClass(CaseData.class);
+        ArgumentCaptor<GrantOfRepresentationData> captor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
         verify(ccdClientApi).updateCaseAsCaseworker(
                 eq(CASE_TYPE_GOP), eq(CASE_ID), eq(LAST_MODIFIED),
                 captor.capture(),
@@ -102,28 +109,53 @@ class AutomatedNotificationCCDServiceTest {
                 eq(SUMMARY)
         );
 
-        CaseData cd = captor.getValue();
+        GrantOfRepresentationData cd = captor.getValue();
         assertNotNull(cd.getProbateNotificationsGenerated());
         assertEquals(1, cd.getProbateNotificationsGenerated().size());
-        assertSame(sentEmail, cd.getProbateNotificationsGenerated().getFirst().getValue());
+        assertEquals(sentEmail.getDocumentFileName(),
+                cd.getProbateNotificationsGenerated().getFirst().getValue().getDocumentFileName());
         assertNull(cd.getFirstStopReminderSentDate());
     }
 
     @Test
     void shouldAppendToExistingNotifications() {
-        Document existingEmail = mock(Document.class);
+        TypeFactory typeFactory = mock(TypeFactory.class);
+        JavaType javaType = mock(JavaType.class);
+        when(objectMapper.getTypeFactory()).thenReturn(typeFactory);
+        when(typeFactory.constructParametricType(
+                eq(uk.gov.hmcts.reform.probate.model.cases.CollectionMember.class),
+                eq(ProbateDocument.class))
+        ).thenReturn(javaType);
+
+        Document existingEmail = createMockDocument("existingEmail.pdf");
         CollectionMember<Document> existingMember = new CollectionMember<>("id1", existingEmail);
         List<CollectionMember<Document>> existingList = new ArrayList<>();
         existingList.add(existingMember);
+
+        // Prepare mock input as raw Map-based structure, as seen by service
         Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("probateNotificationsGenerated", existingList);
+        List<Object> rawList = new ArrayList<>();
+        rawList.add(existingMember); // will be re-mapped
+        dataMap.put("probateNotificationsGenerated", rawList);
         when(caseDetails.getData()).thenReturn(dataMap);
 
-        Document sentEmail = mock(Document.class);
+        // Stub convertValue for existing document
+        ProbateDocument mappedExisting = ProbateDocument.builder()
+                .documentFileName("existingEmail.pdf")
+                .build();
+        uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument> mappedExistingMember =
+                new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>("id1", mappedExisting);
+
+        when(objectMapper.convertValue(
+                eq(existingMember),
+                any(JavaType.class))
+        ).thenReturn(mappedExistingMember);
+
+        Document sentEmail = createMockDocument("newEmail.pdf");
 
         automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, true);
 
-        ArgumentCaptor<CaseData> captor = ArgumentCaptor.forClass(CaseData.class);
+        ArgumentCaptor<GrantOfRepresentationData> captor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
         verify(ccdClientApi).updateCaseAsCaseworker(
                 eq(GRANT_OF_REPRESENTATION), eq(CASE_ID), eq(LAST_MODIFIED),
                 captor.capture(),
@@ -132,11 +164,29 @@ class AutomatedNotificationCCDServiceTest {
                 eq(SUMMARY)
         );
 
-        CaseData cd = captor.getValue();
-        List<CollectionMember<Document>> notifications = cd.getProbateNotificationsGenerated();
+        GrantOfRepresentationData cd = captor.getValue();
+        List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> notifications =
+                cd.getProbateNotificationsGenerated();
+
         assertNotNull(notifications);
         assertEquals(2, notifications.size());
-        assertSame(existingEmail, notifications.get(0).getValue());
-        assertSame(sentEmail, notifications.get(1).getValue());
+        assertEquals("existingEmail.pdf", notifications.get(0).getValue().getDocumentFileName());
+        assertEquals("newEmail.pdf", notifications.get(1).getValue().getDocumentFileName());
+    }
+
+    private Document createMockDocument(String fileName) {
+        DocumentLink link = DocumentLink.builder()
+                .documentBinaryUrl("binaryUrl")
+                .documentFilename(fileName)
+                .documentUrl("documentUrl")
+                .build();
+
+        return Document.builder()
+                .documentLink(link)
+                .documentType(DocumentType.SENT_EMAIL)
+                .documentFileName(fileName)
+                .documentGeneratedBy("system")
+                .documentDateAdded(LocalDate.now())
+                .build();
     }
 }

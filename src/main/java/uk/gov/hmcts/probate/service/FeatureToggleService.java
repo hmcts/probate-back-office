@@ -63,7 +63,7 @@ public class FeatureToggleService {
 
     public boolean isFirstStopReminderFeatureToggleOn() {
         return this.isFeatureToggleOn(
-                SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
+                FIRST_STOP_REMINDER_TOGGLE, false);
     }
 
     public boolean isSecondStopReminderFeatureToggleOn() {
