@@ -32,7 +32,6 @@ class PA1ASolicitorMandatoryFieldsValidatorTest {
         warnings = new ArrayList<>();
     }
 
-
     @Test
     void testSolicitorAllMandatoryFieldsPresentPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacySolicitorFields();
@@ -52,26 +51,6 @@ class PA1ASolicitorMandatoryFieldsValidatorTest {
         pa1ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(0, warnings.size());
     }
-
-    // WARNING WILL NO LONGER APPEAR WITH DUMMY VALUES
-    /*
-    @Test
-    void testSolicitorMissingMandatoryFieldsPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.put("solsSolicitorIsApplying", "True");
-
-        pa1ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(4, warnings.size());
-        assertEquals("Solicitor representative name (solsSolicitorRepresentativeName) is mandatory.",
-            warnings.get(0));
-        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warnings.get(1));
-        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.",
-            warnings.get(2));
-        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warnings.get(3));
-    }
-     */
 
     @Test
     void testSolicitorMissingPaymentMethodFieldsPA1P() {
