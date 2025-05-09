@@ -235,7 +235,7 @@ public class OCRFieldModifierUtils {
         }
 
         if (isBlank(ocrFields.getDeceasedSurname())) {
-            addModifiedField(modifiedFields, "deceasedSurnames", ocrFields.getDeceasedSurname());
+            addModifiedField(modifiedFields, "deceasedSurname", ocrFields.getDeceasedSurname());
             ocrFields.setDeceasedSurname(bulkScanConfig.getName());
             log.info("Setting deceased surname to {}", ocrFields.getDeceasedSurname());
         }
