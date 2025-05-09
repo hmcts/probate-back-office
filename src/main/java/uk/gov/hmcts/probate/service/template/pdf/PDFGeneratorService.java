@@ -54,7 +54,7 @@ public class PDFGeneratorService {
         try {
             if (documentType == DocumentType.DIGITAL_GRANT) {
                 postResult = pdfTemplateService.generate(
-                        "digital_grant/main.html",
+                        "digital_grant/original.html",
                         Locale.UK,
                         asMap(pdfGenerationData));
             } else {
