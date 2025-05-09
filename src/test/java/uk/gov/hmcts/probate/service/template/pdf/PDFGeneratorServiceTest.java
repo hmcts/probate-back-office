@@ -1,14 +1,13 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.util.ReflectionUtils;
+import uk.gov.hmcts.probate.commons.service.PdfTemplateService;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
@@ -17,7 +16,6 @@ import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,37 +32,48 @@ import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 
-@ExtendWith(MockitoExtension.class)
 class PDFGeneratorServiceTest {
 
     @Mock
     private FileSystemResourceService fileSystemResourceServiceMock;
 
     @Mock
-    private PDFServiceConfiguration pdfServiceConfiguration;
+    private PDFServiceConfiguration pdfServiceConfigurationMock;
 
     @Mock
-    private PDFServiceClientException pdfServiceClientExceptionMock;
-
-    @Mock
-    private PDFServiceClient pdfServiceClient;
+    private PDFServiceClient pdfServiceClientMock;
 
     @Mock
     private DocmosisPdfGenerationService docmosisPdfGenerationServiceMock;
 
-    @InjectMocks
+    @Mock
+    PdfTemplateService pdfTemplateServiceMock;
+
     private PDFGeneratorService underTest;
+
+    AutoCloseable closeableMocks;
 
     @BeforeEach
     public void setup() throws IllegalAccessException {
-        Field objectMapper = ReflectionUtils.findField(PDFGeneratorService.class, "objectMapper");
-        objectMapper.setAccessible(true);
-        objectMapper.set(underTest, new ObjectMapper());
+        closeableMocks = MockitoAnnotations.openMocks(this);
+
+        underTest = new PDFGeneratorService(
+                fileSystemResourceServiceMock,
+                pdfServiceConfigurationMock,
+                new ObjectMapper(),
+                pdfServiceClientMock,
+                docmosisPdfGenerationServiceMock,
+                pdfTemplateServiceMock);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        closeableMocks.close();
     }
 
     @Test
     void shouldGeneratePDFWithBytesAndPDFContentType() {
-        when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
+        when(pdfServiceClientMock.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
                 .thenReturn("<htmlTemplate>");
         EvidenceManagementFileUpload result = underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
@@ -104,24 +113,24 @@ class PDFGeneratorServiceTest {
 
     @Test
     void shouldThrowClientException() {
+        final PDFServiceClientException pdfServiceClientException = new PDFServiceClientException("blah", null);
         assertThrows(ClientException.class, () -> {
-            when(pdfServiceClientExceptionMock.getMessage()).thenReturn("blah");
-            when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
+            when(pdfServiceClientMock.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
             when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
                     .thenReturn("<htmlTemplate>");
-            when(pdfServiceClient.generateFromHtml(any(byte[].class), anyMap()))
-                    .thenThrow(pdfServiceClientExceptionMock);
+            when(pdfServiceClientMock.generateFromHtml(any(byte[].class), anyMap()))
+                    .thenThrow(pdfServiceClientException);
             underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
         });
     }
 
     @Test
     void shouldThrowPDFConnectionException() {
+        final PDFServiceClientException pdfServiceClientException = new PDFServiceClientException("blah", null);
         assertThrows(ClientException.class, () -> {
-            when(pdfServiceClientExceptionMock.getMessage()).thenReturn("blah");
             when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
                     .thenReturn("<htmlTemplate>");
-            when(pdfServiceClient.generateFromHtml(any(), any())).thenThrow(pdfServiceClientExceptionMock);
+            when(pdfServiceClientMock.generateFromHtml(any(), any())).thenThrow(pdfServiceClientException);
             underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
         });
     }
@@ -133,6 +142,7 @@ class PDFGeneratorServiceTest {
 
     @Test
     void shouldThrowDocmosisPDFConnectionException() {
+        final PDFServiceClientException pdfServiceClientException = new PDFServiceClientException("blah", null);
         assertThrows(ClientException.class, () -> {
             Map<String, Object> registry =  new HashMap<>();
             registry.put("name", "Bristol District Probate Registry");
@@ -152,9 +162,8 @@ class PDFGeneratorServiceTest {
             placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
             placeholders.put("hmctsfamily", "image:base64:" + null);
 
-            when(pdfServiceClientExceptionMock.getMessage()).thenReturn("blah");
             when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), any()))
-                    .thenThrow(pdfServiceClientExceptionMock);
+                    .thenThrow(pdfServiceClientException);
             underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholders);
         });
     }
