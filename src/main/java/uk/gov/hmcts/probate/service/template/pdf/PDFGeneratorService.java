@@ -27,6 +27,7 @@ import java.util.Map;
 public class PDFGeneratorService {
 
     public static final String TEMPLATE_EXTENSION = ".html";
+
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final ObjectMapper objectMapper;
