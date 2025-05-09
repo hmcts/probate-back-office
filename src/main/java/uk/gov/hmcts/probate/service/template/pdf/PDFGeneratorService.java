@@ -54,10 +54,13 @@ public class PDFGeneratorService {
         byte[] postResult;
         try {
             if (documentType == DocumentType.DIGITAL_GRANT) {
+                log.info("Generating digital grant pdf using new handling");
                 postResult = pdfTemplateService.generate(
                         "digital_grant/original.html",
                         Locale.UK,
                         asMap(pdfGenerationData));
+                log.info("Generated from new template with bytes size {}",
+                        postResult != null ? postResult.length : "0");
             } else {
                 final String templateName = documentType.getTemplateName();
                 log.info("Generate pdf from template {}", templateName);
