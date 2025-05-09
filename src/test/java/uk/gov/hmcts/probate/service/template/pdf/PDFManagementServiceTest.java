@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
@@ -105,6 +106,8 @@ class PDFManagementServiceTest {
     private FileSystemResourceService fileSystemResourceServiceMock;
     @Mock
     private Map<String, Object> placeholdersMock;
+    @Mock
+    private SecurityUtils securityUtils;
 
     private PDFManagementService underTest;
 
@@ -120,7 +123,7 @@ class PDFManagementServiceTest {
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(any(String.class)))
                 .thenReturn("1kbCfLrFBFTQpS2PnDDYW2r11jfRBVFbjhdLYDEMCR8=");
         underTest = new PDFManagementService(pdfGeneratorServiceMock, httpServletRequest, documentManagementServiceMock,
-                pdfServiceConfiguration, fileSystemResourceServiceMock, pdfDecoratorService);
+                pdfServiceConfiguration, fileSystemResourceServiceMock, pdfDecoratorService, securityUtils);
     }
 
     @Test

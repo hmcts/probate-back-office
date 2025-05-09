@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.notification;
 
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.doThrow;
@@ -116,5 +117,79 @@ class AutomatedNotificationServiceTest {
         verify(notificationService, never()).sendStopReminderEmail(any(), anyBoolean());
         verify(elasticSearchRepository, times(1))
                 .fetchFirstPage(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldContinueProcessingIfSubsequentSearchReturnsCases() throws NotificationClientException {
+        CaseDetails secondCase = CaseDetails.builder()
+                .id(456L)
+                .state("BOCaseStopped")
+                .data(Map.of("applicationType", "Solicitor"))
+                .build();
+
+        SearchResult firstNextPage = SearchResult.builder()
+                .total(1)
+                .cases(List.of(secondCase))
+                .build();
+
+        SearchResult emptyNextPage = SearchResult.builder()
+                .total(0)
+                .cases(Collections.emptyList())
+                .build();
+
+        // Chain: first returns a page, second ends the loop
+        when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
+                .thenReturn(firstNextPage)
+                .thenReturn(emptyNextPage);
+
+        automatedNotificationService.sendStopReminder(JOB_DATE, true);
+
+        verify(notificationService, times(1)).sendStopReminderEmail(mockCaseDetails, true);
+        verify(notificationService, times(1)).sendStopReminderEmail(secondCase, true);
+        verify(automatedNotificationCCDService, times(2)).saveNotification(any(), any(), any(), any(), eq(true));
+    }
+
+
+    @Test
+    void shouldHandleExceptionInSubsequentPageEmailSending() throws NotificationClientException {
+        CaseDetails secondCase = CaseDetails.builder()
+                .id(789L)
+                .state("BOCaseStopped")
+                .data(Map.of("applicationType", "Solicitor"))
+                .build();
+
+        SearchResult firstNextPage = SearchResult.builder()
+                .total(1)
+                .cases(List.of(secondCase))
+                .build();
+
+        SearchResult emptyNextPage = SearchResult.builder()
+                .total(0)
+                .cases(Collections.emptyList())
+                .build();
+
+        when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
+                .thenReturn(firstNextPage)
+                .thenReturn(emptyNextPage);
+
+        when(notificationService.sendStopReminderEmail(eq(secondCase), anyBoolean()))
+                .thenThrow(new NotificationClientException("fail"));
+
+        assertDoesNotThrow(() -> automatedNotificationService.sendStopReminder(JOB_DATE, true));
+
+        verify(notificationService, times(1)).sendStopReminderEmail(mockCaseDetails, true);
+        verify(notificationService, times(1)).sendStopReminderEmail(secondCase, true);
+    }
+
+
+    @Test
+    void shouldStopPaginationWhenSubsequentSearchReturnsEmpty() throws NotificationClientException {
+        when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder().total(0).cases(Collections.emptyList()).build());
+
+        automatedNotificationService.sendStopReminder(JOB_DATE, true);
+
+        verify(notificationService, times(1)).sendStopReminderEmail(mockCaseDetails, true);
+        verify(notificationService, times(1)).sendStopReminderEmail(any(), anyBoolean());
     }
 }

@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
@@ -35,12 +36,14 @@ import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_REC
 public class PDFManagementService {
 
     static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion";
+    private static final String USER_ID = "user-id";
     private final PDFGeneratorService pdfGeneratorService;
     private final DocumentManagementService documentManagementService;
     private final HttpServletRequest httpServletRequest;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFDecoratorService pdfDecoratorService;
+    private final SecurityUtils securityUtils;
 
     @Autowired
     public PDFManagementService(PDFGeneratorService pdfGeneratorService,
@@ -48,13 +51,15 @@ public class PDFManagementService {
                                 DocumentManagementService documentManagementService,
                                 PDFServiceConfiguration pdfServiceConfiguration,
                                 FileSystemResourceService fileSystemResourceService,
-                                PDFDecoratorService pdfDecoratorService) {
+                                PDFDecoratorService pdfDecoratorService,
+                                SecurityUtils securityUtils) {
         this.pdfGeneratorService = pdfGeneratorService;
         this.documentManagementService = documentManagementService;
         this.httpServletRequest = httpServletRequest;
         this.pdfServiceConfiguration = pdfServiceConfiguration;
         this.fileSystemResourceService = fileSystemResourceService;
         this.pdfDecoratorService = pdfDecoratorService;
+        this.securityUtils = securityUtils;
     }
 
     public Document generateAndUpload(CallbackRequest callbackRequest, DocumentType documentType) {
@@ -153,7 +158,7 @@ public class PDFManagementService {
                 .documentLink(documentLink)
                 .documentType(documentType)
                 .documentDateAdded(LocalDate.now())
-                .documentGeneratedBy(httpServletRequest.getHeader("user-id"))
+                .documentGeneratedBy(getUserId())
                 .build();
         } catch (IOException e) {
             log.error(e.getMessage(), e);
@@ -186,5 +191,14 @@ public class PDFManagementService {
 
     public String getDecodedSignature() {
         return decryptedFileAsBase64String(pdfServiceConfiguration.getGrantSignatureEncryptedFile());
+    }
+
+    private String getUserId() {
+        try {
+            return httpServletRequest.getHeader(USER_ID);
+        } catch (IllegalStateException e) {
+            log.warn("HttpServletRequest not available, falling back to SecurityContext");
+            return securityUtils.getUserId();
+        }
     }
 }

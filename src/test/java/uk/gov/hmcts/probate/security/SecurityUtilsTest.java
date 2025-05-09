@@ -1,10 +1,13 @@
 package uk.gov.hmcts.probate.security;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.TestSecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -29,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atMostOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -59,6 +63,11 @@ class SecurityUtilsTest {
 
     @Mock
     private HttpServletRequest httpServletRequestMock;
+
+    @AfterEach
+    void clearSecurityContext() {
+        SecurityContextHolder.clearContext();
+    }
 
     @Test
     void shouldGetSecurityDTO() {
@@ -298,5 +307,23 @@ class SecurityUtilsTest {
         uk.gov.hmcts.reform.idam.client.models.UserDetails userDetailsResponse  =
                 securityUtils.getUserDetailsByUserId(USER_TOKEN, "1234");
         assertEquals(userDetails, userDetailsResponse);
+    }
+
+    @Test
+    void shouldReturnSecurityDTOFromSecurityContextHolderWhenRequestHeadersAreNull() {
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(AUTH_CLIENT_ID, USER_TOKEN)
+        );
+
+        HttpServletRequest nullRequest = mock(HttpServletRequest.class);
+        when(nullRequest.getHeader("Authorization")).thenReturn(null);
+        when(nullRequest.getHeader("user-id")).thenReturn(null);
+        when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKEN);
+
+        SecurityDTO dto = securityUtils.getSecurityDTO();
+
+        assertEquals(USER_TOKEN, dto.getAuthorisation());
+        assertEquals(AUTH_CLIENT_ID, dto.getUserId());
+        assertEquals(SERVICE_TOKEN, dto.getServiceAuthorisation());
     }
 }

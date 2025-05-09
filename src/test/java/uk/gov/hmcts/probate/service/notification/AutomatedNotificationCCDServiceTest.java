@@ -123,8 +123,8 @@ class AutomatedNotificationCCDServiceTest {
         JavaType javaType = mock(JavaType.class);
         when(objectMapper.getTypeFactory()).thenReturn(typeFactory);
         when(typeFactory.constructParametricType(
-                eq(uk.gov.hmcts.reform.probate.model.cases.CollectionMember.class),
-                eq(ProbateDocument.class))
+                uk.gov.hmcts.reform.probate.model.cases.CollectionMember.class,
+                ProbateDocument.class)
         ).thenReturn(javaType);
 
         Document existingEmail = createMockDocument("existingEmail.pdf");

@@ -35,6 +35,7 @@ public class AutomatedNotificationService {
 
     public void sendStopReminder(String date, boolean isFirstStopReminder) {
         List<Long> failedCases = new ArrayList<>();
+        securityUtils.setSecurityContextUserAsScheduler();
         try {
             log.info("sendStopReminder for date {} isFirstStop {} ", date, isFirstStopReminder);
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
