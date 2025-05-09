@@ -2,7 +2,7 @@ plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.springframework.boot' version '3.3.11'
-  id 'uk.gov.hmcts.java' version '0.12.65'
+  id 'uk.gov.hmcts.java' version '0.12.66'
   id 'com.github.ben-manes.versions' version '0.52.0'
   id 'com.gorylenko.gradle-git-properties' version '2.5.0'
   id 'info.solidsoft.pitest' version '1.15.0'
@@ -159,13 +159,13 @@ gitProperties {
 }
 
 def versions = [
-        authCheckerLib                  : '3.1.0',
+        authCheckerLib                  : '3.1.1',
         ccdClient                       : '5.0.5',
         commonsIO                       : '2.19.0',
         commonsValidator                : '1.9.0',
         documentClient                  : '1.8.1',
         elasticSearchVersion            : '7.17.28',
-        hmctsJavaLogging                : '6.1.8',
+        hmctsJavaLogging                : '6.1.9',
         jacksonDatabind                 : '2.17.1',
         lombok                          : '1.18.38',
         mapStruct                       : '1.2.0.Final',
@@ -347,6 +347,7 @@ dependencies {
 
 configurations.all {
   exclude group: 'commons-logging', module: 'commons-logging'
+  exclude group: 'com.vaadin.external.google', module: 'android-json'
 }
 
 tasks.withType(JavaCompile) {
