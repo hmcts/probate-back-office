@@ -128,7 +128,7 @@ class PDFGeneratorServiceTest {
 
     @Test
     void coverDigitalGrant() {
-            underTest.generatePdf(DIGITAL_GRANT, "{\"data\":\"value\"}");
+        underTest.generatePdf(DIGITAL_GRANT, "{\"data\":\"value\"}");
     }
 
     @Test
