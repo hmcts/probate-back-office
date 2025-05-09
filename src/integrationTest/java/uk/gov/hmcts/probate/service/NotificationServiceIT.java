@@ -304,6 +304,7 @@ class NotificationServiceIT {
             .solsSOTName(PERSONALISATION_SOLICITOR_NAME)
             .solsSolicitorEmail("solicitor@probate-test.com")
             .languagePreferenceWelsh("No")
+            .channelChoice("Digital")
             .build(), LAST_MODIFIED, ID);
 
         solicitorCaseDataOxford = new CaseDetails(CaseData.builder()
@@ -2249,7 +2250,7 @@ class NotificationServiceIT {
     }
 
     @Test
-    void shouldThrowExceptionWhenNoEmail() throws NotificationClientException {
+    void shouldThrowExceptionWhenNoEmailForDisposalReminder() throws NotificationClientException {
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
         caseData.remove("applicationType");
@@ -2331,5 +2332,68 @@ class NotificationServiceIT {
         notificationService.sendEmailForCaveatSuccessfulPayment(cases, fromDate, toDate);
 
         verify(notificationClient).sendEmail(any(), any(), any(), any());
+    }
+
+    @Test
+    void sendFirstStopReminderEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
+        caseData.put("channel", "Digital");
+        caseData.put("informationNeededByPost", "Yes");
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendFirstStopReminderEmail(returnedCaseDetails);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-first-stop-reminder"),
+                eq("primary@probate-test.com"),
+                any(),
+                anyString());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNoEmailForFirstStopReminder() {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
+        caseData.remove("primaryApplicantEmailAddress");
+        caseData.remove("languagePreferenceWelsh");
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .state(STATE_CASE_PAYMENT_FAILED)
+                        .id(ID)
+                        .build();
+        NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
+                notificationService.sendFirstStopReminderEmail(returnedCaseDetails));
+        assertEquals("Email address not found for case ID: " + ID, exception.getMessage());
+    }
+
+    @Test
+    void sendSolFirstStopReminderEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(solicitorGrantDelayedOxford.getData(), Map.class);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendFirstStopReminderEmail(returnedCaseDetails);
+
+        verify(notificationClient).sendEmail(
+                eq("sol-first-stop-reminder"),
+                eq("solicitor@probate-test.com"),
+                any(),
+                anyString());
     }
 }
