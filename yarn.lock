@@ -1344,11 +1344,11 @@ __metadata:
   linkType: hard
 
 "chai-string@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "chai-string@npm:1.5.0"
+  version: 1.6.0
+  resolution: "chai-string@npm:1.6.0"
   peerDependencies:
     chai: ^4.1.2
-  checksum: 10/39b9511525c99b9d378210897caf6352be34976c24f2e773680c2de4173d2071f3010ea0348bf681e2a201564524e28dd5541ebce8a181a455c8aeefe2a7bda3
+  checksum: 10/85c4cf046abc732842f769a77982c56bc78e4ca714abffba99e94b6d5d11d0f44faef2b095ac130139c3ac81605537bdeee40d70e985bf7567f717e215968c79
   languageName: node
   linkType: hard
 
