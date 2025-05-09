@@ -55,7 +55,7 @@ public class PDFGeneratorService {
             final String templateName = documentType.getTemplateName();
             log.info("Generate pdf from template {}", templateName);
 
-            if (templateName.equals("digitalGrant.html")) {
+            if (templateName.equals("digitalGrant")) {
                 log.info("using alternate templating?");
                 postResult = pdfTemplateService.generate(
                         "digital_grant/main.html",
