@@ -503,7 +503,7 @@ grand_delay:
 bulkscan:
   default-value:
     name: MISSING
-    postcode: MI55 ING
+    postcode: MI55 1NG
     dob: 01011990
     email: contactprobate@justice.gov.uk
     phone: 1234
