@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.template.pdf;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,28 +15,59 @@ import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
+import uk.gov.hmcts.probate.commons.service.PdfTemplateService;
+
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class PDFGeneratorService {
 
     public static final String TEMPLATE_EXTENSION = ".html";
+
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final ObjectMapper objectMapper;
     private final PDFServiceClient pdfServiceClient;
     private final DocmosisPdfGenerationService docmosisPdfGenerationService;
+    private final PdfTemplateService pdfTemplateService;
+
+    public PDFGeneratorService(
+            final FileSystemResourceService fileSystemResourceService,
+            final PDFServiceConfiguration pdfServiceConfiguration,
+            final ObjectMapper objectMapper,
+            final PDFServiceClient pdfServiceClient,
+            final DocmosisPdfGenerationService docmosisPdfGenerationService,
+            final PdfTemplateService pdfTemplateService) {
+        this.fileSystemResourceService = fileSystemResourceService;
+        this.pdfServiceConfiguration = pdfServiceConfiguration;
+        this.objectMapper = objectMapper;
+        this.pdfServiceClient = pdfServiceClient;
+        this.docmosisPdfGenerationService = docmosisPdfGenerationService;
+        this.pdfTemplateService = pdfTemplateService;
+    }
 
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
         byte[] postResult;
         try {
-            log.info("Generate pdf from template {}", documentType.getTemplateName());
-            postResult = generateFromHtml(documentType.getTemplateName(), pdfGenerationData);
-            log.info("Generated from templates with bytes size {}", postResult != null ? postResult.length : "0");
+            if (documentType == DocumentType.DIGITAL_GRANT) {
+                log.info("Generating digital grant pdf using new handling");
+                postResult = pdfTemplateService.generate(
+                        "digital_grant/original.html",
+                        Locale.UK,
+                        asMap(pdfGenerationData));
+                log.info("Generated from new template with bytes size {}",
+                        postResult != null ? postResult.length : "0");
+            } else {
+                final String templateName = documentType.getTemplateName();
+                log.info("Generate pdf from template {}", templateName);
+
+                postResult = generateFromHtml(templateName, pdfGenerationData);
+                log.info("Generated from templates with bytes size {}", postResult != null ? postResult.length : "0");
+            }
         } catch (IOException | PDFServiceClientException e) {
             log.error(e.getMessage(), e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
