@@ -15,7 +15,7 @@ import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
-import uk.gov.hmcts.reform.probate.service.PdfTemplateService;
+import uk.gov.hmcts.probate.commons.service.PdfTemplateService;
 
 import java.io.IOException;
 import java.util.HashMap;
