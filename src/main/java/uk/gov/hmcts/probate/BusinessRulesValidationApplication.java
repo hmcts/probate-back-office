@@ -12,7 +12,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
@@ -31,7 +30,6 @@ import java.util.function.Function;
     "uk.gov.hmcts.reform.sendletter",
     "uk.gov.hmcts.probate.service"})
 @EnableScheduling
-@ComponentScan("uk.gov.hmcts.reform.probate")
 public class BusinessRulesValidationApplication implements CommandLineRunner {
 
     public static final String TASK_NAME = "TASK_NAME";
