@@ -498,6 +498,13 @@ reactivate_dormant:
   minus_days: 1
 
 grand_delay:
+  number_of_weeks: 16
+
+bulkscan:
+  default-value:
+    postcode: MI55 1NG
+    ihtForm: FALSE
+    grossNetValue: 1.11
   number_of_weeks: 12
 
 disposal:

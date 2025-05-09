@@ -3,11 +3,15 @@ package uk.gov.hmcts.probate.model.exceptionrecord;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.get;
+import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.getDefaultPostcodeIfInvalid;
 
 @Data
 public class ExceptionRecordRequest {
@@ -24,6 +28,7 @@ public class ExceptionRecordRequest {
     private final List<OCRField> ocrFields;
     private final String envelopeId;
     private final Boolean isAutomatedProcess;
+    private List<CollectionMember<ModifiedOCRField>> modifiedFields;
 
     public ExceptionRecordRequest(
         @JsonProperty("exception_record_id") String exceptionRecordId,
@@ -51,6 +56,7 @@ public class ExceptionRecordRequest {
         this.ocrFields = ocrFields;
         this.envelopeId = envelopeId;
         this.isAutomatedProcess = isAutomatedProcess;
+        this.modifiedFields = new ArrayList<>();
     }
 
     public ExceptionRecordOCRFields getOCRFieldsObject() {
@@ -71,7 +77,7 @@ public class ExceptionRecordRequest {
             .deceasedAddressLine2(get(ocrFields, "deceasedAddressLine2"))
             .deceasedAddressTown(get(ocrFields, "deceasedAddressTown"))
             .deceasedAddressCounty(get(ocrFields, "deceasedAddressCounty"))
-            .deceasedAddressPostCode(get(ocrFields, "deceasedAddressPostCode"))
+            .deceasedAddressPostCode(getDefaultPostcodeIfInvalid(ocrFields, "deceasedAddressPostCode", modifiedFields))
             .deceasedDateOfBirth(get(ocrFields, "deceasedDateOfBirth"))
             .deceasedDateOfDeath(get(ocrFields, "deceasedDateOfDeath"))
             .solsSolicitorRepresentativeName(get(ocrFields, "solsSolicitorRepresentativeName"))
