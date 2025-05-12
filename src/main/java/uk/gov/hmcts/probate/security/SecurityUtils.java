@@ -130,6 +130,11 @@ public class SecurityUtils {
                 .setAuthentication(new UsernamePasswordAuthenticationToken(caseworkerUserName, getCaseworkerToken()));
     }
 
+    public void setSecurityContextUserAsScheduler() {
+        SecurityContextHolder.getContext()
+                .setAuthentication(new UsernamePasswordAuthenticationToken(schedulerUserName, getSchedulerToken()));
+    }
+
     public String getCaseworkerToken() {
         return getIdamOauth2Token(caseworkerUserName, caseworkerPassword);
     }
