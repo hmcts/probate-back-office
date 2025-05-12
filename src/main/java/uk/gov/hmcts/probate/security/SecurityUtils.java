@@ -84,9 +84,12 @@ public class SecurityUtils {
             }
         }
 
-        if (StringUtils.isBlank(authorisation) || StringUtils.isBlank(userId)) {
-            log.error("No authorisation or userId found in SecurityContext or request");
+        if (StringUtils.isBlank(authorisation)) {
+            log.error("No authorisation found in SecurityContext or request");
             throw new NoSecurityContextException();
+        } else if (StringUtils.isBlank(userId)) {
+            log.error("No userId found in SecurityContext or request, get userId from token");
+            getUserId(authorisation);
         }
 
         return SecurityDTO.builder()

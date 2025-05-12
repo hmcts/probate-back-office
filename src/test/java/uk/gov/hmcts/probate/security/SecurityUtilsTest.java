@@ -331,7 +331,6 @@ class SecurityUtilsTest {
     @Test
     void shouldThrowExceptionWhenNoHeaderAndNoSecurityContext() {
         when(httpServletRequestMock.getHeader("Authorization")).thenReturn(null);
-        when(httpServletRequestMock.getHeader("user-id")).thenReturn(null);
 
         SecurityContextHolder.clearContext();
 
