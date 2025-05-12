@@ -53,7 +53,7 @@ public class HmrcFileService extends BaseFileService {
 
     public File createHmrcFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
         ImmutableList.Builder<String> fileData = prepareFileData(ccdCases, fileName);
-        return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
+        return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName, "HMRC");
     }
 
     private ImmutableList.Builder<String> prepareFileData(List<ReturnedCaseDetails> ccdCases, String fileName) {
@@ -100,14 +100,14 @@ public class HmrcFileService extends BaseFileService {
             addGranteeDetails(fileData, createGrantee(data, 3));
             addGranteeDetails(fileData, createGrantee(data, 4));
             addSolicitorDetails(fileData, data);
-            fileData.add(getPoundValue(data.getIhtGrossValue()));
+            fileData.add(data.getIhtGrossValuePounds());
             addExpectedEstateIndicator(fileData, data);
-            fileData.add(getPoundValue(data.getIhtNetValue()));
+            fileData.add(data.getIhtNetValuePounds());
             fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
             fileData.add(FINAL_GRANT);
-            fileData.add(getPoundValue(data.getIhtEstateGrossValue()));
-            fileData.add(getPoundValue(data.getIhtEstateNetValue()));
-            fileData.add(getPoundValue(data.getIhtEstateNetQualifyingValue()));
+            fileData.add(data.getIhtEstateGrossValuePounds());
+            fileData.add(data.getIhtEstateNetValuePounds());
+            fileData.add(data.getIhtEstateNetQualifyingValuePounds());
             fileData.add(nullToString(data.getIhtUnusedAllowanceClaimed()));
             fileData.add(nullToString(data.getDeceasedMaritalStatus()));
             fileData.add(nullToString(data.getSpouseOrPartner()));

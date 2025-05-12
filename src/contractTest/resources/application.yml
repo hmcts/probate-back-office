@@ -66,17 +66,21 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
+    adColligendaBonaGrantReissueDraft:
+        templateName: FL-PRB-GRP-ENG-01295.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01294.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
+    adColligendaBonaGrantReissue:
+      templateName: FL-PRB-GRP-ENG-01295.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
@@ -88,17 +92,21 @@ docmosis:
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
+    welshAdColligendaBonaGrant:
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00235.doc
+      templateName: FL-PRB-GRP-WEL-00236.doc
+    welshAdColligendaBonaGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00236.doc
 
 fee.api:
   url: http://localhost:4411
@@ -192,11 +200,6 @@ logging:
   pattern:
     console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
 
-azure:
-  app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
-  application-insights:
-    instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
-
 extract:
   templates:
     hmrcExtract: "72dfad41-fed8-431f-896e-3151775dbe8f"
@@ -209,43 +212,46 @@ notifications:
     email:
       english:
         personal:
-          applicationReceived: "6e3f4941-fd11-40fc-8480-8e314e85a985"
-          applicationReceivedNoDocs: "a6da6fb0-61a4-4a26-a324-805d7bcf733e"
-          applicationReceivedPaperFormCaseworker: "01bfc52c-0850-4155-ae03-e6d638286288"
-          documentReceived: "24161fba-65f5-4384-9c4f-ef75f4a5c666"
+          applicationReceived: "8d478d0f-a871-418b-ba7a-682bfa540676"
+          applicationReceivedNoDocs: "2d4cf042-88e5-4bc4-afbe-e640522a172c"
+          applicationReceivedPaperFormCaseworker: "7210fd5a-1a1a-4682-9fbd-4b641e464c45"
+          documentReceived: "60036c70-5022-4625-89c9-a37c91554bea"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
-          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
-          grantIssued: "227bc051-8210-4030-b669-6eee2cbe075e"
-          grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
+          caseStoppedCaveat: "d5084257-f475-415a-b7d0-2427b5c580b1"
+          grantIssued: "53374eda-d7a1-4651-bd29-65672ac0137a"
+          grantReissued: "b1977c1f-b998-48c3-b848-bc5d86c58b2e"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
-          grantRaised: "2b877b12-2fdc-45e9-bf07-60285c377b9b"
-          grantRaisedPaperFormBulkScan: "9711bb2e-f14f-42e9-937b-7aae5390afd0"
-          grantRaisedCtsc: "2b877b12-2fdc-45e9-bf07-60285c377b9b"
+          grantRaised: "8560e744-2b60-4fd9-97bd-9dda83a0a4d4"
+          grantRaisedPaperFormBulkScan: "c81d534b-dd2a-4f36-ad9f-43461f00720f"
+          grantRaisedCtsc: "8560e744-2b60-4fd9-97bd-9dda83a0a4d4"
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "c871adf7-c902-4a18-934f-abeb504ab5d9"
           requestInformationByPost: "8eca356b-ce59-400b-8b43-d470bb1b6be7"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
-          grantIssuedIntestacy: "cda48ea1-6ee4-4cde-a3e2-0e1f87f9e702"
+          grantIssuedIntestacy: "9a10802b-f449-486c-ae40-b76d1cbe78eb"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
+          disposalReminder: "2e29cce0-66d9-458a-82a3-20aa0e4d5112"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
         solicitor:
-          applicationReceived: "27939b7f-3028-4c90-87bb-694adb0b6a51"
-          applicationReceivedNoDocs: "b374863f-3f65-4aed-a5ab-fb2648222f75"
-          applicationReceivedPaperFormCaseworker: "01bfc52c-0850-4155-ae03-e6d638286288"
-          documentReceived: "e618dce9-405e-45a5-86e8-06d792336f2f"
+          applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
+          applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
+          applicationReceivedPaperFormCaseworker: "7210fd5a-1a1a-4682-9fbd-4b641e464c45"
+          documentReceived: "215a1300-bd83-4e4d-884e-fdce9bd7b9d4"
           caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
-          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          caseStoppedCaveat: "d5084257-f475-415a-b7d0-2427b5c580b1"
           grantIssued: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           grantReissued: "9b0e4091-8c94-41bc-8e6c-de4bc211f68f"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
-          grantRaised: "2b877b12-2fdc-45e9-bf07-60285c377b9b"
-          grantRaisedPaperFormBulkScan: "9711bb2e-f14f-42e9-937b-7aae5390afd0"
+          grantRaised: "8560e744-2b60-4fd9-97bd-9dda83a0a4d4"
+          grantRaisedPaperFormBulkScan: "c81d534b-dd2a-4f36-ad9f-43461f00720f"
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
@@ -256,54 +262,61 @@ notifications:
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
           noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
+          sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
+          disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
       welsh:
         personal:
-          applicationReceived: "7f39b671-86ce-49cb-b6b1-2019101aa8b1"
-          applicationReceivedNoDocs: "69b3805d-d66a-4433-ad66-be0bafb31d4a"
-          applicationReceivedPaperFormCaseworker: "22c81233-a213-4520-b6bc-896fe8f6988a"
-          documentReceived: "39b7cef5-8202-479e-9f1e-86a76f964221"
+          applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
+          applicationReceivedNoDocs: "37ca2e1e-b7fb-4f4f-9691-7dab45dcd751"
+          applicationReceivedPaperFormCaseworker: "f066040c-e986-44a7-8a63-0e4800850c36"
+          documentReceived: "a6117239-5e16-49f9-a384-70c03b0e3470"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
-          caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
-          grantIssued: "515c7643-ea3b-4a86-9b94-4622114be080"
-          grantReissued: "c5232b10-0975-4085-ba5a-3e5a6eb5c2bf"
+          caseStoppedCaveat: "4aec6fa3-7e76-406a-9953-2f12d5d29f81"
+          grantIssued: "7ce2c312-e4ec-4e63-a48b-82180d9a4160"
+          grantReissued: "c4436722-33df-4945-af93-b4d84525b4e6"
           generalCaveatMessage: "d2b33c5b-0c65-4472-b26f-9352de5538ba"
           exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
-          grantRaised: "5da8b831-b1cf-48a7-832b-7bae2a15423f"
-          grantRaisedPaperFormBulkScan: "727981ab-eec0-46c1-a261-9e90ae10cabd"
+          grantRaised: "3ff6bf7b-3e2c-45fa-992c-e70f0aaf9098"
+          grantRaisedPaperFormBulkScan: "6e8a1de8-a05b-455c-98b0-e669f2fa0470"
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "3d9ee152-ffbd-4eee-a781-951e708c9c81"
           requestInformationByPost: "d51cdb17-3e65-4c0e-ad2e-c228c97d8012"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
-          grantIssuedIntestacy: "fc9748a7-6e92-480d-9ee8-fdd4fc45552d"
+          grantIssuedIntestacy: "37adbe0b-a119-44be-b094-f62cbbbe2178"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          disposalReminder: "34fe5d9d-c57b-4bc2-9ceb-008e82cd5594"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
         solicitor:
-          applicationReceived: "2f282002-6799-47d0-92dd-726960b91c98"
-          applicationReceivedNoDocs: "60eab724-adec-4d5d-a0a1-aef73ed7da4d"
-          applicationReceivedPaperFormCaseworker: "22c81233-a213-4520-b6bc-896fe8f6988a"
-          documentReceived: "83f93f41-58a1-44f2-a9c4-d20d545b7528"
+          applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
+          applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
+          applicationReceivedPaperFormCaseworker: "f066040c-e986-44a7-8a63-0e4800850c36"
+          documentReceived: "5f1996a6-5510-4b32-9da8-604be2b9b6b7"
           caseStopped: "a767a0bd-4acc-413e-b510-5a71d24daf85"
-          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
-          grantIssued: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
-          grantReissued: "9b0e4091-8c94-41bc-8e6c-de4bc211f68f"
+          caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
+          grantIssued: "9863cfe5-240b-42ed-912b-188a5f7e1e76"
+          grantReissued: "1855a622-4979-45a9-baa9-fdac6530804c"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
-          grantRaised: "5da8b831-b1cf-48a7-832b-7bae2a15423f"
-          grantRaisedPaperFormBulkScan: "727981ab-eec0-46c1-a261-9e90ae10cabd"
+          grantRaised: "3ff6bf7b-3e2c-45fa-992c-e70f0aaf9098"
+          grantRaisedPaperFormBulkScan: "6e8a1de8-a05b-455c-98b0-e669f2fa0470"
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
           requestInformation: "98233470-7aa6-4165-bf62-a663dc9f3c53"
-          redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
-          grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          redeclarationSot: "c34256d7-c8f5-451c-b7a6-1a9580622f1c"
+          grantIssuedIntestacy: "9863cfe5-240b-42ed-912b-188a5f7e1e76"
           caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
-          noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
+          noticeOfChangeReceived: "4f1f3c47-1d84-4584-b251-2a77d64510f2"
+          disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
+          draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
 
 documents:
   templates:
@@ -314,30 +327,36 @@ documents:
             intestacy: INTESTACY_GRANT_REISSUE
             admonWill: ADMON_WILL_GRANT_REISSUE
             gop: DIGITAL_GRANT_REISSUE
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_REISSUE
           grant:
             intestacy: INTESTACY_GRANT
             admonWill: ADMON_WILL_GRANT
             gop: DIGITAL_GRANT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT
         preview:
           reissue:
             intestacy: INTESTACY_GRANT_REISSUE_DRAFT
             admonWill: ADMON_WILL_GRANT_REISSUE_DRAFT
             gop: DIGITAL_GRANT_REISSUE_DRAFT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT
           grant:
             intestacy: INTESTACY_GRANT_DRAFT
             admonWill: ADMON_WILL_GRANT_DRAFT
             gop: DIGITAL_GRANT_DRAFT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_DRAFT
       welsh:
         final:
           grant:
             intestacy: WELSH_INTESTACY_GRANT
             admonWill: WELSH_ADMON_WILL_GRANT
             gop: WELSH_DIGITAL_GRANT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT
         preview:
           grant:
             intestacy: WELSH_INTESTACY_GRANT_DRAFT
             admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
             gop: WELSH_DIGITAL_GRANT_DRAFT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT
 
 registry:
   registries:
@@ -453,6 +472,8 @@ document:
         baseurl: localhost:8080
 
 idam:
+  api:
+    url: ${IDAM_SERVICE_HOST:http://localhost:5000}
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
@@ -464,7 +485,11 @@ send-letter:
 
 auth.idam.client.baseUrl: ${IDAM_SERVICE_HOST:http://localhost:5000}
 
-core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
+core_case_data:
+  api:
+    url: ${services.coreCaseData.baseUrl:http://localhost:4452}
+  elasticsearch:
+    querySize: 500
 
 excelaEmail: ${EXCELA_EMAIL:exela@probate-test.com}
 
@@ -474,6 +499,7 @@ data-extract:
 
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFord@probate-test.com}
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
+draftCaseWithPaymentEmail: ${DRAFT_CASES_WITH_PAYMENT_EMAIL:draftCases@probate-test.com}
 
 welsh:
   months:
@@ -495,7 +521,7 @@ blobstorage:
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
-shcedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
+schedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
 
 feature:
   blobstorage:
@@ -535,4 +561,13 @@ reactivate_dormant:
   minus_days: 1
 
 grand_delay:
-  number_of_weeks: 16
+  number_of_weeks: 12
+
+disposal:
+  adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
+  inactivityNotificationPeriod: 90
+  disposalGracePeriod: 90
+  switchDate: ${RETENTION_SWITCH_DATE:2024-03-04}
+  startDate: 1900-01-01
+  personalNotificationLink: http://localhost:3000
+  solsNotificationLink: http://localhost:3001

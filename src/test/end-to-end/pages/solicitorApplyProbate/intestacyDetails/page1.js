@@ -2,6 +2,7 @@
 
 const intestacyDetailsConfig = require('./intestacyDetails');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
+const grantOfProbateConfig = require('../grantOfProbate/grantOfProbate.json');
 
 module.exports = async function () {
     const I = this;
@@ -22,6 +23,7 @@ module.exports = async function () {
 
     await I.fillField('#primaryApplicantPhoneNumber', intestacyDetailsConfig.applicant_phone);
     await I.fillField('#primaryApplicantEmailAddress', intestacyDetailsConfig.applicant_email);
+    await I.click({css: `#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`});
 
     await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

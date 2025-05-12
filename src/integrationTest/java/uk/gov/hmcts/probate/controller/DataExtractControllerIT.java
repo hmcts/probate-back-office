@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.ClientException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -54,8 +53,6 @@ class DataExtractControllerIT {
     private SmeeAndFordDataExtractService smeeAndFordDataExtractService;
     @MockBean
     private DataExtractDateValidator dataExtractDateValidator;
-    @MockBean
-    private AppInsights appInsights;
     @Autowired
     private MockMvc mockMvc;
     @Autowired

@@ -14,7 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -54,8 +53,6 @@ class NextStepsControllerIT {
 
     private CaseDataBuilder  caseDataBuilder = CaseDataTestBuilder.withDefaults();
 
-    @MockBean
-    AppInsights appInsights;
     @MockBean
     FeeService feeService;
     @MockBean

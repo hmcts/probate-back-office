@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -295,4 +296,41 @@ class CaseDataTransformerTest {
         caseDataTransformer.transformCaseDataForPaperForm(callbackRequestMock);
         assertThat(caseDataMock.getChannelChoice(), is("PaperForm"));
     }
+
+    @Test
+    void shouldTransformIhtFormIdNullForDiedAfter() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT205").build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
+        assertThat(caseDataMock.getIhtFormId(), CoreMatchers.is(nullValue()));
+    }
+
+    @Test
+    void shouldTransformIhtFormEstateNullForDiedBefore() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT205").build();
+
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        caseDataTransformer.transformIhtFormCaseDataByDeceasedDOD(callbackRequestMock);
+        assertThat(caseDataMock.getIhtFormEstate(), CoreMatchers.is(nullValue()));
+    }
+
+    @Test
+    void shouldSetApplicationSubmittedDate() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL).build();
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        caseDataTransformer.setApplicationSubmittedDateForPA(caseDetailsMock);
+        assertEquals(LocalDate.now().toString(),
+                caseDetailsMock.getData().getApplicationSubmittedDate());
+    }
+
 }

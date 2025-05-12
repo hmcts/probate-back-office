@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -38,7 +38,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String VALIDATE_URL = "/case/sols-validate";
     private static final String VALIDATE_IHT_400_DATE = "/case/sols-validate-iht400";
     private static final String TRANSFORM_URL = "/case/casePrinted";
-    private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String INIT_PAPER_FORM_URL = "/case/initPaperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
@@ -235,26 +234,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     void verifyRequestWithSolicitorPostcodeReturnsSuccess() throws IOException {
         validatePostSuccess("success.solicitorCreate.json", CASE_CREATE_VALIDATE_URL);
-    }
-
-    @Test
-    void verifyRequestCheckListAnswerEqualsYesAndCheckQAState() throws IOException {
-        final ResponseBody body = validatePostSuccess("solicitorPayloadNotifications.json", CHECKLIST_URL);
-        final JsonPath jsonPath = JsonPath.from(body.asString());
-        final String state = jsonPath.get("data.state");
-
-        assertEquals("BOCaseQA", state);
-    }
-
-    @Test
-    void verifyRequestCheckListAnswerEqualsYes() throws IOException {
-        validatePostSuccess("solicitorPayloadNotifications.json", CHECKLIST_URL);
-    }
-
-    @Test
-    void verifyRequestCheckListAnswerEqualsNo() throws IOException {
-        validatePostFailureForCheckList("failure.checkList.json",
-            "Ensure all checks have been completed, cancel to return to the examining state");
     }
 
     @Test
@@ -1047,10 +1026,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     private void validatePostFailureForCaseAmend(String jsonFileName, String errorMessage) throws IOException {
         validatePostFailure(jsonFileName, errorMessage, 200, VALIDATE_CASE_AMEND_URL);
-    }
-
-    private void validatePostFailureForCheckList(String jsonFileName, String errorMessage) throws IOException {
-        validatePostFailure(jsonFileName, errorMessage, 200, CHECKLIST_URL);
     }
 
     private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String url)

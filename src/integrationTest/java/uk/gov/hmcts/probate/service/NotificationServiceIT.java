@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.ImmutableList;
 import org.assertj.core.api.Assertions;
 import org.json.JSONObject;
@@ -16,7 +18,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
-import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
@@ -28,6 +30,7 @@ import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -43,6 +46,7 @@ import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
@@ -71,6 +75,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -93,6 +98,7 @@ import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 import static uk.gov.hmcts.probate.model.State.NOC;
 import static uk.gov.hmcts.probate.model.State.REDECLARATION_SOT;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PAYMENT_FAILED;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -101,6 +107,7 @@ class NotificationServiceIT {
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final LocalDateTime LAST_DATE_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
+    private static final LocalDateTime CREATED_DATE = LocalDateTime.now(ZoneOffset.UTC).minusYears(3);
     private static final Long CASE_ID = 12345678987654321L;
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private static final byte[] DOC_BYTES = {(byte) 23};
@@ -140,15 +147,13 @@ class NotificationServiceIT {
     private static final DateTimeFormatter NOC_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final String MARKDOWN_ERROR_MESSAGE
             = "Markdown Link detected in case data, stop sending notification email.";
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private NotificationService notificationService;
 
     @Autowired
     private LocalDateToWelshStringConverter localDateToWelshStringConverter;
-
-    @MockBean
-    private AppInsights appInsights;
 
     @MockBean
     private SendEmailResponse sendEmailResponse;
@@ -181,6 +186,9 @@ class NotificationServiceIT {
 
     @MockBean
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
+
+    @MockBean
+    private UserInfoService userInfoService;
 
     @SpyBean
     private NotificationClient notificationClient;
@@ -2029,6 +2037,31 @@ class NotificationServiceIT {
     }
 
     @Test
+    void verifysendsendSealedAndCertifiedEmail()
+            throws NotificationClientException, BadRequestException {
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
+                .build(), LAST_MODIFIED, ID);
+        notificationService.sendSealedAndCertifiedEmail(caseDetails);
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caseDetails.getData().getDeceasedFullName());
+
+        verify(notificationClient).sendEmail(
+                eq("sealed-and-certified"),
+                eq("SealedAndCertified@probate-test.com"),
+                eq(personalisation),
+                eq("1"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
     void verifySendNocEmail()
             throws NotificationClientException, BadRequestException {
 
@@ -2099,7 +2132,7 @@ class NotificationServiceIT {
 
     @Test
     void throwExceptionSendEmailWhenInvalidPersonalisationExists() {
-        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+        RequestInformationParameterException expectException =  assertThrows(RequestInformationParameterException.class,
                 () -> notificationService.sendEmail(CASE_STOPPED, markdownLinkCaseData));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
     }
@@ -2115,14 +2148,14 @@ class NotificationServiceIT {
                         .build())
                 .email("primary@probate-test.com")
                 .notification("Yes").build();
-        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+        RequestInformationParameterException expectException =  assertThrows(RequestInformationParameterException.class,
                 () -> notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, markdownLinkCaseData));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
     }
 
     @Test
     void throwExceptionSendCaveatEmailWhenInvalidPersonalisationExists() {
-        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+        RequestInformationParameterException expectException =  assertThrows(RequestInformationParameterException.class,
                 () -> notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, markdownLinkCaveatData));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
     }
@@ -2141,7 +2174,7 @@ class NotificationServiceIT {
                         .build())
                 .email("primary@probate-test.com")
                 .notification("Yes").build();
-        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+        RequestInformationParameterException expectException =  assertThrows(RequestInformationParameterException.class,
                 () -> notificationService.sendEmailWithDocumentAttached(markdownLinkCaseData,
                         executorsApplyingNotification, REDECLARATION_SOT));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
@@ -2151,7 +2184,7 @@ class NotificationServiceIT {
     void verifyEmailPreview()
             throws NotificationClientException {
 
-        when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
@@ -2166,6 +2199,137 @@ class NotificationServiceIT {
                 .build(), LAST_MODIFIED, ID);
         notificationService.emailPreview(caseDetails);
 
-        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+        verify(pdfManagementService).generateDocmosisDocumentAndUpload(any(), eq(SENT_EMAIL));
+    }
+
+    @Test
+    void sendDisposalReminderEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+            uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                .data(caseData)
+                .createdDate(CREATED_DATE)
+                .lastModified(LAST_DATE_MODIFIED)
+                .id(ID)
+                .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendDisposalReminderEmail(returnedCaseDetails, false);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-disposal-reminder"),
+                eq("primary@probate-test.com"),
+                any(),
+                anyString());
+    }
+
+    @Test
+    void sendDisposalReminderEmailWithEmptyData() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
+        caseData.remove("applicationType");
+        caseData.remove("languagePreferenceWelsh");
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .state(STATE_CASE_PAYMENT_FAILED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        when(userInfoService.getUserEmailByCaseId(ID)).thenReturn(Optional.of("primary-idam-email@probate-test.com"));
+        notificationService.sendDisposalReminderEmail(returnedCaseDetails, false);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-disposal-reminder"),
+                eq("primary-idam-email@probate-test.com"),
+                any(),
+                anyString());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNoEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
+        caseData.remove("applicationType");
+        caseData.remove("languagePreferenceWelsh");
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .state(STATE_CASE_PAYMENT_FAILED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        when(userInfoService.getUserEmailByCaseId(ID)).thenReturn(Optional.empty());
+        NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
+                notificationService.sendDisposalReminderEmail(returnedCaseDetails, false));
+        assertEquals("Email address not found for case ID: " + ID, exception.getMessage());
+    }
+
+    @Test
+    void sendSolDisposalReminderEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(solicitorGrantDelayedOxford.getData(), Map.class);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+            uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                .data(caseData)
+                .createdDate(CREATED_DATE)
+                .lastModified(LAST_DATE_MODIFIED)
+                .id(ID)
+                .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendDisposalReminderEmail(returnedCaseDetails, false);
+
+        verify(notificationClient).sendEmail(
+                eq("sol-disposal-reminder"),
+                eq("solicitor@probate-test.com"),
+                any(),
+                anyString());
+    }
+
+    @Test
+    void shouldNotSendDisposalReminderEmailForEmptyData() throws NotificationClientException {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build();
+        notificationService.sendDisposalReminderEmail(returnedCaseDetails, false);
+
+        verify(notificationClient, never()).sendEmail(
+                eq("pa-disposal-reminder"),
+                eq("primary@probate-test.com"),
+                any(),
+                anyString());
+    }
+
+    @Test
+    void sendEmailForGORSuccessfulPayment() throws NotificationClientException {
+        CaseData caseData = CaseData.builder()
+                .applicationType(SOLICITOR).languagePreferenceWelsh("No").build();
+        List<ReturnedCaseDetails> cases = List.of(new ReturnedCaseDetails(caseData, null, ID));
+        String fromDate = "2022-01-01";
+        String toDate = "2022-01-31";
+
+        notificationService.sendEmailForGORSuccessfulPayment(cases, fromDate, toDate);
+
+        verify(notificationClient).sendEmail(any(), any(), any(), any());
+    }
+
+    @Test
+    void sendEmailForCaveatSuccessfulPayment() throws NotificationClientException {
+        CaveatData caseData = CaveatData.builder()
+                .applicationType(SOLICITOR).languagePreferenceWelsh("No").build();
+        List<ReturnedCaveatDetails> cases = List.of(new ReturnedCaveatDetails(caseData, null, ID));
+        String fromDate = "2022-01-01";
+        String toDate = "2022-01-31";
+
+        notificationService.sendEmailForCaveatSuccessfulPayment(cases, fromDate, toDate);
+
+        verify(notificationClient).sendEmail(any(), any(), any(), any());
     }
 }

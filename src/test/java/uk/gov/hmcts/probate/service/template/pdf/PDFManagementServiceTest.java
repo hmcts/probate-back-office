@@ -43,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -177,6 +178,11 @@ class PDFManagementServiceTest {
     @Test
     void shouldGenerateAndUploadIntestacyGrant() throws IOException {
         assertDocumentUploaded(INTESTACY_GRANT, "intestacyGrant.pdf");
+    }
+
+    @Test
+    void shouldGenerateAndUploadAdColligendaBonaGrant() throws IOException {
+        assertDocumentUploaded(AD_COLLIGENDA_BONA_GRANT, "adColligendaBonaGrant.pdf");
     }
 
     @Test

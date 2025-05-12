@@ -24,21 +24,26 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.service.LegacyImportService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 
 import jakarta.servlet.http.HttpServletRequest;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 class CaseMatchingControllerUnitTest {
@@ -80,8 +85,16 @@ class CaseMatchingControllerUnitTest {
     private CallbackResponse callbackResponse;
     @Mock
     private CaveatCallbackResponse caveatCallbackResponse;
+    @Mock
+    private UserInfoService userInfoService;
 
     private List<CaseMatch> caseMatches = new ArrayList<>();
+
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
 
     @BeforeEach
     public void setUp() {
@@ -89,7 +102,7 @@ class CaseMatchingControllerUnitTest {
 
         underTest = new CaseMatchingController(callbackResponseTransformer, caveatCallbackResponseTransformer,
                 standingSearchCallbackResponseTransformer, willLodgementCallbackResponseTransformer,
-                caseMatchingService, legacyImportService, businessValidationMessageService);
+                caseMatchingService, legacyImportService, businessValidationMessageService, userInfoService);
 
         CaseMatch ccdCase = CaseMatch.builder()
                 .dob("dob")
@@ -126,6 +139,7 @@ class CaseMatchingControllerUnitTest {
         caseMatches.add(legacyCase);
         caseMatches.add(ccdCaseNoId);
         when(caseMatchingService.findCrossMatches(eq(CaseType.getAll()), any())).thenReturn(caseMatches);
+        doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
     @Test
@@ -142,7 +156,8 @@ class CaseMatchingControllerUnitTest {
                 .build();
         CaseDetails caseDetails = new CaseDetails(caseData, new String[]{"2022", "1", "1", "1"}, 0L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        when(callbackResponseTransformer.addMatches(callbackRequest, caseMatches)).thenReturn(callbackResponse);
+        when(callbackResponseTransformer
+                .addMatches(callbackRequest, caseMatches, Optional.empty())).thenReturn(callbackResponse);
         ResponseEntity<CallbackResponse> response = underTest.search(callbackRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -178,7 +193,8 @@ class CaseMatchingControllerUnitTest {
         when(caseDataMock.getCaseMatches()).thenReturn(caseMatchMock);
         when(legacyImportService.areLegacyRowsValidToImport(caseMatchMock)).thenReturn(true);
         when(legacyImportService.importLegacyRows(caseMatchMock)).thenReturn(caseMatches);
-        when(callbackResponseTransformer.addMatches(callbackRequest, caseMatches)).thenReturn(callbackResponse);
+        when(callbackResponseTransformer.addMatches(callbackRequest, caseMatches, CASEWORKER_USERINFO))
+                .thenReturn(callbackResponse);
         ResponseEntity<CallbackResponse> response = underTest
                 .doImportFromGrant(callbackRequest, httpServletRequestMock);
 

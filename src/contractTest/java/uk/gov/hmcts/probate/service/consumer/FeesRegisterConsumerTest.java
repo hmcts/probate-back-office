@@ -19,7 +19,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
@@ -41,8 +40,6 @@ public class FeesRegisterConsumerTest {
     @Autowired
     FeeService feeService;
 
-    @MockBean
-    AppInsights appInsights;
     @MockBean
     FeatureToggleService featureToggleServiceMock;
 

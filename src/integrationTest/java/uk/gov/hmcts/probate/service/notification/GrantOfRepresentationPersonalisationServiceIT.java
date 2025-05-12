@@ -10,7 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -62,6 +63,9 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_NOC_SUBMITTED_DATE = "noc_date";
+    private static final String PERSONALISATION_DRAFT_NAME = "draftName";
+    private static final String PERSONALISATION_CASE_TYPE = "caseType";
+
     private static final DateTimeFormatter NOC_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     Registry registry = new Registry();
     @InjectMocks
@@ -72,8 +76,6 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private CoreCaseDataApi coreCaseDataApi;
     @MockBean
     private CaveatQueryService caveatQueryServiceMock;
-    @MockBean
-    private AppInsights appInsights;
     @MockBean
     private SendEmailResponse sendEmailResponse;
     @Mock
@@ -325,5 +327,41 @@ class GrantOfRepresentationPersonalisationServiceIT {
         assertEquals(addressee, response.get(PERSONALISATION_ADDRESSEE));
     }
 
+    @Test
+    void getGORDraftCasePersonalisationContentIsOk() {
+        List<ReturnedCaseDetails> cases = List.of(new ReturnedCaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedForenames("Jack")
+                .deceasedSurname("Michelson")
+                .build(), LAST_DATE_MODIFIED, ID));
+        Map<String, Object> response =
+                grantOfRepresentationPersonalisationService.getGORDraftCaseWithPaymentPersonalisation(cases,
+                        "01/01/2025", "01/05/2025");
 
+        assertEquals("Draft cases with payment success extract from 01/01/2025 to 01/05/2025",
+                response.get(PERSONALISATION_DRAFT_NAME));
+        assertEquals("1, Jack, Michelson\n",
+                response.get(PERSONALISATION_CASE_DATA));
+        assertEquals("Grant of Representation",
+                response.get(PERSONALISATION_CASE_TYPE));
+    }
+
+    @Test
+    void getCaveatDraftCasePersonalisationContentIsOk() {
+        List<ReturnedCaveatDetails> cases = List.of(new ReturnedCaveatDetails(CaveatData.builder()
+                .applicationType(PERSONAL)
+                .deceasedForenames("Jack")
+                .deceasedSurname("Michelson")
+                .build(), null, ID));
+        Map<String, Object> response =
+                grantOfRepresentationPersonalisationService.getCaveatDraftCaseWithPaymentPersonalisation(cases,
+                        "01/01/2025", "01/05/2025");
+
+        assertEquals("Draft cases with payment success extract from 01/01/2025 to 01/05/2025",
+                response.get(PERSONALISATION_DRAFT_NAME));
+        assertEquals("1, Jack, Michelson\n",
+                response.get(PERSONALISATION_CASE_DATA));
+        assertEquals("Caveat",
+                response.get(PERSONALISATION_CASE_TYPE));
+    }
 }

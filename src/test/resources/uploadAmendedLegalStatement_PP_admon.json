@@ -1,0 +1,37 @@
+{
+  "case_details": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "BOCaseStopped",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "case_data": {
+      "applicationType": "Solicitor",
+      "schemaVersion": "2.0.0",
+      "caseType": "admonWill",
+      "paperForm": "No",
+      "amendedLegalStatement": {
+        "document_url": "doc_url",
+        "document_filename": "upload.pdf",
+        "document_binary_url": "doc_bin_url"
+      }
+    }
+  }
+}

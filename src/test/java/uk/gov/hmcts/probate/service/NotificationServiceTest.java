@@ -9,6 +9,11 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
@@ -23,13 +28,18 @@ import uk.gov.hmcts.probate.validator.PersonalisationValidationRule.Personalisat
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.TemplatePreview;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class NotificationServiceTest {
@@ -98,12 +108,13 @@ class NotificationServiceTest {
         when(personalisationValidationRuleMock.validatePersonalisation(dummyPersonalisation))
                 .thenReturn(mockResult);
 
-        assertThrows(NotificationClientException.class, () ->
+        assertThrows(RequestInformationParameterException.class, () ->
                 notificationService.doCommonNotificationServiceHandling(dummyPersonalisation, dummyCaseId));
     }
 
     @Test
-    void givenPersonalisationWithHtml_whenCommonValidation_thenReturnsHtmlFound() throws NotificationClientException {
+    void givenPersonalisationWithHtml_whenCommonValidation_thenReturnsHtmlFound()
+            throws RequestInformationParameterException {
         final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
         final Long dummyCaseId = 1L;
 
@@ -120,7 +131,8 @@ class NotificationServiceTest {
     }
 
     @Test
-    void givenPersonalisationWithNoIssue_whenCommonValidation_thenReturnsAllOk() throws NotificationClientException {
+    void givenPersonalisationWithNoIssue_whenCommonValidation_thenReturnsAllOk()
+            throws RequestInformationParameterException {
         final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
         final Long dummyCaseId = 1L;
 
@@ -134,5 +146,88 @@ class NotificationServiceTest {
         final var result = notificationService.doCommonNotificationServiceHandling(dummyPersonalisation, dummyCaseId);
 
         assertEquals(CommonNotificationResult.ALL_OK, result);
+    }
+
+    @Test
+    void shouldUpdatePersonalisationForSolicitor() throws NotificationClientException {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getRegistryLocation()).thenReturn("oxford");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getChannelChoice()).thenReturn("Digital");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+        when(caseData.getSolsSOTName()).thenReturn("OtherName");
+
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "FirstName");
+        when(grantOfRepresentationPersonalisationServiceMock.getPersonalisation((CaseDetails) any(), any()))
+                .thenReturn(personalisation);
+        final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
+                Map.of(),
+                List.of());
+
+        when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
+                .thenReturn(mockResult);
+        when(notificationClientServiceMock.emailPreview(any(), any(), any())).thenReturn(mock(TemplatePreview.class));
+
+        notificationService.emailPreview(caseDetails);
+
+        verify(notificationClientServiceMock).emailPreview(any(), any(), any());
+        assertEquals("OtherName", personalisation.get("applicant_name"));
+    }
+
+    @Test
+    void shouldUpdatePersonalisationWithSolicitorName() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+        when(caseData.getSolsSOTName()).thenReturn("John Doe");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "Old Name");
+
+        notificationService.updatePersonalisationForSolicitor(caseData, personalisation);
+
+        assertEquals("John Doe", personalisation.get("applicant_name"));
+    }
+
+    @Test
+    void shouldUpdatePersonalisationWithSolicitorForenamesAndSurname() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+        when(caseData.getSolsSOTForenames()).thenReturn("John");
+        when(caseData.getSolsSOTSurname()).thenReturn("Doe");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "Old Name");
+
+        notificationService.updatePersonalisationForSolicitor(caseData, personalisation);
+
+        assertEquals("John Doe", personalisation.get("applicant_name"));
+    }
+
+    @Test
+    void shouldNotUpdatePersonalisationWhenApplicationTypeIsNotSolicitor() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+        when(caseData.getSolsSOTForenames()).thenReturn("John");
+        when(caseData.getSolsSOTSurname()).thenReturn("Doe");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "Old Name");
+
+        notificationService.updatePersonalisationForSolicitor(caseData, personalisation);
+
+        assertEquals("Old Name", personalisation.get("applicant_name"));
     }
 }

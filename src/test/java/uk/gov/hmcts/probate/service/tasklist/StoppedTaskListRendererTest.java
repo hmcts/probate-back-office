@@ -26,7 +26,7 @@ class StoppedTaskListRendererTest {
 
         caseDataBuilder = CaseData.builder()
                 .grantStoppedDate(LocalDate.of(2020,1,1));
-        ReflectionTestUtils.setField(renderer, "grandDelayNumberOfWeeks", "16");
+        ReflectionTestUtils.setField(renderer, "grandDelayNumberOfWeeks", "12");
     }
 
     @Test
@@ -48,7 +48,7 @@ class StoppedTaskListRendererTest {
             + "<li>further information from the applicant or Probate practitioner is needed</li>\n</ul>\n\n"
             + "<p class=\"govuk-body-s\">You will be notified by email if we need any information from you to "
             + "progress the case.</p>\n"
-            + "<p class=\"govuk-body-s\">You'll usually get the grant within 16 weeks. It can take longer if you need "
+            + "<p class=\"govuk-body-s\">You'll usually get the grant within 12 weeks. It can take longer if you need "
             + "to provide additional information.</p>\n"
             + "<p class=\"govuk-body-s\">You don't need to do anything else now, we'll email you if we need more "
             + "information</p>"
@@ -58,7 +58,7 @@ class StoppedTaskListRendererTest {
             + "<li>Mae angen rhagor o wybodaeth gan y ceisydd neu'r ymarferydd profiant</li>\n</ul>\n\n"
             + "<p class=\"govuk-body-s\">Fe'ch hysbysir drwy e-bost os bydd arnom angen unrhyw wybodaeth gennych "
             + "i symud yr achos yn ei flaen.</p>\n"
-            + "<p class=\"govuk-body-s\">Byddwch fel arfer yn cael y grant o fewn 16 wythnos. Gall gymryd mwy o amser "
+            + "<p class=\"govuk-body-s\">Byddwch fel arfer yn cael y grant o fewn 12 wythnos. Gall gymryd mwy o amser "
             + "os oes angen i chi ddarparu gwybodaeth ychwanegol.</p>\n"
             + "<p class=\"govuk-body-s\">Nid oes angen i chi wneud unrhyw beth arall nawr, byddwn yn anfon e-bost "
             + "atoch os oes arnom angen mwy o wybodaeth.</p>\n\n"

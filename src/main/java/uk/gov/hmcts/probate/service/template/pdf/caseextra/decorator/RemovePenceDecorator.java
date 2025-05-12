@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 
 import static uk.gov.hmcts.probate.model.Constants.FORMAT;
 import static uk.gov.hmcts.probate.model.Constants.DIVISOR;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -44,6 +46,7 @@ public class RemovePenceDecorator {
 
     private static Stream<DocumentType> grantDocumentTypeStream() {
         return Stream.of(ADMON_WILL_GRANT, ADMON_WILL_GRANT_DRAFT, DIGITAL_GRANT, DIGITAL_GRANT_DRAFT,
-                DIGITAL_GRANT_REISSUE, DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT, INTESTACY_GRANT_DRAFT);
+                DIGITAL_GRANT_REISSUE, DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT, INTESTACY_GRANT_DRAFT,
+                AD_COLLIGENDA_BONA_GRANT, AD_COLLIGENDA_BONA_GRANT_DRAFT);
     }
 }

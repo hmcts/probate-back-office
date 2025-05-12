@@ -18,7 +18,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -52,8 +51,6 @@ class LifeEventCCDIntegrationIT {
     private MockMvc mockMvc;
     @Autowired
     private TestUtils testUtils;
-    @MockBean
-    private AppInsights appInsights;
     @MockBean
     private SecurityUtils securityUtils;
     @Autowired

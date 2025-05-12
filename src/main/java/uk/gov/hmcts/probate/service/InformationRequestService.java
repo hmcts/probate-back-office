@@ -11,9 +11,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,7 +26,9 @@ public class InformationRequestService {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
 
-    public CallbackResponse handleInformationRequest(CallbackRequest callbackRequest) {
+    public CallbackResponse handleInformationRequest(
+            final CallbackRequest callbackRequest,
+            final Optional<UserInfo> caseworkerInfo) throws NotificationClientException {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         CCDData dataForEmailAddress = CCDData.builder()
                 .applicationType(caseData.getApplicationType().name())
@@ -39,7 +43,8 @@ public class InformationRequestService {
         }
         List<Document> documents = informationRequestCorrespondenceService
                 .emailInformationRequest(callbackRequest.getCaseDetails());
-        return callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents);
+        return callbackResponseTransformer
+                .addInformationRequestDocuments(callbackRequest, documents, caseworkerInfo);
     }
 
     public Document emailPreview(CallbackRequest callbackRequest) {

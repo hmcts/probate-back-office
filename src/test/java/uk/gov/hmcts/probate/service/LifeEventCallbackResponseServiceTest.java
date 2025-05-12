@@ -41,7 +41,7 @@ class LifeEventCallbackResponseServiceTest {
     @BeforeEach
     public void setup() {
         response = CallbackResponse.builder().data(ResponseCaseData.builder().build()).build();
-        when(callbackResponseTransformer.updateTaskList(any(CallbackRequest.class))).thenReturn(response);
+        when(callbackResponseTransformer.updateTaskList(any(CallbackRequest.class), any())).thenReturn(response);
         deathRecords = mock(List.class);
         when(deathRecords.size()).thenReturn(5);
     }

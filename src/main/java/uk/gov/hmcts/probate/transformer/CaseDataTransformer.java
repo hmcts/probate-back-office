@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
@@ -14,6 +15,7 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationC
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -33,6 +35,8 @@ public class CaseDataTransformer {
     private static final String IHT400 = "IHT400";
     private static final String IHT205 = "IHT205";
     private static final String PAPERFORM = "PaperForm";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public void transformForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
@@ -56,7 +60,13 @@ public class CaseDataTransformer {
 
 
     public void transformCaseDataForValidateProbate(CallbackRequest callbackRequest) {
-        final var caseData = callbackRequest.getCaseDetails().getData();
+        final var caseDetails = callbackRequest.getCaseDetails();
+        final var caseData = caseDetails.getData();
+
+        solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
+                caseDetails);
+
+        solicitorApplicationCompletionTransformer.clearAdditionalExecutorWhenUpdatingApplicantDetails(caseDetails);
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
@@ -97,6 +107,10 @@ public class CaseDataTransformer {
         }
     }
 
+    public void setApplicationSubmittedDateForPA(CaseDetails caseDetails) {
+        caseDetails.getData().setApplicationSubmittedDate(LocalDate.now().format(dateTimeFormatter));
+    }
+
     public void transformCaseDataForEvidenceHandledForManualCreateByCW(CallbackRequest callbackRequest) {
         if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
             evidenceHandledTransformer.updateEvidenceHandledToNo(callbackRequest.getCaseDetails().getData());
@@ -117,6 +131,15 @@ public class CaseDataTransformer {
 
     public void transformCaseDataForDocsReceivedNotificationSent(CallbackRequest callbackRequest) {
         attachDocumentsTransformer.updateDocsReceivedNotificationSent(callbackRequest.getCaseDetails().getData());
+    }
+
+    public void transformIhtFormCaseDataByDeceasedDOD(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
+            resetIhtFormId(caseData);
+        } else {
+            resetIhtFormEstate(caseData);
+        }
     }
 
     public void transformFormCaseData(CallbackRequest callbackRequest) {

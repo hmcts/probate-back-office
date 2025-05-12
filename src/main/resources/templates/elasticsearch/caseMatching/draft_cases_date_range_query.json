@@ -1,0 +1,34 @@
+{
+  "size": :size,
+  "from": :from,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "gte": ":fromDate",
+              "lte": ":toDate"
+            }
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "PAAppCreated",
+              "CasePaymentFailed",
+              "Pending"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "id": {
+        "order": "asc"
+      }
+    }
+  ]
+}

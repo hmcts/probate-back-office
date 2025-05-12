@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -21,6 +22,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
@@ -42,6 +46,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_WITHDRAWN;
 import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CaveatCallbackResponseTransformer {
@@ -51,12 +56,14 @@ public class CaveatCallbackResponseTransformer {
     public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
-
+    private static final List<String> ROLLBACK_STATE_LIST = List.of("PAAppCreated", "SolAppCreated", "SolAppUpdated");
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
     private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final OrganisationsRetrievalService organisationsRetrievalService;
+    private final AuditEventService auditEventService;
+    private final SecurityUtils securityUtils;
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest,
                                                List<Document> documents, String letterId) {
@@ -310,7 +317,8 @@ public class CaveatCallbackResponseTransformer {
             .removedRepresentative(caveatData.getRemovedRepresentative())
             .changeOrganisationRequestField(caveatData.getChangeOrganisationRequestField())
             .changeOfRepresentatives(getNullForEmptyRepresentatives(caveatData.getChangeOfRepresentatives()))
-            .paymentConfirmCheckbox(caveatData.getPaymentConfirmCheckbox());
+            .paymentConfirmCheckbox(caveatData.getPaymentConfirmCheckbox())
+            .ttl(caveatData.getTtl());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
@@ -389,7 +397,15 @@ public class CaveatCallbackResponseTransformer {
     public CaveatCallbackResponse rollback(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
                 getResponseCaveatData(callbackRequest.getCaseDetails());
-        responseCaseDataBuilder.applicantOrganisationPolicy(null);
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        auditEventService.getLatestAuditEventByState(
+                callbackRequest.getCaseDetails().getId().toString(), ROLLBACK_STATE_LIST,
+                securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation())
+            .ifPresent(auditEvent -> {
+                log.info("Audit event found: Case ID = {}, Event State = {}",
+                        callbackRequest.getCaseDetails().getId(), auditEvent.getStateId());
+                responseCaseDataBuilder.state(auditEvent.getStateId());
+            });
         return transformResponse(responseCaseDataBuilder.build());
     }
 

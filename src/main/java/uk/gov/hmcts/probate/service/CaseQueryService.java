@@ -18,7 +18,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.exception.ClientDataException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
@@ -35,8 +34,6 @@ import java.util.List;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Service
@@ -71,9 +68,10 @@ public class CaseQueryService {
             + "dormant_date_range_query.json";
     private static final String REACTIVATE_DORMANT_QUERY = "templates/elasticsearch/caseMatching/"
             + "reactivate_dormant_date_range_query.json";
+    private static final String DRAFT_CASES_QUERY = "templates/elasticsearch/caseMatching/"
+            + "draft_cases_date_range_query.json";
     private static final String SORT_COLUMN = "id";
     private final RestTemplate restTemplate;
-    private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
@@ -260,14 +258,10 @@ public class CaseQueryService {
             log.info("...Posted object for CaseQueryService");
         } catch (HttpClientErrorException e) {
             log.error("CaseMatchingException on CaseQueryService, message=" + e.getMessage());
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION.toString(), appInsights.trackingMap("exception",
-                e.getMessage()));
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
-
-        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", uri.toString()));
 
         log.info("CaseQueryService returnedCases.size = {}", returnedCases.getCases().size());
         return returnedCases;
@@ -277,4 +271,7 @@ public class CaseQueryService {
         return paginatedQry.replaceFirst("\"from\": *\\d*,", "\"from\":" + pageStart + ",");
     }
 
+    public List<ReturnedCaseDetails> findDraftCases(String startDate, String endDate) {
+        return findCaseStateWithinDateRange("Draft", DRAFT_CASES_QUERY, startDate, endDate);
+    }
 }

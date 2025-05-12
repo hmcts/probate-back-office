@@ -41,6 +41,8 @@ def secrets = [
                 secret('excelaEmail', 'EXCELA_EMAIL'),
                 secret('smeeAndFordEmail', 'SMEE_AND_FORD_EMAIL'),
                 secret('hmrcEmail', 'HMRC_EMAIL'),
+                secret('sealedAndCertifiedEmail', 'SEALED_AND_CERTIFIED_EMAIL'),
+                secret('draftCaseWithPaymentEmail', 'DRAFT_CASES_WITH_PAYMENT_EMAIL'),
                 secret('ftpSignature', 'FTP_SIGNATURE'),
                 secret('ftpEnv', 'FTP_ENV'),
                 secret('probate-bo-grantSignatureKey', 'PDF_SERVICE_GRANTSIGNATURESECRETKEY'),
@@ -185,7 +187,6 @@ def archiveCoreCaseDataDefinitions(env) {
   }
 
 withPipeline("java", product, component) {
-  env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
   env.CASE_DOCUMENT_AM_URL='http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
   pipelineConf = config;

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
@@ -19,6 +21,7 @@ import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -49,6 +52,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
+import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
@@ -68,12 +72,15 @@ import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.ANSWER_NO;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
 @Jacksonized
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Slf4j
 public class CaseData extends CaseDataParent {
 
     // Tasklist update
@@ -267,6 +274,8 @@ public class CaseData extends CaseDataParent {
 
     private final DocumentLink statementOfTruthDocument;
 
+    private final DocumentLink amendedLegalStatement;
+
     private final DocumentLink solsCoversheetDocument;
 
     @Builder.Default
@@ -364,7 +373,7 @@ public class CaseData extends CaseDataParent {
     private final String boExaminationChecklistQ1;
     private final String boExaminationChecklistQ2;
     private final String boExaminationChecklistRequestQA;
-    private final String applicationSubmittedDate;
+    private String applicationSubmittedDate;
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
     private String evidenceHandled;
     private transient String attachDocuments;
@@ -465,6 +474,7 @@ public class CaseData extends CaseDataParent {
     private final String dateOfDeathType;
     private final String resolveStopState;
     private final String transferToState;
+    private final String resolveCaveatStopState;
     private final String orderNeeded;
     private final List<CollectionMember<Reissue>> reissueReason;
     private final String reissueReasonNotation;
@@ -525,6 +535,7 @@ public class CaseData extends CaseDataParent {
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
     private LocalDate escalatedDate;
+    private RegistrarEscalateReason registrarEscalateReason;
     private LocalDate caseWorkerEscalationDate;
     private LocalDate resolveCaseWorkerEscalationDate;
     private String resolveCaseWorkerEscalationState;
@@ -595,6 +606,8 @@ public class CaseData extends CaseDataParent {
     private String deceasedAliasLastNameOnWill;
     @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetNegative}")
     private final BigDecimal ihtFormNetValue;
+    private final String lastModifiedCaseworkerForenames;
+    private final String lastModifiedCaseworkerSurname;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
@@ -617,6 +630,9 @@ public class CaseData extends CaseDataParent {
     private final String expectedResponseDate;
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
+    private final String executorsNamed;
+
+    private TTL ttl;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
@@ -708,4 +724,59 @@ public class CaseData extends CaseDataParent {
         return YES.equals(getLanguagePreferenceWelsh());
     }
 
+    public void clearPrimaryApplicant() {
+        log.debug("Clearing primary applicant information from CaseData");
+
+
+        this.setPrimaryApplicantIsApplying(null);
+
+        this.setPrimaryApplicantForenames(null);
+        this.setPrimaryApplicantSurname(null);
+
+        // This is to be consistent with the behaviour currently exhibited by the service when creating
+        // a case with a non-NoneOfThese TitleAndClearingType.
+        this.setPrimaryApplicantHasAlias(ANSWER_NO);
+        this.setPrimaryApplicantAlias(null);
+
+
+        // As above this is to be consistent with the behaviour currently exhibited by the service when
+        // creating a case with a non-NoneOfThese TitleAndClearingType.
+        final SolsAddress nullAddress = SolsAddress.builder().build();
+        this.setPrimaryApplicantAddress(nullAddress);
+
+        this.setPrimaryApplicantEmailAddress(null);
+        this.setPrimaryApplicantPhoneNumber(null);
+    }
+
+    public String getIhtGrossValuePounds() {
+        return getPoundValue(ihtGrossValue);
+    }
+
+    public String getIhtNetValuePounds() {
+        return getPoundValue(ihtNetValue);
+    }
+
+    public String getIhtEstateGrossValuePounds() {
+        return getPoundValue(ihtEstateGrossValue);
+    }
+
+    public String getIhtEstateNetValuePounds() {
+        return getPoundValue(ihtEstateNetValue);
+    }
+
+    public String getIhtEstateNetQualifyingValuePounds() {
+        return getPoundValue(ihtEstateNetQualifyingValue);
+    }
+
+    private String getPoundValue(BigDecimal value) {
+        if (value == null) {
+            return "0";
+        }
+        final BigDecimal poundsValue = value.divideToIntegralValue(BigDecimal.valueOf(100L));
+        return poundsValue.toString();
+    }
+
+    public void clearAdditionalExecutorList() {
+        getSolsAdditionalExecutorList().clear();
+    }
 }

@@ -13,7 +13,7 @@
     "eslint-test": "NODE_PATH=. eslint ./src/test",
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
     "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --grep '@crossbrowser' --reporter mocha-multi",
-    "test:functional": "yarn playwright install && NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-workers 3 -c ./src/test/end-to-end/",
+    "test:functional": "yarn playwright install && NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-workers 3 -c ./src/test/end-to-end/ --reporter mocha-multi",
     "test:fullfunctional-pr": "E2E_TEST_PATH='./paths/**/pr_specific/*.js' ./bin/run-e2e-tests.sh",
     "test:fullfunctional": "E2E_TEST_PATH='./paths/**/*.js' ./bin/run-e2e-tests.sh",
     "test:fullfunctional-cw": "E2E_TEST_PATH='./paths/caseworker/*.js' ./bin/run-e2e-tests.sh",
@@ -74,9 +74,9 @@
     "mochawesome": "^7.1.3",
     "moment": "^2.29.1",
     "nock": "^13.0.7",
-    "nodemon": "^2.0.7",
+    "nodemon": "^3.0.0",
     "nsp": "^3.2.1",
-    "pa11y": "^5.3.0",
+    "pa11y": "^8.0.0",
     "phantomjs-prebuilt": "^2.1.13",
     "playwright": "^1.23.2",
     "proxyquire": "^2.1.3",
@@ -97,5 +97,5 @@
   "resolutions": {
     "http-cache-semantics": ">=4.1.1"
   },
-  "packageManager": "yarn@4.5.3"
+  "packageManager": "yarn@4.9.1"
 }

@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,7 +33,6 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
     protected static final String CASE_STOPPED_URL = "/case/case-stopped";
     protected static final String CASE_ESCALATED_URL = "/case/case-escalated";
     protected static final String CASE_MATCHING_EXAMINING_URL = "/case-matching/import-legacy-from-grant-flow";
-    protected static final String CASE_MATCHING_READY_TO_ISSUE_URL = "/case/validateCheckListDetails";
     protected static final String GENERATE_GRANT_URL = "/document/generate-grant";
 
     private static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));

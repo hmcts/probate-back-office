@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -39,6 +41,12 @@ class InformationRequestServiceTest {
     private static final Long ID = 123456789L;
     private static final Document SENT_EMAIL_DOCUMENT =
         Document.builder().documentType(DocumentType.SENT_EMAIL).build();
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
+
     @Mock
     private InformationRequestCorrespondenceService informationRequestCorrespondenceService;
     @Mock
@@ -65,7 +73,7 @@ class InformationRequestServiceTest {
     }
 
     @Test
-    void testEmailRequestReturnsSentEmailDocumentSuccessfully() {
+    void testEmailRequestReturnsSentEmailDocumentSuccessfully() throws NotificationClientException {
         CollectionMember<Document> documentCollectionMember =
             new CollectionMember<>(Document.builder().documentType(DocumentType.SENT_EMAIL).build());
         documentList = new ArrayList<>();
@@ -76,7 +84,7 @@ class InformationRequestServiceTest {
         CallbackResponse callbackResponse = CallbackResponse.builder().data(emailResponseCaseData).build();
 
         when(callbackResponseTransformer.addInformationRequestDocuments(any(),
-            eq(Arrays.asList(SENT_EMAIL_DOCUMENT)))).thenReturn(callbackResponse);
+            eq(Arrays.asList(SENT_EMAIL_DOCUMENT)), any())).thenReturn(callbackResponse);
 
         caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
@@ -86,15 +94,15 @@ class InformationRequestServiceTest {
         when(informationRequestCorrespondenceService.emailInformationRequest(caseDetails))
             .thenReturn(Arrays.asList(SENT_EMAIL_DOCUMENT));
         when(callbackResponseTransformer.addInformationRequestDocuments(any(),
-            eq(Arrays.asList(SENT_EMAIL_DOCUMENT)))).thenReturn(callbackResponse);
+            eq(Arrays.asList(SENT_EMAIL_DOCUMENT)), any())).thenReturn(callbackResponse);
 
         assertEquals(SENT_EMAIL_DOCUMENT,
-            informationRequestService.handleInformationRequest(callbackRequest)
+            informationRequestService.handleInformationRequest(callbackRequest, CASEWORKER_USERINFO)
                 .getData().getProbateNotificationsGenerated().get(0).getValue());
     }
 
     @Test
-    void testEmailRequestReturnsErrorWhenNoEmailProvided() {
+    void testEmailRequestReturnsErrorWhenNoEmailProvided() throws NotificationClientException {
         caseData = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
                 .build();
@@ -111,7 +119,8 @@ class InformationRequestServiceTest {
                 .thenReturn(Collections.singletonList(fieldErrorResponse));
 
         assertEquals("NoEmailProvidedErrorMessage",
-                informationRequestService.handleInformationRequest(callbackRequest).getErrors().get(0));
+                informationRequestService.handleInformationRequest(callbackRequest, CASEWORKER_USERINFO)
+                        .getErrors().get(0));
     }
 
     @Test

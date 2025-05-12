@@ -1,0 +1,273 @@
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<h2 class="govuk-heading-l">1. Enter application details</h2>
+<h2 class="govuk-heading-l">Rhoi manylion y cais</h2>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">These steps are to be completed by the Probate practitioner.</font></p>
+<p class="govuk-body-s"><font color="#505a5f">Dylai'r camau hyn gael eu cwblhau gan yr ymarferydd profiant.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Add Probate practitioner details</p>
+<p class="govuk-body-s">Ychwanegu manylion ymarferydd profiant</p>
+</div>
+<div class="govuk-grid-column-one-third">
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed-welsh.png" alt="CWBLHAWYD" title="CWBLHAWYD" /></p>
+</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Add deceased details</p>
+<p class="govuk-body-s">Ychwanegu manylion yr ymadawedig </p>
+</div>
+<div class="govuk-grid-column-one-third">
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed-welsh.png" alt="CWBLHAWYD" title="CWBLHAWYD" /></p>
+</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Add application details</p>
+<p class="govuk-body-s">Ychwanegu manylion y cais</p>
+</div>
+<div class="govuk-grid-column-one-third">
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed-welsh.png" alt="CWBLHAWYD" title="CWBLHAWYD" /></p>
+</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<br/>
+<h2 class="govuk-heading-l">2. Sign legal statement and submit application</h2>
+<h2 class="govuk-heading-l">Llofnodi'r datganiad cyfreithiol a chyflwyno'r cais</h2>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">These steps are to be completed by the Probate practitioner.</font></p>
+<p class="govuk-body-s"><font color="#505a5f">Dylai'r camau hyn gael eu cwblhau gan yr ymarferydd profiant.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Review and sign legal statement and submit application</p>
+</div>
+<div class="govuk-grid-column-one-third">
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+</div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p><strong>Submitted on <today/></strong></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Adolygwch a llofnodwch y datganiad cyfreithiol a chyflwynwch y cais</p>
+</div>
+<div class="govuk-grid-column-one-third">
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed-welsh.png" alt="CWBLHAWYD" title="CWBLHAWYD" /></p>
+</div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p><strong>Cyflwynwyd ar <today-welsh/></strong></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">Cynhyrchwyd y datganiad cyfreithiol.  Gallwch adolygu, newid unrhyw fanylion, llofnodi a chyflwyno eich cais.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Make payment</p>
+<p class="govuk-body-s">Gwneud taliad</p>
+<p class="govuk-body-s">
+<font color="#505a5f">
+</p>
+<p><secText>No payment is required.</secText></font></p>
+<p class="govuk-body-s">
+<font color="#505a5f">
+</p>
+<p>Nid oes angen unrhyw daliad.</secText></font></p>
+</div>
+<div class="govuk-grid-column-one-third">
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed-welsh.png" alt="CWBLHAWYD" title="CWBLHAWYD" /></p>
+</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Send documents<br/>
+<details class="govuk-details" data-module="govuk-details">
+  <summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      View the documents needed by HM Courts and Tribunal Service    </span>  </summary>
+  <div class="govuk-details__text">
+    You now need to send us<br/>
+<ul>
+<li>the printed coversheet (accessed in the cover sheet tab) or your reference number 1528365719153338 written on a sheet of paper</li>
+<li>a photocopy of the signed legal statement and declaration</li>
+<li>the original will</li>
+<li>the inheritance tax form IHT205</li>
+</ul>
+  </div>
+</details>
+Anfon dogfennau<br/>
+<details class="govuk-details" data-module="govuk-details">
+  <summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      Gweld y dogfennau sydd eu hangen gan Wasanaeth Llysoedd a Thribiwnlysoedd EF    </span>  </summary>
+  <div class="govuk-details__text">
+    Nawr, mae'n rhaid i chi anfon y canlynol atom<br/>
+<ul>
+<li>Y ddalen flaen wedi’i hargraffu (yn y tab dalen flaen) neu'ch cyfeirnod wedi'i ysgrifennu 1528365719153338 ar ddalen o bapur</li>
+<li>llungopi o'r datganiad cyfreithiol a’r datganiad wedi’u llofnodi</li>
+<li>yr ewyllys wreiddiol</li>
+<li>y ffurflen treth etifeddiant IHT205</li>
+</ul>
+  </div>
+</details>
+</p>
+</div>
+<div class="govuk-grid-column-one-third">
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/in-progress.png" alt="IN PROGRESS" title="IN PROGRESS" /></p>
+</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<br/>
+<h2 class="govuk-heading-l">3. Review application</h2>
+<h2 class="govuk-heading-l">Adolygu'r cais</h2>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.</font></p>
+<p class="govuk-body-s"><font color="#505a5f">Dylai'r camau hyn gael eu cwblhau gan staff Gwasanaeth Llysoedd a Thribiwnlysoedd EF. Gall gymryd ychydig wythnosau cyn i'r adolygiad ddechrau.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Authenticate documents</p>
+</div>
+<div class="govuk-grid-column-one-third"></div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">We will authenticate your documents and match them with your application.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Dilysu dogfennau</p>
+</div>
+<div class="govuk-grid-column-one-third"></div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">Byddwn yn dilysu eich dogfennau ac yn eu paru â'ch cais.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Examine application</p>
+</div>
+<div class="govuk-grid-column-one-third"></div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">Your application will update through any of these case states as it is reviewed by our team:</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<ul class="govuk-list govuk-list--bullet">
+<li>Examining</li>
+<li>Case Matching</li>
+<li>Case selected for Quality Assurance</li>
+<li>Ready to issue</li>
+</ul>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Archwilio'r cais</p>
+</div>
+<div class="govuk-grid-column-one-third"></div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">Byddwn yn adolygu eich cais am wybodaeth anghyflawn neu broblemau ac yn ei ddilysu yn erbyn achosion eraill neu gafeatau. Ar ôl yr adolygiad, byddwn yn paratoi'r grant.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">Bydd eich cais yn cael ei ddiweddaru ac yn symud drwy'r camau hyn fel y bydd yn cael ei adolygu gan ein tîm:</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<ul class="govuk-list govuk-list--bullet">
+<li>Archwilio</li>
+<li>Paru Achos</li>
+<li>Achos wedi’i ddethol ar gyfer Sicrhau Ansawdd</li>
+<li>Barod i’w gychwyn</li>
+</ul>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<h2 class="govuk-heading-l">4. Grant of representation</h2>
+<h2 class="govuk-heading-l">Grant cynrychiolaeth</h2>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">This step is completed by HM Courts and Tribunals Service staff.</font></p>
+<p class="govuk-body-s"><font color="#505a5f">Dylai'r cam hwn gael ei gwblhau gan staff Gwasanaeth Llysoedd a Thribiwnlysoedd EF.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Issue grant of representation</p>
+</div>
+<div class="govuk-grid-column-one-third"></div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">The grant will be delivered in the post a few days after issuing.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s">Cyhoeddi grant cynrychiolaeth</p>
+</div>
+<div class="govuk-grid-column-one-third"></div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p class="govuk-body-s"><font color="#505a5f">Bydd y grant yn cael ei anfon yn y post ychydig ddyddiau ar ôl ei gyhoeddi.</font></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+</div>
+</div>
