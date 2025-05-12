@@ -84,12 +84,9 @@ public class SecurityUtils {
             }
         }
 
-        if (StringUtils.isBlank(authorisation)) {
+        if (StringUtils.isBlank(authorisation) || StringUtils.isBlank(userId)) {
             log.error("No authorisation found in SecurityContext or request");
             throw new NoSecurityContextException();
-        } else if (StringUtils.isBlank(userId)) {
-            log.error("No userId found in SecurityContext or request, get userId from token");
-            getUserId(authorisation);
         }
 
         return SecurityDTO.builder()
@@ -152,7 +149,7 @@ public class SecurityUtils {
     }
 
     public String getUserId(String authToken) {
-        UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
+        UserInfo userInfo = idamApi.retrieveUserInfo(getBearerToken(authToken));
         return Objects.requireNonNull(userInfo.getUid());
     }
 
@@ -213,7 +210,7 @@ public class SecurityUtils {
             }
             idamOpenIdTokenResponse = cacheSchedulerTokenResponse;
             log.info("Getting AccessToken...");
-            return BEARER + idamOpenIdTokenResponse.accessToken;
+            return getBearerToken(idamOpenIdTokenResponse.accessToken);
         } catch (Exception e) {
             log.error("Exception on IDAM token" + e.getMessage());
             throw e;
@@ -233,7 +230,7 @@ public class SecurityUtils {
                 idamOpenIdTokenResponse = cacheTokenResponse;
             }
             log.info("Getting AccessToken...");
-            return BEARER + idamOpenIdTokenResponse.accessToken;
+            return getBearerToken(idamOpenIdTokenResponse.accessToken);
         } catch (Exception e) {
             log.error("Exception on IDAM token" + e.getMessage());
             throw e;
