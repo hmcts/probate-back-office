@@ -99,6 +99,15 @@ public class SecurityUtils {
                 .build();
     }
 
+    public SecurityDTO getOrDefaultCaseworkerSecurityDTO() {
+        try {
+            return getSecurityDTO();
+        } catch (NoSecurityContextException e) {
+            log.info("No security details found in SecurityContext or request");
+        }
+        return getUserByCaseworkerTokenAndServiceSecurityDTO();
+    }
+
     private String getHeader(String headerName) {
         try {
             return httpServletRequest != null ? httpServletRequest.getHeader(headerName) : null;
@@ -152,20 +161,6 @@ public class SecurityUtils {
             .getAuthentication()
             .getPrincipal())
             .getUsername();
-    }
-
-    public String getUserIdFromHttpRequest() {
-        try {
-            if (httpServletRequest != null) {
-                String userId = httpServletRequest.getHeader(USER_ID);
-                if (StringUtils.isNotBlank(userId)) {
-                    return userId;
-                }
-            }
-        } catch (IllegalStateException e) {
-            log.warn("HttpServletRequest not available, falling back to SecurityContext");
-        }
-        return this.getUserId();
     }
 
     public String generateServiceToken() {

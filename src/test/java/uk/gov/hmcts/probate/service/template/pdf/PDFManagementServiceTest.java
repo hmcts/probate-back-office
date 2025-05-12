@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
@@ -111,12 +112,18 @@ class PDFManagementServiceTest {
 
     private PDFManagementService underTest;
 
+    private final SecurityDTO securityDTO = SecurityDTO.builder()
+            .userId("mock-user")
+            .authorisation("authToken")
+            .serviceAuthorisation("serviceAuthToken")
+            .build();
+
     private static final String SELF_URL = "selfURL";
     private static final String BINARY_URL = "binaryURL";
 
     @BeforeEach
     public void setUp() {
-        when(securityUtils.getUserIdFromHttpRequest()).thenReturn("mock-user");
+        when(securityUtils.getOrDefaultCaseworkerSecurityDTO()).thenReturn(securityDTO);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetails);
         when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetails);
         when(pdfServiceConfiguration.getGrantSignatureEncryptedFile()).thenReturn("image.png");

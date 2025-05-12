@@ -358,40 +358,34 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void shouldReturnUserIdFromHttpServletRequest() {
-        when(httpServletRequestMock.getHeader("user-id")).thenReturn("request-user");
+    void shouldReturnSecurityDTOWhenAvailableInContext() {
+        when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH_HEADER");
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn("USER_ID");
+        when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKEN);
 
-        String userId = securityUtils.getUserIdFromHttpRequest();
+        SecurityDTO dto = securityUtils.getOrDefaultCaseworkerSecurityDTO();
 
-        assertEquals("request-user", userId);
+        assertEquals("AUTH_HEADER", dto.getAuthorisation());
+        assertEquals("USER_ID", dto.getUserId());
+        assertEquals(SERVICE_TOKEN, dto.getServiceAuthorisation());
     }
 
     @Test
-    void shouldFallbackToSecurityContextWhenUserIdHeaderIsBlank() {
-        when(httpServletRequestMock.getHeader("user-id")).thenReturn("  ");
+    void shouldFallbackToCaseworkerSecurityDTOWhenNoContextAvailable() {
+        when(httpServletRequestMock.getHeader("Authorization")).thenReturn(null);
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn(null);
+        SecurityContextHolder.clearContext();
 
-        ServiceAndUserDetails principal = new ServiceAndUserDetails("fallback-user",
-                USER_TOKEN, Collections.emptyList(), "test-service");
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, USER_TOKEN);
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        when(authTokenGenerator.generate()).thenReturn("fallback-service");
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(new TokenResponse("fallback-auth", "3600", "id", null, null, null));
+        when(idamApi.retrieveUserInfo(any()))
+                .thenReturn(UserInfo.builder().uid("fallback-user").build());
 
-        String userId = securityUtils.getUserIdFromHttpRequest();
+        SecurityDTO dto = securityUtils.getOrDefaultCaseworkerSecurityDTO();
 
-        assertEquals("fallback-user", userId);
+        assertEquals("Bearer fallback-auth", dto.getAuthorisation());
+        assertEquals("fallback-user", dto.getUserId());
+        assertEquals("fallback-service", dto.getServiceAuthorisation());
     }
-
-    @Test
-    void shouldFallbackToSecurityContextWhenHttpRequestThrows() {
-        when(httpServletRequestMock.getHeader("user-id")).thenThrow(new IllegalStateException("not bound"));
-
-        ServiceAndUserDetails principal = new ServiceAndUserDetails("context-user",
-                USER_TOKEN, Collections.emptyList(), "test-service");
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, USER_TOKEN);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-
-        String userId = securityUtils.getUserIdFromHttpRequest();
-
-        assertEquals("context-user", userId);
-    }
-
 }

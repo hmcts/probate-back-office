@@ -74,7 +74,7 @@ class DocumentManagementServiceImplTest {
             .authorisation("AUTH")
             .serviceAuthorisation("S2S")
             .build();
-        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityUtils.getOrDefaultCaseworkerSecurityDTO()).thenReturn(securityDTO);
         when(securityUtils.getBearerToken("AUTH")).thenReturn("Bearer AUTH");
         when(documentUploadRequestMock.getCaseTypeId()).thenReturn("GrantOfRepresentation");
         when(documentUploadRequestMock.getFiles()).thenReturn(Collections.emptyList());

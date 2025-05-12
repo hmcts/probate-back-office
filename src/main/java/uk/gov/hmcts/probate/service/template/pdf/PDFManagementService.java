@@ -153,7 +153,7 @@ public class PDFManagementService {
                 .documentLink(documentLink)
                 .documentType(documentType)
                 .documentDateAdded(LocalDate.now())
-                .documentGeneratedBy(securityUtils.getUserIdFromHttpRequest())
+                .documentGeneratedBy(securityUtils.getOrDefaultCaseworkerSecurityDTO().getUserId())
                 .build();
         } catch (IOException e) {
             log.error(e.getMessage(), e);

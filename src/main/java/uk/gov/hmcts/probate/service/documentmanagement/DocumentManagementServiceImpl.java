@@ -45,7 +45,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             documentManagementRequestBuilder.perpareDocumentUploadRequest(file,
             documentType);
 
-        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        SecurityDTO securityDTO = securityUtils.getOrDefaultCaseworkerSecurityDTO();
         String auth = securityUtils.getBearerToken(securityDTO.getAuthorisation());
 
         return caseDocumentClient.uploadDocuments(auth, securityDTO.getServiceAuthorisation(),
