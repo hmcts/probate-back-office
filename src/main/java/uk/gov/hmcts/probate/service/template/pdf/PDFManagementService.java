@@ -191,10 +191,8 @@ public class PDFManagementService {
     }
 
     /** Converts an input HTML string to an XHTML string.
-     *
      * This is needed because the underlying pdfGeneratorService uses an XML parser rather
      * than an HTML parser.
-     *
      * @param inputHtml an HTML string
      * @return the input rendered as XHTML
      */
