@@ -8,14 +8,12 @@ import org.mockito.Mock;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.TestSecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.exception.NoSecurityContextException;
 import uk.gov.hmcts.probate.exception.model.InvalidTokenException;
 import uk.gov.hmcts.probate.service.IdamApi;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.validators.AuthTokenValidator;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
@@ -23,7 +21,6 @@ import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -77,30 +74,6 @@ class SecurityUtilsTest {
 
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         assertEquals("AUTH", securityDTO.getAuthorisation());
-    }
-
-    @Test
-    void shouldGetUserAndServiceSecurityDTO() {
-        UserDetails serviceAndUserDetails = new ServiceAndUserDetails("username", USER_TOKEN,
-                Collections.EMPTY_LIST, "servicename");
-        TestSecurityContextHolder.getContext().setAuthentication(
-                new TestingAuthenticationToken(serviceAndUserDetails, USER_TOKEN, "ROLE_USER"));
-        when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH");
-        when(httpServletRequestMock.getHeader("user-id")).thenReturn("USER");
-
-        SecurityDTO securityDTO = securityUtils.getUserAndServiceSecurityDTO();
-        assertEquals("AUTH", securityDTO.getAuthorisation());
-        assertEquals("username", securityDTO.getUserId());
-    }
-
-    @Test
-    void shouldGetUserId() {
-        UserDetails serviceAndUserDetails = new ServiceAndUserDetails("username", USER_TOKEN,
-                Collections.EMPTY_LIST, "servicename");
-        TestSecurityContextHolder.getContext().setAuthentication(
-                new TestingAuthenticationToken(serviceAndUserDetails, USER_TOKEN, "ROLE_USER"));
-        String id = securityUtils.getUserId();
-        assertEquals("username", id);
     }
 
     @Test
@@ -268,7 +241,7 @@ class SecurityUtilsTest {
     }
 
     @Test()
-    void authenticateABlankToken() throws InvalidTokenException {
+    void authenticateABlankToken() {
         assertThrows(InvalidTokenException.class, () -> {
             securityUtils.authenticate(" ");
         });
@@ -320,6 +293,8 @@ class SecurityUtilsTest {
         when(nullRequest.getHeader("Authorization")).thenReturn(null);
         when(nullRequest.getHeader("user-id")).thenReturn(null);
         when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKEN);
+        UserInfo userInfo = UserInfo.builder().uid(AUTH_CLIENT_ID).build();
+        when(idamApi.retrieveUserInfo(any())).thenReturn(userInfo);
 
         SecurityDTO dto = securityUtils.getSecurityDTO();
 
@@ -340,19 +315,20 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void shouldFallbackToSecurityContextIfHeaderMissing() {
+    void shouldGetUserIdIfHeaderMissing() {
         when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH_HEADER");
         when(httpServletRequestMock.getHeader("user-id")).thenReturn(null);
 
         SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken("userFromContext", "tokenFromContext")
+                new UsernamePasswordAuthenticationToken("userFromContext", "AUTH_HEADER")
         );
-
         when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKEN);
+        UserInfo userInfo = UserInfo.builder().uid("userFromContext").build();
+        when(idamApi.retrieveUserInfo(any())).thenReturn(userInfo);
 
         SecurityDTO dto = securityUtils.getSecurityDTO();
 
-        assertEquals("tokenFromContext", dto.getAuthorisation());
+        assertEquals("AUTH_HEADER", dto.getAuthorisation());
         assertEquals("userFromContext", dto.getUserId());
         assertEquals(SERVICE_TOKEN, dto.getServiceAuthorisation());
     }

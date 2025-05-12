@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.security;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +13,6 @@ import org.springframework.util.ObjectUtils;
 import uk.gov.hmcts.probate.exception.NoSecurityContextException;
 import uk.gov.hmcts.probate.exception.model.InvalidTokenException;
 import uk.gov.hmcts.probate.service.IdamApi;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.validators.AuthTokenValidator;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
@@ -75,25 +75,32 @@ public class SecurityUtils {
         String authorisation = getHeader(AUTHORIZATION);
         String userId = getHeader(USER_ID);
 
-        if (StringUtils.isBlank(authorisation) || StringUtils.isBlank(userId)) {
-            log.warn("No authorisation or userId found in request, checking SecurityContext");
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            if (auth != null) {
+        if (StringUtils.isNotBlank(authorisation) && StringUtils.isNotBlank(userId)) {
+            return buildSecurityDTO(authorisation, userId);
+        }
+
+        log.warn("Missing authorisation or userId from headers, checking SecurityContext");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            if (StringUtils.isBlank(authorisation)) {
                 authorisation = getAuthCredentials(auth);
-                userId = getAuthPrincipal(auth);
+            }
+
+            if (StringUtils.isBlank(userId)) {
+                try {
+                    userId = getUserId(authorisation);
+                } catch (FeignException | NullPointerException e) {
+                    log.error("Failed to resolve user ID from token: {}", e.getMessage());
+                }
             }
         }
 
         if (StringUtils.isBlank(authorisation) || StringUtils.isBlank(userId)) {
-            log.error("No authorisation found in SecurityContext or request");
+            log.error("Unable to resolve security context: missing auth or userId");
             throw new NoSecurityContextException();
         }
 
-        return SecurityDTO.builder()
-                .authorisation(authorisation)
-                .userId(userId)
-                .serviceAuthorisation(generateServiceToken())
-                .build();
+        return buildSecurityDTO(authorisation, userId);
     }
 
     public SecurityDTO getOrDefaultCaseworkerSecurityDTO() {
@@ -118,18 +125,6 @@ public class SecurityUtils {
         return auth.getCredentials() != null ? auth.getCredentials().toString() : null;
     }
 
-    private String getAuthPrincipal(Authentication auth) {
-        return (auth.getPrincipal() instanceof String principal) ? principal : null;
-    }
-
-    public SecurityDTO getUserAndServiceSecurityDTO() {
-        return SecurityDTO.builder()
-            .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
-            .userId(getUserId())
-            .serviceAuthorisation(generateServiceToken())
-            .build();
-    }
-
     public SecurityDTO getUserBySchedulerTokenAndServiceSecurityDTO() {
         String token = getSchedulerToken();
         return SecurityDTO.builder()
@@ -151,13 +146,6 @@ public class SecurityUtils {
     public String getUserId(String authToken) {
         UserInfo userInfo = idamApi.retrieveUserInfo(getBearerToken(authToken));
         return Objects.requireNonNull(userInfo.getUid());
-    }
-
-    public String getUserId() {
-        return ((ServiceAndUserDetails) SecurityContextHolder.getContext()
-            .getAuthentication()
-            .getPrincipal())
-            .getUsername();
     }
 
     public String generateServiceToken() {
@@ -312,5 +300,13 @@ public class SecurityUtils {
 
     private String getSearchQuery(String userId) {
         return MessageFormat.format("id:{0}", userId);
+    }
+
+    private SecurityDTO buildSecurityDTO(String authorisation, String userId) {
+        return SecurityDTO.builder()
+                .authorisation(authorisation)
+                .userId(userId)
+                .serviceAuthorisation(generateServiceToken())
+                .build();
     }
 }
