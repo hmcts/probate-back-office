@@ -31,8 +31,7 @@ class CaveatExpiryTaskTest {
 
     @InjectMocks
     private CaveatExpiryTask caveatExpiryTask;
-    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
-    private String adhocDate = "2022-09-05";
+    private static final String DATE = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
 
     @Test
     void shouldExpireCaveatCases() {
@@ -41,8 +40,8 @@ class CaveatExpiryTaskTest {
         caveatExpiryTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform caveat expiry finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(date);
-        verify(caveatExpiryService).expireCaveats(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
+        verify(caveatExpiryService).expireCaveats(DATE);
     }
 
     @Test
@@ -53,6 +52,7 @@ class CaveatExpiryTaskTest {
         caveatExpiryTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform caveat expiry finished", responseEntity.getBody());
+        final String adhocDate = "2022-09-05";
         verify(dataExtractDateValidator).dateValidator(adhocDate);
         verify(caveatExpiryService).expireCaveats(adhocDate);
     }
@@ -60,18 +60,18 @@ class CaveatExpiryTaskTest {
     @Test
     void shouldThrowClientExceptionWithBadRequestForExpireCaveatCasesWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
-                .dateValidator(date);
+                .dateValidator(DATE);
         caveatExpiryTask.run();
-        verify(dataExtractDateValidator).dateValidator(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
         verifyNoInteractions(caveatExpiryService);
     }
 
     @Test
     void shouldThrowExceptionForExpireCaveatCases() {
         doThrow(new NullPointerException()).when(dataExtractDateValidator)
-                .dateValidator(date);
+                .dateValidator(DATE);
         caveatExpiryTask.run();
-        verify(dataExtractDateValidator).dateValidator(date);
+        verify(dataExtractDateValidator).dateValidator(DATE);
         verifyNoInteractions(caveatExpiryService);
     }
 }

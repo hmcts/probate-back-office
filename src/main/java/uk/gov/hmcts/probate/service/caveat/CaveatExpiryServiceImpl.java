@@ -71,14 +71,13 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
     }
 
     private EventId getEventIdForCaveatToExpireGivenPreconditionState(CaseState caveatState) {
-        EventId eventId = switch (caveatState) {
+        return switch (caveatState) {
             case CAVEAT_NOT_MATCHED -> CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
             case CAVEAT_AWAITING_RESOLUTION -> CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
             case CAVEAT_AWAITING_WARNING_RESPONSE -> CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
             case CAVEAT_WARNING_VALIDATION -> CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
             default -> throw new IllegalStateException("Unexpected state for Caveat Auto Expiry: " + caveatState);
         };
-        return eventId;
     }
 
 }

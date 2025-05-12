@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -74,14 +73,14 @@ class CaveatExpiryServiceImplTest {
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
 
         verify(ccdClientApi, times(1)).updateCaseAsCaseworker(
-                eq(CcdCaseType.CAVEAT),
-                eq(CASE_ID.toString()),
-                eq(returnedDetails.getLastModified()),
-                eq(caveatData),
-                eq(expectedEventId),
-                eq(securityDTO),
-                eq("Caveat Auto Expired"),
-                eq("Caveat Auto Expired")
+                CcdCaseType.CAVEAT,
+                CASE_ID.toString(),
+                returnedDetails.getLastModified(),
+                caveatData,
+                expectedEventId,
+                securityDTO,
+                "Caveat Auto Expired",
+                "Caveat Auto Expired"
         );
 
         assertEquals("true", caveatData.getAutoClosedExpiry());
@@ -109,7 +108,6 @@ class CaveatExpiryServiceImplTest {
 
     @Test
     void shouldCatchExceptionDuringCaseUpdate() {
-        CaveatData caveatData = CaveatData.builder().build();
         ReturnedCaveatDetails returnedDetails = new ReturnedCaveatDetails(CaveatData.builder().build(),
                 LocalDateTime.now(), CaseState.CAVEAT_NOT_MATCHED, 1L);
 
