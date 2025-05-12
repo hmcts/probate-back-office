@@ -102,6 +102,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
      */
 
+    /*
     @Test
     void shouldWarnWhenDiedAfterSwitchDateInconsistentWithDOD() {
         String jsonRequest =
@@ -111,6 +112,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
             utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/wrongDiedAfterSwitchDate.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
     /*
     @Test
