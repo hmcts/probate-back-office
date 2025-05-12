@@ -166,6 +166,7 @@ def versions = [
         documentClient                  : '1.8.1',
         elasticSearchVersion            : '7.17.24',
         hmctsJavaLogging                : '6.1.7',
+        jsoup                           : '1.18.3',
         jacksonDatabind                 : '2.17.1',
         lombok                          : '1.18.36',
         mapStruct                       : '1.2.0.Final',
@@ -263,6 +264,7 @@ dependencies {
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.4'
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
+  implementation group: 'org.jsoup', name: 'jsoup', version: versions.jsoup
 
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.2.1-RELEASE'
