@@ -50,26 +50,30 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Calling Send Stop Reminder from date, to date {} {}",
                         firstStopReminderDate, firstStopReminderDate);
                 dataExtractDateValidator.dateValidator(firstStopReminderDate, firstStopReminderDate);
-                log.info("Perform Send Stop Reminder (8-week) started");
+                log.info("Perform Send First Stop Reminder started");
                 automatedNotificationService.sendStopReminder(firstStopReminderDate, true);
-                log.info("Perform Send Stop Reminder (8-week) finished");
-
-            }
-            if (!featureToggleService.isSecondStopReminderFeatureToggleOn()) {
-                log.info("Feature toggle SecondStopReminderFeatureToggle is off, skipping task");
-            } else {
-                dataExtractDateValidator.dateValidator(secondStopReminderDate, secondStopReminderDate);
-                log.info("Perform Send Stop Reminder (12-week) started");
-                automatedNotificationService.sendStopReminder(secondStopReminderDate, false);
-                log.info("Perform Send Stop Reminder (12-week) finished");
+                log.info("Perform Send First Stop Reminder finished");
 
             }
         } catch (ApiClientException e) {
             log.error(e.getMessage());
         } catch (Exception e) {
-            log.error("Error on SendNotificationsTask Scheduler Send Stop Reminder task {}", e.getMessage());
+            log.error("Error on SendNotificationsTask Scheduler Send First Stop Reminder task {}", e.getMessage());
+        }
+
+        try {
+            if (!featureToggleService.isSecondStopReminderFeatureToggleOn()) {
+                log.info("Feature toggle SecondStopReminderFeatureToggle is off, skipping task");
+            } else {
+                dataExtractDateValidator.dateValidator(secondStopReminderDate, secondStopReminderDate);
+                log.info("Perform Send Second Stop Reminder started");
+                automatedNotificationService.sendStopReminder(secondStopReminderDate, false);
+                log.info("Perform Send Second Stop Reminder finished");
+            }
+        } catch (ApiClientException e) {
+            log.error(e.getMessage());
+        } catch (Exception e) {
+            log.error("Error on SendNotificationsTask Scheduler Send Second Stop Reminder task {}", e.getMessage());
         }
     }
-
-
 }

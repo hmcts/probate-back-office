@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -4743,11 +4744,12 @@ class CallbackResponseTransformerTest {
         assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
     }
 
-    @Test
-    void shouldReturnExistingDateWhenExcludedEventIsMatched() {
+    @ParameterizedTest
+    @ValueSource(strings = {"boHistoryCorrection", "boCorrection", "automatedNotification"})
+    void shouldReturnExistingDateWhenExcludedEventIsMatched(String excludedEvent) {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .lastModifiedDateForDormant(dateTime);
-        when(callbackRequestMock.getEventId()).thenReturn("boHistoryCorrection");
+        when(callbackRequestMock.getEventId()).thenReturn(excludedEvent);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 

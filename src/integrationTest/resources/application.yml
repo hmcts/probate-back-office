@@ -518,4 +518,4 @@ disposal:
 automated_notification:
   stop_reminder:
     first_notification_days: 56
-    second_notification_days: 28
+    second_notification_days: 84

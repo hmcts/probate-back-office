@@ -100,7 +100,7 @@ public class SecurityUtils {
         try {
             return getSecurityDTO();
         } catch (NoSecurityContextException e) {
-            log.info("No security details found in SecurityContext or request");
+            log.info("Unable to getSecurityDTO, use default caseworker token");
         }
         return getUserByCaseworkerTokenAndServiceSecurityDTO();
     }
