@@ -28,7 +28,11 @@ public enum EventId {
     CITIZEN_HUB_RESPONSE("citizenHubResponse"),
     CITIZEN_HUB_RESPONSE_DRAFT("citizenHubResponseDraft"),
     DISPOSE_CASE("disposeCase"),
-    GOP_CREATE_DRAFT("createDraft");
+    GOP_CREATE_DRAFT("createDraft"),
+    CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION("caveatExpiredForAwaitingCaveatResolution"),
+    CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED("caveatExpiredForCaveaNotMatched"),
+    CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION("caveatExpiredForWarningValidation"),
+    CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE("caveatExpiredForAwaitingWarningResponse");
     @Getter
     private final String name;
 

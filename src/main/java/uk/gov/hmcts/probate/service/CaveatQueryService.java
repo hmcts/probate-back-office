@@ -32,6 +32,7 @@ import java.util.Locale;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
+import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +47,11 @@ public class CaveatQueryService {
     private static final String STATE = "state";
     private static final String CAVEAT_NOT_FOUND_CODE = "caveatNotFound";
     private static final String CAVEAT_NOT_FOUND_CODE_WELSH = "caveatNotFoundWelsh";
+    private static final String DATA_EXPIRY_DATE = "data.expiryDate";
+    private static final String CAVEAT_NOT_MATCHED = "CaveatNotMatched";
+    private static final String AWAITING_CAVEAT_RESOLUTION = "AwaitingCaveatResolution";
+    private static final String WARNING_VALIDATION = "WarningValidation";
+    private static final String AWAITING_WARNING_RESPONSE = "AwaitingWarningResponse";
 
     private final RestTemplate restTemplate;
     private final HttpHeadersFactory headers;
@@ -121,5 +127,17 @@ public class CaveatQueryService {
         }
 
         return returnedCaveats.getCaveats();
+    }
+
+    public List<ReturnedCaveatDetails> findCaveatExpiredCases(String expiryDate) {
+        BoolQueryBuilder query = boolQuery()
+                .must(matchQuery(DATA_EXPIRY_DATE, expiryDate))
+                .should(matchQuery(STATE, CAVEAT_NOT_MATCHED))
+                .should(matchQuery(STATE, AWAITING_CAVEAT_RESOLUTION))
+                .should(matchQuery(STATE, WARNING_VALIDATION))
+                .should(matchQuery(STATE, AWAITING_WARNING_RESPONSE))
+                .minimumShouldMatch(1);
+        String jsonQuery = new SearchSourceBuilder().query(query).toString();
+        return runQuery(CAVEAT, jsonQuery);
     }
 }
