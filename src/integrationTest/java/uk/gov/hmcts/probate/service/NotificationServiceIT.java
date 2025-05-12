@@ -2184,7 +2184,7 @@ class NotificationServiceIT {
     void verifyEmailPreview()
             throws NotificationClientException {
 
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), any())).thenReturn(Document.builder()
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
@@ -2199,7 +2199,7 @@ class NotificationServiceIT {
                 .build(), LAST_MODIFIED, ID);
         notificationService.emailPreview(caseDetails);
 
-        verify(pdfManagementService).generateDocmosisDocumentAndUpload(any(), eq(SENT_EMAIL));
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
