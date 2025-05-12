@@ -37,14 +37,14 @@ class SendNotificationsTaskTest {
     private SendNotificationsTask sendNotificationsTask;
     private static final String AD_HOC_DATE = "2022-09-05";
     private static final String FIRST_STOP_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(56).toString();
-    private static final String SECOND_STOP_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(84).toString();
+    private static final String SECOND_STOP_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(28).toString();
     private static final String DEFAULT_FIRST_DATE = DATE_FORMAT.format(LocalDate.now().minusDays(56));
-    private static final String DEFAULT_SECOND_DATE = DATE_FORMAT.format(LocalDate.now().minusDays(84));
+    private static final String DEFAULT_SECOND_DATE = DATE_FORMAT.format(LocalDate.now().minusDays(28));
 
     @BeforeEach
     void setUp() {
         ReflectionTestUtils.setField(sendNotificationsTask, "firstNotificationDays", 56);
-        ReflectionTestUtils.setField(sendNotificationsTask, "secondNotificationDays", 84);
+        ReflectionTestUtils.setField(sendNotificationsTask, "secondNotificationDays", 28);
         when(featureToggleService.isFirstStopReminderFeatureToggleOn())
                 .thenReturn(true);
     }
