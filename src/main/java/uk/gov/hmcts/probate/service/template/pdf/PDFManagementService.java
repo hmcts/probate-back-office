@@ -22,7 +22,6 @@ import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -36,10 +35,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_REC
 public class PDFManagementService {
 
     static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion";
-    private static final String USER_ID = "user-id";
     private final PDFGeneratorService pdfGeneratorService;
     private final DocumentManagementService documentManagementService;
-    private final HttpServletRequest httpServletRequest;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFDecoratorService pdfDecoratorService;
@@ -47,7 +44,6 @@ public class PDFManagementService {
 
     @Autowired
     public PDFManagementService(PDFGeneratorService pdfGeneratorService,
-                                HttpServletRequest httpServletRequest,
                                 DocumentManagementService documentManagementService,
                                 PDFServiceConfiguration pdfServiceConfiguration,
                                 FileSystemResourceService fileSystemResourceService,
@@ -55,7 +51,6 @@ public class PDFManagementService {
                                 SecurityUtils securityUtils) {
         this.pdfGeneratorService = pdfGeneratorService;
         this.documentManagementService = documentManagementService;
-        this.httpServletRequest = httpServletRequest;
         this.pdfServiceConfiguration = pdfServiceConfiguration;
         this.fileSystemResourceService = fileSystemResourceService;
         this.pdfDecoratorService = pdfDecoratorService;
@@ -192,6 +187,4 @@ public class PDFManagementService {
     public String getDecodedSignature() {
         return decryptedFileAsBase64String(pdfServiceConfiguration.getGrantSignatureEncryptedFile());
     }
-
-
 }

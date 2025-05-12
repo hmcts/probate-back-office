@@ -123,7 +123,7 @@ class PDFManagementServiceTest {
         when(pdfServiceConfiguration.getGrantSignatureSecretKey()).thenReturn("testkey123456789");
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(any(String.class)))
                 .thenReturn("1kbCfLrFBFTQpS2PnDDYW2r11jfRBVFbjhdLYDEMCR8=");
-        underTest = new PDFManagementService(pdfGeneratorServiceMock, httpServletRequest, documentManagementServiceMock,
+        underTest = new PDFManagementService(pdfGeneratorServiceMock, documentManagementServiceMock,
                 pdfServiceConfiguration, fileSystemResourceServiceMock, pdfDecoratorService, securityUtils);
     }
 
