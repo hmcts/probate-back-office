@@ -83,7 +83,7 @@ class CaveatExpiryServiceImplTest {
                 "Caveat Auto Expired"
         );
 
-        assertEquals("true", caveatData.getAutoClosedExpiry());
+        assertEquals("Yes", caveatData.getAutoClosedExpiry());
     }
 
     private static Stream<Arguments> validCaveatStates() {

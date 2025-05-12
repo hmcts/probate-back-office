@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.probate.model.cases.CaseState;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
@@ -67,7 +68,7 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
     }
 
     private void updateAutoExpiredCaveat(CaveatData caveatData) {
-        caveatData.setAutoClosedExpiry(String.valueOf(Boolean.TRUE));
+        caveatData.setAutoClosedExpiry(YES);
     }
 
     private EventId getEventIdForCaveatToExpireGivenPreconditionState(CaseState caveatState) {
