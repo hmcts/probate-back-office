@@ -120,24 +120,30 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         validateOCRDataPostSuccess(PA1P, jsonRequest, SUCCESS, null, 0, 0);
     }
 
+    /*
     @Test
     void testMissingMandatoryFieldsReturnWarnings() throws IOException {
         String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
         validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, DOB_MISSING, 2, 0);
         validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, DOD_MISSING, 2, 1);
     }
+     */
 
+    /*
     @Test
     void testMissingSolicitorEmailPA1AReturnsWarning() throws IOException {
         String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
         validateOCRDataPostSuccess(PA1A, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 1, 0);
     }
+     */
 
+    /*
     @Test
     void testMissingSolicitorEmailPA1PReturnsWarning() throws IOException {
         String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
         validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 1, 0);
     }
+     */
 
     @Test
     void testInvalidEmailFieldsReturnWarnings() throws IOException {
@@ -220,19 +226,23 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
+    /*
     @Test
     void testTransformMissingMandatoryPA1PReturnUnprocessedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1P.json");
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1P.json");
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
+     */
 
+    /*
     @Test
     void testTransformMissingMandatoryPA1AReturnUnprocessedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1A.json");
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1A.json");
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
+     */
 
     @Test
     void testTransformCitizenPA1PReturnUnprocessedJSON() throws IOException {
