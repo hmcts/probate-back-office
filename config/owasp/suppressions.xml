@@ -4,7 +4,7 @@
         <cve>CVE-2024-45772</cve>
     </suppress>
 
-    <suppress until = "2025-05-10">
+    <suppress until = "2026-05-10">
         <!--
         There is no available resolution. We should not (but do in a roundabout way which
         the changes in this PR should start removing) be using the affected functionality.
