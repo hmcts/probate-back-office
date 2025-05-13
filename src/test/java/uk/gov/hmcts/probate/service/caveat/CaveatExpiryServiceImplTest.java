@@ -71,19 +71,23 @@ class CaveatExpiryServiceImplTest {
                 .thenReturn(List.of(returnedDetails));
 
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
+        uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData updatedCaveat =
+                uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
+                    .autoClosedExpiry(Boolean.TRUE)
+                    .build();
 
         verify(ccdClientApi, times(1)).updateCaseAsCaseworker(
                 CcdCaseType.CAVEAT,
                 CASE_ID.toString(),
                 returnedDetails.getLastModified(),
-                caveatData,
+                updatedCaveat,
                 expectedEventId,
                 securityDTO,
                 "Caveat Auto Expired",
                 "Caveat Auto Expired"
         );
 
-        assertEquals("Yes", caveatData.getAutoClosedExpiry());
+        assertEquals(Boolean.TRUE, updatedCaveat.getAutoClosedExpiry());
     }
 
     private static Stream<Arguments> validCaveatStates() {
