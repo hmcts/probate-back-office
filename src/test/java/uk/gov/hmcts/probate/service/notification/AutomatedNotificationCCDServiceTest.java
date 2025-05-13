@@ -1,15 +1,5 @@
 package uk.gov.hmcts.probate.service.notification;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
-
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -38,6 +28,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
+import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 @ExtendWith(SpringExtension.class)
 class AutomatedNotificationCCDServiceTest {
@@ -73,7 +75,8 @@ class AutomatedNotificationCCDServiceTest {
 
         Document sentEmail = createMockDocument("newEmail.pdf");
 
-        automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, true);
+        automatedNotificationCCDService
+                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, FIRST_STOP_REMINDER);
 
         ArgumentCaptor<GrantOfRepresentationData> captor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
         verify(ccdClientApi).updateCaseAsCaseworker(
@@ -98,7 +101,8 @@ class AutomatedNotificationCCDServiceTest {
 
         Document sentEmail = createMockDocument("newEmail.pdf");
 
-        automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, false);
+        automatedNotificationCCDService
+                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, SECOND_STOP_REMINDER);
 
         ArgumentCaptor<GrantOfRepresentationData> captor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
         verify(ccdClientApi).updateCaseAsCaseworker(
@@ -153,7 +157,8 @@ class AutomatedNotificationCCDServiceTest {
 
         Document sentEmail = createMockDocument("newEmail.pdf");
 
-        automatedNotificationCCDService.saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, true);
+        automatedNotificationCCDService
+                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, FIRST_STOP_REMINDER);
 
         ArgumentCaptor<GrantOfRepresentationData> captor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
         verify(ccdClientApi).updateCaseAsCaseworker(

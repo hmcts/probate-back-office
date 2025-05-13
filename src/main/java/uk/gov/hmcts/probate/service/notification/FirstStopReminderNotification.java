@@ -7,6 +7,8 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.service.notify.NotificationClientException;
 
+import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
+
 @Service
 public class FirstStopReminderNotification implements NotificationStrategy {
     private final NotificationService notificationService;
@@ -22,7 +24,7 @@ public class FirstStopReminderNotification implements NotificationStrategy {
 
     @Override
     public boolean matchesType(NotificationType type) {
-        return type == NotificationType.FIRST_STOP_REMINDER;
+        return type == FIRST_STOP_REMINDER;
     }
 
     @Override
@@ -33,5 +35,10 @@ public class FirstStopReminderNotification implements NotificationStrategy {
     @Override
     public boolean isFirstReminder() {
         return true;
+    }
+
+    @Override
+    public NotificationType getType() {
+        return FIRST_STOP_REMINDER;
     }
 }

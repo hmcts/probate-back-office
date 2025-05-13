@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -37,10 +38,10 @@ public class AutomatedNotificationCCDService {
                                  final String caseId,
                                  final SecurityDTO securityDTO,
                                  final Document sentEmail,
-                                 final boolean isFirstStopReminder) {
+                                 final NotificationType notificationType) {
         log.info("AutomatedNotificationCCDService buildCaseData for case id: {}", caseId);
-        GrantOfRepresentationData data = buildCaseData(caseDetails.getData(), sentEmail, isFirstStopReminder);
-        log.info("AutomatedNotificationCCDService saveNotification to Case: " + caseId);
+        GrantOfRepresentationData data = buildCaseData(caseDetails.getData(), sentEmail, notificationType);
+        log.info("AutomatedNotificationCCDService saveNotification to Case: {}", caseId);
         try {
             ccdClientApi.updateCaseAsCaseworker(GRANT_OF_REPRESENTATION, caseId, caseDetails.getLastModified(), data,
                     EventId.AUTOMATED_NOTIFICATION, securityDTO, EVENT_DESCRIPTION, EVENT_SUMMARY);
@@ -51,19 +52,18 @@ public class AutomatedNotificationCCDService {
 
     private GrantOfRepresentationData buildCaseData(Map<String, Object> data,
                                                     Document sentEmail,
-                                                    boolean isFirstStopReminder) {
+                                                    NotificationType notificationType) {
         List<CollectionMember<ProbateDocument>> notifications =
                 getProbateDocuments(sentEmail, data);
-        if (isFirstStopReminder) {
-            return GrantOfRepresentationData.builder()
-                .probateNotificationsGenerated(notifications)
-                .firstStopReminderSentDate(LocalDate.now())
-                .build();
-        } else {
-            return GrantOfRepresentationData.builder()
-                .probateNotificationsGenerated(notifications)
-                .build();
-        }
+        return switch (notificationType) {
+            case FIRST_STOP_REMINDER -> GrantOfRepresentationData.builder()
+                    .probateNotificationsGenerated(notifications)
+                    .firstStopReminderSentDate(LocalDate.now())
+                    .build();
+            case SECOND_STOP_REMINDER -> GrantOfRepresentationData.builder()
+                    .probateNotificationsGenerated(notifications)
+                    .build();
+        };
     }
 
     private List<CollectionMember<ProbateDocument>> getProbateDocuments(

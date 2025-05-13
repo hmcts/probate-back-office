@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.notification;
 
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -23,11 +22,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.SearchResult;
 import uk.gov.service.notify.NotificationClientException;
@@ -39,16 +36,10 @@ class AutomatedNotificationServiceTest {
     private ElasticSearchRepository elasticSearchRepository;
 
     @Mock
-    private NotificationService notificationService;
-
-    @Mock
     private AutomatedNotificationCCDService automatedNotificationCCDService;
 
     @Mock
     private SecurityUtils securityUtils;
-
-    @Mock
-    private CaseData caseDataMock;
 
     @Mock
     private FirstStopReminderNotification firstStopReminderNotification;
@@ -121,7 +112,7 @@ class AutomatedNotificationServiceTest {
                 .thenThrow(new RuntimeException("ElasticSearch error"));
         assertDoesNotThrow(() -> automatedNotificationService
                 .sendNotification(JOB_DATE, FIRST_STOP_REMINDER));
-        verify(automatedNotificationCCDService, never()).saveNotification(any(), any(), any(), any(), anyBoolean());
+        verify(automatedNotificationCCDService, never()).saveNotification(any(), any(), any(), any(), any());
     }
 
     @Test
@@ -163,7 +154,7 @@ class AutomatedNotificationServiceTest {
 
         verify(firstStopReminderNotification, times(1)).sendEmail(mockCaseDetails);
         verify(firstStopReminderNotification, times(1)).sendEmail(secondCase);
-        verify(automatedNotificationCCDService, times(2)).saveNotification(any(), any(), any(), any(), eq(true));
+        verify(automatedNotificationCCDService, times(2)).saveNotification(any(), any(), any(), any(), any());
     }
 
 

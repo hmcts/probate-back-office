@@ -14,4 +14,6 @@ public interface NotificationStrategy {
     Document sendEmail(CaseDetails caseDetails) throws NotificationClientException;
 
     boolean isFirstReminder();
+
+    NotificationType getType();
 }

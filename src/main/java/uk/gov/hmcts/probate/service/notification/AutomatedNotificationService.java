@@ -55,6 +55,8 @@ public class AutomatedNotificationService {
         SearchResult searchResult = elasticSearchRepository.fetchFirstPage(
                 securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
                 query, date, date);
+        log.info("sendStopReminder query executed for date: {}, cases found: {}",
+                date, searchResult.getTotal());
         if (searchResult.getTotal() == 0) {
             log.info("No cases found for query: {} for date: {}", query, date);
             return;
@@ -84,7 +86,7 @@ public class AutomatedNotificationService {
                 Document sentEmail = strategy.sendEmail(caseDetails);
                 automatedNotificationCCDService.saveNotification(
                         caseDetails, caseDetails.getId().toString(),
-                        securityDTO, sentEmail, strategy.isFirstReminder()
+                        securityDTO, sentEmail, strategy.getType()
                 );
             } catch (NotificationClientException | RuntimeException e) {
                 log.warn("Failed to send notification for case ID {}: {}", caseDetails.getId(), e.getMessage());
