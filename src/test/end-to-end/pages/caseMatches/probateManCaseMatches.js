@@ -22,14 +22,14 @@ module.exports = async function (caseRef, nextStepName) {
     }
     const legacyApplication = {css: '#caseMatches_%s_%s > fieldset > ccd-field-read:nth-child(2) > div > ccd-field-read-label > div > dl > dd'};
     const legacyApplicationTypeText = 'Legacy LEGACY APPLICATION';
-    const removeBtnLocator = {css: '#caseMatches > div > div > div:nth-child(%s) > div > div.float-right > button'};
+    const removeBtnLocator = {css: '#caseMatches_%s_%s > div > div.float-right > button'};
     const caseMatchesValidYesLocator = {css: '#caseMatches_%s_valid_Yes'};
     const caseMatchesImportNoLocator = {css: '#caseMatches_%s_doImport_No'};
     let i = numOfElements;
     await I.logInfo('The number of cases is : ', i);
     /* eslint-disable no-await-in-loop */
     while (i > 1) {
-        const removeBtnLocatorNthChild = removeBtnLocator.css.replace(/%s/g, i);
+        const removeBtnLocatorNthChild = removeBtnLocator.css.replace(/%s/g, i-1);
         const caseMatchesValidYesLocatorNthChild = caseMatchesValidYesLocator.css.replace(/%s/g, i-1);
         const caseMatchesImportNoLocatorNthChild = caseMatchesImportNoLocator.css.replace(/%s/g, i-1);
         await I.scrollTo(removeBtnLocatorNthChild);
@@ -48,6 +48,7 @@ module.exports = async function (caseRef, nextStepName) {
             await I.click(caseMatchesValidYesLocatorNthChild);
             await I.waitForElement(caseMatchesImportNoLocatorNthChild);
             await I.click(caseMatchesImportNoLocatorNthChild);
+            break;
         }
         // eslint-disable-next-line no-plusplus
         i--;
