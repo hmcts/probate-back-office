@@ -10,6 +10,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +21,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -30,7 +32,7 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.SearchResult;
 import uk.gov.service.notify.NotificationClientException;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 class AutomatedNotificationServiceTest {
 
     @Mock
@@ -48,19 +50,24 @@ class AutomatedNotificationServiceTest {
     @Mock
     private CaseData caseDataMock;
 
+    @Mock
+    private FirstStopReminderNotification firstStopReminderNotification;
+
+    @Mock
+    private SecondStopReminderNotification secondStopReminderNotification;
+
     @InjectMocks
     private AutomatedNotificationService automatedNotificationService;
 
 
     private static final String JOB_DATE = "2025-02-07";
 
-    private SecurityDTO mockSecurityDTO;
     private CaseDetails mockCaseDetails;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws NotificationClientException {
         mockCaseDetails = mock(CaseDetails.class);
-        mockSecurityDTO = mock(SecurityDTO.class);
+        SecurityDTO mockSecurityDTO = mock(SecurityDTO.class);
 
         mockCaseDetails = CaseDetails.builder()
                 .id(123L)
@@ -75,13 +82,23 @@ class AutomatedNotificationServiceTest {
                         .total(1)
                         .cases(List.of(mockCaseDetails))
                         .build());
+
+        when(firstStopReminderNotification.sendEmail(any())).thenReturn(mock(Document.class));
+        when(firstStopReminderNotification.matchesType(FIRST_STOP_REMINDER)).thenReturn(true);
+        when(firstStopReminderNotification.isFirstReminder()).thenReturn(true);
+
+        automatedNotificationService = new AutomatedNotificationService(
+                List.of(firstStopReminderNotification, secondStopReminderNotification),
+                securityUtils,
+                elasticSearchRepository,
+                automatedNotificationCCDService);
     }
 
     @Test
     void shouldSendFirstStopReminderSuccessfully() throws NotificationClientException {
-        automatedNotificationService.sendStopReminder(JOB_DATE, true);
+        automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER);
 
-        verify(notificationService, times(1)).sendStopReminderEmail(mockCaseDetails, true);
+        verify(firstStopReminderNotification, times(1)).sendEmail(mockCaseDetails);
         verify(elasticSearchRepository, times(1))
                 .fetchFirstPage(any(), any(), any(), any(), any());
         verify(elasticSearchRepository, times(1))
@@ -90,12 +107,12 @@ class AutomatedNotificationServiceTest {
 
     @Test
     void shouldHandleNotificationExceptionGracefully() throws NotificationClientException {
-        doThrow(new NotificationClientException("Email failed")).when(notificationService)
-                .sendStopReminderEmail(any(), anyBoolean());
+        doThrow(new NotificationClientException("Email failed")).when(firstStopReminderNotification)
+                .sendEmail(any());
 
         assertDoesNotThrow(() -> automatedNotificationService
-                .sendStopReminder(JOB_DATE, true));
-        verify(notificationService, times(1)).sendStopReminderEmail(any(), anyBoolean());
+                .sendNotification(JOB_DATE, FIRST_STOP_REMINDER));
+        verify(firstStopReminderNotification, times(1)).sendEmail(any());
     }
 
     @Test
@@ -103,7 +120,7 @@ class AutomatedNotificationServiceTest {
         when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any()))
                 .thenThrow(new RuntimeException("ElasticSearch error"));
         assertDoesNotThrow(() -> automatedNotificationService
-                .sendStopReminder(JOB_DATE, true));
+                .sendNotification(JOB_DATE, FIRST_STOP_REMINDER));
         verify(automatedNotificationCCDService, never()).saveNotification(any(), any(), any(), any(), anyBoolean());
     }
 
@@ -112,9 +129,9 @@ class AutomatedNotificationServiceTest {
         SearchResult emptySearchResult = SearchResult.builder().total(0).cases(Collections.emptyList()).build();
         when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any())).thenReturn(emptySearchResult);
 
-        automatedNotificationService.sendStopReminder(JOB_DATE, true);
+        automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER);
 
-        verify(notificationService, never()).sendStopReminderEmail(any(), anyBoolean());
+        verify(firstStopReminderNotification, never()).sendEmail(any());
         verify(elasticSearchRepository, times(1))
                 .fetchFirstPage(any(), any(), any(), any(), any());
     }
@@ -142,10 +159,10 @@ class AutomatedNotificationServiceTest {
                 .thenReturn(firstNextPage)
                 .thenReturn(emptyNextPage);
 
-        automatedNotificationService.sendStopReminder(JOB_DATE, true);
+        automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER);
 
-        verify(notificationService, times(1)).sendStopReminderEmail(mockCaseDetails, true);
-        verify(notificationService, times(1)).sendStopReminderEmail(secondCase, true);
+        verify(firstStopReminderNotification, times(1)).sendEmail(mockCaseDetails);
+        verify(firstStopReminderNotification, times(1)).sendEmail(secondCase);
         verify(automatedNotificationCCDService, times(2)).saveNotification(any(), any(), any(), any(), eq(true));
     }
 
@@ -172,13 +189,13 @@ class AutomatedNotificationServiceTest {
                 .thenReturn(firstNextPage)
                 .thenReturn(emptyNextPage);
 
-        when(notificationService.sendStopReminderEmail(eq(secondCase), anyBoolean()))
+        when(firstStopReminderNotification.sendEmail(eq(secondCase)))
                 .thenThrow(new NotificationClientException("fail"));
 
-        assertDoesNotThrow(() -> automatedNotificationService.sendStopReminder(JOB_DATE, true));
+        assertDoesNotThrow(() -> automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER));
 
-        verify(notificationService, times(1)).sendStopReminderEmail(mockCaseDetails, true);
-        verify(notificationService, times(1)).sendStopReminderEmail(secondCase, true);
+        verify(firstStopReminderNotification, times(1)).sendEmail(mockCaseDetails);
+        verify(firstStopReminderNotification, times(1)).sendEmail(secondCase);
     }
 
 
@@ -187,9 +204,9 @@ class AutomatedNotificationServiceTest {
         when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
                 .thenReturn(SearchResult.builder().total(0).cases(Collections.emptyList()).build());
 
-        automatedNotificationService.sendStopReminder(JOB_DATE, true);
+        automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER);
 
-        verify(notificationService, times(1)).sendStopReminderEmail(mockCaseDetails, true);
-        verify(notificationService, times(1)).sendStopReminderEmail(any(), anyBoolean());
+        verify(firstStopReminderNotification, times(1)).sendEmail(mockCaseDetails);
+        verify(firstStopReminderNotification, times(1)).sendEmail(any());
     }
 }

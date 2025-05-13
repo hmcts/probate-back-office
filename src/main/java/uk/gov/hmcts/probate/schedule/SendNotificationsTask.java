@@ -13,6 +13,8 @@ import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 import java.time.LocalDate;
 
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
+import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
+import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 
 @Component
 @Slf4j
@@ -47,11 +49,10 @@ public class SendNotificationsTask implements Runnable {
             if (!featureToggleService.isFirstStopReminderFeatureToggleOn()) {
                 log.info("Feature toggle FirstStopReminderFeatureToggle is off, skipping task");
             } else {
-                log.info("Calling Send Stop Reminder from date, to date {} {}",
-                        firstStopReminderDate, firstStopReminderDate);
-                dataExtractDateValidator.dateValidator(firstStopReminderDate, firstStopReminderDate);
+                log.info("Calling Send First Stop Reminder for date {}", firstStopReminderDate);
+                dataExtractDateValidator.dateValidator(firstStopReminderDate);
                 log.info("Perform Send First Stop Reminder started");
-                automatedNotificationService.sendStopReminder(firstStopReminderDate, true);
+                automatedNotificationService.sendNotification(firstStopReminderDate, FIRST_STOP_REMINDER);
                 log.info("Perform Send First Stop Reminder finished");
 
             }
@@ -65,9 +66,10 @@ public class SendNotificationsTask implements Runnable {
             if (!featureToggleService.isSecondStopReminderFeatureToggleOn()) {
                 log.info("Feature toggle SecondStopReminderFeatureToggle is off, skipping task");
             } else {
-                dataExtractDateValidator.dateValidator(secondStopReminderDate, secondStopReminderDate);
+                log.info("Calling Send Second Stop Reminder for date {}", secondStopReminderDate);
+                dataExtractDateValidator.dateValidator(secondStopReminderDate);
                 log.info("Perform Send Second Stop Reminder started");
-                automatedNotificationService.sendStopReminder(secondStopReminderDate, false);
+                automatedNotificationService.sendNotification(secondStopReminderDate, SECOND_STOP_REMINDER);
                 log.info("Perform Send Second Stop Reminder finished");
             }
         } catch (ApiClientException e) {

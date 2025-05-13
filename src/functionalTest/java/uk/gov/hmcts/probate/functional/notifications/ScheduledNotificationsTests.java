@@ -22,7 +22,7 @@ import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PAR
 
 @Slf4j
 @ExtendWith(SerenityJUnit5Extension.class)
-public class AutomatedNotificationsTests extends IntegrationTestBase {
+public class ScheduledNotificationsTests extends IntegrationTestBase {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final String APPLY_FOR_GRANT_PAYLOAD = "applyforGrantPaperApplicationManPayload.json";

@@ -20,6 +20,8 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
+import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
+import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 
 @ExtendWith(SpringExtension.class)
 class SendNotificationsTaskTest {
@@ -57,10 +59,10 @@ class SendNotificationsTaskTest {
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER_DATE);
-        verify(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE, SECOND_STOP_REMINDER_DATE);
-        verify(automatedNotificationService).sendStopReminder(FIRST_STOP_REMINDER_DATE, true);
-        verify(automatedNotificationService).sendStopReminder(SECOND_STOP_REMINDER_DATE, false);
+        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE);
+        verify(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE);
+        verify(automatedNotificationService).sendNotification(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER);
+        verify(automatedNotificationService).sendNotification(SECOND_STOP_REMINDER_DATE, SECOND_STOP_REMINDER);
     }
 
     @Test
@@ -71,10 +73,10 @@ class SendNotificationsTaskTest {
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(DEFAULT_FIRST_DATE, DEFAULT_FIRST_DATE);
-        verify(dataExtractDateValidator).dateValidator(DEFAULT_SECOND_DATE, DEFAULT_SECOND_DATE);
-        verify(automatedNotificationService).sendStopReminder(DEFAULT_FIRST_DATE, true);
-        verify(automatedNotificationService).sendStopReminder(DEFAULT_SECOND_DATE, false);
+        verify(dataExtractDateValidator).dateValidator(DEFAULT_FIRST_DATE);
+        verify(dataExtractDateValidator).dateValidator(DEFAULT_SECOND_DATE);
+        verify(automatedNotificationService).sendNotification(DEFAULT_FIRST_DATE, FIRST_STOP_REMINDER);
+        verify(automatedNotificationService).sendNotification(DEFAULT_SECOND_DATE, SECOND_STOP_REMINDER);
     }
 
     @Test
@@ -85,8 +87,8 @@ class SendNotificationsTaskTest {
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE, SECOND_STOP_REMINDER_DATE);
-        verify(automatedNotificationService).sendStopReminder(SECOND_STOP_REMINDER_DATE, false);
+        verify(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE);
+        verify(automatedNotificationService).sendNotification(SECOND_STOP_REMINDER_DATE, SECOND_STOP_REMINDER);
         verifyNoMoreInteractions(automatedNotificationService);
     }
 
@@ -98,8 +100,8 @@ class SendNotificationsTaskTest {
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER_DATE);
-        verify(automatedNotificationService).sendStopReminder(FIRST_STOP_REMINDER_DATE, true);
+        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE);
+        verify(automatedNotificationService).sendNotification(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER);
         verifyNoMoreInteractions(automatedNotificationService);
     }
 
@@ -121,11 +123,11 @@ class SendNotificationsTaskTest {
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
 
         doThrow(new ClientException(400, "bad request"))
-                .when(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER_DATE);
+                .when(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE);
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER_DATE);
+        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE);
         verifyNoInteractionsWithAutomatedNotificationService();
     }
 
@@ -136,11 +138,11 @@ class SendNotificationsTaskTest {
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
 
         doThrow(new ClientException(400, "bad request"))
-                .when(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE, SECOND_STOP_REMINDER_DATE);
+                .when(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE);
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE, SECOND_STOP_REMINDER_DATE);
+        verify(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE);
         verifyNoInteractionsWithAutomatedNotificationService();
     }
 
