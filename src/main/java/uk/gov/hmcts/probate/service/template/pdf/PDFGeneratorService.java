@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -51,23 +52,24 @@ public class PDFGeneratorService {
     }
 
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
-        byte[] postResult;
+        final byte[] postResult;
         try {
-            if (documentType == DocumentType.DIGITAL_GRANT) {
-                log.info("Generating digital grant pdf using new handling");
+            final Optional<String> commonsTemplate = documentType.getCommonsTemplateName();
+            if (commonsTemplate.isPresent()) {
+                log.info("Generating document using commons templating: {}", commonsTemplate);
                 postResult = pdfTemplateService.generate(
-                        "digital_grant/original.html",
+                        commonsTemplate.get(),
                         Locale.UK,
                         asMap(pdfGenerationData));
-                log.info("Generated from new template with bytes size {}",
-                        postResult != null ? postResult.length : "0");
             } else {
-                final String templateName = documentType.getTemplateName();
-                log.info("Generate pdf from template {}", templateName);
-
-                postResult = generateFromHtml(templateName, pdfGenerationData);
-                log.info("Generated from templates with bytes size {}", postResult != null ? postResult.length : "0");
+                // In theory this should never happen?
+                log.info("Falling back to old document generation process for {}", documentType.name());
+                postResult = generateFromHtml(documentType.getTemplateName(), pdfGenerationData);
             }
+            log.info(
+                    "Generated from template with size: {} bytes",
+                    postResult != null ? postResult.length: "null_array");
+
         } catch (IOException | PDFServiceClientException e) {
             log.error(e.getMessage(), e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
