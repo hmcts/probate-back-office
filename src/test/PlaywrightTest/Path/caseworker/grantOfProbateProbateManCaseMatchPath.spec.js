@@ -18,7 +18,7 @@ const caseProgressConfig = require('../../Pages/caseProgressStandard/caseProgres
 
 test.describe('Caseworker Grant of Representation - probateman case match', () => {
     test('Caseworker Grant of Representation - probateman case match',
-        async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
+        async ({basePage, signInPage, createCasePage, cwEventActionsPage}, testInfo) => {
             const scenarioName = 'Caseworker Grant of Representation - probateman case match';
             if (testConfig.TestBackOfficeUrl.includes('demo') || testConfig.TestBackOfficeUrl.includes('aat')) {
                 let endState;
@@ -44,12 +44,12 @@ test.describe('Caseworker Grant of Representation - probateman case match', () =
                 const caseRef = await basePage.getCaseRefFromUrl();
 
                 await basePage.logInfo(scenarioName, nextStepName, caseRef);
-                await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-                await basePage.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateManualProbateManCaseConfig);
-                await basePage.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateManualProbateManCaseConfig);
+                await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+                await basePage.seeCaseDetails(testInfo, caseRef, deceasedTabConfig, createGrantOfProbateManualProbateManCaseConfig);
+                await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabConfig, createGrantOfProbateManualProbateManCaseConfig);
                 await basePage.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
-                await basePage.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateManualProbateManCaseConfig);
-                await basePage.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateManualProbateManCaseConfig);
+                await basePage.seeCaseDetails(testInfo, caseRef, applicantDetailsTabConfig, createGrantOfProbateManualProbateManCaseConfig);
+                await basePage.seeCaseDetails(testInfo, caseRef, copiesTabConfig, createGrantOfProbateManualProbateManCaseConfig);
 
                 nextStepName = 'Find matches (cases)';
                 await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -57,8 +57,8 @@ test.describe('Caseworker Grant of Representation - probateman case match', () =
                 await cwEventActionsPage.selectProbateManCaseMatchesForGrantOfProbate(caseRef, nextStepName, false);
                 await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
                 endState = 'Awaiting documentation';
-                await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-                await basePage.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+                await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+                await basePage.seeCaseDetails(testInfo, caseRef, caseMatchesTabConfig, caseMatchesConfig);
                 await cwEventActionsPage.verifyProbateManCcdCaseNumber();
             }
         });

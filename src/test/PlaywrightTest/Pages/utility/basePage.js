@@ -1,7 +1,7 @@
 const {expect} = require('@playwright/test');
 const {testConfig} = require ('../../Configs/config');
-const {accessibilityPage} = require('../../Accessibility/runner');
 const assert = require('assert');
+const {checkAccessibility} = require('../../Accessibility/axeUtils');
 
 exports.BasePage = class BasePage {
     constructor(page) {
@@ -23,6 +23,11 @@ exports.BasePage = class BasePage {
             ret = ret + ' : ' + caseRef;
         }
         console.info(ret);
+    }
+
+    async runAccessibilityTest(testInfo) {
+        const results = await checkAccessibility(this.page, testInfo);
+        expect(results.violations).toEqual([]);
     }
 
     async rejectCookies () {
@@ -94,7 +99,7 @@ exports.BasePage = class BasePage {
         await navigationPromise;
     }
 
-    async seeCaseDetails(caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault) {
+    async seeCaseDetails(testInfo, caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault) {
         if (tabConfigFile.tabName && tabConfigFile.tabName !== 'Documents') {
             await expect(this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`)).toBeEnabled();
         }
@@ -105,7 +110,7 @@ exports.BasePage = class BasePage {
         await this.page.waitForTimeout(delay);
 
         // *****Need to comment this until accessibility script is completed*****/
-        // await this.page.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
 
         if (tabConfigFile.waitForText) {
             this.tabLocator = this.page.getByLabel(tabConfigFile.waitForText);
@@ -161,11 +166,11 @@ exports.BasePage = class BasePage {
         }
     }
 
-    async seeUpdatesOnCase(caseRef, tabConfigFile, tabUpdates, tabUpdatesConfigFile, forUpdateApplication) {
+    async seeUpdatesOnCase(testInfo, caseRef, tabConfigFile, tabUpdates, tabUpdatesConfigFile, forUpdateApplication) {
         await expect(this.page.getByRole('heading', {name: caseRef})).toBeVisible();
         await this.page.getByRole('tab', {name: tabConfigFile.tabName}).focus();
         await this.page.getByRole('tab', {name: tabConfigFile.tabName}).click();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
 
         if (tabUpdates) {
             const updatedConfig = tabConfigFile[tabUpdates];
@@ -207,13 +212,4 @@ exports.BasePage = class BasePage {
         }
     }
 
-    async runAccessibilityTest() {
-        if (!testConfig.TestForAccessibility) {
-            return;
-        }
-        const url = await this.page.url();
-        const {page} = await this.page;
-
-        accessibilityPage.runAccessibility(url, page);
-    }
 };

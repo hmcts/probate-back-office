@@ -1,5 +1,5 @@
 // @ts-check
-const {test, expect} = require('../../Fixtures/fixtures');
+const {test} = require('../../Fixtures/fixtures');
 const dateFns = require('date-fns');
 
 const createCaseConfig = require('../../Pages/createCase/createCaseConfig.json');
@@ -31,7 +31,7 @@ const {
 
 test.describe('Caseworker Caveat3 - Caveat expired', () => {
     test('Caseworker Caveat3 - Caveat expired',
-        async ({basePage, signInPage, createCasePage, cwEventActionsPage, makeAxeBuilder}, testInfo) => {
+        async ({basePage, signInPage, createCasePage, cwEventActionsPage}, testInfo) => {
             const scenarioName = 'Caseworker Caveat3 - Caveat expired';
 
             // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Caveat expired
@@ -68,13 +68,13 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
 
             const caseRef = await basePage.getCaseRefFromUrl();
             // await basePage.logInfo(caseRef);
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
-            await basePage.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
-            await basePage.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, deceasedDetailsTabConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, caveatorDetailsTabConfig, createCaveatConfig);
             // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
             createCaveatConfig.caveat_expiry_date = dateFns.format(legacyParse(dateFns.addMonths(new Date(), 6)), convertTokens('D MMM YYYY'));
-            await basePage.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
             nextStepName = 'Caveat match';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -82,7 +82,7 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.selectCaseMatches(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat matching';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
             // await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
@@ -91,7 +91,7 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat not matched';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Upload document';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -99,7 +99,7 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.uploadDocument(caseRef, documentUploadConfig);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when uploading a document.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             await basePage.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
             nextStepName = 'Add comment';
@@ -107,14 +107,14 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when adding a comment.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Caveat expired';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat closed';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Email caveator'; // When in state 'Caveat closed'
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -122,10 +122,10 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.emailCaveator(caseRef);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when emailing the caveator.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             // When emailing the caveator, the Date added for the email document is set to today
             emailCaveatorConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
-            await basePage.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
             nextStepName = 'Reopen caveat'; // When in state 'Caveat closed'
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -134,8 +134,8 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat raised';
             await basePage.logInfo(scenarioName, endState);
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
             nextStepName = 'Withdraw caveat';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -143,7 +143,7 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.withdrawCaveatPage1();
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat closed';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Email caveator'; // When in state 'Caveat closed'
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -154,7 +154,7 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             // When emailing the caveator, the Date added for the email document is set to today
             emailCaveatorConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
-            await basePage.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
             nextStepName = 'Reopen caveat'; // When in state 'Caveat closed'
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -163,18 +163,8 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat raised';
             await basePage.logInfo(scenarioName, endState);
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
-
-            const accessibilityScanResults = await makeAxeBuilder()
-                .analyze();
-
-            await testInfo.attach('accessibility-scan-results', {
-                body: JSON.stringify(accessibilityScanResults, null, 2),
-                contentType: 'application/json'
-            });
-
-            expect(accessibilityScanResults.violations).toEqual([]);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
             await signInPage.signOut();
         });

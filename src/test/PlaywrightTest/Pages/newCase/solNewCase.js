@@ -10,6 +10,7 @@ const dateFns = require('date-fns');
 const {legacyParse, convertTokens} = require('@date-fns/upgrade/v2');
 const makePaymentConfig = require('../solicitorApplyProbate/makePayment/makePaymentConfig');
 const postPaymentReviewTabConfig = require('../caseDetails/solicitorApplyProbate/postPaymentReviewTabConfig');
+const applyProbateConfig = require('../solicitorApplyProbate/applyProbate/applyProbateConfig');
 
 exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
     constructor(page) {
@@ -27,17 +28,18 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         this.eventHistoryTab = this.page.getByRole('tab', {name: makePaymentConfig.eventHistoryTab});
         this.caseProgressTabLocator = this.page.getByRole('tab', {name: makePaymentConfig.caseProgressTab, exact: true});
         this.postcodeLinkLocator = page.getByText(createCaveatConfig.UKpostcodeLink);
+        this.solSignSot = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
     }
 
-    async applyCaveatPage1() {
+    async applyCaveatPage1(testInfo) {
         await expect(this.page.locator('#solsCaveatEligibility')).toBeVisible();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async applyCaveatPage2() {
+    async applyCaveatPage2(testInfo) {
         await expect(this.page.locator('#solsSolicitorFirmName')).toBeVisible();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
         await this.page.locator('#solsSolicitorFirmName').fill(applyCaveatConfig.page2_firm_name);
         await this.postcodeLinkLocator.click();
         await this.page.locator('#caveatorAddress__detailAddressLine1').fill(applyCaveatConfig.address_line1);
@@ -53,9 +55,9 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async cyaPage() {
+    async cyaPage(testInfo) {
         await expect(this.page.getByText('Check your answers')).toBeVisible();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
         await this.waitForSubmitNavigationToComplete('Save and continue');
     }
 
@@ -66,17 +68,17 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         await expect(this.page.getByText(endState)).toBeVisible();
     }
 
-    async caveatApplicationDetailsPage1() {
+    async caveatApplicationDetailsPage1(testInfo) {
         await expect(this.page.locator('#caveatorForenames')).toBeVisible();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
         await this.page.locator('#caveatorForenames').fill(applicationDetailsConfig.page1_caveator_forename);
         await this.page.locator('#caveatorSurname').fill(applicationDetailsConfig.page1_caveator_surname);
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async caveatApplicationDetailsPage2() {
+    async caveatApplicationDetailsPage2(testInfo) {
         await expect(this.page.locator('#deceasedForenames')).toBeVisible();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
         await this.page.locator('#deceasedForenames').fill(applicationDetailsConfig.page2_deceased_forename);
         await this.page.locator('#deceasedSurname').fill(applicationDetailsConfig.page2_deceased_surname);
         await this.page.locator('#deceasedDateOfDeath-day').fill(applicationDetailsConfig.page2_dateOfDeath_day);
@@ -121,17 +123,17 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async completeCaveatApplicationPage1() {
-        // await I.runAccessibilityTest();
+    async completeCaveatApplicationPage1(testInfo) {
+        await this.runAccessibilityTest(testInfo);
         await this.page.locator('#solsPBAPaymentReference').fill(completeApplicationConfig.page1_paymentReference);
         await this.page.locator('input#paymentConfirmCheckbox-paymentAcknowledgement').click();
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
     }
 
-    async completeCaveatApplicationPage2(caseRef) {
+    async completeCaveatApplicationPage2(caseRef, testInfo) {
         completeApplicationConfig.page2_notification_date = dateFns.format(legacyParse(new Date()), convertTokens('DD/MM/YYYY'));
         await expect(this.page.getByText(completeApplicationConfig.page2_waitForText)).toBeVisible();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
         await expect(this.page.getByText(caseRef)).toBeVisible();
         await expect(this.page.getByText(completeApplicationConfig.page2_confirmationText)).toBeVisible();
         await expect(this.page.getByText(completeApplicationConfig.page2_app_ref)).toBeVisible();
@@ -140,11 +142,11 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         await this.completeApplicationSubmitButton.click();
     }
 
-    async makeCaveatPaymentPage1(caseRef, serviceRequestTabConfig) {
+    async makeCaveatPaymentPage1(caseRef, serviceRequestTabConfig, testInfo) {
         await expect(this.page.getByText(caseRef).first()).toBeVisible();
         await expect(this.serviceRequestTabLocator).toBeEnabled();
         await this.serviceRequestTabLocator.click();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
 
         for (let i = 0; i < serviceRequestTabConfig.fields.length; i++) {
             if (serviceRequestTabConfig.fields[i] && serviceRequestTabConfig.fields[i] !== '') {
@@ -157,10 +159,10 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         await this.reviewLinkLocator.click();
     }
 
-    async reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig) {
+    async reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig, testInfo) {
         await expect(this.page.getByText(caseRef).first()).toBeVisible();
         await expect(this.serviceRequestTabLocator).toBeEnabled();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
         for (let i = 0; i < serviceRequestReviewTabConfig.fields.length; i++) {
             if (serviceRequestReviewTabConfig.fields[i] && serviceRequestReviewTabConfig.fields[i] !== '') {
                 // eslint-disable-line no-await-in-loop
@@ -172,12 +174,12 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         await this.backToServiceRequestLocator.click();
     }
 
-    async makePaymentPage2(caseRef) {
+    async makePaymentPage2(caseRef, testInfo) {
         await expect(this.page.getByText(caseRef).first()).toBeVisible();
         await expect(this.payNowLinkLocator).toBeVisible();
         await this.payNowLinkLocator.click();
         await expect(this.page.getByText(makePaymentConfig.page2_waitForText)).toBeVisible();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
         await expect(this.pbaOptionLocator).toBeEnabled();
         await this.pbaOptionLocator.click();
         await expect(this.pbaAccountNumberLocator).toBeEnabled();
@@ -187,7 +189,7 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         await this.confirmPaymentButton.click();
     }
 
-    async viewPaymentStatus(caseRef, appType) {
+    async viewPaymentStatus(testInfo, caseRef, appType) {
         await expect(this.page.getByText(caseRef).first()).toBeVisible();
         await expect(this.page.getByText(makePaymentConfig.paymentStatusConfirmText)).toBeVisible();
         await expect(this.serviceRequestLinkLocator).toBeEnabled();
@@ -195,7 +197,7 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         await expect(this.page.getByText(caseRef).first()).toBeVisible();
         await expect(this.page.getByText(makePaymentConfig.paymentStatus)).toBeVisible();
         await expect(this.page.getByText(makePaymentConfig.payNowLinkText)).not.toBeVisible();
-        await this.postPaymentReviewDetails(caseRef);
+        await this.postPaymentReviewDetails(caseRef, testInfo);
         for (let i = 0; i <= 6; i++) {
             await expect(this.eventHistoryTab).toBeEnabled(); // eslint-disable-line no-await-in-loop
             await expect(this.page.getByText(caseRef).first()).toBeVisible(); // eslint-disable-line no-await-in-loop
@@ -218,12 +220,12 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         }
     }
 
-    async postPaymentReviewDetails(caseRef) {
+    async postPaymentReviewDetails(caseRef, testInfo) {
         await expect(this.page.getByText(caseRef).first()).toBeVisible();
         await expect(this.reviewLinkLocator).toBeVisible();
         await this.reviewLinkLocator.click();
         await expect(this.serviceRequestTabLocator).toBeEnabled();
-        // await I.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
 
         for (let i = 0; i < postPaymentReviewTabConfig.fields.length; i++) {
             if (postPaymentReviewTabConfig.fields[i] && postPaymentReviewTabConfig.fields[i] !== '') {
@@ -234,5 +236,73 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
 
         await expect(this.page.locator('.govuk-back-link')).toBeEnabled();
         await this.backToServiceRequestLocator.click();
+    }
+
+    async applyForProbatePage1(testInfo) {
+        await expect(this.page.locator('#solsStartPage')).toBeVisible();
+        await this.runAccessibilityTest(testInfo);
+        await this.waitForSubmitNavigationToComplete(commonConfig.submitButton);
+        // await I.waitForElement('#solsStartPage');
+        // await I.runAccessibilityTest();
+        // await I.waitForNavigationToComplete(commonConfig.submitButton, true);
+    }
+
+    async applyForProbatePage2(isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false, testInfo) {
+        await expect(this.page.locator('#solsApplyPage')).toBeVisible();
+        await this.runAccessibilityTest(testInfo);
+        await expect(this.page.locator(applyProbateConfig.page2_subheading)).toBeVisible();
+        await expect(this.page.locator(applyProbateConfig.page2_probatePractionerHelp)).toBeVisible();
+        await expect(this.solSignSot).toBeEnabled();
+        await this.solSignSot.focus();
+        await this.solSignSot.click();
+        // await I.waitForElement('#solsApplyPage');
+        // await I.runAccessibilityTest();
+        // await I.waitForText(applyProbateConfig.page2_subheading);
+        // await I.waitForText(applyProbateConfig.page2_probatePractionerHelp);
+
+        // await I.waitForElement(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
+        // await I.click(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
+        /*await I.fillField('#solsForenames', applyProbateConfig.page2_sol_forename);
+        await I.fillField('#solsSurname', applyProbateConfig.page2_sol_surname);
+
+        await I.fillField('#solsSOTForenames', applyProbateConfig.page2_sol_forename);
+        await I.fillField('#solsSOTSurname', applyProbateConfig.page2_sol_surname);
+
+        if (isSolicitorNamedExecutor) {
+            await I.click({css: '#solsSolicitorIsExec_Yes'});
+            await I.waitForVisible({css: '#applyForProbatePageHint1'});
+
+            if (isSolicitorApplyingExecutor) {
+                await I.click({css: '#solsSolicitorIsApplying_Yes'});
+                await I.waitForVisible({css: '#applyForProbatePageHint1'});
+            } else {
+                await I.click({css: '#solsSolicitorIsApplying_No'});
+                await I.waitForVisible({css: '#solsSolicitorNotApplyingReason-PowerReserved'});
+                await I.click({css: '#solsSolicitorNotApplyingReason-PowerReserved'});
+            }
+        } else {
+            await I.click({css: '#solsSolicitorIsExec_No'});
+            await I.click({css: `#solsSolicitorIsApplying_${isSolicitorApplyingExecutor ? 'Yes' : 'No'}`});
+            if (isSolicitorApplyingExecutor) {
+                await I.waitForVisible({css: '#applyForProbatePageHint2'});
+            }
+        }
+
+        await I.fillField('#solsSolicitorFirmName', applyProbateConfig.page2_firm_name);
+
+        await I.click(applyProbateConfig.UKpostcodeLink);
+        await I.fillField('#solsSolicitorAddress__detailAddressLine1', applyProbateConfig.address_line1);
+        await I.fillField('#solsSolicitorAddress__detailAddressLine2', applyProbateConfig.address_line2);
+        await I.fillField('#solsSolicitorAddress__detailAddressLine3', applyProbateConfig.address_line3);
+        await I.fillField('#solsSolicitorAddress__detailPostTown', applyProbateConfig.address_town);
+        await I.fillField('#solsSolicitorAddress__detailCounty', applyProbateConfig.address_county);
+        await I.fillField('#solsSolicitorAddress__detailPostCode', applyProbateConfig.address_postcode);
+        await I.fillField('#solsSolicitorAddress__detailCountry', applyProbateConfig.address_country);
+
+        await I.fillField('#solsSolicitorEmail', applyProbateConfig.page2_sol_email);
+        await I.fillField('#solsSolicitorPhoneNumber', applyProbateConfig.page2_phone_num);
+        await I.fillField('#solsSolicitorAppReference', applyProbateConfig.page2_app_ref);
+
+        await I.waitForNavigationToComplete(commonConfig.continueButton, true);*/
     }
 };

@@ -32,7 +32,7 @@ const {
 
 test.describe('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker', () => {
     test('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker',
-        async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
+        async ({basePage, signInPage, createCasePage, cwEventActionsPage}, testInfo) => {
             const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker';
 
             // BO Grant of Representation (Personal): Case created -> Grant issued
@@ -75,20 +75,20 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             const caseRef = await basePage.getCaseRefFromUrl();
 
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
-            await basePage.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, deceasedTabConfig, createGrantOfProbateConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
             await basePage.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
-            await basePage.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
-            await basePage.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
-            await basePage.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, copiesTabConfig, createGrantOfProbateConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, ihtTabConfig, createGrantOfProbateConfig);
 
             nextStepName = 'Handle supplementary evidence';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepConfig.handleSupEvidence);
             await cwEventActionsPage.handleEvidence(caseRef);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
@@ -96,15 +96,15 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepConfig.addComment);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Upload Documents';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepConfig.uploadDocument);
             await cwEventActionsPage.uploadDocument(caseRef, documentUploadConfig);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, documentUploadTabConfig, documentUploadConfig);
 
             // "reverting" update back to defaults - to enable case-match with matching case
             nextStepName = 'Amend case details';
@@ -112,14 +112,14 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.chooseNextStep(nextStepConfig.amendCaseDetails);
             await createCasePage.enterGrantOfProbatePage4('EE');
             await createCasePage.checkMyAnswers(nextStepName);
-            await basePage.seeCaseDetails(caseRef, ihtTabConfigUpdate, createGrantOfProbateConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, ihtTabConfigUpdate, createGrantOfProbateConfig);
 
             nextStepName = 'Generate grant preview';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepConfig.generateGrantPreview);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Ready to issue';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Stop case';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -127,7 +127,7 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.caseProgressStopEscalateIssueAddCaseStoppedReason();
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Case stopped';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Resolve stop';
             const resolveStop = 'Case Matching (Issue grant)';
@@ -136,7 +136,7 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.chooseResolveStop(resolveStop);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Case Matching (Issue grant)';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Find matches (cases)';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -144,21 +144,21 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.selectCaseMatches(caseRef, nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Case Matching (Issue grant)';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
             nextStepName = 'Issue grant';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepConfig.issueGrant);
             await cwEventActionsPage.issueGrant(caseRef);
             endState = 'Grant issued';
-            await basePage.logInfo(scenarioName, endState, caseRef);
+            await basePage.logInfo(testInfo, scenarioName, endState, caseRef);
 
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
 
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             // When sending an email notification, the Date added for the email notification is set to today
             issueGrantConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
-            await basePage.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, grantNotificationsTabConfig, issueGrantConfig);
         });
 });

@@ -36,7 +36,7 @@ const {
 
 test.describe('Caseworker Caveat1 - Order summons', () => {
     test('Caseworker Caveat1 - Order summons',
-        async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
+        async ({basePage, signInPage, createCasePage, cwEventActionsPage}, testInfo) => {
             const scenarioName = 'Caseworker Caveat1 - Order summons';
             // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Order summons
 
@@ -72,21 +72,21 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
 
             const caseRef = await basePage.getCaseRefFromUrl();
 
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
-            await basePage.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
-            await basePage.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, deceasedDetailsTabConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, caveatorDetailsTabConfig, createCaveatConfig);
 
             // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
             createCaveatConfig.caveat_expiry_date = dateFns.format(legacyParse(dateFns.addMonths(new Date(), 6)), convertTokens('D MMM YYYY'));
-            await basePage.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
             nextStepName = 'Registrar\'s decision';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.registrarsDecision(caseRef);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            await basePage.seeCaseDetails(caseRef, registrarsDecisionTabConfig, registrarsDecisionConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, registrarsDecisionTabConfig, registrarsDecisionConfig);
 
             nextStepName = 'Email caveator'; // When in state 'Caveat raised'
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -94,10 +94,10 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
             await cwEventActionsPage.emailCaveator(caseRef);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when emailing the caveator.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             // When emailing the caveator, the Date added for the email document is set to today
             emailCaveatorConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
-            await basePage.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
             nextStepName = 'Caveat match';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -105,8 +105,8 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
             await cwEventActionsPage.selectCaseMatches(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat matching';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
             nextStepName = 'Email caveator'; // When in state 'Caveat closed'
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -114,17 +114,17 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
             await cwEventActionsPage.emailCaveator(caseRef);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when emailing the caveator.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             // When emailing the caveator, the Date added for the email document is set to today
             emailCaveatorConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
-            await basePage.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
             nextStepName = 'Caveat not matched';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat not matched';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Upload document';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -132,43 +132,43 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
             await cwEventActionsPage.uploadDocument(caseRef, documentUploadConfig);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when uploading a document.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
             nextStepName = 'Add comment';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when adding a comment.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Await caveat resolution';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Awaiting caveat resolution';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Warning requested';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Warning validation';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Issue caveat warning';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Awaiting warning response';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Order summons';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Summons ordered';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Amend caveat details';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -179,11 +179,11 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
 
             // Note that End State does not change when amending the caveat details.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, caseDetailsTabUpdateConfig, createCaveatConfig);
-            await basePage.seeCaseDetails(caseRef, deceasedDetailsTabUpdateConfig, createCaveatConfig);
-            await basePage.seeCaseDetails(caseRef, caveatorDetailsTabUpdateConfig, createCaveatConfig);
-            await basePage.seeCaseDetails(caseRef, caveatDetailsTabUpdateConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabUpdateConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, deceasedDetailsTabUpdateConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, caveatorDetailsTabUpdateConfig, createCaveatConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, caveatDetailsTabUpdateConfig, createCaveatConfig);
 
             nextStepName = 'Withdraw caveat';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -192,7 +192,7 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat closed';
             await basePage.logInfo(scenarioName, endState);
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             await signInPage.signOut();
 
