@@ -247,7 +247,7 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         // await I.waitForNavigationToComplete(commonConfig.submitButton, true);
     }
 
-    async applyForProbatePage2(isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false, testInfo) {
+    /*async applyForProbatePage2(isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false, testInfo) {
         await expect(this.page.locator('#solsApplyPage')).toBeVisible();
         await this.runAccessibilityTest(testInfo);
         await expect(this.page.locator(applyProbateConfig.page2_subheading)).toBeVisible();
@@ -262,7 +262,7 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
 
         // await I.waitForElement(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
         // await I.click(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
-        /*await I.fillField('#solsForenames', applyProbateConfig.page2_sol_forename);
+        /!*await I.fillField('#solsForenames', applyProbateConfig.page2_sol_forename);
         await I.fillField('#solsSurname', applyProbateConfig.page2_sol_surname);
 
         await I.fillField('#solsSOTForenames', applyProbateConfig.page2_sol_forename);
@@ -303,6 +303,6 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         await I.fillField('#solsSolicitorPhoneNumber', applyProbateConfig.page2_phone_num);
         await I.fillField('#solsSolicitorAppReference', applyProbateConfig.page2_app_ref);
 
-        await I.waitForNavigationToComplete(commonConfig.continueButton, true);*/
-    }
+        await I.waitForNavigationToComplete(commonConfig.continueButton, true);*!/
+    }*/
 };
