@@ -2,8 +2,14 @@
   "page1_payment_type": "Fee account",
   "page1_pBAANumber": "PBA0082126",
   "page1_paymentReference": "E2E PBA Caveat Payment Reference",
+  "page1_submitButton": "Submit",
 
   "page2_waitForText":"Submit application",
+  "page2_confirmationText": "Your application has been submitted but cannot be processed until payment has been made",
+  "page2_app_ref": "Application reference:",
+  "page2_notification_date_text": "Submitted on:",
+  "page2_notification_date": "XX/XX/XXXX",
+  "page2_continueButton": "Close and Return to case details",
 
   "page3_waitForText":"This caveat application has now been submitted",
   "page3_app_ref": "SOL-123-456",

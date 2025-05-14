@@ -1,7 +1,7 @@
 const {expect} = require('@playwright/test');
 const {testConfig} = require ('../../Configs/config');
-const {accessibilityPage} = require('../../Accessibility/runner');
 const assert = require('assert');
+const {checkAccessibility} = require('../../Accessibility/axeUtils');
 
 exports.BasePage = class BasePage {
     constructor(page) {
@@ -23,6 +23,11 @@ exports.BasePage = class BasePage {
             ret = ret + ' : ' + caseRef;
         }
         console.info(ret);
+    }
+
+    async runAccessibilityTest(testInfo) {
+        const results = await checkAccessibility(this.page, testInfo);
+        expect(results.violations).toEqual([]);
     }
 
     async rejectCookies () {
@@ -94,7 +99,7 @@ exports.BasePage = class BasePage {
         await navigationPromise;
     }
 
-    async seeCaseDetails(caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault) {
+    async seeCaseDetails(testInfo, caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault) {
         if (tabConfigFile.tabName && tabConfigFile.tabName !== 'Documents') {
             await expect(this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`)).toBeEnabled();
         }
@@ -105,7 +110,7 @@ exports.BasePage = class BasePage {
         await this.page.waitForTimeout(delay);
 
         // *****Need to comment this until accessibility script is completed*****/
-        // await this.page.runAccessibilityTest();
+        await this.runAccessibilityTest(testInfo);
 
         if (tabConfigFile.waitForText) {
             this.tabLocator = this.page.getByLabel(tabConfigFile.waitForText);
@@ -135,9 +140,13 @@ exports.BasePage = class BasePage {
             if (nextStep === endState) {
                 await expect(this.page.getByText(nextStep).nth(2)).toBeVisible();
                 await expect(this.page.getByText(endState).nth(3)).toBeVisible();
+            } else if (endState === 'Caveat created') {
+                await expect(this.page.getByRole('cell', {name: endState, exact: true})).toBeVisible();
+                await expect(this.page.getByLabel(nextStep).nth(1)).toBeVisible();
+                // await expect(this.page.getByLabel(nextStep), {exact: true}).toBeVisible();
             } else {
-                await expect(this.page.getByRole('cell', {name: nextStep, exact: true}).locator('span')).toBeVisible();
                 await expect(this.page.getByRole('cell', {name: endState, exact: true}).locator('span')).toBeVisible();
+                await expect(this.page.getByRole('cell', {name: nextStep, exact: true}).locator('span')).toBeVisible();
             }
             let eventSummaryPrefix = nextStep;
             eventSummaryPrefix = eventSummaryPrefix.replace(/\s+/g, '_').toLowerCase() + '_';
@@ -153,6 +162,33 @@ exports.BasePage = class BasePage {
                 } else {
                     await expect(this.page.getByRole('table', {name: 'case viewer table'})).toContainText(dataConfigFile[tabConfigFile.dataKeys[i]]);
                 }
+            }
+        }
+    }
+
+    async seeUpdatesOnCase(testInfo, caseRef, tabConfigFile, tabUpdates, tabUpdatesConfigFile, forUpdateApplication) {
+        await expect(this.page.getByRole('heading', {name: caseRef})).toBeVisible();
+        await this.page.getByRole('tab', {name: tabConfigFile.tabName}).focus();
+        await this.page.getByRole('tab', {name: tabConfigFile.tabName}).click();
+        await this.runAccessibilityTest(testInfo);
+
+        if (tabUpdates) {
+            const updatedConfig = tabConfigFile[tabUpdates];
+            let fields = updatedConfig.fields;
+            let keys = updatedConfig.dataKeys;
+            if (forUpdateApplication) {
+                fields = fields.concat(updatedConfig.updateAppFields);
+                keys = keys.concat(updatedConfig.updateAppDataKeys);
+            }
+
+            for (let i = 0; i < fields.length; i++) {
+                // eslint-disable-next-line
+                await expect(this.page.getByText(fields[i]).first()).toBeVisible();
+            }
+
+            for (let i = 0; i < keys.length; i++) {
+                // eslint-disable-next-line
+                await expect(this.page.getByText(tabUpdatesConfigFile[keys[i]])).toBeVisible();
             }
         }
     }
@@ -176,13 +212,4 @@ exports.BasePage = class BasePage {
         }
     }
 
-    async runAccessibilityTest() {
-        if (!testConfig.TestForAccessibility) {
-            return;
-        }
-        const url = await this.page.url();
-        const {page} = await this.page;
-
-        accessibilityPage.runAccessibility(url, page);
-    }
 };

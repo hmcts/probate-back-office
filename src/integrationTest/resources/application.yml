@@ -165,7 +165,6 @@ notifications:
           grantAwaitingDocumentation: "pa-grantAwaitingDoc"
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "pa-disposal-reminder"
-          draftCasePaymentSuccess: "pa-draft-case-payment-success"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -189,7 +188,6 @@ notifications:
           noticeOfChangeReceived: "sols-noc"
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "sol-disposal-reminder"
-          draftCasePaymentSuccess: "sol-draft-case-payment-success"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -214,7 +212,6 @@ notifications:
           grantAwaitingDocumentation: "pa-grantAwaitingDoc-welsh"
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "pa-disposal-reminder-welsh"
-          draftCasePaymentSuccess: "pa-draft-case-payment-success-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -237,7 +234,6 @@ notifications:
           noticeOfChangeReceived: "sols-noc"
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "sol-disposal-reminder-welsh"
-          draftCasePaymentSuccess: "sol-draft-case-payment-success-welsh"
 
 documents:
   templates:
@@ -433,7 +429,6 @@ excelaEmail: exela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
 sealedAndCertifiedEmail: SealedAndCertified@probate-test.com
-draftCaseWithPaymentEmail: draftCases@probate-test.com
 
 data-extract:
   pagination:

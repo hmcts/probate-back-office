@@ -1,33 +1,33 @@
 // @ts-check
-const {test} = require('../Fixtures/fixtures');
+const {test} = require('../../Fixtures/fixtures');
 
 const dateFns = require('date-fns');
 
 // const testConfig = require('src/test/config');
-const createCaseConfig = require('../Pages/createCase/createCaseConfig.json');
-const eventSummaryConfig = require('../Pages/eventSummary/eventSummaryConfig');
+const createCaseConfig = require('../../Pages/createCase/createCaseConfig.json');
+const eventSummaryConfig = require('../../Pages/eventSummary/eventSummaryConfig.json');
 
-const createWillLodgementConfig = require('../Pages/createWillLodgement/createWillLodgementConfig');
-const documentUploadConfig = require('../Pages/documentUpload/willLodgement/documentUploadConfig');
-const generateDepositReceiptConfig = require('../Pages/generateDepositReceipt/generateDepositReceiptConfig');
-const caseMatchesConfig = require('../Pages/caseMatches/willLodgement/caseMatchesConfig');
-const withdrawWillConfig = require('../Pages/withdrawal/willLodgement/withdrawalConfig');
+const createWillLodgementConfig = require('../../Pages/createWillLodgement/createWillLodgementConfig.json');
+const documentUploadConfig = require('../../Pages/documentUpload/willLodgement/documentUploadConfig.json');
+const generateDepositReceiptConfig = require('../../Pages/generateDepositReceipt/generateDepositReceiptConfig.json');
+const caseMatchesConfig = require('../../Pages/caseMatches/willLodgement/caseMatchesConfig.json');
+const withdrawWillConfig = require('../../Pages/withdrawal/willLodgement/withdrawalConfig.json');
 
-const historyTabConfig = require('../Pages/caseDetails/willLodgement/historyTabConfig');
+const historyTabConfig = require('../../Pages/caseDetails/willLodgement/historyTabConfig.json');
 
-const caseDetailsTabConfig = require('../Pages/caseDetails/willLodgement/caseDetailsTabConfig');
-const testatorTabConfig = require('../Pages/caseDetails/willLodgement/testatorTabConfig');
-const executorTabConfig = require('../Pages/caseDetails/willLodgement/executorTabConfig');
+const caseDetailsTabConfig = require('../../Pages/caseDetails/willLodgement/caseDetailsTabConfig.json');
+const testatorTabConfig = require('../../Pages/caseDetails/willLodgement/testatorTabConfig.json');
+const executorTabConfig = require('../../Pages/caseDetails/willLodgement/executorTabConfig.json');
 
-const caseDetailsTabUpdateConfig = require('../Pages/caseDetails/willLodgement/caseDetailsTabUpdateConfig');
-const testatorTabUpdateConfig = require('../Pages/caseDetails/willLodgement/testatorTabUpdateConfig');
-const executorTabUpdateConfig = require('../Pages/caseDetails/willLodgement/executorTabUpdateConfig');
+const caseDetailsTabUpdateConfig = require('../../Pages/caseDetails/willLodgement/caseDetailsTabUpdateConfig.json');
+const testatorTabUpdateConfig = require('../../Pages/caseDetails/willLodgement/testatorTabUpdateConfig.json');
+const executorTabUpdateConfig = require('../../Pages/caseDetails/willLodgement/executorTabUpdateConfig.json');
 
-const documentsTabUploadDocumentConfig = require('../Pages/caseDetails/willLodgement/documentsTabUploadDocumentConfig');
-const documentsTabGenerateDepositReceiptConfig = require('../Pages/caseDetails/willLodgement/documentsTabGenerateDepositReceiptConfig');
+const documentsTabUploadDocumentConfig = require('../../Pages/caseDetails/willLodgement/documentsTabUploadDocumentConfig.json');
+const documentsTabGenerateDepositReceiptConfig = require('../../Pages/caseDetails/willLodgement/documentsTabGenerateDepositReceiptConfig.json');
 
-const caseMatchesTabConfig = require('../Pages/caseDetails/willLodgement/caseMatchesTabConfig');
-const willWithdrawalDetailsTabConfig = require('../Pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig');
+const caseMatchesTabConfig = require('../../Pages/caseDetails/willLodgement/caseMatchesTabConfig.json');
+const willWithdrawalDetailsTabConfig = require('../../Pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig.json');
 
 const {
     legacyParse,
@@ -36,7 +36,7 @@ const {
 
 test.describe('Caseworker Will Lodgement - Withdraw will', () => {
     test('Caseworker Will Lodgement - Withdraw will',
-        async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
+        async ({basePage, signInPage, createCasePage, cwEventActionsPage}, testInfo) => {
             const scenarioName = 'Caseworker Will Lodgement - Withdraw will';
 
             // BO Will Lodgement (Personal): Create a will lodgement -> Withdraw will
@@ -71,10 +71,10 @@ test.describe('Caseworker Will Lodgement - Withdraw will', () => {
 
             const caseRef = await basePage.getCaseRefFromUrl();
 
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, caseDetailsTabConfig, createWillLodgementConfig);
-            await basePage.seeCaseDetails(caseRef, testatorTabConfig, createWillLodgementConfig);
-            await basePage.seeCaseDetails(caseRef, executorTabConfig, createWillLodgementConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabConfig, createWillLodgementConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, testatorTabConfig, createWillLodgementConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, executorTabConfig, createWillLodgementConfig);
 
             nextStepName = 'Upload document';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -82,15 +82,15 @@ test.describe('Caseworker Will Lodgement - Withdraw will', () => {
             await cwEventActionsPage.uploadDocument(caseRef, documentUploadConfig);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when uploading a document.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
             nextStepName = 'Add comment';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when adding a comment.
-            await cwEventActionsPage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await cwEventActionsPage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Amend will lodgement';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -100,20 +100,20 @@ test.describe('Caseworker Will Lodgement - Withdraw will', () => {
             await createCasePage.enterWillLodgementPage3('update');
             await createCasePage.checkMyAnswers(nextStepName);
             // Note that End State does not change when amending a Will Lodgement.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, caseDetailsTabUpdateConfig, createWillLodgementConfig);
-            await basePage.seeCaseDetails(caseRef, testatorTabUpdateConfig, createWillLodgementConfig);
-            await basePage.seeCaseDetails(caseRef, executorTabUpdateConfig, createWillLodgementConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabUpdateConfig, createWillLodgementConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, testatorTabUpdateConfig, createWillLodgementConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, executorTabUpdateConfig, createWillLodgementConfig);
 
             nextStepName = 'Generate deposit receipt';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when generating a deposit receipt.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             // When generating a deposit receipt, the Date added for the deposit receipt document is set to today
             generateDepositReceiptConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
-            await basePage.seeCaseDetails(caseRef, documentsTabGenerateDepositReceiptConfig, generateDepositReceiptConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, documentsTabGenerateDepositReceiptConfig, generateDepositReceiptConfig);
 
             // "reverting" update back to defaults - to enable case-match with matching case
             nextStepName = 'Amend will lodgement';
@@ -128,8 +128,8 @@ test.describe('Caseworker Will Lodgement - Withdraw will', () => {
             await cwEventActionsPage.selectCaseMatches(caseRef, nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Will lodged';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
             nextStepName = 'Withdraw will';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -137,8 +137,8 @@ test.describe('Caseworker Will Lodgement - Withdraw will', () => {
             await cwEventActionsPage.selectWithdrawalReason(caseRef, withdrawWillConfig);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Will withdrawn';
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
             await basePage.logInfo(scenarioName, endState, caseRef);
 
             await signInPage.signOut();

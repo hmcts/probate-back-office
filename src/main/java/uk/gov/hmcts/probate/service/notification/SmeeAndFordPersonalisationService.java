@@ -14,7 +14,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
-import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.nio.charset.StandardCharsets;
@@ -61,7 +60,6 @@ public class SmeeAndFordPersonalisationService {
     private static final String APPLICATION_TYPE_PERSONAL = "Personally";
 
     private final FileSystemResourceService fileSystemResourceService;
-    private final FeatureToggleService featureToggleService;
 
     public Map<String, String> getSmeeAndFordPersonalisation(List<ReturnedCaseDetails> cases, String fromDate,
                                                              String toDate) {
@@ -110,11 +108,9 @@ public class SmeeAndFordPersonalisationService {
                 data.append(getPrimaryApplicantName(currentCaseData));
                 data.append(DELIMITER);
                 data.append(getFullAddress(currentCaseData.getPrimaryApplicantAddress()));
-                data.append(featureToggleService.isPoundValueFeatureToggleOn()
-                        ? currentCaseData.getIhtGrossValuePounds() : currentCaseData.getIhtGrossValue().toString());
+                data.append(currentCaseData.getIhtGrossValue().toString());
                 data.append(DELIMITER);
-                data.append(featureToggleService.isPoundValueFeatureToggleOn()
-                        ? currentCaseData.getIhtNetValuePounds() : currentCaseData.getIhtNetValue().toString());
+                data.append(currentCaseData.getIhtNetValue().toString());
                 data.append(DELIMITER);
                 data.append(getSolicitorDetails(currentCaseData));
                 data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfBirth()));

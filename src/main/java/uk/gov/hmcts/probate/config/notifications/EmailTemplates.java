@@ -33,5 +33,4 @@ public class EmailTemplates {
     private String sealedAndCertified;
     private String disposalReminder;
     private String caveatDisposalReminder;
-    private String draftCasePaymentSuccess;
 }

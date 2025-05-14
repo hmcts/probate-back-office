@@ -1,24 +1,24 @@
 // @ts-check
-const {test} = require('../Fixtures/fixtures');
+const {test} = require('../../Fixtures/fixtures');
 
-const {testConfig} = require ('../Configs/config');
-const createCaseConfig = require('../Pages/createCase/createCaseConfig');
+const {testConfig} = require ('../../Configs/config');
+const createCaseConfig = require('../../Pages/createCase/createCaseConfig.json');
 
-const caseMatchesConfig = require('../Pages/caseMatches/grantOfProbate/probateManCaseMatchesConfig');
-const createGrantOfProbateManualProbateManCaseConfig = require('../Pages/createGrantOfProbateManualForProbateMan/createGrantOfProbateManualProbateManCaseConfig');
-const eventSummaryConfig = require('../Pages/eventSummary/eventSummaryConfig');
-const applicantDetailsTabConfig = require('../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE');
-const caseDetailsTabConfig = require('../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigProbateMan');
+const caseMatchesConfig = require('../../Pages/caseMatches/grantOfProbate/probateManCaseMatchesConfig.json');
+const createGrantOfProbateManualProbateManCaseConfig = require('../../Pages/createGrantOfProbateManualForProbateMan/createGrantOfProbateManualProbateManCaseConfig.json');
+const eventSummaryConfig = require('../../Pages/eventSummary/eventSummaryConfig.json');
+const applicantDetailsTabConfig = require('../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json');
+const caseDetailsTabConfig = require('../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigProbateMan.json');
 
-const caseMatchesTabConfig = require('../Pages/caseDetails/grantOfProbate/probateManCaseMatchesTabConfig');
-const deceasedTabConfig = require('../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE');
-const historyTabConfig = require('../Pages/caseDetails/grantOfProbate/historyTabConfig');
-const copiesTabConfig = require('../Pages/caseDetails/grantOfProbate/copiesTabConfig');
-const caseProgressConfig = require('../Pages/caseProgressStandard/caseProgressConfig');
+const caseMatchesTabConfig = require('../../Pages/caseDetails/grantOfProbate/probateManCaseMatchesTabConfig.json');
+const deceasedTabConfig = require('../../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE.json');
+const historyTabConfig = require('../../Pages/caseDetails/grantOfProbate/historyTabConfig.json');
+const copiesTabConfig = require('../../Pages/caseDetails/grantOfProbate/copiesTabConfig.json');
+const caseProgressConfig = require('../../Pages/caseProgressStandard/caseProgressConfig.json');
 
 test.describe('Caseworker Grant of Representation - probateman case match', () => {
     test('Caseworker Grant of Representation - probateman case match',
-        async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
+        async ({basePage, signInPage, createCasePage, cwEventActionsPage}, testInfo) => {
             const scenarioName = 'Caseworker Grant of Representation - probateman case match';
             if (testConfig.TestBackOfficeUrl.includes('demo') || testConfig.TestBackOfficeUrl.includes('aat')) {
                 let endState;
@@ -44,12 +44,12 @@ test.describe('Caseworker Grant of Representation - probateman case match', () =
                 const caseRef = await basePage.getCaseRefFromUrl();
 
                 await basePage.logInfo(scenarioName, nextStepName, caseRef);
-                await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-                await basePage.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateManualProbateManCaseConfig);
-                await basePage.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateManualProbateManCaseConfig);
+                await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+                await basePage.seeCaseDetails(testInfo, caseRef, deceasedTabConfig, createGrantOfProbateManualProbateManCaseConfig);
+                await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabConfig, createGrantOfProbateManualProbateManCaseConfig);
                 await basePage.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
-                await basePage.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateManualProbateManCaseConfig);
-                await basePage.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateManualProbateManCaseConfig);
+                await basePage.seeCaseDetails(testInfo, caseRef, applicantDetailsTabConfig, createGrantOfProbateManualProbateManCaseConfig);
+                await basePage.seeCaseDetails(testInfo, caseRef, copiesTabConfig, createGrantOfProbateManualProbateManCaseConfig);
 
                 nextStepName = 'Find matches (cases)';
                 await basePage.logInfo(scenarioName, nextStepName, caseRef);
@@ -57,8 +57,8 @@ test.describe('Caseworker Grant of Representation - probateman case match', () =
                 await cwEventActionsPage.selectProbateManCaseMatchesForGrantOfProbate(caseRef, nextStepName, false);
                 await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
                 endState = 'Awaiting documentation';
-                await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-                await basePage.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+                await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+                await basePage.seeCaseDetails(testInfo, caseRef, caseMatchesTabConfig, caseMatchesConfig);
                 await cwEventActionsPage.verifyProbateManCcdCaseNumber();
             }
         });

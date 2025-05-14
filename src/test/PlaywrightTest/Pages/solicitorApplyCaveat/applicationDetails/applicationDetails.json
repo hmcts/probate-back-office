@@ -9,7 +9,7 @@
   "page2_dateOfDeath_year": "2017",
   "page2_dateOfDeath_long": "1 Jan 2017",
 
-  "page2_addAliasButton": "#deceasedFullAliasNameList div button[type=\"button\"]",
+  "page2_addAliasButton": "Add new",
   "page2_alias_1": "deceased_alias_name1",
   "page2_alias_2": "deceased_alias_name2",
   "page2_hasAliasYes": "Yes",
