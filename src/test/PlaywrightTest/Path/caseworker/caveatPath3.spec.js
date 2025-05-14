@@ -100,7 +100,7 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when uploading a document.
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            await basePage.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
+            await basePage.seeCaseDetails(testInfo, caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
             nextStepName = 'Add comment';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
