@@ -166,7 +166,7 @@ def versions = [
         documentClient                  : '1.8.1',
         elasticSearchVersion            : '7.17.28',
         hmctsJavaLogging                : '6.1.9',
-        jsoup                           : '1.18.3',
+        jsoup                           : '1.20.1',
         jacksonDatabind                 : '2.17.1',
         lombok                          : '1.18.38',
         mapStruct                       : '1.2.0.Final',
