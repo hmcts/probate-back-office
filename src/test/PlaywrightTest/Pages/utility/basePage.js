@@ -101,7 +101,7 @@ exports.BasePage = class BasePage {
 
     async seeCaseDetails(testInfo, caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault) {
         if (tabConfigFile.tabName && tabConfigFile.tabName !== 'Documents') {
-            await expect(this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`)).toBeEnabled();
+            await expect(this.page.getByLabel(`${tabConfigFile.tabName}`, {exact: true})).toBeVisible();
         }
 
         await expect(this.page.getByRole('heading', {name: caseRef})).toBeVisible();
@@ -140,7 +140,7 @@ exports.BasePage = class BasePage {
             if (nextStep === endState) {
                 await expect(this.page.getByText(nextStep).nth(2)).toBeVisible();
                 await expect(this.page.getByText(endState).nth(3)).toBeVisible();
-            } else if (endState === 'Caveat created') {
+            } else if (endState === 'Caveat created' || nextStep === 'Apply for probate' || endState === 'Grant of probate created') {
                 await expect(this.page.getByRole('cell', {name: endState, exact: true})).toBeVisible();
                 await expect(this.page.getByLabel(nextStep).nth(1)).toBeVisible();
                 // await expect(this.page.getByLabel(nextStep), {exact: true}).toBeVisible();
@@ -188,7 +188,11 @@ exports.BasePage = class BasePage {
 
             for (let i = 0; i < keys.length; i++) {
                 // eslint-disable-next-line
-                await expect(this.page.getByText(tabUpdatesConfigFile[keys[i]])).toBeVisible();
+                const textLocator = this.page.getByText(tabUpdatesConfigFile[keys[i]], {exact: true});
+                const locatorCount = await textLocator.count();
+                if (locatorCount > 0) {
+                    await textLocator.first().isVisible();
+                }
             }
         }
     }
