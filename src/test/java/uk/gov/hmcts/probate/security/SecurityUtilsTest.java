@@ -104,6 +104,23 @@ class SecurityUtilsTest {
     }
 
     @Test
+    void shouldSecurityContextUserAsScheduler() {
+        ReflectionTestUtils.setField(securityUtils, "authRedirectUrl", REDIRECT);
+        ReflectionTestUtils.setField(securityUtils, "authClientId", AUTH_CLIENT_ID);
+        ReflectionTestUtils.setField(securityUtils, "authClientSecret", AUTH_CLIENT_SECRET);
+        ReflectionTestUtils.setField(securityUtils, "schedulerUserName", SCHEDULER_USER_NAME);
+        ReflectionTestUtils.setField(securityUtils, "schedulerPassword", SCHEDULER_PASSWORD);
+
+        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(tokenResponse);
+
+        securityUtils.setSecurityContextUserAsScheduler();
+
+        assertThat(securityUtils.getAuthorisation(), equalTo(BEARER + USER_TOKEN));
+    }
+
+    @Test
     void shouldGetUserEmail() {
         UserInfo userInfo = UserInfo.builder().sub("solicitor@probate-test.com").build();
         when(idamApi.retrieveUserInfo("AuthToken")).thenReturn(userInfo);
@@ -231,7 +248,7 @@ class SecurityUtilsTest {
     }
 
     private void testGetBearToken(String input, String expected) {
-        assertEquals(securityUtils.getBearerToken(input), expected);
+        assertEquals(expected, securityUtils.getBearerToken(input));
     }
 
     @Test
