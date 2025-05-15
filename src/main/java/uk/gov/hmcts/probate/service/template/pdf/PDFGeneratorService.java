@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
@@ -35,6 +36,7 @@ public class PDFGeneratorService {
     private final PDFServiceClient pdfServiceClient;
     private final DocmosisPdfGenerationService docmosisPdfGenerationService;
     private final PdfTemplateService pdfTemplateService;
+    private final FeatureToggleService featureToggleService;
 
     public PDFGeneratorService(
             final FileSystemResourceService fileSystemResourceService,
@@ -42,13 +44,15 @@ public class PDFGeneratorService {
             final ObjectMapper objectMapper,
             final PDFServiceClient pdfServiceClient,
             final DocmosisPdfGenerationService docmosisPdfGenerationService,
-            final PdfTemplateService pdfTemplateService) {
+            final PdfTemplateService pdfTemplateService,
+            final FeatureToggleService featureToggleService) {
         this.fileSystemResourceService = fileSystemResourceService;
         this.pdfServiceConfiguration = pdfServiceConfiguration;
         this.objectMapper = objectMapper;
         this.pdfServiceClient = pdfServiceClient;
         this.docmosisPdfGenerationService = docmosisPdfGenerationService;
         this.pdfTemplateService = pdfTemplateService;
+        this.featureToggleService = featureToggleService;
     }
 
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {

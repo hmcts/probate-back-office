@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.commons.service.PdfTemplateService;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
@@ -48,6 +49,9 @@ class PDFGeneratorServiceTest {
     @Mock
     PdfTemplateService pdfTemplateServiceMock;
 
+    @Mock
+    FeatureToggleService featureToggleServiceMock;
+
     private PDFGeneratorService underTest;
 
     AutoCloseable closeableMocks;
@@ -62,7 +66,11 @@ class PDFGeneratorServiceTest {
                 new ObjectMapper(),
                 pdfServiceClientMock,
                 docmosisPdfGenerationServiceMock,
-                pdfTemplateServiceMock);
+                pdfTemplateServiceMock,
+                featureToggleServiceMock);
+
+        when(featureToggleServiceMock.useCommonsPdfGen())
+                .thenReturn(true);
     }
 
     @AfterEach
