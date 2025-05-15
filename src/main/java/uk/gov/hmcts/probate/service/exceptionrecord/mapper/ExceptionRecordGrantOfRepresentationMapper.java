@@ -508,7 +508,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         }
     }
 
-    @AfterMapping
+    /*@AfterMapping
     default void setDefaultEmailToNull(@MappingTarget GrantOfRepresentationData caseData,
                                        ExceptionRecordOCRFields ocrField) {
         //If bulk scan case had a missing email, this removes the dummy value
@@ -516,7 +516,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
                 && ocrField.getSolsSolicitorEmail().equals("contactprobate@justice.gov.uk")) {
             caseData.setSolsSolicitorEmail(null);
         }
-    }
+    }*/
 
     default boolean greaterThenZero(String field) {
         Integer integerValue = 0;
