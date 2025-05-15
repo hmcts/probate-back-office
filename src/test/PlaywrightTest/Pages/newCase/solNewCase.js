@@ -201,6 +201,8 @@ exports.SolCreateCasePage = class SolCreateCasePage extends BasePage {
         for (let i = 0; i <= 6; i++) {
             await expect(this.eventHistoryTab).toBeEnabled(); // eslint-disable-line no-await-in-loop
             await expect(this.page.getByText(caseRef).first()).toBeVisible(); // eslint-disable-line no-await-in-loop
+            await this.eventHistoryTab.focus(); // eslint-disable-line no-await-in-loop
+            await this.eventHistoryTab.click(); // eslint-disable-line no-await-in-loop
             await this.eventHistoryTab.click(); // eslint-disable-line no-await-in-loop
             // eslint-disable-line no-await-in-loop
             const result = await this.page.getByText(makePaymentConfig.statusText).isVisible()
