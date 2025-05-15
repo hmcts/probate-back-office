@@ -151,7 +151,7 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.emailCaveator(caseRef);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when emailing the caveator.
-            await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             // When emailing the caveator, the Date added for the email document is set to today
             emailCaveatorConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
             await basePage.seeCaseDetails(testInfo, caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
