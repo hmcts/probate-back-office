@@ -12,6 +12,7 @@ public class FeatureToggleService {
     private final LDClient ldClient;
     private final LDContext ldContext;
     private static final String SMEE_AND_FORD_POUND_VALUE_TOGGLE = "probate-smee-ford-pound-value";
+    private static final String USE_COMMONS_PDF_GEN = "probate-use-commons-pdf-gen";
 
 
     @Autowired
@@ -54,4 +55,9 @@ public class FeatureToggleService {
         return this.isFeatureToggleOn(
                 SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
     }
+
+    public boolean useCommonsPdfGen() {
+        return this.isFeatureToggleOn(USE_COMMONS_PDF_GEN, false);
+    }
+
 }
