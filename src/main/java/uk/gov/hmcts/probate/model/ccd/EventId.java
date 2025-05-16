@@ -28,7 +28,8 @@ public enum EventId {
     CITIZEN_HUB_RESPONSE("citizenHubResponse"),
     CITIZEN_HUB_RESPONSE_DRAFT("citizenHubResponseDraft"),
     DISPOSE_CASE("disposeCase"),
-    GOP_CREATE_DRAFT("createDraft");
+    GOP_CREATE_DRAFT("createDraft"),
+    AUTOMATED_NOTIFICATION("automatedNotification");
     @Getter
     private final String name;
 
