@@ -88,7 +88,20 @@ public class ExceptionRecordService {
 
         try {
             log.info("About to map Caveat OCR fields to CCD for case: {}", erRequest.getExceptionRecordId());
+            ExceptionRecordOCRFields exceptionRecordOCRFields = erRequest.getOCRFieldsObject();
+
+            List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                    .setDefaultCaveatValues(exceptionRecordOCRFields);
+
+            List<CollectionMember<String>> autoCaseWarnings = ocrFieldModifierUtils
+                    .checkWarnings(exceptionRecordOCRFields);
+
+            log.info("AutoCaseWarnings: {}", autoCaseWarnings);
             CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
+
+            caveatData.setModifiedOCRFieldList(modifiedFields);
+
+            caveatData.setAutoCaseWarnings(autoCaseWarnings);
 
             // Add bulkScanReferenceId
             caveatData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
@@ -130,7 +143,7 @@ public class ExceptionRecordService {
             ExceptionRecordOCRFields exceptionRecordOCRFields = erRequest.getOCRFieldsObject();
 
             List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                    .setDefaultValues(exceptionRecordOCRFields);
+                    .setDefaultGorValues(exceptionRecordOCRFields);
 
             List<CollectionMember<String>> autoCaseWarnings = ocrFieldModifierUtils
                     .checkWarnings(exceptionRecordOCRFields);

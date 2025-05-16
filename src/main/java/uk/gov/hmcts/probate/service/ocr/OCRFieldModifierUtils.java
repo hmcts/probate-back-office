@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.ocr;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
@@ -23,14 +24,8 @@ public class OCRFieldModifierUtils {
 
     private final BulkScanConfig bulkScanConfig;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
-    public static final String IHT_FORM_NOT_REQUIRED = "exceptedEstate";
-    public static final String IHT400_COMPLETED = "iht400completed";
-    public static final String IHT_400_PROCESS = "iht400process";
-    public static final String IHT400421_COMPLETED = "iht400421completed";
-    public static final String IHT207_COMPLETED = "iht207completed";
-    public static final String IHT205_COMPLETED = "iht205completed";
 
-    public List<CollectionMember<ModifiedOCRField>> setDefaultValues(ExceptionRecordOCRFields ocrFields) {
+    public List<CollectionMember<ModifiedOCRField>> setDefaultGorValues(ExceptionRecordOCRFields ocrFields) {
 
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
 
@@ -74,97 +69,6 @@ public class OCRFieldModifierUtils {
             log.info("Setting primary applicant postcode to {}", ocrFields.getPrimaryApplicantAddressPostCode());
         }
 
-        if (isBlank(ocrFields.getSolsSolicitorIsApplying())
-                && isNotBlank(ocrFields.getSolsSolicitorRepresentativeName())
-                && isNotBlank(ocrFields.getSolsSolicitorEmail())) {
-            addModifiedField(modifiedFields, "solsSolicitorIsApplying",
-                    ocrFields.getSolsSolicitorIsApplying());
-            ocrFields.setSolsSolicitorIsApplying("TRUE");
-            log.info("Setting solicitor is applying to TRUE");
-        }
-
-        if (isBlank(ocrFields.getSolsSolicitorRepresentativeName())) {
-            addModifiedField(modifiedFields, "solsSolicitorRepresentativeName",
-                    ocrFields.getSolsSolicitorFirmName());
-            if (isNotBlank(ocrFields.getSolsSolicitorFirmName())) {
-                ocrFields.setSolsSolicitorRepresentativeName(ocrFields.getSolsSolicitorFirmName());
-                log.info("Setting solicitor representative name to {}", ocrFields.getSolsSolicitorFirmName());
-            }
-        }
-
-        if (isBlank(ocrFields.getSolsSolicitorFirmName())) {
-            addModifiedField(modifiedFields, "solsSolicitorFirmName", ocrFields.getSolsSolicitorFirmName());
-            ocrFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
-            log.info("Setting solicitor firm name to {}", ocrFields.getSolsSolicitorFirmName());
-        }
-
-        if (isBlank(ocrFields.getSolsSolicitorAppReference())) {
-            addModifiedField(modifiedFields, "solsSolicitorAppReference",
-                    ocrFields.getSolsSolicitorAppReference());
-            if (isNotBlank(ocrFields.getDeceasedSurname())) {
-                ocrFields.setSolsSolicitorAppReference(ocrFields.getDeceasedSurname());
-                log.info("Setting legal representative to deceased surname {}",
-                        ocrFields.getSolsSolicitorAppReference());
-            }
-        }
-
-        // TODO - Populate fields from postcode
-        if (isBlank(ocrFields.getSolsSolicitorAddressLine1())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressLine1",
-                    ocrFields.getSolsSolicitorAddressLine1());
-            if (isNotBlank(ocrFields.getSolsSolicitorAddressLine1())) {
-                // Add auto population from postcode code here
-                ocrFields.setSolsSolicitorAddressLine1(bulkScanConfig.getAddressLine());
-                log.info("Setting solicitor firm address line 1 to {}", ocrFields.getSolsSolicitorAddressLine1());
-            } else {
-                ocrFields.setSolsSolicitorAddressLine1(bulkScanConfig.getName());
-                log.info("Setting solicitor firm address line 1 to {}", ocrFields.getSolsSolicitorAddressLine1());
-            }
-        }
-
-        // TODO - If addressLine1 and Postcode are blank, what should this be? (Awaiting Response from Operations)
-        if (isBlank(ocrFields.getSolsSolicitorAddressLine2())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressLine2",
-                    ocrFields.getSolsSolicitorAddressLine2());
-            if (isBlank(ocrFields.getSolsSolicitorAddressLine1())
-                    && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
-                ocrFields.setSolsSolicitorAddressLine2(bulkScanConfig.getName());
-                log.info("Setting solicitor address line 2 to {}", ocrFields.getSolsSolicitorAddressLine2());
-            }
-        }
-
-        // TODO - If addressLine1 and Postcode are blank, what should this be? (Awaiting Response from Operations)
-        if (isBlank(ocrFields.getSolsSolicitorAddressTown())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressTown",
-                    ocrFields.getSolsSolicitorAddressTown());
-            if (isBlank(ocrFields.getSolsSolicitorAddressLine1())
-                    && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
-                ocrFields.setSolsSolicitorAddressTown(bulkScanConfig.getName());
-                log.info("Setting solicitor town or city to {}", ocrFields.getSolsSolicitorAddressTown());
-            }
-        }
-
-        if (isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressPostCode",
-                    ocrFields.getSolsSolicitorAddressPostCode());
-            ocrFields.setSolsSolicitorAddressPostCode(bulkScanConfig.getPostcode());
-            log.info("Setting solicitor postcode to {}", ocrFields.getSolsSolicitorAddressPostCode());
-        }
-
-        if (isBlank(ocrFields.getSolsSolicitorEmail())) {
-            addModifiedField(modifiedFields, "solsSolicitorEmail",
-                    ocrFields.getSolsSolicitorEmail());
-            ocrFields.setSolsSolicitorEmail(bulkScanConfig.getEmail());
-            log.info("Setting solicitor email to {}", ocrFields.getSolsSolicitorEmail());
-        }
-
-        if (isBlank(ocrFields.getSolsSolicitorPhoneNumber())) {
-            addModifiedField(modifiedFields, "solsSolicitorPhoneNumber",
-                    ocrFields.getSolsSolicitorPhoneNumber());
-            ocrFields.setSolsSolicitorPhoneNumber(bulkScanConfig.getPhone());
-            log.info("Setting solicitor phone to {}", ocrFields.getSolsSolicitorPhoneNumber());
-        }
-
         if (isBlank(ocrFields.getDeceasedSurname())) {
             addModifiedField(modifiedFields, "deceasedSurname", ocrFields.getDeceasedSurname());
             ocrFields.setDeceasedSurname(bulkScanConfig.getName());
@@ -204,30 +108,6 @@ public class OCRFieldModifierUtils {
             log.info("Setting deceased domiciled in Eng/Wales to {}", ocrFields.getDeceasedDomicileInEngWales());
         }
 
-        if (isBlank(ocrFields.getCaveatorForenames())) {
-            addModifiedField(modifiedFields, "caveatorForenames", ocrFields.getCaveatorForenames());
-            ocrFields.setCaveatorForenames(bulkScanConfig.getName());
-            log.info("Setting caveator forename(s) to {}", ocrFields.getCaveatorForenames());
-        }
-
-        if (isBlank(ocrFields.getCaveatorSurnames())) {
-            addModifiedField(modifiedFields, "caveatorSurnames", ocrFields.getCaveatorSurnames());
-            ocrFields.setCaveatorSurnames(bulkScanConfig.getName());
-            log.info("Setting caveator surname to {}", ocrFields.getCaveatorSurnames());
-        }
-
-        if (isBlank(ocrFields.getCaveatorAddressLine1())) {
-            addModifiedField(modifiedFields, "caveatorAddressLine1", ocrFields.getCaveatorAddressLine1());
-            ocrFields.setCaveatorAddressLine1(bulkScanConfig.getName());
-            log.info("Setting caveator address line 1 to {}", ocrFields.getCaveatorAddressLine1());
-        }
-
-        if (isBlank(ocrFields.getCaveatorAddressPostCode())) {
-            addModifiedField(modifiedFields, "caveatorAddressPostCode", ocrFields.getCaveatorAddressPostCode());
-            ocrFields.setCaveatorAddressPostCode(bulkScanConfig.getPostcode());
-            log.info("Setting caveator address postcode to {}", ocrFields.getCaveatorAddressPostCode());
-        }
-
         if (isBlank(ocrFields.getDeceasedForenames())) {
             addModifiedField(modifiedFields, "deceasedForenames", ocrFields.getDeceasedForenames());
             ocrFields.setDeceasedForenames(bulkScanConfig.getName());
@@ -238,6 +118,10 @@ public class OCRFieldModifierUtils {
             addModifiedField(modifiedFields, "deceasedSurname", ocrFields.getDeceasedSurname());
             ocrFields.setDeceasedSurname(bulkScanConfig.getName());
             log.info("Setting deceased surname to {}", ocrFields.getDeceasedSurname());
+        }
+
+        if (BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
+            handleGorSolicitorFields(ocrFields, modifiedFields, bulkScanConfig);
         }
 
         if (isFormVersion3AndSwitchDateValid(ocrFields)) {
@@ -416,6 +300,104 @@ public class OCRFieldModifierUtils {
         modifiedList.add(new CollectionMember<>(null, modifiedOCRField));
     }
 
+    private void handleGorSolicitorFields(ExceptionRecordOCRFields ocrFields,
+                                          List<CollectionMember<ModifiedOCRField>> modifiedFields,
+                                          BulkScanConfig bulkScanConfig) {
+        //not needed -Iswarya as we are setting in OCRToCCDMandatoryField
+        /*if (isBlank(ocrFields.getSolsSolicitorIsApplying())
+                && isNotBlank(ocrFields.getSolsSolicitorRepresentativeName())
+                && isNotBlank(ocrFields.getSolsSolicitorEmail())) {
+            addModifiedField(modifiedFields, "solsSolicitorIsApplying",
+                    ocrFields.getSolsSolicitorIsApplying());
+            ocrFields.setSolsSolicitorIsApplying("TRUE");
+            log.info("Setting solicitor is applying to TRUE");
+        }*/
+        //something is wrong here- Iswarya
+        if (isBlank(ocrFields.getSolsSolicitorRepresentativeName())) {
+            addModifiedField(modifiedFields, "solsSolicitorRepresentativeName",
+                    ocrFields.getSolsSolicitorFirmName());
+            if (isNotBlank(ocrFields.getSolsSolicitorFirmName())) {
+                ocrFields.setSolsSolicitorRepresentativeName(ocrFields.getSolsSolicitorFirmName());
+                log.info("Setting solicitor representative name to {}", ocrFields.getSolsSolicitorFirmName());
+            }
+        }
+
+        if (isBlank(ocrFields.getSolsSolicitorFirmName())) {
+            addModifiedField(modifiedFields, "solsSolicitorFirmName", ocrFields.getSolsSolicitorFirmName());
+            ocrFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
+            log.info("Setting solicitor firm name to {}", ocrFields.getSolsSolicitorFirmName());
+        }
+
+        //Not sure why deceased surname is needed for solicitor app reference -Iswarya
+        if (isBlank(ocrFields.getSolsSolicitorAppReference())) {
+            addModifiedField(modifiedFields, "solsSolicitorAppReference",
+                    ocrFields.getSolsSolicitorAppReference());
+            if (isNotBlank(ocrFields.getDeceasedSurname())) {
+                ocrFields.setSolsSolicitorAppReference(ocrFields.getDeceasedSurname());
+                log.info("Setting legal representative to deceased surname {}",
+                        ocrFields.getSolsSolicitorAppReference());
+            }
+        }
+
+        //isNotBlank will not come into play here - Iswarya
+        // TODO - Populate fields from postcode
+        if (isBlank(ocrFields.getSolsSolicitorAddressLine1())) {
+            addModifiedField(modifiedFields, "solsSolicitorAddressLine1",
+                    ocrFields.getSolsSolicitorAddressLine1());
+            if (isNotBlank(ocrFields.getSolsSolicitorAddressLine1())) {
+                // Add auto population from postcode code here
+                ocrFields.setSolsSolicitorAddressLine1(bulkScanConfig.getAddressLine());
+                log.info("Setting solicitor firm address line 1 to {}", ocrFields.getSolsSolicitorAddressLine1());
+            } else {
+                ocrFields.setSolsSolicitorAddressLine1(bulkScanConfig.getName());
+                log.info("Setting solicitor firm address line 1 to {}", ocrFields.getSolsSolicitorAddressLine1());
+            }
+        }
+
+        // TODO - If addressLine1 and Postcode are blank, what should this be? (Awaiting Response from Operations)
+        if (isBlank(ocrFields.getSolsSolicitorAddressLine2())) {
+            addModifiedField(modifiedFields, "solsSolicitorAddressLine2",
+                    ocrFields.getSolsSolicitorAddressLine2());
+            if (isBlank(ocrFields.getSolsSolicitorAddressLine1())
+                    && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
+                ocrFields.setSolsSolicitorAddressLine2(bulkScanConfig.getName());
+                log.info("Setting solicitor address line 2 to {}", ocrFields.getSolsSolicitorAddressLine2());
+            }
+        }
+
+        // TODO - If addressLine1 and Postcode are blank, what should this be? (Awaiting Response from Operations)
+        if (isBlank(ocrFields.getSolsSolicitorAddressTown())) {
+            addModifiedField(modifiedFields, "solsSolicitorAddressTown",
+                    ocrFields.getSolsSolicitorAddressTown());
+            if (isBlank(ocrFields.getSolsSolicitorAddressLine1())
+                    && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
+                ocrFields.setSolsSolicitorAddressTown(bulkScanConfig.getName());
+                log.info("Setting solicitor town or city to {}", ocrFields.getSolsSolicitorAddressTown());
+            }
+        }
+
+        if (isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
+            addModifiedField(modifiedFields, "solsSolicitorAddressPostCode",
+                    ocrFields.getSolsSolicitorAddressPostCode());
+            ocrFields.setSolsSolicitorAddressPostCode(bulkScanConfig.getPostcode());
+            log.info("Setting solicitor postcode to {}", ocrFields.getSolsSolicitorAddressPostCode());
+        }
+
+        if (isBlank(ocrFields.getSolsSolicitorEmail())) {
+            addModifiedField(modifiedFields, "solsSolicitorEmail",
+                    ocrFields.getSolsSolicitorEmail());
+            ocrFields.setSolsSolicitorEmail(bulkScanConfig.getEmail());
+            log.info("Setting solicitor email to {}", ocrFields.getSolsSolicitorEmail());
+        }
+
+        if (isBlank(ocrFields.getSolsSolicitorPhoneNumber())) {
+            addModifiedField(modifiedFields, "solsSolicitorPhoneNumber",
+                    ocrFields.getSolsSolicitorPhoneNumber());
+            ocrFields.setSolsSolicitorPhoneNumber(bulkScanConfig.getPhone());
+            log.info("Setting solicitor phone to {}", ocrFields.getSolsSolicitorPhoneNumber());
+        }
+    }
+
     public List<CollectionMember<String>> checkWarnings(ExceptionRecordOCRFields ocrFields) {
         List<CollectionMember<String>> warnings = new ArrayList<>();
         long ihtFormCount = Stream.of(
@@ -435,4 +417,91 @@ public class OCRFieldModifierUtils {
         }
         return warnings;
     }
+
+    public List<CollectionMember<ModifiedOCRField>> setDefaultCaveatValues(ExceptionRecordOCRFields
+                                                                                   exceptionRecordOCRFields) {
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+
+        if (isBlank(exceptionRecordOCRFields.getCaveatorForenames())) {
+            addModifiedField(modifiedFields, "caveatorForenames",
+                    exceptionRecordOCRFields.getCaveatorForenames());
+            exceptionRecordOCRFields.setCaveatorForenames(bulkScanConfig.getName());
+            log.info("Setting caveator forename(s) to {}", exceptionRecordOCRFields.getCaveatorForenames());
+        }
+
+        if (isBlank(exceptionRecordOCRFields.getCaveatorSurnames())) {
+            addModifiedField(modifiedFields, "caveatorSurnames",
+                    exceptionRecordOCRFields.getCaveatorSurnames());
+            exceptionRecordOCRFields.setCaveatorSurnames(bulkScanConfig.getName());
+            log.info("Setting caveator surname to {}", exceptionRecordOCRFields.getCaveatorSurnames());
+        }
+
+        if (isBlank(exceptionRecordOCRFields.getDeceasedForenames())) {
+            addModifiedField(modifiedFields, "deceasedForenames",
+                    exceptionRecordOCRFields.getDeceasedForenames());
+            exceptionRecordOCRFields.setCaveatorSurnames(bulkScanConfig.getName());
+            log.info("Setting caveat deceased forename to {}", exceptionRecordOCRFields.getDeceasedForenames());
+        }
+
+        if (isBlank(exceptionRecordOCRFields.getDeceasedSurname())) {
+            addModifiedField(modifiedFields, "deceasedSurname",
+                    exceptionRecordOCRFields.getDeceasedSurname());
+            exceptionRecordOCRFields.setCaveatorSurnames(bulkScanConfig.getName());
+            log.info("Setting Caveat Deceased surname to {}", exceptionRecordOCRFields.getDeceasedSurname());
+        }
+
+        if (isBlank(exceptionRecordOCRFields.getDeceasedDateOfDeath())) {
+            addModifiedField(modifiedFields, "deceasedDateOfDeath",
+                    exceptionRecordOCRFields.getDeceasedDateOfDeath());
+            exceptionRecordOCRFields.setDeceasedDateOfBirth(bulkScanConfig.getDob());
+            log.info("Setting deceased date of death to {}", exceptionRecordOCRFields.getDeceasedDateOfDeath());
+        }
+
+        if (BooleanUtils.toBoolean(exceptionRecordOCRFields.getLegalRepresentative())) {
+            handleCaveatSolicitorAddressFields(exceptionRecordOCRFields, modifiedFields);
+        } else {
+            handleCaveatCitizenAddressFields(exceptionRecordOCRFields, modifiedFields);
+        }
+        return modifiedFields;
+    }
+
+    private void handleCaveatSolicitorAddressFields(ExceptionRecordOCRFields exceptionRecordOCRFields,
+                                                 List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        if (isBlank(exceptionRecordOCRFields.getSolsSolicitorAddressLine1())) {
+            addModifiedField(modifiedFields, "solsSolicitorAddressLine1",
+                    exceptionRecordOCRFields.getSolsSolicitorAddressLine1());
+            exceptionRecordOCRFields.setSolsSolicitorAddressLine1(bulkScanConfig.getName());
+            log.info("Setting solicitor firm address line 1 to {}",
+                    exceptionRecordOCRFields.getSolsSolicitorAddressLine1());
+        }
+        if (isBlank(exceptionRecordOCRFields.getSolsSolicitorAddressPostCode())) {
+            addModifiedField(modifiedFields, "solsSolicitorAddressPostCode",
+                    exceptionRecordOCRFields.getSolsSolicitorAddressPostCode());
+            exceptionRecordOCRFields.setSolsSolicitorAddressPostCode(bulkScanConfig.getPostcode());
+            log.info("Setting solicitor postcode to {}", exceptionRecordOCRFields.getSolsSolicitorAddressPostCode());
+        }
+        if (isBlank(exceptionRecordOCRFields.getSolsSolicitorFirmName())) {
+            addModifiedField(modifiedFields, "solsSolicitorFirmName",
+                    exceptionRecordOCRFields.getSolsSolicitorFirmName());
+            exceptionRecordOCRFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
+            log.info("Setting solicitor firm name to {}", exceptionRecordOCRFields.getSolsSolicitorFirmName());
+        }
+    }
+
+    private void handleCaveatCitizenAddressFields(ExceptionRecordOCRFields exceptionRecordOCRFields,
+                                      List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        if (isBlank(exceptionRecordOCRFields.getCaveatorAddressLine1())) {
+            addModifiedField(modifiedFields, "caveatorAddressLine1",
+                    exceptionRecordOCRFields.getCaveatorAddressLine1());
+            exceptionRecordOCRFields.setCaveatorAddressLine1(bulkScanConfig.getName());
+            log.info("Setting caveator address line 1 to {}", exceptionRecordOCRFields.getCaveatorAddressLine1());
+        }
+        if (isBlank(exceptionRecordOCRFields.getCaveatorAddressPostCode())) {
+            addModifiedField(modifiedFields, "caveatorAddressPostCode",
+                    exceptionRecordOCRFields.getCaveatorAddressPostCode());
+            exceptionRecordOCRFields.setCaveatorAddressPostCode(bulkScanConfig.getPostcode());
+            log.info("Setting caveator address postcode to {}", exceptionRecordOCRFields.getCaveatorAddressPostCode());
+        }
+    }
+
 }

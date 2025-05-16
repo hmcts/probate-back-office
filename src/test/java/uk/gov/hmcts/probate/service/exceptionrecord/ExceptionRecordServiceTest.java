@@ -475,7 +475,7 @@ class ExceptionRecordServiceTest {
                 .build();
         modifiedOCRFieldList
                 .add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember(null, modifiedOCRField));
-        when(ocrFieldModifierUtils.setDefaultValues(any())).thenReturn(modifiedOCRFieldList);
+        when(ocrFieldModifierUtils.setDefaultGorValues(any())).thenReturn(modifiedOCRFieldList);
         SuccessfulTransformationResponse response =
                 erService
                         .createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbateMissingValue,
