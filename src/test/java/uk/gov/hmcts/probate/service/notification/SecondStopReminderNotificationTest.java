@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.service.notification;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -15,7 +15,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
 class SecondStopReminderNotificationTest {
 
     @Mock
@@ -27,18 +26,26 @@ class SecondStopReminderNotificationTest {
     @Mock
     private Document mockDocument;
 
-    private SecondStopReminderNotification secondStopReminderNotification;
+    private SecondStopReminderNotification underTest;
+
+    AutoCloseable closeableMocks;
 
     @BeforeEach
     void setUp() {
-        secondStopReminderNotification = new SecondStopReminderNotification(notificationService);
+        closeableMocks = MockitoAnnotations.openMocks(this);
+        underTest = new SecondStopReminderNotification(notificationService);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        closeableMocks.close();
     }
 
     @Test
     void shouldSendFirstStopReminderEmail() throws NotificationClientException {
         when(notificationService.sendStopReminderEmail(caseDetails, false)).thenReturn(mockDocument);
 
-        Document result = secondStopReminderNotification.sendEmail(caseDetails);
+        Document result = underTest.sendEmail(caseDetails);
 
         verify(notificationService, times(1)).sendStopReminderEmail(caseDetails, false);
         assertEquals(mockDocument, result);

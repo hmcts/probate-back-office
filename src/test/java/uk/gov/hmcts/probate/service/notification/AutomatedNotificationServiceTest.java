@@ -76,7 +76,6 @@ class AutomatedNotificationServiceTest {
 
         when(firstStopReminderNotification.sendEmail(any())).thenReturn(mock(Document.class));
         when(firstStopReminderNotification.matchesType(FIRST_STOP_REMINDER)).thenReturn(true);
-        when(firstStopReminderNotification.isFirstReminder()).thenReturn(true);
 
         automatedNotificationService = new AutomatedNotificationService(
                 List.of(firstStopReminderNotification, secondStopReminderNotification),

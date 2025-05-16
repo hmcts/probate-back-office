@@ -19,6 +19,7 @@ public class CaseStoppedService {
     public void caseStopped(CaseDetails caseDetails) {
         caseDetails.getData().setGrantStoppedDate(LocalDate.now());
         caseDetails.getData().setDocumentUploadedAfterCaseStopped(Constants.NO);
+        caseDetails.getData().setFirstStopReminderSentDate(null);
     }
 
     public void setEvidenceHandledNo(CaseDetails caseDetails) {

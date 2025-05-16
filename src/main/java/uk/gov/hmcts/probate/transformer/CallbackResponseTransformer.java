@@ -1418,7 +1418,8 @@ public class CallbackResponseTransformer {
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
             .isSaveAndClose(caseData.getIsSaveAndClose())
             .executorsNamed(caseData.getExecutorsNamed())
-            .ttl(caseData.getTtl());
+            .ttl(caseData.getTtl())
+            .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate());
 
         if (featureToggleService.enableNewAliasTransformation()) {
             handleDeceasedAliases(

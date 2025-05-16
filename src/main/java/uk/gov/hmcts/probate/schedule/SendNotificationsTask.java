@@ -54,12 +54,11 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Perform Send First Stop Reminder started");
                 automatedNotificationService.sendNotification(firstStopReminderDate, FIRST_STOP_REMINDER);
                 log.info("Perform Send First Stop Reminder finished");
-
             }
         } catch (ApiClientException e) {
-            log.error(e.getMessage());
+            log.error("API client exception during Send First Stop Reminder", e);
         } catch (Exception e) {
-            log.error("Error on SendNotificationsTask Scheduler Send First Stop Reminder task {}", e.getMessage());
+            log.error("Error on SendNotificationsTask Scheduler Send First Stop Reminder task", e);
         }
 
         try {
@@ -73,9 +72,9 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Perform Send Second Stop Reminder finished");
             }
         } catch (ApiClientException e) {
-            log.error(e.getMessage());
+            log.error("API client exception during Send Second Stop Reminder", e);
         } catch (Exception e) {
-            log.error("Error on SendNotificationsTask Scheduler Send Second Stop Reminder task {}", e.getMessage());
+            log.error("Error on SendNotificationsTask Scheduler Send Second Stop Reminder task ", e);
         }
     }
 }

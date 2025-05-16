@@ -30,21 +30,21 @@ import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION
 public class AutomatedNotificationCCDService {
     private final CcdClientApi ccdClientApi;
     private final ObjectMapper objectMapper;
-    public static final String EVENT_DESCRIPTION = "Send Stop Reminder";
-    public static final String EVENT_SUMMARY = "Send Stop Reminder";
-
 
     public void saveNotification(final CaseDetails caseDetails,
                                  final String caseId,
                                  final SecurityDTO securityDTO,
                                  final Document sentEmail,
-                                 final NotificationType notificationType) {
-        log.info("AutomatedNotificationCCDService buildCaseData for case id: {}", caseId);
-        GrantOfRepresentationData data = buildCaseData(caseDetails.getData(), sentEmail, notificationType);
+                                 final NotificationStrategy notificationStrategy) {
+        log.info("AutomatedNotificationCCDService buildCaseData for case id: {} type: {}",
+                caseId, notificationStrategy.getType());
+        GrantOfRepresentationData data =
+                buildCaseData(caseDetails.getData(), sentEmail, notificationStrategy.getType());
         log.info("AutomatedNotificationCCDService saveNotification to Case: {}", caseId);
         try {
             ccdClientApi.updateCaseAsCaseworker(GRANT_OF_REPRESENTATION, caseId, caseDetails.getLastModified(), data,
-                    EventId.AUTOMATED_NOTIFICATION, securityDTO, EVENT_DESCRIPTION, EVENT_SUMMARY);
+                    EventId.AUTOMATED_NOTIFICATION, securityDTO,
+                    notificationStrategy.getEventDescription(), notificationStrategy.getEventSummary());
         } catch (Exception e) {
             log.error("Error saving notification to CCD for case id: {}, Error: {}", caseId, e.getMessage());
         }

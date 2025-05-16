@@ -88,7 +88,8 @@ public class TemplateService {
         }
     }
 
-    private boolean requestInfoByPostForPersonalApplication(String channelChoice, ApplicationType applicationType,
+    private boolean requestInfoByPostForPersonalApplication(String channelChoice,
+                                                            ApplicationType applicationType,
                                                             String informationNeededByPost) {
         return ApplicationType.PERSONAL.equals(applicationType)
             && ((CHANNEL_CHOICE_DIGITAL.equalsIgnoreCase(channelChoice)
@@ -97,16 +98,24 @@ public class TemplateService {
                 || CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase(channelChoice));
     }
 
-    public String getStopReminderTemplateId(ApplicationType applicationType, LanguagePreference languagePreference,
-                                String channelChoice, String informationNeededByPost, boolean isFirstStopReminder) {
+    public String getStopReminderTemplateId(ApplicationType applicationType,
+                                            LanguagePreference languagePreference,
+                                            String channelChoice,
+                                            String informationNeededByPost,
+                                            boolean isFirstStopReminder) {
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
-        if (ApplicationType.SOLICITOR.equals(applicationType)
-                || requestInfoByPostForPersonalApplication(channelChoice, applicationType, informationNeededByPost)) {
-            return isFirstStopReminder ?  emailTemplates.getFirstStopReminder()
-                    : emailTemplates.getSecondStopReminder();
+
+        boolean isSolicitor = ApplicationType.SOLICITOR.equals(applicationType);
+        boolean isPostalRequest = requestInfoByPostForPersonalApplication(channelChoice,
+                applicationType, informationNeededByPost);
+        boolean useHubTemplate = !(isSolicitor || isPostalRequest);
+
+        if (isFirstStopReminder) {
+            return useHubTemplate ? emailTemplates.getFirstStopReminderForHub()
+                    : emailTemplates.getFirstStopReminder();
         } else {
-            return isFirstStopReminder ? emailTemplates.getFirstStopReminderForHub()
-                    : emailTemplates.getSecondStopReminderForHub();
+            return useHubTemplate ? emailTemplates.getSecondStopReminderForHub()
+                    : emailTemplates.getSecondStopReminder();
         }
     }
 }

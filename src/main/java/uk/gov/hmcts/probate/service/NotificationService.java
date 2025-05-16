@@ -704,18 +704,12 @@ public class NotificationService {
     }
 
     private String getChannelChoice(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails) {
-        if (caseDetails == null || caseDetails.getData() == null) {
-            return CHANNEL_CHOICE_DIGITAL;
-        }
         return Optional.ofNullable(caseDetails.getData().get(CHANNEL_CHOICE))
                 .map(Object::toString)
                 .orElse(CHANNEL_CHOICE_DIGITAL);
     }
 
     private String getInformationNeededByPost(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails) {
-        if (caseDetails == null || caseDetails.getData() == null) {
-            return NO;
-        }
         return Optional.ofNullable(caseDetails.getData().get(INFORMATION_NEEDED_BY_POST))
                 .map(Object::toString)
                 .orElse(NO);
@@ -796,7 +790,8 @@ public class NotificationService {
         SendEmailResponse response =
                 notificationClientService.sendEmail(templateId, emailAddress,
                         personalisation, caseDetails.getId().toString());
-        log.info("First Stop Reminder email reference response: {}", response.getReference());
+        log.info("Stop Reminder email reference response: {} isFirstStopReminder: {}", response.getReference(),
+                isFirstStopReminder);
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }
 }

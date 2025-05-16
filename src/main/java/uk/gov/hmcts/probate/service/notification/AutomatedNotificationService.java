@@ -39,12 +39,12 @@ public class AutomatedNotificationService {
         SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
 
         try {
-            log.info("Fetch and process automated notification for tyoe: {}", type);
+            log.info("Fetch and process automated notification for type: {} date: {}", type, date);
             fetchAndProcessPages(strategy, date, securityDTO, failedCases);
         } catch (Exception e) {
-            log.error("Error sending notifications for type {}: {}", type, e.getMessage(), e);
+            log.error(getErrorMessage(type, date), e);
         } finally {
-            log.warn("Failed cases for {}: {}", type, failedCases);
+            log.info("Failed cases for {} on {} : {}", type, date, failedCases);
         }
     }
 
@@ -86,10 +86,10 @@ public class AutomatedNotificationService {
                 Document sentEmail = strategy.sendEmail(caseDetails);
                 automatedNotificationCCDService.saveNotification(
                         caseDetails, caseDetails.getId().toString(),
-                        securityDTO, sentEmail, strategy.getType()
+                        securityDTO, sentEmail, strategy
                 );
             } catch (NotificationClientException | RuntimeException e) {
-                log.warn("Failed to send notification for case ID {}: {}", caseDetails.getId(), e.getMessage());
+                log.info("Failed to send notification for case ID {}: {}", caseDetails.getId(), e.getMessage());
                 failedCases.add(caseDetails.getId());
             }
         }
@@ -97,5 +97,9 @@ public class AutomatedNotificationService {
 
     private String getLastId(SearchResult searchResult) {
         return searchResult.getCases().getLast().getId().toString();
+    }
+
+    private String getErrorMessage(NotificationType type, String date) {
+        return String.format("Error sending notifications for type: %s for date: %s", type, date);
     }
 }

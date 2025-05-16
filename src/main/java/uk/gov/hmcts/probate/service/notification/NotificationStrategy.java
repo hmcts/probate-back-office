@@ -13,7 +13,9 @@ public interface NotificationStrategy {
 
     Document sendEmail(CaseDetails caseDetails) throws NotificationClientException;
 
-    boolean isFirstReminder();
+    String getEventSummary();
+
+    String getEventDescription();
 
     NotificationType getType();
 }

@@ -336,10 +336,10 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
           disposalReminder: "34fe5d9d-c57b-4bc2-9ceb-008e82cd5594"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
-          firstStopReminder: "3c4d8cae-2992-4950-95ab-2d1fd7e8ad7d"
-          firstStopReminderForHub: "a2856f90-39a7-4ff4-9107-13f9b053485c"
-          secondStopReminder: "66de5dc4-bd56-4169-813d-648bdcb36498"
-          secondStopReminderForHub: "284a9158-2386-411d-b92e-693932e53885"
+          firstStopReminder: "ab697deb-7739-44d1-b0ea-642fcea0fc0d"
+          firstStopReminderForHub: "8732675b-8869-4177-acd2-b2bb1cb23641"
+          secondStopReminder: "67673f61-38ed-42dc-8197-93c3839d2da8"
+          secondStopReminderForHub: "a28af333-ee4f-41d3-9e1a-1ea149560007"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -367,8 +367,8 @@ notifications:
           disposalReminder: "bd041f52-5f87-4d90-87ab-302e20e7215d"
           caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
-          firstStopReminder: "9089ab1d-abe7-4bee-a777-b4bcb7d85ea1"
-          secondStopReminder: "2b57f57d-e492-4648-b92d-0c604df722e9"
+          firstStopReminder: "e06d92b6-e59f-4a78-8654-9c1a9f70411b"
+          secondStopReminder: "206a11a2-1171-464b-ad03-5ca83b928968"
 
 documents:
   templates:
