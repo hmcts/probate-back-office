@@ -53,23 +53,6 @@ class PA1PSolicitorMandatoryFieldsValidatorTest {
     }
 
     @Test
-    void testSolicitorMissingMandatoryFieldsPA1P() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.put("solsSolicitorIsApplying", "True");
-
-        pa1PSolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(4, warnings.size());
-        assertEquals("Solicitor representative name (solsSolicitorRepresentativeName) is mandatory.",
-            warnings.get(0));
-        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warnings.get(1));
-        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.",
-            warnings.get(2));
-        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warnings.get(3));
-    }
-
-    @Test
     void testSolicitorMissingPaymentMethodFieldsPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);

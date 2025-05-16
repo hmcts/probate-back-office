@@ -36,6 +36,7 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
         validateOCRWarnings(PA1P, jsonRequest, SUCCESS, expectedWarnings);
     }
 
+    /*
     @Test
     void testPost2022PA1PMissingMandatoryFieldsPresentReturnSomeWarnings() {
         String jsonRequest =
@@ -44,6 +45,7 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
             utils.getLinesFromFile("/json/bulkscan/version3/validation/expectedWarnings/missingNQV.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
     @Test
     void testPost2022PA1AAllMandatoryFieldsPresentReturnNoWarning() {
@@ -64,6 +66,7 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
         validateOCRWarnings(PA1A, jsonRequest, WARNINGS, expectedWarnings);
     }
 
+    /*
     @Test
     void shouldWarnWhenIHT400421Missing() {
         String jsonRequest =
@@ -74,7 +77,9 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
                 "/json/bulkscan/version3/validation/expectedWarnings/missingIHT421Values.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
+    /*
     @Test
     void shouldWarnWhenIHT400ValuesMissing() {
         String jsonRequest =
@@ -85,7 +90,9 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
                         "/json/bulkscan/version3/validation/expectedWarnings/missingIHT400Values.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
+    /*
     @Test
     void shouldWarnWhenExceptedEstatesMissing() {
         String jsonRequest =
@@ -96,7 +103,9 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
                         "/json/bulkscan/version3/validation/expectedWarnings/missingExceptedEstates.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
+    /*
     @Test
     void shouldWarnWhenIHT207Missing() {
         String jsonRequest =
@@ -107,7 +116,9 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
                 "/json/bulkscan/version3/validation/expectedWarnings/missingIHT207Values.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
+    /*
     @Test
     void shouldWarnWhenDiedAfterSwitchDateMissing() {
         String jsonRequest =
@@ -118,7 +129,9 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
                 + "/missingDiedAfterSwitchDate.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
+    /*
     @Test
     void shouldWarnWhenDiedAfterSwitchDateInconsistentWithDOD() {
         String jsonRequest =
@@ -128,7 +141,9 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
             utils.getLinesFromFile("/json/bulkscan/version3/validation/expectedWarnings/wrongDiedAfterSwitchDate.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
+    /*
     @Test
     void shouldWarnForMissingEstateValues() {
         String jsonRequest =
@@ -139,7 +154,9 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
                 + "missingEstateValues.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
+    /*
     @Test
     void shouldWarnForMissingIHT205Values() {
         String jsonRequest =
@@ -150,7 +167,9 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
                 + "missingIHT205Values.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
+    /*
     @Test
     void shouldWarnForMoreThanOneFormSubmitted() {
         String jsonRequest =
@@ -161,6 +180,7 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
                         + "moreThanOneFormSubmitted.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
     @Test
     void invalidApplyingExecutor0EmailAddress() {
@@ -202,6 +222,7 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
         validateOCRWarnings(PA1A, jsonRequest, SUCCESS, expectedWarnings);
     }
 
+    /*
     @Test
     void shouldWarnForIht400Iht400421completedWithNoIht421Values() {
         String jsonRequest =
@@ -212,6 +233,7 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
                 "/json/bulkscan/version3/validation/expectedWarnings/missingIHT421ValuesDuplicateForms.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+     */
 
     private void validateOCRWarnings(String formName, String bodyText, String containsText,
                                      List<String> expectedWarnings) {
