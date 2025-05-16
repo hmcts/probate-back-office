@@ -16,7 +16,9 @@ public enum DocumentType {
     LEGAL_STATEMENT_PROBATE("legalStatementProbate", "legal_statement_probate/original.html"),
 
     @JsonProperty("legalStatementGrantOfProbate")
-    LEGAL_STATEMENT_PROBATE_TRUST_CORPS("legalStatementGrantOfProbate", "legal_statement_grant_of_probate/original.html"),
+    LEGAL_STATEMENT_PROBATE_TRUST_CORPS(
+            "legalStatementGrantOfProbate",
+            "legal_statement_grant_of_probate/original.html"),
 
     @JsonProperty("legalStatementIntestacy")
     LEGAL_STATEMENT_INTESTACY("legalStatementIntestacy", "legal_statement_intestacy/original.html"),
@@ -28,7 +30,7 @@ public enum DocumentType {
     UPLOADED_LEGAL_STATEMENT("uploadedLegalStatement"),
 
     @JsonProperty("digitalGrant")
-    DIGITAL_GRANT("digitalGrant" , "digital_grant/original.html"),
+    DIGITAL_GRANT("digitalGrant", "digital_grant/original.html"),
 
     @JsonProperty("grantCover")
     GRANT_COVER("grantCover", "grant_cover/original.html"),
