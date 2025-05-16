@@ -124,7 +124,7 @@ public class GrantNotificationService {
     private boolean hasCaseSinceBeenUpdated(ReturnedCaseDetails foundCase, EventId sentEvent) {
         CaseDetails caseDetails =
             ccdClientApi.readForCaseWorker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-                securityUtils.getUserAndServiceSecurityDTO());
+                securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO());
         if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) {
             if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
                 && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
