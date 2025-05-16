@@ -332,7 +332,6 @@ public class OCRFieldTestUtils {
             .value("NW1 5LA")
             .description("Solicitor address postcode").build();
 
-        ocrFields.add(field0);
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
