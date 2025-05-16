@@ -1,0 +1,14 @@
+{
+  "waitForText" : "Case list",
+  "page1_list1_application_type": "Personal",
+  "page1_list2_registry_location": "Liverpool",
+  "page1_list2_registry_location_update": "Birmingham",
+  "xuiCreateCaseLocator": "Create Case",
+  "jurisdictionLocatorName": "Jurisdiction",
+  "caseTypeLocatorName": "Case type",
+  "eventLocatorName": "Event",
+  "jurisdictionValue": "PROBATE",
+  "startButton": "Start",
+  "applicationTypeLocatorName": "Application type",
+  "registryLocatorName": "Registry location"
+}

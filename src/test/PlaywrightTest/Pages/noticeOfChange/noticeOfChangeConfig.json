@@ -1,0 +1,14 @@
+{
+  "nocWaitForText" : "Case list",
+  "xuiNocLocator": "a[href=\"\/noc\"]",
+  "page1WaitForText": "Notice of change",
+  "page2WaitForText": "Deceased Surname",
+  "page3WaitForText": "Check and submit",
+  "confirmationPageWaitForText": "Notice of change successful",
+  "caseRefLocator": "#caseRef",
+  "deceasedSurnameLocator": "#deceasedSurname",
+  "affirmationLocator": "#affirmation",
+  "notifyCheckboxLocator": "#notifyEveryParty",
+  "viewCaseLinkLocator": "#content > div > exui-noc-navigation > div > div > exui-noc-submit-success > div > div > div > div > p:nth-child(8) > a",
+  "continueButtonLocator": "div > exui-noc-navigation > button"
+}
