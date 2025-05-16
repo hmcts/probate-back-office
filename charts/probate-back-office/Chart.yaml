@@ -2,7 +2,7 @@ apiVersion: v2
 description: A Helm chart for the HMCTS probate back office service
 name: probate-back-office
 home: https://github.com/hmcts/probate-back-office
-version: 1.0.52
+version: 1.0.53
 maintainers:
   - name: HMCTS Probate Team
     email: probate-action-group@HMCTS.NET
@@ -11,25 +11,25 @@ dependencies:
     version:  5.3.0
     repository: 'oci://hmctspublic.azurecr.io/helm'
   - name: ccd
-    version: 9.2.1
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 9.2.2
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     tags:
       - probate-ccd-stack
   - name: xui-webapp
     version: ~1.0.0
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: xui-webapp.enabled
   - name: aac-manage-case-assignment
     version: ~0.2.0
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: aac-manage-case-assignment.enabled
   - name: idam-pr
     version: 2.3.0
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: idam-pr.enabled
   - name: postgresql
-    version: 1.0.2
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    version: 1.1.0
+    repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: postgresql.enabled
 
 #  - name: elasticsearch
