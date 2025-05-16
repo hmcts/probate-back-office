@@ -12,6 +12,8 @@ import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -26,151 +28,93 @@ public class OCRFieldModifierUtils {
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     public List<CollectionMember<ModifiedOCRField>> setDefaultGorValues(ExceptionRecordOCRFields ocrFields) {
-
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
 
+        handleDeceasedFields(ocrFields, modifiedFields);
+        handlePrimaryApplicantFields(ocrFields, modifiedFields);
+        handleSolicitorFields(ocrFields, modifiedFields);
+        handleIHTFields(ocrFields, modifiedFields);
+
+        return modifiedFields;
+    }
+
+    private void handleDeceasedFields(ExceptionRecordOCRFields ocrFields,
+                                      List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
             addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
                     ocrFields.getDeceasedDiedOnAfterSwitchDate());
-            if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())) {
-                ocrFields.setDeceasedDiedOnAfterSwitchDate("TRUE");
-                log.info("Setting deceasedDiedOnAfterSwitchDate to {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
-            } else {
-                ocrFields.setDeceasedDiedOnAfterSwitchDate("FALSE");
-                log.info("Setting deceasedDiedOnAfterSwitchDate to {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
-            }
+            String switchDateValue = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields
+                    .getDeceasedDateOfDeath()) ? "TRUE" : "FALSE";
+            ocrFields.setDeceasedDiedOnAfterSwitchDate(switchDateValue);
+            log.info("Setting deceasedDiedOnAfterSwitchDate to {}", switchDateValue);
         }
 
-        if (isBlank(ocrFields.getPrimaryApplicantForenames())) {
-            addModifiedField(modifiedFields, "primaryApplicantForenames",
-                    ocrFields.getPrimaryApplicantForenames());
-            ocrFields.setPrimaryApplicantForenames(bulkScanConfig.getName());
-            log.info("Setting primary applicant forename(s) to {}", ocrFields.getPrimaryApplicantForenames());
-        }
+        setFieldIfBlank(ocrFields::getDeceasedForenames, ocrFields::setDeceasedForenames,
+                "deceasedForenames", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedSurname, ocrFields::setDeceasedSurname,
+                "deceasedSurname", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedAddressLine1, ocrFields::setDeceasedAddressLine1,
+                "deceasedAddressLine1", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedAddressPostCode, ocrFields::setDeceasedAddressPostCode,
+                "deceasedAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedDateOfBirth, ocrFields::setDeceasedDateOfBirth,
+                "deceasedDateOfBirth", bulkScanConfig.getDob(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedAnyOtherNames, ocrFields::setDeceasedAnyOtherNames,
+                "deceasedAnyOtherNames", "FALSE", modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedDomicileInEngWales, ocrFields::setDeceasedDomicileInEngWales,
+                "deceasedDomicileInEngWales", "TRUE", modifiedFields);
+    }
 
-        if (isBlank(ocrFields.getPrimaryApplicantSurname())) {
-            addModifiedField(modifiedFields, "primaryApplicantSurname",
-                    ocrFields.getPrimaryApplicantSurname());
-            ocrFields.setPrimaryApplicantSurname(bulkScanConfig.getName());
-            log.info("Setting primary applicant surname to {}", ocrFields.getPrimaryApplicantSurname());
-        }
+    private void handlePrimaryApplicantFields(ExceptionRecordOCRFields ocrFields,
+                                              List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        setFieldIfBlank(ocrFields::getPrimaryApplicantForenames, ocrFields::setPrimaryApplicantForenames,
+                "primaryApplicantForenames", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getPrimaryApplicantSurname, ocrFields::setPrimaryApplicantSurname,
+                "primaryApplicantSurname", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getPrimaryApplicantAddressLine1, ocrFields::setPrimaryApplicantAddressLine1,
+                "primaryApplicantAddressLine1", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getPrimaryApplicantAddressPostCode, ocrFields::setPrimaryApplicantAddressPostCode,
+                "primaryApplicantAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+    }
 
-        if (isBlank(ocrFields.getPrimaryApplicantAddressLine1())) {
-            addModifiedField(modifiedFields, "primaryApplicantAddressLine1",
-                    ocrFields.getPrimaryApplicantAddressLine1());
-            ocrFields.setPrimaryApplicantAddressLine1(bulkScanConfig.getAddressLine());
-            log.info("Setting primary applicant address line 1 to {}", ocrFields.getPrimaryApplicantAddressLine1());
-        }
-
-        if (isBlank(ocrFields.getPrimaryApplicantAddressPostCode())) {
-            addModifiedField(modifiedFields, "primaryApplicantAddressPostCode",
-                    ocrFields.getPrimaryApplicantAddressPostCode());
-            ocrFields.setPrimaryApplicantAddressPostCode(bulkScanConfig.getPostcode());
-            log.info("Setting primary applicant postcode to {}", ocrFields.getPrimaryApplicantAddressPostCode());
-        }
-
-        if (isBlank(ocrFields.getDeceasedSurname())) {
-            addModifiedField(modifiedFields, "deceasedSurname", ocrFields.getDeceasedSurname());
-            ocrFields.setDeceasedSurname(bulkScanConfig.getName());
-            log.info("Setting deceased surname to {}", ocrFields.getDeceasedSurname());
-        }
-
-        if (isBlank(ocrFields.getDeceasedAddressLine1())) {
-            addModifiedField(modifiedFields, "deceasedAddressLine1", ocrFields.getDeceasedAddressLine1());
-            ocrFields.setDeceasedAddressLine1(bulkScanConfig.getName());
-            log.info("Setting deceased address line 1 to {}", ocrFields.getDeceasedAddressLine1());
-        }
-
-        if (isBlank(ocrFields.getDeceasedAddressPostCode())) {
-            addModifiedField(modifiedFields, "deceasedAddressPostCode",
-                    ocrFields.getDeceasedAddressPostCode());
-            ocrFields.setDeceasedAddressPostCode(bulkScanConfig.getPostcode());
-            log.info("Setting deceased postcode to {}", ocrFields.getDeceasedAddressPostCode());
-        }
-
-        if (isBlank(ocrFields.getDeceasedDateOfBirth())) {
-            addModifiedField(modifiedFields, "deceasedDateOfBirth", ocrFields.getDeceasedDateOfBirth());
-            ocrFields.setDeceasedDateOfBirth(bulkScanConfig.getDob());
-            log.info("Setting deceased date of birth to {}", ocrFields.getDeceasedDateOfBirth());
-        }
-
-        if (isBlank(ocrFields.getDeceasedAnyOtherNames())) {
-            addModifiedField(modifiedFields, "deceasedAnyOtherNames",
-                    ocrFields.getDeceasedAnyOtherNames());
-            ocrFields.setDeceasedAnyOtherNames("FALSE");
-            log.info("Setting deceased any other names to {}", ocrFields.getDeceasedAnyOtherNames());
-        }
-
-        if (isBlank(ocrFields.getDeceasedDomicileInEngWales())) {
-            addModifiedField(modifiedFields, "deceasedDomicileInEngWales",
-                    ocrFields.getDeceasedDomicileInEngWales());
-            ocrFields.setDeceasedDomicileInEngWales("TRUE");
-            log.info("Setting deceased domiciled in Eng/Wales to {}", ocrFields.getDeceasedDomicileInEngWales());
-        }
-
-        if (isBlank(ocrFields.getDeceasedForenames())) {
-            addModifiedField(modifiedFields, "deceasedForenames", ocrFields.getDeceasedForenames());
-            ocrFields.setDeceasedForenames(bulkScanConfig.getName());
-            log.info("Setting deceased forename(s) to {}", ocrFields.getDeceasedForenames());
-        }
-
-        if (isBlank(ocrFields.getDeceasedSurname())) {
-            addModifiedField(modifiedFields, "deceasedSurname", ocrFields.getDeceasedSurname());
-            ocrFields.setDeceasedSurname(bulkScanConfig.getName());
-            log.info("Setting deceased surname to {}", ocrFields.getDeceasedSurname());
-        }
-
+    private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
+                                       List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         if (BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
             handleGorSolicitorFields(ocrFields, modifiedFields, bulkScanConfig);
         }
+    }
 
+    private void handleIHTFields(ExceptionRecordOCRFields ocrFields,
+                                 List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         if (isFormVersion3AndSwitchDateValid(ocrFields)) {
             setDefaultIHTValues(ocrFields, modifiedFields, bulkScanConfig);
             if (isIhtFormsNotCompleted(ocrFields)) {
                 addModifiedField(modifiedFields, "iht400Completed", ocrFields.getIht400Completed());
                 ocrFields.setIht400Completed("TRUE");
                 log.info("Setting iht400Completed to {}", ocrFields.getIht400Completed());
-                if (isBlank(ocrFields.getIht400process())) {
-                    addModifiedField(modifiedFields, "iht400process", ocrFields.getIht400process());
-                    ocrFields.setIht400process("TRUE");
-                    log.info("Setting iht400process to {}", ocrFields.getIht400process());
-                }
-                if (isBlank(ocrFields.getProbateGrossValueIht400())) {
-                    addModifiedField(modifiedFields, "probateGrossValueIht400",
-                            ocrFields.getProbateGrossValueIht400());
-                    ocrFields.setProbateGrossValueIht400(bulkScanConfig.getGrossNetValue());
-                    log.info("Setting probateGrossValueIht400 to {}", ocrFields.getProbateGrossValueIht400());
-                }
-                if (isBlank(ocrFields.getProbateNetValueIht400())) {
-                    addModifiedField(modifiedFields, "probateNetValueIht400",
-                            ocrFields.getProbateNetValueIht400());
-                    ocrFields.setProbateNetValueIht400(bulkScanConfig.getGrossNetValue());
-                    log.info("Setting probateNetValueIht400 to {}", ocrFields.getProbateNetValueIht400());
-                }
+                setFieldIfBlank(ocrFields::getIht400process, ocrFields::setIht400process,
+                        "iht400process", "TRUE", modifiedFields);
+
+                setFieldIfBlank(ocrFields::getProbateGrossValueIht400, ocrFields::setProbateGrossValueIht400,
+                        "probateGrossValueIht400", bulkScanConfig.getGrossNetValue(), modifiedFields);
+
+                setFieldIfBlank(ocrFields::getProbateNetValueIht400, ocrFields::setProbateNetValueIht400,
+                        "probateNetValueIht400", bulkScanConfig.getGrossNetValue(), modifiedFields);
             }
         }
         if (isFormVersion2AndSwitchDateValid(ocrFields, exceptedEstateDateOfDeathChecker)) {
             setDefaultIHTValues(ocrFields, modifiedFields, bulkScanConfig);
         }
         if (isFormVersion2Or3AndExceptedEstate(ocrFields)) {
-            if (isBlank(ocrFields.getIhtEstateGrossValue())) {
-                addModifiedField(modifiedFields, "ihtEstateGrossValue", ocrFields.getIhtEstateGrossValue());
-                ocrFields.setIhtEstateGrossValue(bulkScanConfig.getGrossNetValue());
-                log.info("Setting ihtEstateGrossValue to {}", ocrFields.getIhtEstateGrossValue());
-            }
-            if (isBlank(ocrFields.getIhtEstateNetValue())) {
-                addModifiedField(modifiedFields, "ihtEstateNetValue", ocrFields.getIhtEstateNetValue());
-                ocrFields.setIhtEstateNetValue(bulkScanConfig.getGrossNetValue());
-                log.info("Setting ihtEstateNetValue to {}", ocrFields.getIhtEstateNetValue());
-            }
-            if (isBlank(ocrFields.getIhtEstateNetQualifyingValue())) {
-                addModifiedField(modifiedFields, "ihtEstateNetQualifyingValue", ocrFields
-                        .getIhtEstateNetQualifyingValue());
-                ocrFields.setIhtEstateNetQualifyingValue(bulkScanConfig.getGrossNetValue());
-                log.info("Setting ihtEstateNetQualifyingValue to {}", ocrFields.getIhtEstateNetQualifyingValue());
-            }
+            setFieldIfBlank(ocrFields::getIhtEstateGrossValue, ocrFields::setIhtEstateGrossValue,
+                    "ihtEstateGrossValue", bulkScanConfig.getGrossNetValue(), modifiedFields);
+
+            setFieldIfBlank(ocrFields::getIhtEstateNetValue, ocrFields::setIhtEstateNetValue,
+                    "ihtEstateNetValue", bulkScanConfig.getGrossNetValue(), modifiedFields);
+
+            setFieldIfBlank(ocrFields::getIhtEstateNetQualifyingValue, ocrFields::setIhtEstateNetQualifyingValue,
+                    "ihtEstateNetQualifyingValue", bulkScanConfig.getGrossNetValue(), modifiedFields);
         }
-        return modifiedFields;
     }
 
     private boolean isFormVersion3AndSwitchDateValid(ExceptionRecordOCRFields ocrFields) {
@@ -236,55 +180,35 @@ public class OCRFieldModifierUtils {
         } else if ("true".equalsIgnoreCase(fieldValue)) {
             switch (fieldName) {
                 case "iht400421Completed":
-                    if (isBlank(ocrFields.getIht421grossValue())) {
-                        addModifiedField(modifiedList, "iht421grossValue", ocrFields.getIht421grossValue());
-                        ocrFields.setIht421grossValue(bulkScanConfig.getGrossNetValue());
-                        log.info("Setting iht421grossValue to {}", ocrFields.getIht421grossValue());
-                    }
-                    if (isBlank(ocrFields.getIht421netValue())) {
-                        addModifiedField(modifiedList, "iht421netValue", ocrFields.getIht421netValue());
-                        ocrFields.setIht421netValue(bulkScanConfig.getGrossNetValue());
-                        log.info("Setting iht421netValue to {}", ocrFields.getIht421netValue());
-                    }
+                    setFieldIfBlank(ocrFields::getIht421grossValue, ocrFields::setIht421grossValue,
+                            "iht421grossValue", bulkScanConfig.getGrossNetValue(), modifiedList);
+
+                    setFieldIfBlank(ocrFields::getIht421netValue, ocrFields::setIht421netValue,
+                            "iht421netValue", bulkScanConfig.getGrossNetValue(), modifiedList);
                     break;
                 case "iht207Completed":
-                    if (isBlank(ocrFields.getIht207grossValue())) {
-                        addModifiedField(modifiedList, "iht207grossValue", ocrFields.getIht207grossValue());
-                        ocrFields.setIht207grossValue(bulkScanConfig.getGrossNetValue());
-                        log.info("Setting iht207grossValue to {}", ocrFields.getIht207grossValue());
-                    }
-                    if (isBlank(ocrFields.getIht207netValue())) {
-                        addModifiedField(modifiedList, "iht207netValue", ocrFields.getIht207netValue());
-                        ocrFields.setIht207netValue(bulkScanConfig.getGrossNetValue());
-                        log.info("Setting iht207netValue to {}", ocrFields.getIht207netValue());
-                    }
+                    setFieldIfBlank(ocrFields::getIht207grossValue, ocrFields::setIht207grossValue,
+                            "iht207grossValue", bulkScanConfig.getGrossNetValue(), modifiedList);
+
+                    setFieldIfBlank(ocrFields::getIht207netValue, ocrFields::setIht207netValue,
+                            "iht207netValue", bulkScanConfig.getGrossNetValue(), modifiedList);
                     break;
                 case "iht205Completed":
-                    if (isBlank(ocrFields.getIhtGrossValue205())) {
-                        addModifiedField(modifiedList, "ihtGrossValue205", ocrFields.getIhtGrossValue205());
-                        ocrFields.setIhtGrossValue205(bulkScanConfig.getGrossNetValue());
-                        log.info("Setting ihtGrossValue205 to {}", ocrFields.getIhtGrossValue205());
-                    }
-                    if (isBlank(ocrFields.getIhtNetValue205())) {
-                        addModifiedField(modifiedList, "ihtNetValue205", ocrFields.getIhtNetValue205());
-                        ocrFields.setIhtNetValue205(bulkScanConfig.getGrossNetValue());
-                        log.info("Setting ihtNetValue205 to {}", ocrFields.getIhtNetValue205());
-                    }
+                    setFieldIfBlank(ocrFields::getIhtGrossValue205, ocrFields::setIhtGrossValue205,
+                            "ihtGrossValue205", bulkScanConfig.getGrossNetValue(), modifiedList);
+
+                    setFieldIfBlank(ocrFields::getIhtNetValue205, ocrFields::setIhtNetValue205,
+                            "ihtNetValue205", bulkScanConfig.getGrossNetValue(), modifiedList);
                     break;
                 case "iht205completedOnline":
-                    if (isBlank(ocrFields.getIhtReferenceNumber())) {
-                        addModifiedField(modifiedList, "ihtReferenceNumber", ocrFields
-                                .getIhtReferenceNumber());
-                        ocrFields.setIhtReferenceNumber("1234");
-                    }
-                    if (isBlank(ocrFields.getIhtGrossValue205())) {
-                        addModifiedField(modifiedList, "ihtGrossValue205", ocrFields.getIhtGrossValue205());
-                        ocrFields.setIhtGrossValue205(bulkScanConfig.getGrossNetValue());
-                    }
-                    if (isBlank(ocrFields.getIhtNetValue205())) {
-                        addModifiedField(modifiedList, "ihtNetValue205", ocrFields.getIhtNetValue205());
-                        ocrFields.setIhtNetValue205(bulkScanConfig.getGrossNetValue());
-                    }
+                    setFieldIfBlank(ocrFields::getIhtReferenceNumber, ocrFields::setIhtReferenceNumber,
+                            "ihtReferenceNumber", "1234", modifiedList);
+
+                    setFieldIfBlank(ocrFields::getIhtGrossValue205, ocrFields::setIhtGrossValue205,
+                            "ihtGrossValue205", bulkScanConfig.getGrossNetValue(), modifiedList);
+
+                    setFieldIfBlank(ocrFields::getIhtNetValue205, ocrFields::setIhtNetValue205,
+                            "ihtNetValue205", bulkScanConfig.getGrossNetValue(), modifiedList);
                     break;
             }
         }
@@ -418,44 +342,34 @@ public class OCRFieldModifierUtils {
         return warnings;
     }
 
+    private void setFieldIfBlank(Supplier<String> getter, Consumer<String> setter, String fieldName,
+                                 String defaultValue, List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        if (isBlank(getter.get())) {
+            addModifiedField(modifiedFields, fieldName, getter.get());
+            setter.accept(defaultValue);
+            log.info("Setting {} to {}", fieldName, defaultValue);
+        }
+    }
+
     public List<CollectionMember<ModifiedOCRField>> setDefaultCaveatValues(ExceptionRecordOCRFields
                                                                                    exceptionRecordOCRFields) {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
 
-        if (isBlank(exceptionRecordOCRFields.getCaveatorForenames())) {
-            addModifiedField(modifiedFields, "caveatorForenames",
-                    exceptionRecordOCRFields.getCaveatorForenames());
-            exceptionRecordOCRFields.setCaveatorForenames(bulkScanConfig.getName());
-            log.info("Setting caveator forename(s) to {}", exceptionRecordOCRFields.getCaveatorForenames());
-        }
+        setFieldIfBlank(exceptionRecordOCRFields::getCaveatorForenames, exceptionRecordOCRFields::setCaveatorForenames,
+                "caveatorForenames", bulkScanConfig.getName(), modifiedFields);
 
-        if (isBlank(exceptionRecordOCRFields.getCaveatorSurnames())) {
-            addModifiedField(modifiedFields, "caveatorSurnames",
-                    exceptionRecordOCRFields.getCaveatorSurnames());
-            exceptionRecordOCRFields.setCaveatorSurnames(bulkScanConfig.getName());
-            log.info("Setting caveator surname to {}", exceptionRecordOCRFields.getCaveatorSurnames());
-        }
+        setFieldIfBlank(exceptionRecordOCRFields::getCaveatorSurnames, exceptionRecordOCRFields::setCaveatorSurnames,
+                "caveatorSurnames", bulkScanConfig.getName(), modifiedFields);
 
-        if (isBlank(exceptionRecordOCRFields.getDeceasedForenames())) {
-            addModifiedField(modifiedFields, "deceasedForenames",
-                    exceptionRecordOCRFields.getDeceasedForenames());
-            exceptionRecordOCRFields.setCaveatorSurnames(bulkScanConfig.getName());
-            log.info("Setting caveat deceased forename to {}", exceptionRecordOCRFields.getDeceasedForenames());
-        }
+        setFieldIfBlank(exceptionRecordOCRFields::getDeceasedForenames, exceptionRecordOCRFields::setDeceasedForenames,
+                "deceasedForenames", bulkScanConfig.getName(), modifiedFields);
 
-        if (isBlank(exceptionRecordOCRFields.getDeceasedSurname())) {
-            addModifiedField(modifiedFields, "deceasedSurname",
-                    exceptionRecordOCRFields.getDeceasedSurname());
-            exceptionRecordOCRFields.setCaveatorSurnames(bulkScanConfig.getName());
-            log.info("Setting Caveat Deceased surname to {}", exceptionRecordOCRFields.getDeceasedSurname());
-        }
+        setFieldIfBlank(exceptionRecordOCRFields::getDeceasedSurname, exceptionRecordOCRFields::setDeceasedSurname,
+                "deceasedSurname", bulkScanConfig.getName(), modifiedFields);
 
-        if (isBlank(exceptionRecordOCRFields.getDeceasedDateOfDeath())) {
-            addModifiedField(modifiedFields, "deceasedDateOfDeath",
-                    exceptionRecordOCRFields.getDeceasedDateOfDeath());
-            exceptionRecordOCRFields.setDeceasedDateOfBirth(bulkScanConfig.getDob());
-            log.info("Setting deceased date of death to {}", exceptionRecordOCRFields.getDeceasedDateOfDeath());
-        }
+        setFieldIfBlank(exceptionRecordOCRFields::getDeceasedDateOfDeath,
+                exceptionRecordOCRFields::setDeceasedDateOfBirth, "deceasedDateOfDeath",
+                bulkScanConfig.getDob(), modifiedFields);
 
         if (BooleanUtils.toBoolean(exceptionRecordOCRFields.getLegalRepresentative())) {
             handleCaveatSolicitorAddressFields(exceptionRecordOCRFields, modifiedFields);
@@ -467,41 +381,28 @@ public class OCRFieldModifierUtils {
 
     private void handleCaveatSolicitorAddressFields(ExceptionRecordOCRFields exceptionRecordOCRFields,
                                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        if (isBlank(exceptionRecordOCRFields.getSolsSolicitorAddressLine1())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressLine1",
-                    exceptionRecordOCRFields.getSolsSolicitorAddressLine1());
-            exceptionRecordOCRFields.setSolsSolicitorAddressLine1(bulkScanConfig.getName());
-            log.info("Setting solicitor firm address line 1 to {}",
-                    exceptionRecordOCRFields.getSolsSolicitorAddressLine1());
-        }
-        if (isBlank(exceptionRecordOCRFields.getSolsSolicitorAddressPostCode())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressPostCode",
-                    exceptionRecordOCRFields.getSolsSolicitorAddressPostCode());
-            exceptionRecordOCRFields.setSolsSolicitorAddressPostCode(bulkScanConfig.getPostcode());
-            log.info("Setting solicitor postcode to {}", exceptionRecordOCRFields.getSolsSolicitorAddressPostCode());
-        }
-        if (isBlank(exceptionRecordOCRFields.getSolsSolicitorFirmName())) {
-            addModifiedField(modifiedFields, "solsSolicitorFirmName",
-                    exceptionRecordOCRFields.getSolsSolicitorFirmName());
-            exceptionRecordOCRFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
-            log.info("Setting solicitor firm name to {}", exceptionRecordOCRFields.getSolsSolicitorFirmName());
-        }
+        setFieldIfBlank(exceptionRecordOCRFields::getSolsSolicitorAddressLine1,
+                exceptionRecordOCRFields::setSolsSolicitorAddressLine1,
+                "solsSolicitorAddressLine1", bulkScanConfig.getName(), modifiedFields);
+
+        setFieldIfBlank(exceptionRecordOCRFields::getSolsSolicitorAddressPostCode,
+                exceptionRecordOCRFields::setSolsSolicitorAddressPostCode,
+                "solsSolicitorAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+
+        setFieldIfBlank(exceptionRecordOCRFields::getSolsSolicitorFirmName,
+                exceptionRecordOCRFields::setSolsSolicitorFirmName,
+                "solsSolicitorFirmName", bulkScanConfig.getName(), modifiedFields);
     }
 
     private void handleCaveatCitizenAddressFields(ExceptionRecordOCRFields exceptionRecordOCRFields,
                                       List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        if (isBlank(exceptionRecordOCRFields.getCaveatorAddressLine1())) {
-            addModifiedField(modifiedFields, "caveatorAddressLine1",
-                    exceptionRecordOCRFields.getCaveatorAddressLine1());
-            exceptionRecordOCRFields.setCaveatorAddressLine1(bulkScanConfig.getName());
-            log.info("Setting caveator address line 1 to {}", exceptionRecordOCRFields.getCaveatorAddressLine1());
-        }
-        if (isBlank(exceptionRecordOCRFields.getCaveatorAddressPostCode())) {
-            addModifiedField(modifiedFields, "caveatorAddressPostCode",
-                    exceptionRecordOCRFields.getCaveatorAddressPostCode());
-            exceptionRecordOCRFields.setCaveatorAddressPostCode(bulkScanConfig.getPostcode());
-            log.info("Setting caveator address postcode to {}", exceptionRecordOCRFields.getCaveatorAddressPostCode());
-        }
+        setFieldIfBlank(exceptionRecordOCRFields::getCaveatorAddressLine1,
+                exceptionRecordOCRFields::setCaveatorAddressLine1,
+                "caveatorAddressLine1", bulkScanConfig.getName(), modifiedFields);
+
+        setFieldIfBlank(exceptionRecordOCRFields::getCaveatorAddressPostCode,
+                exceptionRecordOCRFields::setCaveatorAddressPostCode,
+                "caveatorAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
     }
 
 }

@@ -113,7 +113,7 @@ public class ExceptionRecordService {
             caveatData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
-                .collect(toList()));
+                .toList());
 
             caveatData.setApplicationSubmittedDate(erRequest.getDeliveryDate().toLocalDate());
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
