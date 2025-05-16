@@ -41,6 +41,7 @@ public class CaveatQueryService {
 
     private static final String SERVICE_AUTH = "ServiceAuthorization";
     private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER = "Bearer ";
     private static final String CASE_TYPE_ID = "ctid";
     private static final String REFERENCE = "reference";
     private static final String PA_APP_CREATED = "PAAppCreated";
@@ -97,7 +98,7 @@ public class CaveatQueryService {
     }
 
     private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {
-        log.debug("CaveatMatchingService runQuery: " + jsonQuery);
+        log.debug("CaveatQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
             .queryParam(CASE_TYPE_ID, caseType.getCode())
@@ -109,12 +110,12 @@ public class CaveatQueryService {
             tokenHeaders = headers.getAuthorizationHeaders();
         } catch (Exception e) {
             tokenHeaders = new HttpHeaders();
-            tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
+            tokenHeaders.add(SERVICE_AUTH, BEARER + serviceAuthTokenGenerator.generate());
             tokenHeaders.add(AUTHORIZATION, securityUtils.getCaseworkerToken());
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
-            log.info("Data search - caveat cases: " + entity);
+            log.info("Data search - caveat cases: " + entity.getBody());
         }
 
         ReturnedCaveats returnedCaveats;
@@ -131,7 +132,7 @@ public class CaveatQueryService {
 
     public List<ReturnedCaveatDetails> findCaveatExpiredCases(String expiryDate) {
         BoolQueryBuilder query = boolQuery()
-                .must(matchQuery(DATA_EXPIRY_DATE, expiryDate))
+                .filter(rangeQuery(DATA_EXPIRY_DATE).lte(expiryDate))
                 .should(matchQuery(STATE, CAVEAT_NOT_MATCHED))
                 .should(matchQuery(STATE, AWAITING_CAVEAT_RESOLUTION))
                 .should(matchQuery(STATE, WARNING_VALIDATION))
