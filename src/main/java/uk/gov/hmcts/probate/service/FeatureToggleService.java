@@ -48,10 +48,6 @@ public class FeatureToggleService {
         return this.ldClient.boolVariation(featureToggleCode, this.ldContext, defaultValue);
     }
 
-    public boolean enableNewAliasTransformation() {
-        return this.isFeatureToggleOn("probate-enable-new-alias-transformation", false);
-    }
-
     public boolean enableAmendLegalStatementFiletypeCheck() {
         return this.isFeatureToggleOn("enable-amend-legal-statement-filetype-check", false);
     }
