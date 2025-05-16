@@ -646,4 +646,115 @@ class OCRFieldModifierUtilsTest {
 
         assertEquals(0, warnings.size());
     }
+
+    @Test
+    void shouldSetCaveatorForenamesToDefaultWhenEmpty() {
+        ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);
+        ocrFields.setCaveatorForenames("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                .setDefaultCaveatValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("caveatorForenames", modifiedFields.get(0).getValue().getFieldName());
+    }
+
+    @Test
+    void shouldSetCaveatorSurnamesToDefaultWhenEmpty() {
+        ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);
+        ocrFields.setCaveatorSurnames("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                .setDefaultCaveatValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("caveatorSurnames", modifiedFields.get(0).getValue().getFieldName());
+    }
+
+    @Test
+    void shouldSetDeceasedForenamesToDefaultWhenEmpty() {
+        ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);
+        ocrFields.setDeceasedForenames("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                .setDefaultCaveatValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("deceasedForenames", modifiedFields.get(0).getValue().getFieldName());
+    }
+
+    @Test
+    void shouldSetDeceasedSurnameToDefaultWhenEmpty() {
+        ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);
+        ocrFields.setDeceasedSurname("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                .setDefaultCaveatValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("deceasedSurname", modifiedFields.get(0).getValue().getFieldName());
+    }
+
+    @Test
+    void shouldSetDeceasedDateOfDeathToDefaultWhenEmpty() {
+        ocrFields.setDeceasedDateOfDeath("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                .setDefaultCaveatValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("deceasedDateOfDeath", modifiedFields.get(0).getValue().getFieldName());
+    }
+
+    @Test
+    void shouldSetSolicitorAddressFieldsWhenLegalRepresentativeIsTrue() throws NoSuchFieldException,
+            IllegalAccessException {
+        Field legalRepresentative = ExceptionRecordOCRFields.class.getDeclaredField("legalRepresentative");
+        legalRepresentative.setAccessible(true);
+        legalRepresentative.set(ocrFields, "TRUE");
+        ocrFields.setSolsSolicitorAddressLine1("");
+        ocrFields.setSolsSolicitorAddressPostCode("");
+        ocrFields.setSolsSolicitorFirmName("");
+        ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                .setDefaultCaveatValues(ocrFields);
+
+        assertEquals(3, modifiedFields.size());
+        assertEquals("solsSolicitorAddressLine1", modifiedFields.get(0).getValue().getFieldName());
+        assertEquals("solsSolicitorAddressPostCode", modifiedFields.get(1).getValue().getFieldName());
+        assertEquals("solsSolicitorFirmName", modifiedFields.get(2).getValue().getFieldName());
+    }
+
+    @Test
+    void shouldSetCitizenAddressFieldsWhenLegalRepresentativeIsFalse() throws IllegalAccessException,
+            NoSuchFieldException {
+        Field legalRepresentative = ExceptionRecordOCRFields.class.getDeclaredField("legalRepresentative");
+        legalRepresentative.setAccessible(true);
+        legalRepresentative.set(ocrFields, "false");
+        ocrFields.setCaveatorAddressLine1("");
+        ocrFields.setCaveatorAddressPostCode("");
+        ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                .setDefaultCaveatValues(ocrFields);
+
+        assertEquals(2, modifiedFields.size());
+        assertEquals("caveatorAddressLine1", modifiedFields.get(0).getValue().getFieldName());
+        assertEquals("caveatorAddressPostCode", modifiedFields.get(1).getValue().getFieldName());
+    }
+
+    @Test
+    void shouldNotModifyFieldsWhenAllValuesArePresent() throws NoSuchFieldException, IllegalAccessException {
+        ocrFields.setCaveatorForenames("John");
+        ocrFields.setCaveatorSurnames("Doe");
+        ocrFields.setDeceasedForenames("Jane");
+        ocrFields.setDeceasedSurname("Smith");
+        ocrFields.setDeceasedDateOfDeath("01012020");
+        Field legalRepresentative = ExceptionRecordOCRFields.class.getDeclaredField("legalRepresentative");
+        legalRepresentative.setAccessible(true);
+        legalRepresentative.set(ocrFields, "false");
+        ocrFields.setCaveatorAddressLine1("123 Street");
+        ocrFields.setCaveatorAddressPostCode("SW1A 1AA");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                .setDefaultCaveatValues(ocrFields);
+
+        assertEquals(0, modifiedFields.size());
+    }
 }
