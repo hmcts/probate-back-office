@@ -39,6 +39,7 @@ class PA8ASolicitorMandatoryFieldsValidatorTest {
     void testSolicitorMissingMandatoryFieldsPA8A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
         ocrFieldTestUtils.removeOCRField(ocrFields, "legalRepresentative");
+        ocrFields.removeFirst();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         pa8ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
