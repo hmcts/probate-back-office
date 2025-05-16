@@ -17,11 +17,13 @@ import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
 import uk.gov.hmcts.probate.commons.service.PdfTemplateService;
+import uk.gov.hmcts.reform.probate.exception.ProbateRuntimeException;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -57,27 +59,34 @@ public class PDFGeneratorService {
 
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
         final byte[] postResult;
-        try {
-            final Optional<String> commonsTemplate = documentType.getCommonsTemplateName();
-            if (commonsTemplate.isPresent()) {
-                log.info("Generating document using commons templating: {}", commonsTemplate);
-                postResult = pdfTemplateService.generate(
-                        commonsTemplate.get(),
-                        Locale.UK,
-                        asMap(pdfGenerationData));
-            } else {
-                // In theory this should never happen?
-                log.info("Falling back to old document generation process for {}", documentType.name());
-                postResult = generateFromHtml(documentType.getTemplateName(), pdfGenerationData);
-            }
-            log.info(
-                    "Generated from template with size: {} bytes",
-                    postResult != null ? postResult.length: "null_array");
 
-        } catch (IOException | PDFServiceClientException e) {
-            log.error(e.getMessage(), e);
+        final Map<String, Object> params;
+        try {
+            params = asMap(pdfGenerationData);
+        } catch (IOException e) {
+            log.error("Unable to convert pdf parameter string to json", e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
+        try {
+            if (featureToggleService.useCommonsPdfGen()) {
+                final Optional<String> commonsTemplate = documentType.getCommonsTemplateName();
+
+                log.info("Generating document using commons templating: {}", commonsTemplate);
+                postResult = pdfTemplateService.generate(
+                        commonsTemplate.orElseThrow(),
+                        Locale.ENGLISH,
+                        params);
+            } else {
+                log.info("Falling back to old document generation process for {}", documentType.name());
+                postResult = generateFromHtml(documentType.getTemplateName(), params);
+            }
+        } catch (ProbateRuntimeException | PDFServiceClientException | NoSuchElementException e) {
+            log.error("Unable to generate pdf", e);
+            throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        }
+        log.info(
+                "Generated from template with size: {} bytes",
+                postResult != null ? postResult.length: "null_array");
         log.info("Returning FileUpload obj");
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
@@ -94,11 +103,12 @@ public class PDFGeneratorService {
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
 
-    private byte[] generateFromHtml(String templateName, String pdfGenerationData) throws IOException {
+    private byte[] generateFromHtml(
+            final String templateName,
+            final Map<String, Object> params) {
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + TEMPLATE_EXTENSION;
         String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);
-        Map<String, Object> paramMap = asMap(pdfGenerationData);
-        return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
+        return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), params);
     }
 
     private Map<String, Object> asMap(String placeholderValues) throws IOException {

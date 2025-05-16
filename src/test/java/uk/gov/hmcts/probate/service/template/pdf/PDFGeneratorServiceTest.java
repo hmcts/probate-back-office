@@ -68,9 +68,6 @@ class PDFGeneratorServiceTest {
                 docmosisPdfGenerationServiceMock,
                 pdfTemplateServiceMock,
                 featureToggleServiceMock);
-
-        when(featureToggleServiceMock.useCommonsPdfGen())
-                .thenReturn(true);
     }
 
     @AfterEach
@@ -80,10 +77,15 @@ class PDFGeneratorServiceTest {
 
     @Test
     void shouldGeneratePDFWithBytesAndPDFContentType() {
-        when(pdfServiceClientMock.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
+        when(featureToggleServiceMock.useCommonsPdfGen())
+                .thenReturn(false);
+        when(pdfServiceClientMock.generateFromHtml(any(), any()))
+                .thenReturn("MockedBytes".getBytes());
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
                 .thenReturn("<htmlTemplate>");
+
         EvidenceManagementFileUpload result = underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
+
         assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
         assertThat(result.getBytes().length, greaterThan(0));
     }
@@ -121,23 +123,34 @@ class PDFGeneratorServiceTest {
     @Test
     void shouldThrowClientException() {
         final PDFServiceClientException pdfServiceClientException = new PDFServiceClientException("blah", null);
+
+        when(featureToggleServiceMock.useCommonsPdfGen())
+                .thenReturn(false);
+
+        when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
+                .thenReturn("<htmlTemplate>");
+        when(pdfServiceClientMock.generateFromHtml(any(byte[].class), anyMap()))
+                .thenThrow(pdfServiceClientException);
+
         assertThrows(ClientException.class, () -> {
-            when(pdfServiceClientMock.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
-            when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
-                    .thenReturn("<htmlTemplate>");
-            when(pdfServiceClientMock.generateFromHtml(any(byte[].class), anyMap()))
-                    .thenThrow(pdfServiceClientException);
             underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
         });
     }
 
+    // this test seems to be identical to shouldThrowClientException() ?
     @Test
     void shouldThrowPDFConnectionException() {
         final PDFServiceClientException pdfServiceClientException = new PDFServiceClientException("blah", null);
+
+        when(featureToggleServiceMock.useCommonsPdfGen())
+                .thenReturn(false);
+
+        when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
+                .thenReturn("<htmlTemplate>");
+        when(pdfServiceClientMock.generateFromHtml(any(), any()))
+                .thenThrow(pdfServiceClientException);
+
         assertThrows(ClientException.class, () -> {
-            when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
-                    .thenReturn("<htmlTemplate>");
-            when(pdfServiceClientMock.generateFromHtml(any(), any())).thenThrow(pdfServiceClientException);
             underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
         });
     }
