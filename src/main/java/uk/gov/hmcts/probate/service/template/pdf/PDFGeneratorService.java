@@ -86,7 +86,7 @@ public class PDFGeneratorService {
         }
         log.info(
                 "Generated from template with size: {} bytes",
-                postResult != null ? postResult.length: "null_array");
+                postResult != null ? postResult.length : "null_array");
         log.info("Returning FileUpload obj");
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
