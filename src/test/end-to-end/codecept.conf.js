@@ -10,6 +10,13 @@ exports.config = {
             'waitForAction': 1000,
             'show': testConfig.TestShowBrowserWindow,
             'waitForNavigation': 'domcontentloaded',
+            video: {
+                enabled: true,
+                // Only keep videos for failed tests
+                keepVideoForPassedTests: false,
+                // Specify size if needed
+                size: { width: 1280, height: 720 }
+            },
             'chrome': {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,
@@ -45,13 +52,6 @@ exports.config = {
     'plugins': {
         'autoDelay': {
             'enabled': testConfig.TestAutoDelayEnabled
-        },
-        video: {
-            enabled: true,
-            // Only keep videos for failed tests
-            keepVideoForPassedTests: false,
-            // Specify size if needed
-            size: { width: 1280, height: 720 }
         },
         screenshotOnFail: {
             enabled: true,
