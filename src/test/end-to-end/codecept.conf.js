@@ -72,8 +72,11 @@ exports.config = {
                 }
             },
             'mocha-multi': {
-                'spec': { stdout: '-' },
-                'mocha-junit-reporter': { stdout: `${testConfig.TestOutputDir}/result.xml` }
+                stdout: '-',
+                options: {
+                    mochaFile: `${testConfig.TestOutputDir}/result.xml`,
+                    attachments: true
+                }
             },
             'mochawesome': {
                 stdout: `${testConfig.TestOutputDir}/console.log`,
