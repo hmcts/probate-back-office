@@ -28,7 +28,19 @@ exports.config = {
                     '--window-size=1440,1400'
                 ]
             },
-
+            video: {
+                enabled: true,
+                // Only keep videos for failed tests
+                keepVideoForPassedTests: false,
+                // Specify size if needed
+                size: { width: 1280, height: 720 }
+            },
+            fullPageScreenshots: true,
+            // This setting enables automatic screenshots on failure
+            screenshotOnFail: {
+                enabled: true,
+                fullPageScreenshots: true
+            }
         },
         'PlaywrightHelper': {
             'require': './helpers/PlaywrightHelper.js'
