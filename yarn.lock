@@ -2067,7 +2067,7 @@ __metadata:
     chai: "npm:^4.1.0"
     chai-http: "npm:^4.3.0"
     chai-string: "npm:^1.5.0"
-    codeceptjs: "npm:^3.7.3"
+    codeceptjs: "npm:^3.4.0"
     date-fns: "npm:^2.21.3"
     dotenv-extended: "npm:^2.9.0"
     eslint: "npm:^7.22.0"
@@ -3652,7 +3652,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"codeceptjs@npm:^3.7.3":
+"codeceptjs@npm:^3.4.0":
   version: 3.7.3
   resolution: "codeceptjs@npm:3.7.3"
   dependencies:
