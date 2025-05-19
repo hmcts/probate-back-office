@@ -71,13 +71,7 @@ exports.config = {
                     attachments: true
                 }
             },
-            'mocha-multi': {
-                stdout: '-',
-                options: {
-                    mochaFile: `${testConfig.TestOutputDir}/result.xml`,
-                    attachments: true
-                }
-            },
+            'mocha-multi': `${testConfig.TestOutputDir}/result.xml`,
             'mochawesome': {
                 stdout: `${testConfig.TestOutputDir}/console.log`,
                 options: {
