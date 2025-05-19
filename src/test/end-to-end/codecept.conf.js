@@ -27,19 +27,6 @@ exports.config = {
                     // '--proxy-bypass-list=*beta*LB.reform.hmcts.net',
                     '--window-size=1440,1400'
                 ]
-            },
-            video: {
-                enabled: true,
-                // Only keep videos for failed tests
-                keepVideoForPassedTests: false,
-                // Specify size if needed
-                size: { width: 1280, height: 720 }
-            },
-            fullPageScreenshots: true,
-            // This setting enables automatic screenshots on failure
-            screenshotOnFail: {
-                enabled: true,
-                fullPageScreenshots: true
             }
         },
         'PlaywrightHelper': {
@@ -59,6 +46,13 @@ exports.config = {
         'autoDelay': {
             'enabled': testConfig.TestAutoDelayEnabled
         },
+        video: {
+            enabled: true,
+            // Only keep videos for failed tests
+            keepVideoForPassedTests: false,
+            // Specify size if needed
+            size: { width: 1280, height: 720 }
+        },
         screenshotOnFail: {
             enabled: true,
             fullPageScreenshots: 'true'
@@ -73,8 +67,13 @@ exports.config = {
             'mocha-junit-reporter': {
                 stdout: '-',
                 options: {
-                    mochaFile: `${testConfig.TestOutputDir}/result.xml`
+                    mochaFile: `${testConfig.TestOutputDir}/result.xml`,
+                    attachments: true
                 }
+            },
+            'mocha-multi': {
+                'spec': { stdout: '-' },
+                'mocha-junit-reporter': { stdout: `${testConfig.TestOutputDir}/result.xml` }
             },
             'mochawesome': {
                 stdout: `${testConfig.TestOutputDir}/console.log`,
