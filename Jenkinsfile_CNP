@@ -246,7 +246,7 @@ withPipeline("java", product, component) {
             allowMissing         : true,
             alwaysLinkToLastBuild: true,
             keepAll              : true,
-            reportDir            : "target/site/serenity/",
+            reportDir            : "build/reports/tests/",
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
@@ -258,7 +258,7 @@ withPipeline("java", product, component) {
             allowMissing         : true,
             alwaysLinkToLastBuild: true,
             keepAll              : true,
-            reportDir            : "target/site/serenity/",
+            reportDir            : "build/reports/tests/",
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
