@@ -10,6 +10,7 @@ exports.config = {
             'waitForAction': 1000,
             'show': testConfig.TestShowBrowserWindow,
             'waitForNavigation': 'domcontentloaded',
+            'headless': 'true',
             video: {
                 enabled: true,
                 // Only keep videos for failed tests
@@ -25,7 +26,7 @@ exports.config = {
                     'height': 960
                 },
                 args: [
-                    '--headless',
+                    // '--headless',
                     '--disable-gpu',
                     '--no-sandbox',
                     '--allow-running-insecure-content',
