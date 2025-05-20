@@ -48,8 +48,7 @@ withNightlyPipeline("nodejs", product, component) {
     enableFortifyScan('probate-aat')
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
     afterAlways('fullFunctionalTest') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*',
-        junit './functional-output/result.xml'
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }
 
     afterAlways('crossBrowserTest') {
