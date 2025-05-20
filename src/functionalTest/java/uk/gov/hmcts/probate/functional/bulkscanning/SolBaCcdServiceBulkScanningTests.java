@@ -120,31 +120,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         validateOCRDataPostSuccess(PA1P, jsonRequest, SUCCESS, null, 0, 0);
     }
 
-    /*
-    @Test
-    void testMissingMandatoryFieldsReturnWarnings() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
-        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, DOB_MISSING, 2, 0);
-        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, DOD_MISSING, 2, 1);
-    }
-     */
-
-    /*
-    @Test
-    void testMissingSolicitorEmailPA1AReturnsWarning() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
-        validateOCRDataPostSuccess(PA1A, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 1, 0);
-    }
-     */
-
-    /*
-    @Test
-    void testMissingSolicitorEmailPA1PReturnsWarning() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
-        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 1, 0);
-    }
-     */
-
     @Test
     void testInvalidEmailFieldsReturnWarnings() throws IOException {
         String jsonRequest = utils.getJsonFromFile("expectedOCRDataAllInvalidEmailAddress.json");
