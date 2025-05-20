@@ -13,7 +13,8 @@ exports.config = {
             'headless': 'true',
             video: {
                 enabled: true,
-                dir: `${testConfig.TestOutputDir}/`,
+                dir: `${testConfig.TestOutputDir}/videos`,
+                name: test => `${test.title.replace(/\s/g, '_')}.webm`,
                 // Only keep videos for failed tests
                 keepVideoForPassedTests: false,
                 // Specify size if needed
