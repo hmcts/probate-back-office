@@ -78,7 +78,6 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
-        //verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
         assertEquals(0, warnings.size());
     }
 

@@ -67,7 +67,6 @@ class PA1PCommonMandatoryFieldsValidatorTest {
 
         pa1PCommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(0, warnings.size());
-        //verify(commonMandatoryFieldsValidatorV3).addWarnings(any(), any());
     }
 
     @Test

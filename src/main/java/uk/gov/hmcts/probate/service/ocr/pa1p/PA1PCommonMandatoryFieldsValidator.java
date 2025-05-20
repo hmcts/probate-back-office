@@ -52,9 +52,5 @@ public class PA1PCommonMandatoryFieldsValidator {
                 }
             }
         }
-
-        if (mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)) {
-            //commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
-        }
     }
 }

@@ -190,7 +190,6 @@ class PA1PCitizenMandatoryFieldsValidatorTest {
 
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
-        //verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
         assertEquals(1, warnings.size());
         assertEquals("Form version (formVersion) is mandatory.", warnings.get(0));
     }
