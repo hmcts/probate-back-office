@@ -77,7 +77,7 @@ public class ExceptionRecordService {
     CallbackResponseTransformer grantOfRepresentationTransformer;
 
     @Autowired
-    private OCRFieldModifierUtils ocrFieldModifierUtils;
+    OCRFieldModifierUtils ocrFieldModifierUtils;
 
     public SuccessfulTransformationResponse createCaveatCaseFromExceptionRecord(
         ExceptionRecordRequest erRequest,
