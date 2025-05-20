@@ -73,6 +73,7 @@ exports.config = {
                     'inlineAssets': true
                 }
             },
+            'mocha-multi': 'build/reports/tests/',
             'mochawesome': {
                 stdout: `${testConfig.TestOutputDir}/console.log`,
                 options: {
