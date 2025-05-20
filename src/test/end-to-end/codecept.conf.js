@@ -13,7 +13,7 @@ exports.config = {
             'headless': 'true',
             video: {
                 enabled: true,
-                dir: 'build/reports/tests/',
+                dir: `${testConfig.TestOutputDir}`,
                 // Only keep videos for failed tests
                 keepVideoForPassedTests: false,
                 // Specify size if needed
