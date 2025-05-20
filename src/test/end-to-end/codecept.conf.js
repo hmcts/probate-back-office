@@ -26,7 +26,7 @@ exports.config = {
                     'height': 960
                 },
                 args: [
-                    // '--headless',
+                    '--headless=new',
                     '--disable-gpu',
                     '--no-sandbox',
                     '--allow-running-insecure-content',
