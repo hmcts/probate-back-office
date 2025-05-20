@@ -13,6 +13,7 @@ exports.config = {
             'headless': 'true',
             video: {
                 enabled: true,
+                dir: 'build/reports/tests/',
                 // Only keep videos for failed tests
                 keepVideoForPassedTests: false,
                 // Specify size if needed
@@ -73,7 +74,6 @@ exports.config = {
                     'inlineAssets': true
                 }
             },
-            'mocha-multi': 'build/reports/tests/',
             'mochawesome': {
                 stdout: `${testConfig.TestOutputDir}/console.log`,
                 options: {

@@ -252,7 +252,7 @@ withPipeline("java", product, component) {
     ]
   }
 
-  afterSuccess('functionalTest:aat') {
+  afterAlways('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
             allowMissing         : true,
