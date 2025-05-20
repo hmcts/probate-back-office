@@ -194,54 +194,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA8A.json");
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
-    /*
-    @Test
-    void testTransformPA1PReturnSuccessfulJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1P.json");
-        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1P.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-
-    @Test
-    void testTransformCombinedCitizenPA1PReturnSuccessfulJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1P.json");
-        String jsonResponse = utils.getJsonFromFile(
-                "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1P.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-
-    @Test
-    void testTransformCombinedSolicitorPA1PReturnSuccessfulJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1P.json");
-        String jsonResponse = utils.getJsonFromFile(
-                "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1P.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-
-    @Test
-    void testTransformSolicitorPA1PReturnSuccessfulJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1P.json");
-        String jsonResponse = utils.getJsonFromFile(
-                "expectedBulkScanTransformExceptionRecordOutputSolicitorPA1P.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-
-    @Test
-    void testTransformMissingMandatoryPA1PReturnUnprocessedJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1P.json");
-        String jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1P.json");
-        transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
-    }
-     */
-
-    /*
-    @Test
-    void testTransformMissingMandatoryPA1AReturnUnprocessedJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1A.json");
-        String jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1A.json");
-        transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
-    }
-     */
 
     @Test
     void testTransformCitizenPA1PReturnUnprocessedJSON() throws IOException {
@@ -250,15 +202,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 "expectedBulkScanTransformExceptionRecordOutputPA1PUnprocessed.json");
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
-
-    /*
-    @Test
-    void testTransformPA1AReturnSuccessfulJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1A.json");
-        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1A.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-     */
 
     @Test
     void testUpdateCaseExtendCaveatPA8AReturnSuccessfulJSON() throws IOException {
@@ -322,26 +265,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
-    /*
-    @Test
-    void testTransformCombinedCitizenPA1AReturnSuccessfulJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1A.json");
-        String jsonResponse = utils.getJsonFromFile(
-                "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1A.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-     */
-
-    /*
-    @Test
-    void testTransformCombinedSolicitorPA1AReturnSuccessfulJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1A.json");
-        String jsonResponse = utils.getJsonFromFile(
-                "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1A.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-     */
-
     @Test
     void testTransformPA8AReturnTransformErrorJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordError.json");
@@ -386,46 +309,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA8A.json");
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
-    /*
-    @Test
-    void testTransformPA1PReturnSuccessfulAutomatedJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1PAutomated.json");
-        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1P.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-
-
-    @Test
-    void testTransformCombinedCitizenPA1PReturnSuccessfulAutomatedJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1PAutomated.json");
-        String jsonResponse = utils.getJsonFromFile(
-                "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1P.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-
-    @Test
-    void testTransformCombinedSolicitorPA1PReturnSuccessfulAutomatedJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1PAutomated.json");
-        String jsonResponse = utils.getJsonFromFile(
-                "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1P.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-
-    @Test
-    void testTransformSolicitorPA1PSingleExecReturnSuccessfulAutomatedJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1PAutomated.json");
-        String jsonResponse = utils.getJsonFromFile(
-                "expectedBulkScanTransformExceptionRecordOutputSolicitorPA1P.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-
-    @Test
-    void testTransformPA1AReturnSuccessfulAutomatedJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1AAutomated.json");
-        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1A.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-     */
 
     @Test
     void testUpdateCaseExtendCaveatPA8AReturnSuccessfulAutomatedJSON() throws IOException {
@@ -493,28 +376,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
-    /*
-    @Test
-    void testTransformCombinedCitizenPA1AReturnSuccessfulAutomatedJSON() throws IOException {
-        String jsonRequest =
-            utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1AAutomated.json");
-        String jsonResponse =
-            utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1A.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-     */
-
-    /*
-    @Test
-    void testTransformCombinedSolicitorPA1AReturnSuccessfulAutomatedJSON() throws IOException {
-        String jsonRequest =
-            utils.getJsonFromFile(EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON);
-        String jsonResponse =
-            utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1A.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
-    }
-     */
-
     @Test
     void testTransformPA8AReturnTransformErrorAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordErrorAutomated.json");
@@ -577,20 +438,4 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
             .when().post(UPDATE_CASE_FROM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(403);
     }
-
-
-    //    @Test
-    //    public void test401test() {
-    //        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1AAutomated.json");
-    //        test401(jsonRequest);
-    //    }
-    //
-    //    private void test401(String bodyText) {
-    //        RestAssured.given()
-    //                .relaxedHTTPSValidation()
-    //                .headers(utils.getHeadersWithUserId())
-    //                .body(bodyText)
-    //                .when().post(TRANSFORM_EXCEPTON_RECORD)
-    //                .then().assertThat().statusCode(401);
-    //    }
 }

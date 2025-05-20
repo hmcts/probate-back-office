@@ -35,17 +35,6 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
         validateOCRWarnings(PA1P, jsonRequest, SUCCESS, expectedWarnings);
     }
 
-    //Expect that this will be 1.11
-    /*@Test
-    void testPost2022PA1PMissingMandatoryFieldsPresentReturnSomeWarnings() {
-        String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/Post2022PA1PMissingNQV.json");
-        List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/missingNQV.txt");
-        validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
-    }
-     */
-
     @Test
     void testPost2022PA1AAllMandatoryFieldsPresentReturnNoWarning() {
         String jsonRequest =
@@ -75,70 +64,6 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
                 "/json/bulkscan/version2/validation/expectedWarnings/missingIHT400421completed.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
-
-    /*
-    @Test
-    void shouldWarnWhenIHT207Missing() {
-        String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
-                + "Post2022PA1PMissingIHT207completed.json");
-        List<String> expectedWarnings =
-            utils.getLinesFromFile(
-                "/json/bulkscan/version2/validation/expectedWarnings/missingIHT207completed.txt");
-        validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
-    }
-     */
-
-    /*
-    @Test
-    void shouldWarnWhenDiedAfterSwitchDateMissing() {
-        String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
-                + "Post2022PA1PMissingDiedAfterSwitchDate.json");
-        List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings"
-                + "/missingDiedAfterSwitchDate.txt");
-        validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
-    }
-     */
-
-    /*
-    @Test
-    void shouldWarnWhenDiedAfterSwitchDateInconsistentWithDOD() {
-        String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
-                + "Post2022PA1PDiedAfterSwitchDateWrong.json");
-        List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/wrongDiedAfterSwitchDate.txt");
-        validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
-    }
-     */
-
-    /*
-    @Test
-    void shouldWarnForMissingEstateValues() {
-        String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
-                + "Post2022PA1PMissingEstateValues.json");
-        List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/"
-                + "missingEstateValues.txt");
-        validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
-    }
-     */
-
-    /*
-    @Test
-    void shouldWarnForMissingIHT205CompletedOnline() {
-        String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
-                + "Post2022PA1PMissingIHT205CompletedOnline.json");
-        List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/"
-                + "missingIHT205CompletedOnline.txt");
-        validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
-    }
-     */
 
     @Test
     void invalidApplyingExecutor0EmailAddress() {
