@@ -66,18 +66,19 @@ exports.config = {
                 options: {steps: true}
             },
             'mocha-junit-reporter': {
-                stdout: '-',
+                stdout: `${testConfig.TestOutputDir}/console.log`,
                 options: {
-                    mochaFile: `${testConfig.TestOutputDir}/result.xml`,
-                    attachments: true
+                    'reportDir': testConfig.TestOutputDir,
+                    'reportName': 'index',
+                    'inlineAssets': true
                 }
             },
             'mocha-multi': {
-            stdout: `${testConfig.TestOutputDir}/console.log`,
-            options: {
-                'reportDir': testConfig.TestOutputDir,
-                'reportName': 'index',
-                'inlineAssets': true
+                stdout: `${testConfig.TestOutputDir}/console.log`,
+                options: {
+                    'reportDir': testConfig.TestOutputDir,
+                    'reportName': 'index',
+                    'inlineAssets': true
                 }
             },
             'mochawesome': {
