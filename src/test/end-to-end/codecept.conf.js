@@ -73,14 +73,6 @@ exports.config = {
                     'inlineAssets': true
                 }
             },
-            'mocha-multi': {
-                stdout: `${testConfig.TestOutputDir}/console.log`,
-                options: {
-                    'reportDir': testConfig.TestOutputDir,
-                    'reportName': 'index',
-                    'inlineAssets': true
-                }
-            },
             'mochawesome': {
                 stdout: `${testConfig.TestOutputDir}/console.log`,
                 options: {
