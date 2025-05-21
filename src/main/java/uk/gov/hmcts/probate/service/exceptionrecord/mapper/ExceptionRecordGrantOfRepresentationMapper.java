@@ -514,7 +514,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         //If bulk scan case had a missing email
         if (ocrField.getSolsSolicitorEmail() != null
                 && ocrField.getSolsSolicitorEmail().equals("contactprobate@justice.gov.uk")) {
-            caseData.setSolsSolicitorEmail("james.albertelli@justice.gov.uk");
+            caseData.setSolsSolicitorEmail("James.Albertelli@justice.gov.uk");
         }
     }
 
