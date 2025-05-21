@@ -3,4 +3,14 @@
         <!-- Requires update of elasticsearch lib that has lucene dependency version > 9.12.0 -->
         <cve>CVE-2024-45772</cve>
     </suppress>
+    <suppress until = "2025-10-15">
+        <!--
+            Pebble literal templates can permit loading from the filesystem.
+            If a user could control the template input this would be an issue,
+            but we only load templates through a classpath loaded, not using
+            a string loader, and the templates are managed from the resources
+            in probate-commons.
+        -->
+        <cve>CVE-2025-1686</cve>
+    </suppress>
 </suppressions>
