@@ -58,5 +58,7 @@
   {"LiveFrom": "01/01/2017", "ID": "AddedRepresentative", "ListElementCode": "updatedVia", "FieldType": "Text", "ElementLabel": "Update via", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "addedDateTime", "FieldType": "DateTime", "ElementLabel": "Date Triggered", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "removedRepresentative", "FieldType": "RemovedRepresentative", "ElementLabel": "Removed Representative", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "addedRepresentative", "FieldType": "AddedRepresentative", "ElementLabel": "Added Representative", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "addedRepresentative", "FieldType": "AddedRepresentative", "ElementLabel": "Added Representative", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "fieldName", "FieldType": "Text", "ElementLabel": "OCR Field", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "originalValue", "FieldType": "Text", "ElementLabel": "Original Value", "SecurityClassification": "Public"}
 ]
