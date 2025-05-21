@@ -173,7 +173,10 @@ public class CaveatData {
 
     private TTL ttl;
 
+    @Builder.Default
     private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList = new ArrayList<>();
+
+    @Builder.Default
     private final List<CollectionMember<String>> autoCaseWarnings = new ArrayList<>();
 
     @Builder.Default
