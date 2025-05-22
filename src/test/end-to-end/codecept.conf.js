@@ -10,6 +10,16 @@ exports.config = {
             'waitForAction': 1000,
             'show': testConfig.TestShowBrowserWindow,
             'waitForNavigation': 'domcontentloaded',
+            'headless': 'true',
+            video: {
+                enabled: true,
+                dir: `${testConfig.TestOutputDir}/videos`,
+                name: test => `${test.title.replace(/\s/g, '_')}.webm`,
+                // Only keep videos for failed tests
+                keepVideoForPassedTests: false,
+                // Specify size if needed
+                size: { width: 1280, height: 720 }
+            },
             'chrome': {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,
@@ -18,7 +28,7 @@ exports.config = {
                     'height': 960
                 },
                 args: [
-                    // '--headless',
+                    '--headless=new',
                     '--disable-gpu',
                     '--no-sandbox',
                     '--allow-running-insecure-content',
@@ -27,8 +37,7 @@ exports.config = {
                     // '--proxy-bypass-list=*beta*LB.reform.hmcts.net',
                     '--window-size=1440,1400'
                 ]
-            },
-
+            }
         },
         'PlaywrightHelper': {
             'require': './helpers/PlaywrightHelper.js'
@@ -59,9 +68,11 @@ exports.config = {
                 options: {steps: true}
             },
             'mocha-junit-reporter': {
-                stdout: '-',
+                stdout: `${testConfig.TestOutputDir}/console.log`,
                 options: {
-                    mochaFile: `${testConfig.TestOutputDir}/result.xml`
+                    'reportDir': testConfig.TestOutputDir,
+                    'reportName': 'index',
+                    'inlineAssets': true
                 }
             },
             'mochawesome': {

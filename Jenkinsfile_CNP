@@ -246,19 +246,19 @@ withPipeline("java", product, component) {
             allowMissing         : true,
             alwaysLinkToLastBuild: true,
             keepAll              : true,
-            reportDir            : "target/site/serenity/",
+            reportDir            : "build/reports/tests/",
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
   }
 
-  afterSuccess('functionalTest:aat') {
+  afterAlways('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
             allowMissing         : true,
             alwaysLinkToLastBuild: true,
             keepAll              : true,
-            reportDir            : "target/site/serenity/",
+            reportDir            : "build/reports/tests/",
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
