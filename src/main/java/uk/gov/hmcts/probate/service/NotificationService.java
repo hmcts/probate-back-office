@@ -794,4 +794,36 @@ public class NotificationService {
                 isFirstStopReminder);
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }
+
+    public Document sendHseReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
+            throws NotificationClientException {
+        log.info("Sending HSE email for case id: {}", caseDetails.getId());
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("Case data is null for HSe case ID: {}", caseDetails.getId());
+            return null;
+        }
+        String emailAddress = getEmail(data);
+        if (emailAddress == null) {
+            throw new NotificationClientException("Email address not found for HSE case ID: " + caseDetails.getId());
+        }
+        ApplicationType applicationType = getApplicationType(caseDetails);
+        LanguagePreference languagePreference = Optional.ofNullable(
+                        caseDetails.getData().get("languagePreferenceWelsh"))
+                .map(Object::toString)
+                .filter("Yes"::equalsIgnoreCase)
+                .map(yes -> LanguagePreference.WELSH)
+                .orElse(LanguagePreference.ENGLISH);
+        String templateId = templateService.getHseReminderTemplateId(applicationType, languagePreference,
+                getChannelChoice(caseDetails), getInformationNeededByPost(caseDetails));
+        log.info("sendHseReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
+        Map<String, String> personalisation =
+                automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
+        log.info("start HSE sendEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("Stop HSE Reminder email reference response: {} ", response.getReference());
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
 }

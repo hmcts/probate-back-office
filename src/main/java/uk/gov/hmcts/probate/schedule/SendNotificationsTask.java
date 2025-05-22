@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
+import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
 
 @Component
 @Slf4j
@@ -33,6 +34,9 @@ public class SendNotificationsTask implements Runnable {
     @Value("${automated_notification.stop_reminder.second_notification_days}")
     private int secondNotificationDays;
 
+    @Value("${automated_notification.hse_reminder.awaiting_documentation_months}")
+    private int hseYesNotificationMonths;
+
     @Value("${adhocSchedulerJobDate}")
     public String adHocJobDate;
 
@@ -41,10 +45,13 @@ public class SendNotificationsTask implements Runnable {
         log.info("Scheduled task SendNotificationsTask started");
         String firstStopReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(firstNotificationDays));
         String secondStopReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(secondNotificationDays));
+        String hseReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusMonths(hseYesNotificationMonths));
+
         if (StringUtils.isNotEmpty(adHocJobDate)) {
             log.info("Running SendNotificationsTask with Adhoc dates {}", adHocJobDate);
             firstStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(firstNotificationDays).toString();
             secondStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(secondNotificationDays).toString();
+            hseReminderDate = LocalDate.parse(adHocJobDate).minusMonths(hseYesNotificationMonths).toString();
         }
 
         try {
@@ -77,6 +84,22 @@ public class SendNotificationsTask implements Runnable {
             log.error("API client exception during Send Second Stop Reminder", e);
         } catch (Exception e) {
             log.error("Error on SendNotificationsTask Scheduler Send Second Stop Reminder task ", e);
+        }
+
+        try {
+            if (!featureToggleService.isHseReminderFeatureToggleOn()) {
+                log.info("Feature toggle HseReminderFeatureToggle is off, skipping task");
+            } else {
+                log.info("Calling Send HSE YES notification for date {}", hseReminderDate);
+                dataExtractDateValidator.dateValidator(hseReminderDate);
+                log.info("Perform Send HSE YES notification started");
+                automatedNotificationService.sendNotification(hseReminderDate, HSE_REMINDER);
+                log.info("Perform Send HSE YES notification finished");
+            }
+        } catch (ApiClientException e) {
+            log.error("API client exception during Send HSE Reminder", e);
+        } catch (Exception e) {
+            log.error("Error on SendNotificationsTask Scheduler Send HSE Reminder task ", e);
         }
     }
 }
