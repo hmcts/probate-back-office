@@ -17,5 +17,9 @@ public interface NotificationStrategy {
 
     String getEventDescription();
 
+    String getFailureEventDescription();
+
+    String getFailureEventSummary();
+
     NotificationType getType();
 }

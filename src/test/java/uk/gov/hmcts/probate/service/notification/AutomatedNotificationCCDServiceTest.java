@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.NotificationType;
-import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -33,8 +32,10 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -59,9 +60,10 @@ class AutomatedNotificationCCDServiceTest {
 
     private static final String CASE_ID = "1234567890123456";
     private static final EventId EVENT_ID = EventId.AUTOMATED_NOTIFICATION;
-    private static final CcdCaseType CASE_TYPE_GOP = GRANT_OF_REPRESENTATION;
     private static final String DESCRIPTION = "description";
     private static final String SUMMARY = "summary";
+    private static final String FAILURE_DESCRIPTION = "failure description";
+    private static final String FAILURE_SUMMARY = "failure summary";
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.of(2025, 5, 6, 10, 0);
 
     private CaseDetails caseDetails;
@@ -81,7 +83,9 @@ class AutomatedNotificationCCDServiceTest {
                 firstStopReminderNotificationStrategy,
                 NotificationType.FIRST_STOP_REMINDER,
                 DESCRIPTION,
-                SUMMARY
+                SUMMARY,
+                FAILURE_DESCRIPTION,
+                FAILURE_SUMMARY
         );
 
         Document sentEmail = createMockDocument("newEmail.pdf");
@@ -106,7 +110,9 @@ class AutomatedNotificationCCDServiceTest {
                 secondStopReminderNotificationStrategy,
                 NotificationType.SECOND_STOP_REMINDER,
                 DESCRIPTION,
-                SUMMARY
+                SUMMARY,
+                FAILURE_DESCRIPTION,
+                FAILURE_SUMMARY
         );
 
         Document sentEmail = createMockDocument("newEmail.pdf");
@@ -159,7 +165,9 @@ class AutomatedNotificationCCDServiceTest {
                 firstStopReminderNotificationStrategy,
                 NotificationType.FIRST_STOP_REMINDER,
                 DESCRIPTION,
-                SUMMARY
+                SUMMARY,
+                FAILURE_DESCRIPTION,
+                FAILURE_SUMMARY
         );
 
         Document sentEmail = createMockDocument("newEmail.pdf");
@@ -176,6 +184,56 @@ class AutomatedNotificationCCDServiceTest {
         assertEquals(2, notifications.size());
         assertEquals("existingEmail.pdf", notifications.get(0).getValue().getDocumentFileName());
         assertEquals("newEmail.pdf", notifications.get(1).getValue().getDocumentFileName());
+    }
+
+    @Test
+    void shouldSaveFailedNotification() {
+        stubNotificationStrategy(
+                firstStopReminderNotificationStrategy,
+                NotificationType.FIRST_STOP_REMINDER,
+                DESCRIPTION,
+                SUMMARY,
+                FAILURE_DESCRIPTION,
+                FAILURE_SUMMARY
+        );
+
+        automatedNotificationCCDService.saveFailedNotification(
+                caseDetails, CASE_ID, securityDTO, firstStopReminderNotificationStrategy);
+
+        GrantOfRepresentationData data = captureUpdatedCaseData(CASE_ID, securityDTO, EVENT_ID,
+                FAILURE_DESCRIPTION, FAILURE_SUMMARY);
+
+        assertNotNull(data);
+        assertNull(data.getFirstStopReminderSentDate());
+        assertNull(data.getProbateNotificationsGenerated());
+    }
+
+    @Test
+    void saveNotificationShouldWrapClientExceptions() {
+        // Arrange
+        when(caseDetails.getData()).thenReturn(new HashMap<>());
+        stubNotificationStrategy(
+                firstStopReminderNotificationStrategy,
+                NotificationType.FIRST_STOP_REMINDER,
+                DESCRIPTION,
+                SUMMARY,
+                FAILURE_DESCRIPTION,
+                FAILURE_SUMMARY
+        );
+        Document sentEmail = createMockDocument("newEmail.pdf");
+
+        doThrow(new RuntimeException("ccd-fail"))
+                .when(ccdClientApi)
+                .updateCaseAsCaseworker(
+                        any(), any(), any(), any(), any(), any(), any(), any());
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+                automatedNotificationCCDService.saveNotification(
+                        caseDetails, CASE_ID, securityDTO, sentEmail, firstStopReminderNotificationStrategy)
+        );
+        assertEquals("Error saving notification to CCD", ex.getMessage());
+        assertNotNull(ex.getCause());
+        assertEquals("ccd-fail", ex.getCause().getMessage());
     }
 
     private Document createMockDocument(String fileName) {
@@ -208,9 +266,12 @@ class AutomatedNotificationCCDServiceTest {
     }
 
     private void stubNotificationStrategy(NotificationStrategy strategy, NotificationType type,
-                                          String description, String summary) {
+                                          String description, String summary,
+                                          String failureDescription, String failureSummary) {
         when(strategy.getType()).thenReturn(type);
         when(strategy.getEventDescription()).thenReturn(description);
         when(strategy.getEventSummary()).thenReturn(summary);
+        when(strategy.getFailureEventDescription()).thenReturn(failureDescription);
+        when(strategy.getFailureEventSummary()).thenReturn(failureSummary);
     }
 }

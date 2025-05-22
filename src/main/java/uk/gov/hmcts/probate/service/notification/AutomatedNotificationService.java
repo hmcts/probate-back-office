@@ -42,7 +42,8 @@ public class AutomatedNotificationService {
             log.info("Fetch and process automated notification for type: {} date: {}", type, date);
             fetchAndProcessPages(strategy, date, securityDTO, failedCases);
         } catch (Exception e) {
-            log.error(getErrorMessage(type, date), e);
+            final String errorMsg = String.format("Error sending notifications for type: %s for date: %s", type, date);
+            log.error(errorMsg, e);
         } finally {
             log.info("Failed cases for {} on {} : {}", type, date, failedCases);
         }
@@ -82,24 +83,35 @@ public class AutomatedNotificationService {
     private void processCases(List<CaseDetails> cases, NotificationStrategy strategy,
                               SecurityDTO securityDTO, List<Long> failedCases) {
         for (CaseDetails caseDetails : cases) {
+            Document sentEmail = null;
             try {
-                Document sentEmail = strategy.sendEmail(caseDetails);
-                automatedNotificationCCDService.saveNotification(
-                        caseDetails, caseDetails.getId().toString(),
-                        securityDTO, sentEmail, strategy
-                );
+                sentEmail = strategy.sendEmail(caseDetails);
             } catch (NotificationClientException | RuntimeException e) {
                 log.info("Failed to send notification for case ID {}: {}", caseDetails.getId(), e.getMessage());
                 failedCases.add(caseDetails.getId());
+            }
+
+            try {
+                if (null != sentEmail) {
+                    automatedNotificationCCDService.saveNotification(
+                            caseDetails, caseDetails.getId().toString(),
+                            securityDTO, sentEmail, strategy
+                    );
+                } else {
+                    automatedNotificationCCDService.saveFailedNotification(
+                            caseDetails, caseDetails.getId().toString(),
+                            securityDTO, strategy
+                    );
+                }
+            } catch (RuntimeException e) {
+                if (!failedCases.contains(caseDetails.getId())) {
+                    failedCases.add(caseDetails.getId());
+                }
             }
         }
     }
 
     private String getLastId(SearchResult searchResult) {
         return searchResult.getCases().getLast().getId().toString();
-    }
-
-    private String getErrorMessage(NotificationType type, String date) {
-        return String.format("Error sending notifications for type: %s for date: %s", type, date);
     }
 }

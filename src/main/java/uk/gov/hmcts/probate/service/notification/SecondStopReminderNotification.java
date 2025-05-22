@@ -13,6 +13,8 @@ import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 public class SecondStopReminderNotification implements NotificationStrategy {
     private static final String EVENT_DESCRIPTION = "Send Second Stop Reminder";
     private static final String EVENT_SUMMARY = "Send Second Stop Reminder";
+    private static final String FAILURE_EVENT_DESCRIPTION = "Failed to send second stop reminder";
+    private static final String FAILURE_EVENT_SUMMARY = "Failed to send second stop reminder";
     private final NotificationService notificationService;
 
     public SecondStopReminderNotification(NotificationService notificationService) {
@@ -42,6 +44,16 @@ public class SecondStopReminderNotification implements NotificationStrategy {
     @Override
     public String getEventDescription() {
         return EVENT_DESCRIPTION;
+    }
+
+    @Override
+    public String getFailureEventDescription() {
+        return FAILURE_EVENT_DESCRIPTION;
+    }
+
+    @Override
+    public String getFailureEventSummary() {
+        return FAILURE_EVENT_SUMMARY;
     }
 
     @Override

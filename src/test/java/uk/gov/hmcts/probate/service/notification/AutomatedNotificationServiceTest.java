@@ -199,4 +199,61 @@ class AutomatedNotificationServiceTest {
         verify(firstStopReminderNotification, times(1)).sendEmail(mockCaseDetails);
         verify(firstStopReminderNotification, times(1)).sendEmail(any());
     }
+
+    @Test
+    void shouldSaveFailedNotificationWhenSendEmailReturnsNull() throws NotificationClientException {
+        when(firstStopReminderNotification.sendEmail(mockCaseDetails)).thenReturn(null);
+
+        when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder().total(0).cases(Collections.emptyList()).build());
+
+        automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER);
+
+        verify(automatedNotificationCCDService, times(1))
+                .saveFailedNotification(eq(mockCaseDetails), eq("123"), any(SecurityDTO.class),
+                        eq(firstStopReminderNotification));
+        verify(automatedNotificationCCDService, never())
+                .saveNotification(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldSaveFailedNotificationWhenSendEmailThrows() throws NotificationClientException {
+        when(firstStopReminderNotification.sendEmail(mockCaseDetails))
+                .thenThrow(new NotificationClientException("boom"));
+
+        when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder().total(0).cases(Collections.emptyList()).build());
+
+        automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER);
+
+        verify(automatedNotificationCCDService, times(1))
+                .saveFailedNotification(eq(mockCaseDetails), eq("123"), any(SecurityDTO.class),
+                        eq(firstStopReminderNotification));
+        verify(automatedNotificationCCDService, never())
+                .saveNotification(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldHandleExceptionInSaveNotificationGracefully() throws NotificationClientException {
+        Document doc = mock(Document.class);
+        when(firstStopReminderNotification.sendEmail(mockCaseDetails)).thenReturn(doc);
+
+        doThrow(new RuntimeException("ccd fail"))
+                .when(automatedNotificationCCDService)
+                .saveNotification(eq(mockCaseDetails), eq("123"), any(SecurityDTO.class), eq(doc),
+                        eq(firstStopReminderNotification));
+
+        when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder().total(0).cases(Collections.emptyList()).build());
+
+        assertDoesNotThrow(() ->
+                automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER)
+        );
+
+        verify(automatedNotificationCCDService, never())
+                .saveFailedNotification(any(), any(), any(), any());
+        verify(automatedNotificationCCDService, times(1))
+                .saveNotification(eq(mockCaseDetails), eq("123"), any(SecurityDTO.class), eq(doc),
+                        eq(firstStopReminderNotification));
+    }
 }

@@ -95,8 +95,12 @@ public class SecurityUtils {
             }
         }
 
-        if (StringUtils.isBlank(authorisation) || StringUtils.isBlank(userId)) {
-            log.error("Unable to resolve security context: missing auth or userId");
+        if (StringUtils.isBlank(authorisation)) {
+            log.error("Unable to resolve security context: missing authorisation token");
+            throw new NoSecurityContextException();
+        }
+        if (StringUtils.isBlank(userId)) {
+            log.error("Unable to resolve security context: missing userId");
             throw new NoSecurityContextException();
         }
 

@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
@@ -23,6 +24,7 @@ public class SendNotificationsTask implements Runnable {
     private final DataExtractDateValidator dataExtractDateValidator;
     private final AutomatedNotificationService automatedNotificationService;
     private final FeatureToggleService featureToggleService;
+    private final Clock clock;
 
 
     @Value("${automated_notification.stop_reminder.first_notification_days}")
@@ -37,8 +39,8 @@ public class SendNotificationsTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task SendNotificationsTask started");
-        String firstStopReminderDate = DATE_FORMAT.format(LocalDate.now().minusDays(firstNotificationDays));
-        String secondStopReminderDate = DATE_FORMAT.format(LocalDate.now().minusDays(secondNotificationDays));
+        String firstStopReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(firstNotificationDays));
+        String secondStopReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(secondNotificationDays));
         if (StringUtils.isNotEmpty(adHocJobDate)) {
             log.info("Running SendNotificationsTask with Adhoc dates {}", adHocJobDate);
             firstStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(firstNotificationDays).toString();

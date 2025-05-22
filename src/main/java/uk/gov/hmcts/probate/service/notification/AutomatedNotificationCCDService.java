@@ -36,17 +36,35 @@ public class AutomatedNotificationCCDService {
                                  final SecurityDTO securityDTO,
                                  final Document sentEmail,
                                  final NotificationStrategy notificationStrategy) {
-        log.info("AutomatedNotificationCCDService buildCaseData for case id: {} type: {}",
-                caseId, notificationStrategy.getType());
-        GrantOfRepresentationData data =
-                buildCaseData(caseDetails.getData(), sentEmail, notificationStrategy.getType());
-        log.info("AutomatedNotificationCCDService saveNotification to Case: {}", caseId);
         try {
+            log.info("AutomatedNotificationCCDService buildCaseData for case id: {} type: {}",
+                    caseId, notificationStrategy.getType());
+            final GrantOfRepresentationData data =
+                    buildCaseData(caseDetails.getData(), sentEmail, notificationStrategy.getType());
+            log.info("AutomatedNotificationCCDService saveNotification to Case: {}", caseId);
             ccdClientApi.updateCaseAsCaseworker(GRANT_OF_REPRESENTATION, caseId, caseDetails.getLastModified(), data,
                     EventId.AUTOMATED_NOTIFICATION, securityDTO,
                     notificationStrategy.getEventDescription(), notificationStrategy.getEventSummary());
         } catch (Exception e) {
             log.error("Error saving notification to CCD for case id: {}, Error: {}", caseId, e.getMessage());
+            throw new RuntimeException("Error saving notification to CCD", e);
+        }
+    }
+
+    public void saveFailedNotification(final CaseDetails caseDetails,
+                                       final String caseId,
+                                       final SecurityDTO securityDTO,
+                                       final NotificationStrategy notificationStrategy) {
+        try {
+            log.info("AutomatedNotificationCCDService saveFailedNotification to Case: {}", caseId);
+            final GrantOfRepresentationData data = GrantOfRepresentationData.builder().build();
+            ccdClientApi.updateCaseAsCaseworker(GRANT_OF_REPRESENTATION, caseId, caseDetails.getLastModified(), data,
+                    EventId.AUTOMATED_NOTIFICATION, securityDTO,
+                    notificationStrategy.getFailureEventDescription(),
+                    notificationStrategy.getFailureEventSummary());
+        } catch (Exception e) {
+            log.error("Error saving failed notification to CCD for case id: {}, Error: {}", caseId, e.getMessage());
+            throw new RuntimeException("Error saving failed notification to CCD", e);
         }
     }
 
@@ -84,8 +102,7 @@ public class AutomatedNotificationCCDService {
                     existingDocuments.add(member);
                 }
             } catch (Exception e) {
-                log.warn("Failed to parse probateNotificationsGenerated. Reason: {}",
-                        e.getMessage());
+                log.warn("Failed to parse probateNotificationsGenerated. Reason: {}", e.getMessage());
                 throw e;
             }
         }
