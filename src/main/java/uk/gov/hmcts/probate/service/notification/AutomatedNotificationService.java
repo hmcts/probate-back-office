@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.exception.CcdUpdateNotificationException;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
@@ -103,7 +104,7 @@ public class AutomatedNotificationService {
                             securityDTO, strategy
                     );
                 }
-            } catch (RuntimeException e) {
+            } catch (CcdUpdateNotificationException e) {
                 if (!failedCases.contains(caseDetails.getId())) {
                     failedCases.add(caseDetails.getId());
                 }

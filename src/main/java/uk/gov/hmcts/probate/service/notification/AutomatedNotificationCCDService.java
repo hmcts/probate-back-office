@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.exception.CcdUpdateNotificationException;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -47,7 +48,7 @@ public class AutomatedNotificationCCDService {
                     notificationStrategy.getEventDescription(), notificationStrategy.getEventSummary());
         } catch (Exception e) {
             log.error("Error saving notification to CCD for case id: {}, Error: {}", caseId, e.getMessage());
-            throw new RuntimeException("Error saving notification to CCD", e);
+            throw new CcdUpdateNotificationException("Error saving notification to CCD", e);
         }
     }
 
@@ -64,7 +65,7 @@ public class AutomatedNotificationCCDService {
                     notificationStrategy.getFailureEventSummary());
         } catch (Exception e) {
             log.error("Error saving failed notification to CCD for case id: {}, Error: {}", caseId, e.getMessage());
-            throw new RuntimeException("Error saving failed notification to CCD", e);
+            throw new CcdUpdateNotificationException("Error saving failed notification to CCD", e);
         }
     }
 

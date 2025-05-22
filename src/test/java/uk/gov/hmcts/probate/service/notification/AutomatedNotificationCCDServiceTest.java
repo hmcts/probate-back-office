@@ -194,7 +194,6 @@ class AutomatedNotificationCCDServiceTest {
 
     @Test
     void saveNotificationShouldWrapClientExceptions() {
-        // Arrange
         when(caseDetails.getData()).thenReturn(new HashMap<>());
         stubNotificationStrategy(
                 firstStopReminderNotificationStrategy,

@@ -144,7 +144,6 @@ class AutomatedNotificationServiceTest {
                 .cases(Collections.emptyList())
                 .build();
 
-        // Chain: first returns a page, second ends the loop
         when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
                 .thenReturn(firstNextPage)
                 .thenReturn(emptyNextPage);
@@ -179,7 +178,7 @@ class AutomatedNotificationServiceTest {
                 .thenReturn(firstNextPage)
                 .thenReturn(emptyNextPage);
 
-        when(firstStopReminderNotification.sendEmail(eq(secondCase)))
+        when(firstStopReminderNotification.sendEmail(secondCase))
                 .thenThrow(new NotificationClientException("fail"));
 
         assertDoesNotThrow(() -> automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER));
