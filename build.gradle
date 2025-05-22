@@ -178,8 +178,8 @@ def versions = [
         serviceAuthVersion              : '5.3.2',
         springBootVersion               : '3.3.11',
         springBootStarterHateoas        : '3.3.11',
-        springCloud                     : '4.1.4',
-        springCloudStarterNetflixHystrix: '4.1.3',
+        springCloud                     : '4.2.1',
+        springCloudStarterNetflixHystrix: '4.2.1',
         springDocOpenUi                 : '2.6.0',
         springSecurityVersion           : '6.4.5'
 ]
@@ -202,7 +202,7 @@ repositories {
 
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.3"
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:2024.0.1"
   }
 }
 
