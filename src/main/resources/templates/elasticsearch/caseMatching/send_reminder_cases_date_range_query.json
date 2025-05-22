@@ -1,0 +1,103 @@
+{
+  "size": :size,
+  "from": :from,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "gte": ":fromDate",
+              "lte": ":toDate"
+            }
+          }
+        },
+        {
+          "term": {
+            "state.keyword": "Dormant"
+          }
+        },
+        {
+          "term": {
+            "data.channelChoice.keyword": "BulkScan"
+          }
+        },
+        {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "term": {
+                        "data.applicationType.keyword": "Personal"
+                      }
+                    },
+                    {
+                      "bool": {
+                        "should": [
+                          {
+                            "term": {
+                              "data.primaryApplicantEmailAddress.keyword": ""
+                            }
+                          },
+                          {
+                            "bool": {
+                              "must_not": {
+                                "exists": {
+                                  "field": "data.primaryApplicantEmailAddress"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "term": {
+                        "data.applicationType.keyword": "Solicitor"
+                      }
+                    },
+                    {
+                      "bool": {
+                        "should": [
+                          {
+                            "term": {
+                              "data.solsSolicitorEmail.keyword": ""
+                            }
+                          },
+                          {
+                            "bool": {
+                              "must_not": {
+                                "exists": {
+                                  "field": "data.solsSolicitorEmail"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "id": {
+        "order": "asc"
+      }
+    }
+  ]
+}

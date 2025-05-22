@@ -133,6 +133,10 @@ public class CaseDataTransformer {
         attachDocumentsTransformer.updateDocsReceivedNotificationSent(callbackRequest.getCaseDetails().getData());
     }
 
+    public void transformCaseDataToResetDormantNotificationSent(CallbackRequest callbackRequest) {
+        attachDocumentsTransformer.updateDormantReceivedNotificationSent(callbackRequest.getCaseDetails().getData());
+    }
+
     public void transformIhtFormCaseDataByDeceasedDOD(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {

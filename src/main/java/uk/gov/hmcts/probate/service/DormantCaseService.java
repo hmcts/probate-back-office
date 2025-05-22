@@ -17,6 +17,8 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -64,11 +66,14 @@ public class DormantCaseService {
             List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeReactivatedFromDormant(date);
             log.info("Found {} cases with dated document for Reactivate Dormant", cases.size());
             for (ReturnedCaseDetails returnedCaseDetails : cases) {
+                log.info("case id {} ", returnedCaseDetails.getId());
                 log.info("MoveToDormantDateTime before {} ", returnedCaseDetails.getData().getMoveToDormantDateTime());
+                log.info("Notification flag {} ", returnedCaseDetails.getData().getDormantNotificationSent());
                 if (StringUtils.isNotBlank(returnedCaseDetails.getData().getMoveToDormantDateTime())) {
                     LocalDateTime moveToDormantDateTime = LocalDateTime.parse(returnedCaseDetails.getData()
                             .getMoveToDormantDateTime(), DATE_FORMAT);
-                    if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime)) {
+                    if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime)
+                            && NO.equals(returnedCaseDetails.getData().getDormantNotificationSent())) {
                         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                                 .evidenceHandled(false)
                                 .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))

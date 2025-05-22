@@ -70,6 +70,8 @@ public class CaseQueryService {
             + "reactivate_dormant_date_range_query.json";
     private static final String DRAFT_CASES_QUERY = "templates/elasticsearch/caseMatching/"
             + "draft_cases_date_range_query.json";
+    private static final String SEND_REMINDER_CASES_QUERY = "templates/elasticsearch/caseMatching/"
+            + "send_reminder_cases_date_range_query.json";
     private static final String SORT_COLUMN = "id";
     private final RestTemplate restTemplate;
     private final HttpHeadersFactory headers;
@@ -273,5 +275,9 @@ public class CaseQueryService {
 
     public List<ReturnedCaseDetails> findDraftCases(String startDate, String endDate) {
         return findCaseStateWithinDateRange("Draft", DRAFT_CASES_QUERY, startDate, endDate);
+    }
+
+    public List<ReturnedCaseDetails> findCasesToSendReminder(String startDate, String endDate) {
+        return findCaseStateWithinDateRange("Reminder", SEND_REMINDER_CASES_QUERY, startDate, endDate);
     }
 }

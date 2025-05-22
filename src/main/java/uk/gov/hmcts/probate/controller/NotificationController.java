@@ -174,6 +174,18 @@ public class NotificationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/send-reminder")
+    public ResponseEntity<CallbackResponse> sendDormantNotification(
+            @RequestBody CallbackRequest callbackRequest) {
+        log.info("Preparing to send email notification for case moved to Dormant");
+        String letterId = null;
+        CallbackResponse response = null;
+
+        List<Document> documents = new ArrayList<>();
+        //Add logic for sending letter to applicant
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/redeclaration-sot-default-values")
     public ResponseEntity<CallbackResponse> redeclarationSOTDefaultValues(
         @RequestBody CallbackRequest callbackRequest) {
@@ -252,6 +264,7 @@ public class NotificationController {
             caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
         }
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        caseDataTransformer.transformCaseDataToRessetDormantNotificationSent(callbackRequest);
         CallbackResponse response = callbackResponseTransformer
                 .transformCaseForAttachScannedDocs(callbackRequest, document, caseworkerInfo);
         return ResponseEntity.ok(response);
