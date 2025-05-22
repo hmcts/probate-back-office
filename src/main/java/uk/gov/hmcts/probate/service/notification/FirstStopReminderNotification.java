@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.notification;
 
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.NotificationType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -54,6 +55,11 @@ public class FirstStopReminderNotification implements NotificationStrategy {
     @Override
     public String getFailureEventSummary() {
         return FAILURE_EVENT_SUMMARY;
+    }
+
+    @Override
+    public EventId getEventId() {
+        return EventId.AUTOMATED_NOTIFICATION;
     }
 
     @Override

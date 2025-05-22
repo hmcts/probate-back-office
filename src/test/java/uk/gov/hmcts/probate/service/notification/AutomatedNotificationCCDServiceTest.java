@@ -81,11 +81,7 @@ class AutomatedNotificationCCDServiceTest {
         when(caseDetails.getData()).thenReturn(new HashMap<>());
         stubNotificationStrategy(
                 firstStopReminderNotificationStrategy,
-                NotificationType.FIRST_STOP_REMINDER,
-                DESCRIPTION,
-                SUMMARY,
-                FAILURE_DESCRIPTION,
-                FAILURE_SUMMARY
+                NotificationType.FIRST_STOP_REMINDER
         );
 
         Document sentEmail = createMockDocument("newEmail.pdf");
@@ -108,11 +104,7 @@ class AutomatedNotificationCCDServiceTest {
 
         stubNotificationStrategy(
                 secondStopReminderNotificationStrategy,
-                NotificationType.SECOND_STOP_REMINDER,
-                DESCRIPTION,
-                SUMMARY,
-                FAILURE_DESCRIPTION,
-                FAILURE_SUMMARY
+                NotificationType.SECOND_STOP_REMINDER
         );
 
         Document sentEmail = createMockDocument("newEmail.pdf");
@@ -163,11 +155,7 @@ class AutomatedNotificationCCDServiceTest {
 
         stubNotificationStrategy(
                 firstStopReminderNotificationStrategy,
-                NotificationType.FIRST_STOP_REMINDER,
-                DESCRIPTION,
-                SUMMARY,
-                FAILURE_DESCRIPTION,
-                FAILURE_SUMMARY
+                NotificationType.FIRST_STOP_REMINDER
         );
 
         Document sentEmail = createMockDocument("newEmail.pdf");
@@ -190,11 +178,7 @@ class AutomatedNotificationCCDServiceTest {
     void shouldSaveFailedNotification() {
         stubNotificationStrategy(
                 firstStopReminderNotificationStrategy,
-                NotificationType.FIRST_STOP_REMINDER,
-                DESCRIPTION,
-                SUMMARY,
-                FAILURE_DESCRIPTION,
-                FAILURE_SUMMARY
+                NotificationType.FIRST_STOP_REMINDER
         );
 
         automatedNotificationCCDService.saveFailedNotification(
@@ -214,11 +198,7 @@ class AutomatedNotificationCCDServiceTest {
         when(caseDetails.getData()).thenReturn(new HashMap<>());
         stubNotificationStrategy(
                 firstStopReminderNotificationStrategy,
-                NotificationType.FIRST_STOP_REMINDER,
-                DESCRIPTION,
-                SUMMARY,
-                FAILURE_DESCRIPTION,
-                FAILURE_SUMMARY
+                NotificationType.FIRST_STOP_REMINDER
         );
         Document sentEmail = createMockDocument("newEmail.pdf");
 
@@ -265,13 +245,12 @@ class AutomatedNotificationCCDServiceTest {
         return captor.getValue();
     }
 
-    private void stubNotificationStrategy(NotificationStrategy strategy, NotificationType type,
-                                          String description, String summary,
-                                          String failureDescription, String failureSummary) {
+    private void stubNotificationStrategy(NotificationStrategy strategy, NotificationType type) {
         when(strategy.getType()).thenReturn(type);
-        when(strategy.getEventDescription()).thenReturn(description);
-        when(strategy.getEventSummary()).thenReturn(summary);
-        when(strategy.getFailureEventDescription()).thenReturn(failureDescription);
-        when(strategy.getFailureEventSummary()).thenReturn(failureSummary);
+        when(strategy.getEventDescription()).thenReturn(AutomatedNotificationCCDServiceTest.DESCRIPTION);
+        when(strategy.getEventSummary()).thenReturn(AutomatedNotificationCCDServiceTest.SUMMARY);
+        when(strategy.getFailureEventDescription()).thenReturn(AutomatedNotificationCCDServiceTest.FAILURE_DESCRIPTION);
+        when(strategy.getFailureEventSummary()).thenReturn(AutomatedNotificationCCDServiceTest.FAILURE_SUMMARY);
+        when(strategy.getEventId()).thenReturn(EventId.AUTOMATED_NOTIFICATION);
     }
 }
