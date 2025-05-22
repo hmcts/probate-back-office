@@ -170,8 +170,7 @@ def versions = [
         lombok                          : '1.18.38',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
-        probateCommonsVersion           : '2.1.7',
-        probatePactCommonsVersion       : '1.0.2',
+        probateCommonsVersion           : '2.2.0',
         restAssured                     : '5.5.2',
         serenity                        : '4.2.22',
         serenityreporter                : '4.2.22',
@@ -337,7 +336,7 @@ dependencies {
   contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntimeOnly group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-  contractTestImplementation group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
+  contractTestImplementation group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probateCommonsVersion
   contractTestImplementation sourceSets.main.runtimeClasspath
   contractTestImplementation sourceSets.test.runtimeClasspath
 
