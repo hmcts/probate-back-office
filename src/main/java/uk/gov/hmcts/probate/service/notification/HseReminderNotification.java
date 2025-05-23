@@ -16,6 +16,7 @@ public class HseReminderNotification implements NotificationStrategy {
     private static final String EVENT_SUMMARY = "HSE Reminder";
     private static final String HSE_REMINDER_FAILURE_EVENT_DESCRIPTION = "Failed to send HSE reminder";
     private static final String HSE_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send HSE reminder";
+    private static final String HSE_ES_QUERY_PATH = "templates/elasticsearch/caseMatching/hse_reminder_query.json";
     private final NotificationService notificationService;
 
     public HseReminderNotification(NotificationService notificationService) {
@@ -23,9 +24,7 @@ public class HseReminderNotification implements NotificationStrategy {
     }
 
     @Override
-    public String getQueryTemplate() {
-        return "templates/elasticsearch/caseMatching/hse_reminder_query.json";
-    }
+    public String getQueryTemplate() {return HSE_ES_QUERY_PATH; }
 
     @Override
     public boolean matchesType(NotificationType type) {

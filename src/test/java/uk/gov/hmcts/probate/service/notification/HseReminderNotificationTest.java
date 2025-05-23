@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
 
 class HseReminderNotificationTest {
 
@@ -39,6 +40,13 @@ class HseReminderNotificationTest {
     @AfterEach
     public void tearDown() throws Exception {
         closeableMocks.close();
+    }
+
+    @Test
+    void matchesTypeShouldReturnTrueWhenTypeIsHseReminder() {
+        boolean result = underTest.matchesType(HSE_REMINDER);
+
+        assertEquals(true, result);
     }
 
     @Test
