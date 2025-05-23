@@ -193,6 +193,23 @@ class SendNotificationsTaskTest {
         verifyNoInteractionsWithAutomatedNotificationService();
     }
 
+    @Test
+    void shouldCatchClientExceptionInHseReminder() {
+        ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
+        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(true);
+
+        doThrow(new ClientException(400, "bad request"))
+                .when(dataExtractDateValidator).dateValidator(HSE_REMINDER_DATE);
+
+        sendNotificationsTask.run();
+
+        verify(dataExtractDateValidator).dateValidator(HSE_REMINDER_DATE);
+        verifyNoInteractionsWithAutomatedNotificationService();
+    }
+
+
     private void verifyNoInteractionsWithAutomatedNotificationService() {
         verifyNoInteractions(automatedNotificationService);
     }

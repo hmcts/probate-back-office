@@ -45,6 +45,13 @@ class HseReminderNotificationTest {
     }
 
     @Test
+    void returnsCorrectQueryTemplatePath() {
+        String result = underTest.getQueryTemplate();
+
+        assertEquals("templates/elasticsearch/caseMatching/hse_reminder_query.json", result);
+    }
+
+    @Test
     void matchesTypeShouldReturnTrueWhenTypeIsHseReminder() {
         boolean result = underTest.matchesType(HSE_REMINDER);
 
