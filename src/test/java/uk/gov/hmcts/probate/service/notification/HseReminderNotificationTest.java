@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.NotificationType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -57,5 +59,47 @@ class HseReminderNotificationTest {
 
         verify(notificationService, times(1)).sendHseReminderEmail(caseDetails);
         assertEquals(mockDocument, result);
+    }
+
+    @Test
+    void returnsEventSummary() {
+        String result = underTest.getEventSummary();
+
+        assertEquals("HSE Reminder", result);
+    }
+
+    @Test
+    void returnsEventDescription() {
+        String result = underTest.getEventDescription();
+
+        assertEquals("HSE Reminder", result);
+    }
+
+    @Test
+    void returnsFailureEventDescription() {
+        String result = underTest.getFailureEventDescription();
+
+        assertEquals("Failed to send HSE reminder", result);
+    }
+
+    @Test
+    void returnsFailureEventSummary() {
+        String result = underTest.getFailureEventSummary();
+
+        assertEquals("Failed to send HSE reminder", result);
+    }
+
+    @Test
+    void returnsEventId() {
+        EventId result = underTest.getEventId();
+
+        assertEquals(EventId.AUTOMATED_NOTIFICATION, result);
+    }
+
+    @Test
+    void returnsNotificationType() {
+        NotificationType result = underTest.getType();
+
+        assertEquals(HSE_REMINDER, result);
     }
 }
