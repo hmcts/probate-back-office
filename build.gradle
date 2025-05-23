@@ -301,7 +301,7 @@ dependencies {
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '4.3.0'
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.6'
   testFunctionalImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
-  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.2'
+  testFunctionalImplementation group: 'com.github.hmcts', name: 'pdf-service-client', version: versions.pdfServiceClientVersion
   testFunctionalImplementation group: 'net.thucydides', name: 'thucydides-core', version: '0.9.275'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
   testFunctionalImplementation sourceSets.test.runtimeClasspath
