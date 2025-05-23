@@ -2654,6 +2654,8 @@ class CallbackResponseTransformerTest {
             callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
         assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
+        assertEquals(callbackResponse.getData().getEvidenceHandledDate(),
+                LocalDate.now().toString());
     }
 
     @Test
@@ -2680,6 +2682,8 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getExpectedResponseDate());
         assertNull(callbackResponse.getData().getDocumentUploadIssue());
         assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
+        assertEquals(callbackResponse.getData().getEvidenceHandledDate(),
+                LocalDate.now().toString());
     }
 
     @Test
@@ -4873,6 +4877,8 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getInformationNeeded());
         assertNull(callbackResponse.getData().getInformationNeededByPost());
         assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
+        assertEquals(callbackResponse.getData().getEvidenceHandledDate(),
+                LocalDate.now().toString());
     }
 
     @Test
