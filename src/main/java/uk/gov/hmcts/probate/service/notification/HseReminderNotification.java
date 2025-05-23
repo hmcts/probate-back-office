@@ -24,7 +24,9 @@ public class HseReminderNotification implements NotificationStrategy {
     }
 
     @Override
-    public String getQueryTemplate() {return HSE_ES_QUERY_PATH; }
+    public String getQueryTemplate() {
+        return HSE_ES_QUERY_PATH;
+    }
 
     @Override
     public boolean matchesType(NotificationType type) {
