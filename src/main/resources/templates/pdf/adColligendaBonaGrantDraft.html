@@ -292,14 +292,13 @@
                 {% endfor %}
             </p>
             {% endif %}
-            <p>This is an Ad Colligenda Bona grant and is limited for the purposes only of collecting getting in and
+            <p>{% if case_details.case_data.boLimitationText != null and case_details.case_data.boLimitationText != "" %}{{ case_details.case_data.boLimitationText }}{% else %}This is an Ad Colligenda Bona grant and is limited for the purposes only of collecting getting in and
                 receiving the estate and doing such acts as may be necessary for the preservation of the same in
                 particular, to deal with issues and if necessary to sell {% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %} {{case_details.case_data.deceasedAddress.AddressLine2}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %} {{case_details.case_data.deceasedAddress.AddressLine3}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %} {{case_details.case_data.deceasedAddress.PostTown}}{% endif %} and until further
-                representation be granted
-            </p>
+                representation be granted{% endif %}</p>
             
             <p>The application has stated that the gross value of the estate in {% if case_details.case_data.deceasedDomicileInEngWales != "No" %}the United Kingdom{% else %}England and Wales{% endif %} amounts to
                 {% if case_extras !=null%}
