@@ -14,6 +14,7 @@ import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.SearchResult;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 @ExtendWith(SpringExtension.class)
@@ -47,6 +49,9 @@ class AutomatedNotificationServiceTest {
     @Mock
     private SecondStopReminderNotification secondStopReminderNotification;
 
+    @Mock
+    private StartEventResponse startEventResponse;
+
     @InjectMocks
     private AutomatedNotificationService automatedNotificationService;
 
@@ -54,11 +59,12 @@ class AutomatedNotificationServiceTest {
     private static final String JOB_DATE = "2025-02-07";
 
     private CaseDetails mockCaseDetails;
+    private SecurityDTO mockSecurityDTO;
 
     @BeforeEach
     void setUp() throws NotificationClientException {
         mockCaseDetails = mock(CaseDetails.class);
-        SecurityDTO mockSecurityDTO = mock(SecurityDTO.class);
+        mockSecurityDTO = mock(SecurityDTO.class);
 
         mockCaseDetails = CaseDetails.builder()
                 .id(123L)
@@ -73,9 +79,22 @@ class AutomatedNotificationServiceTest {
                         .total(1)
                         .cases(List.of(mockCaseDetails))
                         .build());
+        when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder()
+                        .total(0)
+                        .cases(Collections.emptyList())
+                        .build());
 
         when(firstStopReminderNotification.sendEmail(any())).thenReturn(mock(Document.class));
         when(firstStopReminderNotification.matchesType(FIRST_STOP_REMINDER)).thenReturn(true);
+
+        when(automatedNotificationCCDService
+                .startEvent(eq("123"), eq(mockSecurityDTO), eq(firstStopReminderNotification)))
+                .thenReturn(startEventResponse);
+        when(startEventResponse.getCaseDetails()).thenReturn(mockCaseDetails);
+
+        Predicate<CaseDetails> accepts = cd -> true;
+        when(firstStopReminderNotification.accepts()).thenReturn(accepts);
 
         automatedNotificationService = new AutomatedNotificationService(
                 List.of(firstStopReminderNotification, secondStopReminderNotification),
@@ -111,7 +130,7 @@ class AutomatedNotificationServiceTest {
                 .thenThrow(new RuntimeException("ElasticSearch error"));
         assertDoesNotThrow(() -> automatedNotificationService
                 .sendNotification(JOB_DATE, FIRST_STOP_REMINDER));
-        verify(automatedNotificationCCDService, never()).saveNotification(any(), any(), any(), any(), any());
+        verify(automatedNotificationCCDService, never()).saveNotification(any(), any(), any(), any(), any(), any());
     }
 
     @Test
@@ -148,11 +167,17 @@ class AutomatedNotificationServiceTest {
                 .thenReturn(firstNextPage)
                 .thenReturn(emptyNextPage);
 
+        StartEventResponse secondResponse = mock(StartEventResponse.class);
+        when(automatedNotificationCCDService.startEvent(
+                eq("456"), eq(mockSecurityDTO), eq(firstStopReminderNotification)))
+                .thenReturn(secondResponse);
+        when(secondResponse.getCaseDetails()).thenReturn(secondCase);
+
         automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER);
 
         verify(firstStopReminderNotification, times(1)).sendEmail(mockCaseDetails);
         verify(firstStopReminderNotification, times(1)).sendEmail(secondCase);
-        verify(automatedNotificationCCDService, times(2)).saveNotification(any(), any(), any(), any(), any());
+        verify(automatedNotificationCCDService, times(2)).saveNotification(any(), any(), any(), any(), any(), any());
     }
 
 
@@ -177,6 +202,12 @@ class AutomatedNotificationServiceTest {
         when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
                 .thenReturn(firstNextPage)
                 .thenReturn(emptyNextPage);
+
+        StartEventResponse secondResponse = mock(StartEventResponse.class);
+        when(automatedNotificationCCDService.startEvent(
+                eq("789"), eq(mockSecurityDTO), eq(firstStopReminderNotification)))
+                .thenReturn(secondResponse);
+        when(secondResponse.getCaseDetails()).thenReturn(secondCase);
 
         when(firstStopReminderNotification.sendEmail(secondCase))
                 .thenThrow(new NotificationClientException("fail"));
@@ -209,16 +240,16 @@ class AutomatedNotificationServiceTest {
         automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER);
 
         verify(automatedNotificationCCDService, times(1))
-                .saveFailedNotification(eq(mockCaseDetails), eq("123"), any(SecurityDTO.class),
-                        eq(firstStopReminderNotification));
+                .saveFailedNotification(eq("123"), any(SecurityDTO.class),
+                        eq(firstStopReminderNotification), eq(startEventResponse));
         verify(automatedNotificationCCDService, never())
-                .saveNotification(any(), any(), any(), any(), any());
+                .saveNotification(any(), any(), any(), any(), any(), any());
     }
 
     @Test
     void shouldSaveFailedNotificationWhenSendEmailThrows() throws NotificationClientException {
         when(firstStopReminderNotification.sendEmail(mockCaseDetails))
-                .thenThrow(new NotificationClientException("boom"));
+                .thenThrow(new NotificationClientException("notification error"));
 
         when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
                 .thenReturn(SearchResult.builder().total(0).cases(Collections.emptyList()).build());
@@ -226,10 +257,10 @@ class AutomatedNotificationServiceTest {
         automatedNotificationService.sendNotification(JOB_DATE, FIRST_STOP_REMINDER);
 
         verify(automatedNotificationCCDService, times(1))
-                .saveFailedNotification(eq(mockCaseDetails), eq("123"), any(SecurityDTO.class),
-                        eq(firstStopReminderNotification));
+                .saveFailedNotification(eq("123"), any(SecurityDTO.class),
+                        eq(firstStopReminderNotification), eq(startEventResponse));
         verify(automatedNotificationCCDService, never())
-                .saveNotification(any(), any(), any(), any(), any());
+                .saveNotification(any(), any(), any(), any(), any(), any());
     }
 
     @Test
@@ -240,7 +271,7 @@ class AutomatedNotificationServiceTest {
         doThrow(new RuntimeException("ccd fail"))
                 .when(automatedNotificationCCDService)
                 .saveNotification(eq(mockCaseDetails), eq("123"), any(SecurityDTO.class), eq(doc),
-                        eq(firstStopReminderNotification));
+                        eq(firstStopReminderNotification), eq(startEventResponse));
 
         when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
                 .thenReturn(SearchResult.builder().total(0).cases(Collections.emptyList()).build());
@@ -253,6 +284,6 @@ class AutomatedNotificationServiceTest {
                 .saveFailedNotification(any(), any(), any(), any());
         verify(automatedNotificationCCDService, times(1))
                 .saveNotification(eq(mockCaseDetails), eq("123"), any(SecurityDTO.class), eq(doc),
-                        eq(firstStopReminderNotification));
+                        eq(firstStopReminderNotification), eq(startEventResponse));
     }
 }

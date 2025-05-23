@@ -10,6 +10,8 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.Clock;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -19,6 +21,9 @@ class FirstStopReminderNotificationTest {
 
     @Mock
     private NotificationService notificationService;
+
+    @Mock
+    private Clock clock;
 
     @Mock
     private CaseDetails caseDetails;
@@ -33,7 +38,7 @@ class FirstStopReminderNotificationTest {
     @BeforeEach
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
-        underTest = new FirstStopReminderNotification(notificationService);
+        underTest = new FirstStopReminderNotification(notificationService, clock);
     }
 
     @AfterEach
