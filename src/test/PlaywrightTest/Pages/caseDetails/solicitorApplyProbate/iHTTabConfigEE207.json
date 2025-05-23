@@ -1,0 +1,11 @@
+{
+    "tabName": "IHT",
+    "fields": [
+      "Did you complete IHT forms to report the estate's values?",
+      "Which IHT forms did you complete to report the estate's value?"
+    ],
+    "dataKeys": [
+      "optionYes",
+      "page2_solsIHTTab207FormLabel"
+    ]
+  }
