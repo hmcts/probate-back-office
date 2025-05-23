@@ -13,4 +13,12 @@
         -->
         <cve>CVE-2025-1686</cve>
     </suppress>
+    <suppress until = "2025-10-15">
+        <!--
+            This has been pulled in transitively through pact-commons which is
+            only used by the contractTest handling and is not deployed in the
+            production environment.
+        -->
+        <cve>CVE-2022-23437</cve>
+    </suppress>
 </suppressions>
