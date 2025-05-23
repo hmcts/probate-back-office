@@ -59,7 +59,7 @@ public class SecondStopReminderNotification implements NotificationStrategy {
 
     @Override
     public EventId getEventId() {
-        return EventId.AUTOMATED_NOTIFICATION;
+        return EventId.AUTO_NOTIFICATION_SECOND_STOP_REMINDER;
     }
 
     @Override

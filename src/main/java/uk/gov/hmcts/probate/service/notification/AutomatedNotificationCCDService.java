@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.CcdUpdateNotificationException;
 import uk.gov.hmcts.probate.model.NotificationType;
-import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
@@ -44,7 +43,7 @@ public class AutomatedNotificationCCDService {
                     buildCaseData(caseDetails.getData(), sentEmail, notificationStrategy.getType());
             log.info("AutomatedNotificationCCDService saveNotification to Case: {}", caseId);
             ccdClientApi.updateCaseAsCaseworker(GRANT_OF_REPRESENTATION, caseId, caseDetails.getLastModified(), data,
-                    EventId.AUTOMATED_NOTIFICATION, securityDTO,
+                    notificationStrategy.getEventId(), securityDTO,
                     notificationStrategy.getEventDescription(), notificationStrategy.getEventSummary());
         } catch (Exception e) {
             log.error("Error saving notification to CCD for case id: {}, Error: {}", caseId, e.getMessage());
@@ -60,7 +59,7 @@ public class AutomatedNotificationCCDService {
             log.info("AutomatedNotificationCCDService saveFailedNotification to Case: {}", caseId);
             final GrantOfRepresentationData data = GrantOfRepresentationData.builder().build();
             ccdClientApi.updateCaseAsCaseworker(GRANT_OF_REPRESENTATION, caseId, caseDetails.getLastModified(), data,
-                    EventId.AUTOMATED_NOTIFICATION, securityDTO,
+                    notificationStrategy.getEventId(), securityDTO,
                     notificationStrategy.getFailureEventDescription(),
                     notificationStrategy.getFailureEventSummary());
         } catch (Exception e) {

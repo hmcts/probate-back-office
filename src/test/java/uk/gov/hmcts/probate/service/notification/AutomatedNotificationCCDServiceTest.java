@@ -59,7 +59,7 @@ class AutomatedNotificationCCDServiceTest {
     private AutomatedNotificationCCDService automatedNotificationCCDService;
 
     private static final String CASE_ID = "1234567890123456";
-    private static final EventId EVENT_ID = EventId.AUTOMATED_NOTIFICATION;
+    private static final EventId EVENT_ID = EventId.AUTO_NOTIFICATION_FIRST_STOP_REMINDER;
     private static final String DESCRIPTION = "description";
     private static final String SUMMARY = "summary";
     private static final String FAILURE_DESCRIPTION = "failure description";
@@ -250,6 +250,6 @@ class AutomatedNotificationCCDServiceTest {
         when(strategy.getEventSummary()).thenReturn(AutomatedNotificationCCDServiceTest.SUMMARY);
         when(strategy.getFailureEventDescription()).thenReturn(AutomatedNotificationCCDServiceTest.FAILURE_DESCRIPTION);
         when(strategy.getFailureEventSummary()).thenReturn(AutomatedNotificationCCDServiceTest.FAILURE_SUMMARY);
-        when(strategy.getEventId()).thenReturn(EventId.AUTOMATED_NOTIFICATION);
+        when(strategy.getEventId()).thenReturn(EventId.AUTO_NOTIFICATION_FIRST_STOP_REMINDER);
     }
 }
