@@ -264,7 +264,6 @@ dependencies {
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.24.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
-  implementation 'org.apache.tika:tika-core:3.1.0'
 
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
@@ -355,9 +354,9 @@ configurations.all {
   exclude group: 'commons-logging', module: 'commons-logging'
   exclude group: 'com.vaadin.external.google', module: 'android-json'
 
-//  resolutionStrategy {
-//    force '
-//  }
+  resolutionStrategy {
+    force 'org.apache.tika:tika-core:3.1.0'
+  }
 }
 
 tasks.withType(JavaCompile) {
