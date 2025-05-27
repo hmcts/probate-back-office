@@ -6,6 +6,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.function.Predicate;
+
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.Constants.GRANT_OF_REPRESENTATION_NAME;
+
 public interface NotificationStrategy {
 
     String getQueryTemplate();
@@ -25,4 +29,10 @@ public interface NotificationStrategy {
     EventId getEventId();
 
     NotificationType getType();
+
+    Predicate<CaseDetails> accepts();
+
+    default String getCaseTypeName() {
+        return GRANT_OF_REPRESENTATION_NAME;
+    }
 }

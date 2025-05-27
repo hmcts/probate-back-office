@@ -1,0 +1,30 @@
+{
+  "tabName": "Case details",
+  "fields": [
+    "What case type is this?",
+    "What is the channel choice?",
+    "Gross value of the estate for probate",
+    "Net value of the estate for probate",
+    "Registry location",
+    "Application type",
+    "Did the deceased leave a will?"
+  ],
+  "dataKeys": [
+    "page1_list3_case_type",
+    "page1_optionChannelChoiceCW",
+    "EE_ihtEstateGrossValue",
+    "EE_ihtEstateNetValue",
+    "page1_list1_registry_location",
+    "page1_list2_application_type",
+    "page1_optionNo"
+  ],
+  "fieldsNotPresent": [
+    "Please state the grounds for making this application and any information in support:",
+    "Version of schema applicable for this case",
+    "When was the original will signed and dated?",
+    "When was the codicil added? 1",
+    "Did you complete Inheritance Tax (IHT) forms to report the estate’s value?",
+    "Did the deceased have a late spouse or civil partner?",
+    "Are you claiming the unused IHT allowance (‘nil-rate band’) of the deceased’s late spouse or civil partner?"
+  ]
+}

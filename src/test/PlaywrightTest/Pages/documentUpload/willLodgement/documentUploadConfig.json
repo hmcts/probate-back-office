@@ -1,0 +1,9 @@
+{
+  "waitForText" : "Document upload",
+  "documentType": ["Email", "Correspondence", "Will", "Codicil", "Other", "Death Certificate"],
+  "documentTypeSelected": "Email",
+  "fileToUploadUrl":"./src/test/PlaywrightTest/Documents/test_file.docx",
+  "filename": "test_file.docx",
+  "comment": "test file to upload",
+  "id": "#documentsUploaded"
+}

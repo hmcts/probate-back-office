@@ -4,12 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.exception.CcdUpdateNotificationException;
 import uk.gov.hmcts.probate.model.NotificationType;
-import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.security.SecurityDTO;
-import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.ccd.client.model.Event;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
@@ -22,49 +25,111 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
+import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AutomatedNotificationCCDService {
-    private final CcdClientApi ccdClientApi;
+    private final CoreCaseDataApi coreCaseDataApi;
     private final ObjectMapper objectMapper;
+    private static final String PROBATE_NOTIFICATIONS_GENERATED = "probateNotificationsGenerated";
+
+    public StartEventResponse startEvent(final String caseId,
+                                         final SecurityDTO securityDTO,
+                                         final NotificationStrategy notificationStrategy) {
+        StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                PROBATE.name(),
+                notificationStrategy.getCaseTypeName(),
+                caseId,
+                notificationStrategy.getEventId().getName());
+
+        if (startEventResponse == null || startEventResponse.getCaseDetails() == null) {
+            final String errorMsg = String.format(
+                    "Failed to start event for case id: %s and event id: %s",
+                    caseId, notificationStrategy.getEventId());
+            throw new CcdUpdateNotificationException(errorMsg);
+        }
+        return startEventResponse;
+    }
 
     public void saveNotification(final CaseDetails caseDetails,
                                  final String caseId,
                                  final SecurityDTO securityDTO,
                                  final Document sentEmail,
-                                 final NotificationStrategy notificationStrategy) {
+                                 final NotificationStrategy notificationStrategy,
+                                 final StartEventResponse startEventResponse) {
         try {
             log.info("AutomatedNotificationCCDService buildCaseData for case id: {} type: {}",
                     caseId, notificationStrategy.getType());
-            final GrantOfRepresentationData data =
+            final GrantOfRepresentationData updatedData =
                     buildCaseData(caseDetails.getData(), sentEmail, notificationStrategy.getType());
+
+            final Event event = Event.builder()
+                    .id(startEventResponse.getEventId())
+                    .summary(notificationStrategy.getEventSummary())
+                    .description(notificationStrategy.getEventDescription())
+                    .build();
+
+            final CaseDataContent caseDataContent = CaseDataContent.builder()
+                    .eventToken(startEventResponse.getToken())
+                    .event(event)
+                    .data(updatedData)
+                    .build();
+
             log.info("AutomatedNotificationCCDService saveNotification to Case: {}", caseId);
-            ccdClientApi.updateCaseAsCaseworker(GRANT_OF_REPRESENTATION, caseId, caseDetails.getLastModified(), data,
-                    EventId.AUTOMATED_NOTIFICATION, securityDTO,
-                    notificationStrategy.getEventDescription(), notificationStrategy.getEventSummary());
+            coreCaseDataApi.submitEventForCaseWorker(
+                    securityDTO.getAuthorisation(),
+                    securityDTO.getServiceAuthorisation(),
+                    securityDTO.getUserId(),
+                    PROBATE.name(),
+                    notificationStrategy.getCaseTypeName(),
+                    caseId,
+                    true,
+                    caseDataContent);
         } catch (Exception e) {
-            log.error("Error saving notification to CCD for case id: {}, Error: {}", caseId, e.getMessage());
-            throw new RuntimeException("Error saving notification to CCD", e);
+            final String errorMsg = String.format("Error saving notification to CCD for case: %s", caseId);
+            log.error(errorMsg, e);
+            throw new CcdUpdateNotificationException(errorMsg, e);
         }
     }
 
-    public void saveFailedNotification(final CaseDetails caseDetails,
-                                       final String caseId,
+    public void saveFailedNotification(final String caseId,
                                        final SecurityDTO securityDTO,
-                                       final NotificationStrategy notificationStrategy) {
+                                       final NotificationStrategy notificationStrategy,
+                                       final StartEventResponse startEventResponse) {
         try {
             log.info("AutomatedNotificationCCDService saveFailedNotification to Case: {}", caseId);
             final GrantOfRepresentationData data = GrantOfRepresentationData.builder().build();
-            ccdClientApi.updateCaseAsCaseworker(GRANT_OF_REPRESENTATION, caseId, caseDetails.getLastModified(), data,
-                    EventId.AUTOMATED_NOTIFICATION, securityDTO,
-                    notificationStrategy.getFailureEventDescription(),
-                    notificationStrategy.getFailureEventSummary());
+
+            final Event event = Event.builder()
+                    .id(startEventResponse.getEventId())
+                    .summary(notificationStrategy.getFailureEventSummary())
+                    .description(notificationStrategy.getFailureEventDescription())
+                    .build();
+
+            final CaseDataContent caseDataContent = CaseDataContent.builder()
+                    .eventToken(startEventResponse.getToken())
+                    .event(event)
+                    .data(data)
+                    .build();
+
+            coreCaseDataApi.submitEventForCaseWorker(
+                    securityDTO.getAuthorisation(),
+                    securityDTO.getServiceAuthorisation(),
+                    securityDTO.getUserId(),
+                    PROBATE.name(),
+                    notificationStrategy.getCaseTypeName(),
+                    caseId,
+                    true,
+                    caseDataContent);
         } catch (Exception e) {
-            log.error("Error saving failed notification to CCD for case id: {}, Error: {}", caseId, e.getMessage());
-            throw new RuntimeException("Error saving failed notification to CCD", e);
+            final String errorMsg = String.format("Error saving failed notification to CCD for case: %s", caseId);
+            log.error(errorMsg, e);
+            throw new CcdUpdateNotificationException(errorMsg, e);
         }
     }
 
@@ -88,7 +153,7 @@ public class AutomatedNotificationCCDService {
             Document sentEmail,
             Map<String, Object> data) {
         List<CollectionMember<ProbateDocument>> existingDocuments = new ArrayList<>();
-        Object rawData = data.get("probateNotificationsGenerated");
+        Object rawData = data.get(PROBATE_NOTIFICATIONS_GENERATED);
 
         if (rawData != null) {
             try {
@@ -102,8 +167,7 @@ public class AutomatedNotificationCCDService {
                     existingDocuments.add(member);
                 }
             } catch (Exception e) {
-                log.warn("Failed to parse probateNotificationsGenerated. Reason: {}", e.getMessage());
-                throw e;
+                throw new CcdUpdateNotificationException("Failed to deserialize existing notifications", e);
             }
         }
         existingDocuments.add(new CollectionMember<>(null, getProbateDocument(sentEmail)));

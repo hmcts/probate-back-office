@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.exception.CcdUpdateNotificationException;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
@@ -11,6 +12,7 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.SearchResult;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
@@ -83,35 +85,53 @@ public class AutomatedNotificationService {
     private void processCases(List<CaseDetails> cases, NotificationStrategy strategy,
                               SecurityDTO securityDTO, List<Long> failedCases) {
         for (CaseDetails caseDetails : cases) {
+            StartEventResponse startEventResponse = null;
             Document sentEmail = null;
+            boolean emailSucceeded = false;
+            String caseId = caseDetails.getId().toString();
             try {
-                sentEmail = strategy.sendEmail(caseDetails);
-            } catch (NotificationClientException | RuntimeException e) {
-                log.info("Failed to send notification for case ID {}: {}", caseDetails.getId(), e.getMessage());
-                failedCases.add(caseDetails.getId());
+                startEventResponse = automatedNotificationCCDService
+                        .startEvent(caseId, securityDTO, strategy);
+                if (!strategy.accepts().test(startEventResponse.getCaseDetails())) {
+                    log.info("Skipping case {} as it doesn’t meet criteria", caseDetails.getId());
+                    failedCases.add(caseDetails.getId());
+                    continue;
+                }
+                sentEmail = strategy.sendEmail(startEventResponse.getCaseDetails());
+                emailSucceeded = true;
+            } catch (CcdUpdateNotificationException e) {
+                log.error(getErrorMessage("StartEvent failed for case: %s", caseId), e);
+            } catch (NotificationClientException e) {
+                log.error(getErrorMessage("Email send failed for case: %s", caseId), e);
+            } catch (RuntimeException e) {
+                log.error(getErrorMessage("Unexpected error for case: %s", caseId), e);
+
             }
 
             try {
-                if (null != sentEmail) {
+                if (emailSucceeded && sentEmail != null) {
                     automatedNotificationCCDService.saveNotification(
-                            caseDetails, caseDetails.getId().toString(),
-                            securityDTO, sentEmail, strategy
+                            startEventResponse.getCaseDetails(), caseDetails.getId().toString(),
+                            securityDTO, sentEmail, strategy, startEventResponse
                     );
                 } else {
                     automatedNotificationCCDService.saveFailedNotification(
-                            caseDetails, caseDetails.getId().toString(),
-                            securityDTO, strategy
+                            caseDetails.getId().toString(), securityDTO, strategy, startEventResponse
                     );
+                    failedCases.add(Long.valueOf(caseId));
                 }
-            } catch (RuntimeException e) {
-                if (!failedCases.contains(caseDetails.getId())) {
-                    failedCases.add(caseDetails.getId());
-                }
+            } catch (CcdUpdateNotificationException e) {
+                log.error(getErrorMessage("Failed to persist notification for case: %s", caseId), e);
+                failedCases.add(caseDetails.getId());
             }
         }
     }
 
     private String getLastId(SearchResult searchResult) {
         return searchResult.getCases().getLast().getId().toString();
+    }
+
+    private String getErrorMessage(String msg, String caseId) {
+        return String.format(msg, caseId);
     }
 }

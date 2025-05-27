@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.notification;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -8,7 +9,12 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.function.Predicate;
+
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 
 @Service
 public class FirstStopReminderNotification implements NotificationStrategy {
@@ -17,9 +23,14 @@ public class FirstStopReminderNotification implements NotificationStrategy {
     private static final String FIRST_STOP_REMINDER_FAILURE_EVENT_DESCRIPTION = "Failed to send first stop reminder";
     private static final String FIRST_STOP_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send first stop reminder";
     private final NotificationService notificationService;
+    private final Clock clock;
 
-    public FirstStopReminderNotification(NotificationService notificationService) {
+    @Value("${automated_notification.stop_reminder.first_notification_days}")
+    private int firstNotificationDays;
+
+    public FirstStopReminderNotification(NotificationService notificationService, Clock clock) {
         this.notificationService = notificationService;
+        this.clock = clock;
     }
 
     @Override
@@ -59,11 +70,22 @@ public class FirstStopReminderNotification implements NotificationStrategy {
 
     @Override
     public EventId getEventId() {
-        return EventId.AUTOMATED_NOTIFICATION;
+        return EventId.AUTO_NOTIFICATION_FIRST_STOP_REMINDER;
     }
 
     @Override
     public NotificationType getType() {
         return FIRST_STOP_REMINDER;
+    }
+
+    @Override
+    public Predicate<CaseDetails> accepts() {
+        return cd -> {
+            if (cd == null || cd.getData() == null) {
+                return false;
+            }
+            return cd.getState().equals(STATE_BO_CASE_STOPPED)
+                    && !cd.getLastModified().isAfter(LocalDateTime.now(clock).minusDays(firstNotificationDays));
+        };
     }
 }

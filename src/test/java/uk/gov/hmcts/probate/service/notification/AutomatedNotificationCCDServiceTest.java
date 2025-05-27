@@ -10,6 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.exception.CcdUpdateNotificationException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -17,8 +18,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.security.SecurityDTO;
-import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
@@ -34,17 +37,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
+import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
 @ExtendWith(SpringExtension.class)
 class AutomatedNotificationCCDServiceTest {
     @Mock
-    private CcdClientApi ccdClientApi;
+    private CoreCaseDataApi coreCaseDataApi;
 
     @Mock
     private ObjectMapper objectMapper;
@@ -59,7 +65,7 @@ class AutomatedNotificationCCDServiceTest {
     private AutomatedNotificationCCDService automatedNotificationCCDService;
 
     private static final String CASE_ID = "1234567890123456";
-    private static final EventId EVENT_ID = EventId.AUTOMATED_NOTIFICATION;
+    private static final EventId EVENT_ID = EventId.AUTO_NOTIFICATION_FIRST_STOP_REMINDER;
     private static final String DESCRIPTION = "description";
     private static final String SUMMARY = "summary";
     private static final String FAILURE_DESCRIPTION = "failure description";
@@ -68,17 +74,30 @@ class AutomatedNotificationCCDServiceTest {
 
     private CaseDetails caseDetails;
     private SecurityDTO securityDTO;
+    private StartEventResponse startEvent;
 
     @BeforeEach
     void setUp() {
-        caseDetails = mock(CaseDetails.class);
-        securityDTO = mock(SecurityDTO.class);
-        when(caseDetails.getLastModified()).thenReturn(LAST_MODIFIED);
+        securityDTO = SecurityDTO.builder()
+                .authorisation("authToken")
+                .serviceAuthorisation("svcToken")
+                .userId("user1")
+                .build();
+
+        caseDetails = CaseDetails.builder()
+                .data(new HashMap<>())
+                .lastModified(LAST_MODIFIED)
+                .build();
+
+        startEvent = StartEventResponse.builder()
+                .token("evtToken")
+                .eventId(EVENT_ID.getName())
+                .caseDetails(caseDetails)
+                .build();
     }
 
     @Test
     void shouldAddNotificationAndUpdateCaseWhenNoExistingNotifications() {
-        when(caseDetails.getData()).thenReturn(new HashMap<>());
         stubNotificationStrategy(
                 firstStopReminderNotificationStrategy,
                 NotificationType.FIRST_STOP_REMINDER
@@ -87,9 +106,11 @@ class AutomatedNotificationCCDServiceTest {
         Document sentEmail = createMockDocument("newEmail.pdf");
 
         automatedNotificationCCDService
-                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, firstStopReminderNotificationStrategy);
+                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail,
+                        firstStopReminderNotificationStrategy, startEvent);
 
-        GrantOfRepresentationData cd = captureUpdatedCaseData(CASE_ID, securityDTO, EVENT_ID, DESCRIPTION, SUMMARY);
+        CaseDataContent caseDataContent = captureUpdatedCaseData(CASE_ID, securityDTO);
+        GrantOfRepresentationData cd = (GrantOfRepresentationData) caseDataContent.getData();
 
         assertNotNull(cd.getProbateNotificationsGenerated());
         assertEquals(1, cd.getProbateNotificationsGenerated().size());
@@ -99,9 +120,33 @@ class AutomatedNotificationCCDServiceTest {
     }
 
     @Test
-    void shouldFirstStopReminderSentDateNullSecondStopReminder() {
-        when(caseDetails.getData()).thenReturn(new HashMap<>());
+    void startEventReturnsResponseOrThrows() {
+        stubNotificationStrategy(
+                firstStopReminderNotificationStrategy,
+                NotificationType.FIRST_STOP_REMINDER
+        );
+        when(coreCaseDataApi.startEventForCaseWorker(
+                anyString(), anyString(), anyString(),
+                anyString(),
+                eq(GRANT_OF_REPRESENTATION.getName()),
+                eq(CASE_ID),
+                eq(EventId.AUTO_NOTIFICATION_FIRST_STOP_REMINDER.getName())))
+                .thenReturn(startEvent);
 
+        StartEventResponse response = automatedNotificationCCDService
+                .startEvent(CASE_ID, securityDTO, firstStopReminderNotificationStrategy);
+        assertEquals(startEvent, response);
+
+        when(coreCaseDataApi.startEventForCaseWorker(any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(null);
+        assertThrows(CcdUpdateNotificationException.class, () ->
+                automatedNotificationCCDService
+                        .startEvent(CASE_ID, securityDTO, firstStopReminderNotificationStrategy));
+    }
+
+
+    @Test
+    void shouldFirstStopReminderSentDateNullSecondStopReminder() {
         stubNotificationStrategy(
                 secondStopReminderNotificationStrategy,
                 NotificationType.SECOND_STOP_REMINDER
@@ -110,9 +155,11 @@ class AutomatedNotificationCCDServiceTest {
         Document sentEmail = createMockDocument("newEmail.pdf");
 
         automatedNotificationCCDService
-                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, secondStopReminderNotificationStrategy);
+                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail,
+                        secondStopReminderNotificationStrategy, startEvent);
 
-        GrantOfRepresentationData cd = captureUpdatedCaseData(CASE_ID, securityDTO, EVENT_ID, DESCRIPTION, SUMMARY);
+        CaseDataContent caseDataContent = captureUpdatedCaseData(CASE_ID, securityDTO);
+        GrantOfRepresentationData cd = (GrantOfRepresentationData) caseDataContent.getData();
 
         assertNotNull(cd.getProbateNotificationsGenerated());
         assertEquals(1, cd.getProbateNotificationsGenerated().size());
@@ -140,7 +187,7 @@ class AutomatedNotificationCCDServiceTest {
         List<Object> rawList = new ArrayList<>();
         rawList.add(existingMember);
         dataMap.put("probateNotificationsGenerated", rawList);
-        when(caseDetails.getData()).thenReturn(dataMap);
+        caseDetails.setData(dataMap);
 
         ProbateDocument mappedExisting = ProbateDocument.builder()
                 .documentFileName("existingEmail.pdf")
@@ -161,9 +208,11 @@ class AutomatedNotificationCCDServiceTest {
         Document sentEmail = createMockDocument("newEmail.pdf");
 
         automatedNotificationCCDService
-                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail, firstStopReminderNotificationStrategy);
+                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail,
+                        firstStopReminderNotificationStrategy, startEvent);
 
-        GrantOfRepresentationData cd = captureUpdatedCaseData(CASE_ID, securityDTO, EVENT_ID, DESCRIPTION, SUMMARY);
+        CaseDataContent caseDataContent = captureUpdatedCaseData(CASE_ID, securityDTO);
+        GrantOfRepresentationData cd = (GrantOfRepresentationData) caseDataContent.getData();
 
         List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> notifications =
                 cd.getProbateNotificationsGenerated();
@@ -181,11 +230,12 @@ class AutomatedNotificationCCDServiceTest {
                 NotificationType.FIRST_STOP_REMINDER
         );
 
-        automatedNotificationCCDService.saveFailedNotification(
-                caseDetails, CASE_ID, securityDTO, firstStopReminderNotificationStrategy);
+        automatedNotificationCCDService
+                .saveFailedNotification(CASE_ID, securityDTO,
+                        firstStopReminderNotificationStrategy, startEvent);
 
-        GrantOfRepresentationData data = captureUpdatedCaseData(CASE_ID, securityDTO, EVENT_ID,
-                FAILURE_DESCRIPTION, FAILURE_SUMMARY);
+        CaseDataContent caseDataContent = captureUpdatedCaseData(CASE_ID, securityDTO);
+        GrantOfRepresentationData data = (GrantOfRepresentationData) caseDataContent.getData();
 
         assertNotNull(data);
         assertNull(data.getFirstStopReminderSentDate());
@@ -194,8 +244,6 @@ class AutomatedNotificationCCDServiceTest {
 
     @Test
     void saveNotificationShouldWrapClientExceptions() {
-        // Arrange
-        when(caseDetails.getData()).thenReturn(new HashMap<>());
         stubNotificationStrategy(
                 firstStopReminderNotificationStrategy,
                 NotificationType.FIRST_STOP_REMINDER
@@ -203,15 +251,21 @@ class AutomatedNotificationCCDServiceTest {
         Document sentEmail = createMockDocument("newEmail.pdf");
 
         doThrow(new RuntimeException("ccd-fail"))
-                .when(ccdClientApi)
-                .updateCaseAsCaseworker(
-                        any(), any(), any(), any(), any(), any(), any(), any());
+                .when(coreCaseDataApi)
+                .submitEventForCaseWorker(
+                        anyString(),
+                        anyString(),
+                        anyString(),
+                        anyString(),
+                        anyString(),
+                        anyString(),
+                        anyBoolean(),
+                        any(CaseDataContent.class));
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+        CcdUpdateNotificationException ex = assertThrows(CcdUpdateNotificationException.class, () ->
                 automatedNotificationCCDService.saveNotification(
-                        caseDetails, CASE_ID, securityDTO, sentEmail, firstStopReminderNotificationStrategy)
-        );
-        assertEquals("Error saving notification to CCD", ex.getMessage());
+                        caseDetails, CASE_ID, securityDTO, sentEmail,
+                        firstStopReminderNotificationStrategy, startEvent));
         assertNotNull(ex.getCause());
         assertEquals("ccd-fail", ex.getCause().getMessage());
     }
@@ -232,15 +286,17 @@ class AutomatedNotificationCCDServiceTest {
                 .build();
     }
 
-    private GrantOfRepresentationData captureUpdatedCaseData(String caseId, SecurityDTO securityDTO, EventId eventId,
-                                                             String description, String summary) {
-        ArgumentCaptor<GrantOfRepresentationData> captor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
-        verify(ccdClientApi).updateCaseAsCaseworker(
-                eq(GRANT_OF_REPRESENTATION), eq(caseId), eq(LAST_MODIFIED),
-                captor.capture(),
-                eq(eventId), eq(securityDTO),
-                eq(description),
-                eq(summary)
+    private CaseDataContent captureUpdatedCaseData(String caseId, SecurityDTO securityDTO) {
+        ArgumentCaptor<CaseDataContent> captor = ArgumentCaptor.forClass(CaseDataContent.class);
+        verify(coreCaseDataApi).submitEventForCaseWorker(
+                eq(securityDTO.getAuthorisation()),
+                eq(securityDTO.getServiceAuthorisation()),
+                eq(securityDTO.getUserId()),
+                eq(PROBATE.name()),
+                eq(GRANT_OF_REPRESENTATION.getName()),
+                eq(caseId),
+                eq(true),
+                captor.capture()
         );
         return captor.getValue();
     }
@@ -251,6 +307,7 @@ class AutomatedNotificationCCDServiceTest {
         when(strategy.getEventSummary()).thenReturn(AutomatedNotificationCCDServiceTest.SUMMARY);
         when(strategy.getFailureEventDescription()).thenReturn(AutomatedNotificationCCDServiceTest.FAILURE_DESCRIPTION);
         when(strategy.getFailureEventSummary()).thenReturn(AutomatedNotificationCCDServiceTest.FAILURE_SUMMARY);
-        when(strategy.getEventId()).thenReturn(EventId.AUTOMATED_NOTIFICATION);
+        when(strategy.getEventId()).thenReturn(EventId.AUTO_NOTIFICATION_FIRST_STOP_REMINDER);
+        when(strategy.getCaseTypeName()).thenReturn(GRANT_OF_REPRESENTATION.getName());
     }
 }
