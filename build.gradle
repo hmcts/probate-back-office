@@ -264,6 +264,7 @@ dependencies {
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.24.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
+  implementation 'org.apache.tika:tika-core:3.1.0'
 
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
@@ -337,10 +338,7 @@ dependencies {
   contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntimeOnly group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-  contractTestImplementation group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probateCommonsVersion, {
-    exclude group: 'org.apache.tika', module: 'tika-core'
-  }
-  contractTestImplementation 'org.apache.tika:tika-core:1.28.5'
+  contractTestImplementation group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probateCommonsVersion
   contractTestImplementation sourceSets.main.runtimeClasspath
   contractTestImplementation sourceSets.test.runtimeClasspath
 
