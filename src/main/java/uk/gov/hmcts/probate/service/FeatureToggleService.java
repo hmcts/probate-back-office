@@ -42,16 +42,8 @@ public class FeatureToggleService {
         return isFeatureToggleOn("probate-enable-new-markdown-filtering", false);
     }
 
-    public boolean enableDuplicateExecutorFiltering() {
-        return isFeatureToggleOn("probate-enable-duplicate-executor-filtering", false);
-    }
-
     public boolean isFeatureToggleOn(String featureToggleCode, boolean defaultValue) {
         return this.ldClient.boolVariation(featureToggleCode, this.ldContext, defaultValue);
-    }
-
-    public boolean enableNewAliasTransformation() {
-        return this.isFeatureToggleOn("probate-enable-new-alias-transformation", false);
     }
 
     public boolean enableAmendLegalStatementFiletypeCheck() {
