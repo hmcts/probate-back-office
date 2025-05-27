@@ -30,7 +30,7 @@ public class ReactivateDormantCasesTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task ReactivateDormantCasesTask started to reactivate dormant cases");
-        String date = DATE_FORMAT.format(LocalDate.now().minusDays(reactivateDormantMinusDays));
+        String date = DATE_FORMAT.format(LocalDate.now().minusDays(0L));
         if (StringUtils.isNotEmpty(adHocJobDate)) {
             log.info("Running ReactivateDormantCasesTask with Adhoc date");
             date = adHocJobDate;

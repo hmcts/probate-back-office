@@ -24,7 +24,7 @@ public class BulkScanDormantCaseReminderTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task BulkScanDormantCaseReminderTask started");
-        String reminderDate = DATE_FORMAT.format(LocalDate.now().minusMonths(12L));
+        String reminderDate = DATE_FORMAT.format(LocalDate.now().minusDays(0L));
         log.info("Calling perform sending remainder email for paper cases from date, to date {} {}",
                 reminderDate, reminderDate);
         try {

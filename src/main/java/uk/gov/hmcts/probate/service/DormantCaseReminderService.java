@@ -32,7 +32,6 @@ public class DormantCaseReminderService {
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
 
             GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-                    .skipReactivateDormant(true)
                     .build();
             log.info("Updating case to set flag in CCD by scheduler for case id : {}", returnedCaseDetails.getId());
             try {

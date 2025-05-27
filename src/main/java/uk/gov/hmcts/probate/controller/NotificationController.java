@@ -264,7 +264,6 @@ public class NotificationController {
             caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
         }
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        caseDataTransformer.transformCaseDataToResetSkipReactivateDormantFlag(callbackRequest);
         CallbackResponse response = callbackResponseTransformer
                 .transformCaseForAttachScannedDocs(callbackRequest, document, caseworkerInfo);
         return ResponseEntity.ok(response);

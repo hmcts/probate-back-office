@@ -16,8 +16,4 @@ public class AttachDocumentsTransformer {
     public void updateDocsReceivedNotificationSent(CaseData data) {
         data.setDocumentsReceivedNotificationSent(YES);
     }
-
-    public void updateSkipReactivateDormantFlag(CaseData data) {
-        data.setSkipReactivateDormant(NO);
-    }
 }

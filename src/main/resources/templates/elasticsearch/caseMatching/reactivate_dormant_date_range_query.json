@@ -6,15 +6,10 @@
       "filter": [
         {
           "range": {
-            "last_modified": {
+            "data.lastModifiedDateForDormant": {
               "gte": ":fromDate",
               "lte": ":toDate"
             }
-          }
-        },
-        {
-          "term": {
-            "data.skipReactivateDormant": "No"
           }
         },
         {
