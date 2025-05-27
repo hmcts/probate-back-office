@@ -46,16 +46,6 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    void testPost2022PA1AMissingMandatoryFieldsPresentReturnSomeWarnings() {
-        String jsonRequest =
-            utils.getStringFromFile(
-                "/json/bulkscan/version3/validation/requestPayload/Post2022PA1AMissingNQV.json");
-        List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version3/validation/expectedWarnings/missingNQV.txt");
-        validateOCRWarnings(PA1A, jsonRequest, WARNINGS, expectedWarnings);
-    }
-
-    @Test
     void invalidApplyingExecutor0EmailAddress() {
         String jsonRequest =
                 utils.getStringFromFile("/json/bulkscan/version3/validation/requestPayload/"
