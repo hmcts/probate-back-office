@@ -30,7 +30,8 @@ public enum EventId {
     DISPOSE_CASE("disposeCase"),
     GOP_CREATE_DRAFT("createDraft"),
     AUTO_NOTIFICATION_FIRST_STOP_REMINDER("autoNotificationFirstStopReminder"),
-    AUTO_NOTIFICATION_SECOND_STOP_REMINDER("autoNotificationSecondStopReminder");
+    AUTO_NOTIFICATION_SECOND_STOP_REMINDER("autoNotificationSecondStopReminder"),
+    AUTO_NOTIFICATION_HSE_REMINDER("autoNotificationHSEReminder");
     @Getter
     private final String name;
 

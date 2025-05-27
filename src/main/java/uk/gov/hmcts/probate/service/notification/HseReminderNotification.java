@@ -8,7 +8,10 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.function.Predicate;
+
 import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Service
 public class HseReminderNotification implements NotificationStrategy {
@@ -17,6 +20,7 @@ public class HseReminderNotification implements NotificationStrategy {
     private static final String HSE_REMINDER_FAILURE_EVENT_DESCRIPTION = "Failed to send HSE reminder";
     private static final String HSE_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send HSE reminder";
     private static final String HSE_ES_QUERY_PATH = "templates/elasticsearch/caseMatching/hse_reminder_query.json";
+    private static final String EVIDENCE_HANDLED_DATE = "evidenceHandledDate";
     private final NotificationService notificationService;
 
     public HseReminderNotification(NotificationService notificationService) {
@@ -60,11 +64,22 @@ public class HseReminderNotification implements NotificationStrategy {
 
     @Override
     public EventId getEventId() {
-        return EventId.AUTOMATED_NOTIFICATION;
+        return EventId.AUTO_NOTIFICATION_HSE_REMINDER;
     }
 
     @Override
     public NotificationType getType() {
         return HSE_REMINDER;
+    }
+
+    @Override
+    public Predicate<CaseDetails> accepts() {
+        return cd -> {
+            if (cd == null || cd.getData() == null) {
+                return false;
+            }
+            return cd.getData().get("evidenceHandled").equals(YES)
+                    && cd.getData().get(EVIDENCE_HANDLED_DATE) != null;
+        };
     }
 }
