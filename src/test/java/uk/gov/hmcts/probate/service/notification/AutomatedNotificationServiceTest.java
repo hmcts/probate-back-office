@@ -89,7 +89,7 @@ class AutomatedNotificationServiceTest {
         when(firstStopReminderNotification.matchesType(FIRST_STOP_REMINDER)).thenReturn(true);
 
         when(automatedNotificationCCDService
-                .startEvent(eq("123"), eq(mockSecurityDTO), eq(firstStopReminderNotification)))
+                .startEvent("123", mockSecurityDTO, firstStopReminderNotification))
                 .thenReturn(startEventResponse);
         when(startEventResponse.getCaseDetails()).thenReturn(mockCaseDetails);
 
@@ -168,8 +168,7 @@ class AutomatedNotificationServiceTest {
                 .thenReturn(emptyNextPage);
 
         StartEventResponse secondResponse = mock(StartEventResponse.class);
-        when(automatedNotificationCCDService.startEvent(
-                eq("456"), eq(mockSecurityDTO), eq(firstStopReminderNotification)))
+        when(automatedNotificationCCDService.startEvent("456", mockSecurityDTO, firstStopReminderNotification))
                 .thenReturn(secondResponse);
         when(secondResponse.getCaseDetails()).thenReturn(secondCase);
 
@@ -204,8 +203,7 @@ class AutomatedNotificationServiceTest {
                 .thenReturn(emptyNextPage);
 
         StartEventResponse secondResponse = mock(StartEventResponse.class);
-        when(automatedNotificationCCDService.startEvent(
-                eq("789"), eq(mockSecurityDTO), eq(firstStopReminderNotification)))
+        when(automatedNotificationCCDService.startEvent("789", mockSecurityDTO, firstStopReminderNotification))
                 .thenReturn(secondResponse);
         when(secondResponse.getCaseDetails()).thenReturn(secondCase);
 
