@@ -325,8 +325,11 @@ dependencies {
   contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
   contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonDatabind
   contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonDatabind
-  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+  contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version, {
+    exclude group: 'org.apache.tika', module: 'tika-core'
+  }
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+  contractTestImplementation 'org.apache.tika:tika-core:1.28.5'
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.4")
@@ -353,9 +356,6 @@ dependencies {
 configurations.configureEach {
   exclude group: 'commons-logging', module: 'commons-logging'
   exclude group: 'com.vaadin.external.google', module: 'android-json'
-  resolutionStrategy {
-    force 'org.apache.tika:tika-core:1.28.5'
-  }
 }
 
 tasks.withType(JavaCompile) {
