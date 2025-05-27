@@ -218,7 +218,9 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.12'
-  implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
+  implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion, {
+    exclude group: 'com.github.hmcts', module: 'probate-pact-commons'
+  }
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
   implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.5'
