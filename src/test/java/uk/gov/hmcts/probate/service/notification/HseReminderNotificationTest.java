@@ -100,7 +100,7 @@ class HseReminderNotificationTest {
     void returnsEventId() {
         EventId result = underTest.getEventId();
 
-        assertEquals(EventId.AUTOMATED_NOTIFICATION, result);
+        assertEquals(EventId.AUTO_NOTIFICATION_HSE_REMINDER, result);
     }
 
     @Test
