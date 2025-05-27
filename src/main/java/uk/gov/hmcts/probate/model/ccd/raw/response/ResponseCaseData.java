@@ -415,5 +415,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String informationNeededByPostSwitch;
     private final TTL ttl;
     private final String executorsNamed;
-    private final String dormantNotificationSent;
+    private final String skipReactivateDormant;
 }

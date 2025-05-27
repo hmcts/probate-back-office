@@ -631,7 +631,7 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
     private final String executorsNamed;
-    private String dormantNotificationSent;
+    private String skipReactivateDormant;
 
     private TTL ttl;
 

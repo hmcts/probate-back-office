@@ -13,8 +13,13 @@
           }
         },
         {
-          "match": {
-            "state": "Dormant"
+          "term": {
+            "data.skipReactivateDormant": "No"
+          }
+        },
+        {
+          "term": {
+            "state.keyword": "Dormant"
           }
         }
       ]

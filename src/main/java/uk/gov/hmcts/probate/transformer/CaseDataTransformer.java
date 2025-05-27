@@ -133,8 +133,8 @@ public class CaseDataTransformer {
         attachDocumentsTransformer.updateDocsReceivedNotificationSent(callbackRequest.getCaseDetails().getData());
     }
 
-    public void transformCaseDataToResetDormantNotificationSent(CallbackRequest callbackRequest) {
-        attachDocumentsTransformer.updateDormantReceivedNotificationSent(callbackRequest.getCaseDetails().getData());
+    public void transformCaseDataToResetSkipReactivateDormantFlag(CallbackRequest callbackRequest) {
+        attachDocumentsTransformer.updateSkipReactivateDormantFlag(callbackRequest.getCaseDetails().getData());
     }
 
     public void transformIhtFormCaseDataByDeceasedDOD(CallbackRequest callbackRequest) {
