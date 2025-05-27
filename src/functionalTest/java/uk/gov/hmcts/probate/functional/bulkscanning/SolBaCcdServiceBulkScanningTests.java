@@ -90,7 +90,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200)
                 .and().extract().body().asPrettyString();
         JSONAssert.assertEquals(containsText, actualResponse, JSONCompareMode.STRICT);
-        System.out.println(actualResponse);
     }
 
     private void updateCaseFromExceptionPostSuccess(String bodyText, String containsText) {
