@@ -31,7 +31,7 @@ public enum EventId {
     GOP_CREATE_DRAFT("createDraft"),
     AUTO_NOTIFICATION_FIRST_STOP_REMINDER("autoNotificationFirstStopReminder"),
     AUTO_NOTIFICATION_SECOND_STOP_REMINDER("autoNotificationSecondStopReminder"),
-    AUTO_NOTIFICATION_HSE_REMINDER("autoNotificationHSEReminder");
+    AUTO_NOTIFICATION_HSE_REMINDER("autoNotificationHseReminder");
     @Getter
     private final String name;
 
