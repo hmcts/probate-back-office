@@ -330,7 +330,11 @@ dependencies {
   }
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestImplementation 'org.apache.tika:tika-core:1.28.5'
-  contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
+
+  contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version, {
+    exclude group: 'org.apache.tika', module: 'tika-core'
+  }
+  contractTestRuntimeOnly 'org.apache.tika:tika-core:1.28.5'
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.4")
   contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.11.4')
