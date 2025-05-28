@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,10 +38,13 @@ class SecondStopReminderNotificationTest {
 
     AutoCloseable closeableMocks;
 
+    private final LocalDate referenceDate = LocalDate.of(2025, 5, 25);
+
     @BeforeEach
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
         underTest = new SecondStopReminderNotification(notificationService);
+        underTest.setReferenceDate(referenceDate);
     }
 
     @AfterEach
@@ -59,7 +63,7 @@ class SecondStopReminderNotificationTest {
     }
 
     @Test
-    void accepts_wrongStateOrMissingKey_returnsFalse() {
+    void acceptsWrongStateOrMissingKeyReturnsFalse() {
         CaseDetails wrongState = CaseDetails.builder()
                 .state("SomethingElse")
                 .data(Map.of(FIRST_STOP_REMINDER_DATE, "2025-05-25"))
@@ -82,7 +86,7 @@ class SecondStopReminderNotificationTest {
     }
 
     @Test
-    void accepts_stateStoppedAndKeyPresent_returnsTrue() {
+    void acceptsStateStoppedAndKeyPresentReturnsTrue() {
         Map<String,Object> data = Map.of(FIRST_STOP_REMINDER_DATE, "2025-05-25");
         CaseDetails ok = CaseDetails.builder()
                 .state("BOCaseStopped")

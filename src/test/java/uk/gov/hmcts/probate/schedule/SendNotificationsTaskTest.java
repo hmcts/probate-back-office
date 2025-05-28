@@ -11,6 +11,8 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
+import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
+import uk.gov.hmcts.probate.service.notification.SecondStopReminderNotification;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -42,6 +44,12 @@ class SendNotificationsTaskTest {
     @Mock
     private Clock clock;
 
+    @Mock
+    private FirstStopReminderNotification firstStopReminderNotification;
+
+    @Mock
+    private SecondStopReminderNotification secondStopReminderNotification;
+
     @InjectMocks
     private SendNotificationsTask sendNotificationsTask;
     private static final String AD_HOC_DATE = "2022-09-05";
@@ -56,13 +64,12 @@ class SendNotificationsTaskTest {
         ReflectionTestUtils.setField(sendNotificationsTask, "firstNotificationDays", 56);
         ReflectionTestUtils.setField(sendNotificationsTask, "secondNotificationDays", 28);
         ReflectionTestUtils.setField(sendNotificationsTask, "clock", clock);
-
         Instant fixedInstant = FIXED_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant();
         when(clock.instant()).thenReturn(fixedInstant);
         when(clock.getZone()).thenReturn(ZoneId.systemDefault());
 
-        when(featureToggleService.isFirstStopReminderFeatureToggleOn())
-                .thenReturn(true);
+        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(true);
+        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
     }
 
     @Test
