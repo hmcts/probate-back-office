@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.notification;
 
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -8,6 +9,8 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.function.Predicate;
 
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
@@ -21,6 +24,9 @@ public class SecondStopReminderNotification implements NotificationStrategy {
     private static final String SECOND_STOP_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send second stop reminder";
     private static final String FIRST_STOP_REMINDER_DATE = "firstStopReminderDate";
     private final NotificationService notificationService;
+
+    @Setter
+    private LocalDate referenceDate;
 
     public SecondStopReminderNotification(NotificationService notificationService) {
         this.notificationService = notificationService;
@@ -77,8 +83,29 @@ public class SecondStopReminderNotification implements NotificationStrategy {
             if (cd == null || cd.getData() == null) {
                 return false;
             }
-            return cd.getState().equals(STATE_BO_CASE_STOPPED)
-                    && cd.getData().get(FIRST_STOP_REMINDER_DATE) != null;
+            if (!STATE_BO_CASE_STOPPED.equals(cd.getState())) {
+                return false;
+            }
+            LocalDate firstReminderDate = extractFirstReminderDate(cd);
+            if (firstReminderDate == null) {
+                return false;
+            }
+            return firstReminderDate.isEqual(referenceDate);
         };
+    }
+
+    private LocalDate extractFirstReminderDate(CaseDetails cd) {
+        Object raw = cd.getData().get(FIRST_STOP_REMINDER_DATE);
+        if (raw instanceof LocalDate) {
+            return (LocalDate) raw;
+        }
+        if (raw instanceof String) {
+            try {
+                return LocalDate.parse((String) raw);
+            } catch (DateTimeParseException e) {
+                return null;
+            }
+        }
+        return null;
     }
 }

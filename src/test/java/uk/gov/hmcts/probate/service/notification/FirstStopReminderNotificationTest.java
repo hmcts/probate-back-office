@@ -11,6 +11,7 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -48,7 +49,8 @@ class FirstStopReminderNotificationTest {
                 LocalDateTime.of(2025,5,27,12,0).toInstant(ZoneOffset.UTC),
                 ZoneId.of("UTC")
         );
-        underTest = new FirstStopReminderNotification(notificationService, fixedClock);
+        underTest = new FirstStopReminderNotification(notificationService);
+        underTest.setReferenceDate(LocalDate.now(fixedClock));
     }
 
     @AfterEach

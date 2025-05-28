@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
+import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
+import uk.gov.hmcts.probate.service.notification.SecondStopReminderNotification;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 
 import java.time.Clock;
@@ -25,6 +27,8 @@ public class SendNotificationsTask implements Runnable {
     private final AutomatedNotificationService automatedNotificationService;
     private final FeatureToggleService featureToggleService;
     private final Clock clock;
+    private final FirstStopReminderNotification firstStopReminderNotification;
+    private final SecondStopReminderNotification secondStopReminderNotification;
 
 
     @Value("${automated_notification.stop_reminder.first_notification_days}")
@@ -53,6 +57,7 @@ public class SendNotificationsTask implements Runnable {
             } else {
                 log.info("Calling Send First Stop Reminder for date {}", firstStopReminderDate);
                 dataExtractDateValidator.dateValidator(firstStopReminderDate);
+                firstStopReminderNotification.setReferenceDate(LocalDate.parse(firstStopReminderDate));
                 log.info("Perform Send First Stop Reminder started");
                 automatedNotificationService.sendNotification(firstStopReminderDate, FIRST_STOP_REMINDER);
                 log.info("Perform Send First Stop Reminder finished");
@@ -69,6 +74,7 @@ public class SendNotificationsTask implements Runnable {
             } else {
                 log.info("Calling Send Second Stop Reminder for date {}", secondStopReminderDate);
                 dataExtractDateValidator.dateValidator(secondStopReminderDate);
+                secondStopReminderNotification.setReferenceDate(LocalDate.parse(secondStopReminderDate));
                 log.info("Perform Send Second Stop Reminder started");
                 automatedNotificationService.sendNotification(secondStopReminderDate, SECOND_STOP_REMINDER);
                 log.info("Perform Send Second Stop Reminder finished");
