@@ -10,6 +10,7 @@ exports.config = {
             'waitForAction': 1000,
             'show': testConfig.TestShowBrowserWindow,
             'waitForNavigation': 'domcontentloaded',
+            'headless': 'true',
             'chrome': {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,
@@ -18,7 +19,7 @@ exports.config = {
                     'height': 960
                 },
                 args: [
-                    // '--headless',
+                    '--headless=new',
                     '--disable-gpu',
                     '--no-sandbox',
                     '--allow-running-insecure-content',
