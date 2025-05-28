@@ -21,4 +21,32 @@
         -->
         <cve>CVE-2022-23437</cve>
     </suppress>
+    <suppress until = "2025-10-15">
+        <!--
+            This is reported as a runtime dependency but is not.
+            It is used by the contractTest handling.
+        -->
+        <cve>CVE-2022-25169</cve>
+    </suppress>
+    <suppress until = "2025-10-15">
+        <!--
+            This is reported as a runtime dependency but is not.
+            It is used by the contractTest handling.
+        -->
+        <cve>CVE-2022-30126</cve>
+    </suppress>
+    <suppress until = "2025-10-15">
+        <!--
+            This is reported as a runtime dependency but is not.
+            It is used by the contractTest handling.
+        -->
+        <cve>CVE-2022-30973</cve>
+    </suppress>
+    <suppress until = "2025-10-15">
+        <!--
+            This is reported as a runtime dependency but is not.
+            It is used by the contractTest handling.
+        -->
+        <cve>CVE-2022-33879</cve>
+    </suppress>
 </suppressions>
