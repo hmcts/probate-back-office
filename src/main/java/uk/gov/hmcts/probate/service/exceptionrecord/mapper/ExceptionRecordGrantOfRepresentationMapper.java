@@ -43,8 +43,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring",
         imports = {StringUtils.class, ApplicationType.class},
-        uses = {BulkScanConfig.class,
-                ApplicationTypeMapper.class,
+        uses = {ApplicationTypeMapper.class,
                 OCRFieldAddressMapper.class,
                 OCRFieldAdditionalExecutorsApplyingMapper.class,
                 OCRFieldAdditionalExecutorsNotApplyingMapper.class,
