@@ -82,7 +82,7 @@ public class FirstStopReminderNotification implements NotificationStrategy {
                 return false;
             }
             return cd.getState().equals(STATE_BO_CASE_STOPPED)
-                    && !cd.getLastModified().isAfter(referenceDate.atStartOfDay());
+                    && !cd.getLastModified().isAfter(referenceDate.plusDays(1).atStartOfDay());
         };
     }
 }
