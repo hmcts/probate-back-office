@@ -11,22 +11,24 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
+import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
+import uk.gov.hmcts.probate.service.notification.SecondStopReminderNotification;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
-import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
+import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
 
 @ExtendWith(SpringExtension.class)
 class SendNotificationsTaskTest {
@@ -42,6 +44,12 @@ class SendNotificationsTaskTest {
 
     @Mock
     private Clock clock;
+
+    @Mock
+    private FirstStopReminderNotification firstStopReminderNotification;
+
+    @Mock
+    private SecondStopReminderNotification secondStopReminderNotification;
 
     @InjectMocks
     private SendNotificationsTask sendNotificationsTask;
@@ -59,15 +67,13 @@ class SendNotificationsTaskTest {
         ReflectionTestUtils.setField(sendNotificationsTask, "firstNotificationDays", 56);
         ReflectionTestUtils.setField(sendNotificationsTask, "secondNotificationDays", 28);
         ReflectionTestUtils.setField(sendNotificationsTask, "hseYesNotificationMonths", 1);
-
         ReflectionTestUtils.setField(sendNotificationsTask, "clock", clock);
-
         Instant fixedInstant = FIXED_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant();
         when(clock.instant()).thenReturn(fixedInstant);
         when(clock.getZone()).thenReturn(ZoneId.systemDefault());
 
-        when(featureToggleService.isFirstStopReminderFeatureToggleOn())
-                .thenReturn(true);
+        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(true);
+        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
         when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(true);
     }
 

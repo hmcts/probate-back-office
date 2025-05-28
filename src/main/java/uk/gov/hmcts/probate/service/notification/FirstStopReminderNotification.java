@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.notification;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -9,8 +9,7 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.function.Predicate;
 
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
@@ -23,14 +22,12 @@ public class FirstStopReminderNotification implements NotificationStrategy {
     private static final String FIRST_STOP_REMINDER_FAILURE_EVENT_DESCRIPTION = "Failed to send first stop reminder";
     private static final String FIRST_STOP_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send first stop reminder";
     private final NotificationService notificationService;
-    private final Clock clock;
 
-    @Value("${automated_notification.stop_reminder.first_notification_days}")
-    private int firstNotificationDays;
+    @Setter
+    private LocalDate referenceDate;
 
-    public FirstStopReminderNotification(NotificationService notificationService, Clock clock) {
+    public FirstStopReminderNotification(NotificationService notificationService) {
         this.notificationService = notificationService;
-        this.clock = clock;
     }
 
     @Override
@@ -85,7 +82,7 @@ public class FirstStopReminderNotification implements NotificationStrategy {
                 return false;
             }
             return cd.getState().equals(STATE_BO_CASE_STOPPED)
-                    && !cd.getLastModified().isAfter(LocalDateTime.now(clock).minusDays(firstNotificationDays));
+                    && !cd.getLastModified().isAfter(referenceDate.atStartOfDay());
         };
     }
 }

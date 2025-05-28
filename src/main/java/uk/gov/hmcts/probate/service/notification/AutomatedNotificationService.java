@@ -105,7 +105,6 @@ public class AutomatedNotificationService {
                 log.error(getErrorMessage("Email send failed for case: %s", caseId), e);
             } catch (RuntimeException e) {
                 log.error(getErrorMessage("Unexpected error for case: %s", caseId), e);
-
             }
 
             try {
