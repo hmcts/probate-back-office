@@ -10,6 +10,8 @@ module.exports = {
     TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === 'true',
     TestEnvCwUser: process.env.CW_USER_EMAIL || 'ProbateSolCW1@gmail.com',
     TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
+    TestEnvSuperCwUser: process.env.CW_SUPERUSER_EMAIL || 'probatesuperuser2@gmail.com',
+    TestEnvSuperCwPassword: process.env.CW_SUPERUSER_PASSWORD || 'Monday01',
     TestEnvProfUser: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest2@gmail.com',
     TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Pa55wordTest',
     //  TestEnvProfUser2 User for share case e2e only
