@@ -257,26 +257,27 @@ public class OCRFieldModifierUtils {
             }
         }
 
-        // TO DO - If addressLine1 and Postcode are blank, what should this be? (Awaiting Response from Operations)
-        if (isBlank(ocrFields.getSolsSolicitorAddressLine2())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressLine2",
-                    ocrFields.getSolsSolicitorAddressLine2());
-            if (isBlank(ocrFields.getSolsSolicitorAddressLine1())
-                    && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
-                ocrFields.setSolsSolicitorAddressLine2(bulkScanConfig.getName());
-                log.info("Setting solicitor address line 2 to {}", ocrFields.getSolsSolicitorAddressLine2());
-            }
+        if (isBlank(ocrFields.getSolsSolicitorAddressLine1())) {
+            addModifiedField(modifiedFields, "solsSolicitorAddressLine1",
+                    ocrFields.getSolsSolicitorAddressLine1());
+            ocrFields.setSolsSolicitorAddressLine1(bulkScanConfig.getName());
+            log.info("Setting solicitor address line 1 to {}", ocrFields.getSolsSolicitorAddressLine1());
         }
 
-        // TO DO - If addressLine1 and Postcode are blank, what should this be? (Awaiting Response from Operations)
-        if (isBlank(ocrFields.getSolsSolicitorAddressTown())) {
+        if (isBlank(ocrFields.getSolsSolicitorAddressLine2()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
+                && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
+                addModifiedField(modifiedFields, "solsSolicitorAddressLine2",
+                        ocrFields.getSolsSolicitorAddressLine2());
+                ocrFields.setSolsSolicitorAddressLine2(bulkScanConfig.getName());
+                log.info("Setting solicitor address line 2 to {}", ocrFields.getSolsSolicitorAddressLine2());
+        }
+
+        if (isBlank(ocrFields.getSolsSolicitorAddressTown()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
+                && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
             addModifiedField(modifiedFields, "solsSolicitorAddressTown",
                     ocrFields.getSolsSolicitorAddressTown());
-            if (isBlank(ocrFields.getSolsSolicitorAddressLine1())
-                    && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
                 ocrFields.setSolsSolicitorAddressTown(bulkScanConfig.getName());
                 log.info("Setting solicitor town or city to {}", ocrFields.getSolsSolicitorAddressTown());
-            }
         }
 
         if (isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
