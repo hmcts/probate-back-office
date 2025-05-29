@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.schedule;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.service.FetchDraftCaseService;
@@ -20,21 +19,13 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
 
     private final DataExtractDateValidator dataExtractDateValidator;
     private final FetchDraftCaseService fetchDraftCaseService;
-    @Value("${adhocSchedulerJobDate}")
-    public String adHocJobFromDate;
-    @Value("${adhocSchedulerJobToDate}")
-    public String adHocJobToDate;
+    @Value("${draft_payment.start_date}")
+    public String startDate;
 
     @Override
     public void run() {
         log.info("Scheduled task FetchDraftCasesWithPaymentTask started");
-        String startDate = DATE_FORMAT.format(LocalDate.now().minusDays(180L));
-        String endDate = startDate;
-        if (StringUtils.isNotEmpty(adHocJobFromDate)) {
-            startDate = adHocJobFromDate;
-            endDate = StringUtils.isNotEmpty(adHocJobToDate) ? adHocJobToDate : adHocJobFromDate;
-            log.info("Running FetchDraftCasesWithPaymentTask with Adhoc dates {} {}", startDate, endDate);
-        }
+        final String endDate = DATE_FORMAT.format(LocalDate.now());
         log.info("Calling perform fetch draft cases wth payment done from date, to date {} {}", startDate, endDate);
         try {
             dataExtractDateValidator.dateValidator(startDate, endDate);

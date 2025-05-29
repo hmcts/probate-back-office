@@ -554,6 +554,9 @@ dormancy:
   period_months: 6
   start_date: 1900-01-01
 
+draft_payment:
+  start_date: 1900-01-01
+
 make_dormant:
   add_time_minutes: 5
 
