@@ -252,7 +252,7 @@ dependencies {
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
 
   implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.5'
-  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.10.1'
+  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
 
   implementation group: 'org.pitest', name: 'pitest', version: '1.19.4'
