@@ -90,7 +90,6 @@ sourceSets {
       runtimeClasspath += main.output
       srcDir file('src/contractTest/java')
     }
-    resources.srcDir file('src/contractTest/resources')
   }
   integrationTest {
     java {
@@ -98,7 +97,6 @@ sourceSets {
       runtimeClasspath += main.output
       srcDir file('src/integrationTest/java')
     }
-    resources.srcDir file('src/integrationTest/resources')
   }
 }
 
@@ -415,7 +413,6 @@ task highLevelDataSetup(type: JavaExec) {
 }
 
 check.dependsOn(integration)
-tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
 
 static def getCheckedOutGitCommitHash() {
   'git rev-parse --verify --short HEAD'.execute().text.trim()
@@ -558,20 +555,4 @@ dependencyCheck {
 
 rootProject.tasks.named("processResources") {
   dependsOn("generateGitProperties")
-}
-
-processContractTestResources {
-  duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
-
-bootJar {
-  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-distTar {
-  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-distZip {
-  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
