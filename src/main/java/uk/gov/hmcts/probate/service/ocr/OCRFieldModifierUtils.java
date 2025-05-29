@@ -266,18 +266,18 @@ public class OCRFieldModifierUtils {
 
         if (isBlank(ocrFields.getSolsSolicitorAddressLine2()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
                 && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
-                addModifiedField(modifiedFields, "solsSolicitorAddressLine2",
-                        ocrFields.getSolsSolicitorAddressLine2());
-                ocrFields.setSolsSolicitorAddressLine2(bulkScanConfig.getName());
-                log.info("Setting solicitor address line 2 to {}", ocrFields.getSolsSolicitorAddressLine2());
+            addModifiedField(modifiedFields, "solsSolicitorAddressLine2",
+                    ocrFields.getSolsSolicitorAddressLine2());
+            ocrFields.setSolsSolicitorAddressLine2(bulkScanConfig.getName());
+            log.info("Setting solicitor address line 2 to {}", ocrFields.getSolsSolicitorAddressLine2());
         }
 
         if (isBlank(ocrFields.getSolsSolicitorAddressTown()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
                 && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
             addModifiedField(modifiedFields, "solsSolicitorAddressTown",
                     ocrFields.getSolsSolicitorAddressTown());
-                ocrFields.setSolsSolicitorAddressTown(bulkScanConfig.getName());
-                log.info("Setting solicitor town or city to {}", ocrFields.getSolsSolicitorAddressTown());
+            ocrFields.setSolsSolicitorAddressTown(bulkScanConfig.getName());
+            log.info("Setting solicitor town or city to {}", ocrFields.getSolsSolicitorAddressTown());
         }
 
         if (isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
