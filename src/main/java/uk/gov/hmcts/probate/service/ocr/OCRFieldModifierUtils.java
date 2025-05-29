@@ -88,7 +88,7 @@ public class OCRFieldModifierUtils {
                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         if (isFormVersion3AndSwitchDateValid(ocrFields)
                 || isFormVersion2AndSwitchDateValid(ocrFields, exceptedEstateDateOfDeathChecker)
-                || isFormVersion1AndSwitchDateValid(ocrFields)) {
+                || isFormVersion1Valid(ocrFields)) {
 
             setDefaultIHTValues(ocrFields, modifiedFields, bulkScanConfig);
             if (isIhtFormsNotCompleted(ocrFields)) {
@@ -129,9 +129,8 @@ public class OCRFieldModifierUtils {
                 .getDeceasedDateOfDeath()) || !checker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath()));
     }
 
-    private boolean isFormVersion1AndSwitchDateValid(ExceptionRecordOCRFields ocrFields) {
-        return "1".equals(ocrFields.getFormVersion()) && ("true".equalsIgnoreCase(ocrFields
-                .getDeceasedDiedOnAfterSwitchDate()));
+    private boolean isFormVersion1Valid(ExceptionRecordOCRFields ocrFields) {
+        return "1".equals(ocrFields.getFormVersion());
     }
 
     private boolean isFormVersion2Or3AndExceptedEstate(ExceptionRecordOCRFields ocrFields) {
