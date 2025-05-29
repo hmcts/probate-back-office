@@ -86,7 +86,10 @@ public class OCRFieldModifierUtils {
 
     private void handleIHTFields(ExceptionRecordOCRFields ocrFields,
                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        if (isFormVersion3AndSwitchDateValid(ocrFields)) {
+        if (isFormVersion3AndSwitchDateValid(ocrFields)
+                || isFormVersion2AndSwitchDateValid(ocrFields, exceptedEstateDateOfDeathChecker)
+                || isFormVersion1AndSwitchDateValid(ocrFields)) {
+
             setDefaultIHTValues(ocrFields, modifiedFields, bulkScanConfig);
             if (isIhtFormsNotCompleted(ocrFields)) {
                 addModifiedField(modifiedFields, "iht400Completed", ocrFields.getIht400Completed());
@@ -101,9 +104,6 @@ public class OCRFieldModifierUtils {
                 setFieldIfBlank(ocrFields::getProbateNetValueIht400, ocrFields::setProbateNetValueIht400,
                         "probateNetValueIht400", bulkScanConfig.getGrossNetValue(), modifiedFields);
             }
-        }
-        if (isFormVersion2AndSwitchDateValid(ocrFields, exceptedEstateDateOfDeathChecker)) {
-            setDefaultIHTValues(ocrFields, modifiedFields, bulkScanConfig);
         }
         if (isFormVersion2Or3AndExceptedEstate(ocrFields)) {
             setFieldIfBlank(ocrFields::getIhtEstateGrossValue, ocrFields::setIhtEstateGrossValue,
@@ -127,6 +127,11 @@ public class OCRFieldModifierUtils {
                                                      ExceptedEstateDateOfDeathChecker checker) {
         return "2".equals(ocrFields.getFormVersion()) && (checker.isOnOrAfterSwitchDate(ocrFields
                 .getDeceasedDateOfDeath()) || !checker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath()));
+    }
+
+    private boolean isFormVersion1AndSwitchDateValid(ExceptionRecordOCRFields ocrFields) {
+        return "1".equals(ocrFields.getFormVersion()) && ("true".equalsIgnoreCase(ocrFields
+                .getDeceasedDiedOnAfterSwitchDate()));
     }
 
     private boolean isFormVersion2Or3AndExceptedEstate(ExceptionRecordOCRFields ocrFields) {
