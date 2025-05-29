@@ -23,9 +23,6 @@ public class BulkScanConfig {
     private String solsSolicitorRepresentativeName; //sols Firm name if empty (no default)
     private String solsSolicitorFirmName;
     private String solsSolicitorAppReference; //Deceased surname if empty (no default)
-    private String solsSolicitorAddressLine1; //N/A if address building, street and postcode are populated
-    private String solsSolicitorAddressLine2; //N/A if address building, street and postcode are populated
-    private String solsSolicitorAddressTown; //N/A if address building, street and postcode are populated
 
     private String legalRepresentative;
     private String ihtForm;
