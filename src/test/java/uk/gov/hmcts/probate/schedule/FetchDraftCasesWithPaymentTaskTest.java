@@ -36,7 +36,7 @@ class FetchDraftCasesWithPaymentTaskTest {
     private final String adhocDate = "2022-09-05";
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() {
         ReflectionTestUtils.setField(fetchDraftCasesWithPaymentTask, "startDate", adhocDate);
     }
 
@@ -78,7 +78,6 @@ class FetchDraftCasesWithPaymentTaskTest {
     @Test
     void shouldPerformDraftCasesExtractForAdhocDateRange() {
         fetchDraftCasesWithPaymentTask.startDate = "2022-09-05";
-        //fetchDraftCasesWithPaymentTask.adHocJobToDate = "2022-09-10";
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform hmrc data extract from date finished");
         fetchDraftCasesWithPaymentTask.run();
