@@ -34,6 +34,8 @@ public class OCRFieldIhtFormEstateMapper {
                 return IhtFormEstate.optionIHT400421;
             } else if (TRUE.equalsIgnoreCase(ocrFields.getIht207Completed())) {
                 return IhtFormEstate.optionIHT207;
+            } else if (TRUE.equalsIgnoreCase(ocrFields.getIht400Completed())) {
+                return IhtFormEstate.optionIHT400;
             }
         }
         return null;
