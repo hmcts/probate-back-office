@@ -20,21 +20,13 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
 
     private final DataExtractDateValidator dataExtractDateValidator;
     private final FetchDraftCaseService fetchDraftCaseService;
-    @Value("${adhocSchedulerJobDate}")
-    public String adHocJobFromDate;
-    @Value("${adhocSchedulerJobToDate}")
-    public String adHocJobToDate;
+    @Value("1900-01-01")
+    public String startDate;
 
     @Override
     public void run() {
         log.info("Scheduled task FetchDraftCasesWithPaymentTask started");
-        String startDate = DATE_FORMAT.format(LocalDate.now().minusDays(180L));
-        String endDate = startDate;
-        if (StringUtils.isNotEmpty(adHocJobFromDate)) {
-            startDate = adHocJobFromDate;
-            endDate = StringUtils.isNotEmpty(adHocJobToDate) ? adHocJobToDate : adHocJobFromDate;
-            log.info("Running FetchDraftCasesWithPaymentTask with Adhoc dates {} {}", startDate, endDate);
-        }
+        final String endDate = DATE_FORMAT.format(LocalDate.now());
         log.info("Calling perform fetch draft cases wth payment done from date, to date {} {}", startDate, endDate);
         try {
             dataExtractDateValidator.dateValidator(startDate, endDate);
