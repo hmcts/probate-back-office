@@ -49,6 +49,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.probate.model.cases.CaseState;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -2324,7 +2325,8 @@ class NotificationServiceIT {
     void sendEmailForCaveatSuccessfulPayment() throws NotificationClientException {
         CaveatData caseData = CaveatData.builder()
                 .applicationType(SOLICITOR).languagePreferenceWelsh("No").build();
-        List<ReturnedCaveatDetails> cases = List.of(new ReturnedCaveatDetails(caseData, null, ID));
+        List<ReturnedCaveatDetails> cases =
+                List.of(new ReturnedCaveatDetails(caseData, null, CaseState.CAVEAT_RAISED, ID));
         String fromDate = "2022-01-01";
         String toDate = "2022-01-31";
 
