@@ -318,7 +318,9 @@ public class CaveatCallbackResponseTransformer {
             .changeOrganisationRequestField(caveatData.getChangeOrganisationRequestField())
             .changeOfRepresentatives(getNullForEmptyRepresentatives(caveatData.getChangeOfRepresentatives()))
             .paymentConfirmCheckbox(caveatData.getPaymentConfirmCheckbox())
-            .ttl(caveatData.getTtl());
+            .ttl(caveatData.getTtl())
+            .modifiedOCRFieldList(caveatData.getModifiedOCRFieldList())
+            .autoCaseWarnings(caveatData.getAutoCaseWarnings());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(

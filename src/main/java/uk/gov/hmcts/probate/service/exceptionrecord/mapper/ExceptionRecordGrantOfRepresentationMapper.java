@@ -38,7 +38,6 @@ import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.SolsPaymentMethods;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
-
 import java.util.List;
 
 @Mapper(componentModel = "spring",
@@ -504,6 +503,16 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             caseData.setIhtEstateGrossValue(null);
             caseData.setIhtEstateNetValue(null);
             caseData.setIhtEstateNetQualifyingValue(null);
+        }
+    }
+
+    @AfterMapping
+    default void setDefaultEmailToNull(@MappingTarget GrantOfRepresentationData caseData,
+                                       ExceptionRecordOCRFields ocrField) {
+        //If bulk scan case had a missing email
+        if (ocrField.getSolsSolicitorEmail() != null
+                && ocrField.getSolsSolicitorEmail().equals("contactprobate@justice.gov.uk")) {
+            caseData.setSolsSolicitorEmail("James.Albertelli@justice.gov.uk");
         }
     }
 
