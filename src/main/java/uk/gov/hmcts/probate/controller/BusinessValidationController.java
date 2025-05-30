@@ -388,8 +388,8 @@ public class BusinessValidationController {
     @PostMapping(path = "/fail-qa", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> caseFailQa(@RequestBody CallbackRequest callbackRequest) {
         caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
-        Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(callbackRequest, caseworkerInfo));
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(callbackRequest,
+                Optional.empty()));
     }
 
 
