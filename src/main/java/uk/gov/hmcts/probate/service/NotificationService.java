@@ -326,7 +326,7 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddress, documentType);
     }
 
-    public Document sendExelaEmail(List<ReturnedCaseDetails> caseDetails) throws
+    public void sendExelaEmail(List<ReturnedCaseDetails> caseDetails) throws
         NotificationClientException {
         String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
             .get(caseDetails.get(0).getData().getApplicationType())
@@ -339,8 +339,6 @@ public class NotificationService {
         response = notificationClientService.sendEmail(templateId, emailAddresses.getExcelaEmail(),
             personalisation, reference);
         log.info("Exela email reference response: {}", response.getReference());
-
-        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
     }
 
     public SendEmailResponse sendSmeeAndFordEmail(List<ReturnedCaseDetails> caseDetails, String fromDate,
