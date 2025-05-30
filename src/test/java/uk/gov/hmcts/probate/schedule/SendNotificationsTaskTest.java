@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
 import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
+import uk.gov.hmcts.probate.service.notification.HseReminderNotification;
 import uk.gov.hmcts.probate.service.notification.SecondStopReminderNotification;
 
 import java.time.Clock;
@@ -51,6 +52,9 @@ class SendNotificationsTaskTest {
     @Mock
     private SecondStopReminderNotification secondStopReminderNotification;
 
+    @Mock
+    private HseReminderNotification hseReminderNotification;
+
     @InjectMocks
     private SendNotificationsTask sendNotificationsTask;
     private static final String AD_HOC_DATE = "2022-09-05";
@@ -78,7 +82,7 @@ class SendNotificationsTaskTest {
     }
 
     @Test
-    void shouldSendBothRemindersWithAdhocDate() {
+    void shouldSendAllRemindersWithAdhocDate() {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
         when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(true);
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);

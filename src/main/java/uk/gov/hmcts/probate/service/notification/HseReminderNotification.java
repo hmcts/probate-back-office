@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.notification;
 
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -8,6 +9,8 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
@@ -22,6 +25,9 @@ public class HseReminderNotification implements NotificationStrategy {
     private static final String HSE_ES_QUERY_PATH = "templates/elasticsearch/caseMatching/hse_reminder_query.json";
     private static final String EVIDENCE_HANDLED_DATE = "evidenceHandledDate";
     private final NotificationService notificationService;
+
+    @Setter
+    private LocalDate referenceDate;
 
     public HseReminderNotification(NotificationService notificationService) {
         this.notificationService = notificationService;
@@ -75,11 +81,19 @@ public class HseReminderNotification implements NotificationStrategy {
     @Override
     public Predicate<CaseDetails> accepts() {
         return cd -> {
-            if (cd == null || cd.getData() == null) {
+            if (cd == null || cd.getData() == null || referenceDate == null) {
                 return false;
             }
-            return cd.getData().get("evidenceHandled").equals(YES)
-                    && cd.getData().get(EVIDENCE_HANDLED_DATE) != null;
+
+            Object evidenceHandled = cd.getData().get("evidenceHandled");
+            LocalDate evidenceHandledDate = Optional.ofNullable(cd.getData().get(EVIDENCE_HANDLED_DATE))
+                    .map(Object::toString)
+                    .map(LocalDate::parse)
+                    .orElse(null);
+
+            return YES.equals(evidenceHandled)
+                    && evidenceHandledDate != null
+                    && evidenceHandledDate.equals(referenceDate);
         };
     }
 }

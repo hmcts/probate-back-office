@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
 import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
+import uk.gov.hmcts.probate.service.notification.HseReminderNotification;
 import uk.gov.hmcts.probate.service.notification.SecondStopReminderNotification;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 
@@ -30,6 +31,7 @@ public class SendNotificationsTask implements Runnable {
     private final Clock clock;
     private final FirstStopReminderNotification firstStopReminderNotification;
     private final SecondStopReminderNotification secondStopReminderNotification;
+    private final HseReminderNotification hseReminderNotification;
 
 
     @Value("${automated_notification.stop_reminder.first_notification_days}")
@@ -98,6 +100,7 @@ public class SendNotificationsTask implements Runnable {
             } else {
                 log.info("Calling Send HSE YES notification for date {}", hseReminderDate);
                 dataExtractDateValidator.dateValidator(hseReminderDate);
+                hseReminderNotification.setReferenceDate(LocalDate.parse(hseReminderDate));
                 log.info("Perform Send HSE YES notification started");
                 automatedNotificationService.sendNotification(hseReminderDate, HSE_REMINDER);
                 log.info("Perform Send HSE YES notification finished");

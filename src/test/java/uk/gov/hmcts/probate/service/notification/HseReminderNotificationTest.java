@@ -12,6 +12,9 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDate;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -108,5 +111,43 @@ class HseReminderNotificationTest {
         NotificationType result = underTest.getType();
 
         assertEquals(HSE_REMINDER, result);
+    }
+
+    @Test
+    void acceptsShouldReturnFalseWhenEvidenceHandledIsNotYes() {
+        when(caseDetails.getData()).thenReturn(Map.of("evidenceHandled", "No"));
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertEquals(false, result);
+    }
+
+    @Test
+    void acceptsShouldReturnFalseWhenEvidenceHandledDateIsInvalid() {
+        when(caseDetails.getData()).thenReturn(Map.of("evidenceHandled", "Yes", "evidenceHandledDate", "invalid-date"));
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertEquals(false, result);
+    }
+
+    @Test
+    void acceptsShouldReturnFalseWhenEvidenceHandledDateDoesNotMatchReferenceDate() {
+        underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
+        when(caseDetails.getData()).thenReturn(Map.of("evidenceHandled", "Yes", "evidenceHandledDate", "2023-09-30"));
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertEquals(false, result);
+    }
+
+    @Test
+    void acceptsShouldReturnTrueWhenEvidenceHandledIsYesAndDatesMatch() {
+        underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
+        when(caseDetails.getData()).thenReturn(Map.of("evidenceHandled", "Yes", "evidenceHandledDate", "2023-10-01"));
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertEquals(true, result);
     }
 }
