@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -69,11 +70,13 @@ public class ExecutorListMapperService {
     }
 
     private CollectionMember<AdditionalExecutorNotApplying> mapFromSolicitorToNotApplyingExecutor(CaseData caseData) {
+        final String capSolSotName = FormattingService.capitaliseEachWord(
+                caseData.getSolsSOTForenames() + " " + caseData.getSolsSOTSurname(),
+                "Not applying Solicitor - Statement of Truth Name");
         AdditionalExecutorNotApplying exec = AdditionalExecutorNotApplying.builder()
-            .notApplyingExecutorName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()
-                    + " " + caseData.getSolsSOTSurname()))
-            .notApplyingExecutorReason(caseData.getSolsSolicitorNotApplyingReason())
-            .build();
+                .notApplyingExecutorName(capSolSotName)
+                .notApplyingExecutorReason(caseData.getSolsSolicitorNotApplyingReason())
+                .build();
 
         return new CollectionMember<>(SOLICITOR_ID, exec);
     }
@@ -83,9 +86,14 @@ public class ExecutorListMapperService {
         List<CollectionMember<AdditionalExecutorApplying>> tempList =
                 new ArrayList<>(caseData.getAdditionalExecutorsApplying());
         // Update list
-        tempList.forEach(exec -> exec.getValue().setApplyingExecutorName(FormattingService.capitaliseEachWord(
+        tempList.forEach(exec -> {
+            final String capApplExecName = FormattingService.capitaliseEachWord(
                     exec.getValue().getApplyingExecutorFirstName()
-                            + " " + exec.getValue().getApplyingExecutorLastName())));
+                            + " " + exec.getValue().getApplyingExecutorLastName(),
+                    "Additional applying executor"
+            );
+            exec.getValue().setApplyingExecutorName(capApplExecName);
+        });
         // Return list
         return tempList;
     }
@@ -94,18 +102,27 @@ public class ExecutorListMapperService {
             CaseData caseData) {
         return caseData.getAdditionalExecutorsTrustCorpList()
                 .stream()
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
-                        .applyingExecutorAddress(caseData.getTrustCorpAddress())
-                        .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()))
-                        .applyingExecutorLastName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()
-                                        + " " + exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
-                        .applyingExecutorTrustCorpPosition(exec.getValue().getAdditionalExecutorTrustCorpPosition())
-                        .build()))
+                .map(exec -> {
+                    final String applExecFNames = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecForenames(),
+                            "Applying executor forenames");
+                    final String applExecLName = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecLastname(),
+                            "Applying executor last name");
+                    final String applExecName = applExecFNames + " " + applExecLName;
+                    final String applExecTCPosition = exec.getValue().getAdditionalExecutorTrustCorpPosition();
+
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorApplying.builder()
+                                    .applyingExecutorAddress(caseData.getTrustCorpAddress())
+                                    .applyingExecutorFirstName(applExecFNames)
+                                    .applyingExecutorLastName(applExecLName)
+                                    .applyingExecutorName(applExecName)
+                                    .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
+                                    .applyingExecutorTrustCorpPosition(applExecTCPosition)
+                                    .build());
+                })
                 .collect(Collectors.toList());
     }
 
@@ -113,17 +130,24 @@ public class ExecutorListMapperService {
             CaseData caseData) {
         return caseData.getOtherPartnersApplyingAsExecutors()
                 .stream()
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
-                        .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
-                        .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()))
-                        .applyingExecutorLastName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
-                        .applyingExecutorName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()
-                                + " " + exec.getValue().getAdditionalExecLastname()))
-                        .build()))
+                .map(exec -> {
+                    final String applExecFNames = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecForenames(),
+                            "Additional Partner Executor forenames");
+                    final String applExecLName = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecLastname(),
+                            "Additional Partner Executor last name");
+                    final String applExecName = applExecFNames + " " + applExecLName;
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorApplying.builder()
+                                    .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
+                                    .applyingExecutorFirstName(applExecFNames)
+                                    .applyingExecutorLastName(applExecLName)
+                                    .applyingExecutorType(EXECUTOR_TYPE_PROFESSIONAL)
+                                    .applyingExecutorName(applExecName)
+                                    .build());
+                })
                 .collect(Collectors.toList());
     }
 
@@ -131,15 +155,23 @@ public class ExecutorListMapperService {
             CaseData caseData) {
         return caseData.getDispenseWithNoticeOtherExecsList()
                 .stream()
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
-                        .notApplyingExecutorName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getNotApplyingExecutorName()))
-                        .notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_REASON)
-                        .notApplyingExecutorDispenseWithNotice(caseData.getDispenseWithNotice())
-                        .notApplyingExecutorDispenseWithNoticeLeaveGiven(caseData.getDispenseWithNoticeLeaveGiven())
-                        .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(
-                                caseData.getDispenseWithNoticeLeaveGivenDate())
-                        .build()))
+                .map(exec -> {
+                    final String notApplExecName = FormattingService.capitaliseEachWord(
+                            exec.getValue().getNotApplyingExecutorName(),
+                            "Not Applying Executor Name");
+                    final String dispWNoticeLeaveGiven = caseData.getDispenseWithNoticeLeaveGiven();
+                    final LocalDate dispWNoticeLeaveGivenDate = caseData.getDispenseWithNoticeLeaveGivenDate();
+
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorNotApplying.builder()
+                                    .notApplyingExecutorName(notApplExecName)
+                                    .notApplyingExecutorReason(EXECUTOR_NOT_APPLYING_REASON)
+                                    .notApplyingExecutorDispenseWithNotice(caseData.getDispenseWithNotice())
+                                    .notApplyingExecutorDispenseWithNoticeLeaveGiven(dispWNoticeLeaveGiven)
+                                    .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(dispWNoticeLeaveGivenDate)
+                                    .build());
+                })
                 .collect(Collectors.toList());
     }
 
@@ -148,18 +180,25 @@ public class ExecutorListMapperService {
         return caseData.getSolsAdditionalExecutorList()
                 .stream()
                 .filter(exec -> YES.equals(exec.getValue().getAdditionalApplying()))
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
-                        .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
-                        .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()))
-                        .applyingExecutorLastName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()
-                                + " " + exec.getValue().getAdditionalExecLastname()))
-                        .applyingExecutorType(EXECUTOR_TYPE_NAMED)
-                        .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
-                        .build()))
+                .map(exec -> {
+                    final String applExecFNames = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecForenames(),
+                            "additional executor forenames");
+                    final String applExecLName = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecLastname(),
+                            "additional executor last name");
+                    final String applExecName = applExecFNames + " " + applExecLName;
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorApplying.builder()
+                                    .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
+                                    .applyingExecutorFirstName(applExecFNames)
+                                    .applyingExecutorLastName(applExecLName)
+                                    .applyingExecutorName(applExecName)
+                                    .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                                    .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
+                                    .build());
+                })
                 .collect(Collectors.toList());
     }
 
@@ -168,24 +207,37 @@ public class ExecutorListMapperService {
         return caseData.getSolsAdditionalExecutorList()
                 .stream()
                 .filter(exec -> exec.getValue().getAdditionalApplying().equals(NO))
-                .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorNotApplying.builder()
-                        .notApplyingExecutorName(FormattingService.capitaliseEachWord(
-                                exec.getValue().getAdditionalExecForenames()
-                                + " " + exec.getValue().getAdditionalExecLastname()))
-                        .notApplyingExecutorReason(exec.getValue().getAdditionalExecReasonNotApplying())
-                        .notApplyingExecutorNameOnWill(exec.getValue().getAdditionalExecAliasNameOnWill())
-                        .build()))
+                .map(exec -> {
+                    final String nApplExecName = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecForenames()
+                                    + " " + exec.getValue().getAdditionalExecLastname(),
+                            "additional executor name");
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorNotApplying.builder()
+                                    .notApplyingExecutorName(nApplExecName)
+                                    .notApplyingExecutorReason(exec.getValue().getAdditionalExecReasonNotApplying())
+                                    .notApplyingExecutorNameOnWill(exec.getValue().getAdditionalExecAliasNameOnWill())
+                                    .build());
+                })
                 .collect(Collectors.toList());
     }
 
     public CollectionMember<AdditionalExecutorApplying> mapFromSolicitorToApplyingExecutor(
             CaseData caseData) {
+        final String capSolSotFnames = FormattingService.capitaliseEachWord(
+                caseData.getSolsSOTForenames(),
+                "Solicitor Statement of Truth Forenames");
+        final String capSolSotSname = FormattingService.capitaliseEachWord(
+                caseData.getSolsSOTSurname(),
+                "Solicitor Statement of Truth Surnames");
+        final String capSolSotName = capSolSotFnames + " " + capSolSotSname;
+
         // Create applying executor collection member containing solicitor names
         return new CollectionMember<>(SOLICITOR_ID, AdditionalExecutorApplying.builder()
-                .applyingExecutorFirstName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()))
-                .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getSolsSOTSurname()))
-                .applyingExecutorName(FormattingService.capitaliseEachWord(caseData.getSolsSOTForenames()
-                        + " " + caseData.getSolsSOTSurname()))
+                .applyingExecutorFirstName(capSolSotFnames)
+                .applyingExecutorLastName(capSolSotSname)
+                .applyingExecutorName(capSolSotName)
                 .applyingExecutorType(getSolExecType(caseData))
                 .applyingExecutorAddress(caseData.getSolsSolicitorAddress())
                 .applyingExecutorTrustCorpPosition(
@@ -203,22 +255,32 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorApplying> mapFromPrimaryApplicantToApplyingExecutor(
             CaseData caseData, String collectionMemberId) {
+        final String pApplFNames = FormattingService.capitaliseEachWord(
+                caseData.getPrimaryApplicantForenames(),
+                "Primary applicant forenames");
+        final String pApplLName = FormattingService.capitaliseEachWord(
+                caseData.getPrimaryApplicantSurname(),
+                "Primary applicant surname");
+        final String pAppName = FormattingService.capitaliseEachWord(
+                caseData.getPrimaryApplicantFullName(),
+                "Primary applicant full name");
         // Create applying executor collection member containing primary applicant names
-        return new CollectionMember<>(collectionMemberId, AdditionalExecutorApplying.builder()
-                .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
-                        caseData.getPrimaryApplicantForenames()))
-                .applyingExecutorLastName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantSurname()))
-                .applyingExecutorName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantFullName()))
-                .applyingExecutorType(getSolExecType(caseData))
-                .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
-                .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
-                .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
-                .applyingExecutorTrustCorpPosition(
-                        getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())
-                        && NO.equals(caseData.getSolsSolicitorIsExec())
-                        && YES.equals(caseData.getSolsSolicitorIsApplying())
-                                ? caseData.getProbatePractitionersPositionInTrust() : null)
-                .build());
+        return new CollectionMember<>(
+                collectionMemberId,
+                AdditionalExecutorApplying.builder()
+                        .applyingExecutorFirstName(pApplFNames)
+                        .applyingExecutorLastName(pApplLName)
+                        .applyingExecutorName(pAppName)
+                        .applyingExecutorType(getSolExecType(caseData))
+                        .applyingExecutorAddress(caseData.getPrimaryApplicantAddress())
+                        .applyingExecutorOtherNames(caseData.getSolsExecutorAliasNames())
+                        .applyingExecutorOtherNamesReason(caseData.getPrimaryApplicantAliasReason())
+                        .applyingExecutorTrustCorpPosition(
+                                getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())
+                                && NO.equals(caseData.getSolsSolicitorIsExec())
+                                && YES.equals(caseData.getSolsSolicitorIsApplying())
+                                        ? caseData.getProbatePractitionersPositionInTrust() : null)
+                        .build());
     }
 
     public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
@@ -229,9 +291,12 @@ public class ExecutorListMapperService {
 
     public CollectionMember<AdditionalExecutorNotApplying> mapFromPrimaryApplicantToNotApplyingExecutor(
             CaseData caseData, String collectionMemberId) {
+        final String capPriApplName = FormattingService.capitaliseEachWord(
+                caseData.getPrimaryApplicantFullName(),
+                "Primary applicant full name");
         // Create not applying executor collection member containing primary applicant names
         return new CollectionMember<>(collectionMemberId, AdditionalExecutorNotApplying.builder()
-                .notApplyingExecutorName(FormattingService.capitaliseEachWord(caseData.getPrimaryApplicantFullName()))
+                .notApplyingExecutorName(capPriApplName)
                 .notApplyingExecutorReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
                 .notApplyingExecutorNameOnWill(caseData.getSolsExecutorAliasNames())
                 .build());
