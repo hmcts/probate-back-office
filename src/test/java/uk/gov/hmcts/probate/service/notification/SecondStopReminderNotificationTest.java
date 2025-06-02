@@ -21,9 +21,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+
 class SecondStopReminderNotificationTest {
 
     private static final String FIRST_STOP_REMINDER_DATE = "firstStopReminderDate";
+    private static final String LAST_MODIFIED_DATE_FOR_DORMANT = "lastModifiedDateForDormant";
 
     @Mock
     private NotificationService notificationService;
@@ -71,7 +74,7 @@ class SecondStopReminderNotificationTest {
         assertFalse(underTest.accepts().test(wrongState));
 
         CaseDetails missingKey = CaseDetails.builder()
-                .state("BOCaseStopped")
+                .state(STATE_BO_CASE_STOPPED)
                 .data(new HashMap<>())
                 .build();
         assertFalse(underTest.accepts().test(missingKey));
@@ -79,19 +82,48 @@ class SecondStopReminderNotificationTest {
         Map<String,Object> nullValue = new HashMap<>();
         nullValue.put(FIRST_STOP_REMINDER_DATE, null);
         CaseDetails nullVal = CaseDetails.builder()
-                .state("BOCaseStopped")
+                .state(STATE_BO_CASE_STOPPED)
                 .data(nullValue)
                 .build();
         assertFalse(underTest.accepts().test(nullVal));
     }
 
+
     @Test
-    void acceptsStateStoppedAndKeyPresentReturnsTrue() {
-        Map<String,Object> data = Map.of(FIRST_STOP_REMINDER_DATE, "2025-05-25");
-        CaseDetails ok = CaseDetails.builder()
-                .state("BOCaseStopped")
-                .data(data)
-                .build();
-        assertTrue(underTest.accepts().test(ok));
+    void acceptsShouldReturnFalseWhenFirstStopReminderDateDoesNotMatchReferenceDate() {
+        underTest.setReferenceDate(LocalDate.of(2025, 5, 25));
+        when(caseDetails.getData()).thenReturn(Map.of(FIRST_STOP_REMINDER_DATE, "2025-05-24"));
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertFalse(result);
     }
+
+    @Test
+    void acceptsShouldReturnFalseWhenLastModifiedDateForDormantIsNotBeforeReferenceDate() {
+        underTest.setReferenceDate(LocalDate.of(2025, 5, 25));
+        when(caseDetails.getData()).thenReturn(Map.of(
+                FIRST_STOP_REMINDER_DATE, "2025-05-25",
+                LAST_MODIFIED_DATE_FOR_DORMANT, "2025-05-25T00:00:00"
+        ));
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void acceptsShouldReturnTrueWhenAllConditionsAreMet() {
+        underTest.setReferenceDate(LocalDate.of(2025, 5, 25));
+        when(caseDetails.getState()).thenReturn(STATE_BO_CASE_STOPPED);
+        when(caseDetails.getData()).thenReturn(Map.of(
+                FIRST_STOP_REMINDER_DATE, "2025-05-25",
+                LAST_MODIFIED_DATE_FOR_DORMANT, "2025-05-24T23:59:59"
+        ));
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertTrue(result);
+    }
+
 }

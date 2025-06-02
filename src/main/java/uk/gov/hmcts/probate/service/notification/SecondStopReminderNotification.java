@@ -10,7 +10,9 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
@@ -23,6 +25,8 @@ public class SecondStopReminderNotification implements NotificationStrategy {
     private static final String SECOND_STOP_REMINDER_FAILURE_EVENT_DESCRIPTION = "Failed to send second stop reminder";
     private static final String SECOND_STOP_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send second stop reminder";
     private static final String FIRST_STOP_REMINDER_DATE = "firstStopReminderDate";
+    private static final String LAST_MODIFIED_DATE_FOR_DORMANT = "lastModifiedDateForDormant";
+
     private final NotificationService notificationService;
 
     @Setter
@@ -80,32 +84,28 @@ public class SecondStopReminderNotification implements NotificationStrategy {
     @Override
     public Predicate<CaseDetails> accepts() {
         return cd -> {
-            if (cd == null || cd.getData() == null) {
+            if (cd == null || cd.getData() == null || referenceDate == null) {
                 return false;
             }
-            if (!STATE_BO_CASE_STOPPED.equals(cd.getState())) {
-                return false;
-            }
-            LocalDate firstReminderDate = extractFirstReminderDate(cd);
-            if (firstReminderDate == null) {
-                return false;
-            }
-            return firstReminderDate.isEqual(referenceDate);
+            Map<String, Object> data = cd.getData();
+
+            LocalDateTime  lastModifiedDateForDormant = Optional.ofNullable(data
+                            .get(LAST_MODIFIED_DATE_FOR_DORMANT))
+                    .map(Object::toString)
+                    .map(LocalDateTime::parse)
+                    .orElse(null);
+
+            LocalDate firstStopReminderDate = Optional.ofNullable(data.get(FIRST_STOP_REMINDER_DATE))
+                    .map(Object::toString)
+                    .map(LocalDate::parse)
+                    .orElse(null);
+
+            return STATE_BO_CASE_STOPPED.equals(cd.getState())
+                    && firstStopReminderDate != null
+                    && firstStopReminderDate.equals(referenceDate)
+                    && lastModifiedDateForDormant != null
+                    && lastModifiedDateForDormant.isBefore(referenceDate.atStartOfDay());
         };
     }
 
-    private LocalDate extractFirstReminderDate(CaseDetails cd) {
-        Object raw = cd.getData().get(FIRST_STOP_REMINDER_DATE);
-        if (raw instanceof LocalDate) {
-            return (LocalDate) raw;
-        }
-        if (raw instanceof String) {
-            try {
-                return LocalDate.parse((String) raw);
-            } catch (DateTimeParseException e) {
-                return null;
-            }
-        }
-        return null;
-    }
 }
