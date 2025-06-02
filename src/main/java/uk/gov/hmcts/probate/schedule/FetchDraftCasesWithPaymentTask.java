@@ -22,6 +22,8 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
     @Value("${draft_payment.start_date}")
     public String startDate;
 
+    // Update LocalDate.now() call on L30 with config when DTSPB-4580 is merged.
+    // https://github.com/hmcts/probate-back-office/pull/3154/files/396d0f0214ced1ce238cd321229954a265110111#r2115573061
     @Override
     public void run() {
         log.info("Scheduled task FetchDraftCasesWithPaymentTask started");
