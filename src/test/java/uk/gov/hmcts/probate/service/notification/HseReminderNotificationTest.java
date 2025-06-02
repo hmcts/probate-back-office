@@ -43,7 +43,7 @@ class HseReminderNotificationTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         closeableMocks.close();
     }
 

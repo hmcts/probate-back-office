@@ -82,6 +82,7 @@ public class NotificationService {
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
+    private static final String LANGUAGE_PREFERENCE_WELSH = "languagePreferenceWelsh";
 
     private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
@@ -388,7 +389,7 @@ public class NotificationService {
         ApplicationType applicationType = getApplicationType(caseDetails);
 
         LanguagePreference languagePreference = Optional.ofNullable(
-                caseDetails.getData().get("languagePreferenceWelsh"))
+                caseDetails.getData().get(LANGUAGE_PREFERENCE_WELSH))
                 .map(Object::toString)
                 .filter("Yes"::equalsIgnoreCase)
                 .map(yes -> LanguagePreference.WELSH)
@@ -776,7 +777,7 @@ public class NotificationService {
         }
         ApplicationType applicationType = getApplicationType(caseDetails);
         LanguagePreference languagePreference = Optional.ofNullable(
-                        caseDetails.getData().get("languagePreferenceWelsh"))
+                        caseDetails.getData().get(LANGUAGE_PREFERENCE_WELSH))
                 .map(Object::toString)
                 .filter("Yes"::equalsIgnoreCase)
                 .map(yes -> LanguagePreference.WELSH)
@@ -809,7 +810,7 @@ public class NotificationService {
         }
         ApplicationType applicationType = getApplicationType(caseDetails);
         LanguagePreference languagePreference = Optional.ofNullable(
-                        caseDetails.getData().get("languagePreferenceWelsh"))
+                        caseDetails.getData().get(LANGUAGE_PREFERENCE_WELSH))
                 .map(Object::toString)
                 .filter("Yes"::equalsIgnoreCase)
                 .map(yes -> LanguagePreference.WELSH)

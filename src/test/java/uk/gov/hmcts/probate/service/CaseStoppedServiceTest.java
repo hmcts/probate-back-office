@@ -113,7 +113,7 @@ class CaseStoppedServiceTest {
     void shouldSetFirstStopReminderSentDateNull() {
         caseDetails.getData().setGrantStoppedDate(null);
         caseDetails.getData().setDocumentUploadedAfterCaseStopped(Constants.YES);
-        caseDetails.getData().setFirstStopReminderSentDate(LocalDate.now());;
+        caseDetails.getData().setFirstStopReminderSentDate(LocalDate.now());
         caseStoppedService.caseStopped(caseDetails);
         assertEquals(Constants.NO, caseDetails.getData().getDocumentUploadedAfterCaseStopped());
         assertEquals(LocalDate.now(), caseDetails.getData().getGrantStoppedDate());
