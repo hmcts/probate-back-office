@@ -10,6 +10,8 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
@@ -21,6 +23,7 @@ public class FirstStopReminderNotification implements NotificationStrategy {
     private static final String FIRST_STOP_REMINDER_EVENT_SUMMARY = "Send First Stop Reminder";
     private static final String FIRST_STOP_REMINDER_FAILURE_EVENT_DESCRIPTION = "Failed to send first stop reminder";
     private static final String FIRST_STOP_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send first stop reminder";
+    private static final String LAST_MODIFIED_DATE_FOR_DORMANT = "lastModifiedDateForDormant";
     private final NotificationService notificationService;
 
     @Setter
@@ -77,12 +80,14 @@ public class FirstStopReminderNotification implements NotificationStrategy {
 
     @Override
     public Predicate<CaseDetails> accepts() {
-        return cd -> {
-            if (cd == null || cd.getData() == null) {
-                return false;
-            }
-            return cd.getState().equals(STATE_BO_CASE_STOPPED)
-                    && !cd.getLastModified().isAfter(referenceDate.plusDays(1).atStartOfDay());
-        };
+        return cd -> cd != null
+            && cd.getData() != null
+            && referenceDate != null
+            && STATE_BO_CASE_STOPPED.equals(cd.getState())
+            && Optional.ofNullable(cd.getData().get(LAST_MODIFIED_DATE_FOR_DORMANT))
+                .map(Object::toString)
+                .map(LocalDateTime::parse)
+                .map(lastModifiedDate -> !lastModifiedDate.isAfter(referenceDate.plusDays(1).atStartOfDay()))
+                .orElse(false);
     }
 }

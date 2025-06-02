@@ -41,6 +41,8 @@ class FirstStopReminderNotificationTest {
     AutoCloseable closeableMocks;
     private Clock fixedClock;
 
+    private static final String LAST_MODIFIED_DATE_FOR_DORMANT = "lastModifiedDateForDormant";
+
     @BeforeEach
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
@@ -84,7 +86,7 @@ class FirstStopReminderNotificationTest {
     void acceptsWrongStateReturnsFalse() {
         CaseDetails wrong = CaseDetails.builder()
                 .state("OtherState")
-                .data(new HashMap<>())
+                .data(Map.of(LAST_MODIFIED_DATE_FOR_DORMANT, LocalDateTime.of(2025,5,24,11,0)))
                 .lastModified(LocalDateTime.of(2025,5,24,11,0))
                 .build();
         assertFalse(underTest.accepts().test(wrong));
@@ -95,7 +97,7 @@ class FirstStopReminderNotificationTest {
         LocalDateTime after = LocalDateTime.of(2025,5,28,12,1);
         CaseDetails cd = CaseDetails.builder()
                 .state("BOCaseStopped")
-                .data(Map.of())
+                .data(Map.of(LAST_MODIFIED_DATE_FOR_DORMANT, after))
                 .lastModified(after)
                 .build();
         assertFalse(underTest.accepts().test(cd));
@@ -106,7 +108,7 @@ class FirstStopReminderNotificationTest {
         LocalDateTime before = LocalDateTime.of(2025,5,23,23,59);
         CaseDetails beforeCase = CaseDetails.builder()
                 .state("BOCaseStopped")
-                .data(Map.of())
+                .data(Map.of(LAST_MODIFIED_DATE_FOR_DORMANT, before))
                 .lastModified(before)
                 .build();
         assertTrue(underTest.accepts().test(beforeCase));
