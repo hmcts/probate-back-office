@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.schedule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ScheduleDates;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
 
@@ -13,14 +14,17 @@ public class IronMountainExtractTask implements Runnable {
     private final DataExtractDateValidator dataExtractionDateValidator;
     private final IronMountainDataExtractService ironMountainDataExtractService;
     private final ScheduleDates scheduleDates;
+    private final FeatureToggleService featureToggleService;
 
     public IronMountainExtractTask(
             final DataExtractDateValidator dataExtractionDateValidator,
             final IronMountainDataExtractService ironMountainDataExtractService,
-            final ScheduleDates extractScheduleDates) {
+            final ScheduleDates extractScheduleDates,
+            final FeatureToggleService featureToggleService) {
         this.dataExtractionDateValidator = dataExtractionDateValidator;
         this.ironMountainDataExtractService = ironMountainDataExtractService;
         this.scheduleDates = extractScheduleDates;
+        this.featureToggleService = featureToggleService;
     }
 
     /// Note that the log messages here are used for alerting/monitoring

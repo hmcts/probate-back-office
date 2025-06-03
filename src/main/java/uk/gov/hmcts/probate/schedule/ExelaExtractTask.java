@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.schedule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ScheduleDates;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 
@@ -13,14 +14,17 @@ public class ExelaExtractTask implements Runnable {
     private final DataExtractDateValidator dataExtractJobDateValidator;
     private final ExelaDataExtractService exelaDataExtractService;
     private final ScheduleDates scheduleDates;
+    private final FeatureToggleService featureToggleService;
 
     public ExelaExtractTask(
             final DataExtractDateValidator dataExtractJobDateValidator,
             final ExelaDataExtractService exelaDataExtractService,
-            final ScheduleDates scheduleExtractDates) {
+            final ScheduleDates scheduleExtractDates,
+            final FeatureToggleService featureToggleService) {
         this.dataExtractJobDateValidator = dataExtractJobDateValidator;
         this.exelaDataExtractService = exelaDataExtractService;
         this.scheduleDates = scheduleExtractDates;
+        this.featureToggleService = featureToggleService;
     }
 
     /// Note that the log messages here are used for alerting/monitoring

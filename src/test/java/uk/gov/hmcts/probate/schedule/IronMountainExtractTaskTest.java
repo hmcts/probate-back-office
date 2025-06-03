@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ScheduleDates;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
 
@@ -24,6 +25,8 @@ class IronMountainExtractTaskTest {
     private IronMountainDataExtractService ironMountainDataExtractServiceDataMock;
     @Mock
     private ScheduleDates scheduleDatesMock;
+    @Mock
+    private FeatureToggleService featureToggleServiceMock;
 
     private IronMountainExtractTask ironMountainExtractTask;
 
@@ -44,7 +47,8 @@ class IronMountainExtractTaskTest {
         ironMountainExtractTask = new IronMountainExtractTask(
                 dataExtractDateValidatorMock,
                 ironMountainDataExtractServiceDataMock,
-                scheduleDatesMock);
+                scheduleDatesMock,
+                featureToggleServiceMock);
     }
 
     @AfterEach

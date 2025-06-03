@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ScheduleDates;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 
@@ -24,6 +25,8 @@ class ExelaExtractTaskTest {
     private ExelaDataExtractService exelaDataExtractServiceMock;
     @Mock
     private ScheduleDates scheduleDatesMock;
+    @Mock
+    private FeatureToggleService featureToggleServiceMock;
 
     private ExelaExtractTask exelaExtractTask;
 
@@ -45,7 +48,8 @@ class ExelaExtractTaskTest {
         exelaExtractTask = new ExelaExtractTask(
                 dataExtractDateValidatorMock,
                 exelaDataExtractServiceMock,
-                scheduleDatesMock);
+                scheduleDatesMock,
+                featureToggleServiceMock);
     }
 
     @AfterEach
