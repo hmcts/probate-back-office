@@ -69,6 +69,7 @@
   "dependencies": {
     "@axe-core/playwright": "^4.9.1",
     "@date-fns/upgrade": "^1.0.3",
+    "@hmcts/playwright-common": "^1.0.20",
     "dotenv-extended": "^2.9.0",
     "html_codesniffer": "^2.5.1",
     "require-directory": "^2.1.1"
@@ -81,7 +82,7 @@
     "chai-string": "^1.5.0",
     "codeceptjs": "3.4.0",
     "date-fns": "^2.21.3",
-    "eslint": "^7.22.0",
+    "eslint": "^9.11.1",
     "eslint-plugin-mocha": "^8.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^10.2.0",
