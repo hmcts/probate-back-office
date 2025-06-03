@@ -1046,6 +1046,7 @@ __metadata:
   dependencies:
     "@axe-core/playwright": "npm:^4.9.1"
     "@date-fns/upgrade": "npm:^1.0.3"
+    "@eslint/js": "npm:^9.11.1"
     "@hmcts/playwright-common": "npm:^1.0.20"
     "@playwright/test": "npm:^1.43.1"
     "@types/node": "npm:^22.0.0"
@@ -1056,7 +1057,7 @@ __metadata:
     date-fns: "npm:^2.21.3"
     dotenv-extended: "npm:^2.9.0"
     eslint: "npm:^9.11.1"
-    eslint-plugin-mocha: "npm:^8.0.0"
+    eslint-plugin-playwright: "npm:^1.6.2"
     html_codesniffer: "npm:^2.5.1"
     istanbul: "npm:^0.4.5"
     mocha: "npm:^10.2.0"
@@ -1081,6 +1082,8 @@ __metadata:
     sonarqube-scanner: "npm:^2.8.0"
     superagent-proxy: "npm:^3.0.0"
     supertest: "npm:^6.1.3"
+    typescript: "npm:^5.6.2"
+    typescript-eslint: "npm:^8.8.0"
     unirest: "npm:^0.6.0"
     uuid: "npm:^8.3.2"
     watch: "npm:^1.0.2"
@@ -3305,18 +3308,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-mocha@npm:^8.0.0":
-  version: 8.2.0
-  resolution: "eslint-plugin-mocha@npm:8.2.0"
-  dependencies:
-    eslint-utils: "npm:^2.1.0"
-    ramda: "npm:^0.27.1"
-  peerDependencies:
-    eslint: ">=7.0.0"
-  checksum: 10/102c9f54719e77fdabcd16aa9c3c62f1d755224eba6fe4f12c997cd1d38ff0dbac0c8236e85e7433cefb305d964d4d69534fda5df86b61b911b151d8dabc38ac
-  languageName: node
-  linkType: hard
-
 "eslint-plugin-playwright@npm:^1.6.2":
   version: 1.8.3
   resolution: "eslint-plugin-playwright@npm:1.8.3"
@@ -3358,15 +3349,6 @@ __metadata:
   dependencies:
     eslint-visitor-keys: "npm:^1.1.0"
   checksum: 10/77079d7123385011fc63c438ab95b01482eac04f2b9cd6e942d1f645ea430d610d721fe150bed8ec4ac17e7c4a11f2d6253a8182551ece09444c62c6a9973ad7
-  languageName: node
-  linkType: hard
-
-"eslint-utils@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "eslint-utils@npm:2.1.0"
-  dependencies:
-    eslint-visitor-keys: "npm:^1.1.0"
-  checksum: 10/a7e43a5154a16a90c021cabeb160c3668cccbcf6474ccb2a7d7762698582398f3b938c5330909b858ef7c21182edfc9786dbf89ed7b294f51b7659a378bf7cec
   languageName: node
   linkType: hard
 
@@ -7542,13 +7524,6 @@ __metadata:
   version: 5.1.1
   resolution: "quick-lru@npm:5.1.1"
   checksum: 10/a516faa25574be7947969883e6068dbe4aa19e8ef8e8e0fd96cddd6d36485e9106d85c0041a27153286b0770b381328f4072aa40d3b18a19f5f7d2b78b94b5ed
-  languageName: node
-  linkType: hard
-
-"ramda@npm:^0.27.1":
-  version: 0.27.2
-  resolution: "ramda@npm:0.27.2"
-  checksum: 10/75b359ed0e5374a12aa2c31ad9af26685bef0559eb6ae6ae7a3ec49fb50576913d740f54ac0cf861b5cc3df7ffb5313a1c28dc775d7cd9e3571162a7a91b47db
   languageName: node
   linkType: hard
 

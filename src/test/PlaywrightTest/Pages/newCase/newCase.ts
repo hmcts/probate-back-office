@@ -212,7 +212,7 @@ export class CreateCasePage extends BasePage {
         if (crud === 'create') {
             await expect(this.createCaseCwTextLocator)
                 .toBeVisible();
-            await expect(this.page.locator('#registryLocation')).toBeEnabled;
+            await expect(this.page.locator('#registryLocation')).toBeEnabled();
             await this.registryLocator.selectOption({label: createConfig.page1_list1_registry_location});
             await this.applicationTypeLocator.selectOption({label: createConfig.page1_list2_application_type});
 

@@ -259,7 +259,7 @@ export class SolCreateCasePage extends BasePage {
     await this.completeApplicationSubmitButton.click();
   }
 
-  async makeCaveatPaymentPage1(caseRef, serviceRequestTabConfig, testInfo) {
+  async makeCaveatPaymentPage1(caseRef, serviceRequestTabConfig) {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(this.serviceRequestTabLocator).toBeEnabled();
     await this.serviceRequestTabLocator.click();
@@ -301,7 +301,7 @@ export class SolCreateCasePage extends BasePage {
     await this.backToServiceRequestLocator.click();
   }
 
-  async makePaymentPage2(caseRef, testInfo) {
+  async makePaymentPage2(caseRef) {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(this.payNowLinkLocator).toBeVisible();
     await this.payNowLinkLocator.click();

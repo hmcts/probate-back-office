@@ -68,7 +68,7 @@ export class BasePage {
     const navigationPromise = this.page.waitForNavigation();
     await expect(this.continueButtonLocator).toBeVisible();
     await expect(this.continueButtonLocator).toBeEnabled();
-    this.continueButtonLocator.click();
+    await this.continueButtonLocator.click();
     await navigationPromise;
   }
 
@@ -77,11 +77,11 @@ export class BasePage {
     if (buttonName === "Save and continue") {
       await expect(this.saveAndContinueButtonLocator).toBeVisible();
       await expect(this.saveAndContinueButtonLocator).toBeEnabled();
-      this.saveAndContinueButtonLocator.click();
+      await this.saveAndContinueButtonLocator.click();
     } else {
       await expect(this.submitButtonLocator).toBeVisible();
       await expect(this.submitButtonLocator).toBeEnabled();
-      this.submitButtonLocator.click();
+      await this.submitButtonLocator.click();
     }
     await navigationPromise;
   }
@@ -100,7 +100,7 @@ export class BasePage {
     const navigationPromise = this.page.waitForNavigation();
     await expect(this.page.locator(`${signOutLocator}`)).toBeVisible();
     await expect(this.page.locator(`${signOutLocator}`)).toBeEnabled();
-    this.page.locator(`${signOutLocator}`).click();
+    await this.page.locator(`${signOutLocator}`).click();
     await navigationPromise;
   }
 
