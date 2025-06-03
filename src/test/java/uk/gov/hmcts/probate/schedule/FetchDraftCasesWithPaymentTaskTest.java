@@ -37,7 +37,11 @@ class FetchDraftCasesWithPaymentTaskTest {
 
     @BeforeEach
     void setUp() {
-        ReflectionTestUtils.setField(fetchDraftCasesWithPaymentTask, "startDate", adhocDate);
+        fetchDraftCasesWithPaymentTask = new FetchDraftCasesWithPaymentTask(
+                dataExtractDateValidator,
+                fetchDraftCaseService,
+                adhocDate
+        );
     }
 
     @Test

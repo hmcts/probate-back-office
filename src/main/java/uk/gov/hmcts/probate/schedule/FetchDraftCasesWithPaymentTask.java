@@ -14,13 +14,21 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class FetchDraftCasesWithPaymentTask implements Runnable {
 
     private final DataExtractDateValidator dataExtractDateValidator;
     private final FetchDraftCaseService fetchDraftCaseService;
     @Value("${draft_payment.start_date}")
     public String startDate;
+
+    public FetchDraftCasesWithPaymentTask(DataExtractDateValidator dataExtractDateValidator,
+                                          FetchDraftCaseService fetchDraftCaseService,
+                                          @Value("${draft_payment.start_date}") String startDate) {
+        this.dataExtractDateValidator = dataExtractDateValidator;
+        this.fetchDraftCaseService = fetchDraftCaseService;
+        this.startDate = startDate;
+    }
 
     // Update LocalDate.now() call on L30 with config when DTSPB-4580 is merged.
     // https://github.com/hmcts/probate-back-office/pull/3154/files/396d0f0214ced1ce238cd321229954a265110111#r2115573061
