@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.schedule;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,6 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 
 @Component
 @Slf4j
-//@RequiredArgsConstructor
 public class FetchDraftCasesWithPaymentTask implements Runnable {
 
     private final DataExtractDateValidator dataExtractDateValidator;
