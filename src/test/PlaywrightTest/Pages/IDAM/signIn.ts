@@ -57,7 +57,7 @@ export class SignInPage extends BasePage {
     await this.page.waitForTimeout(signInDelay);
   }
 
-  async signOut(delay = testConfig.SignOutDelayDefault) {
+  async signOut() {
     await this.waitForSignOutNavigationToComplete(
       "nav.hmcts-header__navigation ul li:last-child a"
     );

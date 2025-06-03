@@ -331,13 +331,12 @@ export class CwEventActionsPage extends BasePage {
 
     if (documentUploadConfig.documentType) {
       for (let i = 0; i < documentUploadConfig.documentType.length; i++) {
-        const optText = await this.page
+        const optText = this.page
           .locator(
             `${documentUploadConfig.id}_0_DocumentType option:nth-child(${
               i + 2
             })`
           )
-          .innerText();
         if (optText !== documentUploadConfig.documentType[i]) {
           console.info("document upload doc types not as expected.");
           console.info(
@@ -357,7 +356,7 @@ export class CwEventActionsPage extends BasePage {
             " in list - " +
             documentUploadConfig.documentType[i]
         );
-        expect(optText).toBe(documentUploadConfig.documentType[i])
+        await expect(optText).toHaveText(documentUploadConfig.documentType[i])
       }
     }
     await expect(
