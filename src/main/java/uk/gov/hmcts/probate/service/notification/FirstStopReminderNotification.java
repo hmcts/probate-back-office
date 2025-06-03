@@ -19,6 +19,7 @@ import java.util.function.Predicate;
 
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED_REISSUE;
 
 @Service
 public class FirstStopReminderNotification implements NotificationStrategy {
@@ -90,7 +91,7 @@ public class FirstStopReminderNotification implements NotificationStrategy {
         return cd -> cd != null
             && cd.getData() != null
             && referenceDate != null
-            && STATE_BO_CASE_STOPPED.equals(cd.getState())
+            && (STATE_BO_CASE_STOPPED.equals(cd.getState()) || STATE_BO_CASE_STOPPED_REISSUE.equals(cd.getState()))
             && isValidLastModifiedDate(cd)
             && !isCaveatStop(cd);
     }
