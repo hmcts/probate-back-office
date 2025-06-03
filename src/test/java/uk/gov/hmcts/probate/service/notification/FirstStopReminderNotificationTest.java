@@ -181,7 +181,8 @@ class FirstStopReminderNotificationTest {
             List<Object> stopList) {
 
         Map<String, Object> data = new HashMap<>();
-        data.put(LAST_MODIFIED_DATE_FOR_DORMANT, lastModifiedDateForDormant.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        data.put(LAST_MODIFIED_DATE_FOR_DORMANT,
+                lastModifiedDateForDormant.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         data.put(STOP_REASON_LIST_KEY, stopList);
         return data;
     }
