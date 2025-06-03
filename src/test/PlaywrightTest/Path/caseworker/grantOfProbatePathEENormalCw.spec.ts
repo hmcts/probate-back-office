@@ -1,0 +1,314 @@
+// @ts-check
+import dateFns from "date-fns";
+import { test } from "../../Fixtures/fixtures.ts";
+
+import caseMatchesConfig from "../../Pages/caseMatches/grantOfProbate/caseMatchesConfigEE.json" with { type: "json" };
+import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import eventSummaryConfig from "../../Pages/eventSummary/eventSummaryConfig.json" with { type: "json" };
+
+// const testConfig = require('src/test/config');
+//const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
+// const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfigEE');
+import createGrantOfProbateConfig from "../../Pages/createGrantOfProbateManual/createGrantOfProbateManualConfig.json" with { type: "json" };
+import documentUploadConfig from "../../Pages/documentUpload/grantOfProbate/documentUploadConfig.json" with { type: "json" };
+//const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
+import applicantDetailsTabConfig from "../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json" with { type: "json" };
+import caseDetailsTabConfig from "../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigEE.json" with { type: "json" };
+import caseMatchesTabConfig from "../../Pages/caseDetails/grantOfProbate/caseMatchesTabConfig.json" with { type: "json" };
+import copiesTabConfig from "../../Pages/caseDetails/grantOfProbate/copiesTabConfig.json" with { type: "json" };
+import deceasedTabConfig from "../../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE.json" with { type: "json" };
+import documentUploadTabConfig from "../../Pages/caseDetails/grantOfProbate/documentUploadTabConfig.json" with { type: "json" };
+import grantNotificationsTabConfig from "../../Pages/caseDetails/grantOfProbate/grantNotificationsTabConfig.json" with { type: "json" };
+import historyTabConfig from "../../Pages/caseDetails/grantOfProbate/historyTabConfig.json" with { type: "json" };
+import ihtTabConfig from "../../Pages/caseDetails/grantOfProbate/ihtTabConfig.json" with { type: "json" };
+import ihtTabConfigUpdate from "../../Pages/caseDetails/grantOfProbate/ihtUpdateTabConfig.json" with { type: "json" };
+import issueGrantConfig from "../../Pages/issueGrant/issueGrantConfig.json" with { type: "json" };
+import nextStepConfig from "../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
+
+import { convertTokens, legacyParse } from "@date-fns/upgrade/v2";
+
+test.describe("Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker", () => {
+  test("Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker", async ({
+    basePage,
+    signInPage,
+    createCasePage,
+    cwEventActionsPage,
+  }, testInfo) => {
+    const scenarioName =
+      "Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker";
+
+    // BO Grant of Representation (Personal): Case created -> Grant issued
+
+    // get unique suffix for names - in order to match only against 1 case
+    const unique_deceased_user = Date.now();
+
+    await basePage.logInfo(scenarioName, "Login as Caseworker", null);
+    await signInPage.authenticateWithIdamIfAvailable(false);
+
+    // FIRST case is only needed for case-matching with SECOND one
+
+    let nextStepName = "PA1P/PA1A/Solicitors Manual";
+    await basePage.logInfo(scenarioName, nextStepName + " - first case", null);
+    await createCasePage.selectNewCase();
+    await createCasePage.selectCaseTypeOptions(
+      createCaseConfig.list2_text_gor,
+      createCaseConfig.list3_text_gor_manual
+    );
+    await basePage.logInfo(scenarioName, "enterGrantOfProbateManualPage1", null);
+    await createCasePage.enterGrantOfProbateManualPage1(
+      "create",
+      createGrantOfProbateConfig,
+      unique_deceased_user,
+      createGrantOfProbateConfig.page1_deceasedDod_year
+    );
+    await basePage.logInfo(scenarioName, "enterGrantOfProbateManualPage2", null);
+    await createCasePage.enterGrantOfProbateManualPage2("create");
+    await basePage.logInfo(scenarioName, "enterGrantOfProbateManualPage3", null);
+    await createCasePage.enterGrantOfProbateManualPage3(
+      "create",
+      createGrantOfProbateConfig
+    );
+    // TODO: Expects 2 arguments
+    await createCasePage.checkMyAnswers(nextStepName);
+    let endState;
+
+    // SECOND case - the main test case
+
+    await basePage.logInfo(scenarioName, nextStepName + " - second case", null);
+    await createCasePage.selectNewCase();
+    await createCasePage.selectCaseTypeOptions(
+      createCaseConfig.list2_text_gor,
+      createCaseConfig.list3_text_gor_manual
+    );
+    await basePage.logInfo(scenarioName, "enterGrantOfProbateManualPage1", null);
+    await createCasePage.enterGrantOfProbateManualPage1(
+      "create",
+      createGrantOfProbateConfig,
+      unique_deceased_user,
+      createGrantOfProbateConfig.page1_deceasedDod_year
+    );
+    await basePage.logInfo(scenarioName, "enterGrantOfProbateManualPage2", null);
+    await createCasePage.enterGrantOfProbateManualPage2("create");
+    await basePage.logInfo(scenarioName, "enterGrantOfProbateManualPage3", null);
+    await createCasePage.enterGrantOfProbateManualPage3(
+      "create",
+      createGrantOfProbateConfig
+    );
+    // TODO: Expects 6-7 arguments
+    await createCasePage.checkMyAnswers(nextStepName);
+    endState = "Awaiting documentation";
+
+    const caseRef = await basePage.getCaseRefFromUrl();
+
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      historyTabConfig,
+      eventSummaryConfig,
+      nextStepName,
+      endState
+    );
+    // TODO: Expects 6-7 arguments
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      deceasedTabConfig,
+      createGrantOfProbateConfig
+    );
+    // TODO: Expects 6-7 arguments
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      caseDetailsTabConfig,
+      createGrantOfProbateConfig
+    );
+    await basePage.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
+    // TODO: Expects 6-7 arguments
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      applicantDetailsTabConfig,
+      createGrantOfProbateConfig
+    );
+    // TODO: Expects 6-7 arguments
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      copiesTabConfig,
+      createGrantOfProbateConfig
+    );
+    // TODO: Expects 6-7 arguments
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      ihtTabConfig,
+      createGrantOfProbateConfig
+    );
+
+    nextStepName = "Handle supplementary evidence";
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.handleSupEvidence);
+    await cwEventActionsPage.handleEvidence(caseRef);
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      historyTabConfig,
+      eventSummaryConfig,
+      nextStepName,
+      endState
+    );
+
+    //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
+
+    nextStepName = "Add Comment";
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.addComment);
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      historyTabConfig,
+      eventSummaryConfig,
+      nextStepName,
+      endState
+    );
+
+    nextStepName = "Upload Documents";
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.uploadDocument);
+    await cwEventActionsPage.uploadDocument(caseRef, documentUploadConfig);
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      historyTabConfig,
+      eventSummaryConfig,
+      nextStepName,
+      endState
+    );
+    // TODO: Expects 6-7 arguments
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      documentUploadTabConfig,
+      documentUploadConfig
+    );
+
+    // "reverting" update back to defaults - to enable case-match with matching case
+    nextStepName = "Amend case details";
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.amendCaseDetails);
+    // TODO: Expects 2 arguments
+    await createCasePage.enterGrantOfProbatePage4("EE");
+    // TODO: Expects 2 arguments
+    await createCasePage.checkMyAnswers(nextStepName);
+    // TODO: Expects 6-7 arguments
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      ihtTabConfigUpdate,
+      createGrantOfProbateConfig
+    );
+
+    nextStepName = "Generate grant preview";
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(
+      nextStepConfig.generateGrantPreview
+    );
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+    endState = "Ready to issue";
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      historyTabConfig,
+      eventSummaryConfig,
+      nextStepName,
+      endState
+    );
+
+    nextStepName = "Stop case";
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.stopCase);
+    await cwEventActionsPage.caseProgressStopEscalateIssueAddCaseStoppedReason();
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+    endState = "Case stopped";
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      historyTabConfig,
+      eventSummaryConfig,
+      nextStepName,
+      endState
+    );
+
+    nextStepName = "Resolve stop";
+    const resolveStop = "Case Matching (Issue grant)";
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.resolveStop);
+    await cwEventActionsPage.chooseResolveStop(resolveStop);
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+    endState = "Case Matching (Issue grant)";
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      historyTabConfig,
+      eventSummaryConfig,
+      nextStepName,
+      endState
+    );
+
+    nextStepName = "Find matches (cases)";
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.findMatch);
+    await cwEventActionsPage.selectCaseMatches(caseRef, nextStepName);
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+    endState = "Case Matching (Issue grant)";
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      historyTabConfig,
+      eventSummaryConfig,
+      nextStepName,
+      endState
+    );
+    // TODO: Expects 6-7 arguments
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      caseMatchesTabConfig,
+      caseMatchesConfig
+    );
+
+    nextStepName = "Issue grant";
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.issueGrant);
+    await cwEventActionsPage.issueGrant(caseRef);
+    endState = "Grant issued";
+    await basePage.logInfo(testInfo, scenarioName, caseRef);
+
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      historyTabConfig,
+      eventSummaryConfig,
+      nextStepName,
+      endState
+    );
+    // When sending an email notification, the Date added for the email notification is set to today
+    issueGrantConfig.date = dateFns.format(
+      legacyParse(new Date()),
+      convertTokens("D MMM YYYY")
+    );
+    // TODO: Expects 6-7 arguments
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      grantNotificationsTabConfig,
+      issueGrantConfig
+    );
+  });
+});
