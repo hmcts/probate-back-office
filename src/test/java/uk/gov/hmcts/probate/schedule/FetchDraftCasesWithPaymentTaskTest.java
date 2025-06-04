@@ -56,7 +56,6 @@ class FetchDraftCasesWithPaymentTaskTest {
 
     @Test
     void shouldPerformGORDraftCasesExtractForAdhocDate() {
-        fetchDraftCasesWithPaymentTask.startDate = "2022-09-05";
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform hmrc data extract from date finished");
         fetchDraftCasesWithPaymentTask.run();
@@ -68,7 +67,6 @@ class FetchDraftCasesWithPaymentTaskTest {
 
     @Test
     void shouldPerformDraftCasesExtractForAdhocDateRange() {
-        fetchDraftCasesWithPaymentTask.startDate = "2022-09-05";
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform hmrc data extract from date finished");
         fetchDraftCasesWithPaymentTask.run();

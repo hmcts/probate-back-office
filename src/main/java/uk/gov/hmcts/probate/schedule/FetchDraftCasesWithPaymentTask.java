@@ -17,8 +17,7 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
 
     private final DataExtractDateValidator dataExtractDateValidator;
     private final FetchDraftCaseService fetchDraftCaseService;
-    @Value("${draft_payment.start_date}")
-    public String startDate;
+    public final String startDate;
 
     public FetchDraftCasesWithPaymentTask(DataExtractDateValidator dataExtractDateValidator,
                                           FetchDraftCaseService fetchDraftCaseService,
