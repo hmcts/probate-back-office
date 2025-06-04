@@ -27,4 +27,6 @@ public class BulkScanConfig {
     private String legalRepresentative;
     private String ihtForm;
     private String grossNetValue;
+
+    private String primaryApplicantHasAlias;
 }

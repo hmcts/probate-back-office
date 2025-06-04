@@ -3,7 +3,7 @@ package uk.gov.hmcts.probate.model.ccd.ocr;
 import java.util.Arrays;
 
 public enum GORSolicitorMandatoryFields {
-    PRIMARY_APPLICANT_HAS_ALIAS("primaryApplicantHasAlias", "Primary applicant has alias?"),
+    //PRIMARY_APPLICANT_HAS_ALIAS("primaryApplicantHasAlias", "Primary applicant has alias?"),
     //DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
     //DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
     DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
