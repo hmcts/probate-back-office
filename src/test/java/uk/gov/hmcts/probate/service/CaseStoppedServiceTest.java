@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(MockitoExtension.class)
 class CaseStoppedServiceTest {
@@ -106,5 +107,17 @@ class CaseStoppedServiceTest {
         caseDetails.getData().setEvidenceHandled(null);
         caseStoppedService.setEvidenceHandledNo(caseDetails);
         assertEquals(Constants.NO, caseDetails.getData().getEvidenceHandled());
+    }
+
+    @Test
+    void shouldSetFirstStopReminderSentDateNull() {
+        caseDetails.getData().setGrantStoppedDate(null);
+        caseDetails.getData().setDocumentUploadedAfterCaseStopped(Constants.YES);
+        caseDetails.getData().setFirstStopReminderSentDate(LocalDate.now());
+        caseStoppedService.caseStopped(caseDetails);
+        assertEquals(Constants.NO, caseDetails.getData().getDocumentUploadedAfterCaseStopped());
+        assertEquals(LocalDate.now(), caseDetails.getData().getGrantStoppedDate());
+        assertNull(caseDetails.getData().getFirstStopReminderSentDate());
+
     }
 }

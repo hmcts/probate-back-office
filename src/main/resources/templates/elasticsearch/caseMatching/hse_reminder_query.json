@@ -1,0 +1,25 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "data.evidenceHandledDate": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "match": {
+            "data.evidenceHandled": "Yes"
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]
