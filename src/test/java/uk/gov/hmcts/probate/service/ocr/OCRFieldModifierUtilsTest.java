@@ -41,12 +41,15 @@ class OCRFieldModifierUtilsTest {
     private static final String DEFAULT_DATE_OF_BIRTH = "01011900";
     private static final String DEFAULT_DECEASED_ANY_OTHER_NAMES_VALUE = "FALSE";
     private static final String DEFAULT_DECEASED_DOMICILE_IN_ENG_WALES_VALUE = "TRUE";
+    private static final String DEFAULT_ALIAS_VALUE = "FALSE";
 
     //Valid
     private static final String VALID_PRIMARY_APPLICANT_FORENAMES = "First Name";
     private static final String VALID_PRIMARY_APPLICANT_SURNAME = "Surname";
     private static final String VALID_PRIMARY_APPLICANT_ADDRESS_LINE_1 = "123 Fake Street";
     private static final String VALID_PRIMARY_APPLICANT_ADDRESS_POSTCODE = "SW1A 1AA";
+    private static final String VALID_PRIMARY_APPLICANT_ALIAS = "Alias Name";
+    private static final String VALID_PRIMARY_APPLICANT_HAS_ALIAS = "TRUE";
 
     private static final String VALID_SOLICITOR_IS_APPLYING = "TRUE";
     private static final String VALID_SOLICITOR_FIRM_NAME = "Firm Name";
@@ -88,6 +91,7 @@ class OCRFieldModifierUtilsTest {
         when(bulkScanConfig.getDob()).thenReturn(DEFAULT_DATE_OF_BIRTH);
         when(bulkScanConfig.getDeceasedAnyOtherNames()).thenReturn(DEFAULT_DECEASED_ANY_OTHER_NAMES_VALUE);
         when(bulkScanConfig.getDeceasedDomicileInEngWales()).thenReturn(DEFAULT_DECEASED_DOMICILE_IN_ENG_WALES_VALUE);
+        when(bulkScanConfig.getPrimaryApplicantHasAlias()).thenReturn(DEFAULT_ALIAS_VALUE);
 
         Field bulkScanConfigField = OCRFieldModifierUtils.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);
@@ -101,6 +105,8 @@ class OCRFieldModifierUtilsTest {
                 .primaryApplicantSurname(VALID_PRIMARY_APPLICANT_SURNAME)
                 .primaryApplicantAddressLine1(VALID_PRIMARY_APPLICANT_ADDRESS_LINE_1)
                 .primaryApplicantAddressPostCode(VALID_PRIMARY_APPLICANT_ADDRESS_POSTCODE)
+                .primaryApplicantAlias(VALID_PRIMARY_APPLICANT_ALIAS)
+                .primaryApplicantHasAlias(VALID_PRIMARY_APPLICANT_HAS_ALIAS)
                 .solsSolicitorIsApplying(VALID_SOLICITOR_IS_APPLYING)
                 .solsSolicitorFirmName(VALID_SOLICITOR_FIRM_NAME)
                 .solsSolicitorRepresentativeName(VALID_SOLICITOR_REPRESENTATIVE_NAME)
