@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public enum GORSolicitorMandatoryFields {
     PRIMARY_APPLICANT_HAS_ALIAS("primaryApplicantHasAlias", "Primary applicant has alias?"),
-    DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
-    DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
+    //DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
+    //DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
     DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
     FORM_VERSION("formVersion", "Form version"),
     IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "1"),
