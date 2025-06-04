@@ -39,6 +39,12 @@ class IronMountainExtractTaskTest {
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
 
+        // these tests predominantly assume we are using this functionality,
+        // so explicitly disable it in the one test where that isn't true
+        // and enable it by default otherwise.
+        when(featureToggleServiceMock.isIronMountainInBackOffice())
+                .thenReturn(true);
+
         when(scheduleDatesMock.hasValue())
                 .thenReturn(false);
         when(scheduleDatesMock.getYesterday())
@@ -93,5 +99,15 @@ class IronMountainExtractTaskTest {
 
         verify(dataExtractDateValidatorMock).dateValidator(any());
         verifyNoInteractions(ironMountainDataExtractServiceDataMock);
+    }
+
+    @Test
+    void shouldNotInteractWithScheduleDatesIfToggledOff() {
+        when(featureToggleServiceMock.isIronMountainInBackOffice())
+                .thenReturn(false);
+
+        ironMountainExtractTask.run();
+
+        verifyNoInteractions(scheduleDatesMock);
     }
 }

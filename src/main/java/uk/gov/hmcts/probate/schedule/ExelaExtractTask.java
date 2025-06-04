@@ -31,6 +31,10 @@ public class ExelaExtractTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task ExelaExtractTask");
+        if (! featureToggleService.isExelaInBackOffice()) {
+            log.info("Exela extract task is not feature toggled to run through back office");
+            return;
+        }
 
         final String descr;
         final String fromDate;

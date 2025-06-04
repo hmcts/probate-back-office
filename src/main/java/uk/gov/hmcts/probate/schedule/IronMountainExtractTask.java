@@ -31,6 +31,10 @@ public class IronMountainExtractTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task IronMountainExtractTask");
+        if (! featureToggleService.isIronMountainInBackOffice()) {
+            log.info("IronMountain extract task is not feature toggled to run through back office");
+            return;
+        }
 
         final String descr;
         final String fromDate;

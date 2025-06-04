@@ -40,6 +40,12 @@ class ExelaExtractTaskTest {
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
 
+        // these tests predominantly assume we are using this functionality,
+        // so explicitly disable it in the one test where that isn't true
+        // and enable it by default otherwise.
+        when(featureToggleServiceMock.isExelaInBackOffice())
+                .thenReturn(true);
+
         when(scheduleDatesMock.hasValue())
                 .thenReturn(false);
         when(scheduleDatesMock.getYesterday())
@@ -113,5 +119,15 @@ class ExelaExtractTaskTest {
 
         verify(dataExtractDateValidatorMock).dateValidator(any(), any());
         verifyNoInteractions(exelaDataExtractServiceMock);
+    }
+
+    @Test
+    void shouldNotInteractWithScheduleDatesIfToggledOff() {
+        when(featureToggleServiceMock.isExelaInBackOffice())
+                .thenReturn(false);
+
+        exelaExtractTask.run();
+
+        verifyNoInteractions(scheduleDatesMock);
     }
 }
