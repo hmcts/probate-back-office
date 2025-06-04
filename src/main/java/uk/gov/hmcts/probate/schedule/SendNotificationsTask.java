@@ -16,6 +16,7 @@ import java.time.Clock;
 import java.time.LocalDate;
 
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
+import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_WARNING;
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 
@@ -37,6 +38,9 @@ public class SendNotificationsTask implements Runnable {
     @Value("${automated_notification.stop_reminder.second_notification_days}")
     private int secondNotificationDays;
 
+    @Value("${automated_notification.dormant_warning_days}")
+    private int dormantWarningDays;
+
     @Value("${adhocSchedulerJobDate}")
     public String adHocJobDate;
 
@@ -45,10 +49,12 @@ public class SendNotificationsTask implements Runnable {
         log.info("Scheduled task SendNotificationsTask started");
         String firstStopReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(firstNotificationDays));
         String secondStopReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(secondNotificationDays));
+        String dormantWarningDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(dormantWarningDays));
         if (StringUtils.isNotEmpty(adHocJobDate)) {
             log.info("Running SendNotificationsTask with Adhoc dates {}", adHocJobDate);
             firstStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(firstNotificationDays).toString();
             secondStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(secondNotificationDays).toString();
+            dormantWarningDate = LocalDate.parse(adHocJobDate).minusDays(dormantWarningDays).toString();
         }
 
         try {
@@ -83,6 +89,23 @@ public class SendNotificationsTask implements Runnable {
             log.error("API client exception during Send Second Stop Reminder", e);
         } catch (Exception e) {
             log.error("Error on SendNotificationsTask Scheduler Send Second Stop Reminder task ", e);
+        }
+
+        try {
+            if (!featureToggleService.isDormantWarningFeatureToggleOn()) {
+                log.info("Feature toggle DormantWarningFeatureToggle is off, skipping task");
+            } else {
+                log.info("Calling Send Dormant Warning for date {}", dormantWarningDate);
+                dataExtractDateValidator.dateValidator(dormantWarningDate);
+                secondStopReminderNotification.setReferenceDate(LocalDate.parse(dormantWarningDate));
+                log.info("Perform Send Dormant Warning started");
+                automatedNotificationService.sendNotification(dormantWarningDate, DORMANT_WARNING);
+                log.info("Perform Send Dormant Warning finished");
+            }
+        } catch (ApiClientException e) {
+            log.error("API client exception during Send Dormant Warning", e);
+        } catch (Exception e) {
+            log.error("Error on SendNotificationsTask Scheduler Send Dormant Warning task ", e);
         }
     }
 }

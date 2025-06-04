@@ -8,6 +8,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -425,31 +426,77 @@ class TemplateServiceIT {
 
     @Test
     void getFirstStopReminder() {
-        String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.ENGLISH,
-                CHANNEL_CHOICE_DIGITAL, NO, true);
-        assertEquals("pa-first-stop-reminder-for-hub", response);
-
-        response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.ENGLISH,
-                CHANNEL_CHOICE_DIGITAL, YES, true);
-        assertEquals("pa-first-stop-reminder", response);
-
-        response = templateService.getStopReminderTemplateId(SOLICITOR, LanguagePreference.ENGLISH,
-                CHANNEL_CHOICE_DIGITAL, null, true);
-        assertEquals("sol-first-stop-reminder", response);
+        assertAll(
+            () -> {
+                String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.ENGLISH,
+                        CHANNEL_CHOICE_DIGITAL, NO, true);
+                assertEquals("pa-first-stop-reminder-for-hub", response);
+            },
+            () -> {
+                String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.ENGLISH,
+                        CHANNEL_CHOICE_DIGITAL, YES, true);
+                assertEquals("pa-first-stop-reminder", response);
+            },
+            () -> {
+                String response = templateService.getStopReminderTemplateId(SOLICITOR, LanguagePreference.ENGLISH,
+                        CHANNEL_CHOICE_DIGITAL, null, true);
+                assertEquals("sol-first-stop-reminder", response);
+            });
     }
 
     @Test
     void getFirstStopReminderWelsh() {
-        String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.WELSH,
-                CHANNEL_CHOICE_DIGITAL, NO, true);
-        assertEquals("pa-first-stop-reminder-for-hub-welsh", response);
+        assertAll(
+            () -> {
+                String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.WELSH,
+                        CHANNEL_CHOICE_DIGITAL, NO, true);
+                assertEquals("pa-first-stop-reminder-for-hub-welsh", response);
+            },
+            () -> {
+                String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.WELSH,
+                        CHANNEL_CHOICE_DIGITAL, YES, true);
+                assertEquals("pa-first-stop-reminder-welsh", response);
+            },
+            () -> {
+                String response = templateService.getStopReminderTemplateId(SOLICITOR, LanguagePreference.WELSH,
+                        CHANNEL_CHOICE_DIGITAL, null, true);
+                assertEquals("sol-first-stop-reminder-welsh", response);
+            }
+        );
+    }
 
-        response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.WELSH,
-                CHANNEL_CHOICE_DIGITAL, YES, true);
-        assertEquals("pa-first-stop-reminder-welsh", response);
+    @Test
+    void getDormantWarning() {
+        assertAll(
+            () -> {
+                String response = templateService.getDormantWarningTemplateId(PERSONAL, LanguagePreference.ENGLISH);
+                assertEquals("pa-dormant-warning", response);
+            },
+            () -> {
+                String response = templateService.getDormantWarningTemplateId(PERSONAL, LanguagePreference.ENGLISH);
+                assertEquals("pa-dormant-warning", response);
+            },
+            () -> {
+                String response = templateService.getDormantWarningTemplateId(SOLICITOR, LanguagePreference.ENGLISH);
+                assertEquals("sol-dormant-warning", response);
+            });
+    }
 
-        response = templateService.getStopReminderTemplateId(SOLICITOR, LanguagePreference.WELSH,
-                CHANNEL_CHOICE_DIGITAL, null, true);
-        assertEquals("sol-first-stop-reminder-welsh", response);
+    @Test
+    void getDormantWarningWelsh() {
+        assertAll(
+            () -> {
+                String response = templateService.getDormantWarningTemplateId(PERSONAL, LanguagePreference.WELSH);
+                assertEquals("pa-dormant-warning-welsh", response);
+            },
+            () -> {
+                String response = templateService.getDormantWarningTemplateId(PERSONAL, LanguagePreference.WELSH);
+                assertEquals("pa-dormant-warning-welsh", response);
+            },
+            () -> {
+                String response = templateService.getDormantWarningTemplateId(SOLICITOR, LanguagePreference.WELSH);
+                assertEquals("sol-dormant-warning-welsh", response);
+            }
+        );
     }
 }

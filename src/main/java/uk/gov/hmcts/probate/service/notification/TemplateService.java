@@ -118,6 +118,12 @@ public class TemplateService {
                     : emailTemplates.getSecondStopReminder();
         }
     }
+
+    public String getDormantWarningTemplateId(ApplicationType applicationType,
+                                              LanguagePreference languagePreference) {
+        EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
+        return emailTemplates.getDormantWarning();
+    }
 }
 
 

@@ -72,7 +72,7 @@ docmosis:
     admonWillGrantReissueDraft:
       templateName: FL-PRB-GRP-ENG-01295.doc
     adColligendaBonaGrantReissueDraft:
-        templateName: FL-PRB-GRP-ENG-01295.doc
+      templateName: FL-PRB-GRP-ENG-01295.doc
     digitalGrantReissue:
       templateName: FL-PRB-GRP-ENG-01295.doc
     intestacyGrantReissue:
@@ -240,6 +240,7 @@ notifications:
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
           firstStopReminder: "f3d0ab70-3fed-4590-ab53-108f6adbea9c"
           firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
+          dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -268,6 +269,7 @@ notifications:
           disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
           firstStopReminder: "eed3eae4-3f01-4d0b-a68f-5b0ab149e328"
+          dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
@@ -296,6 +298,7 @@ notifications:
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
           firstStopReminder: "f3d0ab70-3fed-4590-ab53-108f6adbea9c"
           firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
+          dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -323,6 +326,7 @@ notifications:
           disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
           firstStopReminder: "eed3eae4-3f01-4d0b-a68f-5b0ab149e328"
+          dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
 
 documents:
   templates:
@@ -582,3 +586,4 @@ automated_notification:
   stop_reminder:
     first_notification_days: 56
     second_notification_days: 28
+  dormant_warning_days: 150

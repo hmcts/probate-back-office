@@ -2396,4 +2396,46 @@ class NotificationServiceIT {
                 any(),
                 anyString());
     }
+
+    @Test
+    void sendPaDormantWarningEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendDormantWarningEmail(returnedCaseDetails);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-dormant-warning"),
+                eq("primary@probate-test.com"),
+                any(),
+                anyString());
+    }
+
+    @Test
+    void sendSolDormantWarningEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(solicitorGrantDelayedOxford.getData(), Map.class);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendDormantWarningEmail(returnedCaseDetails);
+
+        verify(notificationClient).sendEmail(
+                eq("sol-dormant-warning"),
+                eq("solicitor@probate-test.com"),
+                any(),
+                anyString());
+    }
 }

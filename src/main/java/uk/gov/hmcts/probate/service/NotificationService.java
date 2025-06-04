@@ -387,12 +387,8 @@ public class NotificationService {
         }
         ApplicationType applicationType = getApplicationType(caseDetails);
 
-        LanguagePreference languagePreference = Optional.ofNullable(
-                caseDetails.getData().get("languagePreferenceWelsh"))
-                .map(Object::toString)
-                .filter("Yes"::equalsIgnoreCase)
-                .map(yes -> LanguagePreference.WELSH)
-                .orElse(LanguagePreference.ENGLISH);
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+
         log.info("ApplicationType: {}, LanguagePreference: {}", applicationType, languagePreference);
         String templateId;
         if (isCaveat) {
@@ -703,6 +699,15 @@ public class NotificationService {
                         : ApplicationType.SOLICITOR);
     }
 
+    private LanguagePreference getLanguagePreference(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails) {
+        return Optional.ofNullable(
+                        caseDetails.getData().get("languagePreferenceWelsh"))
+                .map(Object::toString)
+                .filter("Yes"::equalsIgnoreCase)
+                .map(yes -> LanguagePreference.WELSH)
+                .orElse(LanguagePreference.ENGLISH);
+    }
+
     private String getChannelChoice(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails) {
         return Optional.ofNullable(caseDetails.getData().get(CHANNEL_CHOICE))
                 .map(Object::toString)
@@ -770,17 +775,11 @@ public class NotificationService {
             log.error("Case data is null for case ID: {}", caseDetails.getId());
             return null;
         }
-        String emailAddress = getEmail(data);
-        if (emailAddress == null) {
-            throw new NotificationClientException("Email address not found for case ID: " + caseDetails.getId());
-        }
+        String emailAddress = Optional.ofNullable(getEmail(data))
+                .orElseThrow(() ->
+                    new NotificationClientException("Email address not found for case ID: " + caseDetails.getId()));
         ApplicationType applicationType = getApplicationType(caseDetails);
-        LanguagePreference languagePreference = Optional.ofNullable(
-                        caseDetails.getData().get("languagePreferenceWelsh"))
-                .map(Object::toString)
-                .filter("Yes"::equalsIgnoreCase)
-                .map(yes -> LanguagePreference.WELSH)
-                .orElse(LanguagePreference.ENGLISH);
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
         String templateId = templateService.getStopReminderTemplateId(applicationType, languagePreference,
                 getChannelChoice(caseDetails), getInformationNeededByPost(caseDetails), isFirstStopReminder);
         log.info("sendStopReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
@@ -792,6 +791,31 @@ public class NotificationService {
                         personalisation, caseDetails.getId().toString());
         log.info("Stop Reminder email reference response: {} isFirstStopReminder: {}", response.getReference(),
                 isFirstStopReminder);
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
+    public Document sendDormantWarningEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
+            throws NotificationClientException {
+        log.info("Sending email for case id: {}", caseDetails.getId());
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("Case data is null for case ID: {}", caseDetails.getId());
+            return null;
+        }
+        String emailAddress = Optional.ofNullable(getEmail(data))
+                .orElseThrow(() ->
+                    new NotificationClientException("Email address not found for case ID: " + caseDetails.getId()));
+        ApplicationType applicationType = getApplicationType(caseDetails);
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+        String templateId = templateService.getDormantWarningTemplateId(applicationType, languagePreference);
+        log.info("sendDormantWarningEmail applicationType {}, templateId: {}", applicationType, templateId);
+        Map<String, String> personalisation =
+                automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
+        log.info("start sendEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("Dormant Warning email reference response: {}", response.getReference());
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }
 }
