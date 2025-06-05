@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -56,7 +56,6 @@ public class AutomatedNotificationPersonalisationService {
     @Value("${disposal.solsNotificationLink}")
     private String urlPrefixSolicitorCase;
 
-    @Autowired
     private ObjectMapper objectMapper;
 
     public Map<String, String> getDisposalReminderPersonalisation(CaseDetails caseDetails,

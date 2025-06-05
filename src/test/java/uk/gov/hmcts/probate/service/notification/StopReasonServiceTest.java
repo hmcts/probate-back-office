@@ -22,7 +22,7 @@ class StopReasonServiceTest {
     private NotificationStop notificationStop;
 
     @Mock
-    private StopReasonCode stopReasonCodes;
+    private StopReasonCode stopReasonCodesMock;
 
     @InjectMocks
     private StopReasonService stopReasonService;
@@ -30,7 +30,7 @@ class StopReasonServiceTest {
 
     @Test
     void returnsStopReasonCodeWhenCodeIsNotMapped() {
-        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.ENGLISH, stopReasonCodes));
+        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.ENGLISH, stopReasonCodesMock));
 
         String result = stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH,
                 "UnknownCode");
@@ -40,7 +40,7 @@ class StopReasonServiceTest {
 
     @Test
     void throwsExceptionWhenLanguagePreferenceIsNotMapped() {
-        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.WELSH, stopReasonCodes));
+        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.WELSH, stopReasonCodesMock));
 
         assertThrows(NullPointerException.class, () ->
                 stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH,
@@ -49,8 +49,8 @@ class StopReasonServiceTest {
 
     @Test
     void returnsCorrectDescriptionForDeceasedAddressMissing() {
-        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.ENGLISH, stopReasonCodes));
-        when(stopReasonCodes.getDeceasedAddressMissing()).thenReturn("Deceased address missing");
+        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.ENGLISH, stopReasonCodesMock));
+        when(stopReasonCodesMock.getDeceasedAddressMissing()).thenReturn("Deceased address missing");
 
         String result = stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH,
                 "DeceasedAddressMissing");
@@ -60,8 +60,8 @@ class StopReasonServiceTest {
 
     @Test
     void returnsMappedDescriptionForDocumentsRequired() {
-        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.ENGLISH, stopReasonCodes));
-        when(stopReasonCodes.getDocumentsRequired()).thenReturn("Documents required");
+        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.ENGLISH, stopReasonCodesMock));
+        when(stopReasonCodesMock.getDocumentsRequired()).thenReturn("Documents required");
 
         String result = stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH,
                 "DocumentsRequired");
