@@ -42,7 +42,7 @@ public class StopReasonService {
             case "NotEntitled" -> stopReasonCodes.getNotEntitled();
             case "OriginalDocsRequired" -> stopReasonCodes.getOriginalDocsRequired();
             case "WillNotEnclosed" -> stopReasonCodes.getWillNotEnclosed();
-            case "Permanent Caveat" -> stopReasonCodes.getPermanentCaveat();
+            case "PermanentCaveat" -> stopReasonCodes.getPermanentCaveat();
             case "ProbateFiguresIncorrect" -> stopReasonCodes.getProbateFiguresIncorrect();
             case "RedeclareTitleClearing" -> stopReasonCodes.getRedeclareTitleClearing();
             case "SolicitorsLegalStatementNotSigned" -> stopReasonCodes.getSolicitorsLegalStatementNotSigned();
