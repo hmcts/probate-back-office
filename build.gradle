@@ -177,7 +177,7 @@ def versions = [
         springBootStarterHateoas        : '3.3.11',
         springCloud                     : '4.1.4',
         springCloudStarterNetflixHystrix: '4.1.3',
-        springDocOpenUi                 : '2.6.0',
+        springDocOpenUi                 : '2.8.8',
         springSecurityVersion           : '6.4.5',
         pdfServiceClientVersion         : '8.0.2',
         sendLetterClientVersion         : '5.0.4',
