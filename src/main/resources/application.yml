@@ -625,6 +625,8 @@ bulkscan:
     grossNetValue: 1.11
     solsSolicitorIsApplying: TRUE
     primaryApplicantHasAlias: FALSE
+    dateOfDeathForDiedOnOrAfterSwitchDateTrue: 01012022
+    dateOfDeathForDiedOnOrAfterSwitchDateFalse: 01011900
 
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}

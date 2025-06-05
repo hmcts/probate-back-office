@@ -5,7 +5,7 @@ import java.util.Arrays;
 public enum IntestacySolicitorMandatoryFields {
     //DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
     //DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
-    DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
+    //DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
     SOLICITOR_APPLYING("solsSolicitorIsApplying","Do you have legal representative acting for you?"),
     FORM_VERSION("formVersion", "Form version"),
     IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "1"),

@@ -29,4 +29,7 @@ public class BulkScanConfig {
     private String grossNetValue;
 
     private String primaryApplicantHasAlias;
+
+    private String dateOfDeathForDiedOnOrAfterSwitchDateTrue;
+    private String dateOfDeathForDiedOnOrAfterSwitchDateFalse;
 }

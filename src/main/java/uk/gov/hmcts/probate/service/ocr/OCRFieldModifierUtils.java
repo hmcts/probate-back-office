@@ -49,6 +49,21 @@ public class OCRFieldModifierUtils {
             log.info("Setting deceasedDiedOnAfterSwitchDate to {}", switchDateValue);
         }
 
+        // If DoD is blank but switch date is set we can avoid warnings and auto create by default setting DoD
+        if (isBlank(ocrFields.getDeceasedDateOfDeath()) && !isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+            String switchDateValue = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields
+                    .getDeceasedDateOfDeath()) ? "TRUE" : "FALSE";
+            addModifiedField(modifiedFields, "deceasedDateOfDeath",
+                    ocrFields.getDeceasedDiedOnAfterSwitchDate());
+            if (switchDateValue.equals("TRUE")) {
+                ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
+                log.info("Setting Date of Death to {} due to died on or after switch date vaie", ocrFields.getDeceasedDateOfDeath());
+            } else if (switchDateValue.equals("FALSE")) {
+                ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse());
+                log.info("Setting Date of Death to {} due to died on or after switch date value", ocrFields.getDeceasedDateOfDeath());
+            }
+        }
+
         setFieldIfBlank(ocrFields::getDeceasedForenames, ocrFields::setDeceasedForenames,
                 "deceasedForenames", bulkScanConfig.getName(), modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedSurname, ocrFields::setDeceasedSurname,
