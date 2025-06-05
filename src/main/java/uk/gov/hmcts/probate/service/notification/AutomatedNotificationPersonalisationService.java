@@ -56,7 +56,7 @@ public class AutomatedNotificationPersonalisationService {
     @Value("${disposal.solsNotificationLink}")
     private String urlPrefixSolicitorCase;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public Map<String, String> getDisposalReminderPersonalisation(CaseDetails caseDetails,
                                                                   ApplicationType applicationType) {

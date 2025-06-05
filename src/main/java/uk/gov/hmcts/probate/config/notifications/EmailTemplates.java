@@ -38,5 +38,7 @@ public class EmailTemplates {
     private String firstStopReminderForHub;
     private String secondStopReminder;
     private String secondStopReminderForHub;
+    private String hseReminder;
+    private String hseReminderForHub;
     private String dormantWarning;
 }

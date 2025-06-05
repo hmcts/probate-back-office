@@ -320,6 +320,7 @@ public class CallbackResponseTransformer {
                         caseworkerInfo,
                         false);
         responseCaseDataBuilder.evidenceHandled(YES);
+        responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (isHubResponseRequired(caseData)) {
             responseCaseDataBuilder.citizenResponseCheckbox(null)
@@ -345,6 +346,7 @@ public class CallbackResponseTransformer {
         if (YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())
                 && !YES.equalsIgnoreCase(caseData.getIsSaveAndClose())) {
             responseCaseDataBuilder.evidenceHandled(YES);
+            responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
 
             if (nothingSubmitted(caseData)) {
                 resetRequestInformationFields(responseCaseDataBuilder);
@@ -418,6 +420,7 @@ public class CallbackResponseTransformer {
                     .grantIssuedDate(grantIssuedDate);
 
             responseCaseDataBuilder.evidenceHandled(YES);
+            responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
 
         } else if (documentTransformer.hasDocumentWithType(documents, EDGE_CASE)) {
             String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());

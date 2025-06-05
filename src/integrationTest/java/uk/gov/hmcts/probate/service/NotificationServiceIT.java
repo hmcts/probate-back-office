@@ -2398,6 +2398,70 @@ class NotificationServiceIT {
     }
 
     @Test
+    void sendHseReminderEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
+        caseData.put("channel", "Digital");
+        caseData.put("informationNeededByPost", "Yes");
+        caseData.put("evidenceHandled", "Yes");
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendHseReminderEmail(returnedCaseDetails);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-hse-reminder"),
+                eq("primary@probate-test.com"),
+                any(),
+                anyString());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNoEmailForHseReminder() {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
+        caseData.remove("primaryApplicantEmailAddress");
+        caseData.remove("languagePreferenceWelsh");
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .state(STATE_CASE_PAYMENT_FAILED)
+                        .id(ID)
+                        .build();
+        NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
+                notificationService.sendHseReminderEmail(returnedCaseDetails));
+        assertEquals("Email address not found for HSE case ID: " + ID, exception.getMessage());
+    }
+
+    @Test
+    void sendSolHseReminderEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(solicitorGrantDelayedOxford.getData(), Map.class);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendHseReminderEmail(returnedCaseDetails);
+
+        verify(notificationClient).sendEmail(
+                eq("sol-hse-reminder"),
+                eq("solicitor@probate-test.com"),
+                any(),
+                anyString());
+    }
+
+    @Test
     void sendPaDormantWarningEmail() throws NotificationClientException {
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);

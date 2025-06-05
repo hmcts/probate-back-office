@@ -119,6 +119,21 @@ public class TemplateService {
         }
     }
 
+    public String getHseReminderTemplateId(ApplicationType applicationType,
+                                            LanguagePreference languagePreference,
+                                            String channelChoice,
+                                            String informationNeededByPost) {
+        EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
+
+        boolean isSolicitor = ApplicationType.SOLICITOR.equals(applicationType);
+        boolean isPostalRequest = requestInfoByPostForPersonalApplication(channelChoice,
+                applicationType, informationNeededByPost);
+        boolean useHubTemplate = !(isSolicitor || isPostalRequest);
+
+        return useHubTemplate ? emailTemplates.getHseReminderForHub()
+                : emailTemplates.getHseReminder();
+    }
+
     public String getDormantWarningTemplateId(ApplicationType applicationType,
                                               LanguagePreference languagePreference) {
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);

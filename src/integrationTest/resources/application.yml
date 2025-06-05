@@ -168,6 +168,8 @@ notifications:
           draftCasePaymentSuccess: "pa-draft-case-payment-success"
           firstStopReminder: "pa-first-stop-reminder"
           firstStopReminderForHub: "pa-first-stop-reminder-for-hub"
+          hseReminder: "pa-hse-reminder"
+          hseReminderForHub: "pa-hse-reminder-for-hub"
           dormantWarning: "pa-dormant-warning"
         solicitor:
           applicationReceived: "sol-application-received"
@@ -194,6 +196,7 @@ notifications:
           disposalReminder: "sol-disposal-reminder"
           draftCasePaymentSuccess: "sol-draft-case-payment-success"
           firstStopReminder: "sol-first-stop-reminder"
+          hseReminder: "sol-hse-reminder"
           dormantWarning: "sol-dormant-warning"
       welsh:
         personal:
@@ -222,6 +225,8 @@ notifications:
           draftCasePaymentSuccess: "pa-draft-case-payment-success-welsh"
           firstStopReminder: "pa-first-stop-reminder-welsh"
           firstStopReminderForHub: "pa-first-stop-reminder-for-hub-welsh"
+          hseReminder: "pa-hse-reminder-welsh"
+          hseReminderForHub: "pa-hse-reminder-for-hub-welsh"
           dormantWarning: "pa-dormant-warning-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
@@ -247,6 +252,7 @@ notifications:
           disposalReminder: "sol-disposal-reminder-welsh"
           draftCasePaymentSuccess: "sol-draft-case-payment-success-welsh"
           firstStopReminder: "sol-first-stop-reminder-welsh"
+          hseReminder: "sol-hse-reminder-welsh"
           dormantWarning: "sol-dormant-warning-welsh"
 
 documents:
@@ -523,4 +529,6 @@ automated_notification:
   stop_reminder:
     first_notification_days: 56
     second_notification_days: 28
+  hse_reminder:
+    awaiting_documentation_days: 30
   dormant_warning_days: 150

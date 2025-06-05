@@ -143,8 +143,7 @@ public class AutomatedNotificationCCDService {
                     .probateNotificationsGenerated(notifications)
                     .firstStopReminderSentDate(LocalDate.now())
                     .build();
-            case SECOND_STOP_REMINDER,
-                 DORMANT_WARNING -> GrantOfRepresentationData.builder()
+            case SECOND_STOP_REMINDER, HSE_REMINDER, DORMANT_WARNING -> GrantOfRepresentationData.builder()
                     .probateNotificationsGenerated(notifications)
                     .build();
         };

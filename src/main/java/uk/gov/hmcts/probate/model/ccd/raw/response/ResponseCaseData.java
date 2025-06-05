@@ -177,6 +177,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String applicationSubmittedDate;
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
     private final String evidenceHandled;
+    private final String evidenceHandledDate;
 
     private final String caseType;
     private final String paperForm;

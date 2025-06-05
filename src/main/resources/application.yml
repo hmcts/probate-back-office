@@ -384,6 +384,8 @@ notifications:
           firstStopReminderForHub: "a2856f90-39a7-4ff4-9107-13f9b053485c"
           secondStopReminder: "66de5dc4-bd56-4169-813d-648bdcb36498"
           secondStopReminderForHub: "284a9158-2386-411d-b92e-693932e53885"
+          hseReminder: "38e4f0e6-5656-4ae9-82f7-ac3da178100f"
+          hseReminderForHub: "f039720f-8bdb-48f8-9549-f0068d7a5688"
           dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
@@ -415,6 +417,7 @@ notifications:
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
           firstStopReminder: "9089ab1d-abe7-4bee-a777-b4bcb7d85ea1"
           secondStopReminder: "2b57f57d-e492-4648-b92d-0c604df722e9"
+          hseReminder: "70d352c7-42e1-4f24-b7b4-8cc99f766862"
           dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
       welsh:
         personal:
@@ -446,6 +449,8 @@ notifications:
           firstStopReminderForHub: "8732675b-8869-4177-acd2-b2bb1cb23641"
           secondStopReminder: "67673f61-38ed-42dc-8197-93c3839d2da8"
           secondStopReminderForHub: "a28af333-ee4f-41d3-9e1a-1ea149560007"
+          hseReminder: "aad3c46b-a915-4b31-9612-a630620a51c5"
+          hseReminderForHub: "abfe8fd2-faa5-4da5-a839-8c652ff6807b"
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
@@ -476,6 +481,7 @@ notifications:
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
           firstStopReminder: "e06d92b6-e59f-4a78-8654-9c1a9f70411b"
           secondStopReminder: "206a11a2-1171-464b-ad03-5ca83b928968"
+          hseReminder: "0146b124-a67c-4753-b38e-85bcb37d8562"
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
 
 documents:
@@ -744,4 +750,7 @@ automated_notification:
   stop_reminder:
     first_notification_days: 56
     second_notification_days: 28
+  hse_reminder:
+    awaiting_documentation_days: 30
+
   dormant_warning_days: 150
