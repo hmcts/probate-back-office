@@ -26,6 +26,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
+import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_WARNING;
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 
@@ -55,14 +56,18 @@ class SendNotificationsTaskTest {
     private static final String AD_HOC_DATE = "2022-09-05";
     private static final String FIRST_STOP_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(56).toString();
     private static final String SECOND_STOP_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(28).toString();
+    private static final String DORMANT_WARNING_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(150).toString();
     private static final LocalDate FIXED_DATE = LocalDate.of(2025, 5, 19);
     private static final String DEFAULT_FIRST_DATE = DATE_FORMAT.format(FIXED_DATE.minusDays(56)); //2025-03-24
     private static final String DEFAULT_SECOND_DATE = DATE_FORMAT.format(FIXED_DATE.minusDays(28)); //2025-04-21
+    private static final String DEFAULT_DORMANT_WARNING_DATE = DATE_FORMAT.format(FIXED_DATE.minusDays(150));
+
 
     @BeforeEach
     void setUp() {
         ReflectionTestUtils.setField(sendNotificationsTask, "firstNotificationDays", 56);
         ReflectionTestUtils.setField(sendNotificationsTask, "secondNotificationDays", 28);
+        ReflectionTestUtils.setField(sendNotificationsTask, "dormantWarningDays", 150);
         ReflectionTestUtils.setField(sendNotificationsTask, "clock", clock);
         Instant fixedInstant = FIXED_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant();
         when(clock.instant()).thenReturn(fixedInstant);
@@ -70,6 +75,7 @@ class SendNotificationsTaskTest {
 
         when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(true);
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
+        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(true);
     }
 
     @Test
@@ -105,6 +111,8 @@ class SendNotificationsTaskTest {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
         when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
+        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
+
 
         sendNotificationsTask.run();
 
@@ -118,6 +126,8 @@ class SendNotificationsTaskTest {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
         when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(true);
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
+
 
         sendNotificationsTask.run();
 
@@ -130,6 +140,8 @@ class SendNotificationsTaskTest {
     void shouldNotSendAnyReminderWhenBothTogglesOff() {
         when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
+
 
         sendNotificationsTask.run();
 
@@ -142,6 +154,8 @@ class SendNotificationsTaskTest {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
         when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(true);
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
+
 
         doThrow(new ClientException(400, "bad request"))
                 .when(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE);
@@ -157,6 +171,8 @@ class SendNotificationsTaskTest {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
         when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
+        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
+
 
         doThrow(new ClientException(400, "bad request"))
                 .when(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE);
@@ -169,5 +185,25 @@ class SendNotificationsTaskTest {
 
     private void verifyNoInteractionsWithAutomatedNotificationService() {
         verifyNoInteractions(automatedNotificationService);
+    }
+
+    @Test
+    void shouldSendDormantWarningNotificationWithAdhocDate() {
+        ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
+
+        sendNotificationsTask.run();
+
+        verify(dataExtractDateValidator).dateValidator(DORMANT_WARNING_DATE);
+        verify(automatedNotificationService).sendNotification(DORMANT_WARNING_DATE, DORMANT_WARNING);
+    }
+
+    @Test
+    void shouldSendDormantWarningNotification() {
+        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
+        sendNotificationsTask.run();
+
+        verify(dataExtractDateValidator).dateValidator(DEFAULT_DORMANT_WARNING_DATE);
+        verify(automatedNotificationService).sendNotification(DEFAULT_DORMANT_WARNING_DATE, DORMANT_WARNING);
     }
 }

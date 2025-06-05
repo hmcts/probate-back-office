@@ -14,6 +14,7 @@ public class FeatureToggleService {
     private static final String SMEE_AND_FORD_POUND_VALUE_TOGGLE = "probate-smee-ford-pound-value";
     private static final String FIRST_STOP_REMINDER_TOGGLE = "probate-cron-first-stop-reminder";
     private static final String SECOND_STOP_REMINDER_TOGGLE = "probate-cron-second-stop-reminder";
+    private static final String DORMANT_WARNING_TOGGLE = "probate-cron-dormant-warning";
 
 
     @Autowired
@@ -54,16 +55,21 @@ public class FeatureToggleService {
 
     public boolean isPoundValueFeatureToggleOn() {
         return this.isFeatureToggleOn(
-                SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
+                SMEE_AND_FORD_POUND_VALUE_TOGGLE, true);
     }
 
     public boolean isFirstStopReminderFeatureToggleOn() {
         return this.isFeatureToggleOn(
-                FIRST_STOP_REMINDER_TOGGLE, false);
+                FIRST_STOP_REMINDER_TOGGLE, true);
     }
 
     public boolean isSecondStopReminderFeatureToggleOn() {
         return this.isFeatureToggleOn(
-                SECOND_STOP_REMINDER_TOGGLE, false);
+                SECOND_STOP_REMINDER_TOGGLE, true);
+    }
+
+    public boolean isDormantWarningFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                DORMANT_WARNING_TOGGLE, true);
     }
 }

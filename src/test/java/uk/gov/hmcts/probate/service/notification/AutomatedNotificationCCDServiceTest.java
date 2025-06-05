@@ -5,11 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.CcdUpdateNotificationException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.NotificationType;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,7 +49,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
-@ExtendWith(SpringExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AutomatedNotificationCCDServiceTest {
     @Mock
     private CoreCaseDataApi coreCaseDataApi;
@@ -61,8 +63,12 @@ class AutomatedNotificationCCDServiceTest {
     @Mock
     private SecondStopReminderNotification secondStopReminderNotificationStrategy;
 
-    @InjectMocks
-    private AutomatedNotificationCCDService automatedNotificationCCDService;
+    @Mock
+    private DormantWarningNotification dormantWarningNotificationStrategy;
+
+    private AutomatedNotificationCCDService underTest;
+
+    AutoCloseable closeableMocks;
 
     private static final String CASE_ID = "1234567890123456";
     private static final EventId EVENT_ID = EventId.AUTO_NOTIFICATION_FIRST_STOP_REMINDER;
@@ -78,6 +84,8 @@ class AutomatedNotificationCCDServiceTest {
 
     @BeforeEach
     void setUp() {
+        closeableMocks = MockitoAnnotations.openMocks(this);
+
         securityDTO = SecurityDTO.builder()
                 .authorisation("authToken")
                 .serviceAuthorisation("svcToken")
@@ -94,6 +102,7 @@ class AutomatedNotificationCCDServiceTest {
                 .eventId(EVENT_ID.getName())
                 .caseDetails(caseDetails)
                 .build();
+        underTest = new AutomatedNotificationCCDService(coreCaseDataApi, objectMapper);
     }
 
     @Test
@@ -105,7 +114,7 @@ class AutomatedNotificationCCDServiceTest {
 
         Document sentEmail = createMockDocument("newEmail.pdf");
 
-        automatedNotificationCCDService
+        underTest
                 .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail,
                         firstStopReminderNotificationStrategy, startEvent);
 
@@ -133,30 +142,37 @@ class AutomatedNotificationCCDServiceTest {
                 eq(EventId.AUTO_NOTIFICATION_FIRST_STOP_REMINDER.getName())))
                 .thenReturn(startEvent);
 
-        StartEventResponse response = automatedNotificationCCDService
+        StartEventResponse response = underTest
                 .startEvent(CASE_ID, securityDTO, firstStopReminderNotificationStrategy);
         assertEquals(startEvent, response);
 
         when(coreCaseDataApi.startEventForCaseWorker(any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(null);
         assertThrows(CcdUpdateNotificationException.class, () ->
-                automatedNotificationCCDService
+                underTest
                         .startEvent(CASE_ID, securityDTO, firstStopReminderNotificationStrategy));
     }
 
-
-    @Test
-    void shouldFirstStopReminderSentDateNullSecondStopReminder() {
-        stubNotificationStrategy(
+    Stream<NotificationStrategy> notificationStrategiesExceptFirstStopReminder() {
+        return Stream.of(
                 secondStopReminderNotificationStrategy,
+                dormantWarningNotificationStrategy
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("notificationStrategiesExceptFirstStopReminder")
+    void shouldNotSetFirstStopReminderSentDateIfNotFirstStopReminder(NotificationStrategy notificationStrategy) {
+        stubNotificationStrategy(
+                notificationStrategy,
                 NotificationType.SECOND_STOP_REMINDER
         );
 
         Document sentEmail = createMockDocument("newEmail.pdf");
 
-        automatedNotificationCCDService
+        underTest
                 .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail,
-                        secondStopReminderNotificationStrategy, startEvent);
+                        notificationStrategy, startEvent);
 
         CaseDataContent caseDataContent = captureUpdatedCaseData(CASE_ID, securityDTO);
         GrantOfRepresentationData cd = (GrantOfRepresentationData) caseDataContent.getData();
@@ -207,7 +223,7 @@ class AutomatedNotificationCCDServiceTest {
 
         Document sentEmail = createMockDocument("newEmail.pdf");
 
-        automatedNotificationCCDService
+        underTest
                 .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail,
                         firstStopReminderNotificationStrategy, startEvent);
 
@@ -230,7 +246,7 @@ class AutomatedNotificationCCDServiceTest {
                 NotificationType.FIRST_STOP_REMINDER
         );
 
-        automatedNotificationCCDService
+        underTest
                 .saveFailedNotification(CASE_ID, securityDTO,
                         firstStopReminderNotificationStrategy, startEvent);
 
@@ -263,7 +279,7 @@ class AutomatedNotificationCCDServiceTest {
                         any(CaseDataContent.class));
 
         CcdUpdateNotificationException ex = assertThrows(CcdUpdateNotificationException.class, () ->
-                automatedNotificationCCDService.saveNotification(
+                underTest.saveNotification(
                         caseDetails, CASE_ID, securityDTO, sentEmail,
                         firstStopReminderNotificationStrategy, startEvent));
         assertNotNull(ex.getCause());
