@@ -40,6 +40,7 @@ public class OCRFieldModifierUtils {
 
     private void handleDeceasedFields(ExceptionRecordOCRFields ocrFields,
                                       List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+
         if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
             addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
                     ocrFields.getDeceasedDiedOnAfterSwitchDate());
@@ -57,12 +58,45 @@ public class OCRFieldModifierUtils {
                     ocrFields.getDeceasedDiedOnAfterSwitchDate());
             if (switchDateValue.equals("TRUE")) {
                 ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-                log.info("Setting Date of Death to {} due to died on or after switch date vaie",
+                log.info("Setting Date of Death to {} due to died on or after switch date value",
                         ocrFields.getDeceasedDateOfDeath());
             } else if (switchDateValue.equals("FALSE")) {
                 ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse());
                 log.info("Setting Date of Death to {} due to died on or after switch date value",
                         ocrFields.getDeceasedDateOfDeath());
+            }
+        }
+
+
+        if (isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+            if (!isBlank(ocrFields.getIht205Completed()) || (!isBlank(ocrFields.getIhtGrossValue205()))
+                    || (!isBlank(ocrFields.getIhtNetValue205()))) {
+
+                addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
+                        ocrFields.getDeceasedDiedOnAfterSwitchDate());
+                ocrFields.setDeceasedDiedOnAfterSwitchDate(
+                        bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse());
+
+                log.info("Setting Died on or after switch date to {}",
+                        ocrFields.getDeceasedDiedOnAfterSwitchDate());
+
+            } else if (!isBlank(ocrFields.getIhtEstateNetValue()) || (!isBlank(ocrFields.getIhtEstateGrossValue()))
+                || !isBlank(ocrFields.getExceptedEstate())) {
+                addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
+                        ocrFields.getDeceasedDiedOnAfterSwitchDate());
+
+                ocrFields.setDeceasedDiedOnAfterSwitchDate(
+                        bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
+                log.info("Setting Died on or after switch date to {}",
+                        ocrFields.getDeceasedDiedOnAfterSwitchDate());
+            } else {
+                addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
+                        ocrFields.getDeceasedDiedOnAfterSwitchDate());
+
+                ocrFields.setDeceasedDiedOnAfterSwitchDate(
+                        bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
+                log.info("Setting Died on or after switch date to {}",
+                        ocrFields.getDeceasedDiedOnAfterSwitchDate());
             }
         }
 
@@ -96,7 +130,7 @@ public class OCRFieldModifierUtils {
         if (isBlank(ocrFields.getPrimaryApplicantAlias())) {
             addModifiedField(modifiedFields, "primaryApplicantAlias", ocrFields.getPrimaryApplicantAlias());
             ocrFields.setPrimaryApplicantAlias(bulkScanConfig.getName());
-            log.info("Setting primaryApplicantAlias to {}", ocrFields.getSolsSolicitorPhoneNumber());
+            log.info("Setting primaryApplicantAlias to {}", ocrFields.getPrimaryApplicantAlias());
         }
 
         if (isBlank(ocrFields.getPrimaryApplicantHasAlias())) {
