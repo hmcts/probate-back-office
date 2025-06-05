@@ -12,6 +12,8 @@ public class FeatureToggleService {
     private final LDClient ldClient;
     private final LDContext ldContext;
     private static final String SMEE_AND_FORD_POUND_VALUE_TOGGLE = "probate-smee-ford-pound-value";
+    private static final String IRON_MOUNTAIN_IN_BACK_OFFICE = "probate-iron-mountain-in-back-office";
+    private static final String EXELA_IN_BACK_OFFICE = "probate-exela-in-back-office";
 
 
     @Autowired
@@ -53,5 +55,13 @@ public class FeatureToggleService {
     public boolean isPoundValueFeatureToggleOn() {
         return this.isFeatureToggleOn(
                 SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
+    }
+
+    public boolean isIronMountainInBackOffice() {
+        return this.isFeatureToggleOn(IRON_MOUNTAIN_IN_BACK_OFFICE, false);
+    }
+
+    public boolean isExelaInBackOffice() {
+        return this.isFeatureToggleOn(EXELA_IN_BACK_OFFICE, false);
     }
 }
