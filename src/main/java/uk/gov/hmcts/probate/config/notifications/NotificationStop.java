@@ -1,27 +1,23 @@
 package uk.gov.hmcts.probate.config.notifications;
 
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import java.util.Map;
 
 @Getter
 @Setter
 @Component
 @Validated
-@ConfigurationProperties(prefix = "notifications")
-public class NotificationsProperties {
-
-    @NotBlank
-    private String govNotifyApiKey;
+@ConfigurationProperties("notifications.stop")
+public class NotificationStop {
 
     @Valid
-    private NotificationTemplates templates;
+    private Map<LanguagePreference,StopReasonCode> reasons;
 
-    @Valid
-    private StopReasonCode stop;
 }

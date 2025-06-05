@@ -1,22 +1,28 @@
 package uk.gov.hmcts.probate.service.notification;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,6 +39,7 @@ public class AutomatedNotificationPersonalisationService {
     private static final String PERSONALISATION_RESPOND_DATE = "respond_date";
     private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
     private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
+    private static final String PERSONALISATION_CASE_STOP_REASONS = "stop-reasons";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String CASE_ID_STRING = "<CASE_ID>";
@@ -42,12 +49,14 @@ public class AutomatedNotificationPersonalisationService {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMMM yyyy");
     private static final DateTimeFormatter DOD_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
+    private final StopReasonService stopReasonService;
     private final DateFormatterService dateFormatterService;
     @Value("${disposal.personalNotificationLink}")
     private String urlPrefixToPersonalCase;
     @Value("${disposal.solsNotificationLink}")
     private String urlPrefixSolicitorCase;
 
+    private ObjectMapper objectMapper;
 
     public Map<String, String> getDisposalReminderPersonalisation(CaseDetails caseDetails,
                                                                   ApplicationType applicationType) {
@@ -64,7 +73,8 @@ public class AutomatedNotificationPersonalisationService {
 
     public Map<String, String> getPersonalisation(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
                                                   ApplicationType applicationType) {
-        log.info("getPersonalisation");
+        log.info("Stop reminder getPersonalisation");
+        getStopReason(caseDetails);
         Map<String, Object> caseData = caseDetails.getData();
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
@@ -72,7 +82,7 @@ public class AutomatedNotificationPersonalisationService {
         personalisation.put(PERSONALISATION_APPLICANT_NAME, getPrimaryApplicantName(caseData));
         personalisation.put(PERSONALISATION_DECEASED_NAME, getDeceasedFullName(caseData));
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(caseData, applicationType));
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, getStringValue(caseData, "boStopDetails"));
+        personalisation.put(PERSONALISATION_CASE_STOP_REASONS, getStopReason(caseDetails));
         LocalDate dateOfDeath = getDateValue(caseData, "deceasedDateOfDeath");
         personalisation.put(PERSONALISATION_DECEASED_DOD, dateFormatterService.formatDate(dateOfDeath));
         personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
@@ -83,6 +93,59 @@ public class AutomatedNotificationPersonalisationService {
         personalisation.put(PERSONALISATION_LINK_TO_CASE, getHyperLink(caseDetails.getId().toString(),
                 applicationType, getCaseType(caseData)));
         return personalisation;
+    }
+
+    private String getStopReason(CaseDetails caseDetails) {
+        List<CollectionMember<StopReason>> stopReasonList = getStopReasonList(caseDetails.getData());
+        StringBuilder stopReasons = new StringBuilder();
+        LanguagePreference languagePreference = Optional.ofNullable(
+                        caseDetails.getData().get("languagePreferenceWelsh"))
+                .map(Object::toString)
+                .filter("Yes"::equalsIgnoreCase)
+                .map(yes -> LanguagePreference.WELSH)
+                .orElse(LanguagePreference.ENGLISH);
+        // Append regular stop reasons
+        stopReasonList.stream()
+                .filter(sr -> isValidStopReason(sr, false))
+                .forEach(sr -> stopReasons.append(
+                        stopReasonService.getStopReasonDescription(languagePreference,
+                                sr.getValue().getCaseStopReason())).append("\n"));
+
+        // Filter for "DocumentsRequired" reasons
+        List<CollectionMember<StopReason>> docRequiredReasons = stopReasonList.stream()
+                .filter(sr -> isValidStopReason(sr, true))
+                .toList();
+
+        if (!docRequiredReasons.isEmpty()) {
+            stopReasons.append(stopReasonService.getStopReasonDescription(languagePreference,
+                    "DocumentsRequired")).append("\n");
+            docRequiredReasons.forEach(sr ->
+                    stopReasons.append("&nbsp;&nbsp;&nbsp;&nbsp;").append(stopReasonService
+                            .getStopReasonDescription(languagePreference,sr.getValue()
+                                    .getCaseStopSubReasonDocRequired())).append("\n"));
+        }
+
+        return stopReasons.toString();
+    }
+
+    private boolean isValidStopReason(CollectionMember<StopReason> stopReason, boolean isDocumentsRequired) {
+        StopReason value = stopReason.getValue();
+        return value != null && value.getCaseStopReason() != null
+                && (isDocumentsRequired == value.getCaseStopReason().equals("DocumentsRequired"));
+    }
+
+    private List<CollectionMember<StopReason>> getStopReasonList(Map<String, Object> data) {
+        Object raw = data.get("boCaseStopReasonList");
+        if (raw == null) {
+            return new ArrayList<>();
+        }
+
+        try {
+            return objectMapper.convertValue(raw, new TypeReference<List<CollectionMember<StopReason>>>() {});
+        } catch (Exception e) {
+            log.warn("Failed to parse probateNotificationsGenerated. Reason: {}", e.getMessage());
+            throw e;
+        }
     }
 
     private String getHyperLink(String caseId, ApplicationType applicationType, String caseType) {
