@@ -15,6 +15,13 @@
             "data.evidenceHandled": "Yes"
           }
         }
+      ],
+      "must_not": [
+        {
+          "term": {
+            "state.keyword": "BOGrantIssued"
+          }
+        }
       ]
     }
   },

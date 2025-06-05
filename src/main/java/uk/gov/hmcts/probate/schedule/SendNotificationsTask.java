@@ -40,8 +40,8 @@ public class SendNotificationsTask implements Runnable {
     @Value("${automated_notification.stop_reminder.second_notification_days}")
     private int secondNotificationDays;
 
-    @Value("${automated_notification.hse_reminder.awaiting_documentation_months}")
-    private int hseYesNotificationMonths;
+    @Value("${automated_notification.hse_reminder.awaiting_documentation_days}")
+    private int hseYesNotificationDays;
 
     @Value("${adhocSchedulerJobDate}")
     public String adHocJobDate;
@@ -51,13 +51,13 @@ public class SendNotificationsTask implements Runnable {
         log.info("Scheduled task SendNotificationsTask started");
         String firstStopReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(firstNotificationDays));
         String secondStopReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(secondNotificationDays));
-        String hseReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusMonths(hseYesNotificationMonths));
+        String hseReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(hseYesNotificationDays));
 
         if (StringUtils.isNotEmpty(adHocJobDate)) {
             log.info("Running SendNotificationsTask with Adhoc dates {}", adHocJobDate);
             firstStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(firstNotificationDays).toString();
             secondStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(secondNotificationDays).toString();
-            hseReminderDate = LocalDate.parse(adHocJobDate).minusMonths(hseYesNotificationMonths).toString();
+            hseReminderDate = LocalDate.parse(adHocJobDate).minusDays(hseYesNotificationDays).toString();
         }
 
         try {

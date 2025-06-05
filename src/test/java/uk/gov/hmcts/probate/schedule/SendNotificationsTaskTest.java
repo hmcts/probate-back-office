@@ -60,17 +60,17 @@ class SendNotificationsTaskTest {
     private static final String AD_HOC_DATE = "2022-09-05";
     private static final String FIRST_STOP_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(56).toString();
     private static final String SECOND_STOP_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(28).toString();
-    private static final String HSE_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusMonths(1).toString();
+    private static final String HSE_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(30).toString();
     private static final LocalDate FIXED_DATE = LocalDate.of(2025, 5, 19);
     private static final String DEFAULT_FIRST_DATE = DATE_FORMAT.format(FIXED_DATE.minusDays(56)); //2025-03-24
     private static final String DEFAULT_SECOND_DATE = DATE_FORMAT.format(FIXED_DATE.minusDays(28)); //2025-04-21
-    private static final String DEFAULT_HSE_DATE = DATE_FORMAT.format(FIXED_DATE.minusMonths(1)); //2025-04-21
+    private static final String DEFAULT_HSE_DATE = DATE_FORMAT.format(FIXED_DATE.minusDays(30)); //2025-04-21
 
     @BeforeEach
     void setUp() {
         ReflectionTestUtils.setField(sendNotificationsTask, "firstNotificationDays", 56);
         ReflectionTestUtils.setField(sendNotificationsTask, "secondNotificationDays", 28);
-        ReflectionTestUtils.setField(sendNotificationsTask, "hseYesNotificationMonths", 1);
+        ReflectionTestUtils.setField(sendNotificationsTask, "hseYesNotificationDays", 30);
         ReflectionTestUtils.setField(sendNotificationsTask, "clock", clock);
         Instant fixedInstant = FIXED_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant();
         when(clock.instant()).thenReturn(fixedInstant);

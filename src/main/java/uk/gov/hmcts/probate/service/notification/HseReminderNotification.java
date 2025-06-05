@@ -5,16 +5,16 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
 
 @Service
 public class HseReminderNotification implements NotificationStrategy {
@@ -24,6 +24,7 @@ public class HseReminderNotification implements NotificationStrategy {
     private static final String HSE_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send HSE reminder";
     private static final String HSE_ES_QUERY_PATH = "templates/elasticsearch/caseMatching/hse_reminder_query.json";
     private static final String EVIDENCE_HANDLED_DATE = "evidenceHandledDate";
+    private static final String STATE_BO_GRANT_ISSUE = "BOGrantIssued";
     private final NotificationService notificationService;
 
     @Setter
@@ -92,6 +93,7 @@ public class HseReminderNotification implements NotificationStrategy {
                     .orElse(null);
 
             return YES.equals(evidenceHandled)
+                    && !STATE_BO_GRANT_ISSUE.equals(cd.getState())
                     && evidenceHandledDate != null
                     && evidenceHandledDate.equals(referenceDate);
         };

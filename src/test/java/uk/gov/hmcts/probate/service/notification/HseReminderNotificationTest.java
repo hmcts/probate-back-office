@@ -150,4 +150,26 @@ class HseReminderNotificationTest {
 
         assertEquals(true, result);
     }
+
+    @Test
+    void returnsFalseWhenStateIsBOGrantIssued() {
+        underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
+        when(caseDetails.getData()).thenReturn(Map.of("evidenceHandled", "Yes", "evidenceHandledDate", "2023-10-01"));
+        when(caseDetails.getState()).thenReturn("BOGrantIssued");
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertEquals(false, result);
+    }
+
+    @Test
+    void returnsTrueWhenStateIsBOCaseStopped() {
+        underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
+        when(caseDetails.getData()).thenReturn(Map.of("evidenceHandled", "Yes", "evidenceHandledDate", "2023-10-01"));
+        when(caseDetails.getState()).thenReturn("BOCaseStopped");
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertEquals(true, result);
+    }
 }

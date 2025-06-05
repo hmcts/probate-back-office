@@ -526,4 +526,4 @@ automated_notification:
     first_notification_days: 56
     second_notification_days: 28
   hse_reminder:
-    awaiting_documentation_months: 1
+    awaiting_documentation_days: 30
