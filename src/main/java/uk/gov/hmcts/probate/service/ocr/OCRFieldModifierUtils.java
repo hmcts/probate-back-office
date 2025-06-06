@@ -48,7 +48,8 @@ public class OCRFieldModifierUtils {
                     .getDeceasedDateOfDeath()) ? "TRUE" : "FALSE";
             ocrFields.setDeceasedDiedOnAfterSwitchDate(switchDateValue);
             log.info("Setting deceasedDiedOnAfterSwitchDate to {}", switchDateValue);
-        }/*else if (isBlank(ocrFields.getDeceasedDateOfDeath())
+        }
+        /*else if (isBlank(ocrFields.getDeceasedDateOfDeath())
                 && !isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
             // If DoD is blank but switch date is set we can avoid warnings and auto create by default setting DoD
             String switchDateValue = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields
