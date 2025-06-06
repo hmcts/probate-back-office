@@ -11,6 +11,8 @@ import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
@@ -34,6 +36,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -52,6 +55,8 @@ class NotificationServiceTest {
     private RegistriesProperties registriesPropertiesMock;
     @Mock
     private NotificationClient notificationClientMock;
+    @Mock
+    private TemplatePreview templatePreviewMock;
     @Mock
     private MarkdownTransformationService markdownTransformationServiceMock;
     @Mock
@@ -85,6 +90,7 @@ class NotificationServiceTest {
     private NotificationService notificationService;
 
     private AutoCloseable closeableMocks;
+    private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
 
     @BeforeEach
     void setUp() {
@@ -170,7 +176,13 @@ class NotificationServiceTest {
 
         when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
                 .thenReturn(mockResult);
-        when(notificationClientServiceMock.emailPreview(any(), any(), any())).thenReturn(mock(TemplatePreview.class));
+        when(notificationClientServiceMock.emailPreview(any(), any(), any())).thenReturn(templatePreviewMock);
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        String expectedHtml = "<html><body>Test</body></html>";
+        String expectedXhtml = "<xhtml><body>Test</body></xhtml>";
+        when(templatePreviewMock.getHtml()).thenReturn(Optional.of(expectedHtml));
+        when(pdfManagementServiceMock.rerenderAsXhtml(expectedHtml)).thenReturn(expectedXhtml);
 
         notificationService.emailPreview(caseDetails);
 
