@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.service.FetchDraftCaseService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
@@ -18,19 +19,21 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
     private final DataExtractDateValidator dataExtractDateValidator;
     private final FetchDraftCaseService fetchDraftCaseService;
     private final String startDate;
+    private final Clock clock;
 
     public FetchDraftCasesWithPaymentTask(DataExtractDateValidator dataExtractDateValidator,
                                           FetchDraftCaseService fetchDraftCaseService,
-                                          @Value("${draft_payment.start_date}") String startDate) {
+                                          @Value("${draft_payment.start_date}") String startDate, Clock clock) {
         this.dataExtractDateValidator = dataExtractDateValidator;
         this.fetchDraftCaseService = fetchDraftCaseService;
         this.startDate = startDate;
+        this.clock = clock;
     }
 
     @Override
     public void run() {
         log.info("Scheduled task FetchDraftCasesWithPaymentTask started");
-        final String endDate = DATE_FORMAT.format(LocalDate.now());
+        final String endDate = DATE_FORMAT.format(LocalDate.now(clock));
         log.info("Calling perform fetch draft cases wth payment done from date, to date {} {}", startDate, endDate);
         try {
             dataExtractDateValidator.dateValidator(startDate, endDate);

@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.service.FetchDraftCaseService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +30,9 @@ class FetchDraftCasesWithPaymentTaskTest {
     @Mock
     private FetchDraftCaseService fetchDraftCaseService;
 
+    @Mock
+    private Clock clock;
+
     @InjectMocks
     private FetchDraftCasesWithPaymentTask fetchDraftCasesWithPaymentTask;
     private static final String DATE_TODAY = DATE_FORMAT.format(LocalDate.now());
@@ -36,10 +40,13 @@ class FetchDraftCasesWithPaymentTaskTest {
 
     @BeforeEach
     void setUp() {
+        clock = Clock.systemDefaultZone();
+
         fetchDraftCasesWithPaymentTask = new FetchDraftCasesWithPaymentTask(
                 dataExtractDateValidator,
                 fetchDraftCaseService,
-                adhocDate
+                adhocDate,
+                clock
         );
     }
 
