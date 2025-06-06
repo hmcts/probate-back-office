@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 public enum GORCitizenMandatoryFields {
     PRIMARY_APPLICANT_HAS_ALIAS("primaryApplicantHasAlias", "Primary applicant has alias?"),
-    DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
-    DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
-    DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
+    //DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
+    //DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
+    //DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
     EXCEPTED_ESTATE("exceptedEstate", "I did not have to submit any forms to HMRC.", "0"),
     FORM_VERSION("formVersion", "Form version"),
     IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "1"),
