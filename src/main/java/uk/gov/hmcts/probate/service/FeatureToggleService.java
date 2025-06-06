@@ -12,11 +12,12 @@ public class FeatureToggleService {
     private final LDClient ldClient;
     private final LDContext ldContext;
     private static final String SMEE_AND_FORD_POUND_VALUE_TOGGLE = "probate-smee-ford-pound-value";
+    private static final String IRON_MOUNTAIN_IN_BACK_OFFICE = "probate-iron-mountain-in-back-office";
+    private static final String EXELA_IN_BACK_OFFICE = "probate-exela-in-back-office";
     private static final String FIRST_STOP_REMINDER_TOGGLE = "probate-cron-first-stop-reminder";
     private static final String SECOND_STOP_REMINDER_TOGGLE = "probate-cron-second-stop-reminder";
     private static final String HSE_REMINDER_TOGGLE = "probate-cron-hse-reminder";
     private static final String DORMANT_WARNING_TOGGLE = "probate-cron-dormant-warning";
-
 
     @Autowired
     public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,
@@ -56,6 +57,14 @@ public class FeatureToggleService {
     public boolean isPoundValueFeatureToggleOn() {
         return this.isFeatureToggleOn(
                 SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
+    }
+  
+    public boolean isIronMountainInBackOffice() {
+        return this.isFeatureToggleOn(IRON_MOUNTAIN_IN_BACK_OFFICE, false);
+    }
+
+    public boolean isExelaInBackOffice() {
+        return this.isFeatureToggleOn(EXELA_IN_BACK_OFFICE, false);
     }
 
     public boolean isFirstStopReminderFeatureToggleOn() {

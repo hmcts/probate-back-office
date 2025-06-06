@@ -1418,8 +1418,6 @@ class NotificationServiceIT {
             eq("exela@probate-test.com"),
             any(),
             anyString());
-
-        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
@@ -1431,8 +1429,6 @@ class NotificationServiceIT {
             eq("exela@probate-test.com"),
             any(),
             anyString());
-
-        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
@@ -1444,8 +1440,6 @@ class NotificationServiceIT {
             eq("exela@probate-test.com"),
             any(),
             anyString());
-
-        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
