@@ -17,11 +17,14 @@ properties([
 
 String product = "probate"
 String component = "back-office"
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 
 def secrets = [
   'probate-aat': [
     secret('cwUserEmail', 'CW_USER_EMAIL'),
     secret('cwUserPass', 'CW_USER_PASSWORD'),
+    secret('cwSuperuserEmail', 'CW_SUPERUSER_EMAIL'),
+    secret('cwSuperuserPass', 'CW_SUPERUSER_PASSWORD'),
     secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
     secret('solicitorUserPass', 'SOL_USER_PASSWORD'),
     secret('solicitor2UserEmail', 'SOL2_USER_EMAIL'),
@@ -47,8 +50,13 @@ withNightlyPipeline("nodejs", product, component) {
     enableSecurityScan()
     enableFortifyScan('probate-aat')
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
-    afterAlways('fullFunctionalTest') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+    before('fullFunctionalTest') {
+        yarnBuilder.yarn('yarn-update')
+        yarnBuilder.yarn('install-dependencies')
+        env.MOCKED_PAYMENTS = false
+        env.TEST_RETRIES = 2
+        env.TESTS_FOR_ACCESSIBILITY = true
+        env.ENV = 'aat'
     }
 
     afterAlways('crossBrowserTest') {

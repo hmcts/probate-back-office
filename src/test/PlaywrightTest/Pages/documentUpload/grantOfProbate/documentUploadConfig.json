@@ -1,0 +1,11 @@
+{
+  "waitForText" : "Upload Documents",
+  "legalStatement_waitForText": "Amend legal statement",
+  "documentType": ["Email", "Correspondence", "Will", "Codicil", "Uploaded Legal Statement", "Death Certificate", "Citizen hub upload", "Other"],
+  "documentTypeSelected": "Email",
+  "fileToUploadUrl":"./src/test/PlaywrightTest/Documents/test_file.docx",
+  "filename": "test_file.docx",
+  "comment": "test file to upload",
+  "id": "#boDocumentsUploaded",
+  "uploadLegalStatementId": "#amendedLegalStatement"
+}
