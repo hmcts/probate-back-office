@@ -92,8 +92,8 @@ class OCRFieldModifierUtilsTest {
         when(bulkScanConfig.getDeceasedAnyOtherNames()).thenReturn(DEFAULT_DECEASED_ANY_OTHER_NAMES_VALUE);
         when(bulkScanConfig.getDeceasedDomicileInEngWales()).thenReturn(DEFAULT_DECEASED_DOMICILE_IN_ENG_WALES_VALUE);
         when(bulkScanConfig.getPrimaryApplicantHasAlias()).thenReturn(DEFAULT_ALIAS_VALUE);
-        when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue()).thenReturn("TRUE");
-        when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateFalse()).thenReturn("FALSE");
+        //when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue()).thenReturn("TRUE");
+        //when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateFalse()).thenReturn("FALSE");
 
         Field bulkScanConfigField = OCRFieldModifierUtils.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);
@@ -130,10 +130,11 @@ class OCRFieldModifierUtilsTest {
                 .caveatorSurnames(VALID_CAVEATOR_SURNAME)
                 .caveatorAddressLine1(VALID_CAVEATOR_ADDRESS_LINE_1)
                 .caveatorAddressPostCode(VALID_CAVEATOR_ADDRESS_POSTCODE)
+                //.deceasedDateOfDeath("01012022")
+                //.deceasedDiedOnAfterSwitchDate("TRUE")
                 .build();
     }
 
-    /*
     @Test
     void shouldSetApplicantForenameToMissingWhenEmpty() {
         ocrFields.setPrimaryApplicantForenames("");
@@ -245,7 +246,6 @@ class OCRFieldModifierUtilsTest {
         assertEquals("deceasedDomicileInEngWales", modifiedFields.get(0).getValue().getFieldName());
         assertEquals(DEFAULT_DECEASED_DOMICILE_IN_ENG_WALES_VALUE, ocrFields.getDeceasedDomicileInEngWales());
     }
-     */
 
     //IHT
     @Test

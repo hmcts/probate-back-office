@@ -118,11 +118,10 @@ public class CommonMandatoryFieldsValidatorV3 {
             }
             submittedForm.add(IHT205_COMPLETED);
         }
-        /* Temp comment as form version should now default to IHT400
         if (submittedForm.size() != 1) {
             mandatoryFieldsValidatorUtils.addWarning("Applicant must submit one and only one iht form, "
                     + "submitted form:" + submittedForm, warnings);
-        }*/
+        }
     }
 
     private boolean addWarningsForIHTForms(String ihtForm, Map<String, String> ocrFieldValues, List<String> warnings,
