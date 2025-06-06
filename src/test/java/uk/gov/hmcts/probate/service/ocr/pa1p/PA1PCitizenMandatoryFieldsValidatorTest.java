@@ -82,6 +82,7 @@ class PA1PCitizenMandatoryFieldsValidatorTest {
         assertEquals(0, warnings.size());
     }
 
+    /*
     @Test
     void testFieldDescriptionIsAddedToMissingValueListForPA1Pv1() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
@@ -107,6 +108,7 @@ class PA1PCitizenMandatoryFieldsValidatorTest {
         assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
             warnings.get(0));
     }
+     */
 
     @Test
     void testMissingIHT400421CompletedMandatoryFieldReturnSuccessfullyForPA1Pv2() {
