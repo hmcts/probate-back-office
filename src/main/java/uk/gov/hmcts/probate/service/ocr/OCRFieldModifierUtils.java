@@ -48,36 +48,34 @@ public class OCRFieldModifierUtils {
                     .getDeceasedDateOfDeath()) ? "TRUE" : "FALSE";
             ocrFields.setDeceasedDiedOnAfterSwitchDate(switchDateValue);
             log.info("Setting deceasedDiedOnAfterSwitchDate to {}", switchDateValue);
-        }
-
-        // If DoD is blank but switch date is set we can avoid warnings and auto create by default setting DoD
-        if (isBlank(ocrFields.getDeceasedDateOfDeath()) && !isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+        } else if (isBlank(ocrFields.getDeceasedDateOfDeath())
+                && !isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+            // If DoD is blank but switch date is set we can avoid warnings and auto create by default setting DoD
             String switchDateValue = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields
                     .getDeceasedDateOfDeath()) ? "TRUE" : "FALSE";
             addModifiedField(modifiedFields, "deceasedDateOfDeath",
                     ocrFields.getDeceasedDiedOnAfterSwitchDate());
-            if (switchDateValue.equals("TRUE")) {
+
+            if (switchDateValue.equalsIgnoreCase("TRUE")) {
                 ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-                log.info("Setting Date of Death to {} due to died on or after switch date value",
+                log.info("Setting deceasedDateOfDeath to {} due to died on or after switch date value",
                         ocrFields.getDeceasedDateOfDeath());
-            } else if (switchDateValue.equals("FALSE")) {
+            } else if (switchDateValue.equalsIgnoreCase("FALSE")) {
                 ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse());
-                log.info("Setting Date of Death to {} due to died on or after switch date value",
+                log.info("Setting deceasedDateOfDeath to {} due to died on or after switch date value",
                         ocrFields.getDeceasedDateOfDeath());
             }
-        }
-
-
-        if (isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+        } else if (isBlank(ocrFields.getDeceasedDateOfDeath())
+                && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
             if (!isBlank(ocrFields.getIht205Completed()) || (!isBlank(ocrFields.getIhtGrossValue205()))
                     || (!isBlank(ocrFields.getIhtNetValue205()))) {
 
                 addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
                         ocrFields.getDeceasedDiedOnAfterSwitchDate());
                 ocrFields.setDeceasedDiedOnAfterSwitchDate(
-                        bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse());
+                        bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateFalse());
 
-                log.info("Setting Died on or after switch date to {}",
+                log.info("Setting deceasedDiedOnAfterSwitchDate to {}",
                         ocrFields.getDeceasedDiedOnAfterSwitchDate());
 
             } else if (!isBlank(ocrFields.getIhtEstateNetValue()) || (!isBlank(ocrFields.getIhtEstateGrossValue()))
@@ -85,18 +83,14 @@ public class OCRFieldModifierUtils {
                 addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
                         ocrFields.getDeceasedDiedOnAfterSwitchDate());
 
-                ocrFields.setDeceasedDiedOnAfterSwitchDate(
-                        bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-                log.info("Setting Died on or after switch date to {}",
-                        ocrFields.getDeceasedDiedOnAfterSwitchDate());
+                ocrFields.setDeceasedDiedOnAfterSwitchDate(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue());
+                log.info("Setting deceasedDiedOnAfterSwitchDate to {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
             } else {
                 addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
                         ocrFields.getDeceasedDiedOnAfterSwitchDate());
 
-                ocrFields.setDeceasedDiedOnAfterSwitchDate(
-                        bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-                log.info("Setting Died on or after switch date to {}",
-                        ocrFields.getDeceasedDiedOnAfterSwitchDate());
+                ocrFields.setDeceasedDiedOnAfterSwitchDate(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue());
+                log.info("Setting deceasedDiedOnAfterSwitchDate to {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
             }
         }
 

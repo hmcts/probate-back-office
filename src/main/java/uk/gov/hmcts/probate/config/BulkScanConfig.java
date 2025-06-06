@@ -32,4 +32,7 @@ public class BulkScanConfig {
 
     private String dateOfDeathForDiedOnOrAfterSwitchDateTrue;
     private String dateOfDeathForDiedOnOrAfterSwitchDateFalse;
+
+    private String deceasedDiedOnOrAfterSwitchDateTrue;
+    private String deceasedDiedOnOrAfterSwitchDateFalse;
 }
