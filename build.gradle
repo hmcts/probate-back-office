@@ -9,9 +9,9 @@ plugins {
   id 'jacoco'
   id 'project-report'
   id 'au.com.dius.pact' version '4.6.17'
-  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.22'
+  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.30'
   id 'org.sonarqube' version '6.2.0.5505'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.1668'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.1740'
 }
 
 application {
@@ -90,7 +90,6 @@ sourceSets {
       runtimeClasspath += main.output
       srcDir file('src/contractTest/java')
     }
-    resources.srcDir file('src/contractTest/resources')
   }
   integrationTest {
     java {
@@ -98,7 +97,6 @@ sourceSets {
       runtimeClasspath += main.output
       srcDir file('src/integrationTest/java')
     }
-    resources.srcDir file('src/integrationTest/resources')
   }
 }
 
@@ -170,18 +168,21 @@ def versions = [
         lombok                          : '1.18.38',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
-        probateCommonsVersion           : '2.1.1',
-        probatePactCommonsVersion       : '1.0.2',
-        restAssured                     : '5.5.2',
+        probateCommonsVersion           : '2.2.2',
+        restAssured                     : '5.5.5',
         serenity                        : '4.2.22',
-        serenityreporter                : '4.2.22',
+        serenityreporter                : '4.2.30',
         serviceAuthVersion              : '5.3.2',
         springBootVersion               : '3.3.11',
         springBootStarterHateoas        : '3.3.11',
         springCloud                     : '4.1.4',
         springCloudStarterNetflixHystrix: '4.1.3',
         springDocOpenUi                 : '2.6.0',
-        springSecurityVersion           : '6.4.5'
+        springSecurityVersion           : '6.4.5',
+        pdfServiceClientVersion         : '8.0.2',
+        sendLetterClientVersion         : '5.0.4',
+        lifeEventsClientVersion         : '1.3.0',
+        fortifyClientVersion            : '1.4.9',
 ]
 
 jacocoTestReport {
@@ -196,7 +197,9 @@ jacocoTestReport {
 repositories {
   mavenLocal()
   mavenCentral()
-  maven { url "https://jitpack.io" }
+  maven {
+    url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
+  }
 }
 
 
@@ -225,13 +228,13 @@ dependencies {
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
-  implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.2'
-  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.4'
-  implementation group: 'com.github.hmcts', name: 'life-events-client', version: '1.2.4'
+  implementation group: 'com.github.hmcts', name: 'pdf-service-client', version: versions.pdfServiceClientVersion
+  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: versions.sendLetterClientVersion
+  implementation group: 'com.github.hmcts', name: 'life-events-client', version: versions.lifeEventsClientVersion
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.4'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.30.0'
-  implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.7.2'
-  implementation group: 'com.microsoft.azure', name: 'applicationinsights-runtime-attach', version: '3.7.2'
+  implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.7.3'
+  implementation group: 'com.microsoft.azure', name: 'applicationinsights-runtime-attach', version: '3.7.3'
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.1'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
@@ -252,17 +255,17 @@ dependencies {
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
 
   implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.5'
-  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.10.1'
+  implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
 
-  implementation group: 'org.pitest', name: 'pitest', version: '1.19.3'
+  implementation group: 'org.pitest', name: 'pitest', version: '1.19.5'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.24.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
-  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.5'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.6'
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
@@ -282,9 +285,9 @@ dependencies {
   testImplementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
   testImplementation group: 'org.wiremock', name: 'wiremock-standalone', version: '3.13.0'
   testImplementation group: 'org.awaitility', name: 'awaitility', version: '4.3.0'
-  testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.8', classifier: 'all'
+  testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: versions.fortifyClientVersion, classifier: 'all'
   testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
-  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.14.2'
+  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.18.0'
 
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeImplementation sourceSets.main.runtimeClasspath
@@ -297,7 +300,7 @@ dependencies {
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '4.3.0'
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.6'
   testFunctionalImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
-  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.2'
+  testFunctionalImplementation group: 'com.github.hmcts', name: 'pdf-service-client', version: versions.pdfServiceClientVersion
   testFunctionalImplementation group: 'net.thucydides', name: 'thucydides-core', version: '0.9.275'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
   testFunctionalImplementation sourceSets.test.runtimeClasspath
@@ -332,7 +335,7 @@ dependencies {
   contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntimeOnly group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-  contractTestImplementation group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
+  contractTestImplementation group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probateCommonsVersion
   contractTestImplementation sourceSets.main.runtimeClasspath
   contractTestImplementation sourceSets.test.runtimeClasspath
 
@@ -406,7 +409,6 @@ task highLevelDataSetup(type: JavaExec) {
 }
 
 check.dependsOn(integration)
-tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
 
 static def getCheckedOutGitCommitHash() {
   'git rev-parse --verify --short HEAD'.execute().text.trim()
@@ -507,7 +509,7 @@ bootWithCCD {
     environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
   } else {
     doFirst() {
-      "sh bin/variables/load-local-environment-variables.sh".execute()
+      "sh bin/variables/load-local-environment-variables.sh".execute().waitFor()
     }
 
     if (project.file('./.aat-env').exists()) {
@@ -525,7 +527,7 @@ bootWithCCD {
 
 task reloadLocalEnvVars() {
   doFirst() {
-    "sh bin/variables/load-local-environment-variables.sh".execute()
+    "sh bin/variables/load-local-environment-variables.sh".execute().waitFor()
   }
 }
 
@@ -549,20 +551,4 @@ dependencyCheck {
 
 rootProject.tasks.named("processResources") {
   dependsOn("generateGitProperties")
-}
-
-processContractTestResources {
-  duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
-
-bootJar {
-  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-distTar {
-  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-distZip {
-  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

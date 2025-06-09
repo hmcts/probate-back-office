@@ -74,6 +74,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -795,6 +796,17 @@ class BusinessValidationUnitTest {
     void shouldSetGrantStoppedDateAfterCaseFailQa() {
         ResponseEntity<CallbackResponse> response = underTest.caseFailQa(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldUpdateTaskListWithEmptyCaseworkerInfo() {
+        CallbackResponse expectedResponse = Mockito.mock(CallbackResponse.class);
+        when(callbackResponseTransformerMock.updateTaskList(callbackRequestMock, Optional.empty()))
+                .thenReturn(expectedResponse);
+
+        ResponseEntity<CallbackResponse> response = underTest.caseFailQa(callbackRequestMock);
+        assertEquals(expectedResponse, response.getBody());
+        verify(callbackResponseTransformerMock).updateTaskList(callbackRequestMock, Optional.empty());
     }
 
     @Test
