@@ -1,12 +1,12 @@
 import { expect } from "@playwright/test";
-import { testConfig } from "../../Configs/config";
+import { testConfig } from "../../Configs/config.ts";
 import commonConfig from "../common/commonConfig.json" with { type: "json" };
 import emailCaveatorConfig from "../emailNotifications/caveat/emailCaveatorConfig.json" with { type: "json" };
 import eventSummaryConfig from "../eventSummary/eventSummaryConfig.json" with { type: "json" };
 import handleEvidenceConfig from "../handleEvidence/handleEvidenceConfig.json" with { type: "json" };
 import registrarsDecisionConfig from "../registrarsDecision/registrarsDecisionConfig.json" with { type: "json" };
 import reopenCaveatConfig from "../reopenningCases/caveat/reopenCaveatConfig.json" with { type: "json" };
-import { BasePage } from "../utility/basePage";
+import { BasePage } from "../utility/basePage.ts";
 import withdrawCaveatConfig from "../withdrawCaveat/withdrawCaveatConfig.json" with { type: "json" };
 // const createGrantOfProbateConfig = require('../../../end-to-end/pages/createGrantOfProbate/createGrantOfProbateConfig.json');
 import newConfig from "../caseDetails/grantOfProbate/superUserCwConfig.json" with { type: "json" };

@@ -6,6 +6,7 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "type": "module",
   "scripts": {
     "lint": "NODE_PATH=. eslint .",
     "eslint": "NODE_PATH=. eslint .",

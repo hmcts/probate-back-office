@@ -1,7 +1,7 @@
 import { test } from "../../Fixtures/fixtures.ts";
 
-import { testConfig } from "../../Configs/config";
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json";
+import { testConfig } from "../../Configs/config.ts";
+import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 
 import applicantDetailsTabConfig from "../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json" with { type: "json" };
 import caseDetailsTabConfig from "../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigProbateMan.json" with { type: "json" };

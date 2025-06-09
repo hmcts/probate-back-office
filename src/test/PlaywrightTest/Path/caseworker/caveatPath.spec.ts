@@ -1,5 +1,5 @@
 import dateFns from "date-fns";
-import { test } from "../../Fixtures/fixtures";
+import { test } from "../../Fixtures/fixtures.ts";
 
 import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 import eventSummaryConfig from "../../Pages/eventSummary/eventSummaryConfig.json" with { type: "json" };
@@ -11,7 +11,7 @@ import emailCaveatorConfig from "../../Pages/emailNotifications/caveat/emailCave
 
 import documentUploadConfig from "../../Pages/documentUpload/caveat/documentUploadConfig.json" with { type: "json" };
 
-import historyTabConfig from "../../Pages/caseDetails/caveat/historyTabConfig.json";
+import historyTabConfig from "../../Pages/caseDetails/caveat/historyTabConfig.json" with { type: "json" };
 
 import caseDetailsTabConfig from "../../Pages/caseDetails/caveat/caseDetailsTabConfig.json" with { type: "json" };
 import caveatDetailsTabConfig from "../../Pages/caseDetails/caveat/caveatDetailsTabConfig.json" with { type: "json" };
@@ -29,7 +29,7 @@ import documentsTabUploadDocumentConfig from "../../Pages/caseDetails/caveat/doc
 import registrarsDecisionConfig from "../../Pages/caseDetails/caveat/registrarsDecisionConfig.json" with { type: "json" };
 import registrarsDecisionTabConfig from "../../Pages/caseDetails/caveat/registrarsDecisionTabConfig.json" with { type: "json" };
 
-import { convertTokens, legacyParse } from "@date-fns/upgrade/v2";
+import { testConfig } from "../../Configs/config.ts";
 
 test.describe("Caseworker Caveat1 - Order summons", () => {
   test("Caseworker Caveat1 - Order summons", async ({
@@ -113,8 +113,8 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
 
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
     createCaveatConfig.caveat_expiry_date = dateFns.format(
-      legacyParse(dateFns.addMonths(new Date(), 6)),
-      convertTokens("D MMM YYYY")
+      dateFns.addMonths(new Date(), 6),
+      testConfig.dateFormat
     );
     // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
@@ -153,8 +153,8 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
     );
     // When emailing the caveator, the Date added for the email document is set to today
     emailCaveatorConfig.dateAdded = dateFns.format(
-      legacyParse(new Date()),
-      convertTokens("D MMM YYYY")
+      new Date(),
+      testConfig.dateFormat
     );
     // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
@@ -207,8 +207,8 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
     );
     // When emailing the caveator, the Date added for the email document is set to today
     emailCaveatorConfig.dateAdded = dateFns.format(
-      legacyParse(new Date()),
-      convertTokens("D MMM YYYY")
+      new Date(),
+      testConfig.dateFormat
     );
     // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(

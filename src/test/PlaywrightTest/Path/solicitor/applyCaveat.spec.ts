@@ -1,5 +1,5 @@
 import dateFns from "date-fns";
-import { test } from "../../Fixtures/fixtures";
+import { test } from "../../Fixtures/fixtures.ts";
 
 // const {runAccessibilityTest} = require('../../Accessibility/axeUtils');
 // const testConfig = require('src/test/config');
@@ -9,6 +9,7 @@ import applicationDetailsConfig from "../../Pages/solicitorApplyCaveat/applicati
 import applyCaveatConfig from "../../Pages/solicitorApplyCaveat/applyCaveat/applyCaveat.json" with { type: "json" };
 import completeApplicationConfig from "../../Pages/solicitorApplyCaveat/completeApplication/completeApplication.json" with { type: "json" };
 
+import { testConfig } from "../../Configs/config.ts";
 import caseDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/caseDetailsTabConfig.json" with { type: "json" };
 import caveatDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/caveatDetailsTabConfig.json" with { type: "json" };
 import caveatorDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/caveatorDetailsTabConfig.json" with { type: "json" };
@@ -17,8 +18,6 @@ import historyTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/histo
 import notificationsTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/notificationsTabConfig.json" with { type: "json" };
 import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 import serviceRequestTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
-
-import { convertTokens, legacyParse } from "@date-fns/upgrade/v2";
 
 test.describe("Solicitor - Apply Caveat", () => {
   test("Solicitor - Apply Caveat", async ({
@@ -134,13 +133,13 @@ test.describe("Solicitor - Apply Caveat", () => {
 
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
     completeApplicationConfig.caveat_expiry_date = dateFns.format(
-      legacyParse(dateFns.addMonths(new Date(), 6)),
-      convertTokens("D MMM YYYY")
+      dateFns.addMonths(new Date(), 6),
+      testConfig.dateFormat
     );
     // When emailing the caveator, the Date added for the email document is set to today
     completeApplicationConfig.notification_date = dateFns.format(
-      legacyParse(new Date()),
-      convertTokens("D MMM YYYY")
+      new Date(),
+      testConfig.dateFormat
     );
 
     //await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, completeApplicationConfig);

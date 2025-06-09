@@ -25,10 +25,9 @@ import testatorTabUpdateConfig from "../../Pages/caseDetails/willLodgement/testa
 import documentsTabGenerateDepositReceiptConfig from "../../Pages/caseDetails/willLodgement/documentsTabGenerateDepositReceiptConfig.json" with { type: "json" };
 import documentsTabUploadDocumentConfig from "../../Pages/caseDetails/willLodgement/documentsTabUploadDocumentConfig.json" with { type: "json" };
 
+import { testConfig } from "../../Configs/config.ts";
 import caseMatchesTabConfig from "../../Pages/caseDetails/willLodgement/caseMatchesTabConfig.json" with { type: "json" };
 import willWithdrawalDetailsTabConfig from "../../Pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig.json" with { type: "json" };
-
-import { convertTokens, legacyParse } from "@date-fns/upgrade/v2";
 
 test.describe("Caseworker Will Lodgement - Withdraw will", () => {
   test("Caseworker Will Lodgement - Withdraw will", async ({
@@ -206,8 +205,8 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
     );
     // When generating a deposit receipt, the Date added for the deposit receipt document is set to today
     generateDepositReceiptConfig.dateAdded = dateFns.format(
-      legacyParse(new Date()),
-      convertTokens("D MMM YYYY")
+      new Date(),
+      testConfig.dateFormat
     );
     // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
