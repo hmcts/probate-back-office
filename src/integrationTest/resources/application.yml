@@ -171,6 +171,7 @@ notifications:
           hseReminder: "pa-hse-reminder"
           hseReminderForHub: "pa-hse-reminder-for-hub"
           dormantWarning: "pa-dormant-warning"
+          unsubmittedApplication: "pa-unsubmitted-application"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -198,6 +199,7 @@ notifications:
           firstStopReminder: "sol-first-stop-reminder"
           hseReminder: "sol-hse-reminder"
           dormantWarning: "sol-dormant-warning"
+          unsubmittedApplication: "sol-unsubmitted-application"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -228,6 +230,7 @@ notifications:
           hseReminder: "pa-hse-reminder-welsh"
           hseReminderForHub: "pa-hse-reminder-for-hub-welsh"
           dormantWarning: "pa-dormant-warning-welsh"
+          unsubmittedApplication: "pa-unsubmitted-application-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -254,6 +257,7 @@ notifications:
           firstStopReminder: "sol-first-stop-reminder-welsh"
           hseReminder: "sol-hse-reminder-welsh"
           dormantWarning: "sol-dormant-warning-welsh"
+          unsubmittedApplication: "sol-unsubmitted-application-welsh"
 
 documents:
   templates:
@@ -532,3 +536,4 @@ automated_notification:
   hse_reminder:
     awaiting_documentation_days: 30
   dormant_warning_days: 150
+  unsubmitted_application_days: 28

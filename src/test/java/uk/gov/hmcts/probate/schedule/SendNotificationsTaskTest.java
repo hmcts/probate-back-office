@@ -11,16 +11,18 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
+import uk.gov.hmcts.probate.service.notification.DormantWarningNotification;
 import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
 import uk.gov.hmcts.probate.service.notification.HseReminderNotification;
 import uk.gov.hmcts.probate.service.notification.SecondStopReminderNotification;
+import uk.gov.hmcts.probate.service.notification.UnsubmittedApplicationNotification;
 
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-import static org.mockito.Mockito.times;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -31,6 +33,7 @@ import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_WARNING;
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
+import static uk.gov.hmcts.probate.model.NotificationType.UNSUBMITTED_APPLICATION;
 
 @ExtendWith(SpringExtension.class)
 class SendNotificationsTaskTest {
@@ -56,6 +59,12 @@ class SendNotificationsTaskTest {
     @Mock
     private HseReminderNotification hseReminderNotification;
 
+    @Mock
+    private DormantWarningNotification dormantWarningNotification;
+
+    @Mock
+    private UnsubmittedApplicationNotification unsubmittedApplicationNotification;
+
     @InjectMocks
     private SendNotificationsTask sendNotificationsTask;
     private static final String AD_HOC_DATE = "2022-09-05";
@@ -63,11 +72,14 @@ class SendNotificationsTaskTest {
     private static final String SECOND_STOP_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(28).toString();
     private static final String HSE_REMINDER_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(30).toString();
     private static final String DORMANT_WARNING_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(150).toString();
+    private static final String UNSUBMITTED_APPLICATION_DATE = LocalDate.parse(AD_HOC_DATE).minusDays(28).toString();
     private static final LocalDate FIXED_DATE = LocalDate.of(2025, 5, 19);
     private static final String DEFAULT_FIRST_DATE = DATE_FORMAT.format(FIXED_DATE.minusDays(56)); //2025-03-24
     private static final String DEFAULT_SECOND_DATE = DATE_FORMAT.format(FIXED_DATE.minusDays(28)); //2025-04-21
     private static final String DEFAULT_HSE_DATE = DATE_FORMAT.format(FIXED_DATE.minusDays(30)); //2025-04-21
     private static final String DEFAULT_DORMANT_WARNING_DATE = DATE_FORMAT.format(FIXED_DATE.minusDays(150));
+    private static final String DEFAULT_UNSUBMITTED_APPLICATION_DATE =
+            LocalDate.parse(AD_HOC_DATE).minusDays(28).toString();
 
 
     @BeforeEach
@@ -76,6 +88,7 @@ class SendNotificationsTaskTest {
         ReflectionTestUtils.setField(sendNotificationsTask, "secondNotificationDays", 28);
         ReflectionTestUtils.setField(sendNotificationsTask, "hseYesNotificationDays", 30);
         ReflectionTestUtils.setField(sendNotificationsTask, "dormantWarningDays", 150);
+        ReflectionTestUtils.setField(sendNotificationsTask, "unsubmittedApplicationDays", 28);
         ReflectionTestUtils.setField(sendNotificationsTask, "clock", clock);
         Instant fixedInstant = FIXED_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant();
         when(clock.instant()).thenReturn(fixedInstant);
@@ -85,57 +98,46 @@ class SendNotificationsTaskTest {
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
         when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(true);
         when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(true);
+        when(featureToggleService.isUnsubmittedApplicationFeatureToggleOn()).thenReturn(true);
     }
 
     @Test
     void shouldSendAllRemindersWithAdhocDate() {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
-        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(true);
-        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
-        when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(true);
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE);
-        verify(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE);
-        verify(dataExtractDateValidator).dateValidator(HSE_REMINDER_DATE);
+        verify(dataExtractDateValidator).dateValidator(AD_HOC_DATE);
         verify(automatedNotificationService).sendNotification(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER);
         verify(automatedNotificationService).sendNotification(SECOND_STOP_REMINDER_DATE, SECOND_STOP_REMINDER);
         verify(automatedNotificationService).sendNotification(HSE_REMINDER_DATE, HSE_REMINDER);
+        verify(automatedNotificationService).sendNotification(DORMANT_WARNING_DATE, DORMANT_WARNING);
     }
 
     @Test
     void shouldSendAllRemindersWithDefaultDateWhenNoAdhocDate() {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", null);
-        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(true);
-        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
-        when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(true);
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator, times(1)).dateValidator(DEFAULT_FIRST_DATE);
-        verify(dataExtractDateValidator, times(1)).dateValidator(DEFAULT_SECOND_DATE);
-        verify(dataExtractDateValidator, times(1)).dateValidator(DEFAULT_HSE_DATE);
         verify(automatedNotificationService).sendNotification(DEFAULT_FIRST_DATE, FIRST_STOP_REMINDER);
         verify(automatedNotificationService).sendNotification(DEFAULT_SECOND_DATE, SECOND_STOP_REMINDER);
         verify(automatedNotificationService).sendNotification(DEFAULT_HSE_DATE, HSE_REMINDER);
+        verify(automatedNotificationService).sendNotification(DEFAULT_DORMANT_WARNING_DATE, DORMANT_WARNING);
     }
 
     @Test
     void shouldSkipFirstReminderWhenToggleOff() {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
         when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
-        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
-        when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(true);
-        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
-
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE);
+        verify(dataExtractDateValidator).dateValidator(AD_HOC_DATE);
         verify(automatedNotificationService).sendNotification(SECOND_STOP_REMINDER_DATE, SECOND_STOP_REMINDER);
-        verify(dataExtractDateValidator).dateValidator(HSE_REMINDER_DATE);
         verify(automatedNotificationService).sendNotification(HSE_REMINDER_DATE, HSE_REMINDER);
+        verify(automatedNotificationService).sendNotification(DORMANT_WARNING_DATE, DORMANT_WARNING);
+        verify(automatedNotificationService).sendNotification(UNSUBMITTED_APPLICATION_DATE, UNSUBMITTED_APPLICATION);
         verifyNoMoreInteractions(automatedNotificationService);
     }
 
@@ -146,21 +148,24 @@ class SendNotificationsTaskTest {
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
         when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(false);
         when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
-
+        when(featureToggleService.isUnsubmittedApplicationFeatureToggleOn()).thenReturn(false);
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE);
+        verify(dataExtractDateValidator).dateValidator(AD_HOC_DATE);
         verify(automatedNotificationService).sendNotification(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER);
         verifyNoMoreInteractions(automatedNotificationService);
+        verifyNoMoreInteractions(dataExtractDateValidator);
     }
 
     @Test
     void shouldNotSendAnyReminderWhenAllTogglesOff() {
+        ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", null);
         when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
-        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
         when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isUnsubmittedApplicationFeatureToggleOn()).thenReturn(false);
 
         sendNotificationsTask.run();
 
@@ -175,88 +180,39 @@ class SendNotificationsTaskTest {
         when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
         when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(true);
         when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isUnsubmittedApplicationFeatureToggleOn()).thenReturn(false);
+
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(HSE_REMINDER_DATE);
+        verify(dataExtractDateValidator).dateValidator(AD_HOC_DATE);
         verify(automatedNotificationService).sendNotification(HSE_REMINDER_DATE, HSE_REMINDER);
         verifyNoMoreInteractions(automatedNotificationService);
+        verifyNoMoreInteractions(dataExtractDateValidator);
     }
 
     @Test
-    void shouldCatchClientExceptionInFirstReminder() {
+    void shouldAbortWhenValidationFails() {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
-        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(true);
-        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
-        when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(false);
-        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
-
-
         doThrow(new ClientException(400, "bad request"))
-                .when(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE);
+                .when(dataExtractDateValidator).dateValidator(AD_HOC_DATE);
 
-        sendNotificationsTask.run();
-
-        verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE);
-        verifyNoInteractionsWithAutomatedNotificationService();
-    }
-
-    @Test
-    void shouldCatchClientExceptionInSecondReminder() {
-        ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
-        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
-        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(true);
-        when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(false);
-        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
-
-
-        doThrow(new ClientException(400, "bad request"))
-                .when(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE);
-
-        sendNotificationsTask.run();
-
-        verify(dataExtractDateValidator).dateValidator(SECOND_STOP_REMINDER_DATE);
-        verifyNoInteractionsWithAutomatedNotificationService();
-    }
-
-    @Test
-    void shouldCatchClientExceptionInHseReminder() {
-        ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
-        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
-        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
-        when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(true);
-        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
-
-        doThrow(new ClientException(400, "bad request"))
-                .when(dataExtractDateValidator).dateValidator(HSE_REMINDER_DATE);
-
-        sendNotificationsTask.run();
-
-        verify(dataExtractDateValidator).dateValidator(HSE_REMINDER_DATE);
-        verifyNoInteractionsWithAutomatedNotificationService();
-    }
-
-
-    private void verifyNoInteractionsWithAutomatedNotificationService() {
+        assertThrows(ClientException.class, () -> sendNotificationsTask.run());
         verifyNoInteractions(automatedNotificationService);
     }
 
     @Test
-    void shouldSendDormantWarningNotificationWithAdhocDate() {
+    void shouldContinueOtherRemindersWhenFirstApiClientException() {
         ReflectionTestUtils.setField(sendNotificationsTask, "adHocJobDate", AD_HOC_DATE);
+        doThrow(new RuntimeException("error"))
+                .when(automatedNotificationService).sendNotification(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER);
 
         sendNotificationsTask.run();
 
-        verify(dataExtractDateValidator).dateValidator(DORMANT_WARNING_DATE);
+        verify(dataExtractDateValidator).dateValidator(AD_HOC_DATE);
+        verify(automatedNotificationService).sendNotification(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER);
+        verify(automatedNotificationService).sendNotification(SECOND_STOP_REMINDER_DATE, SECOND_STOP_REMINDER);
+        verify(automatedNotificationService).sendNotification(HSE_REMINDER_DATE, HSE_REMINDER);
         verify(automatedNotificationService).sendNotification(DORMANT_WARNING_DATE, DORMANT_WARNING);
-    }
-
-    @Test
-    void shouldSendDormantWarningNotification() {
-        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
-        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
-        sendNotificationsTask.run();
-
-        verify(dataExtractDateValidator).dateValidator(DEFAULT_DORMANT_WARNING_DATE);
-        verify(automatedNotificationService).sendNotification(DEFAULT_DORMANT_WARNING_DATE, DORMANT_WARNING);
+        verify(automatedNotificationService).sendNotification(UNSUBMITTED_APPLICATION_DATE, UNSUBMITTED_APPLICATION);
     }
 }

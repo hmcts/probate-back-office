@@ -843,4 +843,28 @@ public class NotificationService {
         log.info("Dormant Warning email reference response: {}", response.getReference());
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }
+
+    public void sendUnsubmittedApplicationEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
+            throws NotificationClientException {
+        log.info("Sending email for case id: {}", caseDetails.getId());
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("Case data is null for case ID: {}", caseDetails.getId());
+            return;
+        }
+        String emailAddress = Optional.ofNullable(getEmail(data))
+                .orElseThrow(() ->
+                        new NotificationClientException("Email address not found for case ID: " + caseDetails.getId()));
+        ApplicationType applicationType = getApplicationType(caseDetails);
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+        String templateId = templateService.getUnsubmittedApplicationTemplateId(applicationType, languagePreference);
+        log.info("sendUnsubmittedApplicationEmail applicationType {}, templateId: {}", applicationType, templateId);
+        Map<String, String> personalisation =
+                automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
+        log.info("start sendEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("Unsubmitted Application email reference response: {}", response.getReference());
+    }
 }

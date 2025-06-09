@@ -473,10 +473,6 @@ class TemplateServiceIT {
                 assertEquals("pa-dormant-warning", response);
             },
             () -> {
-                String response = templateService.getDormantWarningTemplateId(PERSONAL, LanguagePreference.ENGLISH);
-                assertEquals("pa-dormant-warning", response);
-            },
-            () -> {
                 String response = templateService.getDormantWarningTemplateId(SOLICITOR, LanguagePreference.ENGLISH);
                 assertEquals("sol-dormant-warning", response);
             });
@@ -490,13 +486,40 @@ class TemplateServiceIT {
                 assertEquals("pa-dormant-warning-welsh", response);
             },
             () -> {
-                String response = templateService.getDormantWarningTemplateId(PERSONAL, LanguagePreference.WELSH);
-                assertEquals("pa-dormant-warning-welsh", response);
-            },
-            () -> {
                 String response = templateService.getDormantWarningTemplateId(SOLICITOR, LanguagePreference.WELSH);
                 assertEquals("sol-dormant-warning-welsh", response);
             }
+        );
+    }
+
+    @Test
+    void getUnsubmittedApplication() {
+        assertAll(
+                () -> {
+                    String response =
+                            templateService.getUnsubmittedApplicationTemplateId(PERSONAL, LanguagePreference.ENGLISH);
+                    assertEquals("pa-unsubmitted-application", response);
+                },
+                () -> {
+                    String response =
+                            templateService.getUnsubmittedApplicationTemplateId(SOLICITOR, LanguagePreference.ENGLISH);
+                    assertEquals("sol-unsubmitted-application", response);
+                });
+    }
+
+    @Test
+    void getUnsubmittedApplicationWelsh() {
+        assertAll(
+                () -> {
+                    String response =
+                            templateService.getUnsubmittedApplicationTemplateId(PERSONAL, LanguagePreference.WELSH);
+                    assertEquals("pa-unsubmitted-application-welsh", response);
+                },
+                () -> {
+                    String response =
+                            templateService.getUnsubmittedApplicationTemplateId(SOLICITOR, LanguagePreference.WELSH);
+                    assertEquals("sol-unsubmitted-application-welsh", response);
+                }
         );
     }
 }

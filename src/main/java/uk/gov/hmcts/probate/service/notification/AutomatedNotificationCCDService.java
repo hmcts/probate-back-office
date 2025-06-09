@@ -62,6 +62,10 @@ public class AutomatedNotificationCCDService {
                                  final Document sentEmail,
                                  final NotificationStrategy notificationStrategy,
                                  final StartEventResponse startEventResponse) {
+        if (notificationStrategy.skipSaveNotification()) {
+            log.info("Skipping save notification for case id: {} type: {}", caseId, notificationStrategy.getType());
+            return;
+        }
         try {
             log.info("AutomatedNotificationCCDService buildCaseData for case id: {} type: {}",
                     caseId, notificationStrategy.getType());
@@ -101,6 +105,10 @@ public class AutomatedNotificationCCDService {
                                        final SecurityDTO securityDTO,
                                        final NotificationStrategy notificationStrategy,
                                        final StartEventResponse startEventResponse) {
+        if (notificationStrategy.skipSaveNotification()) {
+            log.info("Skipping save notification for case id: {} type: {}", caseId, notificationStrategy.getType());
+            return;
+        }
         try {
             log.info("AutomatedNotificationCCDService saveFailedNotification to Case: {}", caseId);
             final GrantOfRepresentationData data = GrantOfRepresentationData.builder().build();
@@ -143,7 +151,11 @@ public class AutomatedNotificationCCDService {
                     .probateNotificationsGenerated(notifications)
                     .firstStopReminderSentDate(LocalDate.now())
                     .build();
-            case SECOND_STOP_REMINDER, HSE_REMINDER, DORMANT_WARNING -> GrantOfRepresentationData.builder()
+            case SECOND_STOP_REMINDER,
+                 HSE_REMINDER,
+                 DORMANT_WARNING,
+                 UNSUBMITTED_APPLICATION
+                    -> GrantOfRepresentationData.builder()
                     .probateNotificationsGenerated(notifications)
                     .build();
         };

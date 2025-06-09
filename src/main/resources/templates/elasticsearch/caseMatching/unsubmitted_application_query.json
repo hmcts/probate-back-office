@@ -13,16 +13,24 @@
         {
           "terms": {
             "state.keyword": [
-              "BOCaseStopped",
-              "BOCaseStoppedReissue"
+              "Pending",
+              "CasePaymentFailed",
+              "PAAppCreated",
+              "SolAdmonCreated",
+              "SolAppCreatedDeceasedDtls",
+              "SolAppCreatedSolicitorDtls",
+              "SolAppUpdated",
+              "SolProbateCreated",
+              "SolIntestacyCreated",
+              "CaseCreated"
             ]
           }
         }
       ]
     }
   },
-  "size": %s,
   "_source": ["reference"],
+  "size": %s,
   "sort": [
     {
       "reference.keyword": "asc"

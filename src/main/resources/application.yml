@@ -387,6 +387,7 @@ notifications:
           hseReminder: "38e4f0e6-5656-4ae9-82f7-ac3da178100f"
           hseReminderForHub: "f039720f-8bdb-48f8-9549-f0068d7a5688"
           dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
+          unsubmittedApplication: "3f3965ca-1c8a-4b44-be66-75b929513e65"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -419,6 +420,7 @@ notifications:
           secondStopReminder: "2b57f57d-e492-4648-b92d-0c604df722e9"
           hseReminder: "70d352c7-42e1-4f24-b7b4-8cc99f766862"
           dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
+          unsubmittedApplication: "ab5d7b24-6b40-403b-8a8f-4a21bc48ed6f"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
@@ -452,6 +454,7 @@ notifications:
           hseReminder: "aad3c46b-a915-4b31-9612-a630620a51c5"
           hseReminderForHub: "abfe8fd2-faa5-4da5-a839-8c652ff6807b"
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
+          unsubmittedApplication: "3f3965ca-1c8a-4b44-be66-75b929513e65"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -483,6 +486,7 @@ notifications:
           secondStopReminder: "206a11a2-1171-464b-ad03-5ca83b928968"
           hseReminder: "0146b124-a67c-4753-b38e-85bcb37d8562"
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
+          unsubmittedApplication: "ab5d7b24-6b40-403b-8a8f-4a21bc48ed6f"
 
 documents:
   templates:
@@ -752,5 +756,5 @@ automated_notification:
     second_notification_days: 28
   hse_reminder:
     awaiting_documentation_days: 30
-
   dormant_warning_days: 150
+  unsubmitted_application_days: 28
