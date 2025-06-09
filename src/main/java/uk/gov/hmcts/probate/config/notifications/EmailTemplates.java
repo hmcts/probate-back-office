@@ -41,4 +41,5 @@ public class EmailTemplates {
     private String hseReminder;
     private String hseReminderForHub;
     private String dormantWarning;
+    private String unsubmittedApplication;
 }

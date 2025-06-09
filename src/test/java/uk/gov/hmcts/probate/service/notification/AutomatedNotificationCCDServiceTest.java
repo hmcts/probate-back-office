@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.notification;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -45,6 +46,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
@@ -103,6 +105,11 @@ class AutomatedNotificationCCDServiceTest {
                 .caseDetails(caseDetails)
                 .build();
         underTest = new AutomatedNotificationCCDService(coreCaseDataApi, objectMapper);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeableMocks.close();
     }
 
     @Test
@@ -325,5 +332,39 @@ class AutomatedNotificationCCDServiceTest {
         when(strategy.getFailureEventSummary()).thenReturn(AutomatedNotificationCCDServiceTest.FAILURE_SUMMARY);
         when(strategy.getEventId()).thenReturn(EventId.AUTO_NOTIFICATION_FIRST_STOP_REMINDER);
         when(strategy.getCaseTypeName()).thenReturn(GRANT_OF_REPRESENTATION.getName());
+    }
+
+    @Test
+    void shouldSkipSaveFailedNotification() {
+        stubNotificationStrategy(
+                firstStopReminderNotificationStrategy,
+                NotificationType.FIRST_STOP_REMINDER
+        );
+
+        when(firstStopReminderNotificationStrategy.skipSaveNotification()).thenReturn(true);
+
+        underTest
+                .saveFailedNotification(CASE_ID, securityDTO,
+                        firstStopReminderNotificationStrategy, startEvent);
+
+        verifyNoInteractions(coreCaseDataApi);
+    }
+
+    @Test
+    void shouldSkipSaveNotification() {
+        stubNotificationStrategy(
+                firstStopReminderNotificationStrategy,
+                NotificationType.FIRST_STOP_REMINDER
+        );
+
+        when(firstStopReminderNotificationStrategy.skipSaveNotification()).thenReturn(true);
+
+        Document sentEmail = new Document();
+
+        underTest
+                .saveNotification(caseDetails, CASE_ID, securityDTO, sentEmail,
+                        firstStopReminderNotificationStrategy, startEvent);
+
+        verifyNoInteractions(coreCaseDataApi);
     }
 }

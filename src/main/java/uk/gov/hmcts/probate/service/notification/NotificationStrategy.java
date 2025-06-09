@@ -35,4 +35,8 @@ public interface NotificationStrategy {
     default String getCaseTypeName() {
         return GRANT_OF_REPRESENTATION_NAME;
     }
+
+    default boolean skipSaveNotification() {
+        return false;
+    }
 }

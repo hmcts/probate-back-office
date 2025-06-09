@@ -25,6 +25,8 @@
       ]
     }
   },
+  "size": %s,
+  "_source": ["reference"],
   "sort": [
     {
       "reference.keyword": "asc"
