@@ -1,6 +1,6 @@
 import { AxeUtils } from "@hmcts/playwright-common";
 import { expect, Page } from "@playwright/test";
-import { testConfig } from "../../Configs/config";
+import { testConfig } from "../../Configs/config.ts";
 
 export class BasePage {
   readonly rejectLocator = this.page.getByRole("button", {
@@ -35,7 +35,7 @@ export class BasePage {
     await new AxeUtils(this.page).audit();
   }
 
-  async rejectCookies() {
+  public async rejectCookies() {
     if (testConfig.RejectCookies) {
       try {
         //const rejectLocator = {css: 'button.govuk-button[value="reject"]'};

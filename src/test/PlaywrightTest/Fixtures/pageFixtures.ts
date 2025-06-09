@@ -1,6 +1,5 @@
-import { test as base } from "@playwright/test";
 import { SignInPage } from "../Pages/IDAM/signIn.ts";
-import { CwEventActionsPage } from "../Pages/newCase/cwEventActions";
+import { CwEventActionsPage } from "../Pages/newCase/cwEventActions.ts";
 import { CreateCasePage } from "../Pages/newCase/newCase.ts";
 import { SolCreateCasePage } from "../Pages/newCase/solNewCase.ts";
 import { BasePage } from "../Pages/utility/basePage.ts";
@@ -13,7 +12,7 @@ export interface PageFixtures {
   solCreateCasePage: SolCreateCasePage;
 }
 
-export const pageFixtures = base.extend<PageFixtures>({
+export const pageFixtures = {
   basePage: async ({ page }, use) => {
     await use(new BasePage(page));
   },
@@ -33,4 +32,4 @@ export const pageFixtures = base.extend<PageFixtures>({
   solCreateCasePage: async ({ page }, use) => {
     await use(new SolCreateCasePage(page));
   },
-});
+};

@@ -1,5 +1,5 @@
 import dateFns from "date-fns";
-import { test } from "../../Fixtures/fixtures";
+import { test } from "../../Fixtures/fixtures.ts";
 
 import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 import eventSummaryConfig from "../../Pages/eventSummary/eventSummaryConfig.json" with { type: "json" };
@@ -21,9 +21,8 @@ import deceasedDetailsTabConfig from "../../Pages/caseDetails/caveat/deceasedDet
 import documentsTabEmailCaveatorConfig from "../../Pages/caseDetails/caveat/documentsTabEmailCaveatorConfig.json" with { type: "json" };
 // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
 // const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
+import { testConfig } from "../../Configs/config.ts";
 import documentsTabUploadDocumentConfig from "../../Pages/caseDetails/caveat/documentsTabUploadDocumentConfig.json" with { type: "json" };
-
-import { convertTokens, legacyParse } from "@date-fns/upgrade/v2";
 
 test.describe("Caseworker Caveat3 - Caveat expired", () => {
   test("Caseworker Caveat3 - Caveat expired", async ({
@@ -107,8 +106,8 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
     );
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
     createCaveatConfig.caveat_expiry_date = dateFns.format(
-      legacyParse(dateFns.addMonths(new Date(), 6)),
-      convertTokens("D MMM YYYY")
+      dateFns.addMonths(new Date(), 6),
+      testConfig.dateFormat
     );
     // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
@@ -220,8 +219,8 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
     );
     // When emailing the caveator, the Date added for the email document is set to today
     emailCaveatorConfig.dateAdded = dateFns.format(
-      legacyParse(new Date()),
-      convertTokens("D MMM YYYY")
+      new Date(),
+      testConfig.dateFormat
     );
     // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
@@ -285,8 +284,8 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
     );
     // When emailing the caveator, the Date added for the email document is set to today
     emailCaveatorConfig.dateAdded = dateFns.format(
-      legacyParse(new Date()),
-      convertTokens("D MMM YYYY")
+      new Date(),
+      testConfig.dateFormat
     );
     // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(

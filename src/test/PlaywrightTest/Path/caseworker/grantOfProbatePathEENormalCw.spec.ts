@@ -12,6 +12,7 @@ import eventSummaryConfig from "../../Pages/eventSummary/eventSummaryConfig.json
 import createGrantOfProbateConfig from "../../Pages/createGrantOfProbateManual/createGrantOfProbateManualConfig.json" with { type: "json" };
 import documentUploadConfig from "../../Pages/documentUpload/grantOfProbate/documentUploadConfig.json" with { type: "json" };
 //const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
+import { testConfig } from "../../Configs/config.ts";
 import applicantDetailsTabConfig from "../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json" with { type: "json" };
 import caseDetailsTabConfig from "../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigEE.json" with { type: "json" };
 import caseMatchesTabConfig from "../../Pages/caseDetails/grantOfProbate/caseMatchesTabConfig.json" with { type: "json" };
@@ -24,8 +25,6 @@ import ihtTabConfig from "../../Pages/caseDetails/grantOfProbate/ihtTabConfig.js
 import ihtTabConfigUpdate from "../../Pages/caseDetails/grantOfProbate/ihtUpdateTabConfig.json" with { type: "json" };
 import issueGrantConfig from "../../Pages/issueGrant/issueGrantConfig.json" with { type: "json" };
 import nextStepConfig from "../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
-
-import { convertTokens, legacyParse } from "@date-fns/upgrade/v2";
 
 test.describe("Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker", () => {
   test("Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker", async ({
@@ -300,8 +299,8 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     );
     // When sending an email notification, the Date added for the email notification is set to today
     issueGrantConfig.date = dateFns.format(
-      legacyParse(new Date()),
-      convertTokens("D MMM YYYY")
+      new Date(),
+      testConfig.dateFormat
     );
     // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(

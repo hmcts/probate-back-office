@@ -1,5 +1,5 @@
-import { expect, Locator } from '@playwright/test';
-import { testConfig } from '../../Configs/config';
+import { expect, Locator, Page } from '@playwright/test';
+import { testConfig } from '../../Configs/config.ts';
 import caseProgressConfig from '../caseProgressStandard/caseProgressConfig.json' with { type: 'json' };
 import checkYourAnswersConfig from '../checkYourAnswers/checkYourAnswersConfig.json' with { type: 'json' };
 import commonConfig from '../common/commonConfig.json' with { type: 'json' };
@@ -8,7 +8,7 @@ import createGrantofProbateAmendConfig from '../createGrantOfProbate/createGrant
 import createGrantOfProbateConfig from '../createGrantOfProbateManual/createGrantOfProbateManualConfig.json' with { type: 'json' };
 import createWillLodgementConfig from '../createWillLodgement/createWillLodgementConfig.json' with { type: 'json' };
 import eventSummaryConfig from '../eventSummary/eventSummaryConfig.json' with { type: 'json' };
-import { BasePage } from '../utility/basePage';
+import { BasePage } from '../utility/basePage.ts';
 import newCaseConfig from './newCaseConfig.json' with { type: 'json' };
 
 export class CreateCasePage extends BasePage {
@@ -54,7 +54,7 @@ export class CreateCasePage extends BasePage {
     readonly amendWillWaitForTextLocator = this.page.getByText(createWillLodgementConfig.page2_amend_waitForText);
     readonly genderLocator = this.page.locator('#deceasedGender');
 
-    constructor(page) {
+    constructor(public page: Page) {
         super(page);
     }
 

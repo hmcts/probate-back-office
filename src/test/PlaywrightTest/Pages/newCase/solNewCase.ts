@@ -1,7 +1,6 @@
-import { convertTokens, legacyParse } from "@date-fns/upgrade/v2";
 import dateFns from "date-fns";
 import { expect } from "playwright/test";
-import { testConfig } from "../../Configs/config";
+import { testConfig } from "../../Configs/config.ts";
 import postPaymentReviewTabConfig from "../caseDetails/solicitorApplyProbate/postPaymentReviewTabConfig.json" with { type: "json" };
 import commonConfig from "../common/commonConfig.json" with { type: "json" };
 import createCaveatConfig from "../createCaveat/createCaveatConfig.json" with { type: "json" };
@@ -10,7 +9,7 @@ import applyCaveatConfig from "../solicitorApplyCaveat/applyCaveat/applyCaveat.j
 import completeApplicationConfig from "../solicitorApplyCaveat/completeApplication/completeApplication.json" with { type: "json" };
 import applyProbateConfig from "../solicitorApplyProbate/applyProbate/applyProbateConfig.json" with { type: "json" };
 import makePaymentConfig from "../solicitorApplyProbate/makePayment/makePaymentConfig.json" with { type: "json" };
-import { BasePage } from "../utility/basePage";
+import { BasePage } from "../utility/basePage.ts";
 
 export class SolCreateCasePage extends BasePage {
     readonly completeApplicationSubmitButton = this.page.getByRole("button", {
@@ -232,8 +231,8 @@ export class SolCreateCasePage extends BasePage {
 
   async completeCaveatApplicationPage2(caseRef) {
     completeApplicationConfig.page2_notification_date = dateFns.format(
-      legacyParse(new Date()),
-      convertTokens("DD/MM/YYYY")
+      new Date(),
+      testConfig.dateFormat
     );
     await expect(
       this.page.getByText(completeApplicationConfig.page2_waitForText)

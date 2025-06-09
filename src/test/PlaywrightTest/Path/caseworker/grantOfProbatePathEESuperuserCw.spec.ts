@@ -3,10 +3,7 @@ import { test } from '../../Fixtures/fixtures.ts';
 
 import createCaseConfig from '../../Pages/createCase/createCaseConfig.json' with { type: 'json' };
 
-import {
-    convertTokens,
-    legacyParse
-} from '@date-fns/upgrade/v2';
+import { testConfig } from '../../Configs/config.ts';
 import applicantDetailsTabConfig from '../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json' with { type: 'json' };
 import caseDetailsTabConfig from '../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigBeforeSwitchDate.json' with { type: 'json' };
 import caseMatchesTabConfig from '../../Pages/caseDetails/grantOfProbate/caseMatchesTabConfig.json' with { type: 'json' };
@@ -180,7 +177,7 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
 
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             // When sending an email notification, the Date added for the email notification is set to today
-            issueGrantConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
+            issueGrantConfig.date = dateFns.format(new Date(), testConfig.dateFormat);
             // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, grantNotificationsTabConfig, issueGrantConfig);
 
@@ -197,7 +194,7 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Grant issued';
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            issueGrantConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
+            issueGrantConfig.date = dateFns.format(new Date(), testConfig.dateFormat);
             // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, grantNotificationsTabConfig, issueGrantConfig);
         });
