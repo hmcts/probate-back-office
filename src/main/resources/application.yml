@@ -454,7 +454,7 @@ notifications:
           hseReminder: "aad3c46b-a915-4b31-9612-a630620a51c5"
           hseReminderForHub: "abfe8fd2-faa5-4da5-a839-8c652ff6807b"
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
-          unsubmittedApplication: "3f3965ca-1c8a-4b44-be66-75b929513e65"
+          unsubmittedApplication: "ac18f977-de08-407b-9c35-1e62d9cd80ff"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -486,7 +486,7 @@ notifications:
           secondStopReminder: "206a11a2-1171-464b-ad03-5ca83b928968"
           hseReminder: "0146b124-a67c-4753-b38e-85bcb37d8562"
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
-          unsubmittedApplication: "ab5d7b24-6b40-403b-8a8f-4a21bc48ed6f"
+          unsubmittedApplication: "7440ee74-4cde-4cd4-ab76-038d70674424"
 
 documents:
   templates:
