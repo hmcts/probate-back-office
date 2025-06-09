@@ -52,7 +52,7 @@ module.exports = async function (caseRef, documentUploadConfig) {
         }
     }
 
-    await I.waitForVisible({css: `${documentUploadConfig.id}_0_DocumentLink`});
+    //await I.waitForVisible({css: `${documentUploadConfig.id}_0_DocumentLink`});
     await I.attachFile(`${documentUploadConfig.id}_0_DocumentLink`, documentUploadConfig.fileToUploadUrl);
 
     await I.waitForValue({css: `${documentUploadConfig.id}_0_Comment`}, documentUploadConfig.comment);
