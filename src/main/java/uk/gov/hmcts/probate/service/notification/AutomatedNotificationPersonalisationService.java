@@ -40,6 +40,7 @@ public class AutomatedNotificationPersonalisationService {
     private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
     private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
     private static final String PERSONALISATION_CASE_STOP_REASONS = "stop-reasons";
+    private static final String PERSONALISATION_CASE_STOP_REASONS_WELSH = "stop-reasons-welsh";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String CASE_ID_STRING = "<CASE_ID>";
@@ -74,7 +75,6 @@ public class AutomatedNotificationPersonalisationService {
     public Map<String, String> getPersonalisation(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
                                                   ApplicationType applicationType) {
         log.info("Stop reminder getPersonalisation");
-        getStopReason(caseDetails);
         Map<String, Object> caseData = caseDetails.getData();
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
@@ -82,7 +82,8 @@ public class AutomatedNotificationPersonalisationService {
         personalisation.put(PERSONALISATION_APPLICANT_NAME, getPrimaryApplicantName(caseData));
         personalisation.put(PERSONALISATION_DECEASED_NAME, getDeceasedFullName(caseData));
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(caseData, applicationType));
-        personalisation.put(PERSONALISATION_CASE_STOP_REASONS, getStopReason(caseDetails));
+        personalisation.put(PERSONALISATION_CASE_STOP_REASONS, getStopReason(caseDetails, false));
+        personalisation.put(PERSONALISATION_CASE_STOP_REASONS_WELSH, getStopReason(caseDetails, true));
         LocalDate dateOfDeath = getDateValue(caseData, "deceasedDateOfDeath");
         personalisation.put(PERSONALISATION_DECEASED_DOD, dateFormatterService.formatDate(dateOfDeath));
         personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
@@ -95,21 +96,10 @@ public class AutomatedNotificationPersonalisationService {
         return personalisation;
     }
 
-    private String getStopReason(CaseDetails caseDetails) {
+    private String getStopReason(CaseDetails caseDetails, boolean isWelsh) {
         List<CollectionMember<StopReason>> stopReasonList = getStopReasonList(caseDetails.getData());
         StringBuilder stopReasons = new StringBuilder();
-        LanguagePreference languagePreference = Optional.ofNullable(
-                        caseDetails.getData().get("languagePreferenceWelsh"))
-                .map(Object::toString)
-                .filter("Yes"::equalsIgnoreCase)
-                .map(yes -> LanguagePreference.WELSH)
-                .orElse(LanguagePreference.ENGLISH);
-        // Append regular stop reasons
-        stopReasonList.stream()
-                .filter(sr -> isValidStopReason(sr, false))
-                .forEach(sr -> stopReasons.append(
-                        stopReasonService.getStopReasonDescription(languagePreference,
-                                sr.getValue().getCaseStopReason())).append("\n"));
+        LanguagePreference languagePreference = isWelsh ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
 
         // Filter for "DocumentsRequired" reasons
         List<CollectionMember<StopReason>> docRequiredReasons = stopReasonList.stream()
