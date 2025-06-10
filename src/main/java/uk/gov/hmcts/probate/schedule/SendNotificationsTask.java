@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.schedule;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +26,6 @@ import static uk.gov.hmcts.probate.model.NotificationType.UNSUBMITTED_APPLICATIO
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class SendNotificationsTask implements Runnable {
     private final DataExtractDateValidator dataExtractDateValidator;
     private final AutomatedNotificationService automatedNotificationService;
@@ -38,25 +36,45 @@ public class SendNotificationsTask implements Runnable {
     private final HseReminderNotification hseReminderNotification;
     private final DormantWarningNotification dormantWarningNotification;
     private final UnsubmittedApplicationNotification unsubmittedApplicationNotification;
+    private final int firstNotificationDays;
+    private final int secondNotificationDays;
+    private final int hseYesNotificationDays;
+    private final int dormantWarningDays;
+    private final int unsubmittedApplicationDays;
+    public final String adHocJobDate;
 
-
-    @Value("${automated_notification.stop_reminder.first_notification_days}")
-    private int firstNotificationDays;
-
-    @Value("${automated_notification.stop_reminder.second_notification_days}")
-    private int secondNotificationDays;
-
-    @Value("${automated_notification.hse_reminder.awaiting_documentation_days}")
-    private int hseYesNotificationDays;
-
-    @Value("${automated_notification.dormant_warning_days}")
-    private int dormantWarningDays;
-
-    @Value("${automated_notification.unsubmitted_application_days}")
-    private int unsubmittedApplicationDays;
-
-    @Value("${adhocSchedulerJobDate}")
-    public String adHocJobDate;
+    public SendNotificationsTask(
+            DataExtractDateValidator dataExtractDateValidator,
+            AutomatedNotificationService automatedNotificationService,
+            FeatureToggleService featureToggleService,
+            Clock clock,
+            FirstStopReminderNotification firstStopReminderNotification,
+            SecondStopReminderNotification secondStopReminderNotification,
+            HseReminderNotification hseReminderNotification,
+            DormantWarningNotification dormantWarningNotification,
+            UnsubmittedApplicationNotification unsubmittedApplicationNotification,
+            @Value("${automated_notification.stop_reminder.first_notification_days}") int firstNotificationDays,
+            @Value("${automated_notification.stop_reminder.second_notification_days}") int secondNotificationDays,
+            @Value("${automated_notification.hse_reminder.awaiting_documentation_days}") int hseYesNotificationDays,
+            @Value("${automated_notification.dormant_warning_days}") int dormantWarningDays,
+            @Value("${automated_notification.unsubmitted_application_days}") int unsubmittedApplicationDays,
+            @Value("${adhocSchedulerJobDate}") String adHocJobDate) {
+        this.dataExtractDateValidator = dataExtractDateValidator;
+        this.automatedNotificationService = automatedNotificationService;
+        this.featureToggleService = featureToggleService;
+        this.clock = clock;
+        this.firstStopReminderNotification = firstStopReminderNotification;
+        this.secondStopReminderNotification = secondStopReminderNotification;
+        this.hseReminderNotification = hseReminderNotification;
+        this.dormantWarningNotification = dormantWarningNotification;
+        this.unsubmittedApplicationNotification = unsubmittedApplicationNotification;
+        this.firstNotificationDays = firstNotificationDays;
+        this.secondNotificationDays = secondNotificationDays;
+        this.hseYesNotificationDays = hseYesNotificationDays;
+        this.dormantWarningDays = dormantWarningDays;
+        this.unsubmittedApplicationDays = unsubmittedApplicationDays;
+        this.adHocJobDate = adHocJobDate;
+    }
 
     @Override
     public void run() {
@@ -83,6 +101,7 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Feature toggle FirstStopReminderFeatureToggle is off, skipping task");
             } else {
                 log.info("Calling Send First Stop Reminder for date {}", firstStopReminderDate);
+                dataExtractDateValidator.dateValidator(firstStopReminderDate);
                 firstStopReminderNotification.setReferenceDate(LocalDate.parse(firstStopReminderDate));
                 log.info("Perform Send First Stop Reminder started");
                 automatedNotificationService.sendNotification(firstStopReminderDate, FIRST_STOP_REMINDER);
@@ -99,6 +118,7 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Feature toggle SecondStopReminderFeatureToggle is off, skipping task");
             } else {
                 log.info("Calling Send Second Stop Reminder for date {}", secondStopReminderDate);
+                dataExtractDateValidator.dateValidator(secondStopReminderDate);
                 secondStopReminderNotification.setReferenceDate(LocalDate.parse(secondStopReminderDate));
                 log.info("Perform Send Second Stop Reminder started");
                 automatedNotificationService.sendNotification(secondStopReminderDate, SECOND_STOP_REMINDER);
@@ -115,6 +135,7 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Feature toggle HseReminderFeatureToggle is off, skipping task");
             } else {
                 log.info("Calling Send HSE YES notification for date {}", hseReminderDate);
+                dataExtractDateValidator.dateValidator(hseReminderDate);
                 hseReminderNotification.setReferenceDate(LocalDate.parse(hseReminderDate));
                 log.info("Perform Send HSE YES notification started");
                 automatedNotificationService.sendNotification(hseReminderDate, HSE_REMINDER);
@@ -131,6 +152,7 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Feature toggle DormantWarningFeatureToggle is off, skipping task");
             } else {
                 log.info("Calling Send Dormant Warning for date {}", dormantWarningDate);
+                dataExtractDateValidator.dateValidator(dormantWarningDate);
                 dormantWarningNotification.setReferenceDate(LocalDate.parse(dormantWarningDate));
                 log.info("Perform Send Dormant Warning started");
                 automatedNotificationService.sendNotification(dormantWarningDate, DORMANT_WARNING);
@@ -147,6 +169,7 @@ public class SendNotificationsTask implements Runnable {
                 log.info("Feature toggle UnsubmittedApplicationFeatureToggle is off, skipping task");
             } else {
                 log.info("Calling Send Unsubmitted Application Reminder for date {}", unsubmittedApplicationDate);
+                dataExtractDateValidator.dateValidator(unsubmittedApplicationDate);
                 unsubmittedApplicationNotification.setReferenceDate(LocalDate.parse(unsubmittedApplicationDate));
                 log.info("Perform Send Unsubmitted Application Reminder started");
                 automatedNotificationService.sendNotification(unsubmittedApplicationDate, UNSUBMITTED_APPLICATION);
