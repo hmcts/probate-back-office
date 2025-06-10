@@ -322,7 +322,7 @@ class StopReasonServiceTest {
 
         assertEquals("Permanent Caveat",
                 stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH,
-                        "PermanentCaveat"));
+                        "Permanent Caveat"));
     }
 
     @Test

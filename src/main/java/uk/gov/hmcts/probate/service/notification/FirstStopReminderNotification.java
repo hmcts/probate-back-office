@@ -120,7 +120,7 @@ public class FirstStopReminderNotification implements NotificationStrategy {
         if (item instanceof StopReason stopReason) {
             return stopReason.getCaseStopReason();
         } else if (item instanceof Map<?, ?> map) {
-            Object reason = map.get(STOP_REASON_FIELD_NAME);
+            Object reason = ((java.util.LinkedHashMap)map.get("value")).get(STOP_REASON_FIELD_NAME);
             return reason != null ? reason.toString() : null;
         }
         return null;
