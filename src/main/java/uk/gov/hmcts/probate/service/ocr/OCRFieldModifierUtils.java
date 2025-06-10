@@ -41,7 +41,7 @@ public class OCRFieldModifierUtils {
     private void handleDeceasedFields(ExceptionRecordOCRFields ocrFields,
                                       List<CollectionMember<ModifiedOCRField>> modifiedFields) {
 
-        if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+        /*if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
             addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate",
                     ocrFields.getDeceasedDiedOnAfterSwitchDate());
             String switchDateValue = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields
@@ -49,7 +49,7 @@ public class OCRFieldModifierUtils {
             ocrFields.setDeceasedDiedOnAfterSwitchDate(switchDateValue);
             log.info("Setting deceasedDiedOnAfterSwitchDate to {}", switchDateValue);
         }
-        /*else if (isBlank(ocrFields.getDeceasedDateOfDeath())
+        else if (isBlank(ocrFields.getDeceasedDateOfDeath())
                 && !isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
             // If DoD is blank but switch date is set we can avoid warnings and auto create by default setting DoD
             String switchDateValue = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields
@@ -136,9 +136,7 @@ public class OCRFieldModifierUtils {
 
     private void handleDeceasedDateOfDeathMissing(ExceptionRecordOCRFields ocrFields,
                                                   List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        String switchDateValue = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields
-                .getDeceasedDateOfDeath())
-                ? "TRUE" : "FALSE";
+        String switchDateValue = ocrFields.getDeceasedDiedOnAfterSwitchDate();
         addModifiedField(modifiedFields, "deceasedDateOfDeath", ocrFields.getDeceasedDiedOnAfterSwitchDate());
 
         if ("TRUE".equalsIgnoreCase(switchDateValue)) {

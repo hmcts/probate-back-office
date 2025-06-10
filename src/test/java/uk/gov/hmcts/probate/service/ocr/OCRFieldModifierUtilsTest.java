@@ -92,8 +92,10 @@ class OCRFieldModifierUtilsTest {
         when(bulkScanConfig.getDeceasedAnyOtherNames()).thenReturn(DEFAULT_DECEASED_ANY_OTHER_NAMES_VALUE);
         when(bulkScanConfig.getDeceasedDomicileInEngWales()).thenReturn(DEFAULT_DECEASED_DOMICILE_IN_ENG_WALES_VALUE);
         when(bulkScanConfig.getPrimaryApplicantHasAlias()).thenReturn(DEFAULT_ALIAS_VALUE);
-        //when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue()).thenReturn("TRUE");
-        //when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateFalse()).thenReturn("FALSE");
+        when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue()).thenReturn("TRUE");
+        when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateFalse()).thenReturn("FALSE");
+        when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue()).thenReturn("01012022");
+        when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse()).thenReturn("01011900");
 
         Field bulkScanConfigField = OCRFieldModifierUtils.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);
@@ -130,8 +132,6 @@ class OCRFieldModifierUtilsTest {
                 .caveatorSurnames(VALID_CAVEATOR_SURNAME)
                 .caveatorAddressLine1(VALID_CAVEATOR_ADDRESS_LINE_1)
                 .caveatorAddressPostCode(VALID_CAVEATOR_ADDRESS_POSTCODE)
-                //.deceasedDateOfDeath("01012022")
-                //.deceasedDiedOnAfterSwitchDate("TRUE")
                 .build();
     }
 
@@ -544,7 +544,7 @@ class OCRFieldModifierUtilsTest {
 
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
-        assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.get(0).getValue().getFieldName());
+        assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.getFirst().getValue().getFieldName());
         assertEquals("TRUE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateGrossValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetValue());
@@ -695,5 +695,70 @@ class OCRFieldModifierUtilsTest {
                 .setDefaultCaveatValues(ocrFields);
 
         assertEquals(0, modifiedFields.size());
+    }
+
+    @Test
+    void shouldHandleDeceasedDateOfDeathPresent() {
+        ocrFields.setDeceasedDateOfDeath("01012022");
+
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals("TRUE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+    }
+
+    @Test
+    void shouldHandleDeceasedDateOfDeathBeforePresent() {
+        ocrFields.setDeceasedDateOfDeath("01012020");
+
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+    }
+
+    @Test
+    void shouldHandleDeceasedDateOfDeathMissing() {
+        ocrFields.setDeceasedDateOfDeath("");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("TRUE");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("deceasedDateOfDeath", modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals("01012022", ocrFields.getDeceasedDateOfDeath());
+    }
+
+    @Test
+    void shouldHandleDeceasedDateOfDeathMissingWhenSwitchDateIsFalse() {
+        ocrFields.setDeceasedDateOfDeath("");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("FALSE");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("deceasedDateOfDeath", modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals("01011900", ocrFields.getDeceasedDateOfDeath());
+    }
+
+    @Test
+    void shouldHandleBothDeceasedFieldsMissing() {
+        ocrFields.setDeceasedDateOfDeath("");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
+        ocrFields.setIhtEstateGrossValue(DEFAULT_VALUE);
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(2, modifiedFields.size());
+        assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals("TRUE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        assertEquals("deceasedDateOfDeath", modifiedFields.getLast().getValue().getFieldName());
+        assertEquals("01012022", ocrFields.getDeceasedDateOfDeath());
     }
 }
