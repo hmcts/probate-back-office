@@ -2175,11 +2175,8 @@ class NotificationServiceIT {
     }
 
     @Test
-    void verifyEmailPreview()
-            throws NotificationClientException {
-
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), any())).thenReturn(Document.builder()
-                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+    void verifyEmailPreview() throws NotificationClientException {
+        String expectedHtml = "<html><body>Test</body></html>";
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
                 .solsSolicitorEmail("solicitor@probate-test.com")
@@ -2187,13 +2184,15 @@ class NotificationServiceIT {
                 .languagePreferenceWelsh("No")
                 .deceasedForenames("Deceased")
                 .deceasedSurname("DeceasedL")
-                .deceasedDateOfDeath(LocalDate.of(2022,12,12))
+                .deceasedDateOfDeath(LocalDate.of(2022, 12, 12))
                 .boStopDetails("stopDetails")
                 .boStopDetailsDeclarationParagraph("No")
                 .build(), LAST_MODIFIED, ID);
-        notificationService.emailPreview(caseDetails);
+        when(templatePreviewResponse.getHtml()).thenReturn(Optional.of(expectedHtml));
 
-        verify(pdfManagementService).generateDocmosisDocumentAndUpload(any(), eq(SENT_EMAIL));
+        notificationService.emailPreview(caseDetails);
+        verify(pdfManagementService).rerenderAsXhtml(expectedHtml);
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
