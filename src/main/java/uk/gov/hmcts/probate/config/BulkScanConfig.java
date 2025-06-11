@@ -35,4 +35,5 @@ public class BulkScanConfig {
 
     private String deceasedDiedOnOrAfterSwitchDateTrue;
     private String deceasedDiedOnOrAfterSwitchDateFalse;
+    private String executorsNotApplyingReason;
 }

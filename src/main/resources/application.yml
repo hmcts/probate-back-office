@@ -629,6 +629,7 @@ bulkscan:
     dateOfDeathForDiedOnOrAfterSwitchDateFalse: 01011900
     deceasedDiedOnOrAfterSwitchDateTrue: TRUE
     deceasedDiedOnOrAfterSwitchDateFalse: FALSE
+    executorsNotApplyingReason: A
 
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
