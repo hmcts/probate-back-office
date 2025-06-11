@@ -21,7 +21,6 @@ public class OCRFieldIhtFormEstateValuesCompletedMapper {
     @ToIHTFormEstateValuesCompleted
     public Boolean toIhtFormEstateValuesCompleted(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for ihtFormEstateValuesCompleted");
-        log.info("date of death from application: {}", ocrFields.getDeceasedDateOfDeath());
 
         if (isExpectedEstate(ocrFields) && !isEmpty(ocrFields.getIhtEstateGrossValue())
             && !isEmpty(ocrFields.getIhtEstateNetValue())
