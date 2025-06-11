@@ -177,11 +177,11 @@ def versions = [
         springBootStarterHateoas        : '3.5.0',
         springCloud                     : '4.1.4',
         springCloudStarterNetflixHystrix: '4.1.4',
-        springDocOpenUi                 : '2.8.8', //https://github.com/springdoc/springdoc-openapi/issues/3005
+        springDocOpenUi                 : '2.8.9',
         springSecurityVersion           : '6.5.0',
         pdfServiceClientVersion         : '8.0.2',
         sendLetterClientVersion         : '5.0.4',
-        lifeEventsClientVersion         : '1.3.0-patch1',
+        lifeEventsClientVersion         : '1.3.0-patch2',
         fortifyClientVersion            : '1.4.9',
 ]
 
