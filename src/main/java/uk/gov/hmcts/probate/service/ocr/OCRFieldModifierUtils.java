@@ -197,8 +197,7 @@ public class OCRFieldModifierUtils {
                 || !isBlank(ocrFields.getExceptedEstate())) {
             setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue(),
                     bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-        }
-        else {
+        } else {
             setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue(),
                     bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
         }
