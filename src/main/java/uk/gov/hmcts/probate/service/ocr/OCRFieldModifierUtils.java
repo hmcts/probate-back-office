@@ -198,6 +198,10 @@ public class OCRFieldModifierUtils {
             setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue(),
                     bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
         }
+        else {
+            setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue(),
+                    bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
+        }
     }
 
     private void setDefaultValues(ExceptionRecordOCRFields ocrFields,
