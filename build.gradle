@@ -273,7 +273,7 @@ dependencies {
 
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.2.1-RELEASE'
-  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.0'
+  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.1'
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
   testAnnotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
