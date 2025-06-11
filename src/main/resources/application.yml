@@ -626,7 +626,7 @@ bulkscan:
     solsSolicitorIsApplying: TRUE
     primaryApplicantHasAlias: FALSE
     dateOfDeathForDiedOnOrAfterSwitchDateTrue: 01012022
-    dateOfDeathForDiedOnOrAfterSwitchDateFalse: 01011900
+    dateOfDeathForDiedOnOrAfterSwitchDateFalse: 01011990
     deceasedDiedOnOrAfterSwitchDateTrue: TRUE
     deceasedDiedOnOrAfterSwitchDateFalse: FALSE
     executorsNotApplyingReason: A

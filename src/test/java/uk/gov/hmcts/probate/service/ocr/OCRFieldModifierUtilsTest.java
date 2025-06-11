@@ -103,7 +103,7 @@ class OCRFieldModifierUtilsTest {
         when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue()).thenReturn("TRUE");
         when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateFalse()).thenReturn("FALSE");
         when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue()).thenReturn("01012022");
-        when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse()).thenReturn("01011900");
+        when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse()).thenReturn("01011990");
         when(bulkScanConfig.getExecutorsNotApplyingReason()).thenReturn("A");
 
         Field bulkScanConfigField = OCRFieldModifierUtils.class.getDeclaredField("bulkScanConfig");
@@ -792,7 +792,7 @@ class OCRFieldModifierUtilsTest {
 
         assertEquals(1, modifiedFields.size());
         assertEquals("deceasedDateOfDeath", modifiedFields.getFirst().getValue().getFieldName());
-        assertEquals("01011900", ocrFields.getDeceasedDateOfDeath());
+        assertEquals("01011990", ocrFields.getDeceasedDateOfDeath());
     }
 
     @Test
