@@ -3,4 +3,39 @@
         <!-- Requires update of elasticsearch lib that has lucene dependency version > 9.12.0 -->
         <cve>CVE-2024-45772</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: azure-core-1.55.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure-core@.*$</packageUrl>
+        <cve>CVE-2024-43591</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: azure-core-1.55.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure-core@.*$</packageUrl>
+        <cve>CVE-2023-36052</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jaxb-core-4.0.5.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.glassfish\.jaxb/jaxb-core@.*$</packageUrl>
+        <cve>CVE-2024-9329</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jaxb-runtime-4.0.5.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.glassfish\.jaxb/jaxb-runtime@.*$</packageUrl>
+        <cve>CVE-2024-9329</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: txw2-4.0.5.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.glassfish\.jaxb/txw2@.*$</packageUrl>
+        <cve>CVE-2024-9329</cve>
+    </suppress>
 </suppressions>
