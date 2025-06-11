@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.TRUE;
 
 class OCRFieldModifierUtilsTest {
     @InjectMocks
@@ -164,6 +165,8 @@ class OCRFieldModifierUtilsTest {
                 .caveatorSurnames(VALID_CAVEATOR_SURNAME)
                 .caveatorAddressLine1(VALID_CAVEATOR_ADDRESS_LINE_1)
                 .caveatorAddressPostCode(VALID_CAVEATOR_ADDRESS_POSTCODE)
+                .deceasedDateOfDeath("01012022")
+                .deceasedDiedOnAfterSwitchDate(TRUE)
                 .build();
     }
 
@@ -331,6 +334,7 @@ class OCRFieldModifierUtilsTest {
         formVersionField.set(ocrFields, "3");
 
         ocrFields.setDeceasedDateOfDeath("01012022");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
 
@@ -352,6 +356,7 @@ class OCRFieldModifierUtilsTest {
         formVersionField.set(ocrFields, "3");
 
         ocrFields.setDeceasedDateOfDeath("01012020");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
 
@@ -373,6 +378,7 @@ class OCRFieldModifierUtilsTest {
         formVersionField.set(ocrFields, "3");
 
         ocrFields.setDeceasedDateOfDeath("01012022");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
 
@@ -393,6 +399,7 @@ class OCRFieldModifierUtilsTest {
         formVersionField.set(ocrFields, "2");
 
         ocrFields.setDeceasedDateOfDeath("01012020");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
 
@@ -414,6 +421,7 @@ class OCRFieldModifierUtilsTest {
         formVersionField.set(ocrFields, "3");
 
         ocrFields.setDeceasedDateOfDeath("01012022");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
         ocrFields.setIht400421Completed("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
@@ -437,6 +445,7 @@ class OCRFieldModifierUtilsTest {
 
 
         ocrFields.setDeceasedDateOfDeath("01012022");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
         ocrFields.setIht400421Completed("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
@@ -459,6 +468,7 @@ class OCRFieldModifierUtilsTest {
         formVersionField.set(ocrFields, "3");
 
         ocrFields.setDeceasedDateOfDeath("01012022");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
         ocrFields.setIht207Completed("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
@@ -481,6 +491,7 @@ class OCRFieldModifierUtilsTest {
         formVersionField.set(ocrFields, "2");
 
         ocrFields.setDeceasedDateOfDeath("01012022");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
         ocrFields.setIht207Completed("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
@@ -503,6 +514,7 @@ class OCRFieldModifierUtilsTest {
         formVersionField.set(ocrFields, "3");
 
         ocrFields.setDeceasedDateOfDeath("01012020");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
         ocrFields.setIht205Completed("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
@@ -525,6 +537,7 @@ class OCRFieldModifierUtilsTest {
         formVersionField.set(ocrFields, "2");
 
         ocrFields.setDeceasedDateOfDeath("01012020");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
         ocrFields.setIht205completedOnline("TRUE");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
@@ -571,6 +584,7 @@ class OCRFieldModifierUtilsTest {
             throws IllegalAccessException {
         formVersionField.set(ocrFields, "2");
         ocrFields.setDeceasedDateOfDeath("01012022");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
 
@@ -732,6 +746,7 @@ class OCRFieldModifierUtilsTest {
     @Test
     void shouldHandleDeceasedDateOfDeathPresent() {
         ocrFields.setDeceasedDateOfDeath("01012022");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
 
@@ -745,6 +760,7 @@ class OCRFieldModifierUtilsTest {
     @Test
     void shouldHandleDeceasedDateOfDeathBeforePresent() {
         ocrFields.setDeceasedDateOfDeath("01012020");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012020")).thenReturn(false);
 
