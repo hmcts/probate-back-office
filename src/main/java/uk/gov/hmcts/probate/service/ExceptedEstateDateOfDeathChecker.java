@@ -29,8 +29,11 @@ public class ExceptedEstateDateOfDeathChecker {
             return false;
         }
         try {
+            log.info("Parsed LocalDate from OCR date string: {}", dateOfDeath);
+            log.info("switchDate {}", switchDate);
             DateTimeFormatter ocrDataDateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
             dod = LocalDate.parse(dateOfDeath, ocrDataDateFormatter);
+            log.info("Parsed LocalDate from OCR date string: {}", dod);
 
         } catch (DateTimeParseException dtpe) {
             String errorMessage = DOD_FIELD_NAME
