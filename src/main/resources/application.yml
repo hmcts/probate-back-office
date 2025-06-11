@@ -625,7 +625,7 @@ bulkscan:
     grossNetValue: 1.11
     solsSolicitorIsApplying: TRUE
     primaryApplicantHasAlias: FALSE
-    dateOfDeathForDiedOnOrAfterSwitchDateTrue: 01012022
+    dateOfDeathForDiedOnOrAfterSwitchDateTrue: "01012022"
     dateOfDeathForDiedOnOrAfterSwitchDateFalse: 01011990
     deceasedDiedOnOrAfterSwitchDateTrue: TRUE
     deceasedDiedOnOrAfterSwitchDateFalse: FALSE
