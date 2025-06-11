@@ -101,6 +101,12 @@ public class AutomatedNotificationPersonalisationService {
         StringBuilder stopReasons = new StringBuilder();
         LanguagePreference languagePreference = isWelsh ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
 
+        stopReasonList.stream()
+                .filter(sr -> isValidStopReason(sr, false))
+                .forEach(sr -> stopReasons.append(
+                        stopReasonService.getStopReasonDescription(languagePreference,
+                                sr.getValue().getCaseStopReason())).append("\n"));
+
         // Filter for "DocumentsRequired" reasons
         List<CollectionMember<StopReason>> docRequiredReasons = stopReasonList.stream()
                 .filter(sr -> isValidStopReason(sr, true))
