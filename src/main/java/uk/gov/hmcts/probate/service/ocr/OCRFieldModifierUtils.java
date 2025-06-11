@@ -181,23 +181,14 @@ public class OCRFieldModifierUtils {
     private void handleDeceasedDateOfDeathMissing(ExceptionRecordOCRFields ocrFields,
                                                   List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         String switchDateValue = ocrFields.getDeceasedDiedOnAfterSwitchDate();
-        log.info("deceasedDiedOnAfterSwitchDate is {}", switchDateValue);
         addModifiedField(modifiedFields, "deceasedDateOfDeath", ocrFields.getDeceasedDateOfDeath());
 
         if (TRUE.equalsIgnoreCase(switchDateValue)) {
             log.info("application.yaml date of death {}", bulkScanConfig
                     .getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-            String dateOfDeath = bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-            LocalDate parsedDate = LocalDate.parse(dateOfDeath, formatter);
-            log.info("parsed date of death {}", parsedDate);
             ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-            log.info("Setting deceasedDateOfDeath to {} due to died after switch date value",
-                    ocrFields.getDeceasedDateOfDeath());
         } else {
             ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse());
-            log.info("Setting deceasedDateOfDeath to {} due to died after switch date value",
-                    ocrFields.getDeceasedDateOfDeath());
         }
         log.info("Setting deceasedDateOfDeath to {} due to died on or after switch date value",
                 ocrFields.getDeceasedDateOfDeath());
