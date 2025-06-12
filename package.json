@@ -115,6 +115,6 @@
     "yargs-parser": "^20.2.9",
     "http-cache-semantics": ">=4.1.1"
   },
-  "packageManager": "yarn@4.9.1",
+  "packageManager": "yarn@4.9.2",
   "license": "MIT"
 }
