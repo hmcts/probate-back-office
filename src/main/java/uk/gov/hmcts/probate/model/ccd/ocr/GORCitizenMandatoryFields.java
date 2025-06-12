@@ -3,16 +3,12 @@ package uk.gov.hmcts.probate.model.ccd.ocr;
 import java.util.Arrays;
 
 public enum GORCitizenMandatoryFields {
-    PRIMARY_APPLICANT_HAS_ALIAS("primaryApplicantHasAlias", "Primary applicant has alias?"),
-    //DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
-    //DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
-    //DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
     EXCEPTED_ESTATE("exceptedEstate", "I did not have to submit any forms to HMRC.", "0"),
     FORM_VERSION("formVersion", "Form version"),
     IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "0"),
     IHT_NET_VALUE("ihtNetValue", "Net value of the estate", "0"),
     //SOLICITOR_APPLYING("solsSolicitorIsApplying","Do you have legal representative acting for you?"),
-    IHT_400421_COMPLETED("iht400421completed", "Did you complete an IHT400 and IHT421 form?", "2"),
+    IHT_400421_COMPLETED("iht400421completed", "Did you complete an IHT400 and IHT421 form?", "0"),
     IHT_207_COMPLETED("iht207completed", "IHT207", "0"),
     IHT_400_COMPLETED("iht400completed", "IHT400", "0"),
     IHT_205_COMPLETED("iht205completed", "IHT205", "0"),

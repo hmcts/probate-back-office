@@ -125,11 +125,15 @@ public class OCRFieldModifierUtils {
         setFieldIfBlank(ocrFields::getPrimaryApplicantAddressPostCode, ocrFields::setPrimaryApplicantAddressPostCode,
                 "primaryApplicantAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
 
-        setFieldIfBlank(ocrFields::getPrimaryApplicantAlias, ocrFields::setPrimaryApplicantAlias,
-                "primaryApplicantAlias", bulkScanConfig.getName(), modifiedFields);
-
         setFieldIfBlank(ocrFields::getPrimaryApplicantHasAlias, ocrFields::setPrimaryApplicantHasAlias,
                 "primaryApplicantHasAlias", bulkScanConfig.getPrimaryApplicantHasAlias(), modifiedFields);
+
+        if (TRUE.equalsIgnoreCase(ocrFields.getPrimaryApplicantHasAlias()) && isBlank(
+                ocrFields.getPrimaryApplicantAlias())) {
+            addModifiedField(modifiedFields, "primaryApplicantAlias", ocrFields
+                    .getPrimaryApplicantAlias());
+            ocrFields.setPrimaryApplicantAlias(bulkScanConfig.getNames());
+        }
     }
 
     private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
