@@ -9,7 +9,7 @@ plugins {
   id 'jacoco'
   id 'project-report'
   id 'au.com.dius.pact' version '4.6.17'
-  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.30'
+  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.33'
   id 'org.sonarqube' version '6.2.0.5505'
   id 'com.github.hmcts.rse-cft-lib' version '0.19.1740'
 }
@@ -164,6 +164,7 @@ def versions = [
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '7.17.28',
         hmctsJavaLogging                : '6.1.9',
+        jsoup                           : '1.20.1',
         jacksonDatabind                 : '2.17.1',
         lombok                          : '1.18.38',
         mapStruct                       : '1.2.0.Final',
@@ -171,7 +172,7 @@ def versions = [
         probateCommonsVersion           : '2.2.2',
         restAssured                     : '5.5.5',
         serenity                        : '4.2.22',
-        serenityreporter                : '4.2.30',
+        serenityreporter                : '4.2.34',
         serviceAuthVersion              : '5.3.2',
         springBootVersion               : '3.3.11',
         springBootStarterHateoas        : '3.3.11',
@@ -258,20 +259,21 @@ dependencies {
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
 
-  implementation group: 'org.pitest', name: 'pitest', version: '1.19.4'
+  implementation group: 'org.pitest', name: 'pitest', version: '1.19.5'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.24.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
-  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.6'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.7'
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
+  implementation group: 'org.jsoup', name: 'jsoup', version: versions.jsoup
 
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.2.1-RELEASE'
-  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.0'
+  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.1'
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
   testAnnotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
