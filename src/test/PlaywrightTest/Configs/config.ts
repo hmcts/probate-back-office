@@ -1,3 +1,4 @@
+import { ConfigUtils } from "@hmcts/playwright-common";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -13,21 +14,15 @@ export const testConfig = {
   WaitForTextTimeout:
     Number(process.env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT) || 200,
   TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === "true",
-  TestEnvCwUser: process.env.CW_USER_EMAIL || "probatecaseworker@gmail.com",
-  TestEnvCwPassword: process.env.CW_USER_PASSWORD || "Monday01",
-  TestEnvSuperCwUser:
-    process.env.CW_SUPERUSER_EMAIL || "probatesuperuser2@gmail.com",
-  TestEnvSuperCwPassword: process.env.CW_SUPERUSER_PASSWORD || "Monday01",
-  TestEnvProfUser:
-    process.env.SOL_USER_EMAIL || "probatesolicitortestorgtest2@gmail.com",
-  TestEnvProfPassword: process.env.SOL_USER_PASSWORD || "Pa55wordTest",
+  TestEnvCwUser: ConfigUtils.getEnvVar("CW_USER_EMAIL"),
+  TestEnvCwPassword: ConfigUtils.getEnvVar("CW_USER_PASSWORD"),
+  TestEnvSuperCwUser: ConfigUtils.getEnvVar("CW_SUPERUSER_EMAIL"),
+  TestEnvSuperCwPassword: ConfigUtils.getEnvVar("CW_SUPERUSER_PASSWORD"),
+  TestEnvProfUser: ConfigUtils.getEnvVar("SOL_USER_EMAIL"),
+  TestEnvProfPassword: ConfigUtils.getEnvVar("SOL_USER_PASSWORD"),
   //  TestEnvProfUser2 User for share case e2e only
-  //  For Local Environment please use below credential for User2 to run shareCase, you should be able to share that case with the other PP user
-  //  probatesolicitortestorg2test1@gmail.com   Pass- Probate123
-  TestEnvProfUserSAC: "probate.practitioner.aat.test@gmail.com",
-  TestEnvProfPasswordSAC: "Probate123",
-  TestEnvProfUserNoc: "probate.pp1.org2@gmail.com",
-  TestEnvProfPasswordNoc: "Probate123",
+  //  For Local Environment please use below email for User2 to run shareCase, you should be able to share that case with the other PP user
+  //  probatesolicitortestorg2test1@gmail.com
   TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === "true",
   TestForCrossBrowser: process.env.TESTS_FOR_CROSS_BROWSER === "true",
   // only used when running locally, not in pipeline (where autodelay is on) - other than case matching
