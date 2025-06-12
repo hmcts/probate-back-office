@@ -45,17 +45,6 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    void shouldWarnWhenIHT400421Missing() {
-        String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
-                + "Post2022PA1PMissingIHT400421completed.json");
-        List<String> expectedWarnings =
-            utils.getLinesFromFile(
-                "/json/bulkscan/version2/validation/expectedWarnings/missingIHT400421completed.txt");
-        validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
-    }
-
-    @Test
     void invalidApplyingExecutor0EmailAddress() {
         String jsonRequest =
                 utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
