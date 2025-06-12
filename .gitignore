@@ -49,6 +49,7 @@ src/test/end-to-end/.env
 /src/main/generated/
 
 .aat-env
+src/test/PlaywrightTest/.env
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -60,18 +61,4 @@ src/test/end-to-end/.env
 /playwright-report/
 /playwright/.cache/
 /test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
+
