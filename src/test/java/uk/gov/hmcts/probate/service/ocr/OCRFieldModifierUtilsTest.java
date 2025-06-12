@@ -105,6 +105,7 @@ class OCRFieldModifierUtilsTest {
         when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue()).thenReturn("01012022");
         when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse()).thenReturn("01011990");
         when(bulkScanConfig.getExecutorsNotApplyingReason()).thenReturn("A");
+        when(bulkScanConfig.getSolicitorApplying()).thenReturn("FALSE");
 
         Field bulkScanConfigField = OCRFieldModifierUtils.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);
@@ -921,5 +922,23 @@ class OCRFieldModifierUtilsTest {
                 ocrFields.getExecutorsNotApplying1notApplyingExecutorReason());
         assertEquals(bulkScanConfig.getExecutorsNotApplyingReason(),
                 ocrFields.getExecutorsNotApplying2notApplyingExecutorReason());
+    }
+
+    @Test
+    void shouldSetSolicitorIsApplyingToDefaultWhenEmpty() {
+        ocrFields.setSolsSolicitorIsApplying("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("solsSolicitorIsApplying", modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals(bulkScanConfig.getSolicitorApplying(), ocrFields.getSolsSolicitorIsApplying());
+    }
+
+    @Test
+    void shouldSetSolicitorIsApplyingToDefaultWhenValueIsPresent() {
+        ocrFields.setSolsSolicitorIsApplying("TRUE");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(0, modifiedFields.size());
     }
 }

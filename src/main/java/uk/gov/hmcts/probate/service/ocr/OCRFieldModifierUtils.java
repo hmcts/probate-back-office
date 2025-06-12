@@ -42,6 +42,105 @@ public class OCRFieldModifierUtils {
         return modifiedFields;
     }
 
+    private void handleDeceasedFields(ExceptionRecordOCRFields ocrFields,
+                                      List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+
+        if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+            handleDeceasedDateOfDeathPresent(ocrFields, modifiedFields);
+        } else if (isBlank(ocrFields.getDeceasedDateOfDeath()) && !isBlank(ocrFields
+                .getDeceasedDiedOnAfterSwitchDate())) {
+            handleDeceasedDateOfDeathMissing(ocrFields, modifiedFields);
+        } else if (isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields
+                .getDeceasedDiedOnAfterSwitchDate())) {
+            handleBothDeceasedFieldsMissing(ocrFields, modifiedFields);
+        }
+
+        setFieldIfBlank(ocrFields::getDeceasedForenames, ocrFields::setDeceasedForenames,
+                "deceasedForenames", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedSurname, ocrFields::setDeceasedSurname,
+                "deceasedSurname", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedAddressLine1, ocrFields::setDeceasedAddressLine1,
+                "deceasedAddressLine1", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedAddressPostCode, ocrFields::setDeceasedAddressPostCode,
+                "deceasedAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedDateOfBirth, ocrFields::setDeceasedDateOfBirth,
+                "deceasedDateOfBirth", bulkScanConfig.getDob(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedAnyOtherNames, ocrFields::setDeceasedAnyOtherNames,
+                "deceasedAnyOtherNames", FALSE, modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedDomicileInEngWales, ocrFields::setDeceasedDomicileInEngWales,
+                "deceasedDomicileInEngWales", TRUE, modifiedFields);
+    }
+
+    private void handleDeceasedDateOfDeathPresent(ExceptionRecordOCRFields ocrFields,
+                                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate", ocrFields
+                .getDeceasedDiedOnAfterSwitchDate());
+        String switchDateValue = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields
+                .getDeceasedDateOfDeath())
+                ? TRUE : FALSE;
+        ocrFields.setDeceasedDiedOnAfterSwitchDate(switchDateValue);
+        log.info("Setting deceasedDiedOnAfterSwitchDate to {}", switchDateValue);
+    }
+
+    private void handleDeceasedDateOfDeathMissing(ExceptionRecordOCRFields ocrFields,
+                                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        String switchDateValue = ocrFields.getDeceasedDiedOnAfterSwitchDate();
+        addModifiedField(modifiedFields, "deceasedDateOfDeath", ocrFields.getDeceasedDateOfDeath());
+
+        if (TRUE.equalsIgnoreCase(switchDateValue)) {
+            log.info("application.yaml date of death {}", bulkScanConfig
+                    .getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
+            ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
+        } else {
+            ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse());
+        }
+        log.info("Setting deceasedDateOfDeath to {} due to died on or after switch date value",
+                ocrFields.getDeceasedDateOfDeath());
+    }
+
+    private void handleBothDeceasedFieldsMissing(ExceptionRecordOCRFields ocrFields,
+                                                 List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        if (!isBlank(ocrFields.getIht205Completed()) || !isBlank(ocrFields.getIhtGrossValue205())
+                || !isBlank(ocrFields.getIhtNetValue205())) {
+            setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateFalse(),
+                    bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse());
+        } else if (!isBlank(ocrFields.getIhtEstateNetValue()) || !isBlank(ocrFields.getIhtEstateGrossValue())
+                || !isBlank(ocrFields.getExceptedEstate())) {
+            setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue(),
+                    bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
+        } else {
+            setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue(),
+                    bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
+        }
+    }
+
+    private void handlePrimaryApplicantFields(ExceptionRecordOCRFields ocrFields,
+                                              List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        setFieldIfBlank(ocrFields::getPrimaryApplicantForenames, ocrFields::setPrimaryApplicantForenames,
+                "primaryApplicantForenames", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getPrimaryApplicantSurname, ocrFields::setPrimaryApplicantSurname,
+                "primaryApplicantSurname", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getPrimaryApplicantAddressLine1, ocrFields::setPrimaryApplicantAddressLine1,
+                "primaryApplicantAddressLine1", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getPrimaryApplicantAddressPostCode, ocrFields::setPrimaryApplicantAddressPostCode,
+                "primaryApplicantAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+
+        setFieldIfBlank(ocrFields::getPrimaryApplicantAlias, ocrFields::setPrimaryApplicantAlias,
+                "primaryApplicantAlias", bulkScanConfig.getName(), modifiedFields);
+
+        setFieldIfBlank(ocrFields::getPrimaryApplicantHasAlias, ocrFields::setPrimaryApplicantHasAlias,
+                "primaryApplicantHasAlias", bulkScanConfig.getPrimaryApplicantHasAlias(), modifiedFields);
+    }
+
+    private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
+                                       List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        setFieldIfBlank(ocrFields::getSolsSolicitorIsApplying, ocrFields::setSolsSolicitorIsApplying,
+                "solsSolicitorIsApplying", bulkScanConfig.getSolicitorApplying(), modifiedFields);
+        if (BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
+            handleGorSolicitorFields(ocrFields, modifiedFields, bulkScanConfig);
+        }
+    }
+
     private void handleExecutorsApplyingFields(ExceptionRecordOCRFields ocrFields,
                                                List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         if (!isBlank(ocrFields.getExecutorsApplying0applyingExecutorName())) {
@@ -136,78 +235,6 @@ public class OCRFieldModifierUtils {
         }
     }
 
-    private void handleDeceasedFields(ExceptionRecordOCRFields ocrFields,
-                                      List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-
-        if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
-            handleDeceasedDateOfDeathPresent(ocrFields, modifiedFields);
-        } else if (isBlank(ocrFields.getDeceasedDateOfDeath()) && !isBlank(ocrFields
-                .getDeceasedDiedOnAfterSwitchDate())) {
-            handleDeceasedDateOfDeathMissing(ocrFields, modifiedFields);
-        } else if (isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields
-                .getDeceasedDiedOnAfterSwitchDate())) {
-            handleBothDeceasedFieldsMissing(ocrFields, modifiedFields);
-        }
-
-        setFieldIfBlank(ocrFields::getDeceasedForenames, ocrFields::setDeceasedForenames,
-                "deceasedForenames", bulkScanConfig.getName(), modifiedFields);
-        setFieldIfBlank(ocrFields::getDeceasedSurname, ocrFields::setDeceasedSurname,
-                "deceasedSurname", bulkScanConfig.getName(), modifiedFields);
-        setFieldIfBlank(ocrFields::getDeceasedAddressLine1, ocrFields::setDeceasedAddressLine1,
-                "deceasedAddressLine1", bulkScanConfig.getName(), modifiedFields);
-        setFieldIfBlank(ocrFields::getDeceasedAddressPostCode, ocrFields::setDeceasedAddressPostCode,
-                "deceasedAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
-        setFieldIfBlank(ocrFields::getDeceasedDateOfBirth, ocrFields::setDeceasedDateOfBirth,
-                "deceasedDateOfBirth", bulkScanConfig.getDob(), modifiedFields);
-        setFieldIfBlank(ocrFields::getDeceasedAnyOtherNames, ocrFields::setDeceasedAnyOtherNames,
-                "deceasedAnyOtherNames", FALSE, modifiedFields);
-        setFieldIfBlank(ocrFields::getDeceasedDomicileInEngWales, ocrFields::setDeceasedDomicileInEngWales,
-                "deceasedDomicileInEngWales", TRUE, modifiedFields);
-    }
-
-    private void handleDeceasedDateOfDeathPresent(ExceptionRecordOCRFields ocrFields,
-                                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate", ocrFields
-                .getDeceasedDiedOnAfterSwitchDate());
-        String switchDateValue = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields
-                .getDeceasedDateOfDeath())
-                ? TRUE : FALSE;
-        ocrFields.setDeceasedDiedOnAfterSwitchDate(switchDateValue);
-        log.info("Setting deceasedDiedOnAfterSwitchDate to {}", switchDateValue);
-    }
-
-    private void handleDeceasedDateOfDeathMissing(ExceptionRecordOCRFields ocrFields,
-                                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        String switchDateValue = ocrFields.getDeceasedDiedOnAfterSwitchDate();
-        addModifiedField(modifiedFields, "deceasedDateOfDeath", ocrFields.getDeceasedDateOfDeath());
-
-        if (TRUE.equalsIgnoreCase(switchDateValue)) {
-            log.info("application.yaml date of death {}", bulkScanConfig
-                    .getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-            ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-        } else {
-            ocrFields.setDeceasedDateOfDeath(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse());
-        }
-        log.info("Setting deceasedDateOfDeath to {} due to died on or after switch date value",
-                ocrFields.getDeceasedDateOfDeath());
-    }
-
-    private void handleBothDeceasedFieldsMissing(ExceptionRecordOCRFields ocrFields,
-                                                 List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        if (!isBlank(ocrFields.getIht205Completed()) || !isBlank(ocrFields.getIhtGrossValue205())
-                || !isBlank(ocrFields.getIhtNetValue205())) {
-            setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateFalse(),
-                    bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse());
-        } else if (!isBlank(ocrFields.getIhtEstateNetValue()) || !isBlank(ocrFields.getIhtEstateGrossValue())
-                || !isBlank(ocrFields.getExceptedEstate())) {
-            setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue(),
-                    bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-        } else {
-            setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue(),
-                    bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-        }
-    }
-
     private void setDefaultValues(ExceptionRecordOCRFields ocrFields,
                                   List<CollectionMember<ModifiedOCRField>> modifiedFields,
                                   String switchDateValue, String dateOfDeathValue) {
@@ -219,38 +246,6 @@ public class OCRFieldModifierUtils {
         ocrFields.setDeceasedDateOfDeath(dateOfDeathValue);
 
         log.info("Setting deceasedDiedOnAfterSwitchDate to {}", switchDateValue);
-    }
-
-    private void handlePrimaryApplicantFields(ExceptionRecordOCRFields ocrFields,
-                                              List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        setFieldIfBlank(ocrFields::getPrimaryApplicantForenames, ocrFields::setPrimaryApplicantForenames,
-                "primaryApplicantForenames", bulkScanConfig.getName(), modifiedFields);
-        setFieldIfBlank(ocrFields::getPrimaryApplicantSurname, ocrFields::setPrimaryApplicantSurname,
-                "primaryApplicantSurname", bulkScanConfig.getName(), modifiedFields);
-        setFieldIfBlank(ocrFields::getPrimaryApplicantAddressLine1, ocrFields::setPrimaryApplicantAddressLine1,
-                "primaryApplicantAddressLine1", bulkScanConfig.getName(), modifiedFields);
-        setFieldIfBlank(ocrFields::getPrimaryApplicantAddressPostCode, ocrFields::setPrimaryApplicantAddressPostCode,
-                "primaryApplicantAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
-
-        if (isBlank(ocrFields.getPrimaryApplicantAlias())) {
-            addModifiedField(modifiedFields, "primaryApplicantAlias", ocrFields.getPrimaryApplicantAlias());
-            ocrFields.setPrimaryApplicantAlias(bulkScanConfig.getName());
-            log.info("Setting primaryApplicantAlias to {}", ocrFields.getPrimaryApplicantAlias());
-        }
-
-        if (isBlank(ocrFields.getPrimaryApplicantHasAlias())) {
-            addModifiedField(modifiedFields, "primaryApplicantHasAlias",
-                    ocrFields.getPrimaryApplicantHasAlias());
-            ocrFields.setPrimaryApplicantAlias(bulkScanConfig.getPrimaryApplicantHasAlias()); //Set False
-            log.info("Setting primaryApplicantHasAlias to {}", ocrFields.getPrimaryApplicantHasAlias());
-        }
-    }
-
-    private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
-                                       List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        if (BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
-            handleGorSolicitorFields(ocrFields, modifiedFields, bulkScanConfig);
-        }
     }
 
     private void handleIHTFields(ExceptionRecordOCRFields ocrFields,
@@ -412,11 +407,8 @@ public class OCRFieldModifierUtils {
             }
         }
 
-        if (isBlank(ocrFields.getSolsSolicitorFirmName())) {
-            addModifiedField(modifiedFields, "solsSolicitorFirmName", ocrFields.getSolsSolicitorFirmName());
-            ocrFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
-            log.info("Setting solicitor firm name to {}", ocrFields.getSolsSolicitorFirmName());
-        }
+        setFieldIfBlank(ocrFields::getSolsSolicitorFirmName, ocrFields::setSolsSolicitorFirmName,
+                "solsSolicitorFirmName", bulkScanConfig.getName(), modifiedFields);
 
         if (isBlank(ocrFields.getSolsSolicitorAppReference())) {
             addModifiedField(modifiedFields, "solsSolicitorAppReference",
@@ -430,12 +422,8 @@ public class OCRFieldModifierUtils {
             }
         }
 
-        if (isBlank(ocrFields.getSolsSolicitorAddressLine1())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressLine1",
-                    ocrFields.getSolsSolicitorAddressLine1());
-            ocrFields.setSolsSolicitorAddressLine1(bulkScanConfig.getName());
-            log.info("Setting solicitor address line 1 to {}", ocrFields.getSolsSolicitorAddressLine1());
-        }
+        setFieldIfBlank(ocrFields::getSolsSolicitorAddressLine1, ocrFields::setSolsSolicitorAddressLine1,
+                "solsSolicitorAddressLine1", bulkScanConfig.getName(), modifiedFields);
 
         if (isBlank(ocrFields.getSolsSolicitorAddressLine2()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
                 && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
@@ -453,25 +441,14 @@ public class OCRFieldModifierUtils {
             log.info("Setting solicitor town or city to {}", ocrFields.getSolsSolicitorAddressTown());
         }
 
-        if (isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressPostCode",
-                    ocrFields.getSolsSolicitorAddressPostCode());
-            ocrFields.setSolsSolicitorAddressPostCode(bulkScanConfig.getPostcode());
-            log.info("Setting solicitor postcode to {}", ocrFields.getSolsSolicitorAddressPostCode());
-        }
+        setFieldIfBlank(ocrFields::getSolsSolicitorAddressPostCode, ocrFields::setSolsSolicitorAddressPostCode,
+                "solsSolicitorAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
 
-        if (isBlank(ocrFields.getSolsSolicitorEmail())) {
-            addModifiedField(modifiedFields, "solsSolicitorEmail", ocrFields.getSolsSolicitorEmail());
-            ocrFields.setSolsSolicitorEmail(bulkScanConfig.getEmail());
-            log.info("Setting solicitor email to {}", ocrFields.getSolsSolicitorEmail());
-        }
+        setFieldIfBlank(ocrFields::getSolsSolicitorEmail, ocrFields::setSolsSolicitorEmail,
+                "solsSolicitorEmail", bulkScanConfig.getEmail(), modifiedFields);
 
-        if (isBlank(ocrFields.getSolsSolicitorPhoneNumber())) {
-            addModifiedField(modifiedFields, "solsSolicitorPhoneNumber",
-                    ocrFields.getSolsSolicitorPhoneNumber());
-            ocrFields.setSolsSolicitorPhoneNumber(bulkScanConfig.getPhone());
-            log.info("Setting solicitor phone to {}", ocrFields.getSolsSolicitorPhoneNumber());
-        }
+        setFieldIfBlank(ocrFields::getSolsSolicitorPhoneNumber, ocrFields::setSolsSolicitorPhoneNumber,
+                "solsSolicitorPhoneNumber", bulkScanConfig.getPhone(), modifiedFields);
     }
 
     public List<CollectionMember<String>> checkWarnings(ExceptionRecordOCRFields ocrFields) {

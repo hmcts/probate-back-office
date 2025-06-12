@@ -8,8 +8,8 @@ public enum GORSolicitorMandatoryFields {
     //DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
     //DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
     FORM_VERSION("formVersion", "Form version"),
-    IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "1"),
-    IHT_NET_VALUE("ihtNetValue", "Net value of the estate", "1");
+    IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "0"),
+    IHT_NET_VALUE("ihtNetValue", "Net value of the estate", "0");
 
     private final String key;
     private final String value;
