@@ -61,4 +61,4 @@ src/test/PlaywrightTest/.env
 /playwright-report/
 /playwright/.cache/
 /test-results/
-
+/blob-report/
