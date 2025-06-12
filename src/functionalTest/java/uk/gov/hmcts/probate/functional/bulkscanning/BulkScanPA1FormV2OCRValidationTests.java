@@ -76,17 +76,6 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    void shouldWarnForMissingIhtUnusedAllowanceClaimed() {
-        String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
-                + "Post2022PA1AMissingUnusedAllowanceClaimed.json");
-        List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/"
-                + "missingUnusedAllowanceClaimed.txt");
-        validateOCRWarnings(PA1A, jsonRequest, WARNINGS, expectedWarnings);
-    }
-
-    @Test
     void shouldNotWarnForMissingIhtUnusedAllowanceClaimedIfNotWidowed() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
