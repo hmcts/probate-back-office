@@ -82,47 +82,6 @@ class PA1PCitizenMandatoryFieldsValidatorTest {
         assertEquals(0, warnings.size());
     }
 
-    /*
-    @Test
-    void testFieldDescriptionIsAddedToMissingValueListForPA1Pv1() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.remove("solsSolicitorIsApplying");
-
-        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(1, warnings.size());
-        assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
-            warnings.get(0));
-    }
-
-    @Test
-    void testFieldDescriptionIsAddedToMissingValueListForPA1Pv2() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields(2);
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.remove("solsSolicitorIsApplying");
-        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
-        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(1, warnings.size());
-        assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
-            warnings.get(0));
-    }
-     */
-
-    @Test
-    void testMissingIHT400421CompletedMandatoryFieldReturnSuccessfullyForPA1Pv2() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields(2);
-
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.remove("iht400421completed");
-        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
-        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(1, warnings.size());
-        assertEquals("Did you complete an IHT400 and IHT421 form? (iht400421completed) is mandatory.", warnings.get(0));
-    }
-
     @Test
     void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1Pv1() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
