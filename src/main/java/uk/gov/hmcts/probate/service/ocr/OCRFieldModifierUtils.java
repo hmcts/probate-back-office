@@ -32,14 +32,113 @@ public class OCRFieldModifierUtils {
     public List<CollectionMember<ModifiedOCRField>> setDefaultGorValues(ExceptionRecordOCRFields ocrFields) {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
 
-        handleDeceasedFields(ocrFields, modifiedFields);
-        handlePrimaryApplicantFields(ocrFields, modifiedFields);
         handleSolicitorFields(ocrFields, modifiedFields);
+        handlePrimaryApplicantFields(ocrFields, modifiedFields);
+        handleDeceasedFields(ocrFields, modifiedFields);
         handleIHTFields(ocrFields, modifiedFields);
         handleExecutorsNotApplyingFields(ocrFields, modifiedFields);
         handleExecutorsApplyingFields(ocrFields, modifiedFields);
 
         return modifiedFields;
+    }
+
+    private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
+                                       List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        setFieldIfBlank(ocrFields::getSolsSolicitorIsApplying, ocrFields::setSolsSolicitorIsApplying,
+                "solsSolicitorIsApplying", bulkScanConfig.getSolicitorApplying(), modifiedFields);
+        if (BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
+            handleGorSolicitorFields(ocrFields, modifiedFields, bulkScanConfig);
+        }
+    }
+
+    private void handleGorSolicitorFields(ExceptionRecordOCRFields ocrFields,
+                                          List<CollectionMember<ModifiedOCRField>> modifiedFields,
+                                          BulkScanConfig bulkScanConfig) {
+        if (isBlank(ocrFields.getSolsSolicitorRepresentativeName())) {
+            addModifiedField(modifiedFields, "solsSolicitorRepresentativeName",
+                    ocrFields.getSolsSolicitorFirmName());
+            if (isNotBlank(ocrFields.getSolsSolicitorFirmName())) {
+                ocrFields.setSolsSolicitorRepresentativeName(ocrFields.getSolsSolicitorFirmName());
+                log.info("Setting solicitor representative name to {}", ocrFields.getSolsSolicitorFirmName());
+            } else {
+                ocrFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
+                log.info("Setting solicitor representative to {}", bulkScanConfig.getName());
+            }
+        }
+
+        setFieldIfBlank(ocrFields::getSolsSolicitorFirmName, ocrFields::setSolsSolicitorFirmName,
+                "solsSolicitorFirmName", bulkScanConfig.getName(), modifiedFields);
+
+        if (isBlank(ocrFields.getSolsSolicitorAppReference())) {
+            addModifiedField(modifiedFields, "solsSolicitorAppReference",
+                    ocrFields.getSolsSolicitorAppReference());
+            if (isNotBlank(ocrFields.getDeceasedSurname())) {
+                ocrFields.setSolsSolicitorAppReference(ocrFields.getDeceasedSurname());
+                log.info("Setting legal representative name to {}", ocrFields.getSolsSolicitorAppReference());
+            } else {
+                ocrFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
+                log.info("Setting legal representative name to {}", ocrFields.getSolsSolicitorFirmName());
+            }
+        }
+
+        setFieldIfBlank(ocrFields::getSolsSolicitorAddressLine1, ocrFields::setSolsSolicitorAddressLine1,
+                "solsSolicitorAddressLine1", bulkScanConfig.getName(), modifiedFields);
+
+        if (isBlank(ocrFields.getSolsSolicitorAddressLine2()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
+                && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
+            addModifiedField(modifiedFields, "solsSolicitorAddressLine2",
+                    ocrFields.getSolsSolicitorAddressLine2());
+            ocrFields.setSolsSolicitorAddressLine2(bulkScanConfig.getName());
+            log.info("Setting solicitor address line 2 to {}", ocrFields.getSolsSolicitorAddressLine2());
+        }
+
+        if (isBlank(ocrFields.getSolsSolicitorAddressTown()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
+                && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
+            addModifiedField(modifiedFields, "solsSolicitorAddressTown",
+                    ocrFields.getSolsSolicitorAddressTown());
+            ocrFields.setSolsSolicitorAddressTown(bulkScanConfig.getName());
+            log.info("Setting solicitor town or city to {}", ocrFields.getSolsSolicitorAddressTown());
+        }
+
+        setFieldIfBlank(ocrFields::getSolsSolicitorAddressPostCode, ocrFields::setSolsSolicitorAddressPostCode,
+                "solsSolicitorAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+
+        setFieldIfBlank(ocrFields::getSolsSolicitorEmail, ocrFields::setSolsSolicitorEmail,
+                "solsSolicitorEmail", bulkScanConfig.getEmail(), modifiedFields);
+
+        setFieldIfBlank(ocrFields::getSolsSolicitorPhoneNumber, ocrFields::setSolsSolicitorPhoneNumber,
+                "solsSolicitorPhoneNumber", bulkScanConfig.getPhone(), modifiedFields);
+    }
+
+
+    private void handlePrimaryApplicantFields(ExceptionRecordOCRFields ocrFields,
+                                              List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        if (!BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
+            handleGorPrimaryApplicantFields(ocrFields, modifiedFields, bulkScanConfig);
+        }
+    }
+
+    private void handleGorPrimaryApplicantFields(ExceptionRecordOCRFields ocrFields,
+                                                 List<CollectionMember<ModifiedOCRField>> modifiedFields,
+                                                 BulkScanConfig bulkScanConfig) {
+        setFieldIfBlank(ocrFields::getPrimaryApplicantForenames, ocrFields::setPrimaryApplicantForenames,
+                "primaryApplicantForenames", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getPrimaryApplicantSurname, ocrFields::setPrimaryApplicantSurname,
+                "primaryApplicantSurname", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getPrimaryApplicantAddressLine1, ocrFields::setPrimaryApplicantAddressLine1,
+                "primaryApplicantAddressLine1", bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getPrimaryApplicantAddressPostCode, ocrFields::setPrimaryApplicantAddressPostCode,
+                "primaryApplicantAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+
+        setFieldIfBlank(ocrFields::getPrimaryApplicantHasAlias, ocrFields::setPrimaryApplicantHasAlias,
+                "primaryApplicantHasAlias", bulkScanConfig.getPrimaryApplicantHasAlias(), modifiedFields);
+
+        if (TRUE.equalsIgnoreCase(ocrFields.getPrimaryApplicantHasAlias()) && isBlank(
+                ocrFields.getPrimaryApplicantAlias())) {
+            addModifiedField(modifiedFields, "primaryApplicantAlias", ocrFields
+                    .getPrimaryApplicantAlias());
+            ocrFields.setPrimaryApplicantAlias(bulkScanConfig.getNames());
+        }
     }
 
     private void handleDeceasedFields(ExceptionRecordOCRFields ocrFields,
@@ -111,37 +210,6 @@ public class OCRFieldModifierUtils {
         } else {
             setDefaultValues(ocrFields, modifiedFields, bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue(),
                     bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue());
-        }
-    }
-
-    private void handlePrimaryApplicantFields(ExceptionRecordOCRFields ocrFields,
-                                              List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        setFieldIfBlank(ocrFields::getPrimaryApplicantForenames, ocrFields::setPrimaryApplicantForenames,
-                "primaryApplicantForenames", bulkScanConfig.getName(), modifiedFields);
-        setFieldIfBlank(ocrFields::getPrimaryApplicantSurname, ocrFields::setPrimaryApplicantSurname,
-                "primaryApplicantSurname", bulkScanConfig.getName(), modifiedFields);
-        setFieldIfBlank(ocrFields::getPrimaryApplicantAddressLine1, ocrFields::setPrimaryApplicantAddressLine1,
-                "primaryApplicantAddressLine1", bulkScanConfig.getName(), modifiedFields);
-        setFieldIfBlank(ocrFields::getPrimaryApplicantAddressPostCode, ocrFields::setPrimaryApplicantAddressPostCode,
-                "primaryApplicantAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
-
-        setFieldIfBlank(ocrFields::getPrimaryApplicantHasAlias, ocrFields::setPrimaryApplicantHasAlias,
-                "primaryApplicantHasAlias", bulkScanConfig.getPrimaryApplicantHasAlias(), modifiedFields);
-
-        if (TRUE.equalsIgnoreCase(ocrFields.getPrimaryApplicantHasAlias()) && isBlank(
-                ocrFields.getPrimaryApplicantAlias())) {
-            addModifiedField(modifiedFields, "primaryApplicantAlias", ocrFields
-                    .getPrimaryApplicantAlias());
-            ocrFields.setPrimaryApplicantAlias(bulkScanConfig.getNames());
-        }
-    }
-
-    private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
-                                       List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        setFieldIfBlank(ocrFields::getSolsSolicitorIsApplying, ocrFields::setSolsSolicitorIsApplying,
-                "solsSolicitorIsApplying", bulkScanConfig.getSolicitorApplying(), modifiedFields);
-        if (BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
-            handleGorSolicitorFields(ocrFields, modifiedFields, bulkScanConfig);
         }
     }
 
@@ -394,65 +462,6 @@ public class OCRFieldModifierUtils {
                 .originalValue(originalValue)
                 .build();
         modifiedList.add(new CollectionMember<>(null, modifiedOCRField));
-    }
-
-    private void handleGorSolicitorFields(ExceptionRecordOCRFields ocrFields,
-                                          List<CollectionMember<ModifiedOCRField>> modifiedFields,
-                                          BulkScanConfig bulkScanConfig) {
-        if (isBlank(ocrFields.getSolsSolicitorRepresentativeName())) {
-            addModifiedField(modifiedFields, "solsSolicitorRepresentativeName",
-                    ocrFields.getSolsSolicitorFirmName());
-            if (isNotBlank(ocrFields.getSolsSolicitorFirmName())) {
-                ocrFields.setSolsSolicitorRepresentativeName(ocrFields.getSolsSolicitorFirmName());
-                log.info("Setting solicitor representative name to {}", ocrFields.getSolsSolicitorFirmName());
-            } else {
-                ocrFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
-                log.info("Setting solicitor representative to {}", bulkScanConfig.getName());
-            }
-        }
-
-        setFieldIfBlank(ocrFields::getSolsSolicitorFirmName, ocrFields::setSolsSolicitorFirmName,
-                "solsSolicitorFirmName", bulkScanConfig.getName(), modifiedFields);
-
-        if (isBlank(ocrFields.getSolsSolicitorAppReference())) {
-            addModifiedField(modifiedFields, "solsSolicitorAppReference",
-                    ocrFields.getSolsSolicitorAppReference());
-            if (isNotBlank(ocrFields.getDeceasedSurname())) {
-                ocrFields.setSolsSolicitorAppReference(ocrFields.getDeceasedSurname());
-                log.info("Setting legal representative name to {}", ocrFields.getSolsSolicitorAppReference());
-            } else {
-                ocrFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
-                log.info("Setting legal representative name to {}", ocrFields.getSolsSolicitorFirmName());
-            }
-        }
-
-        setFieldIfBlank(ocrFields::getSolsSolicitorAddressLine1, ocrFields::setSolsSolicitorAddressLine1,
-                "solsSolicitorAddressLine1", bulkScanConfig.getName(), modifiedFields);
-
-        if (isBlank(ocrFields.getSolsSolicitorAddressLine2()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
-                && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressLine2",
-                    ocrFields.getSolsSolicitorAddressLine2());
-            ocrFields.setSolsSolicitorAddressLine2(bulkScanConfig.getName());
-            log.info("Setting solicitor address line 2 to {}", ocrFields.getSolsSolicitorAddressLine2());
-        }
-
-        if (isBlank(ocrFields.getSolsSolicitorAddressTown()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
-                && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressTown",
-                    ocrFields.getSolsSolicitorAddressTown());
-            ocrFields.setSolsSolicitorAddressTown(bulkScanConfig.getName());
-            log.info("Setting solicitor town or city to {}", ocrFields.getSolsSolicitorAddressTown());
-        }
-
-        setFieldIfBlank(ocrFields::getSolsSolicitorAddressPostCode, ocrFields::setSolsSolicitorAddressPostCode,
-                "solsSolicitorAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
-
-        setFieldIfBlank(ocrFields::getSolsSolicitorEmail, ocrFields::setSolsSolicitorEmail,
-                "solsSolicitorEmail", bulkScanConfig.getEmail(), modifiedFields);
-
-        setFieldIfBlank(ocrFields::getSolsSolicitorPhoneNumber, ocrFields::setSolsSolicitorPhoneNumber,
-                "solsSolicitorPhoneNumber", bulkScanConfig.getPhone(), modifiedFields);
     }
 
     public List<CollectionMember<String>> checkWarnings(ExceptionRecordOCRFields ocrFields) {

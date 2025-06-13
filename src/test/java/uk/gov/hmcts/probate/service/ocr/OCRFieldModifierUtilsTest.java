@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.FALSE;
 import static uk.gov.hmcts.probate.model.Constants.TRUE;
 
 class OCRFieldModifierUtilsTest {
@@ -100,12 +101,12 @@ class OCRFieldModifierUtilsTest {
         when(bulkScanConfig.getDeceasedAnyOtherNames()).thenReturn(DEFAULT_DECEASED_ANY_OTHER_NAMES_VALUE);
         when(bulkScanConfig.getDeceasedDomicileInEngWales()).thenReturn(DEFAULT_DECEASED_DOMICILE_IN_ENG_WALES_VALUE);
         when(bulkScanConfig.getPrimaryApplicantHasAlias()).thenReturn(DEFAULT_ALIAS_VALUE);
-        when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue()).thenReturn("TRUE");
-        when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateFalse()).thenReturn("FALSE");
+        when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateTrue()).thenReturn(TRUE);
+        when(bulkScanConfig.getDeceasedDiedOnOrAfterSwitchDateFalse()).thenReturn(FALSE);
         when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue()).thenReturn("01012022");
         when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse()).thenReturn("01011990");
         when(bulkScanConfig.getExecutorsNotApplyingReason()).thenReturn("A");
-        when(bulkScanConfig.getSolicitorApplying()).thenReturn("FALSE");
+        when(bulkScanConfig.getSolicitorApplying()).thenReturn(FALSE);
 
         Field bulkScanConfigField = OCRFieldModifierUtils.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);
@@ -173,6 +174,7 @@ class OCRFieldModifierUtilsTest {
 
     @Test
     void shouldSetApplicantForenameToMissingWhenEmpty() {
+        ocrFields.setSolsSolicitorIsApplying(FALSE);
         ocrFields.setPrimaryApplicantForenames("");
 
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
@@ -183,7 +185,18 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
+    void shouldNotSetApplicantForenameToMissingWhenSolicitorIsApplying() {
+        ocrFields.setSolsSolicitorIsApplying(TRUE);
+        ocrFields.setPrimaryApplicantForenames("");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(0, modifiedFields.size());
+    }
+
+    @Test
     void shouldSetPostcodeToM1551NGWhenEmpty() {
+        ocrFields.setSolsSolicitorIsApplying(FALSE);
         ocrFields.setPrimaryApplicantAddressPostCode("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
@@ -193,6 +206,18 @@ class OCRFieldModifierUtilsTest {
         assertEquals(1, modifiedFields.size());
         assertEquals("primaryApplicantAddressPostCode", modifiedFields.getFirst().getValue().getFieldName());
         assertEquals("MI55 1NG", ocrFields.getPrimaryApplicantAddressPostCode());
+    }
+
+    @Test
+    void shouldNotSetPostcodeToM1551NGWhenSolicitorIsApplying() {
+        ocrFields.setSolsSolicitorIsApplying(TRUE);
+        ocrFields.setPrimaryApplicantAddressPostCode("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        for (CollectionMember<ModifiedOCRField> modifiedField : modifiedFields) {
+            System.out.println(modifiedField.getValue().getFieldName());
+        }
+        assertEquals(0, modifiedFields.size());
     }
 
     @Test
@@ -291,11 +316,11 @@ class OCRFieldModifierUtilsTest {
 
         ocrFields.setIhtEstateNetValue("1000");
         ocrFields.setIhtEstateNetQualifyingValue("1000");
-        ocrFields.setIht400421Completed("FALSE");
-        ocrFields.setIht207Completed("FALSE");
-        ocrFields.setIht205Completed("FALSE");
-        ocrFields.setIht400Completed("TRUE");
-        ocrFields.setIht400process("TRUE");
+        ocrFields.setIht400421Completed(FALSE);
+        ocrFields.setIht207Completed(FALSE);
+        ocrFields.setIht205Completed(FALSE);
+        ocrFields.setIht400Completed(TRUE);
+        ocrFields.setIht400process(TRUE);
         ocrFields.setProbateGrossValueIht400("1000");
         ocrFields.setProbateNetValueIht400("1000");
 
@@ -305,7 +330,7 @@ class OCRFieldModifierUtilsTest {
 
         assertEquals(1, modifiedFields.size());
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.getFirst().getValue().getFieldName());
-        assertEquals("TRUE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        assertEquals(TRUE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
     }
 
     @Test
@@ -313,11 +338,11 @@ class OCRFieldModifierUtilsTest {
         ocrFields.setDeceasedDateOfDeath("01012020");
         ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
-        ocrFields.setIht400421Completed("FALSE");
-        ocrFields.setIht207Completed("FALSE");
-        ocrFields.setIht205Completed("FALSE");
-        ocrFields.setIht400Completed("FALSE");
-        ocrFields.setIht400process("TRUE");
+        ocrFields.setIht400421Completed(FALSE);
+        ocrFields.setIht207Completed(FALSE);
+        ocrFields.setIht205Completed(FALSE);
+        ocrFields.setIht400Completed(FALSE);
+        ocrFields.setIht400process(TRUE);
         ocrFields.setProbateGrossValueIht400("1000");
         ocrFields.setProbateNetValueIht400("1000");
 
@@ -327,7 +352,7 @@ class OCRFieldModifierUtilsTest {
 
         assertEquals(1, modifiedFields.size());
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.getFirst().getValue().getFieldName());
-        assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        assertEquals(FALSE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
     }
 
     @Test
@@ -364,9 +389,9 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.get(0).getValue().getFieldName());
-        assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        assertEquals(FALSE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
         assertEquals("iht400421Completed", modifiedFields.get(1).getValue().getFieldName());
-        assertEquals("TRUE", ocrFields.getIht400Completed());
+        assertEquals(TRUE, ocrFields.getIht400Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht400421Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205Completed());
@@ -407,7 +432,7 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.get(0).getValue().getFieldName());
-        assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        assertEquals(FALSE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
         assertEquals("iht400421Completed", modifiedFields.get(1).getValue().getFieldName());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht400421Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
@@ -523,7 +548,7 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.getFirst().getValue().getFieldName());
-        assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        assertEquals(FALSE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht400421Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
@@ -546,7 +571,7 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.getFirst().getValue().getFieldName());
-        assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        assertEquals(FALSE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht400421Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
         assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205Completed());
@@ -573,7 +598,7 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.getFirst().getValue().getFieldName());
-        assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        assertEquals(FALSE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateGrossValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetValue());
         assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetQualifyingValue());
@@ -602,30 +627,30 @@ class OCRFieldModifierUtilsTest {
     @Test
     void shouldReturnWarningWhenMoreThanOneIHTFormIsTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .exceptedEstate("TRUE")
-                .iht400Completed("TRUE")
-                .iht400process("FALSE")
-                .iht400421Completed("FALSE")
-                .iht207Completed("FALSE")
-                .iht205Completed("FALSE")
+                .exceptedEstate(TRUE)
+                .iht400Completed(TRUE)
+                .iht400process(FALSE)
+                .iht400421Completed(FALSE)
+                .iht207Completed(FALSE)
+                .iht205Completed(FALSE)
                 .build();
 
         List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
 
         assertEquals(1, warnings.size());
         assertEquals("More than one IHT form is marked as TRUE. Only one form should be selected as TRUE.",
-                warnings.get(0).getValue());
+                warnings.getFirst().getValue());
     }
 
     @Test
     void shouldReturnNoWarningWhenOnlyOneIHTFormIsTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .exceptedEstate("TRUE")
-                .iht400Completed("FALSE")
-                .iht400process("FALSE")
-                .iht400421Completed("FALSE")
-                .iht207Completed("FALSE")
-                .iht205Completed("FALSE")
+                .exceptedEstate(TRUE)
+                .iht400Completed(FALSE)
+                .iht400process(FALSE)
+                .iht400421Completed(FALSE)
+                .iht207Completed(FALSE)
+                .iht205Completed(FALSE)
                 .build();
 
         List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
@@ -769,7 +794,7 @@ class OCRFieldModifierUtilsTest {
 
         assertEquals(1, modifiedFields.size());
         assertEquals("deceasedDiedOnAfterSwitchDate", modifiedFields.getFirst().getValue().getFieldName());
-        assertEquals("FALSE", ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        assertEquals(FALSE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
     }
 
     @Test
@@ -787,7 +812,7 @@ class OCRFieldModifierUtilsTest {
     @Test
     void shouldHandleDeceasedDateOfDeathMissingWhenSwitchDateIsFalse() {
         ocrFields.setDeceasedDateOfDeath("");
-        ocrFields.setDeceasedDiedOnAfterSwitchDate("FALSE");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate(FALSE);
 
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
