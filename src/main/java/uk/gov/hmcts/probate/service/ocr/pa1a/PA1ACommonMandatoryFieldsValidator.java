@@ -19,7 +19,7 @@ public class PA1ACommonMandatoryFieldsValidator {
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
         if (mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)) {
-            //commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
+            commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
         }
     }
 }

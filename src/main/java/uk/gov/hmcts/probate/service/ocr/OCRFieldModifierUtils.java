@@ -38,8 +38,17 @@ public class OCRFieldModifierUtils {
         handleIHTFields(ocrFields, modifiedFields);
         handleExecutorsNotApplyingFields(ocrFields, modifiedFields);
         handleExecutorsApplyingFields(ocrFields, modifiedFields);
+        handleCommonFields(ocrFields, modifiedFields);
 
         return modifiedFields;
+    }
+
+    private void handleCommonFields(ExceptionRecordOCRFields ocrFields,
+                                    List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        setFieldIfBlank(ocrFields::getSpouseOrPartner, ocrFields::setSpouseOrPartner,
+                "spouseOrPartner", bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
+        setFieldIfBlank(ocrFields::getNotifiedApplicants, ocrFields::setNotifiedApplicants,
+                "notifiedApplicants", bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
     }
 
     private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,

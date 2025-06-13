@@ -130,7 +130,7 @@ public class ExceptionRecordOCRFields {
     private final String solsWillType;
     private final String solsWillTypeReason;
     private final String bilingualGrantRequested;
-    private final String spouseOrPartner;
+    private String spouseOrPartner;
     private final String childrenUnderEighteenSurvived;
     private final String childrenOverEighteenSurvived;
     private final String childrenDiedUnderEighteen;
@@ -194,7 +194,7 @@ public class ExceptionRecordOCRFields {
     private String executorsNotApplying1notApplyingExecutorReason;
     private final String executorsNotApplying2notApplyingExecutorName;
     private String executorsNotApplying2notApplyingExecutorReason;
-    private final String notifiedApplicants;
+    private String notifiedApplicants;
     private final String ihtFormCompletedOnline;
     private String ihtReferenceNumber;
     private final String ihtFormId;

@@ -169,6 +169,8 @@ class OCRFieldModifierUtilsTest {
                 .caveatorAddressPostCode(VALID_CAVEATOR_ADDRESS_POSTCODE)
                 .deceasedDateOfDeath("01012022")
                 .deceasedDiedOnAfterSwitchDate(TRUE)
+                .spouseOrPartner(TRUE)
+                .notifiedApplicants(TRUE)
                 .build();
     }
 
@@ -965,5 +967,43 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
         assertEquals(0, modifiedFields.size());
+    }
+
+    @Test
+    void shouldSetSpouseOrPartnerToDefaultWhenEmpty() {
+        ocrFields.setSpouseOrPartner("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("spouseOrPartner", modifiedFields.get(0).getValue().getFieldName());
+        assertEquals(bulkScanConfig.getFieldsNotCompleted(), ocrFields.getSpouseOrPartner());
+    }
+
+    @Test
+    void shouldNotModifySpouseOrPartnerWhenValueIsPresent() {
+        ocrFields.setSpouseOrPartner("TRUE");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(0, modifiedFields.size());
+        assertEquals("TRUE", ocrFields.getSpouseOrPartner());
+    }
+
+    @Test
+    void shouldSetNotifiedApplicantsToDefaultWhenEmpty() {
+        ocrFields.setNotifiedApplicants("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("notifiedApplicants", modifiedFields.get(0).getValue().getFieldName());
+        assertEquals(bulkScanConfig.getFieldsNotCompleted(), ocrFields.getNotifiedApplicants());
+    }
+
+    @Test
+    void shouldNotModifyNotifiedApplicantsWhenValueIsPresent() {
+        ocrFields.setNotifiedApplicants("TRUE");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(0, modifiedFields.size());
+        assertEquals("TRUE", ocrFields.getNotifiedApplicants());
     }
 }
