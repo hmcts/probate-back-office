@@ -783,7 +783,7 @@ public class NotificationService {
         log.info("sendStopReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
         Map<String, String> personalisation =
                 automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
-        log.info("start sendEmail");
+        log.info("sendStopReminderEmail start sendEmail");
         SendEmailResponse response =
                 notificationClientService.sendEmail(templateId, emailAddress,
                         personalisation, caseDetails.getId().toString());
@@ -836,7 +836,7 @@ public class NotificationService {
         log.info("sendDormantWarningEmail applicationType {}, templateId: {}", applicationType, templateId);
         Map<String, String> personalisation =
                 automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
-        log.info("start sendEmail");
+        log.info("sendDormantWarningEmail start sendEmail");
         SendEmailResponse response =
                 notificationClientService.sendEmail(templateId, emailAddress,
                         personalisation, caseDetails.getId().toString());

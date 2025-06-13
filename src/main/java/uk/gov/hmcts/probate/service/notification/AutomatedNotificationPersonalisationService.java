@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -37,12 +40,13 @@ public class AutomatedNotificationPersonalisationService {
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
     private static final String PERSONALISATION_RESPOND_DATE = "respond_date";
-    private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
     private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
     private static final String PERSONALISATION_CASE_STOP_REASONS = "stop-reasons";
     private static final String PERSONALISATION_CASE_STOP_REASONS_WELSH = "stop-reasons-welsh";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
+    private static final String PERSONALISATION_DISPLAY_SINGLE_STOP_REASON = "display-single-stop-reason";
+    private static final String PERSONALISATION_DISPLAY_MULTIPLE_STOP_REASONS = "display-multiple-stop-reasons";
     private static final String CASE_ID_STRING = "<CASE_ID>";
     private static final String CASE_TYPE_STRING = "<CASE_TYPE>";
     private static final String SOLICITOR_CASE_URL = "/cases/case-details/<CASE_ID>";
@@ -74,7 +78,7 @@ public class AutomatedNotificationPersonalisationService {
 
     public Map<String, String> getPersonalisation(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
                                                   ApplicationType applicationType) {
-        log.info("Stop reminder getPersonalisation");
+        log.info("AutomatedNotificationPersonalisationService getPersonalisation");
         Map<String, Object> caseData = caseDetails.getData();
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
@@ -82,8 +86,11 @@ public class AutomatedNotificationPersonalisationService {
         personalisation.put(PERSONALISATION_APPLICANT_NAME, getPrimaryApplicantName(caseData));
         personalisation.put(PERSONALISATION_DECEASED_NAME, getDeceasedFullName(caseData));
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(caseData, applicationType));
-        personalisation.put(PERSONALISATION_CASE_STOP_REASONS, getStopReason(caseDetails, false));
-        personalisation.put(PERSONALISATION_CASE_STOP_REASONS_WELSH, getStopReason(caseDetails, true));
+        List<CollectionMember<StopReason>> stopReasonList = getStopReasonList(caseDetails.getData());
+        personalisation.put(PERSONALISATION_CASE_STOP_REASONS, getStopReason(stopReasonList, false));
+        personalisation.put(PERSONALISATION_CASE_STOP_REASONS_WELSH, getStopReason(stopReasonList, true));
+        personalisation.put(PERSONALISATION_DISPLAY_SINGLE_STOP_REASON, stopReasonList.size() == 1 ? YES : NO);
+        personalisation.put(PERSONALISATION_DISPLAY_MULTIPLE_STOP_REASONS, stopReasonList.size() > 1 ? YES : NO);
         LocalDate dateOfDeath = getDateValue(caseData, "deceasedDateOfDeath");
         personalisation.put(PERSONALISATION_DECEASED_DOD, dateFormatterService.formatDate(dateOfDeath));
         personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
@@ -96,8 +103,10 @@ public class AutomatedNotificationPersonalisationService {
         return personalisation;
     }
 
-    private String getStopReason(CaseDetails caseDetails, boolean isWelsh) {
-        List<CollectionMember<StopReason>> stopReasonList = getStopReasonList(caseDetails.getData());
+    private String getStopReason(List<CollectionMember<StopReason>> stopReasonList, boolean isWelsh) {
+        if (stopReasonList.isEmpty()) {
+            return StringUtils.EMPTY;
+        }
         StringBuilder stopReasons = new StringBuilder();
         LanguagePreference languagePreference = isWelsh ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
 
