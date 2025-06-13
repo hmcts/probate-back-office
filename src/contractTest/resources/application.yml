@@ -586,4 +586,6 @@ automated_notification:
   stop_reminder:
     first_notification_days: 56
     second_notification_days: 28
+  hse_reminder:
+    awaiting_documentation_days: 30
   dormant_warning_days: 150
