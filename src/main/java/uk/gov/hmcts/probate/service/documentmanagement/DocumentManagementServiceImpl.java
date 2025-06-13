@@ -43,15 +43,12 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     @Nullable
     public UploadResponse upload(EvidenceManagementFileUpload file, DocumentType documentType) {
         DocumentUploadRequest documentUploadRequest =
-            documentManagementRequestBuilder.perpareDocumentUploadRequest(file,
-            documentType);
+            documentManagementRequestBuilder.perpareDocumentUploadRequest(file, documentType);
 
-        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        /* This handles payment callback and cron jobs where there is no HttpServletRequest,
+         or where the Authorization and/or user-id header are absent */
+        SecurityDTO securityDTO = securityUtils.getOrDefaultCaseworkerSecurityDTO();
         String auth = securityDTO.getAuthorisation();
-        if (auth == null) {
-            securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
-            auth = securityDTO.getAuthorisation();
-        }
         if (!auth.contains(BEARER_PREFIX)) {
             auth = BEARER_PREFIX + auth;
         }
@@ -86,7 +83,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         String s2s = securityDTO.getServiceAuthorisation();
         String selfHref = document.getDocumentLink().getDocumentUrl();
         UUID docId = UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
-        log.info("Deleting document wth id:{}", docId.toString());
+        log.info("Deleting document wth id:{}", docId);
         caseDocumentClient.deleteDocument(auth, s2s, docId, DELETE_PERMANENT);
     }
 

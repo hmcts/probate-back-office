@@ -124,7 +124,7 @@ public class GrantNotificationService {
     private boolean hasCaseSinceBeenUpdated(ReturnedCaseDetails foundCase, EventId sentEvent) {
         CaseDetails caseDetails =
             ccdClientApi.readForCaseWorker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-                securityUtils.getUserAndServiceSecurityDTO());
+                securityUtils.getOrDefaultCaseworkerSecurityDTO());
         if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) {
             if ((caseDetails.getData().get(IDENTIFIED_KEY) != null
                 && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
@@ -160,7 +160,7 @@ public class GrantNotificationService {
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
             foundCase.getLastModified(), grantOfRepresentationData,
             EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED,
-            securityUtils.getUserAndServiceSecurityDTO(), PROBATE_APPLICATION, PROBATE_APPLICATION);
+            securityUtils.getOrDefaultCaseworkerSecurityDTO(), PROBATE_APPLICATION, PROBATE_APPLICATION);
 
     }
 
@@ -180,7 +180,7 @@ public class GrantNotificationService {
         try {
             ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
                 foundCase.getLastModified(), grantOfRepresentationData, sentEvent,
-                securityUtils.getUserAndServiceSecurityDTO(),
+                securityUtils.getOrDefaultCaseworkerSecurityDTO(),
                 PROBATE_APPLICATION, PROBATE_APPLICATION);
             log.info("Updated found case:{}", foundCase.getId());
         } catch (Exception e) {
