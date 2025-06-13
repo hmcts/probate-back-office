@@ -91,6 +91,8 @@ class DocumentControllerIT {
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
     private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final String USER_ID_HEADER = "user-id";
+    private static final String USER_ID = "someUserId";
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
             .familyName("familyName")
             .givenName("givenname")
@@ -1124,6 +1126,8 @@ class DocumentControllerIT {
         when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/validateAmendLegalStatement")
+                .header(AUTH_HEADER, AUTH_TOKEN)
+                .header(USER_ID_HEADER, USER_ID)
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -1174,6 +1178,8 @@ class DocumentControllerIT {
         when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/validateAmendLegalStatement")
+                .header(AUTH_HEADER, AUTH_TOKEN)
+                .header(USER_ID_HEADER, USER_ID)
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
