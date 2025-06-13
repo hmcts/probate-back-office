@@ -486,8 +486,8 @@ class ExceptionRecordServiceTest {
         assertEquals(ApplicationType.PERSONAL, grantOfRepresentationDataResponse.getApplicationType());
         assertEquals(GrantType.GRANT_OF_PROBATE, grantOfRepresentationDataResponse.getGrantType());
         assertEquals("deceasedDiedOnAfterSwitchDate", grantOfRepresentationDataResponse
-                .getModifiedOCRFieldList().get(0).getValue().getFieldName());
+                .getModifiedOCRFieldList().getFirst().getValue().getFieldName());
         assertNull(grantOfRepresentationDataResponse
-                .getModifiedOCRFieldList().get(0).getValue().getOriginalValue());
+                .getModifiedOCRFieldList().getFirst().getValue().getOriginalValue());
     }
 }
