@@ -179,7 +179,6 @@ export class CwEventActionsPage extends BasePage {
     }
     // const legacyApplication = this.page.locator('#caseMatches_%s_%s > fieldset > ccd-field-read:nth-child(2) > div > ccd-field-read-label > div > dl > dd');
     const legacyApplicationTypeText = "Legacy LEGACY APPLICATION";
-    /* eslint-disable no-await-in-loop */
     for (let i = numOfElements; i >= 0; i--) {
       const currentCaseLocator = (i - 1).toString();
       const legacyApplication = `#caseMatches_${currentCaseLocator}_${currentCaseLocator} > fieldset > ccd-field-read:nth-child(2) > div > ccd-field-read-label > div > dl > dd`;
@@ -187,39 +186,30 @@ export class CwEventActionsPage extends BasePage {
       await this.page.waitForTimeout(
         testConfig.CaseMatchesLocateRemoveButtonDelay
       );
-      /* eslint-disable no-await-in-loop */
       const text = await this.page
         .locator(legacyApplication)
         .filter({ hasText: legacyApplicationTypeText })
         .textContent();
 
       if (text === legacyApplicationTypeText) {
-        // eslint-disable-next-line no-unused-vars
         if (!testConfig.TestAutoDelayEnabled) {
-          /* eslint-disable no-await-in-loop */
           await this.page.waitForTimeout(testConfig.ManualDelayShort);
         }
         const caseMatchesValidYesLocatorNew = `#caseMatches_${currentCaseLocator}_valid_Yes`;
         const caseMatchesImportLocatorNew = this.page.locator(
           `#caseMatches_${currentCaseLocator}_doImport_No`
         );
-        /* eslint-disable no-await-in-loop */
         await expect(
           this.page.locator(caseMatchesValidYesLocatorNew)
         ).toBeVisible();
-        /* eslint-disable no-await-in-loop */
         await this.page
           .locator(caseMatchesValidYesLocatorNew)
           .scrollIntoViewIfNeeded();
-        /* eslint-disable no-await-in-loop */
         await expect(
           this.page.locator(caseMatchesValidYesLocatorNew)
         ).toBeEnabled();
-        /* eslint-disable no-await-in-loop */
         await this.page.locator(caseMatchesValidYesLocatorNew).click();
-        /* eslint-disable no-await-in-loop */
         await expect(caseMatchesImportLocatorNew).toBeVisible();
-        /* eslint-disable no-await-in-loop */
         await caseMatchesImportLocatorNew.click();
         break;
       }
@@ -343,7 +333,6 @@ export class CwEventActionsPage extends BasePage {
             `expected: ${documentUploadConfig.documentType[i]}, actual: ${optText}`
           );
           console.info("doctype select html:");
-          // eslint-disable-next-line no-await-in-loop
           console.info(
             await this.page
               .locator(`${documentUploadConfig.id}_0_DocumentType`)
