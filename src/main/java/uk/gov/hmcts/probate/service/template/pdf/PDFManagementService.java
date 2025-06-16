@@ -1,6 +1,8 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
@@ -186,5 +188,23 @@ public class PDFManagementService {
 
     public String getDecodedSignature() {
         return decryptedFileAsBase64String(pdfServiceConfiguration.getGrantSignatureEncryptedFile());
+    }
+
+    /** Converts an input HTML string to an XHTML string.
+     * This is needed because the underlying pdfGeneratorService uses an XML parser rather
+     * than an HTML parser.
+     * @param inputHtml an HTML string
+     * @return the input rendered as XHTML
+     */
+    public String rerenderAsXhtml(String inputHtml) {
+        final Safelist safelist = Safelist.relaxed();
+
+
+        final org.jsoup.nodes.Document.OutputSettings outputSettings = new org.jsoup.nodes.Document.OutputSettings()
+                .syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml)
+                .charset(StandardCharsets.UTF_8)
+                .prettyPrint(false);
+
+        return Jsoup.clean(inputHtml, "", safelist, outputSettings);
     }
 }

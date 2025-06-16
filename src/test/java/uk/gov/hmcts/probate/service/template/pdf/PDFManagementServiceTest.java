@@ -380,4 +380,14 @@ class PDFManagementServiceTest {
         assertEquals(SELF_URL, response.getDocumentLink().getDocumentUrl());
         assertEquals("mock-user", response.getDocumentGeneratedBy());
     }
+
+    @Test
+    void testXhtmlReplacesBrTag() {
+        final String inputHtml = "<p>something</p><br><p>other</p>";
+        final String expectedXhtml = "<p>something</p><br /><p>other</p>";
+
+        final String actualXhtml = underTest.rerenderAsXhtml(inputHtml);
+
+        assertEquals(expectedXhtml, actualXhtml, "Expected result to have closed <br /> tag");
+    }
 }
