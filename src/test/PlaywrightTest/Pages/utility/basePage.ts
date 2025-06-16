@@ -245,12 +245,10 @@ export class BasePage {
       }
 
       for (let i = 0; i < fields.length; i++) {
-        // eslint-disable-next-line
         await expect(this.page.getByText(fields[i]).first()).toBeVisible();
       }
 
       for (let i = 0; i < keys.length; i++) {
-        // eslint-disable-next-line
         const textLocator = this.page.getByText(tabUpdatesConfigFile[keys[i]], {
           exact: true,
         });
@@ -267,7 +265,6 @@ export class BasePage {
     let numElements;
 
     for (let i = 0; i < fieldLabelsNotToBeShown.length; i++) {
-      // eslint-disable-next-line
       visibleElements = await this.page
         .locator(
           `xpath=//div[contains(@class, 'case-viewer-label')][text()='${fieldLabelsNotToBeShown[i]}']`

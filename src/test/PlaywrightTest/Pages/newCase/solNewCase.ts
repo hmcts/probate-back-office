@@ -269,7 +269,6 @@ export class SolCreateCasePage extends BasePage {
         serviceRequestTabConfig.fields[i] &&
         serviceRequestTabConfig.fields[i] !== ""
       ) {
-        // eslint-disable-line no-await-in-loop
         await expect(
           this.page.getByText(serviceRequestTabConfig.fields[i])
         ).toBeVisible();
@@ -289,7 +288,6 @@ export class SolCreateCasePage extends BasePage {
         serviceRequestReviewTabConfig.fields[i] &&
         serviceRequestReviewTabConfig.fields[i] !== ""
       ) {
-        // eslint-disable-line no-await-in-loop
         await expect(
           this.page.getByText(serviceRequestReviewTabConfig.fields[i]).first()
         ).toBeVisible();
@@ -341,20 +339,19 @@ export class SolCreateCasePage extends BasePage {
     ).not.toBeVisible();
     await this.postPaymentReviewDetails(caseRef);
     for (let i = 0; i <= 6; i++) {
-      await expect(this.eventHistoryTab).toBeEnabled(); // eslint-disable-line no-await-in-loop
-      await expect(this.page.getByText(caseRef).first()).toBeVisible(); // eslint-disable-line no-await-in-loop
-      await this.eventHistoryTab.click(); // eslint-disable-line no-await-in-loop
-      // eslint-disable-line no-await-in-loop
+      await expect(this.eventHistoryTab).toBeEnabled();
+      await expect(this.page.getByText(caseRef).first()).toBeVisible();
+      await this.eventHistoryTab.click();
       const result = await this.page
         .getByText(makePaymentConfig.statusText)
         .isVisible()
         .catch(() => true);
-      await this.page.waitForTimeout(10); // eslint-disable-line no-await-in-loop
+      await this.page.waitForTimeout(10);
       if (result) {
         break;
       }
       await this.page.reload();
-      // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`); // eslint-disable-line no-await-in-loop
+      // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     }
     if (appType !== "Caveat") {
       await expect(this.caseProgressTabLocator).toBeEnabled();
@@ -379,7 +376,7 @@ export class SolCreateCasePage extends BasePage {
         await expect(
           this.page.getByText(postPaymentReviewTabConfig.fields[i]).first()
         ).toBeVisible();
-        // await I.see(postPaymentReviewTabConfig.fields[i]); // eslint-disable-line no-await-in-loop
+        // await I.see(postPaymentReviewTabConfig.fields[i]);
       }
     }
 
