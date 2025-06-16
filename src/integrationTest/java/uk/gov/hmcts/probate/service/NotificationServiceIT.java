@@ -2495,4 +2495,46 @@ class NotificationServiceIT {
                 any(),
                 anyString());
     }
+
+    @Test
+    void sendPaUnsubmittedApplicationEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendUnsubmittedApplicationEmail(returnedCaseDetails);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-unsubmitted-application"),
+                eq("primary@probate-test.com"),
+                any(),
+                anyString());
+    }
+
+    @Test
+    void sendSolUnsubmittedApplicationEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(solicitorGrantDelayedOxford.getData(), Map.class);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendUnsubmittedApplicationEmail(returnedCaseDetails);
+
+        verify(notificationClient).sendEmail(
+                eq("sol-unsubmitted-application"),
+                eq("solicitor@probate-test.com"),
+                any(),
+                anyString());
+    }
 }

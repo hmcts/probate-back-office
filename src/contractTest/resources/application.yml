@@ -241,6 +241,7 @@ notifications:
           firstStopReminder: "f3d0ab70-3fed-4590-ab53-108f6adbea9c"
           firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
           dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
+          unsubmittedApplication: "3f3965ca-1c8a-4b44-be66-75b929513e65"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -270,6 +271,7 @@ notifications:
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
           firstStopReminder: "eed3eae4-3f01-4d0b-a68f-5b0ab149e328"
           dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
+          unsubmittedApplication: "ab5d7b24-6b40-403b-8a8f-4a21bc48ed6f"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
@@ -299,6 +301,7 @@ notifications:
           firstStopReminder: "f3d0ab70-3fed-4590-ab53-108f6adbea9c"
           firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
+          unsubmittedApplication: "ac18f977-de08-407b-9c35-1e62d9cd80ff"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -327,6 +330,7 @@ notifications:
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
           firstStopReminder: "eed3eae4-3f01-4d0b-a68f-5b0ab149e328"
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
+          unsubmittedApplication: "7440ee74-4cde-4cd4-ab76-038d70674424"
 
 documents:
   templates:
@@ -589,3 +593,4 @@ automated_notification:
   hse_reminder:
     awaiting_documentation_days: 30
   dormant_warning_days: 150
+  unsubmitted_application_days: 28

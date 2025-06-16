@@ -18,6 +18,7 @@ public class FeatureToggleService {
     private static final String SECOND_STOP_REMINDER_TOGGLE = "probate-cron-second-stop-reminder";
     private static final String HSE_REMINDER_TOGGLE = "probate-cron-hse-reminder";
     private static final String DORMANT_WARNING_TOGGLE = "probate-cron-dormant-warning";
+    private static final String UNSUBMITTED_APPLICATION_TOGGLE = "probate-cron-unsubmitted-application";
 
     @Autowired
     public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,
@@ -58,7 +59,7 @@ public class FeatureToggleService {
         return this.isFeatureToggleOn(
                 SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
     }
-  
+
     public boolean isIronMountainInBackOffice() {
         return this.isFeatureToggleOn(IRON_MOUNTAIN_IN_BACK_OFFICE, false);
     }
@@ -85,5 +86,10 @@ public class FeatureToggleService {
     public boolean isDormantWarningFeatureToggleOn() {
         return this.isFeatureToggleOn(
                 DORMANT_WARNING_TOGGLE, false);
+    }
+
+    public boolean isUnsubmittedApplicationFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                UNSUBMITTED_APPLICATION_TOGGLE, false);
     }
 }

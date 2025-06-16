@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.schedule;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,9 +7,11 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
+import uk.gov.hmcts.probate.service.notification.DormantWarningNotification;
 import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
 import uk.gov.hmcts.probate.service.notification.HseReminderNotification;
 import uk.gov.hmcts.probate.service.notification.SecondStopReminderNotification;
+import uk.gov.hmcts.probate.service.notification.UnsubmittedApplicationNotification;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 
 import java.time.Clock;
@@ -21,10 +22,10 @@ import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_WARNING;
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
+import static uk.gov.hmcts.probate.model.NotificationType.UNSUBMITTED_APPLICATION;
 
 @Component
 @Slf4j
-@RequiredArgsConstructor
 public class SendNotificationsTask implements Runnable {
     private final DataExtractDateValidator dataExtractDateValidator;
     private final AutomatedNotificationService automatedNotificationService;
@@ -33,22 +34,47 @@ public class SendNotificationsTask implements Runnable {
     private final FirstStopReminderNotification firstStopReminderNotification;
     private final SecondStopReminderNotification secondStopReminderNotification;
     private final HseReminderNotification hseReminderNotification;
+    private final DormantWarningNotification dormantWarningNotification;
+    private final UnsubmittedApplicationNotification unsubmittedApplicationNotification;
+    private final int firstNotificationDays;
+    private final int secondNotificationDays;
+    private final int hseYesNotificationDays;
+    private final int dormantWarningDays;
+    private final int unsubmittedApplicationDays;
+    public final String adHocJobDate;
 
-
-    @Value("${automated_notification.stop_reminder.first_notification_days}")
-    private int firstNotificationDays;
-
-    @Value("${automated_notification.stop_reminder.second_notification_days}")
-    private int secondNotificationDays;
-
-    @Value("${automated_notification.hse_reminder.awaiting_documentation_days}")
-    private int hseYesNotificationDays;
-
-    @Value("${automated_notification.dormant_warning_days}")
-    private int dormantWarningDays;
-
-    @Value("${adhocSchedulerJobDate}")
-    public String adHocJobDate;
+    public SendNotificationsTask(
+            DataExtractDateValidator dataExtractDateValidator,
+            AutomatedNotificationService automatedNotificationService,
+            FeatureToggleService featureToggleService,
+            Clock clock,
+            FirstStopReminderNotification firstStopReminderNotification,
+            SecondStopReminderNotification secondStopReminderNotification,
+            HseReminderNotification hseReminderNotification,
+            DormantWarningNotification dormantWarningNotification,
+            UnsubmittedApplicationNotification unsubmittedApplicationNotification,
+            @Value("${automated_notification.stop_reminder.first_notification_days}") int firstNotificationDays,
+            @Value("${automated_notification.stop_reminder.second_notification_days}") int secondNotificationDays,
+            @Value("${automated_notification.hse_reminder.awaiting_documentation_days}") int hseYesNotificationDays,
+            @Value("${automated_notification.dormant_warning_days}") int dormantWarningDays,
+            @Value("${automated_notification.unsubmitted_application_days}") int unsubmittedApplicationDays,
+            @Value("${adhocSchedulerJobDate}") String adHocJobDate) {
+        this.dataExtractDateValidator = dataExtractDateValidator;
+        this.automatedNotificationService = automatedNotificationService;
+        this.featureToggleService = featureToggleService;
+        this.clock = clock;
+        this.firstStopReminderNotification = firstStopReminderNotification;
+        this.secondStopReminderNotification = secondStopReminderNotification;
+        this.hseReminderNotification = hseReminderNotification;
+        this.dormantWarningNotification = dormantWarningNotification;
+        this.unsubmittedApplicationNotification = unsubmittedApplicationNotification;
+        this.firstNotificationDays = firstNotificationDays;
+        this.secondNotificationDays = secondNotificationDays;
+        this.hseYesNotificationDays = hseYesNotificationDays;
+        this.dormantWarningDays = dormantWarningDays;
+        this.unsubmittedApplicationDays = unsubmittedApplicationDays;
+        this.adHocJobDate = adHocJobDate;
+    }
 
     @Override
     public void run() {
@@ -56,14 +82,18 @@ public class SendNotificationsTask implements Runnable {
         String firstStopReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(firstNotificationDays));
         String secondStopReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(secondNotificationDays));
         String hseReminderDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(hseYesNotificationDays));
-
         String dormantWarningDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(dormantWarningDays));
+        String unsubmittedApplicationDate =
+                DATE_FORMAT.format(LocalDate.now(clock).minusDays(unsubmittedApplicationDays));
         if (StringUtils.isNotEmpty(adHocJobDate)) {
             log.info("Running SendNotificationsTask with Adhoc dates {}", adHocJobDate);
+            dataExtractDateValidator.dateValidator(adHocJobDate);
             firstStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(firstNotificationDays).toString();
             secondStopReminderDate = LocalDate.parse(adHocJobDate).minusDays(secondNotificationDays).toString();
             hseReminderDate = LocalDate.parse(adHocJobDate).minusDays(hseYesNotificationDays).toString();
             dormantWarningDate = LocalDate.parse(adHocJobDate).minusDays(dormantWarningDays).toString();
+            unsubmittedApplicationDate =
+                    LocalDate.parse(adHocJobDate).minusDays(unsubmittedApplicationDays).toString();
         }
 
         try {
@@ -123,7 +153,7 @@ public class SendNotificationsTask implements Runnable {
             } else {
                 log.info("Calling Send Dormant Warning for date {}", dormantWarningDate);
                 dataExtractDateValidator.dateValidator(dormantWarningDate);
-                secondStopReminderNotification.setReferenceDate(LocalDate.parse(dormantWarningDate));
+                dormantWarningNotification.setReferenceDate(LocalDate.parse(dormantWarningDate));
                 log.info("Perform Send Dormant Warning started");
                 automatedNotificationService.sendNotification(dormantWarningDate, DORMANT_WARNING);
                 log.info("Perform Send Dormant Warning finished");
@@ -132,6 +162,23 @@ public class SendNotificationsTask implements Runnable {
             log.error("API client exception during Send Dormant Warning", e);
         } catch (Exception e) {
             log.error("Error on SendNotificationsTask Scheduler Send Dormant Warning task ", e);
+        }
+
+        try {
+            if (!featureToggleService.isUnsubmittedApplicationFeatureToggleOn()) {
+                log.info("Feature toggle UnsubmittedApplicationFeatureToggle is off, skipping task");
+            } else {
+                log.info("Calling Send Unsubmitted Application Reminder for date {}", unsubmittedApplicationDate);
+                dataExtractDateValidator.dateValidator(unsubmittedApplicationDate);
+                unsubmittedApplicationNotification.setReferenceDate(LocalDate.parse(unsubmittedApplicationDate));
+                log.info("Perform Send Unsubmitted Application Reminder started");
+                automatedNotificationService.sendNotification(unsubmittedApplicationDate, UNSUBMITTED_APPLICATION);
+                log.info("Perform Send Unsubmitted Application Reminder finished");
+            }
+        } catch (ApiClientException e) {
+            log.error("API client exception during Send Unsubmitted Application Reminder", e);
+        } catch (Exception e) {
+            log.error("Error on SendNotificationsTask Scheduler Send Unsubmitted Application Reminder task ", e);
         }
     }
 }
