@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
+import uk.gov.hmcts.probate.service.notification.DeclarationNotSignedNotification;
 import uk.gov.hmcts.probate.service.notification.DormantWarningNotification;
 import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
 import uk.gov.hmcts.probate.service.notification.HseReminderNotification;
@@ -18,6 +19,7 @@ import java.time.Clock;
 import java.time.LocalDate;
 
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
+import static uk.gov.hmcts.probate.model.NotificationType.DECLARATION_NOT_SIGNED;
 import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_WARNING;
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
@@ -36,11 +38,13 @@ public class SendNotificationsTask implements Runnable {
     private final HseReminderNotification hseReminderNotification;
     private final DormantWarningNotification dormantWarningNotification;
     private final UnsubmittedApplicationNotification unsubmittedApplicationNotification;
+    private final DeclarationNotSignedNotification declarationNotSignedNotification;
     private final int firstNotificationDays;
     private final int secondNotificationDays;
     private final int hseYesNotificationDays;
     private final int dormantWarningDays;
     private final int unsubmittedApplicationDays;
+    private final int declarationNotSignedDays;
     public final String adHocJobDate;
 
     public SendNotificationsTask(
@@ -53,11 +57,13 @@ public class SendNotificationsTask implements Runnable {
             HseReminderNotification hseReminderNotification,
             DormantWarningNotification dormantWarningNotification,
             UnsubmittedApplicationNotification unsubmittedApplicationNotification,
+            DeclarationNotSignedNotification declarationNotSignedNotification,
             @Value("${automated_notification.stop_reminder.first_notification_days}") int firstNotificationDays,
             @Value("${automated_notification.stop_reminder.second_notification_days}") int secondNotificationDays,
             @Value("${automated_notification.hse_reminder.awaiting_documentation_days}") int hseYesNotificationDays,
             @Value("${automated_notification.dormant_warning_days}") int dormantWarningDays,
             @Value("${automated_notification.unsubmitted_application_days}") int unsubmittedApplicationDays,
+            @Value("${automated_notification.declaration_not_signed_days}") int declarationNotSignedDays,
             @Value("${adhocSchedulerJobDate}") String adHocJobDate) {
         this.dataExtractDateValidator = dataExtractDateValidator;
         this.automatedNotificationService = automatedNotificationService;
@@ -68,11 +74,13 @@ public class SendNotificationsTask implements Runnable {
         this.hseReminderNotification = hseReminderNotification;
         this.dormantWarningNotification = dormantWarningNotification;
         this.unsubmittedApplicationNotification = unsubmittedApplicationNotification;
+        this.declarationNotSignedNotification = declarationNotSignedNotification;
         this.firstNotificationDays = firstNotificationDays;
         this.secondNotificationDays = secondNotificationDays;
         this.hseYesNotificationDays = hseYesNotificationDays;
         this.dormantWarningDays = dormantWarningDays;
         this.unsubmittedApplicationDays = unsubmittedApplicationDays;
+        this.declarationNotSignedDays = declarationNotSignedDays;
         this.adHocJobDate = adHocJobDate;
     }
 
@@ -85,6 +93,8 @@ public class SendNotificationsTask implements Runnable {
         String dormantWarningDate = DATE_FORMAT.format(LocalDate.now(clock).minusDays(dormantWarningDays));
         String unsubmittedApplicationDate =
                 DATE_FORMAT.format(LocalDate.now(clock).minusDays(unsubmittedApplicationDays));
+        String declarationNotSignedDate =
+                DATE_FORMAT.format(LocalDate.now(clock).minusDays(declarationNotSignedDays));
         if (StringUtils.isNotEmpty(adHocJobDate)) {
             log.info("Running SendNotificationsTask with Adhoc dates {}", adHocJobDate);
             dataExtractDateValidator.dateValidator(adHocJobDate);
@@ -94,6 +104,8 @@ public class SendNotificationsTask implements Runnable {
             dormantWarningDate = LocalDate.parse(adHocJobDate).minusDays(dormantWarningDays).toString();
             unsubmittedApplicationDate =
                     LocalDate.parse(adHocJobDate).minusDays(unsubmittedApplicationDays).toString();
+            declarationNotSignedDate =
+                    LocalDate.parse(adHocJobDate).minusDays(declarationNotSignedDays).toString();
         }
 
         try {
@@ -179,6 +191,23 @@ public class SendNotificationsTask implements Runnable {
             log.error("API client exception during Send Unsubmitted Application Reminder", e);
         } catch (Exception e) {
             log.error("Error on SendNotificationsTask Scheduler Send Unsubmitted Application Reminder task ", e);
+        }
+
+        try {
+            if (!featureToggleService.isDeclarationNotSignedFeatureToggleOn()) {
+                log.info("Feature toggle DeclarationNotSignedFeatureToggle is off, skipping task");
+            } else {
+                log.info("Calling Send Declaration Not Signed Reminder for date {}", declarationNotSignedDate);
+                dataExtractDateValidator.dateValidator(declarationNotSignedDate);
+                declarationNotSignedNotification.setReferenceDate(LocalDate.parse(declarationNotSignedDate));
+                log.info("Perform Send Declaration Not Signed Reminder started");
+                automatedNotificationService.sendNotification(declarationNotSignedDate, DECLARATION_NOT_SIGNED);
+                log.info("Perform Send Declaration Not Signed Reminder finished");
+            }
+        } catch (ApiClientException e) {
+            log.error("API client exception during Send Declaration Not Signed Reminder", e);
+        } catch (Exception e) {
+            log.error("Error on SendNotificationsTask Scheduler Send Declaration Not Signed Reminder task ", e);
         }
     }
 }

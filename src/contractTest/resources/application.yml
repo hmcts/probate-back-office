@@ -242,6 +242,8 @@ notifications:
           firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
           dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
           unsubmittedApplication: "3f3965ca-1c8a-4b44-be66-75b929513e65"
+          declarationNotSignedPrimaryApplicant: "c04e65be-51f4-46b1-bce4-8795c1113ae7"
+          declarationNotSignedExecutors: "38f8f966-1a7b-4d2b-ae2c-a67f41e4d788"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -302,6 +304,8 @@ notifications:
           firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
           unsubmittedApplication: "ac18f977-de08-407b-9c35-1e62d9cd80ff"
+          declarationNotSignedPrimaryApplicant: "08c35f45-453d-45bc-99d1-a7752fde98a1"
+          declarationNotSignedExecutors: "2bbd7b4d-2308-4b92-ae13-3a5f8608c94b"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -594,3 +598,4 @@ automated_notification:
     awaiting_documentation_days: 30
   dormant_warning_days: 150
   unsubmitted_application_days: 28
+  declaration_not_signed_days: 3

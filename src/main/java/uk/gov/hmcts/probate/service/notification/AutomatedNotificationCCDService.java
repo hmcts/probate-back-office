@@ -63,7 +63,7 @@ public class AutomatedNotificationCCDService {
                                  final NotificationStrategy notificationStrategy,
                                  final StartEventResponse startEventResponse) {
         if (notificationStrategy.skipSaveNotification()) {
-            log.info("Skipping save notification for case id: {} type: {}", caseId, notificationStrategy.getType());
+            log.info("Skip save notification for case id: {} type: {}", caseId, notificationStrategy.getType());
             return;
         }
         try {
@@ -106,7 +106,7 @@ public class AutomatedNotificationCCDService {
                                        final NotificationStrategy notificationStrategy,
                                        final StartEventResponse startEventResponse) {
         if (notificationStrategy.skipSaveNotification()) {
-            log.info("Skipping save notification for case id: {} type: {}", caseId, notificationStrategy.getType());
+            log.info("Skip save failed notification for case id: {} type: {}", caseId, notificationStrategy.getType());
             return;
         }
         try {
@@ -154,7 +154,8 @@ public class AutomatedNotificationCCDService {
             case SECOND_STOP_REMINDER,
                  HSE_REMINDER,
                  DORMANT_WARNING,
-                 UNSUBMITTED_APPLICATION
+                 UNSUBMITTED_APPLICATION,
+                 DECLARATION_NOT_SIGNED
                     -> GrantOfRepresentationData.builder()
                     .probateNotificationsGenerated(notifications)
                     .build();

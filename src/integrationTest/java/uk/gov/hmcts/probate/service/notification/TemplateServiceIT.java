@@ -495,31 +495,61 @@ class TemplateServiceIT {
     @Test
     void getUnsubmittedApplication() {
         assertAll(
-                () -> {
-                    String response =
-                            templateService.getUnsubmittedApplicationTemplateId(PERSONAL, LanguagePreference.ENGLISH);
-                    assertEquals("pa-unsubmitted-application", response);
-                },
-                () -> {
-                    String response =
-                            templateService.getUnsubmittedApplicationTemplateId(SOLICITOR, LanguagePreference.ENGLISH);
-                    assertEquals("sol-unsubmitted-application", response);
-                });
+            () -> {
+                String response =
+                        templateService.getUnsubmittedApplicationTemplateId(PERSONAL, LanguagePreference.ENGLISH);
+                assertEquals("pa-unsubmitted-application", response);
+            },
+            () -> {
+                String response =
+                        templateService.getUnsubmittedApplicationTemplateId(SOLICITOR, LanguagePreference.ENGLISH);
+                assertEquals("sol-unsubmitted-application", response);
+            });
     }
 
     @Test
     void getUnsubmittedApplicationWelsh() {
         assertAll(
-                () -> {
-                    String response =
-                            templateService.getUnsubmittedApplicationTemplateId(PERSONAL, LanguagePreference.WELSH);
-                    assertEquals("pa-unsubmitted-application-welsh", response);
-                },
-                () -> {
-                    String response =
-                            templateService.getUnsubmittedApplicationTemplateId(SOLICITOR, LanguagePreference.WELSH);
-                    assertEquals("sol-unsubmitted-application-welsh", response);
-                }
+            () -> {
+                String response =
+                        templateService.getUnsubmittedApplicationTemplateId(PERSONAL, LanguagePreference.WELSH);
+                assertEquals("pa-unsubmitted-application-welsh", response);
+            },
+            () -> {
+                String response =
+                        templateService.getUnsubmittedApplicationTemplateId(SOLICITOR, LanguagePreference.WELSH);
+                assertEquals("sol-unsubmitted-application-welsh", response);
+            }
         );
+    }
+
+    @Test
+    void getDeclarationNotSigned() {
+        assertAll(
+            () -> {
+                String response =
+                    templateService.getDeclarationNotSignedTemplateId(LanguagePreference.ENGLISH, true);
+                assertEquals("pa-declaration-not-signed-primary-applicant", response);
+            },
+            () -> {
+                String response =
+                    templateService.getDeclarationNotSignedTemplateId(LanguagePreference.ENGLISH, false);
+                assertEquals("pa-declaration-not-signed-executors", response);
+            });
+    }
+
+    @Test
+    void getDeclarationNotSignedWelsh() {
+        assertAll(
+            () -> {
+                String response =
+                        templateService.getDeclarationNotSignedTemplateId(LanguagePreference.WELSH, true);
+                assertEquals("pa-declaration-not-signed-primary-applicant-welsh", response);
+            },
+            () -> {
+                String response =
+                        templateService.getDeclarationNotSignedTemplateId(LanguagePreference.WELSH, false);
+                assertEquals("pa-declaration-not-signed-executors-welsh", response);
+            });
     }
 }
