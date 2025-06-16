@@ -65,12 +65,12 @@ public class OCRFieldModifierUtils {
                                           BulkScanConfig bulkScanConfig) {
         if (isBlank(ocrFields.getSolsSolicitorRepresentativeName())) {
             addModifiedField(modifiedFields, "solsSolicitorRepresentativeName",
-                    ocrFields.getSolsSolicitorFirmName());
+                    ocrFields.getSolsSolicitorRepresentativeName());
             if (isNotBlank(ocrFields.getSolsSolicitorFirmName())) {
                 ocrFields.setSolsSolicitorRepresentativeName(ocrFields.getSolsSolicitorFirmName());
                 log.info("Setting solicitor representative name to {}", ocrFields.getSolsSolicitorFirmName());
             } else {
-                ocrFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
+                ocrFields.setSolsSolicitorRepresentativeName(bulkScanConfig.getName());
                 log.info("Setting solicitor representative to {}", bulkScanConfig.getName());
             }
         }
