@@ -225,13 +225,13 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldNotSetApplicantForenameToMissingWhenSolicitorIsApplying() {
+    void shouldSetApplicantForenameToMissingWhenSolicitorIsApplying() {
         ocrFields.setSolsSolicitorIsApplying(TRUE);
         ocrFields.setPrimaryApplicantForenames("");
 
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
-        assertEquals(0, modifiedFields.size());
+        assertEquals(1, modifiedFields.size());
     }
 
     @Test
@@ -249,7 +249,7 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldNotSetPostcodeToM1551NGWhenSolicitorIsApplying() {
+    void shouldSetPostcodeToM1551NGWhenSolicitorIsApplying() {
         ocrFields.setSolsSolicitorIsApplying(TRUE);
         ocrFields.setPrimaryApplicantAddressPostCode("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
@@ -257,7 +257,7 @@ class OCRFieldModifierUtilsTest {
         for (CollectionMember<ModifiedOCRField> modifiedField : modifiedFields) {
             System.out.println(modifiedField.getValue().getFieldName());
         }
-        assertEquals(0, modifiedFields.size());
+        assertEquals(1, modifiedFields.size());
     }
 
     @Test

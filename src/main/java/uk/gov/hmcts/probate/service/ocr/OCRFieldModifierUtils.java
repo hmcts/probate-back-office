@@ -108,7 +108,7 @@ public class OCRFieldModifierUtils {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
 
         handleSolicitorFields(ocrFields, modifiedFields);
-        handlePrimaryApplicantFields(ocrFields, modifiedFields);
+        handleGorPrimaryApplicantFields(ocrFields, modifiedFields);
         handleDeceasedFields(ocrFields, modifiedFields);
         handleIHTFields(ocrFields, modifiedFields);
         handleExecutorsNotApplyingFields(ocrFields, modifiedFields);
@@ -199,17 +199,8 @@ public class OCRFieldModifierUtils {
                 SOLICITOR_PHONE_NUMBER, bulkScanConfig.getPhone(), modifiedFields);
     }
 
-
-    private void handlePrimaryApplicantFields(ExceptionRecordOCRFields ocrFields,
-                                              List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        if (!BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
-            handleGorPrimaryApplicantFields(ocrFields, modifiedFields, bulkScanConfig);
-        }
-    }
-
     private void handleGorPrimaryApplicantFields(ExceptionRecordOCRFields ocrFields,
-                                                 List<CollectionMember<ModifiedOCRField>> modifiedFields,
-                                                 BulkScanConfig bulkScanConfig) {
+                                                 List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         setFieldIfBlank(ocrFields::getPrimaryApplicantForenames, ocrFields::setPrimaryApplicantForenames,
                 PRIMARY_APPLICANT_FORENAMES, bulkScanConfig.getName(), modifiedFields);
         setFieldIfBlank(ocrFields::getPrimaryApplicantSurname, ocrFields::setPrimaryApplicantSurname,
