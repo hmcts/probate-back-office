@@ -92,7 +92,7 @@ public class ExceptionRecordService {
             List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
                     .setDefaultCaveatValues(exceptionRecordOCRFields);
 
-            CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
+            CaveatData caveatData = erCaveatMapper.toCcdData(exceptionRecordOCRFields);
 
             caveatData.setModifiedOCRFieldList(modifiedFields);
 
