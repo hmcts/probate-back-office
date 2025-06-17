@@ -1,12 +1,17 @@
 package uk.gov.hmcts.probate.service.payments;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.config.ObjectMapperConfiguration;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
@@ -49,28 +54,32 @@ import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.STANDING_SEARCH;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {ObjectMapperConfiguration.class, PaymentsService.class})
 class PaymentsServiceTest {
-    @InjectMocks
+    @Autowired
     private PaymentsService paymentsService;
 
-    @Mock
+    @MockBean
     private ServiceRequestClient serviceRequestClient;
-    @Mock
+    @MockBean
     private SecurityUtils securityUtilsMock;
-    @Mock
+    @MockBean
     private CcdClientApi ccdClientApi;
-    @Mock
+    @MockBean
     private IdamApi idamApi;
-    @Mock
+    @MockBean
     private CasePaymentBuilder casePaymentBuilder;
-    @Mock
+    @MockBean
     private NotificationService notificationService;
-    @Mock
+    @MockBean
     private PDFManagementService pdfManagementService;
-    @Mock
+    @MockBean
     private DocumentTransformer documentTransformer;
-    @Mock
+    @MockBean
     private CaveatNotificationService caveatNotificationService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setup() {

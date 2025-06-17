@@ -116,7 +116,7 @@ class GenericMapperServiceTest {
     private GenericMapperService genericMapperService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
 
         registry.setPhone("01010101010101");
