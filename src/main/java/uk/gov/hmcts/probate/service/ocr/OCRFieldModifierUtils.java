@@ -76,6 +76,7 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_GROSS_VALUE_EX
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_NET_VALUE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_NET_VALUE_EXCEPTED_ESTATE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_REFERENCE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.LEGAL_REPRESENTATIVE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.NOTIFIED_APPLICANTS;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_ADDRESS_POST_CODE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_FORENAMES;
@@ -674,6 +675,10 @@ public class OCRFieldModifierUtils {
         setFieldIfBlank(exceptionRecordOCRFields::getDeceasedDateOfDeath,
                 exceptionRecordOCRFields::setDeceasedDateOfDeath, DECEASED_DOD,
                 bulkScanConfig.getDob(), modifiedFields);
+
+        setFieldIfBlank(exceptionRecordOCRFields::getLegalRepresentative,
+                exceptionRecordOCRFields::setLegalRepresentative, LEGAL_REPRESENTATIVE,
+                bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
 
         if (BooleanUtils.toBoolean(exceptionRecordOCRFields.getLegalRepresentative())) {
             handleCaveatSolicitorAddressFields(exceptionRecordOCRFields, modifiedFields);

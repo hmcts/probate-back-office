@@ -39,9 +39,6 @@ public class OCRToCCDMandatoryField {
         ocrFields.forEach(ocrField -> ocrFieldValues.put(ocrField.getName(), ocrField.getValue()));
 
         switch (formType) {
-            case PA8A:
-                warnings.addAll(getWarningsForPA8ACase(ocrFieldValues));
-                break;
             case PA1A:
                 warnings.addAll(getWarningsForPA1ACase(ocrFieldValues));
                 break;
@@ -81,7 +78,7 @@ public class OCRToCCDMandatoryField {
 
     private ArrayList<String> getWarningsForPA8ACase(Map<String, String> ocrFieldValues) {
         ArrayList<String> warnings = new ArrayList<>();
-        boolean isSolicitorForm =  BooleanUtils.toBoolean(ocrFieldValues.get(LEGAL_REPRESENTATIVE));
+        boolean isSolicitorForm =  isLegalRepresentative(ocrFieldValues);
 
         if (isSolicitorForm) {
             pa8ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
@@ -94,6 +91,13 @@ public class OCRToCCDMandatoryField {
     private boolean isSolicitorForm(Map<String, String> ocrFieldValues) {
         if (ocrFieldValues.containsKey(SOLICTOR_KEY_IS_APPLYING)) {
             return BooleanUtils.toBoolean(ocrFieldValues.get(SOLICTOR_KEY_IS_APPLYING));
+        }
+        return false;
+    }
+
+    private boolean isLegalRepresentative(Map<String, String> ocrFieldValues) {
+        if (ocrFieldValues.containsKey(LEGAL_REPRESENTATIVE)) {
+            return BooleanUtils.toBoolean(ocrFieldValues.get(LEGAL_REPRESENTATIVE));
         }
         return false;
     }

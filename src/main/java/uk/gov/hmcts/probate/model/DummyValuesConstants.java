@@ -87,14 +87,5 @@ public final class DummyValuesConstants {
     public static final String FORM_IHT207 = "IHT207";
     public static final String FORM_IHT400421 = "IHT400421";
     public static final String FORM_IHT400 = "IHT400";
-
-
-
-
-
-
-
-
-
-
+    public static final String LEGAL_REPRESENTATIVE = "legalRepresentative";
 }

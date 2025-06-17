@@ -52,8 +52,6 @@ public class PA1ACitizenMandatoryFieldsValidator {
                     warnings.add(format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));
                 }
             });
-
-        citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
     }
 
     private void addWarningsFormVersion3(Map<String, String> ocrFieldValues, List<String> warnings) {

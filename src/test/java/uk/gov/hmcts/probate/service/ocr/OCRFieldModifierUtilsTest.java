@@ -709,7 +709,7 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
                 .setDefaultCaveatValues(ocrFields);
 
-        assertEquals(1, modifiedFields.size());
+        assertEquals(2, modifiedFields.size());
         assertEquals(CAVEAT_FORENAMES, modifiedFields.getFirst().getValue().getFieldName());
     }
 
@@ -720,7 +720,7 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
                 .setDefaultCaveatValues(ocrFields);
 
-        assertEquals(1, modifiedFields.size());
+        assertEquals(2, modifiedFields.size());
         assertEquals(CAVEAT_SURNAME, modifiedFields.getFirst().getValue().getFieldName());
     }
 
@@ -731,7 +731,7 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
                 .setDefaultCaveatValues(ocrFields);
 
-        assertEquals(1, modifiedFields.size());
+        assertEquals(2, modifiedFields.size());
         assertEquals(DECEASED_FORENAME, modifiedFields.getFirst().getValue().getFieldName());
     }
 
@@ -742,7 +742,7 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
                 .setDefaultCaveatValues(ocrFields);
 
-        assertEquals(1, modifiedFields.size());
+        assertEquals(2, modifiedFields.size());
         assertEquals(DECEASED_SURNAME, modifiedFields.getFirst().getValue().getFieldName());
     }
 
@@ -752,16 +752,13 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
                 .setDefaultCaveatValues(ocrFields);
 
-        assertEquals(1, modifiedFields.size());
+        assertEquals(2, modifiedFields.size());
         assertEquals(DECEASED_DOD, modifiedFields.getFirst().getValue().getFieldName());
     }
 
     @Test
-    void shouldSetSolicitorAddressFieldsWhenLegalRepresentativeIsTrue() throws NoSuchFieldException,
-            IllegalAccessException {
-        Field legalRepresentative = ExceptionRecordOCRFields.class.getDeclaredField("legalRepresentative");
-        legalRepresentative.setAccessible(true);
-        legalRepresentative.set(ocrFields, TRUE);
+    void shouldSetSolicitorAddressFieldsWhenLegalRepresentativeIsTrue() {
+        ocrFields.setLegalRepresentative(TRUE);
         ocrFields.setSolsSolicitorAddressLine1("");
         ocrFields.setSolsSolicitorAddressPostCode("");
         ocrFields.setSolsSolicitorFirmName("");
@@ -777,11 +774,8 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetCitizenAddressFieldsWhenLegalRepresentativeIsFalse() throws IllegalAccessException,
-            NoSuchFieldException {
-        Field legalRepresentative = ExceptionRecordOCRFields.class.getDeclaredField("legalRepresentative");
-        legalRepresentative.setAccessible(true);
-        legalRepresentative.set(ocrFields, "false");
+    void shouldSetCitizenAddressFieldsWhenLegalRepresentativeIsFalse() {
+        ocrFields.setLegalRepresentative(FALSE);
         ocrFields.setCaveatorAddressLine1("");
         ocrFields.setCaveatorAddressPostCode("");
         ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);

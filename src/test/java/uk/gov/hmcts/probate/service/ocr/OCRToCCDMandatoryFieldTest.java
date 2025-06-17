@@ -118,8 +118,6 @@ class OCRToCCDMandatoryFieldTest {
         verifyNoInteractions(pa1ACitizenMandatoryFieldsValidator);
         verifyNoInteractions(pa1ASolicitorMandatoryFieldsValidator);
         verifyNoInteractions(pa1ACommonMandatoryFieldsValidator);
-        verify(pa8ACitizenMandatoryFieldsValidator).addWarnings(any(), any());
-        verifyNoInteractions(pa8ASolicitorMandatoryFieldsValidator);
     }
 
     @Test
@@ -133,7 +131,5 @@ class OCRToCCDMandatoryFieldTest {
         verifyNoInteractions(pa1ACitizenMandatoryFieldsValidator);
         verifyNoInteractions(pa1ASolicitorMandatoryFieldsValidator);
         verifyNoInteractions(pa1ACommonMandatoryFieldsValidator);
-        verifyNoInteractions(pa8ACitizenMandatoryFieldsValidator);
-        verify(pa8ASolicitorMandatoryFieldsValidator).addWarnings(any(), any());
     }
 }
