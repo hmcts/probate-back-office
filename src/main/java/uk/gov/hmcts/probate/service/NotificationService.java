@@ -61,7 +61,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
@@ -113,6 +112,7 @@ public class NotificationService {
     private final AutomatedNotificationPersonalisationService automatedNotificationPersonalisationService;
     private final UserInfoService userInfoService;
     private final ObjectMapper objectMapper;
+    private final EmailValidationService emailValidationService;
 
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -169,7 +169,7 @@ public class NotificationService {
 
     private void sendEmail(String emailAddress,
                            String templateId,
-                           Map<String, String> personalisation,
+                           Map<String, Object> personalisation,
                            String caseId) throws NotificationClientException {
         log.info("sendEmail with templateId: {} for case: {}", templateId, caseId);
         SendEmailResponse response =
@@ -801,7 +801,7 @@ public class NotificationService {
         String templateId = templateService.getStopReminderTemplateId(applicationType, languagePreference,
                 getChannelChoice(caseDetails), getInformationNeededByPost(caseDetails), isFirstStopReminder);
         log.info("sendStopReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
-        Map<String, String> personalisation =
+        Map<String, Object> personalisation =
                 automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
         log.info("sendStopReminderEmail start sendEmail");
         SendEmailResponse response =
@@ -829,7 +829,7 @@ public class NotificationService {
         String templateId = templateService.getHseReminderTemplateId(applicationType, languagePreference,
                 getChannelChoice(caseDetails), getInformationNeededByPost(caseDetails));
         log.info("sendHseReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
-        Map<String, String> personalisation =
+        Map<String, Object> personalisation =
                 automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
         log.info("start HSE sendEmail");
         SendEmailResponse response =
@@ -854,7 +854,7 @@ public class NotificationService {
         LanguagePreference languagePreference = getLanguagePreference(caseDetails);
         String templateId = templateService.getDormantWarningTemplateId(applicationType, languagePreference);
         log.info("sendDormantWarningEmail applicationType {}, templateId: {}", applicationType, templateId);
-        Map<String, String> personalisation =
+        Map<String, Object> personalisation =
                 automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
         log.info("sendDormantWarningEmail start sendEmail");
         SendEmailResponse response =
@@ -879,7 +879,7 @@ public class NotificationService {
         LanguagePreference languagePreference = getLanguagePreference(caseDetails);
         String templateId = templateService.getUnsubmittedApplicationTemplateId(applicationType, languagePreference);
         log.info("sendUnsubmittedApplicationEmail applicationType {}, templateId: {}", applicationType, templateId);
-        Map<String, String> personalisation =
+        Map<String, Object> personalisation =
                 automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
         log.info("start sendEmail");
         SendEmailResponse response =
@@ -899,7 +899,7 @@ public class NotificationService {
             return;
         }
 
-        Map<String, String> personalisation =
+        Map<String, Object> personalisation =
                 automatedNotificationPersonalisationService.getPersonalisation(caseDetails, ApplicationType.PERSONAL);
         List<CollectionMember<ExecutorApplying>> unsignedExecutorList = getExecutorsApplyingList(data).stream()
                 .filter(Objects::nonNull)
@@ -924,14 +924,14 @@ public class NotificationService {
         log.info("Preparing to send declarationNotSigned email to executors for case id: {}", caseId);
         String templateId = templateService.getDeclarationNotSignedTemplateId(languagePreference, false);
         for (CollectionMember<ExecutorApplying> executorApplying : unsignedExecutorList) {
+            String emailAddress = executorApplying.getValue().getApplyingExecutorEmail();
             try {
-                String emailAddress = executorApplying.getValue().getApplyingExecutorEmail();
                 personalisation
                         .put(PERSONALISATION_EXECUTOR_NAME, executorApplying.getValue().getApplyingExecutorName());
                 sendEmail(emailAddress, templateId, personalisation, caseId);
             } catch (NotificationClientException e) {
-                log.error("Failed to send declarationNotSigned email to executor: {} for case id: {}",
-                        executorApplying.getValue().getApplyingExecutorName(), caseId, e);
+                log.error("Failed to send declarationNotSigned to executor email: {} for case id: {}",
+                        emailValidationService.getHashedEmail(emailAddress), caseId, e);
                 executorsEmailFailed = true;
             }
         }
@@ -962,12 +962,12 @@ public class NotificationService {
                 && !Boolean.TRUE.equals(executor.getApplyingExecutorAgreed());
     }
 
-    private String getExecutorsNamesListString(List<CollectionMember<ExecutorApplying>> executors) {
+    private String[] getExecutorsNamesListString(List<CollectionMember<ExecutorApplying>> executors) {
         if (executors == null || executors.isEmpty()) {
-            return StringUtils.EMPTY;
+            return new String[0];
         }
         return executors.stream()
             .map(exec -> exec.getValue().getApplyingExecutorName())
-            .collect(Collectors.joining("\n"));
+            .toArray(String[]::new);
     }
 }
