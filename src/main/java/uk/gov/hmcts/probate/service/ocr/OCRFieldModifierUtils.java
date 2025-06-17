@@ -481,7 +481,7 @@ public class OCRFieldModifierUtils {
                 addModifiedField(modifiedFields, IHT_FORM_ID, ocrFields.getIhtFormId());
                 ocrFields.setIhtFormId(bulkScanConfig.getDefaultForm());
                 log.info("Setting IHT Form ID to {}", ocrFields.getIhtFormId());
-            } else if (isValidIhtFormId(ihtFormId)) {
+            } if (isValidIhtFormId(ihtFormId)) {
                 setFieldIfBlank(ocrFields::getIhtGrossValue, ocrFields::setIhtGrossValue,
                         IHT_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
                 setFieldIfBlank(ocrFields::getIhtNetValue, ocrFields::setIhtNetValue,

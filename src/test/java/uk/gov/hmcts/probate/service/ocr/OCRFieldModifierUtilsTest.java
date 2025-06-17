@@ -1101,17 +1101,33 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
+    void shouldModifyFieldsWhenIhtFormIdIsValidAndValuesAreNotPresent() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "1");
+        ocrFields.setIhtFormCompletedOnline(FALSE);
+        ocrFields.setIhtFormId(DEFAULT_FORM);
+        ocrFields.setIhtGrossValue("");
+        ocrFields.setIhtNetValue("");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(2, modifiedFields.size());
+        assertEquals("1.11", ocrFields.getIhtGrossValue());
+        assertEquals("1.11", ocrFields.getIhtNetValue());
+    }
+
+    @Test
     void shouldNotModifyFieldsWhenIhtFormIdIsValidAndValuesArePresent() throws IllegalAccessException {
         formVersionField.set(ocrFields, "1");
         ocrFields.setIhtFormCompletedOnline(FALSE);
         ocrFields.setIhtFormId(DEFAULT_FORM);
-        ocrFields.setIhtGrossValue("1000");
-        ocrFields.setIhtNetValue("500");
+        ocrFields.setIhtGrossValue("1.11");
+        ocrFields.setIhtNetValue("1.11");
 
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
         assertEquals(0, modifiedFields.size());
-        assertEquals("500", ocrFields.getIhtNetValue());
+        assertEquals("1.11", ocrFields.getIhtGrossValue());
+        assertEquals("1.11", ocrFields.getIhtNetValue());
     }
 
 }
