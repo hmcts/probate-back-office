@@ -83,65 +83,6 @@ class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1Pv1() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(false);
-
-        ocrFieldValues.remove("ihtFormId");
-        ocrFieldValues.put("formVersion", "1");
-        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(1, warnings.size());
-        assertEquals("IHT form id (ihtFormId) is mandatory.", warnings.get(0));
-    }
-
-    @Test
-    void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1Pv1() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(false);
-
-        ocrFieldValues.remove("ihtReferenceNumber");
-        ocrFieldValues.put("ihtFormCompletedOnline", "true");
-        ocrFieldValues.put("formVersion", "1");
-
-        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(1, warnings.size());
-        assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", warnings.get(0));
-    }
-
-    @Test
-    void testNoIHTCompletedOnlineMandatoryFormVersionZeroForPA1Pv1() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(false);
-
-        ocrFieldValues.remove("ihtFormCompletedOnline");
-        ocrFieldValues.put("formVersion", "0");
-
-        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(0, warnings.size());
-    }
-
-    @Test
-    void testIHTCompletedOnlineMandatoryForFormVersionOneForPA1Pv1() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(false);
-
-        ocrFieldValues.remove("ihtFormCompletedOnline");
-        ocrFieldValues.put("formVersion", "1");
-
-        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(1, warnings.size());
-        assertEquals("IHT form completed online (ihtFormCompletedOnline) is mandatory.", warnings.get(0));
-    }
-
-    @Test
     void testFormVersionMandatoryFieldsPresentPA1PCitizenV2() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         ocrFieldTestUtils.addAllV2Data(ocrFields);

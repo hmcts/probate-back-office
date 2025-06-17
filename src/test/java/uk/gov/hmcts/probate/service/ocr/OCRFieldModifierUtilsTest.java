@@ -1078,7 +1078,8 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetGrossAndNetValuesWhenIhtFormIdIsValidAndIhtFormCompletedOnlineIsFalse() throws IllegalAccessException {
+    void shouldSetGrossAndNetValuesWhenIhtFormIdIsValidAndIhtFormCompletedOnlineIsFalse()
+            throws IllegalAccessException {
         formVersionField.set(ocrFields, "1");
         ocrFields.setIhtFormCompletedOnline(FALSE);
         ocrFields.setIhtFormId(DEFAULT_FORM);
