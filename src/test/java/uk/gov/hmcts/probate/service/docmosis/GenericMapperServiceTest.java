@@ -1,10 +1,15 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.config.ObjectMapperConfiguration;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -24,6 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {ObjectMapperConfiguration.class, GenericMapperService.class})
 class GenericMapperServiceTest {
     private static final String DECEASED_FORNAME_KEY = "deceasedForenames";
     private static final String DECEASED_FORNAME_VALUE = "Nigel";
@@ -96,13 +103,16 @@ class GenericMapperServiceTest {
     private Registry registry = new Registry();
 
 
-    @Mock
+    @MockBean
     private RegistriesProperties registriesProperties;
 
-    @Mock
+    @MockBean
     private FileSystemResourceService fileSystemResourceService;
 
-    @InjectMocks
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
     private GenericMapperService genericMapperService;
 
     @BeforeEach

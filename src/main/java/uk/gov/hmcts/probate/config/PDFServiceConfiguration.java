@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,9 @@ import java.net.URI;
 @ConfigurationProperties("pdf.service")
 public class PDFServiceConfiguration {
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     private String url;
     private String pdfApi;
     private String templatesDirectory;
@@ -26,8 +30,7 @@ public class PDFServiceConfiguration {
 
     @Bean
     public PDFServiceClient pdfServiceClient(
-            RestTemplate restTemplate,
-            ObjectMapper objectMapper) {
+            RestTemplate restTemplate) {
 
         URI uri = URI.create(String.format("%s%s", getUrl(), getPdfApi()));
 
