@@ -195,11 +195,11 @@ public class ExceptionRecordOCRFields {
     private final String executorsNotApplying2notApplyingExecutorName;
     private String executorsNotApplying2notApplyingExecutorReason;
     private String notifiedApplicants;
-    private final String ihtFormCompletedOnline;
+    private String ihtFormCompletedOnline;
     private String ihtReferenceNumber;
-    private final String ihtFormId;
-    private final String ihtGrossValue;
-    private final String ihtNetValue;
+    private String ihtFormId;
+    private String ihtGrossValue;
+    private String ihtNetValue;
     private final String ihtFormEstate;
     private String ihtEstateGrossValue;
     private String ihtEstateNetValue;
@@ -215,8 +215,8 @@ public class ExceptionRecordOCRFields {
     private final String exceptedEstate;
     private String iht400process;
     private final String ihtCode;
-    private final String ihtGrossValueExceptedEstate;
-    private final String ihtNetValueExceptedEstate;
+    private String ihtGrossValueExceptedEstate;
+    private String ihtNetValueExceptedEstate;
     private String probateGrossValueIht400;
     private String probateNetValueIht400;
     private String iht421grossValue;

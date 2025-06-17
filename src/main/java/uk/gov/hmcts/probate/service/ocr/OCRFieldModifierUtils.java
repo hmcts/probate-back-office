@@ -20,6 +20,80 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static uk.gov.hmcts.probate.model.Constants.FALSE;
 import static uk.gov.hmcts.probate.model.Constants.TRUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.CAVEATOR_ADDRESS_LINE1;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.CAVEAT_FORENAMES;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.CAVEAT_SURNAME;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.CAVEATOR_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_ADDRESS_LINE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_ANY_OTHER_NAMES;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_DOB;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_DOD;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_DIED_ON_OR_AFTER_SWITCH_DATE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_DOMICILE_IN_ENG_WALES;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_FORENAME;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_SURNAME;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_0_ADDRESS_LINE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_1_ADDRESS_LINE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_2_ADDRESS_LINE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_0_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_1_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_2_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_0_ADDRESS_TOWN;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_1_ADDRESS_TOWN;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_2_ADDRESS_TOWN;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_0_OTHER_NAMES;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_1_OTHER_NAMES;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_2_OTHER_NAMES;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTOR_NOT_APPLYING_0_REASON;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTOR_NOT_APPLYING_1_REASON;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTOR_NOT_APPLYING_2_REASON;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT205;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT207;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT400;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT400421;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_400421;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_400;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_205;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_205_COMPLETED_ONLINE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_205_GROSS_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_205_NET_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_207;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_207_GROSS_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_207_NET_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_421_GROSS_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_421_NET_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_400_GROSS_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_400_NET_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_400_PROCESS;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_ESTATE_GROSS_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_ESTATE_NET_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_ESTATE_NET_QUALIFYING_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_FORM_ID;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_FORM_COMPLETED_ONLINE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_GROSS_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_GROSS_VALUE_EXCEPTED_ESTATE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_NET_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_NET_VALUE_EXCEPTED_ESTATE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_REFERENCE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.NOTIFIED_APPLICANTS;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_FORENAMES;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_HAS_ALIAS;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_SURNAME;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_ALIAS;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_ADDRESS_LINE1;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_ADDRESS_LINE1;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_ADDRESS_LINE2;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_ADDRESS_TOWN;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_APP_REFERENCE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_EMAIL;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_FIRM_NAME;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_IS_APPLYING;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_PHONE_NUMBER;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_REPRESENTATIVE_NAME;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SPOUSE_OR_PARTNER;
 
 @Slf4j
 @Service
@@ -46,15 +120,20 @@ public class OCRFieldModifierUtils {
     private void handleCommonFields(ExceptionRecordOCRFields ocrFields,
                                     List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         setFieldIfBlank(ocrFields::getSpouseOrPartner, ocrFields::setSpouseOrPartner,
-                "spouseOrPartner", bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
+                SPOUSE_OR_PARTNER, bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
         setFieldIfBlank(ocrFields::getNotifiedApplicants, ocrFields::setNotifiedApplicants,
-                "notifiedApplicants", bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
+                NOTIFIED_APPLICANTS, bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
+    }
+
+    private boolean isValidIhtFormId(String ihtFormId) {
+        return Stream.of(FORM_IHT205, FORM_IHT207, FORM_IHT400421, FORM_IHT400)
+                .anyMatch(form -> form.equalsIgnoreCase(ihtFormId));
     }
 
     private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
                                        List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         setFieldIfBlank(ocrFields::getSolsSolicitorIsApplying, ocrFields::setSolsSolicitorIsApplying,
-                "solsSolicitorIsApplying", bulkScanConfig.getSolicitorApplying(), modifiedFields);
+                SOLICITOR_IS_APPLYING, bulkScanConfig.getSolicitorApplying(), modifiedFields);
         if (BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
             handleGorSolicitorFields(ocrFields, modifiedFields, bulkScanConfig);
         }
@@ -64,7 +143,7 @@ public class OCRFieldModifierUtils {
                                           List<CollectionMember<ModifiedOCRField>> modifiedFields,
                                           BulkScanConfig bulkScanConfig) {
         if (isBlank(ocrFields.getSolsSolicitorRepresentativeName())) {
-            addModifiedField(modifiedFields, "solsSolicitorRepresentativeName",
+            addModifiedField(modifiedFields, SOLICITOR_REPRESENTATIVE_NAME,
                     ocrFields.getSolsSolicitorRepresentativeName());
             if (isNotBlank(ocrFields.getSolsSolicitorFirmName())) {
                 ocrFields.setSolsSolicitorRepresentativeName(ocrFields.getSolsSolicitorFirmName());
@@ -76,10 +155,10 @@ public class OCRFieldModifierUtils {
         }
 
         setFieldIfBlank(ocrFields::getSolsSolicitorFirmName, ocrFields::setSolsSolicitorFirmName,
-                "solsSolicitorFirmName", bulkScanConfig.getName(), modifiedFields);
+                SOLICITOR_FIRM_NAME, bulkScanConfig.getName(), modifiedFields);
 
         if (isBlank(ocrFields.getSolsSolicitorAppReference())) {
-            addModifiedField(modifiedFields, "solsSolicitorAppReference",
+            addModifiedField(modifiedFields, SOLICITOR_APP_REFERENCE,
                     ocrFields.getSolsSolicitorAppReference());
             if (isNotBlank(ocrFields.getDeceasedSurname())) {
                 ocrFields.setSolsSolicitorAppReference(ocrFields.getDeceasedSurname());
@@ -91,11 +170,11 @@ public class OCRFieldModifierUtils {
         }
 
         setFieldIfBlank(ocrFields::getSolsSolicitorAddressLine1, ocrFields::setSolsSolicitorAddressLine1,
-                "solsSolicitorAddressLine1", bulkScanConfig.getName(), modifiedFields);
+                SOLICITOR_ADDRESS_LINE1, bulkScanConfig.getName(), modifiedFields);
 
         if (isBlank(ocrFields.getSolsSolicitorAddressLine2()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
                 && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressLine2",
+            addModifiedField(modifiedFields, SOLICITOR_ADDRESS_LINE2,
                     ocrFields.getSolsSolicitorAddressLine2());
             ocrFields.setSolsSolicitorAddressLine2(bulkScanConfig.getName());
             log.info("Setting solicitor address line 2 to {}", ocrFields.getSolsSolicitorAddressLine2());
@@ -103,20 +182,20 @@ public class OCRFieldModifierUtils {
 
         if (isBlank(ocrFields.getSolsSolicitorAddressTown()) && isBlank(ocrFields.getSolsSolicitorAddressLine1())
                 && isBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
-            addModifiedField(modifiedFields, "solsSolicitorAddressTown",
+            addModifiedField(modifiedFields, SOLICITOR_ADDRESS_TOWN,
                     ocrFields.getSolsSolicitorAddressTown());
             ocrFields.setSolsSolicitorAddressTown(bulkScanConfig.getName());
             log.info("Setting solicitor town or city to {}", ocrFields.getSolsSolicitorAddressTown());
         }
 
         setFieldIfBlank(ocrFields::getSolsSolicitorAddressPostCode, ocrFields::setSolsSolicitorAddressPostCode,
-                "solsSolicitorAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+                SOLICITOR_ADDRESS_POST_CODE, bulkScanConfig.getPostcode(), modifiedFields);
 
         setFieldIfBlank(ocrFields::getSolsSolicitorEmail, ocrFields::setSolsSolicitorEmail,
-                "solsSolicitorEmail", bulkScanConfig.getEmail(), modifiedFields);
+                SOLICITOR_EMAIL, bulkScanConfig.getEmail(), modifiedFields);
 
         setFieldIfBlank(ocrFields::getSolsSolicitorPhoneNumber, ocrFields::setSolsSolicitorPhoneNumber,
-                "solsSolicitorPhoneNumber", bulkScanConfig.getPhone(), modifiedFields);
+                SOLICITOR_PHONE_NUMBER, bulkScanConfig.getPhone(), modifiedFields);
     }
 
 
@@ -131,20 +210,20 @@ public class OCRFieldModifierUtils {
                                                  List<CollectionMember<ModifiedOCRField>> modifiedFields,
                                                  BulkScanConfig bulkScanConfig) {
         setFieldIfBlank(ocrFields::getPrimaryApplicantForenames, ocrFields::setPrimaryApplicantForenames,
-                "primaryApplicantForenames", bulkScanConfig.getName(), modifiedFields);
+                PRIMARY_APPLICANT_FORENAMES, bulkScanConfig.getName(), modifiedFields);
         setFieldIfBlank(ocrFields::getPrimaryApplicantSurname, ocrFields::setPrimaryApplicantSurname,
-                "primaryApplicantSurname", bulkScanConfig.getName(), modifiedFields);
+                PRIMARY_APPLICANT_SURNAME, bulkScanConfig.getName(), modifiedFields);
         setFieldIfBlank(ocrFields::getPrimaryApplicantAddressLine1, ocrFields::setPrimaryApplicantAddressLine1,
-                "primaryApplicantAddressLine1", bulkScanConfig.getName(), modifiedFields);
+                PRIMARY_APPLICANT_ADDRESS_LINE1, bulkScanConfig.getName(), modifiedFields);
         setFieldIfBlank(ocrFields::getPrimaryApplicantAddressPostCode, ocrFields::setPrimaryApplicantAddressPostCode,
-                "primaryApplicantAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+                PRIMARY_APPLICANT_ADDRESS_POST_CODE, bulkScanConfig.getPostcode(), modifiedFields);
 
         setFieldIfBlank(ocrFields::getPrimaryApplicantHasAlias, ocrFields::setPrimaryApplicantHasAlias,
-                "primaryApplicantHasAlias", bulkScanConfig.getPrimaryApplicantHasAlias(), modifiedFields);
+                PRIMARY_APPLICANT_HAS_ALIAS, bulkScanConfig.getPrimaryApplicantHasAlias(), modifiedFields);
 
         if (TRUE.equalsIgnoreCase(ocrFields.getPrimaryApplicantHasAlias()) && isBlank(
                 ocrFields.getPrimaryApplicantAlias())) {
-            addModifiedField(modifiedFields, "primaryApplicantAlias", ocrFields
+            addModifiedField(modifiedFields, PRIMARY_APPLICANT_ALIAS, ocrFields
                     .getPrimaryApplicantAlias());
             ocrFields.setPrimaryApplicantAlias(bulkScanConfig.getNames());
         }
@@ -164,24 +243,24 @@ public class OCRFieldModifierUtils {
         }
 
         setFieldIfBlank(ocrFields::getDeceasedForenames, ocrFields::setDeceasedForenames,
-                "deceasedForenames", bulkScanConfig.getName(), modifiedFields);
+                DECEASED_FORENAME, bulkScanConfig.getName(), modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedSurname, ocrFields::setDeceasedSurname,
-                "deceasedSurname", bulkScanConfig.getName(), modifiedFields);
+                DECEASED_SURNAME, bulkScanConfig.getName(), modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedAddressLine1, ocrFields::setDeceasedAddressLine1,
-                "deceasedAddressLine1", bulkScanConfig.getName(), modifiedFields);
+                DECEASED_ADDRESS_LINE, bulkScanConfig.getName(), modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedAddressPostCode, ocrFields::setDeceasedAddressPostCode,
-                "deceasedAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+                DECEASED_POST_CODE, bulkScanConfig.getPostcode(), modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedDateOfBirth, ocrFields::setDeceasedDateOfBirth,
-                "deceasedDateOfBirth", bulkScanConfig.getDob(), modifiedFields);
+                DECEASED_DOB, bulkScanConfig.getDob(), modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedAnyOtherNames, ocrFields::setDeceasedAnyOtherNames,
-                "deceasedAnyOtherNames", FALSE, modifiedFields);
+                DECEASED_ANY_OTHER_NAMES, FALSE, modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedDomicileInEngWales, ocrFields::setDeceasedDomicileInEngWales,
-                "deceasedDomicileInEngWales", TRUE, modifiedFields);
+                DECEASED_DOMICILE_IN_ENG_WALES, TRUE, modifiedFields);
     }
 
     private void handleDeceasedDateOfDeathPresent(ExceptionRecordOCRFields ocrFields,
                                                   List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate", ocrFields
+        addModifiedField(modifiedFields, DECEASED_DIED_ON_OR_AFTER_SWITCH_DATE, ocrFields
                 .getDeceasedDiedOnAfterSwitchDate());
         String switchDateValue = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields
                 .getDeceasedDateOfDeath())
@@ -193,7 +272,7 @@ public class OCRFieldModifierUtils {
     private void handleDeceasedDateOfDeathMissing(ExceptionRecordOCRFields ocrFields,
                                                   List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         String switchDateValue = ocrFields.getDeceasedDiedOnAfterSwitchDate();
-        addModifiedField(modifiedFields, "deceasedDateOfDeath", ocrFields.getDeceasedDateOfDeath());
+        addModifiedField(modifiedFields, DECEASED_DOD, ocrFields.getDeceasedDateOfDeath());
 
         if (TRUE.equalsIgnoreCase(switchDateValue)) {
             log.info("application.yaml date of death {}", bulkScanConfig
@@ -227,67 +306,67 @@ public class OCRFieldModifierUtils {
         if (!isBlank(ocrFields.getExecutorsApplying0applyingExecutorName())) {
             if (TRUE.equalsIgnoreCase(ocrFields.getExecutorsApplying0applyingExecutorDifferentNameToWill()) && isBlank(
                     ocrFields.getExecutorsApplying0applyingExecutorOtherNames())) {
-                addModifiedField(modifiedFields, "executorsApplying0applyingExecutorOtherNames", ocrFields
+                addModifiedField(modifiedFields, EXECUTORS_APPLYING_0_OTHER_NAMES, ocrFields
                         .getExecutorsApplying0applyingExecutorOtherNames());
                 ocrFields.setExecutorsApplying0applyingExecutorOtherNames(bulkScanConfig.getNames());
             }
             setFieldIfBlank(ocrFields::getExecutorsApplying0applyingExecutorAddressLine1,
                     ocrFields::setExecutorsApplying0applyingExecutorAddressLine1,
-                    "executorsApplying0applyingExecutorAddressLine1", bulkScanConfig.getName(),
+                    EXECUTORS_APPLYING_0_ADDRESS_LINE, bulkScanConfig.getName(),
                     modifiedFields);
 
             setFieldIfBlank(ocrFields::getExecutorsApplying0applyingExecutorAddressTown,
                     ocrFields::setExecutorsApplying0applyingExecutorAddressTown,
-                    "executorsApplying0applyingExecutorAddressTown", bulkScanConfig.getName(),
+                    EXECUTORS_APPLYING_0_ADDRESS_TOWN, bulkScanConfig.getName(),
                     modifiedFields);
 
             setFieldIfBlank(ocrFields::getExecutorsApplying0applyingExecutorAddressPostCode,
                     ocrFields::setExecutorsApplying0applyingExecutorAddressPostCode,
-                    "executorsApplying0applyingExecutorAddressPostCode", bulkScanConfig.getPostcode(),
+                    EXECUTORS_APPLYING_0_ADDRESS_POST_CODE, bulkScanConfig.getPostcode(),
                     modifiedFields);
         }
         if (!isBlank(ocrFields.getExecutorsApplying1applyingExecutorName())) {
             if (TRUE.equalsIgnoreCase(ocrFields.getExecutorsApplying1applyingExecutorDifferentNameToWill()) && isBlank(
                     ocrFields.getExecutorsApplying1applyingExecutorOtherNames())) {
-                addModifiedField(modifiedFields, "executorsApplying1applyingExecutorOtherNames", ocrFields
+                addModifiedField(modifiedFields, EXECUTORS_APPLYING_1_OTHER_NAMES, ocrFields
                         .getExecutorsApplying1applyingExecutorOtherNames());
                 ocrFields.setExecutorsApplying1applyingExecutorOtherNames(bulkScanConfig.getNames());
             }
             setFieldIfBlank(ocrFields::getExecutorsApplying1applyingExecutorAddressLine1,
                     ocrFields::setExecutorsApplying1applyingExecutorAddressLine1,
-                    "executorsApplying1applyingExecutorAddressLine1", bulkScanConfig.getName(),
+                    EXECUTORS_APPLYING_1_ADDRESS_LINE, bulkScanConfig.getName(),
                     modifiedFields);
 
             setFieldIfBlank(ocrFields::getExecutorsApplying1applyingExecutorAddressTown,
                     ocrFields::setExecutorsApplying1applyingExecutorAddressTown,
-                    "executorsApplying1applyingExecutorAddressTown", bulkScanConfig.getName(),
+                    EXECUTORS_APPLYING_1_ADDRESS_TOWN, bulkScanConfig.getName(),
                     modifiedFields);
 
             setFieldIfBlank(ocrFields::getExecutorsApplying1applyingExecutorAddressPostCode,
                     ocrFields::setExecutorsApplying1applyingExecutorAddressPostCode,
-                    "executorsApplying1applyingExecutorAddressPostCode", bulkScanConfig.getPostcode(),
+                    EXECUTORS_APPLYING_1_ADDRESS_POST_CODE, bulkScanConfig.getPostcode(),
                     modifiedFields);
         }
         if (!isBlank(ocrFields.getExecutorsApplying2applyingExecutorName())) {
             if (TRUE.equalsIgnoreCase(ocrFields.getExecutorsApplying2applyingExecutorDifferentNameToWill()) && isBlank(
                     ocrFields.getExecutorsApplying2applyingExecutorOtherNames())) {
-                addModifiedField(modifiedFields, "executorsApplying2applyingExecutorOtherNames", ocrFields
+                addModifiedField(modifiedFields, EXECUTORS_APPLYING_2_OTHER_NAMES, ocrFields
                         .getExecutorsApplying2applyingExecutorOtherNames());
                 ocrFields.setExecutorsApplying2applyingExecutorOtherNames(bulkScanConfig.getNames());
             }
             setFieldIfBlank(ocrFields::getExecutorsApplying2applyingExecutorAddressLine1,
                     ocrFields::setExecutorsApplying2applyingExecutorAddressLine1,
-                    "executorsApplying2applyingExecutorAddressLine1", bulkScanConfig.getName(),
+                    EXECUTORS_APPLYING_2_ADDRESS_LINE, bulkScanConfig.getName(),
                     modifiedFields);
 
             setFieldIfBlank(ocrFields::getExecutorsApplying2applyingExecutorAddressTown,
                     ocrFields::setExecutorsApplying2applyingExecutorAddressTown,
-                    "executorsApplying2applyingExecutorAddressTown", bulkScanConfig.getName(),
+                    EXECUTORS_APPLYING_2_ADDRESS_TOWN, bulkScanConfig.getName(),
                     modifiedFields);
 
             setFieldIfBlank(ocrFields::getExecutorsApplying2applyingExecutorAddressPostCode,
                     ocrFields::setExecutorsApplying2applyingExecutorAddressPostCode,
-                    "executorsApplying2applyingExecutorAddressPostCode", bulkScanConfig.getPostcode(),
+                    EXECUTORS_APPLYING_2_ADDRESS_POST_CODE, bulkScanConfig.getPostcode(),
                     modifiedFields);
         }
     }
@@ -296,21 +375,21 @@ public class OCRFieldModifierUtils {
                                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         if (!isBlank(ocrFields.getExecutorsNotApplying0notApplyingExecutorName()) && isBlank(
                 ocrFields.getExecutorsNotApplying0notApplyingExecutorReason())) {
-            addModifiedField(modifiedFields, "executorsNotApplying0notApplyingExecutorReason", ocrFields
+            addModifiedField(modifiedFields, EXECUTOR_NOT_APPLYING_0_REASON, ocrFields
                     .getExecutorsNotApplying0notApplyingExecutorReason());
             ocrFields.setExecutorsNotApplying0notApplyingExecutorReason(bulkScanConfig.getExecutorsNotApplyingReason());
         }
 
         if (!isBlank(ocrFields.getExecutorsNotApplying1notApplyingExecutorName()) && isBlank(
                 ocrFields.getExecutorsNotApplying1notApplyingExecutorReason())) {
-            addModifiedField(modifiedFields, "executorsNotApplying1notApplyingExecutorReason", ocrFields
+            addModifiedField(modifiedFields, EXECUTOR_NOT_APPLYING_1_REASON, ocrFields
                     .getExecutorsNotApplying1notApplyingExecutorReason());
             ocrFields.setExecutorsNotApplying1notApplyingExecutorReason(bulkScanConfig.getExecutorsNotApplyingReason());
         }
 
         if (!isBlank(ocrFields.getExecutorsNotApplying2notApplyingExecutorName()) && isBlank(
                 ocrFields.getExecutorsNotApplying2notApplyingExecutorReason())) {
-            addModifiedField(modifiedFields, "executorsNotApplying2notApplyingExecutorReason", ocrFields
+            addModifiedField(modifiedFields, EXECUTOR_NOT_APPLYING_2_REASON, ocrFields
                     .getExecutorsNotApplying2notApplyingExecutorReason());
             ocrFields.setExecutorsNotApplying2notApplyingExecutorReason(bulkScanConfig.getExecutorsNotApplyingReason());
         }
@@ -319,11 +398,11 @@ public class OCRFieldModifierUtils {
     private void setDefaultValues(ExceptionRecordOCRFields ocrFields,
                                   List<CollectionMember<ModifiedOCRField>> modifiedFields,
                                   String switchDateValue, String dateOfDeathValue) {
-        addModifiedField(modifiedFields, "deceasedDiedOnAfterSwitchDate", ocrFields
+        addModifiedField(modifiedFields, DECEASED_DIED_ON_OR_AFTER_SWITCH_DATE, ocrFields
                 .getDeceasedDiedOnAfterSwitchDate());
         ocrFields.setDeceasedDiedOnAfterSwitchDate(switchDateValue);
 
-        addModifiedField(modifiedFields, "deceasedDateOfDeath", ocrFields.getDeceasedDateOfDeath());
+        addModifiedField(modifiedFields, DECEASED_DOD, ocrFields.getDeceasedDateOfDeath());
         ocrFields.setDeceasedDateOfDeath(dateOfDeathValue);
 
         log.info("Setting deceasedDiedOnAfterSwitchDate to {}", switchDateValue);
@@ -331,46 +410,94 @@ public class OCRFieldModifierUtils {
 
     private void handleIHTFields(ExceptionRecordOCRFields ocrFields,
                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        if (isFormVersion3AndSwitchDateValid(ocrFields)
-                || isFormVersion2AndSwitchDateValid(ocrFields, exceptedEstateDateOfDeathChecker)
-                || isFormVersion1Valid(ocrFields)) {
-
+        if (isFormVersionValid(ocrFields)) {
             setDefaultIHTValues(ocrFields, modifiedFields, bulkScanConfig);
-            if (isIhtFormsNotCompleted(ocrFields)) {
-                addModifiedField(modifiedFields, "iht400Completed", ocrFields.getIht400Completed());
-                ocrFields.setIht400Completed(TRUE);
-                log.info("Setting iht400Completed to {}", ocrFields.getIht400Completed());
-                setFieldIfBlank(ocrFields::getIht400process, ocrFields::setIht400process,
-                        "iht400process", TRUE, modifiedFields);
 
-                setFieldIfBlank(ocrFields::getProbateGrossValueIht400, ocrFields::setProbateGrossValueIht400,
-                        "probateGrossValueIht400", bulkScanConfig.getGrossNetValue(), modifiedFields);
-
-                setFieldIfBlank(ocrFields::getProbateNetValueIht400, ocrFields::setProbateNetValueIht400,
-                        "probateNetValueIht400", bulkScanConfig.getGrossNetValue(), modifiedFields);
+            if (isFormVersion2Or3AndExceptedEstate(ocrFields)) {
+                setEstateValues(ocrFields, modifiedFields);
+            } else if (isIhtFormsNotCompleted(ocrFields)) {
+                setIht400Values(ocrFields, modifiedFields);
             }
         }
-        if (isFormVersion2Or3AndExceptedEstate(ocrFields)) {
-            setFieldIfBlank(ocrFields::getIhtEstateGrossValue, ocrFields::setIhtEstateGrossValue,
-                    "ihtEstateGrossValue", bulkScanConfig.getGrossNetValue(), modifiedFields);
 
-            setFieldIfBlank(ocrFields::getIhtEstateNetValue, ocrFields::setIhtEstateNetValue,
-                    "ihtEstateNetValue", bulkScanConfig.getGrossNetValue(), modifiedFields);
+        if (isFormVersion1Valid(ocrFields)) {
+            handleFormVersion1(ocrFields, modifiedFields);
+        }
+    }
 
-            setFieldIfBlank(ocrFields::getIhtEstateNetQualifyingValue, ocrFields::setIhtEstateNetQualifyingValue,
-                    "ihtEstateNetQualifyingValue", bulkScanConfig.getGrossNetValue(), modifiedFields);
+    private boolean isFormVersionValid(ExceptionRecordOCRFields ocrFields) {
+        return isFormVersion3AndSwitchDateValid(ocrFields)
+                || isFormVersion2AndSwitchDateValid(ocrFields, exceptedEstateDateOfDeathChecker);
+    }
+
+    private void setEstateValues(ExceptionRecordOCRFields ocrFields,
+                                 List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        setFieldIfBlank(ocrFields::getIhtEstateGrossValue, ocrFields::setIhtEstateGrossValue,
+                IHT_ESTATE_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+        setFieldIfBlank(ocrFields::getIhtEstateNetValue, ocrFields::setIhtEstateNetValue,
+                IHT_ESTATE_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+        setFieldIfBlank(ocrFields::getIhtEstateNetQualifyingValue, ocrFields::setIhtEstateNetQualifyingValue,
+                IHT_ESTATE_NET_QUALIFYING_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+
+        if (isFormVersion3Valid(ocrFields)) {
+            setFieldIfBlank(ocrFields::getIhtGrossValueExceptedEstate, ocrFields::setIhtGrossValueExceptedEstate,
+                    IHT_GROSS_VALUE_EXCEPTED_ESTATE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+            setFieldIfBlank(ocrFields::getIhtNetValueExceptedEstate, ocrFields::setIhtNetValueExceptedEstate,
+                    IHT_NET_VALUE_EXCEPTED_ESTATE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+        } else {
+            setFieldIfBlank(ocrFields::getIhtGrossValue, ocrFields::setIhtGrossValue,
+                    IHT_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+            setFieldIfBlank(ocrFields::getIhtNetValue, ocrFields::setIhtNetValue,
+                    IHT_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+        }
+    }
+
+    private void setIht400Values(ExceptionRecordOCRFields ocrFields,
+                                 List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        addModifiedField(modifiedFields, IHT_400, ocrFields.getIht400Completed());
+        ocrFields.setIht400Completed(TRUE);
+        log.info("Setting iht400Completed to {}", ocrFields.getIht400Completed());
+
+        setFieldIfBlank(ocrFields::getIht400process, ocrFields::setIht400process,
+                IHT_400_PROCESS, TRUE, modifiedFields);
+        setFieldIfBlank(ocrFields::getProbateGrossValueIht400, ocrFields::setProbateGrossValueIht400,
+                IHT_400_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+        setFieldIfBlank(ocrFields::getProbateNetValueIht400, ocrFields::setProbateNetValueIht400,
+                IHT_400_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+    }
+
+    private void handleFormVersion1(ExceptionRecordOCRFields ocrFields,
+                                    List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        setFieldIfBlank(ocrFields::getIhtFormCompletedOnline, ocrFields::setIhtFormCompletedOnline,
+                IHT_FORM_COMPLETED_ONLINE, bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
+
+        if (BooleanUtils.toBoolean(ocrFields.getIhtFormCompletedOnline())) {
+            setFieldIfBlank(ocrFields::getIhtReferenceNumber, ocrFields::setIhtReferenceNumber,
+                    IHT_REFERENCE, bulkScanConfig.getName(), modifiedFields);
+        } else {
+            String ihtFormId = ocrFields.getIhtFormId();
+            if (isBlank(ihtFormId)) {
+                addModifiedField(modifiedFields, IHT_FORM_ID, ocrFields.getIhtFormId());
+                ocrFields.setIhtFormId(bulkScanConfig.getDefaultForm());
+                log.info("Setting IHT Form ID to {}", ocrFields.getIhtFormId());
+            } else if (isValidIhtFormId(ihtFormId)) {
+                setFieldIfBlank(ocrFields::getIhtGrossValue, ocrFields::setIhtGrossValue,
+                        IHT_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+                setFieldIfBlank(ocrFields::getIhtNetValue, ocrFields::setIhtNetValue,
+                        IHT_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
+            }
         }
     }
 
     private boolean isFormVersion3AndSwitchDateValid(ExceptionRecordOCRFields ocrFields) {
-        return "3".equals(ocrFields.getFormVersion()) && (TRUE.equalsIgnoreCase(ocrFields
+        return isFormVersion3Valid(ocrFields) && (TRUE.equalsIgnoreCase(ocrFields
                 .getDeceasedDiedOnAfterSwitchDate())
                 || FALSE.equalsIgnoreCase(ocrFields.getDeceasedDiedOnAfterSwitchDate()));
     }
 
     private boolean isFormVersion2AndSwitchDateValid(ExceptionRecordOCRFields ocrFields,
                                                      ExceptedEstateDateOfDeathChecker checker) {
-        return "2".equals(ocrFields.getFormVersion()) && (checker.isOnOrAfterSwitchDate(ocrFields
+        return isFormVersion2Valid(ocrFields) && (checker.isOnOrAfterSwitchDate(ocrFields
                 .getDeceasedDateOfDeath()) || !checker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath()));
     }
 
@@ -378,10 +505,18 @@ public class OCRFieldModifierUtils {
         return "1".equals(ocrFields.getFormVersion());
     }
 
+    private boolean isFormVersion2Valid(ExceptionRecordOCRFields ocrFields) {
+        return "2".equals(ocrFields.getFormVersion());
+    }
+
+    private boolean isFormVersion3Valid(ExceptionRecordOCRFields ocrFields) {
+        return "3".equals(ocrFields.getFormVersion());
+    }
+
     private boolean isFormVersion2Or3AndExceptedEstate(ExceptionRecordOCRFields ocrFields) {
-        return ("2".equals(ocrFields.getFormVersion()) && TRUE.equalsIgnoreCase(ocrFields
+        return (isFormVersion2Valid(ocrFields) && TRUE.equalsIgnoreCase(ocrFields
                 .getDeceasedDiedOnAfterSwitchDate()))
-                || ("3".equals(ocrFields.getFormVersion()) && TRUE.equalsIgnoreCase(ocrFields.getExceptedEstate()));
+                || (isFormVersion3Valid(ocrFields) && TRUE.equalsIgnoreCase(ocrFields.getExceptedEstate()));
     }
 
     private boolean isIhtFormsNotCompleted(ExceptionRecordOCRFields ocrFields) {
@@ -393,74 +528,92 @@ public class OCRFieldModifierUtils {
     private void setDefaultIHTValues(ExceptionRecordOCRFields ocrFields,
                                   List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ModifiedOCRField>>
                                           modifiedList, BulkScanConfig bulkScanConfig) {
-        checkAndSetField(ocrFields, modifiedList, "iht400421Completed", ocrFields.getIht400421Completed(),
+        checkAndSetField(ocrFields, modifiedList, IHT_400421, ocrFields.getIht400421Completed(),
                 bulkScanConfig);
-        checkAndSetField(ocrFields, modifiedList, "iht207Completed", ocrFields.getIht207Completed(),
+        checkAndSetField(ocrFields, modifiedList, IHT_207, ocrFields.getIht207Completed(),
                 bulkScanConfig);
-        checkAndSetField(ocrFields, modifiedList, "iht205Completed", ocrFields.getIht205Completed(),
+        checkAndSetField(ocrFields, modifiedList, IHT_205, ocrFields.getIht205Completed(),
                 bulkScanConfig);
-        checkAndSetField(ocrFields, modifiedList, "iht205completedOnline", ocrFields
+        checkAndSetField(ocrFields, modifiedList, IHT_205_COMPLETED_ONLINE, ocrFields
                         .getIht205completedOnline(), bulkScanConfig);
     }
 
     private void checkAndSetField(ExceptionRecordOCRFields ocrFields,
-                                  List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ModifiedOCRField>>
-                                          modifiedList, String fieldName, String fieldValue,
+                                  List<CollectionMember<ModifiedOCRField>> modifiedList,
+                                  String fieldName, String fieldValue,
                                   BulkScanConfig bulkScanConfig) {
         if (isBlank(fieldValue)) {
             addModifiedField(modifiedList, fieldName, fieldValue);
-            switch (fieldName) {
-                case "iht400421Completed":
-                    ocrFields.setIht400421Completed(bulkScanConfig.getIhtForm());
-                    log.info("Setting iht400421Completed to {}", ocrFields.getIht400421Completed());
-                    break;
-                case "iht207Completed":
-                    ocrFields.setIht207Completed(bulkScanConfig.getIhtForm());
-                    log.info("Setting iht207Completed to {}", ocrFields.getIht207Completed());
-                    break;
-                case "iht205Completed":
-                    ocrFields.setIht205Completed(bulkScanConfig.getIhtForm());
-                    log.info("Setting iht205Completed to {}", ocrFields.getIht205Completed());
-                    break;
-                case "iht205completedOnline":
-                    ocrFields.setIht205completedOnline(bulkScanConfig.getIhtForm());
-                    break;
-            }
+            setFieldValue(ocrFields, fieldName, bulkScanConfig.getIhtForm());
         } else if (TRUE.equalsIgnoreCase(fieldValue)) {
-            switch (fieldName) {
-                case "iht400421Completed":
-                    setFieldIfBlank(ocrFields::getIht421grossValue, ocrFields::setIht421grossValue,
-                            "iht421grossValue", bulkScanConfig.getGrossNetValue(), modifiedList);
-
-                    setFieldIfBlank(ocrFields::getIht421netValue, ocrFields::setIht421netValue,
-                            "iht421netValue", bulkScanConfig.getGrossNetValue(), modifiedList);
-                    break;
-                case "iht207Completed":
-                    setFieldIfBlank(ocrFields::getIht207grossValue, ocrFields::setIht207grossValue,
-                            "iht207grossValue", bulkScanConfig.getGrossNetValue(), modifiedList);
-
-                    setFieldIfBlank(ocrFields::getIht207netValue, ocrFields::setIht207netValue,
-                            "iht207netValue", bulkScanConfig.getGrossNetValue(), modifiedList);
-                    break;
-                case "iht205Completed":
-                    setFieldIfBlank(ocrFields::getIhtGrossValue205, ocrFields::setIhtGrossValue205,
-                            "ihtGrossValue205", bulkScanConfig.getGrossNetValue(), modifiedList);
-
-                    setFieldIfBlank(ocrFields::getIhtNetValue205, ocrFields::setIhtNetValue205,
-                            "ihtNetValue205", bulkScanConfig.getGrossNetValue(), modifiedList);
-                    break;
-                case "iht205completedOnline":
-                    setFieldIfBlank(ocrFields::getIhtReferenceNumber, ocrFields::setIhtReferenceNumber,
-                            "ihtReferenceNumber", "1234", modifiedList);
-
-                    setFieldIfBlank(ocrFields::getIhtGrossValue205, ocrFields::setIhtGrossValue205,
-                            "ihtGrossValue205", bulkScanConfig.getGrossNetValue(), modifiedList);
-
-                    setFieldIfBlank(ocrFields::getIhtNetValue205, ocrFields::setIhtNetValue205,
-                            "ihtNetValue205", bulkScanConfig.getGrossNetValue(), modifiedList);
-                    break;
+            if (isFormVersion3Valid(ocrFields)) {
+                setFormVersion3Fields(ocrFields, modifiedList, fieldName, bulkScanConfig);
+            } else if (isFormVersion2Valid(ocrFields)) {
+                setFormVersion2Fields(ocrFields, modifiedList, bulkScanConfig);
             }
         }
+    }
+
+    private void setFieldValue(ExceptionRecordOCRFields ocrFields, String fieldName, String value) {
+        switch (fieldName) {
+            case IHT_400421:
+                ocrFields.setIht400421Completed(value);
+                log.info("Setting iht400421Completed to {}", value);
+                break;
+            case IHT_207:
+                ocrFields.setIht207Completed(value);
+                log.info("Setting iht207Completed to {}", value);
+                break;
+            case IHT_205:
+                ocrFields.setIht205Completed(value);
+                log.info("Setting iht205Completed to {}", value);
+                break;
+            case IHT_205_COMPLETED_ONLINE:
+                ocrFields.setIht205completedOnline(value);
+                break;
+        }
+    }
+
+    private void setFormVersion3Fields(ExceptionRecordOCRFields ocrFields,
+                                       List<CollectionMember<ModifiedOCRField>> modifiedList,
+                                       String fieldName, BulkScanConfig bulkScanConfig) {
+        switch (fieldName) {
+            case IHT_400421:
+                setFieldIfBlank(ocrFields::getIht421grossValue, ocrFields::setIht421grossValue,
+                        IHT_421_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+                setFieldIfBlank(ocrFields::getIht421netValue, ocrFields::setIht421netValue,
+                        IHT_421_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+                break;
+            case IHT_207:
+                setFieldIfBlank(ocrFields::getIht207grossValue, ocrFields::setIht207grossValue,
+                        IHT_207_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+                setFieldIfBlank(ocrFields::getIht207netValue, ocrFields::setIht207netValue,
+                        IHT_207_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+                break;
+            case IHT_205:
+                setFieldIfBlank(ocrFields::getIhtGrossValue205, ocrFields::setIhtGrossValue205,
+                        IHT_205_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+                setFieldIfBlank(ocrFields::getIhtNetValue205, ocrFields::setIhtNetValue205,
+                        IHT_205_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+                break;
+            case IHT_205_COMPLETED_ONLINE:
+                setFieldIfBlank(ocrFields::getIhtReferenceNumber, ocrFields::setIhtReferenceNumber,
+                        IHT_REFERENCE, "1234", modifiedList);
+                setFieldIfBlank(ocrFields::getIhtGrossValue205, ocrFields::setIhtGrossValue205,
+                        IHT_205_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+                setFieldIfBlank(ocrFields::getIhtNetValue205, ocrFields::setIhtNetValue205,
+                        IHT_207_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+                break;
+        }
+    }
+
+    private void setFormVersion2Fields(ExceptionRecordOCRFields ocrFields,
+                                       List<CollectionMember<ModifiedOCRField>> modifiedList,
+                                       BulkScanConfig bulkScanConfig) {
+        setFieldIfBlank(ocrFields::getIhtGrossValue, ocrFields::setIhtGrossValue,
+                IHT_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+        setFieldIfBlank(ocrFields::getIhtNetValue, ocrFields::setIhtNetValue,
+                IHT_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
     }
 
     private void addModifiedField(List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ModifiedOCRField>>
@@ -507,19 +660,19 @@ public class OCRFieldModifierUtils {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
 
         setFieldIfBlank(exceptionRecordOCRFields::getCaveatorForenames, exceptionRecordOCRFields::setCaveatorForenames,
-                "caveatorForenames", bulkScanConfig.getName(), modifiedFields);
+                CAVEAT_FORENAMES, bulkScanConfig.getName(), modifiedFields);
 
         setFieldIfBlank(exceptionRecordOCRFields::getCaveatorSurnames, exceptionRecordOCRFields::setCaveatorSurnames,
-                "caveatorSurnames", bulkScanConfig.getName(), modifiedFields);
+                CAVEAT_SURNAME, bulkScanConfig.getName(), modifiedFields);
 
         setFieldIfBlank(exceptionRecordOCRFields::getDeceasedForenames, exceptionRecordOCRFields::setDeceasedForenames,
-                "deceasedForenames", bulkScanConfig.getName(), modifiedFields);
+                DECEASED_FORENAME, bulkScanConfig.getName(), modifiedFields);
 
         setFieldIfBlank(exceptionRecordOCRFields::getDeceasedSurname, exceptionRecordOCRFields::setDeceasedSurname,
-                "deceasedSurname", bulkScanConfig.getName(), modifiedFields);
+                DECEASED_SURNAME, bulkScanConfig.getName(), modifiedFields);
 
         setFieldIfBlank(exceptionRecordOCRFields::getDeceasedDateOfDeath,
-                exceptionRecordOCRFields::setDeceasedDateOfBirth, "deceasedDateOfDeath",
+                exceptionRecordOCRFields::setDeceasedDateOfDeath, DECEASED_DOD,
                 bulkScanConfig.getDob(), modifiedFields);
 
         if (BooleanUtils.toBoolean(exceptionRecordOCRFields.getLegalRepresentative())) {
@@ -534,26 +687,26 @@ public class OCRFieldModifierUtils {
                                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         setFieldIfBlank(exceptionRecordOCRFields::getSolsSolicitorAddressLine1,
                 exceptionRecordOCRFields::setSolsSolicitorAddressLine1,
-                "solsSolicitorAddressLine1", bulkScanConfig.getName(), modifiedFields);
+                SOLICITOR_ADDRESS_LINE1, bulkScanConfig.getName(), modifiedFields);
 
         setFieldIfBlank(exceptionRecordOCRFields::getSolsSolicitorAddressPostCode,
                 exceptionRecordOCRFields::setSolsSolicitorAddressPostCode,
-                "solsSolicitorAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+                SOLICITOR_ADDRESS_POST_CODE, bulkScanConfig.getPostcode(), modifiedFields);
 
         setFieldIfBlank(exceptionRecordOCRFields::getSolsSolicitorFirmName,
                 exceptionRecordOCRFields::setSolsSolicitorFirmName,
-                "solsSolicitorFirmName", bulkScanConfig.getName(), modifiedFields);
+                SOLICITOR_FIRM_NAME, bulkScanConfig.getName(), modifiedFields);
     }
 
     private void handleCaveatCitizenAddressFields(ExceptionRecordOCRFields exceptionRecordOCRFields,
                                       List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         setFieldIfBlank(exceptionRecordOCRFields::getCaveatorAddressLine1,
                 exceptionRecordOCRFields::setCaveatorAddressLine1,
-                "caveatorAddressLine1", bulkScanConfig.getName(), modifiedFields);
+                CAVEATOR_ADDRESS_LINE1, bulkScanConfig.getName(), modifiedFields);
 
         setFieldIfBlank(exceptionRecordOCRFields::getCaveatorAddressPostCode,
                 exceptionRecordOCRFields::setCaveatorAddressPostCode,
-                "caveatorAddressPostCode", bulkScanConfig.getPostcode(), modifiedFields);
+                CAVEATOR_POST_CODE, bulkScanConfig.getPostcode(), modifiedFields);
     }
 
 }

@@ -38,4 +38,5 @@ public class BulkScanConfig {
     private String solicitorApplying;
     private String executorsNotApplyingReason;
     private String fieldsNotCompleted;
+    private String defaultForm;
 }

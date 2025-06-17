@@ -632,6 +632,7 @@ bulkscan:
     solicitorApplying: FALSE
     executorsNotApplyingReason: A
     fieldsNotCompleted: FALSE
+    defaultForm: IHT400
 
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
