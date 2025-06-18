@@ -909,7 +909,7 @@ public class NotificationService {
         try {
             log.info("Preparing to send declarationNotSigned email to primary applicant for case id: {}", caseId);
             personalisation
-                    .put(PERSONALISATION_EXECUTOR_NAMES_LIST, getExecutorsNamesListString(unsignedExecutorList));
+                    .put(PERSONALISATION_EXECUTOR_NAMES_LIST, getExecutorsNamesList(unsignedExecutorList));
             String templateId = templateService.getDeclarationNotSignedTemplateId(languagePreference, true);
             String emailAddress = Optional.ofNullable(getEmail(data))
                     .orElseThrow(() ->
@@ -962,12 +962,14 @@ public class NotificationService {
                 && !Boolean.TRUE.equals(executor.getApplyingExecutorAgreed());
     }
 
-    private String[] getExecutorsNamesListString(List<CollectionMember<ExecutorApplying>> executors) {
+    private List<String> getExecutorsNamesList(List<CollectionMember<ExecutorApplying>> executors) {
         if (executors == null || executors.isEmpty()) {
-            return new String[0];
+            return Collections.emptyList();
         }
         return executors.stream()
-            .map(exec -> exec.getValue().getApplyingExecutorName())
-            .toArray(String[]::new);
+            .map(CollectionMember::getValue)
+            .filter(Objects::nonNull)
+            .map(ExecutorApplying::getApplyingExecutorName)
+            .toList();
     }
 }
