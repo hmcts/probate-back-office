@@ -562,13 +562,12 @@ public class OCRFieldModifierUtils {
     private void updateFieldsIfTrue(ExceptionRecordOCRFields ocrFields,
                                     List<CollectionMember<ModifiedOCRField>> modifiedList,
                                     BulkScanConfig bulkScanConfig) {
-        List<String> fieldNames = List.of(IHT_400421, IHT_207, IHT_205, IHT_205_COMPLETED_ONLINE, IHT_400);
+        List<String> fieldNames = List.of(IHT_400421, IHT_207, IHT_205, IHT_205_COMPLETED_ONLINE);
         List<Supplier<String>> getters = List.of(
                 ocrFields::getIht400421Completed,
                 ocrFields::getIht207Completed,
                 ocrFields::getIht205Completed,
-                ocrFields::getIht205completedOnline,
-                ocrFields::getIht400Completed
+                ocrFields::getIht205completedOnline
         );
 
         IntStream.range(0, fieldNames.size())
