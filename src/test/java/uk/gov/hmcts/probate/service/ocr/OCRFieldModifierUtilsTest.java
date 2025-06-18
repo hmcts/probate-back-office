@@ -418,6 +418,21 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
+    void shouldNotSetDefaultIHTFormWhenExceptedEstateAndFormVersionIsTwo() throws IllegalAccessException {
+        formVersionField.set(ocrFields, "2");
+
+        ocrFields.setDeceasedDateOfDeath("01012022");
+        ocrFields.setDeceasedDiedOnAfterSwitchDate("TRUE");
+
+        ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+
+        assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetValue());
+        assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateGrossValue());
+        assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetQualifyingValue());
+        assertEquals("2", ocrFields.getFormVersion());
+    }
+
+    @Test
     void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThree() throws IllegalAccessException {
         formVersionField.set(ocrFields, "3");
 

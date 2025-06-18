@@ -530,7 +530,7 @@ public class OCRFieldModifierUtils {
                 ocrFields.getIht205Completed(),
                 ocrFields.getIht205completedOnline(),
                 ocrFields.getExceptedEstate()
-        ).anyMatch(BooleanUtils::toBoolean);
+        ).anyMatch(BooleanUtils::toBoolean) || isFormVersion2Or3AndExceptedEstate(ocrFields);
 
         if (!isAnyFormSelectedTrue) {
             setFormsToDefault(ocrFields, modifiedList, bulkScanConfig);
