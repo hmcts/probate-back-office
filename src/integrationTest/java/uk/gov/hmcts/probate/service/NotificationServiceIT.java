@@ -50,6 +50,7 @@ import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -2536,5 +2537,55 @@ class NotificationServiceIT {
                 eq("solicitor@probate-test.com"),
                 any(),
                 anyString());
+    }
+
+    @Test
+    void sendDeclarationNotSignedEmail() throws NotificationClientException {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> caseData = mapper.convertValue(personalGrantDelayedOxford.getData(), Map.class);
+
+        caseData.put("executorsApplying", List.of(
+                buildExecutor("Executor one", "executor-one@probate-test.com",true, true),
+                buildExecutor("Executor two", "executor-two@probate-test.com",false, true),
+                buildExecutor("Executor three", "executor-three@probate-test.com",null, true)));
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails returnedCaseDetails =
+                uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .createdDate(CREATED_DATE)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build();
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), anyString())).thenReturn(sendEmailResponse);
+        notificationService.sendDeclarationNotSignedEmail(returnedCaseDetails);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-declaration-not-signed-primary-applicant"),
+                eq("primary@probate-test.com"),
+                any(),
+                anyString());
+        verify(notificationClient).sendEmail(
+                eq("pa-declaration-not-signed-executors"),
+                eq("executor-two@probate-test.com"),
+                any(),
+                anyString());
+        verify(notificationClient).sendEmail(
+                eq("pa-declaration-not-signed-executors"),
+                eq("executor-three@probate-test.com"),
+                any(),
+                anyString());
+    }
+
+    private CollectionMember<ExecutorApplying> buildExecutor(String name,
+                                                             String email,
+                                                             Boolean isAgreed,
+                                                             Boolean emailSent) {
+        ExecutorApplying applying = ExecutorApplying.builder()
+                .applyingExecutorName(name)
+                .applyingExecutorEmail(email)
+                .applyingExecutorAgreed(isAgreed)
+                .applyingExecutorEmailSent(emailSent)
+                .build();
+        return new CollectionMember<>(null, applying);
     }
 }

@@ -76,11 +76,11 @@ public class AutomatedNotificationPersonalisationService {
         return personalisation;
     }
 
-    public Map<String, String> getPersonalisation(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
+    public Map<String, Object> getPersonalisation(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
                                                   ApplicationType applicationType) {
         log.info("AutomatedNotificationPersonalisationService getPersonalisation");
         Map<String, Object> caseData = caseDetails.getData();
-        HashMap<String, String> personalisation = new HashMap<>();
+        HashMap<String, Object> personalisation = new HashMap<>();
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
         personalisation.put(PERSONALISATION_RESPOND_DATE, DATE_FORMAT.format(LocalDate.now().plusDays(14)));
         personalisation.put(PERSONALISATION_APPLICANT_NAME, getPrimaryApplicantName(caseData));

@@ -42,4 +42,6 @@ public class EmailTemplates {
     private String hseReminderForHub;
     private String dormantWarning;
     private String unsubmittedApplication;
+    private String declarationNotSignedPrimaryApplicant;
+    private String declarationNotSignedExecutors;
 }

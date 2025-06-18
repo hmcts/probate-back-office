@@ -172,6 +172,8 @@ notifications:
           hseReminderForHub: "pa-hse-reminder-for-hub"
           dormantWarning: "pa-dormant-warning"
           unsubmittedApplication: "pa-unsubmitted-application"
+          declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant"
+          declarationNotSignedExecutors: "pa-declaration-not-signed-executors"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -231,6 +233,8 @@ notifications:
           hseReminderForHub: "pa-hse-reminder-for-hub-welsh"
           dormantWarning: "pa-dormant-warning-welsh"
           unsubmittedApplication: "pa-unsubmitted-application-welsh"
+          declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant-welsh"
+          declarationNotSignedExecutors: "pa-declaration-not-signed-executors-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -537,3 +541,4 @@ automated_notification:
     awaiting_documentation_days: 30
   dormant_warning_days: 150
   unsubmitted_application_days: 28
+  declaration_not_signed_days: 3

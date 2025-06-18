@@ -141,9 +141,20 @@ public class TemplateService {
     }
 
     public String getUnsubmittedApplicationTemplateId(ApplicationType applicationType,
-                                              LanguagePreference languagePreference) {
+                                                      LanguagePreference languagePreference) {
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
         return emailTemplates.getUnsubmittedApplication();
+    }
+
+    public String getDeclarationNotSignedTemplateId(LanguagePreference languagePreference,
+                                                    boolean isPrimaryApplicant) {
+        EmailTemplates emailTemplates =
+                notificationTemplates.getEmail().get(languagePreference).get(ApplicationType.PERSONAL);
+        if (isPrimaryApplicant) {
+            return emailTemplates.getDeclarationNotSignedPrimaryApplicant();
+        } else {
+            return emailTemplates.getDeclarationNotSignedExecutors();
+        }
     }
 }
 

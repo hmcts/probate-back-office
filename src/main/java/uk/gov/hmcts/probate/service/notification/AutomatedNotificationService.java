@@ -18,8 +18,6 @@ import uk.gov.service.notify.NotificationClientException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -56,7 +54,7 @@ public class AutomatedNotificationService {
         String query = strategy.getQueryTemplate();
 
         SearchResult searchResult = elasticSearchRepository.fetchFirstPage(
-                securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
+                securityDTO.getAuthorisation(), strategy.getCaseTypeName(),
                 query, date, date);
         log.info("sendStopReminder query executed for date: {}, cases found: {}",
                 date, searchResult.getTotal());
@@ -71,7 +69,7 @@ public class AutomatedNotificationService {
         boolean keepSearching;
         do {
             SearchResult nextPage = elasticSearchRepository.fetchNextPage(
-                    securityDTO.getAuthorisation(), GRANT_OF_REPRESENTATION.getName(),
+                    securityDTO.getAuthorisation(), strategy.getCaseTypeName(),
                     searchAfterValue, query, date, date);
 
             keepSearching = nextPage != null && !nextPage.getCases().isEmpty();
@@ -108,7 +106,7 @@ public class AutomatedNotificationService {
             }
 
             try {
-                if (emailSucceeded && sentEmail != null) {
+                if (emailSucceeded && (sentEmail != null || strategy.skipSaveNotification())) {
                     automatedNotificationCCDService.saveNotification(
                             startEventResponse.getCaseDetails(), caseDetails.getId().toString(),
                             securityDTO, sentEmail, strategy, startEventResponse
