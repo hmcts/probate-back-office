@@ -181,7 +181,7 @@ def versions = [
         springDocOpenUi                 : '2.6.0',
         springSecurityVersion           : '6.4.5',
         pdfServiceClientVersion         : '8.0.2',
-        sendLetterClientVersion         : '5.0.4',
+        sendLetterClientVersion         : '5.1.0',
         lifeEventsClientVersion         : '1.3.0',
         fortifyClientVersion            : '1.4.9',
 ]
