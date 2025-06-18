@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.BulkScanConfig;
+import uk.gov.hmcts.probate.model.ccd.IhtFormId;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
@@ -129,8 +130,7 @@ public class OCRFieldModifierUtils {
 
     private boolean isValidIhtFormId(String ihtFormId) {
         log.info("Checking if IHT form ID {} is valid", ihtFormId);
-        return Stream.of(FORM_IHT205, FORM_IHT207, FORM_IHT400421, FORM_IHT400)
-                .anyMatch(form -> form.equalsIgnoreCase(ihtFormId));
+        return IhtFormId.isValid(ihtFormId);
     }
 
     private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
@@ -473,7 +473,8 @@ public class OCRFieldModifierUtils {
                 addModifiedField(modifiedFields, IHT_FORM_ID, ocrFields.getIhtFormId());
                 ocrFields.setIhtFormId(bulkScanConfig.getDefaultForm());
                 log.info("Setting IHT Form ID to {}", ocrFields.getIhtFormId());
-            } if (isValidIhtFormId(ihtFormId)) {
+            }
+            if (isValidIhtFormId(ihtFormId)) {
                 log.info("Setting IHT Form gross and net values based on form ID: {}", ihtFormId);
                 setFieldIfBlank(ocrFields::getIhtGrossValue, ocrFields::setIhtGrossValue,
                         IHT_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
