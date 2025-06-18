@@ -1073,7 +1073,7 @@ class OCRFieldModifierUtilsTest {
 
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
 
-        assertEquals(2, modifiedFields.size());
+        assertEquals(4, modifiedFields.size());
         assertEquals(IHT_FORM_COMPLETED_ONLINE, modifiedFields.getFirst().getValue().getFieldName());
         assertEquals(bulkScanConfig.getFieldsNotCompleted(), ocrFields.getIhtFormCompletedOnline());
         assertEquals(bulkScanConfig.getDefaultForm(), ocrFields.getIhtFormId());
