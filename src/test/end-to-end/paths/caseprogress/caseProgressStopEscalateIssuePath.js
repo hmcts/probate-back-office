@@ -173,7 +173,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.caseProgressStopEscalateIssueStoppedTabCheck();
 
         await I.logInfo(scenarioName, 'Resolve stop', caseRef);
-        const nextState = 'Awaiting Documentation';
+        const nextState = 'Awaiting documentation';
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
