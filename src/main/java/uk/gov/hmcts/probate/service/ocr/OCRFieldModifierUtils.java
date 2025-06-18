@@ -50,10 +50,6 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTOR_NOT_APPLYING_0_REASON;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTOR_NOT_APPLYING_1_REASON;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTOR_NOT_APPLYING_2_REASON;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT205;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT207;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT400;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT400421;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_400421;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_400;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_205;
