@@ -24,13 +24,12 @@ public class OCRFieldIhtGrossValueMapper {
             return Optional.ofNullable(ihtGrossValue)
                     .orElseThrow(() -> ocrMappingException);
         } else {
+            log.info("Iht gross value for version1 {}", ocrFields.getIhtGrossValue());
             return OCRFieldIhtMoneyMapper.poundsToPennies("IhtGrossValue", ocrFields.getIhtGrossValue());
         }
     }
 
     private Long getGrossValueVersion3(ExceptionRecordOCRFields ocrFields) {
-        log.info("get DeceasedDiedOnAfterSwitchDate {}", ocrFields.getDeceasedDiedOnAfterSwitchDate());
-        log.info("get the iht400 value {}", ocrFields.getIht400Completed());
         if (TRUE.equalsIgnoreCase(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
             if (TRUE.equalsIgnoreCase(ocrFields.getIht400421Completed())) {
                 return OCRFieldIhtMoneyMapper.poundsToPennies("Iht421grossValue", ocrFields.getIht421grossValue());

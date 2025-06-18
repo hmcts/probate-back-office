@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -127,6 +128,7 @@ public class OCRFieldModifierUtils {
     }
 
     private boolean isValidIhtFormId(String ihtFormId) {
+        log.info("Checking if IHT form ID {} is valid", ihtFormId);
         return Stream.of(FORM_IHT205, FORM_IHT207, FORM_IHT400421, FORM_IHT400)
                 .anyMatch(form -> form.equalsIgnoreCase(ihtFormId));
     }
@@ -411,7 +413,6 @@ public class OCRFieldModifierUtils {
                 setIht400Values(ocrFields, modifiedFields);
             }
         }
-
         if (isFormVersion1Valid(ocrFields)) {
             handleFormVersion1(ocrFields, modifiedFields);
         }
@@ -473,6 +474,7 @@ public class OCRFieldModifierUtils {
                 ocrFields.setIhtFormId(bulkScanConfig.getDefaultForm());
                 log.info("Setting IHT Form ID to {}", ocrFields.getIhtFormId());
             } if (isValidIhtFormId(ihtFormId)) {
+                log.info("Setting IHT Form gross and net values based on form ID: {}", ihtFormId);
                 setFieldIfBlank(ocrFields::getIhtGrossValue, ocrFields::setIhtGrossValue,
                         IHT_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
                 setFieldIfBlank(ocrFields::getIhtNetValue, ocrFields::setIhtNetValue,
@@ -514,30 +516,81 @@ public class OCRFieldModifierUtils {
     private boolean isIhtFormsNotCompleted(ExceptionRecordOCRFields ocrFields) {
         return FALSE.equalsIgnoreCase(ocrFields.getIht400421Completed()) && FALSE.equalsIgnoreCase(ocrFields
                 .getIht207Completed()) && FALSE.equalsIgnoreCase(ocrFields
-                .getIht205Completed());
+                .getIht205Completed()) && FALSE.equalsIgnoreCase(ocrFields.getIht400Completed());
     }
 
     private void setDefaultIHTValues(ExceptionRecordOCRFields ocrFields,
-                                  List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ModifiedOCRField>>
-                                          modifiedList, BulkScanConfig bulkScanConfig) {
-        checkAndSetField(ocrFields, modifiedList, IHT_400421, ocrFields.getIht400421Completed(),
-                bulkScanConfig);
-        checkAndSetField(ocrFields, modifiedList, IHT_207, ocrFields.getIht207Completed(),
-                bulkScanConfig);
-        checkAndSetField(ocrFields, modifiedList, IHT_205, ocrFields.getIht205Completed(),
-                bulkScanConfig);
-        checkAndSetField(ocrFields, modifiedList, IHT_205_COMPLETED_ONLINE, ocrFields
-                        .getIht205completedOnline(), bulkScanConfig);
+                                     List<CollectionMember<ModifiedOCRField>> modifiedList,
+                                     BulkScanConfig bulkScanConfig) {
+        boolean isAnyFormSelectedTrue = Stream.of(
+                ocrFields.getIht400421Completed(),
+                ocrFields.getIht400Completed(),
+                ocrFields.getIht207Completed(),
+                ocrFields.getIht205Completed(),
+                ocrFields.getIht205completedOnline(),
+                ocrFields.getExceptedEstate()
+        ).anyMatch(BooleanUtils::toBoolean);
+
+        if (!isAnyFormSelectedTrue) {
+            setFormsToDefault(ocrFields, modifiedList, bulkScanConfig);
+        } else {
+            updateFieldsIfTrue(ocrFields, modifiedList, bulkScanConfig);
+        }
+    }
+
+    private void setFormsToDefault(ExceptionRecordOCRFields ocrFields,
+                                   List<CollectionMember<ModifiedOCRField>> modifiedList,
+                                   BulkScanConfig bulkScanConfig) {
+        List<String> fieldNames = List.of(IHT_400421, IHT_207, IHT_205, IHT_205_COMPLETED_ONLINE, IHT_400);
+        List<Supplier<String>> getters = List.of(
+                ocrFields::getIht400421Completed,
+                ocrFields::getIht207Completed,
+                ocrFields::getIht205Completed,
+                ocrFields::getIht205completedOnline,
+                ocrFields::getIht400Completed
+        );
+
+        IntStream.range(0, fieldNames.size())
+                .filter(i -> isBlank(getters.get(i).get()))
+                .forEach(i -> {
+                    addModifiedField(modifiedList, fieldNames.get(i), getters.get(i).get());
+                    setFieldValue(ocrFields, fieldNames.get(i), bulkScanConfig.getIhtForm());
+                });
+    }
+
+    private void updateFieldsIfTrue(ExceptionRecordOCRFields ocrFields,
+                                    List<CollectionMember<ModifiedOCRField>> modifiedList,
+                                    BulkScanConfig bulkScanConfig) {
+        List<String> fieldNames = List.of(IHT_400421, IHT_207, IHT_205, IHT_205_COMPLETED_ONLINE, IHT_400);
+        List<Supplier<String>> getters = List.of(
+                ocrFields::getIht400421Completed,
+                ocrFields::getIht207Completed,
+                ocrFields::getIht205Completed,
+                ocrFields::getIht205completedOnline,
+                ocrFields::getIht400Completed
+        );
+
+        IntStream.range(0, fieldNames.size())
+                .forEach(i -> checkAndSetField(ocrFields, modifiedList, fieldNames.get(i), getters.get(i).get(),
+                        bulkScanConfig));
+    }
+
+    private void setFieldValue(ExceptionRecordOCRFields ocrFields, String fieldName, String value) {
+        switch (fieldName) {
+            case IHT_400421 -> ocrFields.setIht400421Completed(value);
+            case IHT_400 -> ocrFields.setIht400Completed(value);
+            case IHT_207 -> ocrFields.setIht207Completed(value);
+            case IHT_205 -> ocrFields.setIht205Completed(value);
+            case IHT_205_COMPLETED_ONLINE -> ocrFields.setIht205completedOnline(value);
+        }
+        log.info("Setting {} to {}", fieldName, value);
     }
 
     private void checkAndSetField(ExceptionRecordOCRFields ocrFields,
                                   List<CollectionMember<ModifiedOCRField>> modifiedList,
                                   String fieldName, String fieldValue,
                                   BulkScanConfig bulkScanConfig) {
-        if (isBlank(fieldValue)) {
-            addModifiedField(modifiedList, fieldName, fieldValue);
-            setFieldValue(ocrFields, fieldName, bulkScanConfig.getIhtForm());
-        } else if (TRUE.equalsIgnoreCase(fieldValue)) {
+        if (TRUE.equalsIgnoreCase(fieldValue)) {
             if (isFormVersion3Valid(ocrFields)) {
                 setFormVersion3Fields(ocrFields, modifiedList, fieldName, bulkScanConfig);
             } else if (isFormVersion2Valid(ocrFields)) {
@@ -546,56 +599,44 @@ public class OCRFieldModifierUtils {
         }
     }
 
-    private void setFieldValue(ExceptionRecordOCRFields ocrFields, String fieldName, String value) {
-        switch (fieldName) {
-            case IHT_400421:
-                ocrFields.setIht400421Completed(value);
-                log.info("Setting iht400421Completed to {}", value);
-                break;
-            case IHT_207:
-                ocrFields.setIht207Completed(value);
-                log.info("Setting iht207Completed to {}", value);
-                break;
-            case IHT_205:
-                ocrFields.setIht205Completed(value);
-                log.info("Setting iht205Completed to {}", value);
-                break;
-            case IHT_205_COMPLETED_ONLINE:
-                ocrFields.setIht205completedOnline(value);
-                break;
-        }
-    }
-
     private void setFormVersion3Fields(ExceptionRecordOCRFields ocrFields,
                                        List<CollectionMember<ModifiedOCRField>> modifiedList,
                                        String fieldName, BulkScanConfig bulkScanConfig) {
         switch (fieldName) {
-            case IHT_400421:
+            case IHT_400421 -> {
                 setFieldIfBlank(ocrFields::getIht421grossValue, ocrFields::setIht421grossValue,
                         IHT_421_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
                 setFieldIfBlank(ocrFields::getIht421netValue, ocrFields::setIht421netValue,
                         IHT_421_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
-                break;
-            case IHT_207:
+            }
+            case IHT_207 -> {
                 setFieldIfBlank(ocrFields::getIht207grossValue, ocrFields::setIht207grossValue,
                         IHT_207_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
                 setFieldIfBlank(ocrFields::getIht207netValue, ocrFields::setIht207netValue,
                         IHT_207_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
-                break;
-            case IHT_205:
+            }
+            case IHT_205 -> {
                 setFieldIfBlank(ocrFields::getIhtGrossValue205, ocrFields::setIhtGrossValue205,
                         IHT_205_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
                 setFieldIfBlank(ocrFields::getIhtNetValue205, ocrFields::setIhtNetValue205,
                         IHT_205_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
-                break;
-            case IHT_205_COMPLETED_ONLINE:
+            }
+            case IHT_205_COMPLETED_ONLINE -> {
                 setFieldIfBlank(ocrFields::getIhtReferenceNumber, ocrFields::setIhtReferenceNumber,
                         IHT_REFERENCE, "1234", modifiedList);
                 setFieldIfBlank(ocrFields::getIhtGrossValue205, ocrFields::setIhtGrossValue205,
                         IHT_205_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
                 setFieldIfBlank(ocrFields::getIhtNetValue205, ocrFields::setIhtNetValue205,
                         IHT_207_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
-                break;
+            }
+            case IHT_400 -> {
+                setFieldIfBlank(ocrFields::getIht400process, ocrFields::setIht400process,
+                        IHT_400_PROCESS, TRUE, modifiedList);
+                setFieldIfBlank(ocrFields::getProbateGrossValueIht400, ocrFields::setProbateGrossValueIht400,
+                        IHT_400_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+                setFieldIfBlank(ocrFields::getProbateNetValueIht400, ocrFields::setProbateNetValueIht400,
+                        IHT_400_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedList);
+            }
         }
     }
 
