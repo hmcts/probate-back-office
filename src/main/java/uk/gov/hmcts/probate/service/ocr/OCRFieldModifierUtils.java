@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.BulkScanConfig;
-import uk.gov.hmcts.probate.model.ccd.IhtFormId;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
@@ -50,6 +49,10 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTOR_NOT_APPLYING_0_REASON;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTOR_NOT_APPLYING_1_REASON;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTOR_NOT_APPLYING_2_REASON;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT205;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT207;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT400;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.FORM_IHT400421;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_400421;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_400;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_205;
@@ -126,7 +129,8 @@ public class OCRFieldModifierUtils {
 
     private boolean isValidIhtFormId(String ihtFormId) {
         log.info("Checking if IHT form ID {} is valid", ihtFormId);
-        return IhtFormId.isValid(ihtFormId);
+        return Stream.of(FORM_IHT205, FORM_IHT207, FORM_IHT400421, FORM_IHT400)
+                .anyMatch(form -> form.equalsIgnoreCase(ihtFormId));
     }
 
     private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
