@@ -517,7 +517,7 @@ public class OCRFieldModifierUtils {
     private boolean isIhtFormsNotCompleted(ExceptionRecordOCRFields ocrFields) {
         return FALSE.equalsIgnoreCase(ocrFields.getIht400421Completed()) && FALSE.equalsIgnoreCase(ocrFields
                 .getIht207Completed()) && FALSE.equalsIgnoreCase(ocrFields
-                .getIht205Completed()) && FALSE.equalsIgnoreCase(ocrFields.getIht400Completed());
+                .getIht205Completed());
     }
 
     private void setDefaultIHTValues(ExceptionRecordOCRFields ocrFields,
