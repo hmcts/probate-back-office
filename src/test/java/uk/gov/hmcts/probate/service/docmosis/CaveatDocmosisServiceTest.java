@@ -1,12 +1,15 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.config.ObjectMapperConfiguration;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -25,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {ObjectMapperConfiguration.class, CaveatDocmosisService.class})
 class CaveatDocmosisServiceTest {
 
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
@@ -32,23 +37,24 @@ class CaveatDocmosisServiceTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String CAV_EXPIRY_DATE = "31st December 2019";
     Registry registry = new Registry();
-    ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
     Map<String, Registry> registries = new HashMap<>();
-    @InjectMocks
+    @Autowired
     private CaveatDocmosisService caveatDocmosisService;
-    @Mock
+    @MockBean
     private RegistriesProperties registriesPropertiesMock;
-    @Mock
+    @MockBean
     private DateFormatterService dateFormatterService;
-    @Mock
+    @MockBean
     private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         registry.setName("leeds");
         registry.setPhone("123456789");
-        registries = mapper.convertValue(registry, Map.class);
+        registries = objectMapper.convertValue(registry, Map.class);
 
         when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
         when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(CAV_EXPIRY_DATE);

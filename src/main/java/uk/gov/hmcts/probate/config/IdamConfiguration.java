@@ -6,6 +6,7 @@ import feign.Logger;
 import feign.codec.Decoder;
 import feign.jackson.JacksonDecoder;
 import feign.hc5.ApacheHttp5Client;
+import lombok.RequiredArgsConstructor;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -16,7 +17,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
+@RequiredArgsConstructor
 public class IdamConfiguration {
+    private final ObjectMapper objectMapper;
 
     @Bean
     public Client getFeignHttpClient() {
@@ -39,7 +42,7 @@ public class IdamConfiguration {
 
     @Bean
     @Primary
-    Decoder feignDecoder(ObjectMapper objectMapper) {
+    Decoder feignDecoder() {
         return new ResponseEntityDecoder(new JacksonDecoder(objectMapper));
     }
 
