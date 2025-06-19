@@ -48,7 +48,7 @@ class AutomatedNotificationPersonalisationServiceTest {
     private static final String urlPrefixSolicitorCase = "http://localhost:8080/solicitor";
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
 
         objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -134,8 +134,8 @@ class AutomatedNotificationPersonalisationServiceTest {
                 // stop reasons
                 () -> assertEquals("Reason One\nDocs Req\n&nbsp;&nbsp;&nbsp;&nbsp;Sub2 Desc\n",
                         p.get("stop-reasons")),
-                () -> assertEquals("Reason One welsh\nDocs Req welsh\n&nbsp;&nbsp;&nbsp;&nbsp;"
-                        + "Sub2 Desc welsh\n",
+                () -> assertEquals(
+                "Reason One welsh\nDocs Req welsh\n&nbsp;&nbsp;&nbsp;&nbsp;Sub2 Desc welsh\n",
                         p.get("stop-reasons-welsh")),
                 () -> assertEquals("No", p.get("display-single-stop-reason")),
                 () -> assertEquals("Yes", p.get("display-multiple-stop-reasons")),

@@ -388,7 +388,7 @@ public class NotificationService {
         log.info("Sending Disposal Reminder email");
         Map<String, Object> data = caseDetails.getData();
         if (data == null) {
-            log.error("Case data is null for case ID: {}", caseDetails.getId());
+            log.error("sendDisposalReminderEmail Case data is null for case ID: {}", caseDetails.getId());
             return;
         }
         String emailAddress = Optional.of(data)
@@ -401,7 +401,8 @@ public class NotificationService {
                 })
                 .orElseGet(() -> getUserEmail(caseDetails.getId()));
         if (emailAddress == null) {
-            throw new NotificationClientException("Email address not found for case ID: " + caseDetails.getId());
+            throw new NotificationClientException("sendDisposalReminderEmail address not found for case ID: "
+                    + caseDetails.getId());
         }
         ApplicationType applicationType = getApplicationType(caseDetails);
 
@@ -787,15 +788,15 @@ public class NotificationService {
     public Document sendStopReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
                                           boolean isFirstStopReminder)
             throws NotificationClientException {
-        log.info("Sending email for case id: {}", caseDetails.getId());
+        log.info("sendStopReminderEmail for case id: {}", caseDetails.getId());
         Map<String, Object> data = caseDetails.getData();
         if (data == null) {
-            log.error("Case data is null for case ID: {}", caseDetails.getId());
+            log.error("sendStopReminderEmail Case data is null for case ID: {}", caseDetails.getId());
             return null;
         }
         String emailAddress = Optional.ofNullable(getEmail(data))
-                .orElseThrow(() ->
-                    new NotificationClientException("Email address not found for case ID: " + caseDetails.getId()));
+                .orElseThrow(() -> new NotificationClientException(
+                        "sendStopReminderEmail address not found for case ID: " + caseDetails.getId()));
         ApplicationType applicationType = getApplicationType(caseDetails);
         LanguagePreference languagePreference = getLanguagePreference(caseDetails);
         String templateId = templateService.getStopReminderTemplateId(applicationType, languagePreference,
@@ -814,10 +815,10 @@ public class NotificationService {
 
     public Document sendHseReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
             throws NotificationClientException {
-        log.info("Sending HSE email for case id: {}", caseDetails.getId());
+        log.info("sendHseReminderEmail for case id: {}", caseDetails.getId());
         Map<String, Object> data = caseDetails.getData();
         if (data == null) {
-            log.error("Case data is null for HSe case ID: {}", caseDetails.getId());
+            log.error("sendHseReminderEmail Case data is null for HSe case ID: {}", caseDetails.getId());
             return null;
         }
         String emailAddress = getEmail(data);
@@ -841,15 +842,15 @@ public class NotificationService {
 
     public Document sendDormantWarningEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
             throws NotificationClientException {
-        log.info("Sending email for case id: {}", caseDetails.getId());
+        log.info("sendDormantWarningEmail for case id: {}", caseDetails.getId());
         Map<String, Object> data = caseDetails.getData();
         if (data == null) {
-            log.error("Case data is null for case ID: {}", caseDetails.getId());
+            log.error("sendDormantWarningEmail Case data is null for case ID: {}", caseDetails.getId());
             return null;
         }
         String emailAddress = Optional.ofNullable(getEmail(data))
-                .orElseThrow(() ->
-                    new NotificationClientException("Email address not found for case ID: " + caseDetails.getId()));
+                .orElseThrow(() -> new NotificationClientException(
+                        "sendDormantWarningEmail address not found for case ID: " + caseDetails.getId()));
         ApplicationType applicationType = getApplicationType(caseDetails);
         LanguagePreference languagePreference = getLanguagePreference(caseDetails);
         String templateId = templateService.getDormantWarningTemplateId(applicationType, languagePreference);
@@ -866,15 +867,15 @@ public class NotificationService {
 
     public void sendUnsubmittedApplicationEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
             throws NotificationClientException {
-        log.info("Sending email for case id: {}", caseDetails.getId());
+        log.info("sendUnsubmittedApplicationEmail for case id: {}", caseDetails.getId());
         Map<String, Object> data = caseDetails.getData();
         if (data == null) {
-            log.error("Case data is null for case ID: {}", caseDetails.getId());
+            log.error("sendUnsubmittedApplicationEmail Case data is null for case ID: {}", caseDetails.getId());
             return;
         }
         String emailAddress = Optional.ofNullable(getEmail(data))
-                .orElseThrow(() ->
-                        new NotificationClientException("Email address not found for case ID: " + caseDetails.getId()));
+                .orElseThrow(() -> new NotificationClientException(
+                        "sendUnsubmittedApplicationEmail address not found for case ID: " + caseDetails.getId()));
         ApplicationType applicationType = getApplicationType(caseDetails);
         LanguagePreference languagePreference = getLanguagePreference(caseDetails);
         String templateId = templateService.getUnsubmittedApplicationTemplateId(applicationType, languagePreference);
@@ -895,7 +896,7 @@ public class NotificationService {
         Map<String, Object> data = caseDetails.getData();
         LanguagePreference languagePreference = getLanguagePreference(caseDetails);
         if (data == null) {
-            log.warn("Case data is null for case id {}", caseId);
+            log.warn("sendDeclarationNotSignedEmail Case data is null for case id {}", caseId);
             return;
         }
 
@@ -912,8 +913,8 @@ public class NotificationService {
                     .put(PERSONALISATION_EXECUTOR_NAMES_LIST, getExecutorsNamesList(unsignedExecutorList));
             String templateId = templateService.getDeclarationNotSignedTemplateId(languagePreference, true);
             String emailAddress = Optional.ofNullable(getEmail(data))
-                    .orElseThrow(() ->
-                            new NotificationClientException("Email address not found for case ID: {}" + caseId));
+                    .orElseThrow(() -> new NotificationClientException(
+                            "sendDeclarationNotSignedEmail address not found for case ID: {}" + caseId));
             sendEmail(emailAddress, templateId, personalisation, caseId);
         } catch (NotificationClientException e) {
             log.error("Failed to send declarationNotSigned email to primary applicant for case id: {}", caseId, e);

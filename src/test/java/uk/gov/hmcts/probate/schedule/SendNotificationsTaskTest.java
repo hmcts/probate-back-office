@@ -164,6 +164,8 @@ class SendNotificationsTaskTest {
         verify(automatedNotificationService).sendNotification(DEFAULT_HSE_DATE, HSE_REMINDER);
         verify(automatedNotificationService).sendNotification(DEFAULT_DORMANT_WARNING_DATE, DORMANT_WARNING);
         verify(automatedNotificationService)
+                .sendNotification(DEFAULT_UNSUBMITTED_APPLICATION_DATE, UNSUBMITTED_APPLICATION);
+        verify(automatedNotificationService)
                 .sendNotification(DEFAULT_DECLARATION_NOT_SIGNED_DATE, DECLARATION_NOT_SIGNED);
     }
 
