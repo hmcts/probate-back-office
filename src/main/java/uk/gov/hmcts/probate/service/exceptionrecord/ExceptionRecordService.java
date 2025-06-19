@@ -32,6 +32,8 @@ import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,10 +121,15 @@ public class ExceptionRecordService {
         try {
             log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
                     erRequest.getExceptionRecordId());
+
+            Instant beforeMapping = Instant.now();
             GrantOfRepresentationData grantOfRepresentationData =
                     erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
-
             ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
+
+            Duration duration = Duration.between(beforeMapping, Instant.now());
+            log.info("Time taken to map Grant of Representation OCR fields to CCD: {} ms",
+                    duration.toMillis());
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
