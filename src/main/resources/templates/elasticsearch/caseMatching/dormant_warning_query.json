@@ -1,0 +1,47 @@
+{
+  "query": {
+    "bool": {
+      "must_not": { "match": { "state": "Dormant" }},
+      "filter": [
+        {
+          "range": {
+            "data.lastModifiedDateForDormant": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "BOCaseMatchingIssueGrant",
+              "BOCaseQA",
+              "BOReadyToIssue",
+              "BORegistrarEscalation",
+              "BOCaseStopped",
+              "CasePrinted",
+              "BOSotGenerated",
+              "BORedecNotificationSent",
+              "BOCaseStoppedAwaitRedec",
+              "BOCaseStoppedReissue",
+              "BOCaseMatchingReissue",
+              "BOExaminingReissue",
+              "BOCaseImported",
+              "BOCaveatPermenant",
+              "BOCaseWorkerEscalation",
+              "BOPostGrantIssued",
+              "BOGrantIssuedRegistrarEscalation",
+              "BOPostGrantIssuedRegistrarEscalation"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "size": %s,
+  "_source": ["reference"],
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]
