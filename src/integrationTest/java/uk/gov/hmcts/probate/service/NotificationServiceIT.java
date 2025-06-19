@@ -2261,7 +2261,7 @@ class NotificationServiceIT {
         when(userInfoService.getUserEmailByCaseId(ID)).thenReturn(Optional.empty());
         NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
                 notificationService.sendDisposalReminderEmail(returnedCaseDetails, false));
-        assertEquals("Email address not found for case ID: " + ID, exception.getMessage());
+        assertEquals("sendDisposalReminderEmail address not found for case ID: " + ID, exception.getMessage());
     }
 
     @Test
@@ -2367,7 +2367,7 @@ class NotificationServiceIT {
                         .build();
         NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
                 notificationService.sendStopReminderEmail(returnedCaseDetails, true));
-        assertEquals("Email address not found for case ID: " + ID, exception.getMessage());
+        assertEquals("sendStopReminderEmail address not found for case ID: " + ID, exception.getMessage());
     }
 
     @Test
