@@ -254,7 +254,6 @@ dependencies {
   implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.5'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
   implementation group: 'org.pitest', name: 'pitest', version: '1.19.4'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.24.0'
