@@ -27,7 +27,7 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_DORMANT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 
 
-public class DormantWarningNotificationTest {
+class DormantWarningNotificationTest {
     @Mock
     private NotificationService notificationService;
 

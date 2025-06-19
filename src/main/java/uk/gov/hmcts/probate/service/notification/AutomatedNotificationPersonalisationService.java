@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.notification;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,7 +27,6 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class AutomatedNotificationPersonalisationService {
 
@@ -56,12 +54,25 @@ public class AutomatedNotificationPersonalisationService {
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
     private final StopReasonService stopReasonService;
     private final DateFormatterService dateFormatterService;
-    @Value("${disposal.personalNotificationLink}")
-    private String urlPrefixToPersonalCase;
-    @Value("${disposal.solsNotificationLink}")
-    private String urlPrefixSolicitorCase;
-
     private final ObjectMapper objectMapper;
+    private final String urlPrefixToPersonalCase;
+    private final String urlPrefixSolicitorCase;
+
+
+    public AutomatedNotificationPersonalisationService(
+            LocalDateToWelshStringConverter localDateToWelshStringConverter,
+            StopReasonService stopReasonService,
+            DateFormatterService dateFormatterService,
+            ObjectMapper objectMapper,
+            @Value("${disposal.personalNotificationLink}") String urlPrefixToPersonalCase,
+            @Value("${disposal.solsNotificationLink}") String urlPrefixSolicitorCase) {
+        this.localDateToWelshStringConverter = localDateToWelshStringConverter;
+        this.stopReasonService = stopReasonService;
+        this.dateFormatterService = dateFormatterService;
+        this.objectMapper = objectMapper;
+        this.urlPrefixToPersonalCase = urlPrefixToPersonalCase;
+        this.urlPrefixSolicitorCase = urlPrefixSolicitorCase;
+    }
 
     public Map<String, String> getDisposalReminderPersonalisation(CaseDetails caseDetails,
                                                                   ApplicationType applicationType) {

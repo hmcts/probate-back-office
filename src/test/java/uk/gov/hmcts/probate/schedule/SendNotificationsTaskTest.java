@@ -37,7 +37,7 @@ import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.UNSUBMITTED_APPLICATION;
 
 @ExtendWith(SpringExtension.class)
-public class SendNotificationsTaskTest {
+class SendNotificationsTaskTest {
 
     @Mock
     private DataExtractDateValidator dataExtractDateValidator;
@@ -71,39 +71,39 @@ public class SendNotificationsTaskTest {
 
     private SendNotificationsTask underTest;
 
-    private static final int firstStopReminderNotificationDays = 56;
-    private static final int secondStopReminderNotificationDays = 28;
-    private static final int hseReminderNotificationDays = 30;
-    private static final int dormantWarningNotificationDays = 150;
-    private static final int unsubmittedApplicationNotificationDays = 28;
-    private static final int declarationNotSignedNotificationDays = 3;
+    private static final int FIRST_STOP_REMINDER_NOTIFICATION_DAYS = 56;
+    private static final int SECOND_STOP_REMINDER_NOTIFICATION_DAYS = 28;
+    private static final int HSE_REMINDER_NOTIFICATION_DAYS = 30;
+    private static final int DORMANT_WARNING_NOTIFICATION_DAYS = 150;
+    private static final int UNSUBMITTED_APPLICATION_NOTIFICATION_DAYS = 28;
+    private static final int DECLARATION_NOT_SIGNED_NOTIFICATION_DAYS = 3;
 
     private static final String AD_HOC_DATE = "2022-09-05";
     private static final String FIRST_STOP_REMINDER_DATE =
-            LocalDate.parse(AD_HOC_DATE).minusDays(firstStopReminderNotificationDays).toString(); // 2022-07-11
+            LocalDate.parse(AD_HOC_DATE).minusDays(FIRST_STOP_REMINDER_NOTIFICATION_DAYS).toString(); // 2022-07-11
     private static final String SECOND_STOP_REMINDER_DATE =
-            LocalDate.parse(AD_HOC_DATE).minusDays(secondStopReminderNotificationDays).toString(); // 2022-08-08
+            LocalDate.parse(AD_HOC_DATE).minusDays(SECOND_STOP_REMINDER_NOTIFICATION_DAYS).toString(); // 2022-08-08
     private static final String HSE_REMINDER_DATE =
-            LocalDate.parse(AD_HOC_DATE).minusDays(hseReminderNotificationDays).toString(); // 2022-08-06
+            LocalDate.parse(AD_HOC_DATE).minusDays(HSE_REMINDER_NOTIFICATION_DAYS).toString(); // 2022-08-06
     private static final String DORMANT_WARNING_DATE =
-            LocalDate.parse(AD_HOC_DATE).minusDays(dormantWarningNotificationDays).toString(); //2022-04-08
+            LocalDate.parse(AD_HOC_DATE).minusDays(DORMANT_WARNING_NOTIFICATION_DAYS).toString(); //2022-04-08
     private static final String UNSUBMITTED_APPLICATION_DATE =
-            LocalDate.parse(AD_HOC_DATE).minusDays(unsubmittedApplicationNotificationDays).toString(); // 2022-08-08
+            LocalDate.parse(AD_HOC_DATE).minusDays(UNSUBMITTED_APPLICATION_NOTIFICATION_DAYS).toString(); // 2022-08-08
     private static final String DECLARATION_NOT_SIGNED_DATE =
-            LocalDate.parse(AD_HOC_DATE).minusDays(declarationNotSignedNotificationDays).toString(); // 2022-09-02
+            LocalDate.parse(AD_HOC_DATE).minusDays(DECLARATION_NOT_SIGNED_NOTIFICATION_DAYS).toString(); // 2022-09-02
     private static final LocalDate FIXED_DATE = LocalDate.of(2025, 5, 19);
     private static final String DEFAULT_FIRST_DATE =
-            DATE_FORMAT.format(FIXED_DATE.minusDays(firstStopReminderNotificationDays)); //2025-03-24
+            DATE_FORMAT.format(FIXED_DATE.minusDays(FIRST_STOP_REMINDER_NOTIFICATION_DAYS)); //2025-03-24
     private static final String DEFAULT_SECOND_DATE =
-            DATE_FORMAT.format(FIXED_DATE.minusDays(secondStopReminderNotificationDays)); //2025-04-21
+            DATE_FORMAT.format(FIXED_DATE.minusDays(SECOND_STOP_REMINDER_NOTIFICATION_DAYS)); //2025-04-21
     private static final String DEFAULT_HSE_DATE =
-            DATE_FORMAT.format(FIXED_DATE.minusDays(hseReminderNotificationDays)); //2025-04-19
+            DATE_FORMAT.format(FIXED_DATE.minusDays(HSE_REMINDER_NOTIFICATION_DAYS)); //2025-04-19
     private static final String DEFAULT_DORMANT_WARNING_DATE =
-            DATE_FORMAT.format(FIXED_DATE.minusDays(dormantWarningNotificationDays)); //2024-12-20
+            DATE_FORMAT.format(FIXED_DATE.minusDays(DORMANT_WARNING_NOTIFICATION_DAYS)); //2024-12-20
     private static final String DEFAULT_UNSUBMITTED_APPLICATION_DATE =
-            DATE_FORMAT.format(FIXED_DATE.minusDays(unsubmittedApplicationNotificationDays)); //2025-04-21
+            DATE_FORMAT.format(FIXED_DATE.minusDays(UNSUBMITTED_APPLICATION_NOTIFICATION_DAYS)); //2025-04-21
     private static final String DEFAULT_DECLARATION_NOT_SIGNED_DATE =
-            DATE_FORMAT.format(FIXED_DATE.minusDays(declarationNotSignedNotificationDays)); //2025-05-16
+            DATE_FORMAT.format(FIXED_DATE.minusDays(DECLARATION_NOT_SIGNED_NOTIFICATION_DAYS)); //2025-05-16
 
 
     @BeforeEach
@@ -123,12 +123,12 @@ public class SendNotificationsTaskTest {
                 dormantWarningNotification,
                 unsubmittedApplicationNotification,
                 declarationNotSignedNotification,
-                firstStopReminderNotificationDays,
-                secondStopReminderNotificationDays,
-                hseReminderNotificationDays,
-                dormantWarningNotificationDays,
-                unsubmittedApplicationNotificationDays,
-                declarationNotSignedNotificationDays,
+                FIRST_STOP_REMINDER_NOTIFICATION_DAYS,
+                SECOND_STOP_REMINDER_NOTIFICATION_DAYS,
+                HSE_REMINDER_NOTIFICATION_DAYS,
+                DORMANT_WARNING_NOTIFICATION_DAYS,
+                UNSUBMITTED_APPLICATION_NOTIFICATION_DAYS,
+                DECLARATION_NOT_SIGNED_NOTIFICATION_DAYS,
                 AD_HOC_DATE);
 
         when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(true);
@@ -230,6 +230,23 @@ public class SendNotificationsTaskTest {
 
         verify(dataExtractDateValidator).dateValidator(HSE_REMINDER_DATE);
         verify(automatedNotificationService).sendNotification(HSE_REMINDER_DATE, HSE_REMINDER);
+        verifyNoMoreInteractions(automatedNotificationService);
+    }
+
+    @Test
+    void shouldOnlyUnsubmittedApplicationReminder() {
+        ReflectionTestUtils.setField(underTest, "adHocJobDate", AD_HOC_DATE);
+        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isUnsubmittedApplicationFeatureToggleOn()).thenReturn(true);
+        when(featureToggleService.isDeclarationNotSignedFeatureToggleOn()).thenReturn(false);
+
+        underTest.run();
+
+        verify(dataExtractDateValidator).dateValidator(UNSUBMITTED_APPLICATION_DATE);
+        verify(automatedNotificationService).sendNotification(UNSUBMITTED_APPLICATION_DATE, UNSUBMITTED_APPLICATION);
         verifyNoMoreInteractions(automatedNotificationService);
     }
 
