@@ -103,11 +103,11 @@ public class ExceptionRecordOCRFields {
     private String solsSolicitorIsApplying;
     private String deceasedDomicileInEngWales;
     private final String deceasedMartialStatus;
-    private final String dateOfMarriageOrCP;
-    private final String dateOfDivorcedCPJudicially;
+    private String dateOfMarriageOrCP;
+    private String dateOfDivorcedCPJudicially;
     private final String courtOfDecree;
     private final String foreignAsset;
-    private final String foreignAssetEstateValue;
+    private String foreignAssetEstateValue;
     private final String adopted;
     private final String adoptiveRelatives0name;
     private final String adoptiveRelatives0relationship;
@@ -129,7 +129,7 @@ public class ExceptionRecordOCRFields {
     private final String adoptiveRelatives5adoptedInOrOut;
     private final String solsWillType;
     private final String solsWillTypeReason;
-    private final String bilingualGrantRequested;
+    private String bilingualGrantRequested;
     private String spouseOrPartner;
     private final String childrenUnderEighteenSurvived;
     private final String childrenOverEighteenSurvived;
@@ -169,7 +169,7 @@ public class ExceptionRecordOCRFields {
     private final String secondApplicantRelationshipToDeceased;
     private final String thirdApplicantRelationshipToDeceased;
     private final String fourthApplicantRelationshipToDeceased;
-    private final String applyingAsAnAttorney;
+    private String applyingAsAnAttorney;
     private final String attorneyOnBehalfOfName;
     private final String attorneyOnBehalfOfAddressLine1;
     private final String attorneyOnBehalfOfAddressLine2;
@@ -183,7 +183,7 @@ public class ExceptionRecordOCRFields {
     private final String domicilityCountry;
     private final String domicilityEntrustingDocument;
     private final String domicilitySuccessionIHTCert;
-    private final String willDate;
+    private String willDate;
     private final String willHasCodicils;
     private final String willsOutsideOfUK;
     private final String deceasedMarriedAfterWillOrCodicilDate;

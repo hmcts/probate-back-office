@@ -46,6 +46,10 @@ import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ADDRE
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DATE_OF_BIRTH;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ANY_OTHER_NAMES;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DOMICILED_IN_ENG_WALES;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.MARRIED_CIVIL_PARTNERSHIP;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DIVORCED_CIVIL_PARTNERSHIP;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DATE_OF_MARRIAGE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DATE_OF_DIVORCED_CP_JUDICIALLY;
 
 public class DeceasedFieldsHandlerTest {
     @InjectMocks
@@ -57,6 +61,8 @@ public class DeceasedFieldsHandlerTest {
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     private ExceptionRecordOCRFields ocrFields;
+    private Field maritalStatusField;
+    private Field foreignAssestField;
 
     @BeforeEach
     void setup() throws Exception {
@@ -79,6 +85,12 @@ public class DeceasedFieldsHandlerTest {
         Field bulkScanConfigField = DeceasedFieldsHandler.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);
         bulkScanConfigField.set(deceasedFieldsHandler, bulkScanConfig);
+
+        maritalStatusField = ExceptionRecordOCRFields.class.getDeclaredField("deceasedMartialStatus");
+        maritalStatusField.setAccessible(true);
+
+        foreignAssestField = ExceptionRecordOCRFields.class.getDeclaredField("foreignAsset");
+        foreignAssestField.setAccessible(true);
 
         ocrFields = ExceptionRecordOCRFields.builder()
                 .primaryApplicantForenames(VALID_PRIMARY_APPLICANT_FORENAMES)
@@ -254,5 +266,79 @@ public class DeceasedFieldsHandlerTest {
         assertEquals(TRUE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
         assertEquals(DECEASED_DOD, modifiedFields.getLast().getValue().getFieldName());
         assertEquals("01012022", ocrFields.getDeceasedDateOfDeath());
+    }
+
+    @Test
+    void shouldSetDateOfMarriageOrCPWhenMaritalStatusIsMarriedOrCivilPartnership() throws IllegalAccessException {
+        maritalStatusField.set(ocrFields, MARRIED_CIVIL_PARTNERSHIP);
+        ocrFields.setDateOfMarriageOrCP("");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        deceasedFieldsHandler.handleDeceasedFields(ocrFields, modifiedFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(DATE_OF_MARRIAGE, modifiedFields.get(0).getValue().getFieldName());
+        assertEquals(bulkScanConfig.getDob(), ocrFields.getDateOfMarriageOrCP());
+    }
+
+    @Test
+    void shouldSetDateOfDivorcedCPJudiciallyWhenMaritalStatusIsDivorcedOrJudicially() throws IllegalAccessException {
+        maritalStatusField.set(ocrFields, DIVORCED_CIVIL_PARTNERSHIP);
+        ocrFields.setDateOfDivorcedCPJudicially("");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        deceasedFieldsHandler.handleDeceasedFields(ocrFields, modifiedFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(DATE_OF_DIVORCED_CP_JUDICIALLY, modifiedFields.get(0).getValue().getFieldName());
+        assertEquals(bulkScanConfig.getDob(), ocrFields.getDateOfDivorcedCPJudicially());
+    }
+
+    @Test
+    void shouldNotSetDateOfDivorcedCPJudiciallyWhenMaritalStatusIsUnknown() throws IllegalAccessException {
+        maritalStatusField.set(ocrFields, "UNKNOWN");
+        ocrFields.setDateOfDivorcedCPJudicially("");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        deceasedFieldsHandler.handleDeceasedFields(ocrFields, modifiedFields);
+
+        assertEquals(0, modifiedFields.size());
+    }
+
+    @Test
+    void shouldSetForeignAssetEstateValueWhenForeignAssetIsTrueAndValueIsEmpty() throws IllegalAccessException {
+        foreignAssestField.set(ocrFields, TRUE);
+        ocrFields.setForeignAssetEstateValue("");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        deceasedFieldsHandler.handleDeceasedFields(ocrFields, modifiedFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals("foreignAssetEstateValue", modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals(bulkScanConfig.getGrossNetValue(), ocrFields.getForeignAssetEstateValue());
+    }
+
+    @Test
+    void shouldNotModifyForeignAssetEstateValueWhenValueIsPresent() throws IllegalAccessException {
+        foreignAssestField.set(ocrFields, TRUE);
+        ocrFields.setForeignAssetEstateValue("1000");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        deceasedFieldsHandler.handleDeceasedFields(ocrFields, modifiedFields);
+
+        assertEquals(0, modifiedFields.size());
+        assertEquals("1000", ocrFields.getForeignAssetEstateValue());
+    }
+
+    @org.junit.jupiter.api.Test
+    void shouldNotModifyForeignAssetEstateValueWhenForeignAssetIsFalse() throws IllegalAccessException {
+        foreignAssestField.set(ocrFields, FALSE);
+        ocrFields.setForeignAssetEstateValue("");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        deceasedFieldsHandler.handleDeceasedFields(ocrFields, modifiedFields);
+
+        assertEquals(0, modifiedFields.size());
+        assertEquals("", ocrFields.getForeignAssetEstateValue());
     }
 }

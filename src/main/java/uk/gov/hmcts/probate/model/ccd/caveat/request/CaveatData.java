@@ -32,7 +32,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -172,12 +171,6 @@ public class CaveatData {
     private String applicationSubmittedBy;
 
     private TTL ttl;
-
-    @Builder.Default
-    private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList = new ArrayList<>();
-
-    @Builder.Default
-    private final List<CollectionMember<String>> autoCaseWarnings = new ArrayList<>();
 
     @Builder.Default
     private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();

@@ -14,6 +14,7 @@ import java.util.function.Supplier;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.APPLYING_ATTORNEY;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_FIRM_NAME;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_REPRESENTATIVE_NAME;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_APP_REFERENCE;
@@ -87,6 +88,9 @@ public class SolicitorFieldHandler {
 
         setFieldIfBlank(ocrFields::getSolsSolicitorPhoneNumber, ocrFields::setSolsSolicitorPhoneNumber,
                 SOLICITOR_PHONE_NUMBER, bulkScanConfig.getPhone(), modifiedFields);
+
+        setFieldIfBlank(ocrFields::getApplyingAsAnAttorney, ocrFields::setApplyingAsAnAttorney,
+                APPLYING_ATTORNEY, bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
     }
 
     private void setFieldIfBlank(Supplier<String> getter, Consumer<String> setter, String fieldName,

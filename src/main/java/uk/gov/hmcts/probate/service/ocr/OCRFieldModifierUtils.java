@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
 import java.util.ArrayList;
@@ -17,15 +18,10 @@ import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static uk.gov.hmcts.probate.model.Constants.TRUE;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.CAVEAT_FORENAMES;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.CAVEAT_SURNAME;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_DOD;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_FORENAME;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_SURNAME;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.LEGAL_REPRESENTATIVE;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.NOTIFIED_APPLICANTS;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.BILINGUAL_GRANT;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_IS_APPLYING;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SPOUSE_OR_PARTNER;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.WILL_DATE;
 
 @Slf4j
 @Service
@@ -39,11 +35,10 @@ public class OCRFieldModifierUtils {
     private final ExecutorsNotApplyingHandler executorsNotApplyingHandler;
     private final IHTFieldHandler ihtFieldHandler;
     private final SolicitorFieldHandler solicitorFieldHandler;
-    private final CaveatSolicitorAddressHandler caveatSolicitorAddressHandler;
-    private final CaveatCitizenAddressHandler caveatCitizenAddressHandler;
 
 
-    public List<CollectionMember<ModifiedOCRField>> setDefaultGorValues(ExceptionRecordOCRFields ocrFields) {
+    public List<CollectionMember<ModifiedOCRField>> setDefaultGorValues(ExceptionRecordOCRFields ocrFields,
+                                                                        GrantType grantType) {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
 
         handleSolicitorFields(ocrFields, modifiedFields);
@@ -52,17 +47,21 @@ public class OCRFieldModifierUtils {
         ihtFieldHandler.handleIHTFields(ocrFields, modifiedFields);
         executorsApplyingHandler.handleExecutorsApplyingFields(ocrFields, modifiedFields);
         executorsNotApplyingHandler.handleExecutorsNotApplyingFields(ocrFields, modifiedFields);
-        handleCommonFields(ocrFields, modifiedFields);
+        handleCommonFields(ocrFields, modifiedFields, grantType);
 
         return modifiedFields;
     }
 
     private void handleCommonFields(ExceptionRecordOCRFields ocrFields,
-                                    List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+                                    List<CollectionMember<ModifiedOCRField>> modifiedFields, GrantType grantType) {
         setFieldIfBlank(ocrFields::getSpouseOrPartner, ocrFields::setSpouseOrPartner,
                 SPOUSE_OR_PARTNER, bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
-        setFieldIfBlank(ocrFields::getNotifiedApplicants, ocrFields::setNotifiedApplicants,
-                NOTIFIED_APPLICANTS, bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
+        setFieldIfBlank(ocrFields::getBilingualGrantRequested, ocrFields::setBilingualGrantRequested,
+                BILINGUAL_GRANT, bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
+        if (GrantType.GRANT_OF_PROBATE.equals(grantType)) {
+            setFieldIfBlank(ocrFields::getWillDate, ocrFields::setWillDate,
+                    WILL_DATE, bulkScanConfig.getDob(), modifiedFields);
+        }
     }
 
     private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
@@ -111,41 +110,5 @@ public class OCRFieldModifierUtils {
             setter.accept(defaultValue);
             log.info("Setting {} to {}", fieldName, defaultValue);
         }
-    }
-
-    public List<CollectionMember<ModifiedOCRField>> setDefaultCaveatValues(ExceptionRecordOCRFields
-                                                                                   exceptionRecordOCRFields) {
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
-        handleCaveatCommonFields(exceptionRecordOCRFields, modifiedFields);
-
-        if (BooleanUtils.toBoolean(exceptionRecordOCRFields.getLegalRepresentative())) {
-            caveatSolicitorAddressHandler.handleCaveatSolicitorAddressFields(exceptionRecordOCRFields, modifiedFields);
-        } else {
-            caveatCitizenAddressHandler.handleCaveatCitizenAddressFields(exceptionRecordOCRFields, modifiedFields);
-        }
-        return modifiedFields;
-    }
-
-    private void handleCaveatCommonFields(ExceptionRecordOCRFields exceptionRecordOCRFields,
-                                          List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        setFieldIfBlank(exceptionRecordOCRFields::getCaveatorForenames, exceptionRecordOCRFields::setCaveatorForenames,
-                CAVEAT_FORENAMES, bulkScanConfig.getName(), modifiedFields);
-
-        setFieldIfBlank(exceptionRecordOCRFields::getCaveatorSurnames, exceptionRecordOCRFields::setCaveatorSurnames,
-                CAVEAT_SURNAME, bulkScanConfig.getName(), modifiedFields);
-
-        setFieldIfBlank(exceptionRecordOCRFields::getDeceasedForenames, exceptionRecordOCRFields::setDeceasedForenames,
-                DECEASED_FORENAME, bulkScanConfig.getName(), modifiedFields);
-
-        setFieldIfBlank(exceptionRecordOCRFields::getDeceasedSurname, exceptionRecordOCRFields::setDeceasedSurname,
-                DECEASED_SURNAME, bulkScanConfig.getName(), modifiedFields);
-
-        setFieldIfBlank(exceptionRecordOCRFields::getDeceasedDateOfDeath,
-                exceptionRecordOCRFields::setDeceasedDateOfDeath, DECEASED_DOD,
-                bulkScanConfig.getDob(), modifiedFields);
-
-        setFieldIfBlank(exceptionRecordOCRFields::getLegalRepresentative,
-                exceptionRecordOCRFields::setLegalRepresentative, LEGAL_REPRESENTATIVE,
-                bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
     }
 }

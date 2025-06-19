@@ -77,15 +77,17 @@ public final class DummyValuesConstants {
     public static final String EXECUTOR_NOT_APPLYING_0_REASON = "executorsNotApplying0notApplyingExecutorReason";
     public static final String EXECUTOR_NOT_APPLYING_1_REASON = "executorsNotApplying1notApplyingExecutorReason";
     public static final String EXECUTOR_NOT_APPLYING_2_REASON = "executorsNotApplying2notApplyingExecutorReason";
-    public static final String CAVEAT_SURNAME = "caveatorSurnames";
-    public static final String CAVEAT_FORENAMES = "caveatorForenames";
-    public static final String CAVEATOR_ADDRESS_LINE1 = "caveatorAddressLine1";
-    public static final String CAVEATOR_POST_CODE = "caveatorAddressPostCode";
     public static final String SPOUSE_OR_PARTNER = "spouseOrPartner";
-    public static final String NOTIFIED_APPLICANTS = "notifiedApplicants";
+    public static final String BILINGUAL_GRANT = "bilingualGrantRequested";
     public static final String FORM_IHT205 = "IHT205";
     public static final String FORM_IHT207 = "IHT207";
     public static final String FORM_IHT400421 = "IHT400421";
     public static final String FORM_IHT400 = "IHT400";
-    public static final String LEGAL_REPRESENTATIVE = "legalRepresentative";
+    public static final String APPLYING_ATTORNEY = "applyingAsAnAttorney";
+    public static final String MARRIED_CIVIL_PARTNERSHIP = "marriedCivilPartnership";
+    public static final String DIVORCED_CIVIL_PARTNERSHIP = "divorcedCivilPartnership";
+    public static final String JUDICIALLY = "judicially";
+    public static final String DATE_OF_MARRIAGE = "dateOfMarriageOrCP";
+    public static final String DATE_OF_DIVORCED_CP_JUDICIALLY = "dateOfDivorcedCPJudicially";
+    public static final String WILL_DATE = "willDate";
 }

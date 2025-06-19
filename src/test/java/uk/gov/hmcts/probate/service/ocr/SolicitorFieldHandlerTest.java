@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.FALSE;
 import static uk.gov.hmcts.probate.model.Constants.TRUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.APPLYING_ATTORNEY;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_REPRESENTATIVE_NAME;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_APP_REFERENCE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_ADDRESS_LINE1;
@@ -108,6 +109,7 @@ public class SolicitorFieldHandlerTest {
                 .deceasedDomicileInEngWales(VALID_DECEASED_DOMICILED_IN_ENG_WALES)
                 .deceasedDateOfDeath("01012022")
                 .deceasedDiedOnAfterSwitchDate(TRUE)
+                .applyingAsAnAttorney(FALSE)
                 .build();
     }
 
@@ -191,5 +193,28 @@ public class SolicitorFieldHandlerTest {
         assertEquals(1, modifiedFields.size());
         assertEquals(SOLICITOR_ADDRESS_POST_CODE, modifiedFields.getFirst().getValue().getFieldName());
         assertEquals(DEFAULT_POSTCODE_VALUE, ocrFields.getSolsSolicitorAddressPostCode());
+    }
+
+    @Test
+    void shouldSetApplyingAsAnAttorneyToDefaultWhenEmpty() {
+        ocrFields.setApplyingAsAnAttorney("");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        solicitorFieldHandler.handleGorSolicitorFields(ocrFields, modifiedFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(APPLYING_ATTORNEY, modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals(bulkScanConfig.getFieldsNotCompleted(), ocrFields.getApplyingAsAnAttorney());
+    }
+
+    @Test
+    void shouldNotModifyApplyingAsAnAttorneyWhenValueIsPresent() {
+        ocrFields.setApplyingAsAnAttorney(TRUE);
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        solicitorFieldHandler.handleGorSolicitorFields(ocrFields, modifiedFields);
+
+        assertEquals(0, modifiedFields.size());
+        assertEquals(TRUE, ocrFields.getApplyingAsAnAttorney());
     }
 }

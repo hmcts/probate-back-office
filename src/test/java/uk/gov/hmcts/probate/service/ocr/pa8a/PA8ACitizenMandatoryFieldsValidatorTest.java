@@ -41,7 +41,7 @@ class PA8ACitizenMandatoryFieldsValidatorTest {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         pa8ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-        assertEquals(1, warnings.size());
+        assertEquals(5, warnings.size());
     }
 
     @Test
@@ -57,11 +57,11 @@ class PA8ACitizenMandatoryFieldsValidatorTest {
     @Test
     void testFieldDescriptionIsAddedToMissingValueListForPA8A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
-        ocrFields.removeFirst();
+        ocrFields.remove(ocrFields.size() - 1);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         pa8ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-        assertEquals("Legal representative (legalRepresentative) is mandatory.",warnings.get(0));
+        assertEquals("Caveator address postcode (caveatorAddressPostCode) is mandatory.",warnings.get(0));
     }
 
 }

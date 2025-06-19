@@ -25,6 +25,11 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_DIED_ON_O
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_DOMICILE_IN_ENG_WALES;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_FORENAME;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_SURNAME;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.MARRIED_CIVIL_PARTNERSHIP;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DIVORCED_CIVIL_PARTNERSHIP;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.JUDICIALLY;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DATE_OF_MARRIAGE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DATE_OF_DIVORCED_CP_JUDICIALLY;
 
 @Slf4j
 @Component
@@ -47,20 +52,37 @@ public class DeceasedFieldsHandler {
             handleBothDeceasedFieldsMissing(ocrFields, modifiedFields);
         }
 
+        if (TRUE.equalsIgnoreCase(ocrFields.getForeignAsset()) && isBlank(ocrFields.getForeignAssetEstateValue())) {
+            addModifiedField(modifiedFields, "foreignAssetEstateValue",
+                    ocrFields.getForeignAssetEstateValue());
+            ocrFields.setForeignAssetEstateValue(bulkScanConfig.getGrossNetValue());
+            log.info("Setting foreignAssetEstateValue to {}", ocrFields.getForeignAssetEstateValue());
+        }
         setFieldIfBlank(ocrFields::getDeceasedForenames, ocrFields::setDeceasedForenames,
                 DECEASED_FORENAME, bulkScanConfig.getName(), modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedSurname, ocrFields::setDeceasedSurname,
                 DECEASED_SURNAME, bulkScanConfig.getName(), modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedAnyOtherNames, ocrFields::setDeceasedAnyOtherNames,
+                DECEASED_ANY_OTHER_NAMES, FALSE, modifiedFields);
+        setFieldIfBlank(ocrFields::getDeceasedDateOfBirth, ocrFields::setDeceasedDateOfBirth,
+                DECEASED_DOB, bulkScanConfig.getDob(), modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedAddressLine1, ocrFields::setDeceasedAddressLine1,
                 DECEASED_ADDRESS_LINE, bulkScanConfig.getName(), modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedAddressPostCode, ocrFields::setDeceasedAddressPostCode,
                 DECEASED_POST_CODE, bulkScanConfig.getPostcode(), modifiedFields);
-        setFieldIfBlank(ocrFields::getDeceasedDateOfBirth, ocrFields::setDeceasedDateOfBirth,
-                DECEASED_DOB, bulkScanConfig.getDob(), modifiedFields);
-        setFieldIfBlank(ocrFields::getDeceasedAnyOtherNames, ocrFields::setDeceasedAnyOtherNames,
-                DECEASED_ANY_OTHER_NAMES, FALSE, modifiedFields);
         setFieldIfBlank(ocrFields::getDeceasedDomicileInEngWales, ocrFields::setDeceasedDomicileInEngWales,
                 DECEASED_DOMICILE_IN_ENG_WALES, TRUE, modifiedFields);
+
+        if (!isBlank(ocrFields.getDeceasedMartialStatus())) {
+            String fieldValue = ocrFields.getDeceasedMartialStatus().trim();
+            if (MARRIED_CIVIL_PARTNERSHIP.equals(fieldValue)) {
+                setFieldIfBlank(ocrFields::getDateOfMarriageOrCP, ocrFields::setDateOfMarriageOrCP,
+                        DATE_OF_MARRIAGE, bulkScanConfig.getDob(), modifiedFields);
+            } else if (DIVORCED_CIVIL_PARTNERSHIP.equals(fieldValue) || JUDICIALLY.equals(fieldValue)) {
+                setFieldIfBlank(ocrFields::getDateOfDivorcedCPJudicially, ocrFields::setDateOfDivorcedCPJudicially,
+                        DATE_OF_DIVORCED_CP_JUDICIALLY, bulkScanConfig.getDob(), modifiedFields);
+            }
+        }
     }
 
     private void handleDeceasedDateOfDeathPresent(ExceptionRecordOCRFields ocrFields,

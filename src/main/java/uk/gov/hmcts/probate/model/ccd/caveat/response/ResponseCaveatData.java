@@ -23,7 +23,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
 import java.util.List;
 
@@ -123,7 +122,4 @@ public class ResponseCaveatData {
     private String matches;
     private final List<String> paymentConfirmCheckbox;
     private final TTL ttl;
-
-    private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
-    private final List<CollectionMember<String>> autoCaseWarnings;
 }

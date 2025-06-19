@@ -8,13 +8,13 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -23,12 +23,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.any;
 import static uk.gov.hmcts.probate.model.Constants.FALSE;
 import static uk.gov.hmcts.probate.model.Constants.TRUE;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.CAVEAT_FORENAMES;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.CAVEAT_SURNAME;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_DOD;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_FORENAME;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_SURNAME;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.NOTIFIED_APPLICANTS;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.BILINGUAL_GRANT;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_IS_APPLYING;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SPOUSE_OR_PARTNER;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_IHT_FORM;
@@ -65,11 +60,7 @@ import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ADDRE
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DATE_OF_BIRTH;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ANY_OTHER_NAMES;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DOMICILED_IN_ENG_WALES;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_CAVEATOR_FORENAMES;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_CAVEATOR_SURNAME;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_CAVEATOR_ADDRESS_LINE_1;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_CAVEATOR_ADDRESS_POSTCODE;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_FORM;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.WILL_DATE;
 
 class OCRFieldModifierUtilsTest {
     @InjectMocks
@@ -90,11 +81,6 @@ class OCRFieldModifierUtilsTest {
     @Mock
     private  SolicitorFieldHandler solicitorFieldHandler;
 
-    @Mock
-    private CaveatSolicitorAddressHandler caveatSolicitorAddressHandler;
-    @Mock
-    private CaveatCitizenAddressHandler caveatCitizenAddressHandler;
-
     private ExceptionRecordOCRFields ocrFields;
 
 
@@ -104,7 +90,7 @@ class OCRFieldModifierUtilsTest {
         ocrFieldModifierUtils = new OCRFieldModifierUtils(bulkScanConfig,
                 primaryApplicantFieldsHandler, deceasedFieldsHandler,
                 executorsApplyingHandler, executorsNotApplyingHandler,
-                ihtFieldHandler, solicitorFieldHandler, caveatSolicitorAddressHandler, caveatCitizenAddressHandler);
+                ihtFieldHandler, solicitorFieldHandler);
 
         when(bulkScanConfig.getIhtForm()).thenReturn(DEFAULT_IHT_FORM);
         when(bulkScanConfig.getGrossNetValue()).thenReturn(DEFAULT_VALUE);
@@ -123,7 +109,6 @@ class OCRFieldModifierUtilsTest {
         when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse()).thenReturn("01011990");
         when(bulkScanConfig.getExecutorsNotApplyingReason()).thenReturn("A");
         when(bulkScanConfig.getSolicitorApplying()).thenReturn(FALSE);
-        when(bulkScanConfig.getDefaultForm()).thenReturn(DEFAULT_FORM);
 
         Field bulkScanConfigField = OCRFieldModifierUtils.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);
@@ -153,14 +138,12 @@ class OCRFieldModifierUtilsTest {
                 .deceasedDateOfBirth(VALID_DECEASED_DATE_OF_BIRTH)
                 .deceasedAnyOtherNames(VALID_DECEASED_ANY_OTHER_NAMES)
                 .deceasedDomicileInEngWales(VALID_DECEASED_DOMICILED_IN_ENG_WALES)
-                .caveatorForenames(VALID_CAVEATOR_FORENAMES)
-                .caveatorSurnames(VALID_CAVEATOR_SURNAME)
-                .caveatorAddressLine1(VALID_CAVEATOR_ADDRESS_LINE_1)
-                .caveatorAddressPostCode(VALID_CAVEATOR_ADDRESS_POSTCODE)
                 .deceasedDateOfDeath("01012022")
                 .deceasedDiedOnAfterSwitchDate(TRUE)
                 .spouseOrPartner(TRUE)
                 .notifiedApplicants(TRUE)
+                .bilingualGrantRequested(TRUE)
+                .willDate(VALID_DECEASED_DATE_OF_BIRTH)
                 .build();
     }
 
@@ -199,82 +182,10 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetCaveatorForenamesToDefaultWhenEmpty() {
-        ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);
-        ocrFields.setCaveatorForenames("");
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                .setDefaultCaveatValues(ocrFields);
-
-        assertEquals(2, modifiedFields.size());
-        assertEquals(CAVEAT_FORENAMES, modifiedFields.getFirst().getValue().getFieldName());
-    }
-
-    @Test
-    void shouldSetCaveatorSurnamesToDefaultWhenEmpty() {
-        ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);
-        ocrFields.setCaveatorSurnames("");
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                .setDefaultCaveatValues(ocrFields);
-
-        assertEquals(2, modifiedFields.size());
-        assertEquals(CAVEAT_SURNAME, modifiedFields.getFirst().getValue().getFieldName());
-    }
-
-    @Test
-    void shouldSetDeceasedForenamesToDefaultWhenEmpty() {
-        ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);
-        ocrFields.setDeceasedForenames("");
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                .setDefaultCaveatValues(ocrFields);
-
-        assertEquals(2, modifiedFields.size());
-        assertEquals(DECEASED_FORENAME, modifiedFields.getFirst().getValue().getFieldName());
-    }
-
-    @Test
-    void shouldSetDeceasedSurnameToDefaultWhenEmpty() {
-        ocrFields.setDeceasedDateOfDeath(VALID_DECEASED_DATE_OF_BIRTH);
-        ocrFields.setDeceasedSurname("");
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                .setDefaultCaveatValues(ocrFields);
-
-        assertEquals(2, modifiedFields.size());
-        assertEquals(DECEASED_SURNAME, modifiedFields.getFirst().getValue().getFieldName());
-    }
-
-    @Test
-    void shouldSetDeceasedDateOfDeathToDefaultWhenEmpty() {
-        ocrFields.setDeceasedDateOfDeath("");
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                .setDefaultCaveatValues(ocrFields);
-
-        assertEquals(2, modifiedFields.size());
-        assertEquals(DECEASED_DOD, modifiedFields.getFirst().getValue().getFieldName());
-    }
-
-    @Test
-    void shouldNotModifyFieldsWhenAllValuesArePresent() throws NoSuchFieldException, IllegalAccessException {
-        ocrFields.setCaveatorForenames("John");
-        ocrFields.setCaveatorSurnames("Doe");
-        ocrFields.setDeceasedForenames("Jane");
-        ocrFields.setDeceasedSurname("Smith");
-        ocrFields.setDeceasedDateOfDeath("01012020");
-        Field legalRepresentative = ExceptionRecordOCRFields.class.getDeclaredField("legalRepresentative");
-        legalRepresentative.setAccessible(true);
-        legalRepresentative.set(ocrFields, "false");
-        ocrFields.setCaveatorAddressLine1("123 Street");
-        ocrFields.setCaveatorAddressPostCode("SW1A 1AA");
-
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                .setDefaultCaveatValues(ocrFields);
-
-        assertEquals(0, modifiedFields.size());
-    }
-
-    @Test
     void shouldSetSolicitorIsApplyingToDefaultWhenEmpty() {
         ocrFields.setSolsSolicitorIsApplying("");
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
 
         assertEquals(1, modifiedFields.size());
         assertEquals(SOLICITOR_IS_APPLYING, modifiedFields.getFirst().getValue().getFieldName());
@@ -284,7 +195,8 @@ class OCRFieldModifierUtilsTest {
     @Test
     void shouldSetSolicitorIsApplyingToDefaultWhenValueIsPresent() {
         ocrFields.setSolsSolicitorIsApplying(TRUE);
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
 
         assertEquals(0, modifiedFields.size());
     }
@@ -292,7 +204,8 @@ class OCRFieldModifierUtilsTest {
     @Test
     void shouldSetSpouseOrPartnerToDefaultWhenEmpty() {
         ocrFields.setSpouseOrPartner("");
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
 
         assertEquals(1, modifiedFields.size());
         assertEquals(SPOUSE_OR_PARTNER, modifiedFields.get(0).getValue().getFieldName());
@@ -302,34 +215,16 @@ class OCRFieldModifierUtilsTest {
     @Test
     void shouldNotModifySpouseOrPartnerWhenValueIsPresent() {
         ocrFields.setSpouseOrPartner(TRUE);
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
 
         assertEquals(0, modifiedFields.size());
         assertEquals(TRUE, ocrFields.getSpouseOrPartner());
     }
 
     @Test
-    void shouldSetNotifiedApplicantsToDefaultWhenEmpty() {
-        ocrFields.setNotifiedApplicants("");
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
-
-        assertEquals(1, modifiedFields.size());
-        assertEquals(NOTIFIED_APPLICANTS, modifiedFields.getFirst().getValue().getFieldName());
-        assertEquals(bulkScanConfig.getFieldsNotCompleted(), ocrFields.getNotifiedApplicants());
-    }
-
-    @Test
-    void shouldNotModifyNotifiedApplicantsWhenValueIsPresent() {
-        ocrFields.setNotifiedApplicants(TRUE);
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
-
-        assertEquals(0, modifiedFields.size());
-        assertEquals(TRUE, ocrFields.getNotifiedApplicants());
-    }
-
-    @Test
     void shouldCallPrimaryApplicantFieldsHandler() {
-        ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+        ocrFieldModifierUtils.setDefaultGorValues(ocrFields, GrantType.GRANT_OF_PROBATE);
 
         verify(primaryApplicantFieldsHandler).handleGorPrimaryApplicantFields(eq(ocrFields), anyList());
         verify(deceasedFieldsHandler).handleDeceasedFields(eq(ocrFields), anyList());
@@ -342,7 +237,8 @@ class OCRFieldModifierUtilsTest {
     void shouldHandleSolicitorFieldsWhenSolicitorIsApplyingIsTrue() {
         ocrFields.setSolsSolicitorIsApplying(TRUE);
 
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
 
         verify(solicitorFieldHandler).handleGorSolicitorFields(eq(ocrFields), eq(modifiedFields));
         assertEquals(0, modifiedFields.size());
@@ -352,48 +248,62 @@ class OCRFieldModifierUtilsTest {
     void shouldNotHandleSolicitorFieldsWhenSolicitorIsApplyingIsFalse() {
         ocrFields.setSolsSolicitorIsApplying(FALSE);
 
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
 
         verify(solicitorFieldHandler, never()).handleGorSolicitorFields(any(), any());
         assertEquals(0, modifiedFields.size());
     }
 
     @Test
-    void shouldHandleCaveatSolicitorAddressFieldsWhenLegalRepresentativeIsTrue() {
-        ocrFields.setLegalRepresentative(TRUE);
+    void shouldSetBilingualGrantRequestedToDefaultWhenEmpty() {
+        ocrFields.setBilingualGrantRequested("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
 
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                .setDefaultCaveatValues(ocrFields);
-
-        verify(caveatSolicitorAddressHandler).handleCaveatSolicitorAddressFields(eq(ocrFields), eq(modifiedFields));
-        verify(caveatCitizenAddressHandler, never()).handleCaveatCitizenAddressFields(any(), any());
-        assertNotNull(modifiedFields);
+        assertEquals(1, modifiedFields.size());
+        assertEquals(BILINGUAL_GRANT, modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals(bulkScanConfig.getFieldsNotCompleted(), ocrFields.getBilingualGrantRequested());
     }
 
     @Test
-    void shouldHandleCaveatCitizenAddressFieldsWhenLegalRepresentativeIsFalse() {
-        ocrFields.setLegalRepresentative(FALSE);
+    void shouldNotModifyBilingualGrantRequestedWhenValueIsPresent() {
+        ocrFields.setBilingualGrantRequested(TRUE);
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
 
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                .setDefaultCaveatValues(ocrFields);
-
-        verify(caveatCitizenAddressHandler).handleCaveatCitizenAddressFields(eq(ocrFields), eq(modifiedFields));
-        verify(caveatSolicitorAddressHandler, never()).handleCaveatSolicitorAddressFields(any(), any());
-        assertNotNull(modifiedFields);
+        assertEquals(0, modifiedFields.size());
+        assertEquals(TRUE, ocrFields.getBilingualGrantRequested());
     }
 
     @Test
-    void shouldReturnModifiedFieldsWhenCommonFieldsAreBlank() {
-        ocrFields.setCaveatorForenames("");
-        ocrFields.setCaveatorSurnames("");
-        ocrFields.setDeceasedForenames("");
-        ocrFields.setDeceasedSurname("");
-        ocrFields.setDeceasedDateOfDeath("");
+    void shouldSetWillDateToDefaultWhenEmptyAndGrantTypeIsGrantOfProbate() {
+        ocrFields.setWillDate("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
 
-        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                .setDefaultCaveatValues(ocrFields);
+        assertEquals(1, modifiedFields.size());
+        assertEquals(WILL_DATE, modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals(bulkScanConfig.getDob(), ocrFields.getWillDate());
+    }
 
-        assertEquals(6, modifiedFields.size());
-        verify(caveatSolicitorAddressHandler, never()).handleCaveatSolicitorAddressFields(any(), any());
+    @Test
+    void shouldNotModifyWillDateWhenValueIsPresentAndGrantTypeIsGrantOfProbate() {
+        ocrFields.setWillDate("01012020");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
+
+        assertEquals(0, modifiedFields.size());
+        assertEquals("01012020", ocrFields.getWillDate());
+    }
+
+    @Test
+    void shouldNotSetWillDateWhenGrantTypeIsNotGrantOfProbate() {
+        ocrFields.setWillDate("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.INTESTACY);
+
+        assertEquals(0, modifiedFields.size());
+        assertEquals("", ocrFields.getWillDate());
     }
 }
