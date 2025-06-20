@@ -220,8 +220,7 @@ public class IHTFieldHandler {
 
     private void setEstateValues(ExceptionRecordOCRFields ocrFields,
                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        if (isFormVersion2DiedAfter(ocrFields) && hasLateSpouseCivilPartner(ocrFields)
-                && nqvBetweenThresholds(ocrFields)) {
+        if (hasLateSpouseCivilPartner(ocrFields) && nqvBetweenThresholds(ocrFields)) {
             setFieldIfBlank(ocrFields::getIhtUnusedAllowanceClaimed, ocrFields::setIhtUnusedAllowanceClaimed,
                     IHT_UNUSED_ALLOWANCE, bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
         }
@@ -281,11 +280,6 @@ public class IHTFieldHandler {
         return (isFormVersion2Valid(ocrFields) && TRUE.equalsIgnoreCase(ocrFields
                 .getDeceasedDiedOnAfterSwitchDate()))
                 || (isFormVersion3Valid(ocrFields) && TRUE.equalsIgnoreCase(ocrFields.getExceptedEstate()));
-    }
-
-    private boolean isFormVersion2DiedAfter(ExceptionRecordOCRFields ocrFields) {
-        return (isFormVersion2Valid(ocrFields) && TRUE.equalsIgnoreCase(ocrFields
-                .getDeceasedDiedOnAfterSwitchDate()));
     }
 
     private boolean isIhtFormsNotCompleted(ExceptionRecordOCRFields ocrFields) {
