@@ -3,13 +3,16 @@ package uk.gov.hmcts.probate.service.ocr;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -47,6 +50,8 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_400_PROCESS;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_FORM_COMPLETED_ONLINE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_REFERENCE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_FORM_ID;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_UNUSED_ALLOWANCE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_MARITAL_STATUS_WIDOWED;
 
 @Slf4j
 @Component
@@ -55,6 +60,7 @@ public class IHTFieldHandler {
 
     private final BulkScanConfig bulkScanConfig;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    private final IhtEstateValidationRule ihtEstateValidationRule;
 
     public void handleIHTFields(ExceptionRecordOCRFields ocrFields,
                                 List<CollectionMember<ModifiedOCRField>> modifiedFields) {
@@ -214,6 +220,11 @@ public class IHTFieldHandler {
 
     private void setEstateValues(ExceptionRecordOCRFields ocrFields,
                                  List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        if (isFormVersion2DiedAfter(ocrFields) && hasLateSpouseCivilPartner(ocrFields)
+                && nqvBetweenThresholds(ocrFields)) {
+            setFieldIfBlank(ocrFields::getIhtUnusedAllowanceClaimed, ocrFields::setIhtUnusedAllowanceClaimed,
+                    IHT_UNUSED_ALLOWANCE, bulkScanConfig.getFieldsNotCompleted(), modifiedFields);
+        }
         setFieldIfBlank(ocrFields::getIhtEstateGrossValue, ocrFields::setIhtEstateGrossValue,
                 IHT_ESTATE_GROSS_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
         setFieldIfBlank(ocrFields::getIhtEstateNetValue, ocrFields::setIhtEstateNetValue,
@@ -272,6 +283,11 @@ public class IHTFieldHandler {
                 || (isFormVersion3Valid(ocrFields) && TRUE.equalsIgnoreCase(ocrFields.getExceptedEstate()));
     }
 
+    private boolean isFormVersion2DiedAfter(ExceptionRecordOCRFields ocrFields) {
+        return (isFormVersion2Valid(ocrFields) && TRUE.equalsIgnoreCase(ocrFields
+                .getDeceasedDiedOnAfterSwitchDate()));
+    }
+
     private boolean isIhtFormsNotCompleted(ExceptionRecordOCRFields ocrFields) {
         return FALSE.equalsIgnoreCase(ocrFields.getIht400421Completed()) && FALSE.equalsIgnoreCase(ocrFields
                 .getIht207Completed()) && FALSE.equalsIgnoreCase(ocrFields
@@ -301,6 +317,30 @@ public class IHTFieldHandler {
                         IHT_NET_VALUE, bulkScanConfig.getGrossNetValue(), modifiedFields);
             }
         }
+    }
+
+    public boolean nqvBetweenThresholds(ExceptionRecordOCRFields ocrFields) {
+        if (!isBlank(ocrFields.getIhtEstateNetQualifyingValue())) {
+            String ihtEstateNetQualifyingValue = ocrFields.getIhtEstateNetQualifyingValue();
+            if (ihtEstateNetQualifyingValue != null) {
+                String numericalMonetaryValue = ihtEstateNetQualifyingValue.replaceAll("[^\\d^\\.]",
+                        "");
+                if (NumberUtils.isCreatable((numericalMonetaryValue))) {
+                    BigDecimal nqv = new BigDecimal(numericalMonetaryValue).multiply(BigDecimal.valueOf(100));
+                    return ihtEstateValidationRule.isNqvBetweenValues(nqv);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean hasLateSpouseCivilPartner(ExceptionRecordOCRFields ocrFields) {
+        if (!isBlank(ocrFields.getDeceasedMartialStatus())) {
+            String deceasedMaritalStatus = ocrFields.getDeceasedMartialStatus().trim();
+            return DECEASED_MARITAL_STATUS_WIDOWED.equals(deceasedMaritalStatus);
+        }
+        return false;
     }
 
     private void setFieldIfBlank(Supplier<String> getter, Consumer<String> setter, String fieldName,

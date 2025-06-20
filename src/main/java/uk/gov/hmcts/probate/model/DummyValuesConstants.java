@@ -90,4 +90,6 @@ public final class DummyValuesConstants {
     public static final String DATE_OF_MARRIAGE = "dateOfMarriageOrCP";
     public static final String DATE_OF_DIVORCED_CP_JUDICIALLY = "dateOfDivorcedCPJudicially";
     public static final String WILL_DATE = "willDate";
+    public static final String DECEASED_MARITAL_STATUS_WIDOWED = "widowed";
+    public static final String IHT_UNUSED_ALLOWANCE = "ihtUnusedAllowanceClaimed";
 }

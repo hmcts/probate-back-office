@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.BulkScanConfig;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
@@ -72,6 +73,8 @@ public class IHTFieldHandlerTest {
 
     @Mock
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    @Mock
+    private IhtEstateValidationRule ihtEstateValidationRule;
 
     private ExceptionRecordOCRFields ocrFields;
     private Field formVersionField;
@@ -79,7 +82,8 @@ public class IHTFieldHandlerTest {
     @BeforeEach
     void setup() throws Exception {
         MockitoAnnotations.openMocks(this);
-        ihtFieldHandler = new IHTFieldHandler(bulkScanConfig, exceptedEstateDateOfDeathChecker);
+        ihtFieldHandler = new IHTFieldHandler(bulkScanConfig, exceptedEstateDateOfDeathChecker,
+                ihtEstateValidationRule);
 
         when(bulkScanConfig.getIhtForm()).thenReturn(DEFAULT_IHT_FORM);
         when(bulkScanConfig.getGrossNetValue()).thenReturn(DEFAULT_VALUE);
