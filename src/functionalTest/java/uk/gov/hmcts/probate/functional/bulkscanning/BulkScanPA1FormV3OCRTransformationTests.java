@@ -44,7 +44,7 @@ public class BulkScanPA1FormV3OCRTransformationTests extends IntegrationTestBase
         transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.deceasedDateOfDeath",
                 "1990-01-01");
         transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtGrossValue",
-                "1.11");
+                "111");
         transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.solsSolicitorIsApplying",
                 "No");
     }
