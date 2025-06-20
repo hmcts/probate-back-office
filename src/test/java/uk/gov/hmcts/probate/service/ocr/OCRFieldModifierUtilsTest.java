@@ -157,7 +157,7 @@ class OCRFieldModifierUtilsTest {
                 .exceptedEstate(TRUE)
                 .build();
 
-        List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
+        List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrWarningFields1);
 
         assertEquals(1, warnings.size());
         assertEquals("More than one IHT form is marked as TRUE. Only one form should be selected as TRUE.",
@@ -175,7 +175,7 @@ class OCRFieldModifierUtilsTest {
                 .exceptedEstate(TRUE)
                 .build();
 
-        List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
+        List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrWarningFields2);
 
         assertEquals(1, warnings.size());
         assertEquals("More than one IHT form is marked as TRUE. Only one form should be selected as TRUE.",
@@ -193,7 +193,7 @@ class OCRFieldModifierUtilsTest {
                 .deceasedDiedOnAfterSwitchDate(TRUE)
                 .build();
 
-        List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
+        List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrWarningFields3);
 
         assertEquals(1, warnings.size());
         assertEquals("More than one IHT form is marked as TRUE. Only one form should be selected as TRUE.",
@@ -202,7 +202,7 @@ class OCRFieldModifierUtilsTest {
 
     @Test
     void shouldReturnNoWarningWhenOnlyOneIHTFormIsTrue() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+        ExceptionRecordOCRFields ocrWarningFields4 = ExceptionRecordOCRFields.builder()
                 .exceptedEstate(TRUE)
                 .iht400Completed(FALSE)
                 .iht400process(FALSE)
@@ -211,7 +211,7 @@ class OCRFieldModifierUtilsTest {
                 .iht205Completed(FALSE)
                 .build();
 
-        List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrFields);
+        List<CollectionMember<String>> warnings = ocrFieldModifierUtils.checkWarnings(ocrWarningFields4);
 
         assertEquals(0, warnings.size());
     }
