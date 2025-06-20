@@ -47,7 +47,7 @@ import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DATE_
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ANY_OTHER_NAMES;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DOMICILED_IN_ENG_WALES;
 
-public class PrimaryApplicantFieldsHandlerTest {
+class PrimaryApplicantFieldsHandlerTest {
     @InjectMocks
     private PrimaryApplicantFieldsHandler primaryApplicantFieldsHandler;
     @Mock
@@ -161,7 +161,7 @@ public class PrimaryApplicantFieldsHandlerTest {
 
     @Test
     void shouldNotSetPostcodeToM1551NGWhenPostcodeIsPresent() {
-        ocrFields.setSolsSolicitorIsApplying(TRUE);
+        ocrFields.setSolsSolicitorIsApplying(FALSE);
         List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
         primaryApplicantFieldsHandler.handleGorPrimaryApplicantFields(ocrFields, modifiedFields);
 

@@ -50,8 +50,7 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.MARRIED_CIVIL_PART
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DIVORCED_CIVIL_PARTNERSHIP;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DATE_OF_MARRIAGE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DATE_OF_DIVORCED_CP_JUDICIALLY;
-
-public class DeceasedFieldsHandlerTest {
+class DeceasedFieldsHandlerTest {
     @InjectMocks
     private DeceasedFieldsHandler deceasedFieldsHandler;
     @Mock

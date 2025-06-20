@@ -57,7 +57,7 @@ import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DOMIC
 
 
 
-public class SolicitorFieldHandlerTest {
+class SolicitorFieldHandlerTest {
     @InjectMocks
     private SolicitorFieldHandler solicitorFieldHandler;
     @Mock

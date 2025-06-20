@@ -149,7 +149,7 @@ class OCRFieldModifierUtilsTest {
 
     @Test
     void shouldReturnWarningWhenMoreThanOneIHTFormIsTrue() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+        ExceptionRecordOCRFields ocrWarningFields1 = ExceptionRecordOCRFields.builder()
                 .iht400Completed(TRUE)
                 .iht400421Completed(TRUE)
                 .iht207Completed(FALSE)
@@ -166,7 +166,7 @@ class OCRFieldModifierUtilsTest {
 
     @Test
     void shouldReturnWarningWhenOneIHTFormAndExceptedEstateIsTrue() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+        ExceptionRecordOCRFields ocrWarningFields2 = ExceptionRecordOCRFields.builder()
                 .iht400Completed(TRUE)
                 .iht400421Completed(FALSE)
                 .iht207Completed(FALSE)
@@ -184,7 +184,7 @@ class OCRFieldModifierUtilsTest {
 
     @Test
     void shouldReturnWarningWhenOneIHTFormAndDeceasedDiedOnAfterSwitchDateIsTrue() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+        ExceptionRecordOCRFields ocrWarningFields3 = ExceptionRecordOCRFields.builder()
                 .iht400Completed(TRUE)
                 .iht400421Completed(FALSE)
                 .iht207Completed(FALSE)
@@ -275,7 +275,7 @@ class OCRFieldModifierUtilsTest {
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
                 GrantType.GRANT_OF_PROBATE);
 
-        verify(solicitorFieldHandler).handleGorSolicitorFields(eq(ocrFields), eq(modifiedFields));
+        verify(solicitorFieldHandler).handleGorSolicitorFields(ocrFields, modifiedFields);
         assertEquals(0, modifiedFields.size());
     }
 

@@ -65,7 +65,7 @@ import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_CAVEATOR_ADDRE
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_CAVEATOR_ADDRESS_POSTCODE;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_FORM;
 
-public class IHTFieldHandlerTest {
+class IHTFieldHandlerTest {
     @InjectMocks
     private IHTFieldHandler ihtFieldHandler;
     @Mock

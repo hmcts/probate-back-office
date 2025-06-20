@@ -47,8 +47,7 @@ import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DATE_
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ANY_OTHER_NAMES;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DOMICILED_IN_ENG_WALES;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_FORM;
-
-public class ExecutorsApplyingHandlerTest {
+class ExecutorsApplyingHandlerTest {
     @InjectMocks
     private ExecutorsApplyingHandler executorsApplyingHandler;
     @Mock
