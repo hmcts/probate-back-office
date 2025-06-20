@@ -85,15 +85,18 @@ public class OCRFieldModifierUtils {
 
     public List<CollectionMember<String>> checkWarnings(ExceptionRecordOCRFields ocrFields) {
         List<CollectionMember<String>> warnings = new ArrayList<>();
+
         long ihtFormCount = Stream.of(
-                        ocrFields.getExceptedEstate(),
-                        ocrFields.getIht400Completed(),
-                        ocrFields.getIht400process(),
-                        ocrFields.getIht400421Completed(),
-                        ocrFields.getIht207Completed(),
-                        ocrFields.getIht205Completed()
+                        TRUE.equalsIgnoreCase(ocrFields.getIht400Completed()),
+                        TRUE.equalsIgnoreCase(ocrFields.getIht400421Completed()),
+                        TRUE.equalsIgnoreCase(ocrFields.getIht207Completed()),
+                        TRUE.equalsIgnoreCase(ocrFields.getIht205Completed()),
+                        (isFormVersion2Valid(ocrFields)
+                                && TRUE.equalsIgnoreCase(ocrFields.getDeceasedDiedOnAfterSwitchDate()))
+                                || (isFormVersion3Valid(ocrFields)
+                                && TRUE.equalsIgnoreCase(ocrFields.getExceptedEstate()))
                 )
-                .filter(TRUE::equalsIgnoreCase)
+                .filter(Boolean::booleanValue)
                 .count();
 
         if (ihtFormCount > 1) {
@@ -101,6 +104,14 @@ public class OCRFieldModifierUtils {
                     "More than one IHT form is marked as TRUE. Only one form should be selected as TRUE."));
         }
         return warnings;
+    }
+
+    public boolean isFormVersion2Valid(ExceptionRecordOCRFields ocrFields) {
+        return "2".equals(ocrFields.getFormVersion());
+    }
+
+    public boolean isFormVersion3Valid(ExceptionRecordOCRFields ocrFields) {
+        return "3".equals(ocrFields.getFormVersion());
     }
 
     private void setFieldIfBlank(Supplier<String> getter, Consumer<String> setter, String fieldName,
