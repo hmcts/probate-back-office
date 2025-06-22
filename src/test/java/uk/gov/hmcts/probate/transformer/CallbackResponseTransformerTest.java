@@ -5654,4 +5654,81 @@ class CallbackResponseTransformerTest {
 
         assertAll(assertions);
     }
+
+
+    ////////
+
+    @Test
+    void add_first() {
+
+        final var builder = ResponseCaseData.builder();
+        final var builderSpy = spy(builder);
+
+        final CaseData caseData = CaseData.builder()
+                .boDeceasedTitle("ADD_FIRST")
+                .deceasedAnyOtherNameOnWill(NO)
+                .deceasedAliasFirstNameOnWill(WILL_ALIAS_FN)
+                .deceasedAliasLastNameOnWill(WILL_ALIAS_LN)
+                .deceasedAliasNameList(List.of(WILL_PROBATE_ALIAS_NAME_CM))
+                .solsDeceasedAliasNamesList(List.of(WILL_ALIAS_NAME_CM, SOL_DEC_ALIAS_NAME_CM))
+                .build();
+
+        final Long caseRef = 1L;
+
+        final Set<CollectionMember<AliasName>> expAliases = Set.of(
+                WILL_ALIAS_NAME_CM,
+                SOL_DEC_ALIAS_NAME_CM);
+        final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
+
+        underTest.handleDeceasedAliases(
+                builderSpy,
+                caseData,
+                caseRef);
+
+        verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
+        verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
+        verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
+
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
+
+        // verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
+        // verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
+    }
+
+    @Test
+    void add_last() {
+
+        final var builder = ResponseCaseData.builder();
+        final var builderSpy = spy(builder);
+
+        final CaseData caseData = CaseData.builder()
+                .boDeceasedTitle("ADD_LAST")
+                .deceasedAnyOtherNameOnWill(NO)
+                .deceasedAliasFirstNameOnWill(WILL_ALIAS_FN)
+                .deceasedAliasLastNameOnWill(WILL_ALIAS_LN)
+                .deceasedAliasNameList(List.of(WILL_PROBATE_ALIAS_NAME_CM))
+                .solsDeceasedAliasNamesList(List.of(WILL_ALIAS_NAME_CM, SOL_DEC_ALIAS_NAME_CM))
+                .build();
+
+        final Long caseRef = 1L;
+
+        final Set<CollectionMember<AliasName>> expAliases = Set.of(
+                WILL_ALIAS_NAME_CM,
+                SOL_DEC_ALIAS_NAME_CM);
+        final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
+
+        underTest.handleDeceasedAliases(
+                builderSpy,
+                caseData,
+                caseRef);
+
+        verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
+        verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
+        verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
+
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
+
+        // verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
+        // verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
+    }
 }
