@@ -36,8 +36,6 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,26 +129,16 @@ public class ExceptionRecordService {
                     erRequest.getExceptionRecordId());
 
             ExceptionRecordOCRFields exceptionRecordOCRFields = erRequest.getOCRFieldsObject();
-            Instant startSetDefault = Instant.now();
+
             List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
                     .setDefaultGorValues(exceptionRecordOCRFields, grantType);
 
             List<CollectionMember<String>> autoCaseWarnings = ocrFieldModifierUtils
                     .checkWarnings(exceptionRecordOCRFields);
+
             log.info("AutoCaseWarnings: {}", autoCaseWarnings);
-
-            Instant beforeMapping = Instant.now();
-            final Duration setDefaultDuration = Duration.between(startSetDefault, beforeMapping);
-            log.info("Time taken to set default values for {}: {} ms", erRequest.getExceptionRecordId(),
-                    setDefaultDuration.toMillis());
-
             GrantOfRepresentationData grantOfRepresentationData =
                     erGrantOfRepresentationMapper.toCcdData(exceptionRecordOCRFields, grantType);
-
-            Instant afterMapping = Instant.now();
-            final Duration mappingDuration = Duration.between(beforeMapping, afterMapping);
-            log.info("Time taken to map OCR fields to CCD for {}: {} ms",
-                    erRequest.getExceptionRecordId(), mappingDuration.toMillis());
 
             ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
 
@@ -158,10 +146,6 @@ public class ExceptionRecordService {
 
             grantOfRepresentationData.setAutoCaseWarnings(autoCaseWarnings);
 
-            Instant afterSetData = Instant.now();
-            final Duration setDataDuration = Duration.between(afterMapping, afterSetData);
-            log.info("Time taken to set data for {}: {} ms",
-                    erRequest.getExceptionRecordId(), setDataDuration.toMillis());
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 

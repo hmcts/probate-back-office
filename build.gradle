@@ -49,9 +49,6 @@ test.finalizedBy jacocoTestReport
 dependencyCheck {
   suppressionFile = 'config/owasp/suppressions.xml'
 }
-//TODO: Remove this exclusion once the duration logging is removed
-checkstyleMain
-        .exclude('uk/gov/hmcts/probate/service/exceptionrecord/ExceptionRecordService.java')
 
 pitest {
   targetClasses = ['uk.gov.hmcts.probate.*']
