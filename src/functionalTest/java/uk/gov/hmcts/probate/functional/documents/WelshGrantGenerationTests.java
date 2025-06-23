@@ -60,6 +60,12 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
                 "expectedDocumentGrantAdColligendaWelsh.txt");
     }
 
+    @Test
+    void verifyPersonalGenerateWelshGrantAdColligendaWithLimitationText() throws IOException {
+        verifyPersonalWelshGrantText("personalPayloadLimitationTextGrantAdColligendaWelsh.json",
+                "expectedDocumentWithLimitationTextAdColligendaWelsh.txt");
+    }
+
     private void verifyPersonalWelshGrantText(String payload, String expectedFile) throws IOException {
         final String response = getFirstProbateDocumentsText(payload, GENERATE_GRANT);
 

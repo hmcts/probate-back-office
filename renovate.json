@@ -1,28 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["local>hmcts/.github:renovate-config"],
-  "prConcurrentLimit": 6,
   "labels": ["dependencies"],
-  "helm-requirements":
-  {
-    "fileMatch": ["\\Chart.yaml$"],
-    "aliases": {
-      "hmctspublic": "https://hmctspublic.azurecr.io/helm/v1/repo/"
-    }
-  },
-  "separateMajorMinor": false,
-  "packageRules": [
-    {
-      "matchPackageNames": ["ansi-regex"],
-      "allowedVersions": "<=5"
-    },
-    {
-      "matchPackageNames": ["redis"],
-      "allowedVersions": "<=3"
-    }
-  ],
   "lockFileMaintenance": {
     "enabled": false
   },
-  "schedule": ["before 6am"]
+  "schedule": ["after 8am and before 2pm every weekday"],
+  "ignoreDeps": [
+    "com.github.hmcts:probate-commons",
+    "com.github.hmcts:probate-pact-commons"
+  ]
 }
