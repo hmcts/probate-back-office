@@ -57,7 +57,7 @@ public class DeceasedFieldsHandler {
             }
         } else if (ONE.equalsIgnoreCase(ocrFields.getFormVersion())) {
             setFieldIfBlank(ocrFields::getDeceasedDateOfDeath, ocrFields::setDeceasedDateOfDeath,
-                    DECEASED_DOD, bulkScanConfig.getDob(), modifiedFields);
+                    DECEASED_DOD, bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue(), modifiedFields);
         }
 
         if (TRUE.equalsIgnoreCase(ocrFields.getForeignAsset()) && isBlank(ocrFields.getForeignAssetEstateValue())) {

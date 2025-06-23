@@ -366,7 +366,7 @@ class DeceasedFieldsHandlerTest {
 
         assertEquals(1, modifiedFields.size());
         assertEquals(DECEASED_DOD, modifiedFields.getFirst().getValue().getFieldName());
-        assertEquals(bulkScanConfig.getDob(), ocrFields.getDeceasedDateOfDeath());
+        assertEquals(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue(), ocrFields.getDeceasedDateOfDeath());
     }
 
     @Test
