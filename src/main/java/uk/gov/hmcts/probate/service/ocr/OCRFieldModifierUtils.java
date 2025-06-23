@@ -22,6 +22,8 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.BILINGUAL_GRANT;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_IS_APPLYING;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SPOUSE_OR_PARTNER;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.WILL_DATE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.THREE;
 
 @Slf4j
 @Service
@@ -107,11 +109,11 @@ public class OCRFieldModifierUtils {
     }
 
     public boolean isFormVersion2Valid(ExceptionRecordOCRFields ocrFields) {
-        return "2".equals(ocrFields.getFormVersion());
+        return TWO.equals(ocrFields.getFormVersion());
     }
 
     public boolean isFormVersion3Valid(ExceptionRecordOCRFields ocrFields) {
-        return "3".equals(ocrFields.getFormVersion());
+        return THREE.equals(ocrFields.getFormVersion());
     }
 
     private void setFieldIfBlank(Supplier<String> getter, Consumer<String> setter, String fieldName,

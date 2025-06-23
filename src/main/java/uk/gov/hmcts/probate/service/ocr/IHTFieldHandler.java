@@ -52,6 +52,8 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_REFERENCE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_FORM_ID;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.IHT_UNUSED_ALLOWANCE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_MARITAL_STATUS_WIDOWED;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.THREE;
 
 @Slf4j
 @Component
@@ -269,11 +271,11 @@ public class IHTFieldHandler {
     }
 
     public boolean isFormVersion2Valid(ExceptionRecordOCRFields ocrFields) {
-        return "2".equals(ocrFields.getFormVersion());
+        return TWO.equals(ocrFields.getFormVersion());
     }
 
     public boolean isFormVersion3Valid(ExceptionRecordOCRFields ocrFields) {
-        return "3".equals(ocrFields.getFormVersion());
+        return THREE.equals(ocrFields.getFormVersion());
     }
 
     private boolean isFormVersion2Or3AndExceptedEstate(ExceptionRecordOCRFields ocrFields) {

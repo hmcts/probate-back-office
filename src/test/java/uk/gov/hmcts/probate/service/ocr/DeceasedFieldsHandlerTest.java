@@ -50,6 +50,9 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.MARRIED_CIVIL_PART
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DIVORCED_CIVIL_PARTNERSHIP;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DATE_OF_MARRIAGE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DATE_OF_DIVORCED_CP_JUDICIALLY;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.ONE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.THREE;
 
 class DeceasedFieldsHandlerTest {
     @InjectMocks
@@ -63,6 +66,7 @@ class DeceasedFieldsHandlerTest {
     private ExceptionRecordOCRFields ocrFields;
     private Field maritalStatusField;
     private Field foreignAssestField;
+    private Field formVersionField;
 
     @BeforeEach
     void setup() throws Exception {
@@ -85,6 +89,9 @@ class DeceasedFieldsHandlerTest {
         Field bulkScanConfigField = DeceasedFieldsHandler.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);
         bulkScanConfigField.set(deceasedFieldsHandler, bulkScanConfig);
+
+        formVersionField = ExceptionRecordOCRFields.class.getDeclaredField("formVersion");
+        formVersionField.setAccessible(true);
 
         maritalStatusField = ExceptionRecordOCRFields.class.getDeclaredField("deceasedMartialStatus");
         maritalStatusField.setAccessible(true);
@@ -148,7 +155,8 @@ class DeceasedFieldsHandlerTest {
     }
 
     @Test
-    void shouldSetDeceasedDiedOnAfterSwitchDateTrueWhenDeceasedDateOfDeathIsAfter() {
+    void shouldSetDeceasedDiedOnAfterSwitchDateTrueWhenDeceasedDateOfDeathIsAfter() throws IllegalAccessException {
+        formVersionField.set(ocrFields, THREE);
         ocrFields.setDeceasedDateOfDeath("01012022");
         ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
@@ -173,7 +181,8 @@ class DeceasedFieldsHandlerTest {
     }
 
     @Test
-    void shouldSetDeceasedDiedOnAfterSwitchDateFalseWhenDeceasedDateOfDeathIsBefore() {
+    void shouldSetDeceasedDiedOnAfterSwitchDateFalseWhenDeceasedDateOfDeathIsBefore() throws IllegalAccessException {
+        formVersionField.set(ocrFields, THREE);
         ocrFields.setDeceasedDateOfDeath("01012020");
         ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
@@ -196,7 +205,8 @@ class DeceasedFieldsHandlerTest {
     }
 
     @Test
-    void shouldHandleDeceasedDateOfDeathPresent() {
+    void shouldHandleDeceasedDateOfDeathPresent() throws IllegalAccessException {
+        formVersionField.set(ocrFields, THREE);
         ocrFields.setDeceasedDateOfDeath("01012022");
         ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
@@ -211,7 +221,8 @@ class DeceasedFieldsHandlerTest {
     }
 
     @Test
-    void shouldHandleDeceasedDateOfDeathBeforePresent() {
+    void shouldHandleDeceasedDateOfDeathBeforePresent() throws IllegalAccessException {
+        formVersionField.set(ocrFields, TWO);
         ocrFields.setDeceasedDateOfDeath("01012020");
         ocrFields.setDeceasedDiedOnAfterSwitchDate("");
 
@@ -226,7 +237,8 @@ class DeceasedFieldsHandlerTest {
     }
 
     @Test
-    void shouldHandleDeceasedDateOfDeathMissing() {
+    void shouldHandleDeceasedDateOfDeathMissing() throws IllegalAccessException {
+        formVersionField.set(ocrFields, THREE);
         ocrFields.setDeceasedDateOfDeath("");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(TRUE);
 
@@ -239,7 +251,8 @@ class DeceasedFieldsHandlerTest {
     }
 
     @Test
-    void shouldHandleDeceasedDateOfDeathMissingWhenSwitchDateIsFalse() {
+    void shouldHandleDeceasedDateOfDeathMissingWhenSwitchDateIsFalse() throws IllegalAccessException {
+        formVersionField.set(ocrFields, THREE);
         ocrFields.setDeceasedDateOfDeath("");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(FALSE);
 
@@ -253,7 +266,8 @@ class DeceasedFieldsHandlerTest {
     }
 
     @Test
-    void shouldHandleBothDeceasedFieldsMissing() {
+    void shouldHandleBothDeceasedFieldsMissing() throws IllegalAccessException {
+        formVersionField.set(ocrFields, THREE);
         ocrFields.setDeceasedDateOfDeath("");
         ocrFields.setDeceasedDiedOnAfterSwitchDate("");
         ocrFields.setIhtEstateGrossValue(DEFAULT_VALUE);
@@ -340,5 +354,30 @@ class DeceasedFieldsHandlerTest {
 
         assertEquals(0, modifiedFields.size());
         assertEquals("", ocrFields.getForeignAssetEstateValue());
+    }
+
+    @Test
+    void shouldSetDeceasedDateOfDeathWhenFormVersionIsOneAndFieldIsEmpty() throws IllegalAccessException {
+        formVersionField.set(ocrFields, ONE);
+        ocrFields.setDeceasedDateOfDeath("");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        deceasedFieldsHandler.handleDeceasedFields(ocrFields, modifiedFields);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(DECEASED_DOD, modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals(bulkScanConfig.getDob(), ocrFields.getDeceasedDateOfDeath());
+    }
+
+    @Test
+    void shouldNotModifyDeceasedDateOfDeathWhenFormVersionIsOneAndFieldIsPresent() throws IllegalAccessException {
+        formVersionField.set(ocrFields, ONE);
+        ocrFields.setDeceasedDateOfDeath("01012022");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = new ArrayList<>();
+        deceasedFieldsHandler.handleDeceasedFields(ocrFields, modifiedFields);
+
+        assertEquals(0, modifiedFields.size());
+        assertEquals("01012022", ocrFields.getDeceasedDateOfDeath());
     }
 }

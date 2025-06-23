@@ -64,6 +64,8 @@ import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_CAVEATOR_SURNA
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_CAVEATOR_ADDRESS_LINE_1;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_CAVEATOR_ADDRESS_POSTCODE;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_FORM;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.THREE;
 
 class IHTFieldHandlerTest {
     @InjectMocks
@@ -150,7 +152,7 @@ class IHTFieldHandlerTest {
 
     @Test
     void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThree() throws IllegalAccessException {
-        formVersionField.set(ocrFields, "3");
+        formVersionField.set(ocrFields, THREE);
 
         ocrFields.setDeceasedDateOfDeath("01012022");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(TRUE);
@@ -163,12 +165,12 @@ class IHTFieldHandlerTest {
         Assertions.assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
         Assertions.assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205Completed());
         Assertions.assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
-        Assertions.assertEquals("3", ocrFields.getFormVersion());
+        Assertions.assertEquals(THREE, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldNotSetDefaultIHTFormWhenExceptedEstateAndFormVersionIsTwo() throws IllegalAccessException {
-        formVersionField.set(ocrFields, "2");
+        formVersionField.set(ocrFields, TWO);
 
         ocrFields.setDeceasedDateOfDeath("01012022");
         ocrFields.setDeceasedDiedOnAfterSwitchDate("TRUE");
@@ -179,12 +181,12 @@ class IHTFieldHandlerTest {
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetValue());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateGrossValue());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetQualifyingValue());
-        Assertions.assertEquals("2", ocrFields.getFormVersion());
+        Assertions.assertEquals(TWO, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThree() throws IllegalAccessException {
-        formVersionField.set(ocrFields, "3");
+        formVersionField.set(ocrFields, THREE);
 
         ocrFields.setDeceasedDateOfDeath("01012020");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(FALSE);
@@ -197,12 +199,12 @@ class IHTFieldHandlerTest {
         Assertions.assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
         Assertions.assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205Completed());
         Assertions.assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
-        Assertions.assertEquals("3", ocrFields.getFormVersion());
+        Assertions.assertEquals(THREE, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultIHTFormWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsTwo() throws IllegalAccessException {
-        formVersionField.set(ocrFields, "2");
+        formVersionField.set(ocrFields, TWO);
 
         ocrFields.setDeceasedDateOfDeath("01012020");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(FALSE);
@@ -214,13 +216,13 @@ class IHTFieldHandlerTest {
         Assertions.assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht207Completed());
         Assertions.assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205Completed());
         Assertions.assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
-        Assertions.assertEquals("2", ocrFields.getFormVersion());
+        Assertions.assertEquals(TWO, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndIhtIs400421()
             throws IllegalAccessException {
-        formVersionField.set(ocrFields, "3");
+        formVersionField.set(ocrFields, THREE);
 
         ocrFields.setDeceasedDateOfDeath("01012022");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(TRUE);
@@ -231,13 +233,13 @@ class IHTFieldHandlerTest {
 
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIht421grossValue());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIht421netValue());
-        Assertions.assertEquals("3", ocrFields.getFormVersion());
+        Assertions.assertEquals(THREE, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndNoIht()
             throws IllegalAccessException {
-        formVersionField.set(ocrFields, "3");
+        formVersionField.set(ocrFields, THREE);
 
         ocrFields.setDeceasedDateOfDeath("01012022");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(TRUE);
@@ -254,13 +256,13 @@ class IHTFieldHandlerTest {
         Assertions.assertEquals(DEFAULT_IHT_FORM, ocrFields.getIht205completedOnline());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getProbateGrossValueIht400());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getProbateNetValueIht400());
-        Assertions.assertEquals("3", ocrFields.getFormVersion());
+        Assertions.assertEquals(THREE, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwoAndIhtIs400421()
             throws IllegalAccessException {
-        formVersionField.set(ocrFields, "2");
+        formVersionField.set(ocrFields, TWO);
 
 
         ocrFields.setDeceasedDateOfDeath("01012022");
@@ -274,13 +276,13 @@ class IHTFieldHandlerTest {
         Assertions.assertEquals(TRUE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtGrossValue());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtNetValue());
-        Assertions.assertEquals("2", ocrFields.getFormVersion());
+        Assertions.assertEquals(TWO, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsThreeAndIhtIs207()
             throws IllegalAccessException {
-        formVersionField.set(ocrFields, "3");
+        formVersionField.set(ocrFields, THREE);
 
         ocrFields.setDeceasedDateOfDeath("01012022");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(TRUE);
@@ -293,13 +295,13 @@ class IHTFieldHandlerTest {
         Assertions.assertEquals(TRUE, ocrFields.getDeceasedDiedOnAfterSwitchDate());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIht207grossValue());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIht207netValue());
-        Assertions.assertEquals("3", ocrFields.getFormVersion());
+        Assertions.assertEquals(THREE, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwoAndIhtIs207()
             throws IllegalAccessException {
-        formVersionField.set(ocrFields, "2");
+        formVersionField.set(ocrFields, TWO);
 
         ocrFields.setDeceasedDateOfDeath("01012022");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(TRUE);
@@ -310,13 +312,13 @@ class IHTFieldHandlerTest {
 
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtGrossValue());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtNetValue());
-        Assertions.assertEquals("2", ocrFields.getFormVersion());
+        Assertions.assertEquals(TWO, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThreeAndIhtIs205()
             throws IllegalAccessException {
-        formVersionField.set(ocrFields, "3");
+        formVersionField.set(ocrFields, THREE);
 
         ocrFields.setDeceasedDateOfDeath("01012020");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(TRUE);
@@ -329,13 +331,13 @@ class IHTFieldHandlerTest {
 
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtGrossValue205());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtNetValue205());
-        Assertions.assertEquals("3", ocrFields.getFormVersion());
+        Assertions.assertEquals(THREE, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsTwoAndIhtIs205Online()
             throws IllegalAccessException {
-        formVersionField.set(ocrFields, "3");
+        formVersionField.set(ocrFields, THREE);
 
         ocrFields.setDeceasedDateOfDeath("01012020");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(FALSE);
@@ -347,13 +349,13 @@ class IHTFieldHandlerTest {
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtGrossValue205());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtNetValue205());
         Assertions.assertEquals("1234", ocrFields.getIhtReferenceNumber());
-        Assertions.assertEquals("3", ocrFields.getFormVersion());
+        Assertions.assertEquals(THREE, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultEstateGrossNetValueWhenDeceasedDateOfDeathIsBeforeAndFormVersionIsThree()
             throws IllegalAccessException, NoSuchFieldException {
-        formVersionField.set(ocrFields, "3");
+        formVersionField.set(ocrFields, THREE);
 
         Field exceptedEstateField = ExceptionRecordOCRFields.class.getDeclaredField("exceptedEstate");
         exceptedEstateField.setAccessible(true);
@@ -370,13 +372,13 @@ class IHTFieldHandlerTest {
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetQualifyingValue());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateGrossValue());
 
-        Assertions.assertEquals("3", ocrFields.getFormVersion());
+        Assertions.assertEquals(THREE, ocrFields.getFormVersion());
     }
 
     @Test
     void shouldSetDefaultEstateGrossNetValueWhenDeceasedDateOfDeathIsAfterAndFormVersionIsTwo()
             throws IllegalAccessException {
-        formVersionField.set(ocrFields, "2");
+        formVersionField.set(ocrFields, TWO);
         ocrFields.setDeceasedDateOfDeath("01012022");
         ocrFields.setDeceasedDiedOnAfterSwitchDate(TRUE);
 
@@ -388,7 +390,7 @@ class IHTFieldHandlerTest {
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtEstateNetQualifyingValue());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtGrossValue());
         Assertions.assertEquals(DEFAULT_VALUE, ocrFields.getIhtNetValue());
-        Assertions.assertEquals("2", ocrFields.getFormVersion());
+        Assertions.assertEquals(TWO, ocrFields.getFormVersion());
     }
 
     @Test

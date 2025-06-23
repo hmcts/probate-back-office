@@ -30,6 +30,9 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.DIVORCED_CIVIL_PAR
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.JUDICIALLY;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DATE_OF_MARRIAGE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DATE_OF_DIVORCED_CP_JUDICIALLY;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.ONE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.THREE;
 
 @Slf4j
 @Component
@@ -42,14 +45,19 @@ public class DeceasedFieldsHandler {
     public void handleDeceasedFields(ExceptionRecordOCRFields ocrFields,
                                      List<CollectionMember<ModifiedOCRField>> modifiedFields) {
 
-        if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
-            handleDeceasedDateOfDeathPresent(ocrFields, modifiedFields);
-        } else if (isBlank(ocrFields.getDeceasedDateOfDeath()) && !isBlank(ocrFields
-                .getDeceasedDiedOnAfterSwitchDate())) {
-            handleDeceasedDateOfDeathMissing(ocrFields, modifiedFields);
-        } else if (isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields
-                .getDeceasedDiedOnAfterSwitchDate())) {
-            handleBothDeceasedFieldsMissing(ocrFields, modifiedFields);
+        if (TWO.equalsIgnoreCase(ocrFields.getFormVersion()) || THREE.equalsIgnoreCase(ocrFields.getFormVersion())) {
+            if (!isBlank(ocrFields.getDeceasedDateOfDeath()) && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+                handleDeceasedDateOfDeathPresent(ocrFields, modifiedFields);
+            } else if (isBlank(ocrFields.getDeceasedDateOfDeath())
+                    && !isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+                handleDeceasedDateOfDeathMissing(ocrFields, modifiedFields);
+            } else if (isBlank(ocrFields.getDeceasedDateOfDeath())
+                    && isBlank(ocrFields.getDeceasedDiedOnAfterSwitchDate())) {
+                handleBothDeceasedFieldsMissing(ocrFields, modifiedFields);
+            }
+        } else if (ONE.equalsIgnoreCase(ocrFields.getFormVersion())) {
+            setFieldIfBlank(ocrFields::getDeceasedDateOfDeath, ocrFields::setDeceasedDateOfDeath,
+                    DECEASED_DOD, bulkScanConfig.getDob(), modifiedFields);
         }
 
         if (TRUE.equalsIgnoreCase(ocrFields.getForeignAsset()) && isBlank(ocrFields.getForeignAssetEstateValue())) {

@@ -96,4 +96,7 @@ public final class DummyValuesConstants {
     public static final String WILL_DATE = "willDate";
     public static final String DECEASED_MARITAL_STATUS_WIDOWED = "widowed";
     public static final String IHT_UNUSED_ALLOWANCE = "ihtUnusedAllowanceClaimed";
+    public static final String ONE = "1";
+    public static final String TWO = "2";
+    public static final String THREE = "3";
 }
