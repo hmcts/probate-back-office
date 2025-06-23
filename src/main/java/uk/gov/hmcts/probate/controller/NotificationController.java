@@ -202,6 +202,7 @@ public class NotificationController {
     public ResponseEntity<CallbackResponse> informationRequest(
             @RequestBody final CallbackRequest callbackRequest) throws NotificationClientException {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        log.info("caseworker info: {}", caseworkerInfo.orElse(null));
         return ResponseEntity.ok(informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo));
     }
 
