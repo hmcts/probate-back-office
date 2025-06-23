@@ -259,7 +259,7 @@ dependencies {
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
 
-  implementation group: 'org.pitest', name: 'pitest', version: '1.19.6'
+  implementation group: 'org.pitest', name: 'pitest', version: '1.20.0'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.25.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
