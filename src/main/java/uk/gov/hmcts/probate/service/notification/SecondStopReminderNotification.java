@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED_REISSUE;
 
 @Service
 public class SecondStopReminderNotification implements NotificationStrategy {
@@ -24,7 +25,7 @@ public class SecondStopReminderNotification implements NotificationStrategy {
     private static final String SECOND_STOP_REMINDER_EVENT_SUMMARY = "Send Second Stop Reminder";
     private static final String SECOND_STOP_REMINDER_FAILURE_EVENT_DESCRIPTION = "Failed to send second stop reminder";
     private static final String SECOND_STOP_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send second stop reminder";
-    private static final String FIRST_STOP_REMINDER_DATE = "firstStopReminderDate";
+    private static final String FIRST_STOP_REMINDER_SENT_DATE = "firstStopReminderSentDate";
     private static final String LAST_MODIFIED_DATE_FOR_DORMANT = "lastModifiedDateForDormant";
 
     private final NotificationService notificationService;
@@ -95,12 +96,11 @@ public class SecondStopReminderNotification implements NotificationStrategy {
                     .map(LocalDateTime::parse)
                     .orElse(null);
 
-            LocalDate firstStopReminderDate = Optional.ofNullable(data.get(FIRST_STOP_REMINDER_DATE))
+            LocalDate firstStopReminderDate = Optional.ofNullable(data.get(FIRST_STOP_REMINDER_SENT_DATE))
                     .map(Object::toString)
                     .map(LocalDate::parse)
                     .orElse(null);
-
-            return STATE_BO_CASE_STOPPED.equals(cd.getState())
+            return  (STATE_BO_CASE_STOPPED.equals(cd.getState()) || STATE_BO_CASE_STOPPED_REISSUE.equals(cd.getState()))
                     && firstStopReminderDate != null
                     && firstStopReminderDate.equals(referenceDate)
                     && lastModifiedDateForDormant != null

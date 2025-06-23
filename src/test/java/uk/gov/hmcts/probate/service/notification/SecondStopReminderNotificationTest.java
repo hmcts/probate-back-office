@@ -25,7 +25,7 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 
 class SecondStopReminderNotificationTest {
 
-    private static final String FIRST_STOP_REMINDER_DATE = "firstStopReminderDate";
+    private static final String FIRST_STOP_REMINDER_SENT_DATE = "firstStopReminderSentDate";
     private static final String LAST_MODIFIED_DATE_FOR_DORMANT = "lastModifiedDateForDormant";
 
     @Mock
@@ -69,7 +69,7 @@ class SecondStopReminderNotificationTest {
     void acceptsWrongStateOrMissingKeyReturnsFalse() {
         CaseDetails wrongState = CaseDetails.builder()
                 .state("SomethingElse")
-                .data(Map.of(FIRST_STOP_REMINDER_DATE, "2025-05-25"))
+                .data(Map.of(FIRST_STOP_REMINDER_SENT_DATE, "2025-05-25"))
                 .build();
         assertFalse(underTest.accepts().test(wrongState));
 
@@ -80,7 +80,7 @@ class SecondStopReminderNotificationTest {
         assertFalse(underTest.accepts().test(missingKey));
 
         Map<String,Object> nullValue = new HashMap<>();
-        nullValue.put(FIRST_STOP_REMINDER_DATE, null);
+        nullValue.put(FIRST_STOP_REMINDER_SENT_DATE, null);
         CaseDetails nullVal = CaseDetails.builder()
                 .state(STATE_BO_CASE_STOPPED)
                 .data(nullValue)
@@ -92,7 +92,7 @@ class SecondStopReminderNotificationTest {
     @Test
     void acceptsShouldReturnFalseWhenFirstStopReminderDateDoesNotMatchReferenceDate() {
         underTest.setReferenceDate(LocalDate.of(2025, 5, 25));
-        when(caseDetails.getData()).thenReturn(Map.of(FIRST_STOP_REMINDER_DATE, "2025-05-24"));
+        when(caseDetails.getData()).thenReturn(Map.of(FIRST_STOP_REMINDER_SENT_DATE, "2025-05-24"));
 
         boolean result = underTest.accepts().test(caseDetails);
 
@@ -103,7 +103,7 @@ class SecondStopReminderNotificationTest {
     void acceptsShouldReturnFalseWhenLastModifiedDateForDormantIsNotBeforeReferenceDate() {
         underTest.setReferenceDate(LocalDate.of(2025, 5, 25));
         when(caseDetails.getData()).thenReturn(Map.of(
-                FIRST_STOP_REMINDER_DATE, "2025-05-25",
+                FIRST_STOP_REMINDER_SENT_DATE, "2025-05-25",
                 LAST_MODIFIED_DATE_FOR_DORMANT, "2025-05-25T00:00:00"
         ));
 
@@ -117,7 +117,7 @@ class SecondStopReminderNotificationTest {
         underTest.setReferenceDate(LocalDate.of(2025, 5, 25));
         when(caseDetails.getState()).thenReturn(STATE_BO_CASE_STOPPED);
         when(caseDetails.getData()).thenReturn(Map.of(
-                FIRST_STOP_REMINDER_DATE, "2025-05-25",
+                FIRST_STOP_REMINDER_SENT_DATE, "2025-05-25",
                 LAST_MODIFIED_DATE_FOR_DORMANT, "2025-05-24T23:59:59"
         ));
 

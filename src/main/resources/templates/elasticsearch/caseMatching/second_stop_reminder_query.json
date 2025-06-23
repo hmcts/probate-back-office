@@ -13,7 +13,8 @@
         {
           "terms": {
             "state.keyword": [
-              "BOCaseStopped"
+              "BOCaseStopped",
+              "BOCaseStoppedReissue"
             ]
           }
         }
