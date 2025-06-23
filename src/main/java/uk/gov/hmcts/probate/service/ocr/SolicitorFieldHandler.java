@@ -56,7 +56,7 @@ public class SolicitorFieldHandler {
                 ocrFields.setSolsSolicitorAppReference(ocrFields.getDeceasedSurname());
                 log.info("Setting legal representative name to {}", ocrFields.getSolsSolicitorAppReference());
             } else {
-                ocrFields.setSolsSolicitorFirmName(bulkScanConfig.getName());
+                ocrFields.setSolsSolicitorAppReference(bulkScanConfig.getName());
                 log.info("Setting legal representative name to {}", ocrFields.getSolsSolicitorFirmName());
             }
         }
