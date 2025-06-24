@@ -21,6 +21,7 @@ import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFGeneratorService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -56,6 +57,8 @@ public class PdfGeneratorServiceConsumerTest {
     private FileSystemResourceService fileSystemResourceService;
     @MockBean
     private AuthTokenGenerator serviceTokenGenerator;
+    @MockBean
+    private FeatureToggleService featureToggleService;
 
     // TBD consumer 'Name'
     @Pact(provider = "rpePdfService_PDFGenerationEndpointV2", consumer = "probate_backOffice")
@@ -82,6 +85,7 @@ public class PdfGeneratorServiceConsumerTest {
     public void verifyGeneratePdfFromTemplatePact() throws IOException, JSONException {
 
         when(serviceTokenGenerator.generate()).thenReturn(someServiceAuthToken);
+        when(featureToggleService.useCommonsPdfGen()).thenReturn(false);
 
         EvidenceManagementFileUpload response = pdfGenerationService
             .generatePdf(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT,
