@@ -30,7 +30,7 @@ import java.util.Optional;
 @Component
 public class PDFGeneratorService {
 
-    public static final String TEMPLATE_EXTENSION = ".html";
+    public static final String TEMPLATE_EXTENSION = ".peb";
 
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFServiceConfiguration pdfServiceConfiguration;
@@ -69,6 +69,7 @@ public class PDFGeneratorService {
         }
         try {
             if (featureToggleService.useCommonsPdfGen()) {
+
                 final Optional<String> commonsTemplate = documentType.getCommonsTemplateName();
 
                 log.info("Generating document using commons templating: {}", commonsTemplate);
@@ -78,7 +79,7 @@ public class PDFGeneratorService {
                         params);
             } else {
                 log.info("Falling back to old document generation process for {}", documentType.name());
-                postResult = generateFromHtml(documentType.getTemplateName(), params);
+                postResult = generateFromHtml(documentType.getCommonsTemplateName().orElseThrow(), params);
             }
         } catch (ProbateRuntimeException | PDFServiceClientException | NoSuchElementException e) {
             log.error("Unable to generate pdf", e);

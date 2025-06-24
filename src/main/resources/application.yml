@@ -46,7 +46,7 @@ auth.provider.client:
 pdf.service:
   url: http://localhost:5500
   pdfApi: /api/v2/pdf-generator/html
-  templatesDirectory: templates/pdf/
+  templatesDirectory: templates/pdfGeneration/
   defaultDisplayFilename: generated.pdf
   grantSignatureSecretKey: signaturetestkey
   grantSignatureEncryptedFile: signatures/grantSignature-test.png.enc
