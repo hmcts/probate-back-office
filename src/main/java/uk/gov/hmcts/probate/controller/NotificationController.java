@@ -205,7 +205,7 @@ public class NotificationController {
         log.info("caseworker info: {}", caseworkerInfo.orElse(null));
         CallbackResponse response = informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo);
 
-        if (response.getErrors().stream().anyMatch(error ->
+        if (null != response.getErrors() && response.getErrors().stream().anyMatch(error ->
                 error.contains("Status code: 400")
                         && error.contains("\"message\":\"email_address Not a valid email address\""))) {
             log.warn("Invalid applicant email detected for case id: {}", callbackRequest.getCaseDetails().getId());
