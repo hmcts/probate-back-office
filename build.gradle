@@ -169,7 +169,7 @@ def versions = [
         lombok                          : '1.18.38',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
-        probateCommonsVersion           : '2.2.3',
+        probateCommonsVersion           : '3.0.0-DTSPB-4679-downgrade-002',
         restAssured                     : '5.5.5',
         serenity                        : '4.2.34',
         serenityreporter                : '4.2.34',
