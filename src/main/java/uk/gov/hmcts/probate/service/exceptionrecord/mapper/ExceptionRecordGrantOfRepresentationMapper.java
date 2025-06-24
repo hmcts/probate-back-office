@@ -506,16 +506,6 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         }
     }
 
-    @AfterMapping
-    default void setDefaultEmailToNull(@MappingTarget GrantOfRepresentationData caseData,
-                                       ExceptionRecordOCRFields ocrField) {
-        //If bulk scan case had a missing email
-        if (ocrField.getSolsSolicitorEmail() != null
-                && ocrField.getSolsSolicitorEmail().equals("contactprobate@justice.gov.uk")) {
-            caseData.setSolsSolicitorEmail("James.Albertelli@justice.gov.uk");
-        }
-    }
-
     default boolean greaterThenZero(String field) {
         Integer integerValue = 0;
         if (field != null) {

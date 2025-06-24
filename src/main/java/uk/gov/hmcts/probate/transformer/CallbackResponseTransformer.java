@@ -1406,7 +1406,6 @@ public class CallbackResponseTransformer {
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
             .modifiedOCRFieldList(caseData.getModifiedOCRFieldList())
             .autoCaseWarnings(caseData.getAutoCaseWarnings())
-            .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
             .lastModifiedCaseworkerForenames(caseData.getLastModifiedCaseworkerForenames())
             .lastModifiedCaseworkerSurname(caseData.getLastModifiedCaseworkerSurname())
             .informationNeeded(caseData.getInformationNeeded())
