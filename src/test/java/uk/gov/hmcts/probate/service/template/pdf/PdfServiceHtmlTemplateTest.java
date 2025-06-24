@@ -136,12 +136,13 @@ class PdfServiceHtmlTemplateTest {
         jsonData = otherObjectMapper.writeValueAsString(callbackRequest);
     }
 
+    // this 'test' has no assertions and uses its own templating(?)
     @Test
     void shouldGenerateCorrectHtml() throws Exception {
         Map<String, Object> valuesMap = objectMapper.readValue(jsonData, MapType.REFERENCE);
         valuesMap.put("case_extras", null);
         String templateString = new String(Files.readAllBytes(Paths.get(getClass()
-                .getResource("/templates/pdf/legalStatementProbate.html").toURI())));
+                .getResource("/templates/pdf_generation/legal_statement_probate/original.html.peb").toURI())));
         Writer writer = new StringWriter();
         PebbleTemplate pebbleTemplate = pebble.getTemplate(templateString);
         pebbleTemplate.evaluate(writer, valuesMap);
