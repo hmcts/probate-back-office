@@ -429,6 +429,35 @@ class NotificationControllerUnitTest {
     }
 
     @Test
+    void shouldNotSendForInvalidApplicantEmail() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@probate-test.c")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        document = Document.builder()
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("fileName")
+                .documentGeneratedBy("generatedBy")
+                .documentLink(
+                        DocumentLink.builder().documentUrl("url").documentFilename("file")
+                                .documentBinaryUrl("binary").build())
+                .documentType(DocumentType.SENT_EMAIL)
+                .build();
+        List<String> errors = List.of(
+                "{\"error\":\"ValidationError\",\"message\":\"email_address Not a valid email address\"}"
+        );
+        callbackResponse = CallbackResponse.builder().errors(errors).build();
+        when(informationRequestService.handleInformationRequest(any(), any())).thenReturn(callbackResponse);
+        ResponseEntity<CallbackResponse> stringResponseEntity =
+                notificationController.informationRequest(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
     void shouldSendEmailPreview()  {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
