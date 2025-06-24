@@ -203,7 +203,24 @@ public class NotificationController {
             @RequestBody final CallbackRequest callbackRequest) throws NotificationClientException {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         log.info("caseworker info: {}", caseworkerInfo.orElse(null));
-        return ResponseEntity.ok(informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo));
+        CallbackResponse response = informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo);
+
+        if (response.getErrors().stream().anyMatch(error ->
+                error.contains("Status code: 400")
+                        && error.contains("\"message\":\"email_address Not a valid email address\""))) {
+            log.warn("Invalid applicant email detected for case id: {}", callbackRequest.getCaseDetails().getId());
+            if (caseworkerInfo.isPresent()) {
+                log.info("Sending email to caseworker about invalid applicant email for case id: {}",
+                        callbackRequest.getCaseDetails().getId());
+                log.info("Email sent successfully to caseworker for case id: {}",
+                        callbackRequest.getCaseDetails().getId());
+            } else {
+                log.warn("Caseworker info unavailable. Unable to notify caseworker for case id: {}",
+                        callbackRequest.getCaseDetails().getId());
+            }
+        }
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(path = "/information-request-email-preview")
