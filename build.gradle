@@ -220,7 +220,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
-  implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.5'
+  implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.6'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   implementation ('io.github.openfeign.form:feign-form-spring')
 
@@ -255,7 +255,7 @@ dependencies {
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
 
-  implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.5'
+  implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.6'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
 
