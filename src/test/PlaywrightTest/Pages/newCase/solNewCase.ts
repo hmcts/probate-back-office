@@ -167,7 +167,6 @@ export class SolCreateCasePage extends BasePage {
     }
 
     let idx = 0;
-    /* eslint-disable no-await-in-loop */
     const keys = Object.keys(applicationDetailsConfig);
     for (let i = 0; i < keys.length; i++) {
       const propName = keys[i];

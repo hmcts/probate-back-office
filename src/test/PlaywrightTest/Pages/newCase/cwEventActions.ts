@@ -142,7 +142,6 @@ export class CwEventActionsPage extends BasePage {
       const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       for (let i = 0; i < document.body.scrollHeight; i += 1000) {
         window.scrollTo(0, i);
-        /* eslint-disable no-await-in-loop */
         await delay(100);
       }
     });

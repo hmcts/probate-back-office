@@ -134,7 +134,6 @@ export class BasePage {
       await expect(tabLocator).toBeVisible();
     }
 
-    /* eslint-disable no-await-in-loop */
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
       if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== "") {
         const textCount = await this.page
@@ -226,7 +225,7 @@ export class BasePage {
     tabConfigFile,
     tabUpdates,
     tabUpdatesConfigFile,
-    forUpdateApplication
+    forUpdateApplication?
   ) {
     await expect(
       this.page.getByRole("heading", { name: caseRef })

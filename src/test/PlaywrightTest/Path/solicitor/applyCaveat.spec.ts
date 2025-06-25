@@ -115,14 +115,13 @@ test.describe("Solicitor - Apply Caveat", () => {
     await basePage.logInfo(scenarioName, "Payment", null);
     await solCreateCasePage.makeCaveatPaymentPage1(
       caseRef,
-      serviceRequestTabConfig,
-      testInfo
+      serviceRequestTabConfig
     );
     await solCreateCasePage.reviewPaymentDetails(
       caseRef,
       serviceRequestReviewTabConfig
     );
-    await solCreateCasePage.makePaymentPage2(caseRef, testInfo);
+    await solCreateCasePage.makePaymentPage2(caseRef);
     await solCreateCasePage.viewPaymentStatus(
       testInfo,
       caseRef,
@@ -143,7 +142,6 @@ test.describe("Solicitor - Apply Caveat", () => {
     );
 
     //await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, completeApplicationConfig);
-    // TODO: Expects 6 arguments
     await basePage.seeUpdatesOnCase(
       testInfo,
       caseRef,
@@ -151,7 +149,6 @@ test.describe("Solicitor - Apply Caveat", () => {
       "completedApplication",
       completeApplicationConfig
     );
-    // TODO: Expects 6 arguments
     await basePage.seeUpdatesOnCase(
       testInfo,
       caseRef,
