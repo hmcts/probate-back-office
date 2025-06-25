@@ -2066,7 +2066,7 @@ class NotificationServiceIT {
                 .deceasedForenames("Deceased")
                 .deceasedSurname("DeceasedL")
                 .build(), LAST_MODIFIED, ID);
-        UserInfo info = UserInfo.builder().givenName("Case").familyName("Worker").sub("caseworker@gmail.com").build();
+        UserInfo info = UserInfo.builder().givenName("Case").familyName("Worker").sub("case@gmail.com").build();
         notificationService.sendCaseWorkerEmail(caseDetails, Optional.of(info));
 
         HashMap<String, String> personalisation = new HashMap<>();
