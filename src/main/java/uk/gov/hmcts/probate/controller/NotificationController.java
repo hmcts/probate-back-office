@@ -210,6 +210,7 @@ public class NotificationController {
         try {
             response = informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo);
         } catch (NotificationClientException e) {
+            log.info(e.getMessage());
             if (caseworkerInfo.isPresent()) {
                 log.info("Initiate call to send email to caseworker about invalid applicant email for case id: {} ",
                             callbackRequest.getCaseDetails().getId());
