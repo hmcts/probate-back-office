@@ -2079,7 +2079,7 @@ class NotificationServiceIT {
 
         verify(notificationClient).sendEmail(
                 eq("sol-caseworker-email"),
-                eq("caseworker@gmail.com"),
+                eq("case@gmail.com"),
                 eq(personalisation),
                 eq("1"));
 
