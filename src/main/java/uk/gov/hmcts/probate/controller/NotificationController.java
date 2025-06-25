@@ -204,14 +204,23 @@ public class NotificationController {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         log.info("caseworker info: {}", caseworkerInfo.orElse(null));
         CallbackResponse response = null;
+        Document document;
+        List<Document> documents = new ArrayList<>();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
         try {
             response = informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo);
         } catch (NotificationClientException e) {
             if (caseworkerInfo.isPresent()) {
-                log.info("Sending email to caseworker about invalid applicant email for case id: {}",
+                log.info("Initiate call to send email to caseworker about invalid applicant email for case id: {} ",
+                            callbackRequest.getCaseDetails().getId());
+                document = notificationService.sendCaseWorkerEmail(caseDetails, caseworkerInfo);
+                documents.add(document);
+                log.info("Successful response for caveat email for case id {} ",
                         callbackRequest.getCaseDetails().getId());
                 log.info("Email sent successfully to caseworker for case id: {}",
                         callbackRequest.getCaseDetails().getId());
+                response = callbackResponseTransformer
+                        .addInformationRequestDocuments(callbackRequest, documents, caseworkerInfo);
             }
         }
         return ResponseEntity.ok(response);

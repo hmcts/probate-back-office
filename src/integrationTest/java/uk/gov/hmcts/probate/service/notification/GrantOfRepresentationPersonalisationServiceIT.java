@@ -297,6 +297,16 @@ class GrantOfRepresentationPersonalisationServiceIT {
     }
 
     @Test
+    void getCaseWorkerPersonalisationContentIsOk() {
+        Map<String, Object> response =
+                grantOfRepresentationPersonalisationService.getCaseWorkerPersonalisation(ID,
+                        "Deceased DeceasedL", "Caseworker Name");
+
+        assertEquals(ID.toString(), response.get(PERSONALISATION_CCD_REFERENCE));
+        assertEquals("Deceased DeceasedL", response.get(PERSONALISATION_DECEASED_NAME));
+    }
+
+    @Test
     void getExelaPersonalisationContentIsOkNoSubType() {
         Map<String, String> response =
             grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataNoSubtype);

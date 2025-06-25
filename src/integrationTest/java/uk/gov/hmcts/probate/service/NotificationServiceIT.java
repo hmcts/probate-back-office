@@ -50,6 +50,7 @@ import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -117,6 +118,7 @@ class NotificationServiceIT {
     private static final String PERSONALISATION_APPLICANT_SURNAME = "applicantSN";
     private static final String PERSONALISATION_APPLICANT_EMAIL = "primary@probate-test.com";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
+    private static final String PERSONALISATION_CASEWORKER_NAME = "caseworker_name";
     private static final String PERSONALISATION_DECEASED_FORNAMES = "deceasedFN";
     private static final String PERSONALISATION_DECEASED_SURNAME = "deceasedSN";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
@@ -2049,6 +2051,35 @@ class NotificationServiceIT {
         verify(notificationClient).sendEmail(
                 eq("sealed-and-certified"),
                 eq("SealedAndCertified@probate-test.com"),
+                eq(personalisation),
+                eq("1"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    void verifySendCaseworkerEmail()
+            throws NotificationClientException, BadRequestException {
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
+                .build(), LAST_MODIFIED, ID);
+        UserInfo info = UserInfo.builder().givenName("Case").familyName("Worker").sub("caseworker@gmail.com").build();
+        notificationService.sendCaseWorkerEmail(caseDetails, Optional.of(info));
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_CASEWORKER_NAME, "Case Worker");
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caseDetails.getData().getDeceasedFullName());
+
+
+
+        verify(notificationClient).sendEmail(
+                eq("sol-caseworker-email"),
+                eq("caseworker@gmail.com"),
                 eq(personalisation),
                 eq("1"));
 

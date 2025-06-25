@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -62,6 +63,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
+import static uk.gov.hmcts.probate.model.State.CASEWORKER_EMAIL;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PAYMENT_FAILED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_PENDING;
@@ -205,6 +207,36 @@ public class NotificationService {
 
         log.info("Send Sealed And Certified completed for case {}", caseDetails.getId());
         return getGeneratedSentEmailDocument(response, emailAddresses.getSealedAndCertifiedEmail(), SENT_EMAIL);
+    }
+
+    public Document sendCaseWorkerEmail(CaseDetails caseDetails, Optional<UserInfo> info) {
+        CaseData caseData = caseDetails.getData();
+        String reference = caseDetails.getId().toString();
+        String deceasedName = caseData.getDeceasedFullName();
+        String caseworkerName = info.map(userInfo ->
+                        String.join(" ", userInfo.getGivenName(), userInfo.getFamilyName()))
+                .orElse(null);
+        String emailAddress = info.map(UserInfo::getSub).orElse(null);
+
+        String templateId = templateService.getTemplateId(CASEWORKER_EMAIL,
+                caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
+                null, caseData.getChannelChoice(), caseData.getInformationNeededByPost());
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getCaseWorkerPersonalisation(caseDetails.getId(),
+                        deceasedName, caseworkerName);
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
+
+        log.info("Sealed And Certified get the email response for case {}", caseDetails.getId());
+
+        SendEmailResponse response = null;
+        try {
+            response = notificationClientService.sendEmail(templateId, emailAddress, personalisation, reference);
+            log.info("Send Sealed And Certified completed for case {}", caseDetails.getId());
+            return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+        } catch (NotificationClientException e) {
+            log.error("NotificationClientException: {}", e.getMessage());
+        }
+        return null;
     }
 
     public Document sendNocEmail(State state, CaseDetails caseDetails) throws NotificationClientException {

@@ -31,6 +31,7 @@ public class GrantOfRepresentationPersonalisationService {
     private static final DateTimeFormatter EXELA_CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
+    private static final String PERSONALISATION_CASEWORKER_NAME = "caseworker_name";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
     private static final String PERSONALISATION_SOLICITOR_SOT_FORENAMES = "solicitor_sot_forenames";
     private static final String PERSONALISATION_SOLICITOR_SOT_SURNAME = "solicitor_sot_surname";
@@ -78,6 +79,15 @@ public class GrantOfRepresentationPersonalisationService {
         HashMap<String, Object> personalisation = new HashMap<>();
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseId.toString());
         personalisation.put(PERSONALISATION_DECEASED_NAME, deceasedName);
+
+        return personalisation;
+    }
+
+    public Map<String, Object> getCaseWorkerPersonalisation(Long caseId, String deceasedName, String caseWorkerName) {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseId.toString());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, deceasedName);
+        personalisation.put(PERSONALISATION_CASEWORKER_NAME, caseWorkerName);
 
         return personalisation;
     }

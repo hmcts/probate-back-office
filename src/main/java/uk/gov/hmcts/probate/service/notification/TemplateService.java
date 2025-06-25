@@ -75,6 +75,8 @@ public class TemplateService {
                 }
             case NOC:
                 return emailTemplates.getNoticeOfChangeReceived();
+            case CASEWORKER_EMAIL:
+                return emailTemplates.getCaseworkerEmail();
             case CAVEAT_RAISED:
                 return emailTemplates.getCaveatRaised();
             case CAVEAT_EXTEND:
