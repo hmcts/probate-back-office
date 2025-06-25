@@ -226,12 +226,12 @@ public class NotificationService {
                         deceasedName, caseworkerName);
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
-        log.info("Sealed And Certified get the email response for case {}", caseDetails.getId());
+        log.info("Caseworker get the email response for case {}", caseDetails.getId());
 
         SendEmailResponse response = null;
         try {
             response = notificationClientService.sendEmail(templateId, emailAddress, personalisation, reference);
-            log.info("Send Sealed And Certified completed for case {}", caseDetails.getId());
+            log.info("Send caseworker email completed for case {}", caseDetails.getId());
             return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
         } catch (NotificationClientException e) {
             log.error("NotificationClientException: {}", e.getMessage());
