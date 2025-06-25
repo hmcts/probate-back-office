@@ -92,6 +92,7 @@ public class AutomatedNotificationPersonalisationService {
         log.info("AutomatedNotificationPersonalisationService getPersonalisation");
         Map<String, Object> caseData = caseDetails.getData();
         HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put(PERSONALISATION_DATE_CREATED, DATE_FORMAT.format(caseDetails.getCreatedDate()));
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
         personalisation.put(PERSONALISATION_RESPOND_DATE, DATE_FORMAT.format(LocalDate.now().plusDays(14)));
         personalisation.put(PERSONALISATION_APPLICANT_NAME, getPrimaryApplicantName(caseData));
