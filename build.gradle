@@ -115,7 +115,7 @@ task functional(type: Test) {
   // PACT_BRANCH_NAME is only set in non-dev environments
   if (System.getenv("PACT_BRANCH_NAME") == null) {
     doFirst() {
-      "sh bin/variables/load-local-environment-variables.sh".execute()
+      "sh bin/variables/load-local-environment-variables.sh".execute().waitFor()
     }
     if (project.file('./.aat-env').exists()) {
       project.file('./.aat-env').readLines().each() {
@@ -169,7 +169,7 @@ def versions = [
         lombok                          : '1.18.38',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
-        probateCommonsVersion           : '3.0.0-DTSPB-4679-downgrade-002',
+        probateCommonsVersion           : '3.0.0-DTSPB-4679-downgrade-003',
         restAssured                     : '5.5.5',
         serenity                        : '4.2.34',
         serenityreporter                : '4.2.34',
@@ -427,7 +427,7 @@ pact {
   }
 }
 
-runAndPublishConsumerPactTests.finalizedBy pactPublish
+//runAndPublishConsumerPactTests.finalizedBy pactPublish
 
 // Build the back office excel file.
 task buildBackOfficeXlsx(type: Exec) {
@@ -462,7 +462,7 @@ task forceBuildAllXlsx(type: Exec) {
 //import all excel files.
 task importAllXlsx(type: Exec) {
   doFirst() {
-    "sh bin/variables/load-local-environment-variables.sh".execute()
+    "sh bin/variables/load-local-environment-variables.sh".execute().waitFor()
   }
 
   if (project.file('./.aat-env').exists()) {
@@ -481,7 +481,7 @@ task buildAndImportAllXlsx(type: Exec) {
   dependsOn forceBuildAllXlsx
 
   doFirst() {
-    "sh bin/variables/load-local-environment-variables.sh".execute()
+    "sh bin/variables/load-local-environment-variables.sh".execute().waitFor()
   }
 
   if (project.file('./.aat-env').exists()) {
