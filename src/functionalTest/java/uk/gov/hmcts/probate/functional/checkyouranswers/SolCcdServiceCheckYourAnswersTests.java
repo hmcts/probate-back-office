@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional.checkyouranswers;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 @ExtendWith(SerenityJUnit5Extension.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
@@ -320,6 +322,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             final String textContent = removeCrLfs(textContentOf(response.getBody().asByteArray()));
             validationString = removeCrLfs(validationString);
             assertTrue(textContent.contains(validationString));
+            log.info("response header: {}", response.getHeaders().toString());
             assertEquals(response.contentType(), "application/pdf");
         } catch (IOException e) {
             e.printStackTrace();
