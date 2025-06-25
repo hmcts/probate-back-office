@@ -91,6 +91,7 @@ ccd:
         CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
         CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: aac_manage_case_assignment,fpl_case_service,iac,finrem_case_orchestration,divorce_frontend,nfdiv_cos,civil_service,probate_backend
+        UPLOAD_TIMESTAMP_FEATURED_CASE_TYPES: GrantOfRepresentation
         LOG_CALLBACK_DETAILS: "*"
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
