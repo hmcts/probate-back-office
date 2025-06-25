@@ -320,7 +320,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             final String textContent = removeCrLfs(textContentOf(response.getBody().asByteArray()));
             validationString = removeCrLfs(validationString);
             assertTrue(textContent.contains(validationString));
-            assertEquals(response.contentType(), "application/pdf");
+            assertEquals("application/pdf", response.contentType());
         } catch (IOException e) {
             e.printStackTrace();
         }
