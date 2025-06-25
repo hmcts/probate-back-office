@@ -200,23 +200,20 @@ public class NotificationController {
 
     @PostMapping(path = "/stopped-information-request")
     public ResponseEntity<CallbackResponse> informationRequest(
-            @RequestBody final CallbackRequest callbackRequest) throws NotificationClientException {
+            @RequestBody final CallbackRequest callbackRequest) {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         log.info("caseworker info: {}", caseworkerInfo.orElse(null));
-        CallbackResponse response = informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo);
-
-        if (null != response.getErrors() && response.getErrors().stream().anyMatch(error ->
-                error.contains("ValidationError")
-                        && error.contains("\"message\":\"email_address Not a valid email address\""))) {
-            log.warn("Invalid applicant email detected for case id: {}", callbackRequest.getCaseDetails().getId());
+        CallbackResponse response = null;
+        try {
+            response = informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo);
+        } catch (NotificationClientException e) {
             if (caseworkerInfo.isPresent()) {
                 log.info("Sending email to caseworker about invalid applicant email for case id: {}",
                         callbackRequest.getCaseDetails().getId());
                 log.info("Email sent successfully to caseworker for case id: {}",
                         callbackRequest.getCaseDetails().getId());
-            }
+                }
         }
-
         return ResponseEntity.ok(response);
     }
 

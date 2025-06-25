@@ -429,7 +429,7 @@ class NotificationControllerUnitTest {
     }
 
     @Test
-    void shouldNotSendForInvalidApplicantEmail() throws NotificationClientException {
+    void shouldHandleNotificationClientException() throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
                 .registryLocation("Manchester")
@@ -438,23 +438,17 @@ class NotificationControllerUnitTest {
                 .languagePreferenceWelsh("No")
                 .build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
-        document = Document.builder()
-                .documentDateAdded(LocalDate.now())
-                .documentFileName("fileName")
-                .documentGeneratedBy("generatedBy")
-                .documentLink(
-                        DocumentLink.builder().documentUrl("url").documentFilename("file")
-                                .documentBinaryUrl("binary").build())
-                .documentType(DocumentType.SENT_EMAIL)
-                .build();
-        List<String> errors = List.of(
-                "{\"error\":\"ValidationError\",\"message\":\"email_address Not a valid email address\"}"
-        );
-        callbackResponse = CallbackResponse.builder().errors(errors).build();
-        when(informationRequestService.handleInformationRequest(any(), any())).thenReturn(callbackResponse);
-        ResponseEntity<CallbackResponse> stringResponseEntity =
-                notificationController.informationRequest(callbackRequest);
-        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+
+        Optional<UserInfo> caseworkerInfo = Optional.of(UserInfo.builder().build());
+        when(userInfoService.getCaseworkerInfo()).thenReturn(caseworkerInfo);
+
+        NotificationClientException exception = new NotificationClientException("ValidationError");
+        when(informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo))
+                .thenThrow(exception);
+
+        notificationController.informationRequest(callbackRequest);
+
+        verify(userInfoService).getCaseworkerInfo();
     }
 
     @Test
