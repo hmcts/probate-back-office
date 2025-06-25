@@ -216,7 +216,7 @@ public class NotificationController {
                             callbackRequest.getCaseDetails().getId());
                 document = notificationService.sendCaseWorkerEmail(caseDetails, caseworkerInfo);
                 documents.add(document);
-                log.info("Successful response for caveat email for case id {} ",
+                log.info("Successful response for caseworker email for case id {} ",
                         callbackRequest.getCaseDetails().getId());
                 log.info("Email sent successfully to caseworker for case id: {}",
                         callbackRequest.getCaseDetails().getId());
