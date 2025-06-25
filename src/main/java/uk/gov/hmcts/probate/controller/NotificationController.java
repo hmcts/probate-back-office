@@ -212,7 +212,7 @@ public class NotificationController {
                         callbackRequest.getCaseDetails().getId());
                 log.info("Email sent successfully to caseworker for case id: {}",
                         callbackRequest.getCaseDetails().getId());
-                }
+            }
         }
         return ResponseEntity.ok(response);
     }
