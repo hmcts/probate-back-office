@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "lint": "NODE_PATH=. eslint .",
+    "lint": "NODE_PATH=. eslint . && yarn tsc -p tsconfig.json",
     "load-e2e-secrets": "yarn node src/test/PLaywrightTest/scripts/get-secrets.js",
     "eslint": "NODE_PATH=. eslint .",
     "eslint-src": "NODE_PATH=. eslint ./src",

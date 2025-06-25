@@ -117,7 +117,6 @@ export class CreateCasePage extends BasePage {
             await this.page.locator(`#deceasedAnyOtherNames_${createCaveatConfig.page2_hasAliasYes}`).check();
 
             let idx = 0;
-            /* eslint-disable no-await-in-loop */
             const keys = Object.keys(createCaveatConfig);
             let addNewButtonLocator: Locator;
             for (let i=0; i < keys.length; i++) {
@@ -609,7 +608,6 @@ export class CreateCasePage extends BasePage {
             await this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementConfig.page2_hasAliasYes}`).click();
             await this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementConfig.page2_hasAliasYes}`).click();
 
-            /* eslint-disable no-await-in-loop */
             let idx = 0;
             const keys = Object.keys(createWillLodgementConfig);
             for (let i=0; i < keys.length; i++) {
