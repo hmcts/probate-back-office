@@ -2,7 +2,6 @@ import { test } from "../../Fixtures/fixtures.ts";
 
 import dateFns from "date-fns";
 
-// const testConfig = require('src/test/config');
 import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 import eventSummaryConfig from "../../Pages/eventSummary/eventSummaryConfig.json" with { type: "json" };
 

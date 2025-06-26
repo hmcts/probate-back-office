@@ -1,4 +1,3 @@
-// @ts-check
 import dateFns from "date-fns";
 import { test } from "../../Fixtures/fixtures.ts";
 
@@ -6,12 +5,6 @@ import caseMatchesConfig from "../../Pages/caseMatches/grantOfProbate/caseMatche
 import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 import eventSummaryConfig from "../../Pages/eventSummary/eventSummaryConfig.json" with { type: "json" };
 
-// const testConfig = require('src/test/config');
-//const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
-// const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfigEE');
-import createGrantOfProbateConfig from "../../Pages/createGrantOfProbateManual/createGrantOfProbateManualConfig.json" with { type: "json" };
-import documentUploadConfig from "../../Pages/documentUpload/grantOfProbate/documentUploadConfig.json" with { type: "json" };
-//const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 import { testConfig } from "../../Configs/config.ts";
 import applicantDetailsTabConfig from "../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json" with { type: "json" };
 import caseDetailsTabConfig from "../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigEE.json" with { type: "json" };
@@ -23,6 +16,8 @@ import grantNotificationsTabConfig from "../../Pages/caseDetails/grantOfProbate/
 import historyTabConfig from "../../Pages/caseDetails/grantOfProbate/historyTabConfig.json" with { type: "json" };
 import ihtTabConfig from "../../Pages/caseDetails/grantOfProbate/ihtTabConfig.json" with { type: "json" };
 import ihtTabConfigUpdate from "../../Pages/caseDetails/grantOfProbate/ihtUpdateTabConfig.json" with { type: "json" };
+import createGrantOfProbateConfig from "../../Pages/createGrantOfProbateManual/createGrantOfProbateManualConfig.json" with { type: "json" };
+import documentUploadConfig from "../../Pages/documentUpload/grantOfProbate/documentUploadConfig.json" with { type: "json" };
 import issueGrantConfig from "../../Pages/issueGrant/issueGrantConfig.json" with { type: "json" };
 import nextStepConfig from "../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
 
