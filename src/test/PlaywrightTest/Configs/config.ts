@@ -1,6 +1,7 @@
 import { ConfigUtils } from "@hmcts/playwright-common";
-import * as dotenv from "dotenv";
-dotenv.config();
+import dotenv from "dotenv";
+
+dotenv.config({ path: "./src/test/PlaywrightTest/.env" });
 
 export const testConfig = {
   TestBackOfficeUrl:

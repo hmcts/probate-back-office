@@ -72,7 +72,7 @@
     "@axe-core/playwright": "^4.9.1",
     "@date-fns/upgrade": "^1.0.3",
     "@hmcts/playwright-common": "^1.0.24",
-    "dotenv-extended": "^2.9.0",
+    "dotenv": "^16.5.0",
     "html_codesniffer": "^2.5.1",
     "require-directory": "^2.1.1"
   },
