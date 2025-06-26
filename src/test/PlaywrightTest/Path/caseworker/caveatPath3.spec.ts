@@ -36,7 +36,7 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Caveat expired
     // Test File
     // get unique suffix for names - in order to match only against 1 case
-    const unique_deceased_user = Date.now();
+    const unique_deceased_user = Date.now().toString();
 
     await basePage.logInfo(scenarioName, "Login as Caseworker", null);
     await signInPage.authenticateWithIdamIfAvailable(false);
@@ -53,7 +53,6 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
     await createCasePage.enterCaveatPage2("create", unique_deceased_user);
     await createCasePage.enterCaveatPage3("create");
     await createCasePage.enterCaveatPage4("create");
-    // TODO: Expects 2 arguments
     await createCasePage.checkMyAnswers(nextStepName);
 
     // SECOND case - the main test case
@@ -68,7 +67,6 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
     await createCasePage.enterCaveatPage2("create", unique_deceased_user);
     await createCasePage.enterCaveatPage3("create");
     await createCasePage.enterCaveatPage4("create");
-    // TODO: Expects 2 arguments
     await createCasePage.checkMyAnswers(nextStepName);
     let endState = "Caveat raised";
     // await basePage.logInfo(endState);
@@ -83,21 +81,18 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       caseDetailsTabConfig,
       createCaveatConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       deceasedDetailsTabConfig,
       createCaveatConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -109,7 +104,6 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
       dateFns.addMonths(new Date(), 6),
       testConfig.dateFormat
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -167,7 +161,6 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -222,7 +215,6 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
       new Date(),
       testConfig.dateFormat
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -245,7 +237,6 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -287,7 +278,6 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
       new Date(),
       testConfig.dateFormat
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -310,7 +300,6 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,

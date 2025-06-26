@@ -207,7 +207,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterGrantOfProbateManualPage1(crud, createConfig, unique_deceased_user, deceasedDODYear) {
+    async enterGrantOfProbateManualPage1(crud, createConfig, unique_deceased_user = Date.now().toString(), deceasedDODYear?) {
         if (crud === 'create') {
             await expect(this.createCaseCwTextLocator)
                 .toBeVisible();
@@ -310,7 +310,7 @@ export class CreateCasePage extends BasePage {
                 .fill(createConfig.page1_deceasedDod_day);
             await this.page.locator('#deceasedDateOfDeath-month')
                 .fill(createConfig.page1_deceasedDod_month);
-            if (createConfig === createGrantOfProbateConfig) {
+            if (createConfig === createGrantOfProbateConfig && deceasedDODYear) {
                 await this.page.locator('#deceasedDateOfDeath-year')
                     .fill(deceasedDODYear);
             } else {
@@ -372,7 +372,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterGrantOfProbatePage4(crud, unique_deceased_user) {
+    async enterGrantOfProbatePage4(crud, unique_deceased_user = Date.now().toString()) {
         if (crud === 'create') {
             // TODO: This doesn't exist
             //await expect(this.page4waitForTextLocator).toBeVisible();
@@ -510,7 +510,7 @@ export class CreateCasePage extends BasePage {
         }
     }
 
-    async checkMyAnswers(nextStepName, submitButtonName) {
+    async checkMyAnswers(nextStepName, submitButtonName?) {
         let eventSummaryPrefix = nextStepName;
         await expect(this.checkYourAnswersHeadingLocator).toBeVisible();
 
@@ -520,7 +520,7 @@ export class CreateCasePage extends BasePage {
         await this.page.locator('#field-trigger-description').fill(eventSummaryPrefix + eventSummaryConfig.comment);
 
         await this.page.waitForTimeout(testConfig.CreateCaseDelay);
-        await this.waitForSubmitNavigationToComplete(submitButtonName);
+        if (submitButtonName) await this.waitForSubmitNavigationToComplete(submitButtonName);
     }
 
     async enterIhtDetails(caseProgressConfig, optionValue) {
@@ -578,7 +578,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterWillLodgementPage2(crud, unique_deceased_user) {
+    async enterWillLodgementPage2(crud, unique_deceased_user = Date.now().toString()) {
         if (crud === 'create') {
             await expect(this.createWillWaitForTextLocator).toBeVisible();
 

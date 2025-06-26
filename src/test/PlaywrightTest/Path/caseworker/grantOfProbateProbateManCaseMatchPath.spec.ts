@@ -46,7 +46,6 @@ test.describe("Caseworker Grant of Representation - probateman case match", () =
         "enterGrantOfProbateManualForProbateManPage1",
         null
       );
-      // TODO: Expects 4 arguments
       await createCasePage.enterGrantOfProbateManualPage1(
         "create",
         createGrantOfProbateManualProbateManCaseConfig
@@ -69,7 +68,6 @@ test.describe("Caseworker Grant of Representation - probateman case match", () =
         "create",
         createGrantOfProbateManualProbateManCaseConfig
       );
-      // TODO: Expects 2 arguments
       await createCasePage.checkMyAnswers(nextStepName);
       endState = "Awaiting documentation";
 
@@ -84,14 +82,12 @@ test.describe("Caseworker Grant of Representation - probateman case match", () =
         nextStepName,
         endState
       );
-      // TODO: Expects 6-7 arguments
       await basePage.seeCaseDetails(
         testInfo,
         caseRef,
         deceasedTabConfig,
         createGrantOfProbateManualProbateManCaseConfig
       );
-      // TODO: Expects 6-7 arguments
       await basePage.seeCaseDetails(
         testInfo,
         caseRef,
@@ -99,14 +95,12 @@ test.describe("Caseworker Grant of Representation - probateman case match", () =
         createGrantOfProbateManualProbateManCaseConfig
       );
       await basePage.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
-      // TODO: Expects 6-7 arguments
       await basePage.seeCaseDetails(
         testInfo,
         caseRef,
         applicantDetailsTabConfig,
         createGrantOfProbateManualProbateManCaseConfig
       );
-      // TODO: Expects 6-7 arguments
       await basePage.seeCaseDetails(
         testInfo,
         caseRef,
@@ -131,7 +125,6 @@ test.describe("Caseworker Grant of Representation - probateman case match", () =
         nextStepName,
         endState
       );
-      // TODO: Expects 6-7 arguments
       await basePage.seeCaseDetails(
         testInfo,
         caseRef,

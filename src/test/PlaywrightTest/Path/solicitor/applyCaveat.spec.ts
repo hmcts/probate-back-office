@@ -56,21 +56,18 @@ test.describe("Solicitor - Apply Caveat", () => {
       createCaseConfig.list3_text_caveat,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       caseDetailsTabConfig,
       applyCaveatConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       caveatorDetailsTabConfig,
       applyCaveatConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -87,14 +84,12 @@ test.describe("Solicitor - Apply Caveat", () => {
 
     await solCreateCasePage.seeEndState(endState);
 
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       deceasedDetailsTabConfig,
       applicationDetailsConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeUpdatesOnCase(
       testInfo,
       caseRef,

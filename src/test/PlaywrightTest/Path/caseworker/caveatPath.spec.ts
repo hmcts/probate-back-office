@@ -42,7 +42,7 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Order summons
 
     // get unique suffix for names - in order to match only against 1 case
-    const unique_deceased_user = Date.now();
+    const unique_deceased_user = Date.now().toString();
 
     await basePage.logInfo(scenarioName, "Login as Caseworker", null);
     await signInPage.authenticateWithIdamIfAvailable(false);
@@ -60,7 +60,6 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
     await createCasePage.enterCaveatPage2("create", unique_deceased_user);
     await createCasePage.enterCaveatPage3("create");
     await createCasePage.enterCaveatPage4("create");
-    // TODO: Expects 2 arguments
     await createCasePage.checkMyAnswers(nextStepName);
 
     // SECOND case - the main test case
@@ -75,7 +74,6 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
     await createCasePage.enterCaveatPage2("create", unique_deceased_user);
     await createCasePage.enterCaveatPage3("create");
     await createCasePage.enterCaveatPage4("create");
-    // TODO: Expects 2 arguments
     await createCasePage.checkMyAnswers(nextStepName);
     let endState = "Caveat raised";
 
@@ -89,21 +87,18 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       caseDetailsTabConfig,
       createCaveatConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       deceasedDetailsTabConfig,
       createCaveatConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -116,7 +111,6 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
       dateFns.addMonths(new Date(), 6),
       testConfig.dateFormat
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -129,7 +123,6 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await cwEventActionsPage.registrarsDecision(caseRef);
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -156,7 +149,6 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
       new Date(),
       testConfig.dateFormat
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -183,7 +175,6 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -210,7 +201,6 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
       new Date(),
       testConfig.dateFormat
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -246,7 +236,6 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -341,28 +330,24 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       caseDetailsTabUpdateConfig,
       createCaveatConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       deceasedDetailsTabUpdateConfig,
       createCaveatConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       caveatorDetailsTabUpdateConfig,
       createCaveatConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
