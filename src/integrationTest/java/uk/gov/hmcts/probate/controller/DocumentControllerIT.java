@@ -91,6 +91,8 @@ class DocumentControllerIT {
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
     private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final String USER_ID_HEADER = "user-id";
+    private static final String USER_ID = "userId";
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
             .familyName("familyName")
             .givenName("givenname")
@@ -240,6 +242,8 @@ class DocumentControllerIT {
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
 
         when(featureToggleService.enableAmendLegalStatementFiletypeCheck()).thenReturn(true);
+
+        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
     }
 
     @Test
@@ -1114,9 +1118,6 @@ class DocumentControllerIT {
     void shouldAcceptPdfValidateAmendLegalStatement() throws Exception {
         String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_probate.json");
 
-        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
-        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
-
         final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
                 uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
                         .mimeType(MediaType.APPLICATION_PDF_VALUE)
@@ -1124,6 +1125,8 @@ class DocumentControllerIT {
         when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/validateAmendLegalStatement")
+                .header(AUTH_HEADER, AUTH_TOKEN)
+                .header(USER_ID_HEADER, USER_ID)
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -1164,9 +1167,6 @@ class DocumentControllerIT {
     void shouldRejectNonPdfValidateAmendLegalStatement() throws Exception {
         String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_probate.json");
 
-        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
-        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
-
         final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
                 uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
                         .mimeType(MediaType.IMAGE_PNG_VALUE)
@@ -1174,6 +1174,8 @@ class DocumentControllerIT {
         when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/validateAmendLegalStatement")
+                .header(AUTH_HEADER, AUTH_TOKEN)
+                .header(USER_ID_HEADER, USER_ID)
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
