@@ -166,6 +166,7 @@ notifications:
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "pa-disposal-reminder"
           draftCasePaymentSuccess: "pa-draft-case-payment-success"
+          caseworkerEmail: "pa-caseworker-email"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -190,6 +191,7 @@ notifications:
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "sol-disposal-reminder"
           draftCasePaymentSuccess: "sol-draft-case-payment-success"
+          caseworkerEmail: "sol-caseworker-email"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"

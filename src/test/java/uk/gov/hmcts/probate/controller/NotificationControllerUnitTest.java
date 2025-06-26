@@ -429,6 +429,29 @@ class NotificationControllerUnitTest {
     }
 
     @Test
+    void shouldHandleNotificationClientException() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@probate-test.c")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+
+        Optional<UserInfo> caseworkerInfo = Optional.of(UserInfo.builder().build());
+        when(userInfoService.getCaseworkerInfo()).thenReturn(caseworkerInfo);
+
+        NotificationClientException exception = new NotificationClientException("ValidationError");
+        when(informationRequestService.handleInformationRequest(callbackRequest, caseworkerInfo))
+                .thenThrow(exception);
+
+        notificationController.informationRequest(callbackRequest);
+
+        verify(userInfoService).getCaseworkerInfo();
+    }
+
+    @Test
     void shouldSendEmailPreview()  {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)

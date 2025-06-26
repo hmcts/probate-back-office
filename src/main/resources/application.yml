@@ -276,6 +276,7 @@ notifications:
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
           disposalReminder: "2e29cce0-66d9-458a-82a3-20aa0e4d5112"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          caseworkerEmail: "da06595e-edac-4635-98be-a24528e3e10f"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -304,6 +305,7 @@ notifications:
           disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
           caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          caseworkerEmail: "da06595e-edac-4635-98be-a24528e3e10f"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
