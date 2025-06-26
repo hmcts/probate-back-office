@@ -39,7 +39,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     // BO Grant of Representation (Personal): Case created -> Grant issued
 
     // get unique suffix for names - in order to match only against 1 case
-    const unique_deceased_user = Date.now();
+    const unique_deceased_user = Date.now().toString();
 
     await basePage.logInfo(scenarioName, "Login as Caseworker", null);
     await signInPage.authenticateWithIdamIfAvailable(false);
@@ -67,7 +67,6 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
       "create",
       createGrantOfProbateConfig
     );
-    // TODO: Expects 2 arguments
     await createCasePage.checkMyAnswers(nextStepName);
     let endState;
 
@@ -93,7 +92,6 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
       "create",
       createGrantOfProbateConfig
     );
-    // TODO: Expects 6-7 arguments
     await createCasePage.checkMyAnswers(nextStepName);
     endState = "Awaiting documentation";
 
@@ -108,14 +106,12 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       deceasedTabConfig,
       createGrantOfProbateConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -123,21 +119,18 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
       createGrantOfProbateConfig
     );
     await basePage.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       applicantDetailsTabConfig,
       createGrantOfProbateConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       copiesTabConfig,
       createGrantOfProbateConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -187,7 +180,6 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -199,11 +191,8 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     nextStepName = "Amend case details";
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.amendCaseDetails);
-    // TODO: Expects 2 arguments
     await createCasePage.enterGrantOfProbatePage4("EE");
-    // TODO: Expects 2 arguments
     await createCasePage.checkMyAnswers(nextStepName);
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -272,7 +261,6 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -302,7 +290,6 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
       new Date(),
       testConfig.dateFormat
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,

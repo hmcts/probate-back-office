@@ -109,8 +109,8 @@ export class BasePage {
     caseRef,
     tabConfigFile,
     dataConfigFile,
-    nextStep,
-    endState,
+    nextStep?,
+    endState?,
     delay = testConfig.CaseDetailsDelayDefault
   ) {
     if (tabConfigFile.tabName && tabConfigFile.tabName !== "Documents") {

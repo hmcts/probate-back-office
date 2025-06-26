@@ -41,7 +41,7 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
     // BO Will Lodgement (Personal): Create a will lodgement -> Withdraw will
 
     // get unique suffix for names - in order to match only against 1 case
-    const unique_deceased_user = Date.now();
+    const unique_deceased_user = Date.now().toString();
 
     await basePage.logInfo(scenarioName, "Login as Caseworker", null);
     await signInPage.authenticateWithIdamIfAvailable(false);
@@ -90,21 +90,18 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       caseDetailsTabConfig,
       createWillLodgementConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       testatorTabConfig,
       createWillLodgementConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -126,7 +123,6 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -157,7 +153,6 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
       unique_deceased_user
     );
     await createCasePage.enterWillLodgementPage3("update");
-    // TODO: Expects 2 arguments
     await createCasePage.checkMyAnswers(nextStepName);
     // Note that End State does not change when amending a Will Lodgement.
     await basePage.seeCaseDetails(
@@ -168,21 +163,18 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       caseDetailsTabUpdateConfig,
       createWillLodgementConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       testatorTabUpdateConfig,
       createWillLodgementConfig
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -208,7 +200,6 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
       new Date(),
       testConfig.dateFormat
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -220,9 +211,7 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
     nextStepName = "Amend will lodgement";
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
-    // TODO: Expects 2 arguments
     await createCasePage.enterWillLodgementPage2("update2orig");
-    // TODO: Expects 2 arguments
     await createCasePage.checkMyAnswers(nextStepName);
 
     nextStepName = "Match application";
@@ -239,7 +228,6 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
@@ -264,7 +252,6 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
       nextStepName,
       endState
     );
-    // TODO: Expects 6-7 arguments
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,

@@ -31,7 +31,7 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             // BO Grant of Representation (Personal): Case created -> Grant issued
 
             // get unique suffix for names - in order to match only against 1 case
-            const unique_deceased_user = Date.now();
+            const unique_deceased_user = Date.now().toString();
 
             await basePage.logInfo(scenarioName, 'Login as Caseworker', null);
             await signInPage.authenticateWithIdamIfAvailable('superUser');
@@ -49,7 +49,6 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await createCasePage.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
             await basePage.logInfo(scenarioName, 'enterGrantOfProbateManualPage3', null);
             await createCasePage.enterGrantOfProbateManualPage3('create', createGrantOfProbateConfig);
-            // TODO: Expects 2 arguments
             await createCasePage.checkMyAnswers(nextStepName);
             let endState;
 
@@ -65,7 +64,6 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await createCasePage.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
             await basePage.logInfo(scenarioName, 'enterGrantOfProbateManualPage3', null);
             await createCasePage.enterGrantOfProbateManualPage3('create', createGrantOfProbateConfig);
-            // TODO: Expects 2 arguments
             await createCasePage.checkMyAnswers(nextStepName);
             endState = 'Awaiting documentation';
 
@@ -73,14 +71,10 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
 
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, deceasedTabConfig, createGrantOfProbateConfig);
-            // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
             await basePage.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
-            // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
-            // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, copiesTabConfig, createGrantOfProbateConfig);
             //await I.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateConfig);
 
@@ -89,7 +83,6 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.registrarsDecision(caseRef);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, registrarsDecisionTabConfig, registrarsDecisionConfig);
 
             nextStepName = 'Handle supplementary evidence';
@@ -107,7 +100,6 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.uploadDocument(caseRef, documentUploadConfig);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, documentUploadTabConfig, documentUploadConfig);
 
             nextStepName = 'Select for QA';
@@ -154,7 +146,6 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Case Matching (Issue grant)';
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-            // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
             nextStepName = 'Change DOB';
@@ -162,7 +153,6 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterNewDob(newConfig.newDob);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, deceasedTabConfigUpdated, createGrantOfProbateConfig);
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
@@ -178,7 +168,6 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             // When sending an email notification, the Date added for the email notification is set to today
             issueGrantConfig.date = dateFns.format(new Date(), testConfig.dateFormat);
-            // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, grantNotificationsTabConfig, issueGrantConfig);
 
             nextStepName = 'Post Grant Issue';
@@ -195,7 +184,6 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             endState = 'Grant issued';
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             issueGrantConfig.date = dateFns.format(new Date(), testConfig.dateFormat);
-            // TODO: Expects 6-7 arguments
             await basePage.seeCaseDetails(testInfo, caseRef, grantNotificationsTabConfig, issueGrantConfig);
         });
 });
