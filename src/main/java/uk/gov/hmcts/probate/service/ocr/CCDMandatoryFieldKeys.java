@@ -25,8 +25,6 @@ public interface CCDMandatoryFieldKeys {
         "executorsNotApplying_%s_notApplyingExecutorReason";
     String DEPENDANT_DESC_EXECUTORSNOTAPPLYING_EXECUTORREASON =
         "Executor %s not applying reason";
-    String MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS =
-        GORSolicitorMandatoryFields.PRIMARY_APPLICANT_HAS_ALIAS.getKey();
     String MANDATORY_KEY_FORM_VERSION =
             GORSolicitorMandatoryFields.FORM_VERSION.getKey();
     String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";

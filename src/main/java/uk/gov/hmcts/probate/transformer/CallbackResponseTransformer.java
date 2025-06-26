@@ -1404,6 +1404,8 @@ public class CallbackResponseTransformer {
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
+            .modifiedOCRFieldList(caseData.getModifiedOCRFieldList())
+            .autoCaseWarnings(caseData.getAutoCaseWarnings())
             .lastModifiedCaseworkerForenames(caseData.getLastModifiedCaseworkerForenames())
             .lastModifiedCaseworkerSurname(caseData.getLastModifiedCaseworkerSurname())
             .informationNeeded(caseData.getInformationNeeded())

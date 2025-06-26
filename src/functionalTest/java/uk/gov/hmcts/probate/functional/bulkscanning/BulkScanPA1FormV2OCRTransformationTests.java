@@ -33,7 +33,7 @@ public class BulkScanPA1FormV2OCRTransformationTests extends IntegrationTestBase
     @Test
     void shouldSetIhtFormId() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version2/transformation/PA1P_IHT205.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtFormId","IHT205");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtFormId","IHT400");
     }
     
     @Test

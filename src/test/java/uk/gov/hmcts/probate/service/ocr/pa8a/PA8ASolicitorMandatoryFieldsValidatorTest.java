@@ -46,7 +46,8 @@ class PA8ASolicitorMandatoryFieldsValidatorTest {
 
         assertEquals(3, warnings.size());
         assertEquals("Solictor address line 1 (solsSolicitorAddressLine1) is mandatory.", warnings.get(0));
-        assertEquals("Solictor address postcode (solsSolicitorAddressPostCode) is mandatory.", warnings.get(1));
+        assertEquals("Solictor address postcode (solsSolicitorAddressPostCode) is mandatory.",
+                warnings.get(1));
         assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warnings.get(2));
     }
 }
