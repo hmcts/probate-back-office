@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.util.Locale;
 
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.NOT_APPLICABLE_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
 
 @Component
@@ -22,7 +23,7 @@ public class IHTFormIDValidationRule {
         CaseData caseData = caseDetails.getData();
         if (caseData.getIhtFormEstateValuesCompleted() == null
                 && (NOT_APPLICABLE_VALUE.equalsIgnoreCase(caseData.getIhtFormId())
-                || "IHT400421".equalsIgnoreCase(caseData.getIhtFormId()))
+                || IHT400421_VALUE.equalsIgnoreCase(caseData.getIhtFormId()))
         ) {
             String userMessage = businessValidationMessageRetriever
                     .getMessage("ihtFormIDInvalid", null, Locale.UK);
