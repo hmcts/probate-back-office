@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
+import uk.gov.hmcts.probate.service.DemoInstanceToggleService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveatMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordGrantOfRepresentationMapper;
@@ -72,6 +73,9 @@ public class ExceptionRecordService {
 
     @Autowired
     CallbackResponseTransformer grantOfRepresentationTransformer;
+
+    @Autowired
+    DemoInstanceToggleService demoInstanceToggleService;
 
     public SuccessfulTransformationResponse createCaveatCaseFromExceptionRecord(
         ExceptionRecordRequest erRequest,
@@ -130,7 +134,7 @@ public class ExceptionRecordService {
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");
             ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
-                    erRequest.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
+                    erRequest.getScannedDocuments(), demoInstanceToggleService.getCaseType());
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))

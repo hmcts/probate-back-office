@@ -28,6 +28,7 @@ public class DormantCaseService {
     private final CaseQueryService caseQueryService;
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
+    private final DemoInstanceToggleService demoInstanceToggleService;
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

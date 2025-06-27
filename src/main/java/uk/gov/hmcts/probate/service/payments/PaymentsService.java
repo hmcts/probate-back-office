@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateRe
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
+import uk.gov.hmcts.probate.service.DemoInstanceToggleService;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
@@ -45,7 +46,6 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
-import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 @Service
 @RequiredArgsConstructor
@@ -65,6 +65,7 @@ public class PaymentsService {
     private final PDFManagementService pdfManagementService;
     private final DocumentTransformer documentTransformer;
     private final CaveatNotificationService caveatNotificationService;
+    private final DemoInstanceToggleService demoInstanceToggleService;
 
     public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
@@ -81,7 +82,7 @@ public class PaymentsService {
                 retrieveCaseDetailsAsCaseworker(caseId, ccdCaseType);
 
         SecurityDTO securityDTO = getCaseworkerSecurityDTO();
-        if (GRANT_OF_REPRESENTATION == ccdCaseType) {
+        if (demoInstanceToggleService.getCcdCaseType() == ccdCaseType) {
             GrantOfRepresentationData caseData = buildGrantData(retrievedCaseDetails, response);
             String paymentStatus = caseData.getPayments().get(caseData.getPayments().size() - 1)
                     .getValue().getStatus().getName();

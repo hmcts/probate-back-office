@@ -1,0 +1,3 @@
+[
+  {"LiveFrom": "01/01/2021", "CaseTypeID": "GrantOfRepresentation_int", "ID": "NoCChallenge", "DisplayOrder": "1", "QuestionText": "Deceased Surname", "AnswerFieldType": "Text", "Answer": "${deceasedSurname}:[APPLICANTSOLICITOR]", "QuestionId": "deceasedSurname"}
+]

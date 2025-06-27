@@ -6,6 +6,7 @@ import java.util.Optional;
 
 public enum CaseType {
     GRANT_OF_REPRESENTATION("GrantOfRepresentation", "Grant of Representation"),
+    GRANT_OF_REPRESENTATION_INT("GrantOfRepresentation_int", "Grant of Representation - new"),
     CAVEAT("Caveat", "Caveat"),
     STANDING_SEARCH("StandingSearch", "Standing Search"),
     LEGACY("Legacy", "Legacy"),

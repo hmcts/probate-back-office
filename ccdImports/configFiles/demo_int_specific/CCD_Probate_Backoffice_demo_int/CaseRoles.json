@@ -1,0 +1,4 @@
+[
+{"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "ID": "[CREATOR]", "Name": "Creator of case", "Description": "Role specified by CCD"},
+{"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "ID": "[APPLICANTSOLICITOR]", "Name": "Applicant Solicitor", "Description": "Applicant Solicitor"}
+]

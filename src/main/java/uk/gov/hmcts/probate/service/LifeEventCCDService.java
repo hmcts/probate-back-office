@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -43,15 +42,19 @@ public class LifeEventCCDService {
     private CcdClientApi ccdClientApi;
     private DeathRecordService deathRecordService;
     private HandOffLegacyService handOffLegacyService;
+    private DemoInstanceToggleService demoInstanceToggleService;
 
     @Autowired
-    public LifeEventCCDService(final DeathService deathService, final CcdClientApi ccdClientApi,
+    public LifeEventCCDService(final DeathService deathService,
+                               final CcdClientApi ccdClientApi,
                                final DeathRecordService deathRecordService,
-                               final HandOffLegacyService handOffLegacyService) {
+                               final HandOffLegacyService handOffLegacyService,
+                               final DemoInstanceToggleService demoInstanceToggleService) {
         this.deathService = deathService;
         this.ccdClientApi = ccdClientApi;
         this.deathRecordService = deathRecordService;
         this.handOffLegacyService = handOffLegacyService;
+        this.demoInstanceToggleService = demoInstanceToggleService;
     }
 
     @Async
@@ -163,12 +166,12 @@ public class LifeEventCCDService {
                                                  SecurityDTO securityDTO, String description, String summary,
                                                  boolean isCitizenUser) {
         if (isCitizenUser) {
-            ccdClientApi.updateCaseAsCitizen(CcdCaseType.GRANT_OF_REPRESENTATION, caseDetails.getId().toString(),
+            ccdClientApi.updateCaseAsCitizen(demoInstanceToggleService.getCcdCaseType(), caseDetails.getId().toString(),
                     grantOfRepresentationData, eventId, securityDTO, description, summary);
         } else {
-            ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseDetails.getId().toString(),
-                    getLastModifiedDate(caseDetails), grantOfRepresentationData, eventId, securityDTO, description,
-                    summary);
+            ccdClientApi.updateCaseAsCaseworker(demoInstanceToggleService.getCcdCaseType(),
+                    caseDetails.getId().toString(), getLastModifiedDate(caseDetails), grantOfRepresentationData,
+                    eventId, securityDTO, description, summary);
         }
     }
 

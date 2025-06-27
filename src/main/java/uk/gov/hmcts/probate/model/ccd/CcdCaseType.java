@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.Constants.CAVEAT_NAME;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.Constants.GRANT_OF_REPRESENTATION_INT_NAME;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.Constants.GRANT_OF_REPRESENTATION_NAME;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.Constants.STANDING_SEARCH_NAME;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.Constants.WILL_LODGEMENT_NAME;
@@ -14,6 +15,7 @@ import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.Constants.WILL_LODGEMEN
 public enum CcdCaseType {
 
     @JsonProperty(GRANT_OF_REPRESENTATION_NAME) GRANT_OF_REPRESENTATION(GRANT_OF_REPRESENTATION_NAME),
+    @JsonProperty(GRANT_OF_REPRESENTATION_INT_NAME) GRANT_OF_REPRESENTATION_INT(GRANT_OF_REPRESENTATION_INT_NAME),
     @JsonProperty(CAVEAT_NAME) CAVEAT(CAVEAT_NAME),
     @JsonProperty(STANDING_SEARCH_NAME) STANDING_SEARCH(STANDING_SEARCH_NAME),
     @JsonProperty(WILL_LODGEMENT_NAME) WILL_LODGEMENT(WILL_LODGEMENT_NAME);
@@ -24,6 +26,8 @@ public enum CcdCaseType {
     public static class Constants {
 
         public static final String GRANT_OF_REPRESENTATION_NAME = "GrantOfRepresentation";
+
+        public static final String GRANT_OF_REPRESENTATION_INT_NAME = "GrantOfRepresentation_int";
 
         public static final String CAVEAT_NAME = "Caveat";
 

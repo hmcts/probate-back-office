@@ -1,0 +1,15 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "[CASE_REFERENCE]", "Label": "Case reference", "DisplayOrder": 1, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "solsSolicitorAppReference", "Label": "Your reference", "DisplayOrder": 2, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "primaryApplicantForenames", "Label": "Applicant Forename", "DisplayOrder": 3, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "primaryApplicantSurname", "Label": "Applicant Surname", "DisplayOrder": 4, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "deceasedForenames", "Label": "First name(s) of deceased", "DisplayOrder": 5, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "deceasedSurname", "Label": "Last name(s) of deceased", "DisplayOrder": 6, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "deceasedDateOfDeath", "Label": "Date of death", "DisplayOrder": 7, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "casePrinted", "Label": "Case printed", "DisplayOrder": 8, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa" ,"CaseFieldID": "[STATE]", "Label": "State", "DisplayOrder": 9, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "applicationSubmittedDate", "Label": "Application completed date", "DisplayOrder": 10, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "evidenceHandled", "Label": "Supplementary evidence handled", "DisplayOrder": 11, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "grantIssuedDate", "Label": "Grant issued date", "DisplayOrder": 12, "UseCase": "ORGCASES"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CaseFieldID": "[LAST_STATE_MODIFIED_DATE]", "Label": "Last State Modified Date", "DisplayOrder": 13, "UseCase": "ORGCASES"}
+]
