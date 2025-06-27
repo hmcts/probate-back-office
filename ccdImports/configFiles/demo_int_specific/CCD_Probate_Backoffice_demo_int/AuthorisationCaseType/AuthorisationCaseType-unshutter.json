@@ -1,0 +1,18 @@
+[
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation_int", "UserRole": "TTL_profile", "CRUD": "CRU"}
+]
