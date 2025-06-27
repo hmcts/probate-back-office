@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @Slf4j
@@ -100,8 +100,16 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         + " of the estate in the United Kingdom amounts to £10,000 and the net value amounts to £8,000";
 
     private static final String REGISTRY_ADDRESS =
-        "High Court of Justice England and WalesBirmingham District Probate Registry The Priory Courts33 Bull "
-            + "StreetBirminghamB4 6DU0300 303 0648";
+            ".*"
+            + "High Court of Justice[ ]*"
+            + "England and Wales[ ]*"
+            + "Birmingham District Probate Registry[ ]*"
+            + "The Priory Courts[ ]*"
+            + "33 Bull Street[ ]*"
+            + "Birmingham[ ]*"
+            + "B4 6DU[ ]*"
+            + "0300 303 0648"
+            + ".*";
     private static final String REGISTRY_ADDRESS_HARLOW =
         "High Court of Justice England and WalesPrincipal Registry of the Family DivisionHMCTS ProbatePO Box 12625"
             + "HarlowCM20 9QE";
@@ -109,12 +117,22 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High"
             + " HolbornLondonWC1V 6NP0300 303 0648 ";
     private static final String CTSC_REGISTRY_ADDRESS =
-        "High Court of Justice England and WalesPrincipal Registry of the Family DivisionHMCTS ProbatePO Box "
-            + "12625HarlowCM20 9QE0300 303 0648";
+            ".*"
+            + "High Court of Justice England and Wales[ ]*"
+            + "Principal Registry of the Family Division[ ]*"
+            + "HMCTS Probate[ ]*"
+            + "PO Box 12625[ ]*"
+            + "Harlow[ ]*"
+            + "CM20 9QE[ ]*"
+            + "0300 303 0648"
+            + ".*";
     private static final String OXFORD_REGISTRY_ADDRESS = "High Court of Justice England and Wales"
         + "Oxford District Probate Registry Combined Court BuildingSt AldatesOxfordOX1 1LY0300 303 0648";
-    private static final String REISSUE_REASON_DUPLICATE = "Grant of Probate Duplicate of original "
-        + "created on 1st April 2020";
+    private static final String REISSUE_REASON_DUPLICATE =
+            ".*"
+            + "Grant of Probate[ ]*"
+            + "Duplicate of original created on 1st April 2020"
+            + ".*";
     private static final String REISSUE_ORIGINAL_ISSUE_DATE = "1st April 2021";
 
     private static final String SOL_PAYLOAD_REISSUE_CTSC = "solicitorPayloadReissueCtsc.json";
@@ -462,8 +480,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         String adColligendaPayload = "/default/adColligenda/personal/";
         String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON,
                 GENERATE_GRANT_DRAFT);
-        assertTrue("Draft grant document does not contain expected text.",
-                response.contains(AD_COLLIGENDA_GRANT_TEXT));
+        assertTrue(
+                response.contains(AD_COLLIGENDA_GRANT_TEXT),
+                "Draft grant document does not contain expected text.");
     }
 
     @Test
@@ -472,16 +491,18 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         String payload = replaceAllInString(getJsonFromFile(adColligendaPayload + AD_COLLIGENDA_JSON),
                 LIMITATION_TEXT_NO, LIMITATION_TEXT_YES);
         String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_DRAFT);
-        assertTrue("Draft grant document does not contain expected text.",
-                response.contains(LIMITATION_TEXT));
+        assertTrue(
+                response.contains(LIMITATION_TEXT),
+                "Draft grant document does not contain expected text.");
     }
 
     @Test
     void verifyGenerateAllEnglishAdColligendaPersonalGrantType() throws IOException {
         String adColligendaPayload = "/default/adColligenda/personal/";
         String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON, GENERATE_GRANT);
-        assertTrue("Grant document does not contain expected text.",
-                response.contains(AD_COLLIGENDA_GRANT_TEXT));
+        assertTrue(
+                response.contains(AD_COLLIGENDA_GRANT_TEXT),
+                "Grant document does not contain expected text.");
     }
 
     @Test
@@ -489,8 +510,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         String adColligendaPayload = "/default/adColligenda/personal/";
         String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_REISSUE_JSON,
                 GENERATE_GRANT_REISSUE);
-        assertTrue("Reissue grant document does not contain expected text.",
-                response.contains(AD_COLLIGENDA_GRANT_TEXT));
+        assertTrue(
+                response.contains(AD_COLLIGENDA_GRANT_TEXT),
+                "Reissue grant document does not contain expected text.");
     }
 
     @Test
@@ -518,8 +540,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     @Test
     void verifySolicitorGenerateGrantDraftReissueCtsc() throws IOException {
         final String response = generateReissueGrantDraftDocument(SOL_PAYLOAD_REISSUE_CTSC);
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
-        assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
+        assertTrue(response.matches(REISSUE_REASON_DUPLICATE), "should match reissue reason duplicate");
         assertTrue(response.contains(REISSUE_ORIGINAL_ISSUE_DATE));
     }
 
@@ -529,7 +551,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             "\"registryLocation\": \"ctsc\"", "\"registryLocation\": \"Oxford\"");
         final String response = generateReissueGrantDraftDocumentFromPayload(payload);
         assertTrue(response.contains(OXFORD_REGISTRY_ADDRESS));
-        assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
+        assertTrue(response.matches(REISSUE_REASON_DUPLICATE), "should match reissue reason duplicate");
         assertTrue(response.contains(REISSUE_ORIGINAL_ISSUE_DATE));
     }
 
@@ -802,7 +824,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
 
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
         assertTrue(response.contains(SOLICITOR_INFO1));
         assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(GOP));
@@ -824,7 +846,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     void verifySuccessForGetDigitalGrantWithSingleExecutorPA() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PA));
         assertTrue(response.contains(PRIMARY_APPLICANT));
@@ -979,7 +1001,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutors.json",
             GENERATE_GRANT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_TWO));
@@ -1049,7 +1071,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
             GENERATE_GRANT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(POWER_RESERVED));
         assertTrue(response.contains(SOLICITOR_INFO1));
@@ -1071,7 +1093,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReserved.json",
             GENERATE_GRANT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
         assertTrue(response.contains(SOLICITOR_INFO1));
@@ -1094,7 +1116,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsGrantInfo.json",
             GENERATE_GRANT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(WILL_MESSAGE));
         assertTrue(response.contains(ADMIN_MESSAGE));
@@ -1117,7 +1139,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     void verifySuccessForGetDigitalGrantDraftWithSingleExecutorSols() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(SOLICITOR_INFO1));
         assertTrue(response.contains(SOLICITOR_INFO2));
@@ -1138,7 +1160,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     void verifySuccessForGetDigitalGrantDraftWithSingleExecutorPA() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PA));
         assertTrue(response.contains(PRIMARY_APPLICANT));
@@ -1161,7 +1183,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutors.json",
             GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_ONE));
@@ -1238,7 +1260,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
             GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(POWER_RESERVED));
         assertTrue(response.contains(SOLICITOR_INFO1));
@@ -1260,7 +1282,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReserved.json",
             GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
         assertTrue(response.contains(SOLICITOR_INFO1));
@@ -1282,7 +1304,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsGrantInfo.json",
             GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(LIMITATION_MESSAGE));
         assertTrue(response.contains(ADMIN_MESSAGE));
@@ -1313,7 +1335,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(DOD));
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
         assertTrue(response.contains(GOP));
     }
 
@@ -1322,7 +1344,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(IHT_GROSS));
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
         assertTrue(response.contains(IHT_NET));
         assertTrue(response.contains(GOP));
 
@@ -1335,7 +1357,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(IHT_GROSS));
         assertTrue(response.contains(IHT_NET));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
     }
 
     @Test
@@ -1347,7 +1369,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(IHT_GROSS_PENCE));
         assertTrue(response.contains(IHT_NET_PENCE));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
     }
 
     @Test
@@ -1367,7 +1389,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(IHT_GROSS_PENCE));
         assertTrue(response.contains(IHT_NET_PENCE));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
     }
 
     @Test
@@ -1383,7 +1405,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
     }
 
     @Test
@@ -1398,7 +1420,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
 
     }
 
@@ -1417,7 +1439,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
     }
 
     @Test
@@ -1434,7 +1456,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.matches(REGISTRY_ADDRESS), "should match registry address");
     }
 
     @Test
@@ -1477,7 +1499,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPartialAddress.json", GENERATE_GRANT);
 
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
         assertTrue(response.contains(SOLICITOR_INFO3));
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT));
@@ -1499,7 +1521,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPartialAddress.json",
             GENERATE_GRANT);
 
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
         assertTrue(response.contains(SOLICITOR_INFO3));
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT));
@@ -1524,7 +1546,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsForeignDomicile.json",
             GENERATE_GRANT);
 
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
         assertTrue(response.contains(SOLICITOR_INFO3));
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT));
