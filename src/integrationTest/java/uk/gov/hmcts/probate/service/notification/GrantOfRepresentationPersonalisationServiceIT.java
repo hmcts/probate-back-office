@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
@@ -70,13 +70,13 @@ class GrantOfRepresentationPersonalisationServiceIT {
     Registry registry = new Registry();
     @InjectMocks
     private GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
-    @MockBean
+    @MockitoBean
     private CoreCaseDataApi coreCaseDataApi;
-    @MockBean
+    @MockitoBean
     private CaveatQueryService caveatQueryServiceMock;
-    @MockBean
+    @MockitoBean
     private SendEmailResponse sendEmailResponse;
     @Mock
     private RegistriesProperties registriesPropertiesMock;

@@ -7,8 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -61,15 +61,15 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
             .roles(Arrays.asList("caseworker-probate"))
             .build());
 
-    @MockBean
+    @MockitoBean
     BulkPrintService bulkPrintService;
     @Autowired
     private RaiseGrantOfRepresentationNotificationService handleGrantReceivedNotification;
-    @MockBean
+    @MockitoBean
     private SendEmailResponse sendEmailResponse;
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
-    @MockBean
+    @MockitoBean
     private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
     @Mock
     private EventValidationService eventValidationService;
@@ -79,11 +79,11 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
     private CallbackResponse callbackResponse;
     @Mock
     private DateFormatterService dateFormatterService;
-    @MockBean
+    @MockitoBean
     private ServiceAuthTokenGenerator tokenGenerator;
-    @MockBean
+    @MockitoBean
     private DocumentManagementService documentManagementService;
-    @SpyBean
+    @MockitoSpyBean
     private NotificationClient notificationClient;
     private CallbackRequest callbackRequest;
 

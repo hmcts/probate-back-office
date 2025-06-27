@@ -10,7 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
@@ -40,11 +40,11 @@ class LifeEventServiceTest {
     final String lastName = "Wobble";
     @Autowired
     LifeEventService lifeEventService;
-    @MockBean
+    @MockitoBean
     DeathService deathService;
-    @MockBean
+    @MockitoBean
     CcdClientApi ccdClientApi;
-    @MockBean
+    @MockitoBean
     DeathRecordCCDService deathRecordCCDService;
     @Mock
     CaseDetails caseDetails;

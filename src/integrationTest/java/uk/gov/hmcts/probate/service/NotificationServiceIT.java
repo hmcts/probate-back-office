@@ -11,8 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
@@ -155,15 +155,15 @@ class NotificationServiceIT {
     @Autowired
     private LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
-    @MockBean
+    @MockitoBean
     private SendEmailResponse sendEmailResponse;
-    @MockBean
+    @MockitoBean
     private TemplatePreview templatePreviewResponse;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private CaveatQueryService caveatQueryServiceMock;
 
     @Mock
@@ -178,19 +178,19 @@ class NotificationServiceIT {
     @Mock
     private DateFormatterService dateFormatterService;
 
-    @MockBean
+    @MockitoBean
     private AuthTokenGenerator tokenGenerator;
 
-    @MockBean
+    @MockitoBean
     private DocumentManagementService documentManagementService;
 
-    @MockBean
+    @MockitoBean
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
-    @MockBean
+    @MockitoBean
     private UserInfoService userInfoService;
 
-    @SpyBean
+    @MockitoSpyBean
     private NotificationClient notificationClient;
 
     private CaseDetails personalCaseDataOxford;
