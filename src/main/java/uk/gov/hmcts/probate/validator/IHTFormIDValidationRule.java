@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
 import java.util.Locale;
 
@@ -18,10 +19,11 @@ import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_
 public class IHTFormIDValidationRule {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
+    private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     public void validate(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-        if (caseData.getIhtFormEstateValuesCompleted() == null
+        if (!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
                 && (NOT_APPLICABLE_VALUE.equalsIgnoreCase(caseData.getIhtFormId())
                 || IHT400421_VALUE.equalsIgnoreCase(caseData.getIhtFormId()))
         ) {
