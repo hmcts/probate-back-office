@@ -145,6 +145,10 @@ public class CaseDataTransformer {
     public void transformFormCaseData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
+            if (caseData.getIhtFormEstate() == null) {
+                //DTSPB-4527 - scenario 4a all IHT Form Estate radio option removed, default IhtFormEstate to IHT400
+                caseData.setIhtFormEstate(IHT400);
+            }
             if (caseData.getIhtFormId() != null && YES.equals(caseData.getIhtFormEstateValuesCompleted())) {
                 resetIhtFormId(caseData);
                 resetExceptedEstateFields(caseData);
