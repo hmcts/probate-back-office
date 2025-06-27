@@ -54,6 +54,7 @@ java:
     BACK_OFFICE_BASEURL: http://probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     MANAGE_CASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
     FRONTEND_URL: https://probate.{{ .Values.global.environment }}.platform.hmcts.net
+    DEMO_INT_TOGGLE: false
   keyVaults:
     probate:
       secrets:
