@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentStatusReponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.DemoInstanceToggleService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -46,6 +47,8 @@ class PaymentControllerUnitTest {
     private CallbackResponse callbackResponse;
     @Mock
     private SecurityUtils authS2sUtil;
+    @Mock
+    private DemoInstanceToggleService demoInstanceToggleService;
 
     @InjectMocks
     private PaymentController underTest;
@@ -53,8 +56,9 @@ class PaymentControllerUnitTest {
     private static final String s2sAuthToken = "s2sAuthToken";
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
+        when(demoInstanceToggleService.getCcdCaseType()).thenReturn(CcdCaseType.GRANT_OF_REPRESENTATION);
     }
 
     @Test

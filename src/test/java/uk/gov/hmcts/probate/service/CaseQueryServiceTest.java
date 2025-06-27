@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.exception.ClientDataException;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
@@ -57,6 +58,9 @@ class CaseQueryServiceTest {
     @Mock
     private FileSystemResourceService fileSystemResourceService;
 
+    @Mock
+    private DemoInstanceToggleService demoInstanceToggleService;
+
     @Captor
     private ArgumentCaptor<HttpEntity<String>> entityCaptor;
 
@@ -84,6 +88,7 @@ class CaseQueryServiceTest {
         ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
+        when(demoInstanceToggleService.getCaseType()).thenReturn(CaseType.GRANT_OF_REPRESENTATION);
     }
 
     @Test

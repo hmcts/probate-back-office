@@ -623,3 +623,4 @@ disposal:
   personalNotificationLink: ${FRONTEND_URL:http://localhost:3000}
   solsNotificationLink: ${MANAGE_CASE_URL:http://localhost:3001}
 
+demo_instance_toggle: ${DEMO_INSTANCE_TOGGLE:false}

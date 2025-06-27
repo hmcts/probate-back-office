@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -20,6 +21,7 @@ import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateRe
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
+import uk.gov.hmcts.probate.service.DemoInstanceToggleService;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
@@ -71,10 +73,13 @@ class PaymentsServiceTest {
     private DocumentTransformer documentTransformer;
     @Mock
     private CaveatNotificationService caveatNotificationService;
+    @Mock
+    private DemoInstanceToggleService demoInstanceToggleService;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
+        when(demoInstanceToggleService.getCcdCaseType()).thenReturn(CcdCaseType.GRANT_OF_REPRESENTATION);
     }
 
     @Test

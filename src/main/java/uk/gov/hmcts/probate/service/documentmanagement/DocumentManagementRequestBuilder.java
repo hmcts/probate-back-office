@@ -1,11 +1,13 @@
 package uk.gov.hmcts.probate.service.documentmanagement;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.service.DemoInstanceToggleService;
 import uk.gov.hmcts.reform.ccd.document.am.model.DocumentUploadRequest;
 
 import java.util.Arrays;
@@ -13,10 +15,13 @@ import java.util.List;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class DocumentManagementRequestBuilder {
 
     private static final String CLASSIFICATION_PRIVATE_PARAMETER = "PRIVATE";
     private static final String JURISDICTION = "PROBATE";
+
+    private final DemoInstanceToggleService demoInstanceToggleService;
 
     public DocumentUploadRequest perpareDocumentUploadRequest(EvidenceManagementFileUpload file,
                                                                      DocumentType documentType) {
@@ -50,7 +55,7 @@ public class DocumentManagementRequestBuilder {
             case WILL_LODGEMENT_DEPOSIT_RECEIPT:
                 return CcdCaseType.WILL_LODGEMENT.getName();
             default:
-                return CcdCaseType.GRANT_OF_REPRESENTATION.getName();
+                return demoInstanceToggleService.getCcdCaseType().getName();
         }
     }
 

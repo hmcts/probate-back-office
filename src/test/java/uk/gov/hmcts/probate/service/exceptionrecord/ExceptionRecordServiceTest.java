@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
@@ -25,6 +26,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
+import uk.gov.hmcts.probate.service.DemoInstanceToggleService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveatMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordGrantOfRepresentationMapper;
@@ -83,6 +85,9 @@ class ExceptionRecordServiceTest {
     @Mock
     private EventValidationService eventValidationService;
 
+    @Mock
+    private DemoInstanceToggleService demoInstanceToggleService;
+
     private TestUtils testUtils = new TestUtils();
 
     private ExceptionRecordRequest erRequestCaveat;
@@ -124,7 +129,7 @@ class ExceptionRecordServiceTest {
     private CaseCreationDetails grantOfProbateCaseDetailsResponse;
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
 
         exceptionRecordPayloadPA8A =
@@ -198,6 +203,7 @@ class ExceptionRecordServiceTest {
         when(caveatTransformer.bulkScanCaveatCaseTransform(any())).thenReturn(caveatCaseDetailsResponse);
         when(grantOfProbatetransformer.bulkScanGrantOfRepresentationCaseTransform(any()))
             .thenReturn(grantOfProbateCaseDetailsResponse);
+        when(demoInstanceToggleService.getCaseType()).thenReturn(CaseType.GRANT_OF_REPRESENTATION);
     }
 
     @Test

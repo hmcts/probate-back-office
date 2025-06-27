@@ -65,6 +65,8 @@ class LifeEventCCDServiceTest {
     DeathRecordService deathRecordService;
     @MockBean
     HandOffLegacyService handOffLegacyService;
+    @MockBean
+    DemoInstanceToggleService demoInstanceToggleService;
     @Mock
     CaseDetails caseDetails;
     @Mock
@@ -102,6 +104,7 @@ class LifeEventCCDServiceTest {
         when(caseDetails.getId()).thenReturn(caseId);
         when(deathService.searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate)))
             .thenReturn(deathRecords);
+        when(demoInstanceToggleService.getCcdCaseType()).thenReturn(CcdCaseType.GRANT_OF_REPRESENTATION);
 
         mappedRecords = mock(List.class);
 

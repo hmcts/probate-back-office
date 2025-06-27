@@ -574,3 +574,5 @@ disposal:
   startDate: 1900-01-01
   personalNotificationLink: http://localhost:3000
   solsNotificationLink: http://localhost:3001
+
+demo_instance_toggle: ${DEMO_INSTANCE_TOGGLE:false}

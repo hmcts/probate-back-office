@@ -18,7 +18,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.exception.ClientDataException;
-import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -46,7 +45,6 @@ public class CaseQueryService {
     private static final String SERVICE_AUTH = "ServiceAuthorization";
     private static final String AUTHORIZATION = "Authorization";
     private static final String CASE_TYPE_ID = "ctid";
-    private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
     private static final String[] STATES_MATCH_GRANT_DELAYED =
         {"BOCaseMatchingExamining", "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
     private static final String[] STATES_MATCH_GRANT_AWAITING_DOCUMENTATION = {"CasePrinted"};
@@ -77,6 +75,7 @@ public class CaseQueryService {
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final SecurityUtils securityUtils;
     private final FileSystemResourceService fileSystemResourceService;
+    private final DemoInstanceToggleService demoInstanceToggleService;
     @Value("${data-extract.pagination.size}")
     protected int dataExtractPaginationSize;
 
@@ -233,7 +232,7 @@ public class CaseQueryService {
         log.debug("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
-            .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
+            .queryParam(CASE_TYPE_ID, demoInstanceToggleService.getCaseType().getCode())
             .build().encode().toUri();
 
         HttpHeaders tokenHeaders = null;

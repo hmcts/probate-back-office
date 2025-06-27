@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.model.payments.PaymentStatusReponse;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.DemoInstanceToggleService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -34,6 +35,7 @@ public class PaymentController {
     private final PaymentsService paymentsService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final CaseDataTransformer caseDataTransformer;
+    private final DemoInstanceToggleService demoInstanceToggleService;
 
     private final SecurityUtils authS2sUtil;
 
@@ -49,7 +51,7 @@ public class PaymentController {
             Boolean isServiceAllowed = authS2sUtil.checkIfServiceIsAllowed(s2sAuthToken);
             if (Boolean.TRUE.equals(isServiceAllowed)) {
                 paymentsService.updateCaseFromServiceRequest(serviceRequestUpdateResponseDto,
-                        CcdCaseType.GRANT_OF_REPRESENTATION);
+                        demoInstanceToggleService.getCcdCaseType());
                 return ResponseEntity.ok().body(new PaymentStatusReponse(SUCCESSFUL_UPDATE));
             } else {
                 log.info("Calling Service is not authorised to use the endpoint");
