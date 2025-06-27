@@ -1,7 +1,8 @@
 import dateFns from "date-fns";
-import { expect } from "playwright/test";
+import { expect, Page, TestInfo } from "playwright/test";
 import { testConfig } from "../../Configs/config.ts";
 import postPaymentReviewTabConfig from "../caseDetails/solicitorApplyProbate/postPaymentReviewTabConfig.json" with { type: "json" };
+import serviceRequestTabConfig from "../caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
 import commonConfig from "../common/commonConfig.json" with { type: "json" };
 import createCaveatConfig from "../createCaveat/createCaveatConfig.json" with { type: "json" };
 import applicationDetailsConfig from "../solicitorApplyCaveat/applicationDetails/applicationDetails.json" with { type: "json" };
@@ -10,6 +11,8 @@ import completeApplicationConfig from "../solicitorApplyCaveat/completeApplicati
 import applyProbateConfig from "../solicitorApplyProbate/applyProbate/applyProbateConfig.json" with { type: "json" };
 import makePaymentConfig from "../solicitorApplyProbate/makePayment/makePaymentConfig.json" with { type: "json" };
 import { BasePage } from "../utility/basePage.ts";
+
+type ServiceRequestTabConfig = typeof serviceRequestTabConfig;
 
 export class SolCreateCasePage extends BasePage {
     readonly completeApplicationSubmitButton = this.page.getByRole("button", {
@@ -52,7 +55,7 @@ export class SolCreateCasePage extends BasePage {
       `#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`
     );
 
-  constructor(page) {
+  constructor(public readonly page: Page) {
     super(page);
   }
 
@@ -108,7 +111,7 @@ export class SolCreateCasePage extends BasePage {
     await this.waitForSubmitNavigationToComplete("Save and continue");
   }
 
-  async seeEndState(endState) {
+  async seeEndState(endState: string) {
     await expect(this.page.getByText("Event History")).toBeVisible();
     await this.page.getByRole("tab", { name: "Event History" }).focus();
     await this.page.getByRole("tab", { name: "Event History" }).click();
@@ -228,7 +231,7 @@ export class SolCreateCasePage extends BasePage {
     await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
   }
 
-  async completeCaveatApplicationPage2(caseRef) {
+  async completeCaveatApplicationPage2(caseRef: string) {
     completeApplicationConfig.page2_notification_date = dateFns.format(
       new Date(),
       testConfig.dateFormat
@@ -257,7 +260,7 @@ export class SolCreateCasePage extends BasePage {
     await this.completeApplicationSubmitButton.click();
   }
 
-  async makeCaveatPaymentPage1(caseRef, serviceRequestTabConfig) {
+  async makeCaveatPaymentPage1(caseRef: string, serviceRequestTabConfig: ServiceRequestTabConfig) {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(this.serviceRequestTabLocator).toBeEnabled();
     await this.serviceRequestTabLocator.click();
@@ -278,7 +281,7 @@ export class SolCreateCasePage extends BasePage {
     await this.reviewLinkLocator.click();
   }
 
-  async reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig) {
+  async reviewPaymentDetails(caseRef: string, serviceRequestReviewTabConfig: ServiceRequestTabConfig) {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(this.serviceRequestTabLocator).toBeEnabled();
     await this.runAccessibilityTest();
@@ -297,7 +300,7 @@ export class SolCreateCasePage extends BasePage {
     await this.backToServiceRequestLocator.click();
   }
 
-  async makePaymentPage2(caseRef) {
+  async makePaymentPage2(caseRef: string) {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(this.payNowLinkLocator).toBeVisible();
     await this.payNowLinkLocator.click();
@@ -322,7 +325,7 @@ export class SolCreateCasePage extends BasePage {
     await this.confirmPaymentButton.click();
   }
 
-  async viewPaymentStatus(testInfo, caseRef, appType) {
+  async viewPaymentStatus(testInfo: TestInfo, caseRef: string, appType: string) {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(
       this.page.getByText(makePaymentConfig.paymentStatusConfirmText)
@@ -360,7 +363,7 @@ export class SolCreateCasePage extends BasePage {
     }
   }
 
-  async postPaymentReviewDetails(caseRef) {
+  async postPaymentReviewDetails(caseRef: string) {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(this.reviewLinkLocator).toBeVisible();
     await this.reviewLinkLocator.click();

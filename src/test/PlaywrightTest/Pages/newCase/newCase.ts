@@ -11,6 +11,9 @@ import eventSummaryConfig from '../eventSummary/eventSummaryConfig.json' with { 
 import { BasePage } from '../utility/basePage.ts';
 import newCaseConfig from './newCaseConfig.json' with { type: 'json' };
 
+type CreateGrantOfProbateConfig = typeof createGrantOfProbateConfig;
+type CaseProgressConfig = typeof caseProgressConfig;
+
 export class CreateCasePage extends BasePage {
     readonly createCasePageLocator = this.page.getByRole('link', {name: newCaseConfig.waitForText});
     readonly createCaseLocator = this.page.getByRole('link', {name: newCaseConfig.xuiCreateCaseLocator});
@@ -54,7 +57,7 @@ export class CreateCasePage extends BasePage {
     readonly amendWillWaitForTextLocator = this.page.getByText(createWillLodgementConfig.page2_amend_waitForText);
     readonly genderLocator = this.page.locator('#deceasedGender');
 
-    constructor(public page: Page) {
+    constructor(public readonly page: Page) {
         super(page);
     }
 
@@ -67,7 +70,7 @@ export class CreateCasePage extends BasePage {
         await this.createCaseLocator.click();
     }
 
-    async selectCaseTypeOptions(caseType, event) {
+    async selectCaseTypeOptions(caseType: string, event: string) {
         await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await expect(this.createCaseLocator).toBeVisible();
         await expect(this.jurisdictionLocator).toBeEnabled();
@@ -86,7 +89,7 @@ export class CreateCasePage extends BasePage {
         await this.page.waitForTimeout(testConfig.CreateCaseDelay);
     }
 
-    async enterCaveatPage1(crud) {
+    async enterCaveatPage1(crud: string) {
         if (crud === 'create') {
             await expect(this.createCaveatPageLocator).toBeVisible();
             await expect(this.applicationTypeLocator).toBeEnabled();
@@ -105,7 +108,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterCaveatPage2(crud, unique_deceased_user) {
+    async enterCaveatPage2(crud: string, unique_deceased_user: string) {
         if (crud === 'create') {
             await expect(this.createCaveatPage2Locator).toBeVisible();
             await this.page.locator('#deceasedForenames').fill(createCaveatConfig.page2_forenames+unique_deceased_user);
@@ -161,7 +164,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterCaveatPage3(crud) {
+    async enterCaveatPage3(crud: string) {
         if (crud === 'create') {
             await expect(this.createCaveatPage3Locator).toBeVisible();
 
@@ -193,7 +196,7 @@ export class CreateCasePage extends BasePage {
 
     }
 
-    async enterCaveatPage4(crud) {
+    async enterCaveatPage4(crud: string) {
         if (crud === 'update') {
             await expect(this.amendCaveatPage4Locator).toBeVisible();
             await expect(this.page.locator('#expiryDate-day')).toBeEnabled();
@@ -207,7 +210,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterGrantOfProbateManualPage1(crud, createConfig, unique_deceased_user = Date.now().toString(), deceasedDODYear?) {
+    async enterGrantOfProbateManualPage1(crud: string, createConfig: CreateGrantOfProbateConfig, unique_deceased_user: string = Date.now().toString(), deceasedDODYear?: string) {
         if (crud === 'create') {
             await expect(this.createCaseCwTextLocator)
                 .toBeVisible();
@@ -335,7 +338,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterGrantOfProbateManualPage2(crud) {
+    async enterGrantOfProbateManualPage2(crud: string) {
         if (crud === 'create') {
             await expect(this.ihtPageWaitForTextLocator).toBeVisible();
             await this.page.locator(`#ihtFormEstateValuesCompleted_${createGrantOfProbateConfig.EE_ihtFormEstateValueCompletedNo}`).click();
@@ -359,7 +362,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterGrantOfProbateManualPage3(crud, createConfig) {
+    async enterGrantOfProbateManualPage3(crud: string, createConfig: CreateGrantOfProbateConfig) {
         if (crud === 'create') {
             await expect(this.createCaseCwTextLocator).toBeVisible();
 
@@ -372,7 +375,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterGrantOfProbatePage4(crud, unique_deceased_user = Date.now().toString()) {
+    async enterGrantOfProbatePage4(crud: string, unique_deceased_user: string = Date.now().toString()) {
         if (crud === 'create') {
             // TODO: This doesn't exist
             //await expect(this.page4waitForTextLocator).toBeVisible();
@@ -386,8 +389,7 @@ export class CreateCasePage extends BasePage {
             await this.page.locator('#boDeceasedHonours')
                 .fill(createGrantofProbateAmendConfig.page4_bo_deceasedHonours);
 
-            // TODO: This doesn't exist
-            //await expect(this.pclocator).toBeVisible();
+            await expect(this.pcLocator).toBeVisible();
             await this.pcLocator.click();
             await expect(this.deceasedAddressLocator).toBeVisible();
             await this.deceasedAddressLocator
@@ -510,7 +512,7 @@ export class CreateCasePage extends BasePage {
         }
     }
 
-    async checkMyAnswers(nextStepName, submitButtonName?) {
+    async checkMyAnswers(nextStepName: string, submitButtonName?: string) {
         let eventSummaryPrefix = nextStepName;
         await expect(this.checkYourAnswersHeadingLocator).toBeVisible();
 
@@ -523,7 +525,7 @@ export class CreateCasePage extends BasePage {
         if (submitButtonName) await this.waitForSubmitNavigationToComplete(submitButtonName);
     }
 
-    async enterIhtDetails(caseProgressConfig, optionValue) {
+    async enterIhtDetails(caseProgressConfig: CaseProgressConfig, optionValue: string) {
         await expect(this.page.locator(`${caseProgressConfig.ihtHmrcLetter}_${optionValue}`)).toBeVisible();
         await this.page.locator(`${caseProgressConfig.ihtHmrcLetter}_${optionValue}`).click();
         if (optionValue === 'Yes') {
@@ -533,7 +535,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterWillLodgementPage1(crud) {
+    async enterWillLodgementPage1(crud: string) {
         if (crud === 'create') {
             await this.page.waitForTimeout(testConfig.WaitForTextTimeout);
             await expect(this.applicationTypeLocator).toBeEnabled();
@@ -578,7 +580,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterWillLodgementPage2(crud, unique_deceased_user = Date.now().toString()) {
+    async enterWillLodgementPage2(crud: string, unique_deceased_user: string = Date.now().toString()) {
         if (crud === 'create') {
             await expect(this.createWillWaitForTextLocator).toBeVisible();
 
@@ -692,7 +694,7 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete();
     }
 
-    async enterWillLodgementPage3(crud) {
+    async enterWillLodgementPage3(crud: string) {
         const index = 0;
         /* eslint prefer-const: 0 */
         let executorFieldList = [];

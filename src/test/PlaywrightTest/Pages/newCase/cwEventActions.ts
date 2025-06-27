@@ -1,18 +1,23 @@
-import { expect } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
 import { testConfig } from "../../Configs/config.ts";
+import newConfig from "../caseDetails/grantOfProbate/superUserCwConfig.json" with { type: "json" };
 import commonConfig from "../common/commonConfig.json" with { type: "json" };
+import createCaseConfig from "../createCase/createCaseConfig.json" with { type: "json" };
+import documentUploadConfig from "../documentUpload/caveat/documentUploadConfig.json" with { type: "json" };
+import legalDocumentUploadConfig from "../documentUpload/grantOfProbate/documentUploadConfig.json" with { type: "json" };
 import emailCaveatorConfig from "../emailNotifications/caveat/emailCaveatorConfig.json" with { type: "json" };
 import eventSummaryConfig from "../eventSummary/eventSummaryConfig.json" with { type: "json" };
 import handleEvidenceConfig from "../handleEvidence/handleEvidenceConfig.json" with { type: "json" };
+import issueGrantConfig from "../issueGrant/issueGrantConfig.json" with { type: "json" };
 import registrarsDecisionConfig from "../registrarsDecision/registrarsDecisionConfig.json" with { type: "json" };
 import reopenCaveatConfig from "../reopenningCases/caveat/reopenCaveatConfig.json" with { type: "json" };
 import { BasePage } from "../utility/basePage.ts";
 import withdrawCaveatConfig from "../withdrawCaveat/withdrawCaveatConfig.json" with { type: "json" };
-// const createGrantOfProbateConfig = require('../../../end-to-end/pages/createGrantOfProbate/createGrantOfProbateConfig.json');
-import newConfig from "../caseDetails/grantOfProbate/superUserCwConfig.json" with { type: "json" };
-import createCaseConfig from "../createCase/createCaseConfig.json" with { type: "json" };
-import issueGrantConfig from "../issueGrant/issueGrantConfig.json" with { type: "json" };
-// const createGrantOfProbateConfig = require('../createGrantOfProbateManual/createGrantOfProbateManualConfig.json');
+import withdrawalConfig from "../withdrawal/willLodgement/withdrawalConfig.json" with { type: "json" };
+
+type DocumentUploadConfig = typeof documentUploadConfig;
+type LegalDocumentUploadConfig = typeof legalDocumentUploadConfig;
+type WithdrawalConfig = typeof withdrawalConfig;
 
 export class CwEventActionsPage extends BasePage {
   readonly nextStepLocator = this.page.locator("#next-step");
@@ -87,11 +92,11 @@ export class CwEventActionsPage extends BasePage {
   });
   readonly willWithdrawReasonLocator = this.page.locator("#withdrawalReason");
 
-  constructor(page) {
+  constructor(public readonly page: Page) {
     super(page);
   }
 
-  async chooseNextStep(nextStep) {
+  async chooseNextStep(nextStep: string) {
     await expect(this.nextStepLocator).toBeEnabled();
     await this.nextStepLocator.selectOption({ label: nextStep });
     await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
@@ -99,11 +104,11 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async selectCaseMatches(
-    caseRef,
-    nextStepName,
-    retainFirstItem = true,
-    addNewButtonLocator = null,
-    skipMatchingInfo = false
+    caseRef: string,
+    nextStepName: string,
+    retainFirstItem: boolean = true,
+    addNewButtonLocator: string | null = null,
+    skipMatchingInfo: boolean = false
   ) {
     await expect(this.page.getByText(nextStepName)).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
@@ -161,7 +166,7 @@ export class CwEventActionsPage extends BasePage {
     await this.page.waitForTimeout(testConfig.CaseMatchesCompletionDelay);
   }
 
-  async selectProbateManCaseMatchesForGrantOfProbate(caseRef, nextStepName) {
+  async selectProbateManCaseMatchesForGrantOfProbate(caseRef: string, nextStepName: string) {
     await expect(this.page.getByText(nextStepName)).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await this.page.waitForTimeout(testConfig.CaseMatchesInitialDelay);
@@ -253,7 +258,7 @@ export class CwEventActionsPage extends BasePage {
     }
   }
 
-  async enterEventSummary(caseRef, nextStepName) {
+  async enterEventSummary(caseRef: string, nextStepName: string) {
     await this.page.waitForTimeout(testConfig.EventSummaryDelay);
     let eventSummaryPrefix = nextStepName;
     await expect(this.page.getByText(nextStepName)).toBeVisible();
@@ -270,7 +275,7 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
   }
 
-  async uploadDocument(caseRef, documentUploadConfig) {
+  async uploadDocument(caseRef: string, documentUploadConfig: DocumentUploadConfig) {
     await expect(
       this.page.getByRole("heading", {
         name: documentUploadConfig.waitForText,
@@ -326,7 +331,7 @@ export class CwEventActionsPage extends BasePage {
               i + 2
             })`
           )
-        if (optText !== documentUploadConfig.documentType[i]) {
+        if ((await optText.textContent()) !== documentUploadConfig.documentType[i]) {
           console.info("document upload doc types not as expected.");
           console.info(
             `expected: ${documentUploadConfig.documentType[i]}, actual: ${optText}`
@@ -359,7 +364,7 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
   }
 
-  async uploadLegalStatement(caseRef, documentUploadConfig) {
+  async uploadLegalStatement(caseRef: string, documentUploadConfig: LegalDocumentUploadConfig) {
     await expect(
       this.page.getByRole("heading", {
         name: documentUploadConfig.legalStatement_waitForText,
@@ -381,7 +386,7 @@ export class CwEventActionsPage extends BasePage {
     await this.page.waitForTimeout(testConfig.DocumentUploadDelay);
   }
 
-  async emailCaveator(caseRef) {
+  async emailCaveator(caseRef: string) {
     await expect(this.emailCaveatorHeadingLocator).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.emailLocator).toBeEnabled();
@@ -389,7 +394,7 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
   }
 
-  async reopenCaveat(caseRef) {
+  async reopenCaveat(caseRef: string) {
     await expect(this.reopenCaveatHeadingLocator).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.caveatReopenReasonLocator).toBeEnabled();
@@ -410,7 +415,7 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
   }
 
-  async registrarsDecision(caseRef) {
+  async registrarsDecision(caseRef: string) {
     await expect(this.registrarDecisionHeadingLocator).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.registrarDecisionSelectionLocator).toBeEnabled();
@@ -425,7 +430,7 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForNavigationToComplete();
   }
 
-  async handleEvidence(caseRef, handled = "No") {
+  async handleEvidence(caseRef: string, handled: string = "No") {
     await expect(this.handleEvidenceHeadingLocator).toBeVisible();
     const caseRefLocator = this.page.getByRole("heading", {
       name: `${caseRef}`,
@@ -451,14 +456,14 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
   }
 
-  async chooseResolveStop(resolveStop) {
+  async chooseResolveStop(resolveStop: string) {
     await expect(this.resolveStopLocator).toBeEnabled();
     await this.resolveStopLocator.selectOption({ label: `${resolveStop}` });
     await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
     await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
   }
 
-  async issueGrant(caseRef) {
+  async issueGrant(caseRef: string) {
     await expect(this.issueGrantHeadingLocator).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.bulkPrintLocator).toBeEnabled();
@@ -469,7 +474,7 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
   }
 
-  async enterNewDob(updatedDoB) {
+  async enterNewDob(updatedDoB: string) {
     await expect(
       this.page.getByRole("heading", { name: newConfig.waitForText })
     ).toBeVisible();
@@ -479,7 +484,7 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
   }
 
-  async chooseNewState(newState) {
+  async chooseNewState(newState: string) {
     await expect(
       this.page.getByRole("heading", { name: newConfig.newState_waitForText })
     ).toBeVisible();
@@ -489,7 +494,7 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
   }
 
-  async selectWithdrawalReason(caseRef, withdrawalConfig) {
+  async selectWithdrawalReason(caseRef: string, withdrawalConfig: WithdrawalConfig) {
     await expect(
       this.page.getByText(withdrawalConfig.waitForText)
     ).toBeVisible();

@@ -1,5 +1,5 @@
 import { AxeUtils } from "@hmcts/playwright-common";
-import { expect, Page } from "@playwright/test";
+import { expect, Page, TestInfo } from "@playwright/test";
 import { testConfig } from "../../Configs/config.ts";
 
 export class BasePage {
@@ -19,7 +19,7 @@ export class BasePage {
 
   constructor(public readonly page: Page) {}
 
-  async logInfo(scenarioName, log, caseRef) {
+  async logInfo(scenarioName: string, log: string, caseRef: string) {
     let ret = scenarioName;
     await this.page.waitForTimeout(testConfig.GetCaseRefFromUrlDelay);
     if (log) {
@@ -72,7 +72,7 @@ export class BasePage {
     await navigationPromise;
   }
 
-  async waitForSubmitNavigationToComplete(buttonName) {
+  async waitForSubmitNavigationToComplete(buttonName: string) {
     const navigationPromise = this.page.waitForNavigation();
     if (buttonName === "Save and continue") {
       await expect(this.saveAndContinueButtonLocator).toBeVisible();
@@ -96,7 +96,7 @@ export class BasePage {
     ]);
   }
 
-  async waitForSignOutNavigationToComplete(signOutLocator) {
+  async waitForSignOutNavigationToComplete(signOutLocator: string) {
     const navigationPromise = this.page.waitForNavigation();
     await expect(this.page.locator(`${signOutLocator}`)).toBeVisible();
     await expect(this.page.locator(`${signOutLocator}`)).toBeEnabled();
@@ -105,13 +105,13 @@ export class BasePage {
   }
 
   async seeCaseDetails(
-    testInfo,
-    caseRef,
-    tabConfigFile,
-    dataConfigFile,
-    nextStep?,
-    endState?,
-    delay = testConfig.CaseDetailsDelayDefault
+    testInfo: TestInfo,
+    caseRef: string,
+    tabConfigFile, // TODO: type?
+    dataConfigFile, // TODO: type?
+    nextStep?: string,
+    endState?: string,
+    delay: number = testConfig.CaseDetailsDelayDefault
   ) {
     if (tabConfigFile.tabName && tabConfigFile.tabName !== "Documents") {
       await expect(
@@ -220,12 +220,12 @@ export class BasePage {
   }
 
   async seeUpdatesOnCase(
-    testInfo,
-    caseRef,
-    tabConfigFile,
-    tabUpdates,
-    tabUpdatesConfigFile,
-    forUpdateApplication?
+    testInfo: TestInfo,
+    caseRef: string,
+    tabConfigFile, // TODO: type?
+    tabUpdates, // TODO: type?
+    tabUpdatesConfigFile, // TODO: type?
+    forUpdateApplication?: string
   ) {
     await expect(
       this.page.getByRole("heading", { name: caseRef })
@@ -259,7 +259,7 @@ export class BasePage {
     }
   }
 
-  async dontSeeCaseDetails(fieldLabelsNotToBeShown) {
+  async dontSeeCaseDetails(fieldLabelsNotToBeShown: string[]) {
     let visibleElements;
     let numElements;
 
