@@ -135,8 +135,7 @@ public class CallbackResponseTransformer {
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final String IHT400 = "IHT400";
     private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection",
-            "boCorrection",
-            "automatedNotification");
+            "boCorrection");
     private static final List<String> ROLLBACK_STATE_LIST = List.of("Pending", "CasePaymentFailed", "SolAdmonCreated",
             "SolAppCreatedDeceasedDtls", "SolAppCreatedSolicitorDtls", "SolAppUpdated", "SolProbateCreated",
             "SolIntestacyCreated", "Deleted", "Stopped");
@@ -1420,7 +1419,8 @@ public class CallbackResponseTransformer {
             .isSaveAndClose(caseData.getIsSaveAndClose())
             .executorsNamed(caseData.getExecutorsNamed())
             .ttl(caseData.getTtl())
-            .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate());
+            .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
+            .evidenceHandledDate(caseData.getEvidenceHandledDate());
 
         handleDeceasedAliases(
                 builder,
