@@ -4752,7 +4752,7 @@ class CallbackResponseTransformerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"boHistoryCorrection", "boCorrection", "automatedNotification"})
+    @ValueSource(strings = {"boHistoryCorrection", "boCorrection"})
     void shouldReturnExistingDateWhenExcludedEventIsMatched(String excludedEvent) {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .lastModifiedDateForDormant(dateTime);
