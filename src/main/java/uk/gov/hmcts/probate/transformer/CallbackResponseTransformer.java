@@ -132,11 +132,10 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
-    private static final String SOL_AS_EXEC_ID = "solicitor";
-    private static final String PBA_PAYMENT_METHOD = "pba";
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final String IHT400 = "IHT400";
-    private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection", "boCorrection");
+    private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection",
+            "boCorrection");
     private static final List<String> ROLLBACK_STATE_LIST = List.of("Pending", "CasePaymentFailed", "SolAdmonCreated",
             "SolAppCreatedDeceasedDtls", "SolAppCreatedSolicitorDtls", "SolAppUpdated", "SolProbateCreated",
             "SolIntestacyCreated", "Deleted", "Stopped");
@@ -320,6 +319,7 @@ public class CallbackResponseTransformer {
                         caseworkerInfo,
                         false);
         responseCaseDataBuilder.evidenceHandled(YES);
+        responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (isHubResponseRequired(caseData)) {
             responseCaseDataBuilder.citizenResponseCheckbox(null)
@@ -345,6 +345,7 @@ public class CallbackResponseTransformer {
         if (YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())
                 && !YES.equalsIgnoreCase(caseData.getIsSaveAndClose())) {
             responseCaseDataBuilder.evidenceHandled(YES);
+            responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
 
             if (nothingSubmitted(caseData)) {
                 resetRequestInformationFields(responseCaseDataBuilder);
@@ -418,6 +419,7 @@ public class CallbackResponseTransformer {
                     .grantIssuedDate(grantIssuedDate);
 
             responseCaseDataBuilder.evidenceHandled(YES);
+            responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
 
         } else if (documentTransformer.hasDocumentWithType(documents, EDGE_CASE)) {
             String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
@@ -1416,7 +1418,9 @@ public class CallbackResponseTransformer {
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
             .isSaveAndClose(caseData.getIsSaveAndClose())
             .executorsNamed(caseData.getExecutorsNamed())
-            .ttl(caseData.getTtl());
+            .ttl(caseData.getTtl())
+            .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
+            .evidenceHandledDate(caseData.getEvidenceHandledDate());
 
         handleDeceasedAliases(
                 builder,
