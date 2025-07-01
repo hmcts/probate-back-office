@@ -1,0 +1,30 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "data.firstStopReminderSentDate": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "BOCaseStopped",
+              "BOCaseStoppedReissue"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "size": %s,
+  "_source": ["reference"],
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]
