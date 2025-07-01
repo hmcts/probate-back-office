@@ -166,6 +166,10 @@ public abstract class IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(responseDocumentUrl);
         final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
+        if (!response.contains(expectedText)) {
+            log.error("Expected response does not contain expected text:\nexpected:\n{}\n\nresponse:\n{}\n\n",
+                    expectedText, response);
+        }
         assertTrue(response.contains(expectedText));
     }
 
