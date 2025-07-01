@@ -89,8 +89,12 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        String legalStatementExpectedTextOneLine = legalStatementExpectedText
+                .replaceAll("#.*\n", "")
+                .replaceAll("\n", "")
+                .replaceAll("\r", "");
 
-        assertEquals(legalStatementExpectedText, legalStatementText);
+        assertThat(legalStatementText, matchesPattern(legalStatementExpectedTextOneLine));
     }
 
     protected JsonPath postAndGetJsonPathResponse(String jsonFileName, String path) throws IOException {
