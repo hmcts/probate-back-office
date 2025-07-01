@@ -50,8 +50,12 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
+        String legalStatementExpectedTextOneLine = legalStatementExpectedText
+                .replaceAll("#.*\n", "")
+                .replaceAll("\n", "")
+                .replaceAll("\r", "");
 
+        assertThat(legalStatementText, matchesPattern(legalStatementExpectedTextOneLine));
     }
 
     @Test
