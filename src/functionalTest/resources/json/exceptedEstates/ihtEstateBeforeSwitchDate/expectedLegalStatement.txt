@@ -1,4 +1,3 @@
-.*
 1528365719153338[ ]*
 
 IN THE HIGH COURT OF JUSTICE[ ]*
@@ -55,4 +54,3 @@ Date \(DD/MM/YYYY\): [.]+[ ]*
 Name: Solicitor_fn Solicitor_ln \(Probate practitioner\)[ ]*
 Signature: [.]+[ ]*
 Date \(DD/MM/YYYY\): [.]+[ ]*
-.*
