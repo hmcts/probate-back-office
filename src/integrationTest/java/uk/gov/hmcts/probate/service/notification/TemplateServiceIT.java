@@ -8,6 +8,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -402,7 +403,6 @@ class TemplateServiceIT {
 
     @Test
     void getApplicationReceivedPACaseworkerOriginWelsh() {
-
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
             LanguagePreference.WELSH, CaseOrigin.CASEWORKER,CHANNEL_CHOICE_PAPERFORM, null);
         assertEquals("pa-application-received-cw-welsh", response);
@@ -422,5 +422,134 @@ class TemplateServiceIT {
         response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH, CaseOrigin.CITIZEN,null, null);
         assertEquals("sol-application-received", response);
+    }
+
+    @Test
+    void getFirstStopReminder() {
+        assertAll(
+            () -> {
+                String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.ENGLISH,
+                        CHANNEL_CHOICE_DIGITAL, NO, true);
+                assertEquals("pa-first-stop-reminder-for-hub", response);
+            },
+            () -> {
+                String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.ENGLISH,
+                        CHANNEL_CHOICE_DIGITAL, YES, true);
+                assertEquals("pa-first-stop-reminder", response);
+            },
+            () -> {
+                String response = templateService.getStopReminderTemplateId(SOLICITOR, LanguagePreference.ENGLISH,
+                        CHANNEL_CHOICE_DIGITAL, null, true);
+                assertEquals("sol-first-stop-reminder", response);
+            });
+    }
+
+    @Test
+    void getFirstStopReminderWelsh() {
+        assertAll(
+            () -> {
+                String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.WELSH,
+                        CHANNEL_CHOICE_DIGITAL, NO, true);
+                assertEquals("pa-first-stop-reminder-for-hub-welsh", response);
+            },
+            () -> {
+                String response = templateService.getStopReminderTemplateId(PERSONAL, LanguagePreference.WELSH,
+                        CHANNEL_CHOICE_DIGITAL, YES, true);
+                assertEquals("pa-first-stop-reminder-welsh", response);
+            },
+            () -> {
+                String response = templateService.getStopReminderTemplateId(SOLICITOR, LanguagePreference.WELSH,
+                        CHANNEL_CHOICE_DIGITAL, null, true);
+                assertEquals("sol-first-stop-reminder-welsh", response);
+            }
+        );
+    }
+
+    @Test
+    void getDormantWarning() {
+        assertAll(
+            () -> {
+                String response = templateService.getDormantWarningTemplateId(PERSONAL, LanguagePreference.ENGLISH);
+                assertEquals("pa-dormant-warning", response);
+            },
+            () -> {
+                String response = templateService.getDormantWarningTemplateId(SOLICITOR, LanguagePreference.ENGLISH);
+                assertEquals("sol-dormant-warning", response);
+            });
+    }
+
+    @Test
+    void getDormantWarningWelsh() {
+        assertAll(
+            () -> {
+                String response = templateService.getDormantWarningTemplateId(PERSONAL, LanguagePreference.WELSH);
+                assertEquals("pa-dormant-warning-welsh", response);
+            },
+            () -> {
+                String response = templateService.getDormantWarningTemplateId(SOLICITOR, LanguagePreference.WELSH);
+                assertEquals("sol-dormant-warning-welsh", response);
+            }
+        );
+    }
+
+    @Test
+    void getUnsubmittedApplication() {
+        assertAll(
+            () -> {
+                String response =
+                        templateService.getUnsubmittedApplicationTemplateId(PERSONAL, LanguagePreference.ENGLISH);
+                assertEquals("pa-unsubmitted-application", response);
+            },
+            () -> {
+                String response =
+                        templateService.getUnsubmittedApplicationTemplateId(SOLICITOR, LanguagePreference.ENGLISH);
+                assertEquals("sol-unsubmitted-application", response);
+            });
+    }
+
+    @Test
+    void getUnsubmittedApplicationWelsh() {
+        assertAll(
+            () -> {
+                String response =
+                        templateService.getUnsubmittedApplicationTemplateId(PERSONAL, LanguagePreference.WELSH);
+                assertEquals("pa-unsubmitted-application-welsh", response);
+            },
+            () -> {
+                String response =
+                        templateService.getUnsubmittedApplicationTemplateId(SOLICITOR, LanguagePreference.WELSH);
+                assertEquals("sol-unsubmitted-application-welsh", response);
+            }
+        );
+    }
+
+    @Test
+    void getDeclarationNotSigned() {
+        assertAll(
+            () -> {
+                String response =
+                    templateService.getDeclarationNotSignedTemplateId(LanguagePreference.ENGLISH, true);
+                assertEquals("pa-declaration-not-signed-primary-applicant", response);
+            },
+            () -> {
+                String response =
+                    templateService.getDeclarationNotSignedTemplateId(LanguagePreference.ENGLISH, false);
+                assertEquals("pa-declaration-not-signed-executors", response);
+            });
+    }
+
+    @Test
+    void getDeclarationNotSignedWelsh() {
+        assertAll(
+            () -> {
+                String response =
+                        templateService.getDeclarationNotSignedTemplateId(LanguagePreference.WELSH, true);
+                assertEquals("pa-declaration-not-signed-primary-applicant-welsh", response);
+            },
+            () -> {
+                String response =
+                        templateService.getDeclarationNotSignedTemplateId(LanguagePreference.WELSH, false);
+                assertEquals("pa-declaration-not-signed-executors-welsh", response);
+            });
     }
 }

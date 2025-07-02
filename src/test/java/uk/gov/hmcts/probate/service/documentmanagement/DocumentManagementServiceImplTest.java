@@ -74,7 +74,8 @@ class DocumentManagementServiceImplTest {
             .authorisation("AUTH")
             .serviceAuthorisation("S2S")
             .build();
-        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityUtils.getOrDefaultCaseworkerSecurityDTO()).thenReturn(securityDTO);
+        when(securityUtils.getBearerToken("AUTH")).thenReturn("Bearer AUTH");
         when(documentUploadRequestMock.getCaseTypeId()).thenReturn("GrantOfRepresentation");
         when(documentUploadRequestMock.getFiles()).thenReturn(Collections.emptyList());
         when(documentUploadRequestMock.getJurisdictionId()).thenReturn("PROBATE");
@@ -89,38 +90,13 @@ class DocumentManagementServiceImplTest {
     }
 
     @Test
-    void shouldStoreFileWithCaseworkerAuthorisation() {
-        EvidenceManagementFileUpload evidenceManagementFileUpload =
-                new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[100]);
-
-        SecurityDTO securityDTOUser = SecurityDTO.builder()
-                .build();
-        when(securityUtils.getSecurityDTO()).thenReturn(securityDTOUser);
-        SecurityDTO securityDTOCaseworker = SecurityDTO.builder()
-                .authorisation("CWAUTH")
-                .serviceAuthorisation("S2S")
-                .build();
-        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTOCaseworker);
-        when(documentUploadRequestMock.getCaseTypeId()).thenReturn("GrantOfRepresentation");
-        when(documentUploadRequestMock.getFiles()).thenReturn(Collections.emptyList());
-        when(documentUploadRequestMock.getJurisdictionId()).thenReturn("PROBATE");
-        when(documentManagementRequestBuilder.perpareDocumentUploadRequest(evidenceManagementFileUpload, DIGITAL_GRANT))
-                .thenReturn(documentUploadRequestMock);
-        when(caseDocumentClient.uploadDocuments("Bearer CWAUTH", "S2S", "GrantOfRepresentation", "PROBATE",
-                Collections.emptyList(), Classification.PRIVATE))
-                .thenReturn(uploadResponseMock);
-        UploadResponse uploadResponse = documentManagementService.upload(evidenceManagementFileUpload, DIGITAL_GRANT);
-
-        assertEquals(uploadResponseMock, uploadResponse);
-    }
-
-    @Test
     void shouldStoreFileForCitizen() {
         SecurityDTO securityDTO = SecurityDTO.builder()
             .authorisation("AUTH")
             .serviceAuthorisation("S2S")
             .build();
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityUtils.getBearerToken("AUTH")).thenReturn("Bearer AUTH");
         when(documentUploadRequestMock.getCaseTypeId()).thenReturn("GrantOfRepresentation");
         when(documentUploadRequestMock.getFiles()).thenReturn(Collections.emptyList());
         when(documentUploadRequestMock.getJurisdictionId()).thenReturn("PROBATE");
