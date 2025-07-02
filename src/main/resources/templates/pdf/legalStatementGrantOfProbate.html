@@ -868,13 +868,12 @@
 
             {% endfor %}
             <p>{% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
-                {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
-                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.{% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
-                {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
-                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.{% endif %}</p>
+                    {% if multipleExecutors %}
+                        We are the executors named in the will.
+                    {% else %}
+                        I am the executor named in the will.
+                    {% endif %}
+                {% endif %}</p>
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
             <p>The executor{% if multipleOtherPartners > 1%}s{% endif %} {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes" %}
@@ -922,7 +921,22 @@
             {% endif %}
             {% endfor %}
             {% else %}
-            <p>None.</p>
+                {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
+                    <p>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                    at the date of death of the deceased have renounced probate.
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                    {% if multipleExecutors %}
+                        We are the executors named in the will.
+                    {% else %}
+                        I am the executor named in the will.
+                    {% endif %}
+                    The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                    that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                    at the date of death of the deceased have renounced probate.</p>
+                {% endif %}
+                {% else %}
+                    <p>None.</p>
+                {% endif %}
             {% endif %}
         </td>
     </tr>
