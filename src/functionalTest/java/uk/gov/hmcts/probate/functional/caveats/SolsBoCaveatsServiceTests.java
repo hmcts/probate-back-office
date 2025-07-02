@@ -175,7 +175,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR, CAVEAT_WITHDRAW);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE,
+        assertExpectedContentsRegexWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE,
             EMAIL_NOTIFICATION_URL, responseBody, replacements);
     }
 
