@@ -213,7 +213,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(RESPONSE_PAYLOAD_SOLICITOR_NO_DOB, EMAIL_NOTIFICATION_URL,
+        assertExpectedContentsRegexWithExpectedReplacement(RESPONSE_PAYLOAD_SOLICITOR_NO_DOB, EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
 
