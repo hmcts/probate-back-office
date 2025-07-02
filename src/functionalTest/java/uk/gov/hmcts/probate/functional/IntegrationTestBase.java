@@ -24,7 +24,7 @@ import java.util.HashMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.matchesRegex;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.Matchers.nullValue;
 
 
 @Slf4j
@@ -202,12 +202,13 @@ public abstract class IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(responseDocumentUrl);
         final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
-        assertTrue(response.contains(expectedText));
+        assertThat("Expected to contain content from file: " + expectedResponseFile,
+                response, containsString(expectedText));
     }
 
     protected void assertExpectedContentsMissing(String expectedContentMissing, ResponseBody responseBody) {
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(expectedContentMissing);
-        assertTrue(documentUrl == null);
+        assertThat("Expect documentUrl to be null", documentUrl, nullValue());
     }
 }
