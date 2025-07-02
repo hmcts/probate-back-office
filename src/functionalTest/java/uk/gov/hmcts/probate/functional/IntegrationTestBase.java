@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import java.util.HashMap;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.matchesRegex;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -161,6 +162,19 @@ public abstract class IntegrationTestBase {
         return validatePostSuccessForPayload(request, path);
     }
 
+    protected void assertExpectedContentsRegex(
+            final String expectedResponseFile,
+            final String responseDocumentUrl,
+            final ResponseBody responseBody) throws IOException {
+        final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
+
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(responseDocumentUrl);
+        final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
+
+        assertThat("Matching against file: " + expectedResponseFile, response, matchesRegex(expectedText));
+    }
+
     protected void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl,
                                           ResponseBody responseBody) throws IOException {
         final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
@@ -172,8 +186,9 @@ public abstract class IntegrationTestBase {
             log.error("Expected response (from {}) does not contain expected text:\nexpected:\n{}\n\nresponse:\n{}\n\n",
                     expectedResponseFile, expectedText, response);
         }
-        assertThat(response, matchesRegex(expectedText));
-        assertTrue(response.contains(expectedText));
+        assertThat("Expect to contain content from file: " + expectedResponseFile,
+                response,
+                containsString(expectedText));
     }
 
     protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile,

@@ -1,1 +1,12 @@
-Subject: HMCTS Probate received your postal applicationDear Solicitor_fn Solicitor_ln,HMCTS Probate received your application and documents for Deceased First Name Deceased Last Name. The reference for this case is '1528365719153338'.What happens nextA caseworker will check the documents and then review your application.You'll usually get probate within 12 weeks of us receiving your application. It can take longer if you need to provide additional information.You don't need to do anything else now; we'll email you if we need more information.If you have not heard from us after 12 weeks, you can contact the CTSC on 0300 303 0648 for an update.Regards, HMCTS Probate HM Courts and Tribunals Service
+.*
+Subject: HMCTS Probate received your postal application[ ]*
+Dear Solicitor_fn Solicitor_ln,[ ]*
+HMCTS Probate received your application and documents for Deceased First Name Deceased Last Name.[ ]*
+The reference for this case is '1528365719153338'.[ ]*
+What happens next[ ]*
+A caseworker will check the documents and then review your application.[ ]*
+You'll usually get probate within 12 weeks of us receiving your application.[ ]*
+It can take longer if you need to provide additional information.[ ]*
+You don't need to do anything else now; we'll email you if we need more information.[ ]*
+If you have not heard from us after 12 weeks, you can contact the CTSC on 0300 303 0648 for an update.[ ]*
+Regards, HMCTS Probate HM Courts and Tribunals Service
