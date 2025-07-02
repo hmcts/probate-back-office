@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.HashMap;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.matchesRegex;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -167,9 +169,10 @@ public abstract class IntegrationTestBase {
         final String documentUrl = jsonPath.get(responseDocumentUrl);
         final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
         if (!response.contains(expectedText)) {
-            log.error("Expected response does not contain expected text:\nexpected:\n{}\n\nresponse:\n{}\n\n",
-                    expectedText, response);
+            log.error("Expected response (from {}) does not contain expected text:\nexpected:\n{}\n\nresponse:\n{}\n\n",
+                    expectedResponseFile, expectedText, response);
         }
+        assertThat(response, matchesRegex(expectedText));
         assertTrue(response.contains(expectedText));
     }
 
