@@ -923,9 +923,9 @@
             {% else %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
                     <p>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                    at the date of death of the deceased have renounced probate.
+                    at the date of death of the deceased have renounced probate.</p>
                 {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
-                    {% if multipleExecutors %}
+                <p>{% if multipleExecutors %}
                         We are the executors named in the will.
                     {% else %}
                         I am the executor named in the will.
