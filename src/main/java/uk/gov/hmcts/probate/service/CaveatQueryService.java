@@ -31,6 +31,7 @@ import java.util.Locale;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 
 @Service
 @RequiredArgsConstructor
@@ -76,6 +77,17 @@ public class CaveatQueryService {
                 "Could not find any caveats for the entered caveat id: " + caveatId, userMessageWelsh);
         }
         return foundCaveats.get(0).getData();
+    }
+
+    public List<ReturnedCaveatDetails> findCaveatDraftCases(String startDate,
+                                                                   String endDate, CaseType caseType) {
+        BoolQueryBuilder query = boolQuery();
+
+        query.must(matchQuery(STATE, PA_APP_CREATED));
+        query.filter(rangeQuery("last_modified").gte(startDate).lte(endDate));
+        String jsonQuery = new SearchSourceBuilder().query(query).toString();
+
+        return runQuery(caseType, jsonQuery);
     }
 
     private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {

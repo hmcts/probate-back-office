@@ -631,6 +631,8 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
     private final String executorsNamed;
+    private LocalDate firstStopReminderSentDate;
+    private final String evidenceHandledDate;
 
     private TTL ttl;
 
@@ -746,6 +748,34 @@ public class CaseData extends CaseDataParent {
 
         this.setPrimaryApplicantEmailAddress(null);
         this.setPrimaryApplicantPhoneNumber(null);
+    }
+
+    public String getIhtGrossValuePounds() {
+        return getPoundValue(ihtGrossValue);
+    }
+
+    public String getIhtNetValuePounds() {
+        return getPoundValue(ihtNetValue);
+    }
+
+    public String getIhtEstateGrossValuePounds() {
+        return getPoundValue(ihtEstateGrossValue);
+    }
+
+    public String getIhtEstateNetValuePounds() {
+        return getPoundValue(ihtEstateNetValue);
+    }
+
+    public String getIhtEstateNetQualifyingValuePounds() {
+        return getPoundValue(ihtEstateNetQualifyingValue);
+    }
+
+    private String getPoundValue(BigDecimal value) {
+        if (value == null) {
+            return "0";
+        }
+        final BigDecimal poundsValue = value.divideToIntegralValue(BigDecimal.valueOf(100L));
+        return poundsValue.toString();
     }
 
     public void clearAdditionalExecutorList() {
