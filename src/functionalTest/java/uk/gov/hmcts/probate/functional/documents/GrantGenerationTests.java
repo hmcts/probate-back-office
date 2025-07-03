@@ -583,11 +583,12 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final CaseData caseData = CaseData.builder().build();
 
         final String response = getFirstProbateDocumentsText(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT);
+        final String fileName = "admonWillGrantForCardiffResponse.txt";
 
-        String expectedText = removeCrLfs(utils.getJsonFromFile("admonWillGrantForCardiffResponse.txt"));
-        expectedText = expectedText.replace(NOVEMBER_2020, caseData.convertDate(LocalDate.now()));
+        final String baseText = loadRegexFile(fileName);
+        final String expectedText = baseText.replace(NOVEMBER_2020, caseData.convertDate(LocalDate.now()));
 
-        assertTrue(response.contains(expectedText));
+        assertThat("should match: " + fileName, response, matchesRegex(expectedText));
     }
 
     private String loadRegexFile(final String fileName) throws IOException {
