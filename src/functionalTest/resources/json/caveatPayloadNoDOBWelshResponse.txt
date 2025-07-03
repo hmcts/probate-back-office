@@ -13,24 +13,26 @@ Eich cyfrifoldeb chi yw gwirio eich bod wedi rhoi enw a dyddiad marwolaeth cywir
 Os oes unrhyw wybodaeth yn anghywir, rhaid i chi roi gwybod am hyn i HMCTS ar unwaith.[ ]*
 Os nad yw’r wybodaeth yn gywir, gallai hyn arwain at beidio â gallu defnyddio eich cafeat[ ]*
 
-[#]Beth sy’n digwydd nawr\?[ ]*
+[#]Beth sy’n digwydd nawr[?][ ]*
 Byddwn yn cadw cofnod o’ch cafeat, ac os yw’n cyd-fynd â chais am grant, byddwn yn atal y cais.[ ]*
 Bydd eich cafeat yn parhau am 6 mis os na fydd rhywun yn ei herio.[ ]*
-Dylech geisio dod i gytundeb gyda’r unigolyn sy’n gwneud cais am y grant, os yw hynny’n bosibl.#Os ydych angen adnewyddu’r cafeat Gallwch adnewyddu’r cafeat am 6 mis arall o’r mis cyn iddo ddod i ben.[ ]*
+Dylech geisio dod i gytundeb gyda’r unigolyn sy’n gwneud cais am y grant, os yw hynny’n bosibl.[ ]*
+
+[#]Os ydych angen adnewyddu’r cafeat Gallwch adnewyddu’r cafeat am 6 mis arall o’r mis cyn iddo ddod i ben.[ ]*
 I’w adnewyddu, llenwch ac anfonwch ffurflen PA8B \(https://www.gov.uk/government/publications/apply-to-extend-a-caveat-on-a-grant-of-representation-pa8b.cy\).[ ]*
 Mae’n costio £3.[ ]*
 
-[#]Alla’i newid unrhyw fanylion yn y cafeat ar ôl iddo gael ei gofnodi\?[ ]*
+[#]Alla’i newid unrhyw fanylion yn y cafeat ar ôl iddo gael ei gofnodi[?][ ]*
 Medrwch. Gallwch wneud hyn unrhyw bryd – ond yn ddelfrydol, cyn y rhoir unrhyw rybudd neu cyn cychwyn achos profiant.[ ]*
 \(Eglurir y termau hyn yn nes ymlaen\)[ ]*
 Dylech ysgrifennu i HMCTS Probate, PO Box 12625, Harlow, CM20 9QE, lle cyflwynwyd eich cais, a chadarnhau unrhyw newidiadau cyn gynted ag y byddwch wedi sylweddoli eich bod angen newid rhywbeth gan ddyfynnu cyfeirnod eich cafeat.[ ]*
 
-[#]Alla’i ganslo’r cafeat\?
+[#]Alla’i ganslo’r cafeat[?]
 Gallwch. Gallwch wneud hyn cyn y rhoir unrhyw rybudd neu cyn cychwyn achos profiant.[ ]*
 Mae'n bosibl y gallwch ei ddiwygio ar ôl i unrhyw rybudd gael ei gyflwyno neu ar ôl dechrau achos profiant ond mae angen ichi gysylltu â ni am gyngor \(eglurir y telerau hyn yn nes ymlaen\).[ ]*
 Dylech ysgrifennu i HMCTS Probate, PO Box 12625, Harlow, CM20 9QE, lle cyflwynwyd eich cais, a chadarnhau unrhyw newidiadau cyn gynted ag y byddwch wedi sylweddoli eich bod angen newid rhywbeth gan ddyfynnu cyfeirnod eich cafeat.[ ]*
 
-[#]Beth fydd yn digwydd nesaf\?
+[#]Beth fydd yn digwydd nesaf[?]
 Os nad ydych yn gallu datrys y mater gyda’r unigolyn sy’n gwneud cais am brofiant, yna efallai y bydd yn rhoi ‘rhybudd’ ichi.[ ]*
 Mae gennych 14 diwrnod i ymateb i’r rhybudd \(yn cynnwys penwythnosau a gwyliau banc\).[ ]*
 Bydd angen ichi roi rheswm dros atal y cais am grant.[ ]*
@@ -63,7 +65,8 @@ Cewch ragor o fanylion yn: https://www.gov.uk/wills-probate-inheritance/stopping
 
 [#]Os byddwch angen cysylltu â ni[ ]*
 E-bost Cofrestrfa Brofiant Dosbarth Leeds: Leedsdprenquiries@justice.gov.uk.[ ]*
-CofionY Gofrestrfa Brofiant[ ]*
+Cofion[ ]*
+Y Gofrestrfa Brofiant[ ]*
 
 Dear cf name 2 cl name 2[ ]*
 We’ve received your request to stop a grant of representation for the estate of df name 2 dl name 2.[ ]*
@@ -109,7 +112,7 @@ If the appearance is accepted by the probate registry then the caveat will becom
 This means that legal proceedings will be needed to resolve things.[ ]*
 There is no fee for entering an appearance.[ ]*
 The form needs to be sent to: Leeds District Probate Registry, York House, York Place, Leeds LS1 2BA[ ]*
-Issue a ‘summons’.?[ ]*
+Issue a ‘summons’•?[ ]*
 You could issue a ‘summons’ if you believe you are equally entitled to apply for the grant as the person whose application you have stopped.[ ]*
 This may be because you want to apply yourself, or believe there are good reasons the grant should not be issued to the person applying.[ ]*
 You’ll need to complete a summons form and a sworn statement of facts setting out your reasons.[ ]*
