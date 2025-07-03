@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.matchesRegex;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -95,7 +96,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     public static final String AD_COLLIGENDA_JSON = "adColligenda.json";
     public static final String AD_COLLIGENDA_REISSUE_JSON = "adColligendaReissue.json";
     public static final String NOVEMBER_2020 = "18th November 2020";
-    public static final String PROBATE_PRACTITIONER_123_LONDON_LONDON = ".*Probate Practitioner (of )?123 London London.*";
+    public static final String PROBATE_PRACTITIONER_123_LONDON_LONDON =
+            ".*Probate Practitioner (of )?123 London London.*";
     public static final String MORE_PARTNERS_HOLDING_POWER_RESERVED_NO = "\"morePartnersHoldingPowerReserved\": \"No\"";
     public static final String MORE_PARTNERS_HOLDING_POWER_RESERVED_YES =
         "\"morePartnersHoldingPowerReserved\": \"Yes\"";
@@ -119,8 +121,15 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         "High Court of Justice England and WalesPrincipal Registry of the Family DivisionHMCTS ProbatePO Box 12625"
             + "HarlowCM20 9QE";
     private static final String LONDON_REGISTRY_ADDRESS =
-        "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High"
-            + " HolbornLondonWC1V 6NP0300 303 0648 ";
+            ".*"
+            + "High Court of Justice England and Wales[ ]*"
+            + "Principal Registry of the Family Division[ ]*"
+            + "First Avenue House[ ]*"
+            + "42-49 High Holborn[ ]*"
+            + "London[ ]*"
+            + "WC1V 6NP[ ]*"
+            + "0300 303 0648[ ]*"
+            + ".*";
     private static final String CTSC_REGISTRY_ADDRESS =
             ".*"
             + "High Court of Justice England and Wales[ ]*"
@@ -1506,15 +1515,24 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
                 GENERATE_GRANT_DRAFT);
 
-        assertFalse(response.contains(PRIMARY_APPLICANT));
-        assertFalse(response.contains(POWER_RESERVED_SINGLE));
-
-        assertTrue(response.contains(ADD_EXEC_ONE));
-        assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
-        assertTrue(response.contains(ADD_EXEC_TWO));
-        assertTrue(response.contains(POWER_RESERVED));
-        assertTrue(response.contains(GOP));
-        assertTrue(response.contains(LONDON_REGISTRY_ADDRESS));
+        assertAll(
+                () -> assertThat("doesn't contain PRIMARY_APPLICANT",
+                        response, not(containsString(PRIMARY_APPLICANT))),
+                () -> assertThat("doesn't contain POWER_RESERVED_SINGLE",
+                        response, not(containsString(POWER_RESERVED_SINGLE))),
+                () -> assertThat("contains ADD_EXEC_ONE",
+                        response, containsString(ADD_EXEC_ONE)),
+                () -> assertThat("contains ADD_EXEC_ONE_PRIMARY_APPLICANT",
+                        response, containsString(ADD_EXEC_ONE_PRIMARY_APPLICANT)),
+                () -> assertThat("contains ADD_EXEC_TWO",
+                        response, containsString(ADD_EXEC_TWO)),
+                () -> assertThat("contains POWER_RESERVED",
+                        response, containsString(POWER_RESERVED)),
+                () -> assertThat("contains GOP",
+                        response, containsString(GOP)),
+                () -> assertThat("matches LONDON_REGISTRY_ADDRESS",
+                        response, matchesRegex(LONDON_REGISTRY_ADDRESS))
+        );
     }
 
     @Test
@@ -1523,15 +1541,25 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
                 GENERATE_GRANT);
 
-        assertFalse(response.contains(PRIMARY_APPLICANT));
-        assertFalse(response.contains(POWER_RESERVED_SINGLE));
 
-        assertTrue(response.contains(ADD_EXEC_ONE));
-        assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
-        assertTrue(response.contains(ADD_EXEC_TWO));
-        assertTrue(response.contains(POWER_RESERVED));
-        assertTrue(response.contains(GOP));
-        assertTrue(response.contains(LONDON_REGISTRY_ADDRESS));
+        assertAll(
+                () -> assertThat("contains PRIMARY_APPLICANT",
+                        response, not(containsString(PRIMARY_APPLICANT))),
+                () -> assertThat("doesn't contain POWER_RESERVED_SINGLE",
+                        response, not(containsString(POWER_RESERVED_SINGLE))),
+                () -> assertThat("contains ADD_EXEC_ONE",
+                        response, containsString(ADD_EXEC_ONE)),
+                () -> assertThat("contains ADD_EXEC_ONE_PRIMARY_APPLICANT",
+                        response, containsString(ADD_EXEC_ONE_PRIMARY_APPLICANT)),
+                () -> assertThat("contains ADD_EXEC_TWO",
+                        response, containsString(ADD_EXEC_TWO)),
+                () -> assertThat("contains POWER_RESERVED",
+                        response, containsString(POWER_RESERVED)),
+                () -> assertThat("contains GOP",
+                        response, containsString(GOP)),
+                () -> assertThat("matches LONDON_REGISTRY_ADDRESS",
+                        response, matchesRegex(LONDON_REGISTRY_ADDRESS))
+        );
     }
 
     @Test
