@@ -8,8 +8,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.matchesRegex;
 import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -90,7 +95,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     public static final String AD_COLLIGENDA_JSON = "adColligenda.json";
     public static final String AD_COLLIGENDA_REISSUE_JSON = "adColligendaReissue.json";
     public static final String NOVEMBER_2020 = "18th November 2020";
-    public static final String PROBATE_PRACTITIONER_123_LONDON_LONDON = "Probate Practitioner 123 London London";
+    public static final String PROBATE_PRACTITIONER_123_LONDON_LONDON = ".*Probate Practitioner (of )?123 London London.*";
     public static final String MORE_PARTNERS_HOLDING_POWER_RESERVED_NO = "\"morePartnersHoldingPowerReserved\": \"No\"";
     public static final String MORE_PARTNERS_HOLDING_POWER_RESERVED_YES =
         "\"morePartnersHoldingPowerReserved\": \"Yes\"";
@@ -126,8 +131,16 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             + "CM20 9QE[ ]*"
             + "0300 303 0648"
             + ".*";
-    private static final String OXFORD_REGISTRY_ADDRESS = "High Court of Justice England and Wales"
-        + "Oxford District Probate Registry Combined Court BuildingSt AldatesOxfordOX1 1LY0300 303 0648";
+    private static final String OXFORD_REGISTRY_ADDRESS =
+            ".*"
+            + "High Court of Justice England and Wales[ ]*"
+            + "Oxford District Probate Registry[ ]*"
+            + "Combined Court Building[ ]*"
+            + "St Aldates[ ]*"
+            + "Oxford[ ]*"
+            + "OX1 1LY[ ]*"
+            + "0300 303 0648"
+            + ".*";
     private static final String REISSUE_REASON_DUPLICATE =
             ".*"
             + "Grant of Probate[ ]*"
@@ -540,9 +553,14 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     @Test
     void verifySolicitorGenerateGrantDraftReissueCtsc() throws IOException {
         final String response = generateReissueGrantDraftDocument(SOL_PAYLOAD_REISSUE_CTSC);
-        assertTrue(response.matches(CTSC_REGISTRY_ADDRESS), "should match ctsc address");
-        assertTrue(response.matches(REISSUE_REASON_DUPLICATE), "should match reissue reason duplicate");
-        assertTrue(response.contains(REISSUE_ORIGINAL_ISSUE_DATE));
+        assertAll(
+                () -> assertThat("should match ctsc address",
+                        response, matchesRegex(CTSC_REGISTRY_ADDRESS)),
+                () -> assertThat("should match reissue reason duplicate",
+                        response, matchesRegex(REISSUE_REASON_DUPLICATE)),
+                () -> assertThat("should contain original issue date",
+                        response, containsString(REISSUE_ORIGINAL_ISSUE_DATE))
+        );
     }
 
     @Test
@@ -550,9 +568,14 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         final String payload = replaceAllInString(getJsonFromFile(SOL_PAYLOAD_REISSUE_CTSC),
             "\"registryLocation\": \"ctsc\"", "\"registryLocation\": \"Oxford\"");
         final String response = generateReissueGrantDraftDocumentFromPayload(payload);
-        assertTrue(response.contains(OXFORD_REGISTRY_ADDRESS));
-        assertTrue(response.matches(REISSUE_REASON_DUPLICATE), "should match reissue reason duplicate");
-        assertTrue(response.contains(REISSUE_ORIGINAL_ISSUE_DATE));
+        assertAll(
+                () -> assertThat("should match oxford registry address",
+                        response, matchesRegex(OXFORD_REGISTRY_ADDRESS)),
+                () -> assertThat("should match reissue reason duplicate",
+                        response, matchesRegex(REISSUE_REASON_DUPLICATE)),
+                () -> assertThat("should contain original issue date",
+                        response, containsString(REISSUE_ORIGINAL_ISSUE_DATE))
+        );
     }
 
     @Test
@@ -567,15 +590,27 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(expectedText));
     }
 
+    private String loadRegexFile(final String fileName) throws IOException {
+        final String unfilteredInput = getJsonFromFile(fileName);
+        final String filtered = Pattern.compile("^#.*$", Pattern.MULTILINE)
+                .matcher(unfilteredInput).replaceAll("");
+        final String oneLine = removeCrLfs(filtered);
+
+        return oneLine;
+    }
+
     @Test
     void verifySuccessForGetAdmonWillGrantDraftForCardiff() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
+        final String fileName = "admonWillGrantDraftForCardiffResponse.txt";
 
-        String expectedText = removeCrLfs(utils.getJsonFromFile("admonWillGrantDraftForCardiffResponse.txt"));
-        expectedText = expectedText.replace(NOVEMBER_2020, caseData.convertDate(LocalDate.now()));
+        final String baseText = loadRegexFile(fileName);
 
-        assertTrue(response.contains(expectedText));
+        final String expectedText = baseText.replace(NOVEMBER_2020, caseData.convertDate(LocalDate.now()));
+
+        assertThat("match content from " + fileName,
+                response, matchesRegex(expectedText));
     }
 
     @Test
@@ -589,28 +624,32 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     void verifySuccessForDigitalGrantDraftAddresses() throws IOException {
         final String response = generateGrantDocument(CW_PART_SUCC, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(PROBATE_PRACTITIONER_123_LONDON_LONDON));
+        assertThat("should match practioner name and address",
+                response, matchesRegex(PROBATE_PRACTITIONER_123_LONDON_LONDON));
     }
 
     @Test
     void verifySuccessForDigitalGrantAddresses() throws IOException {
         final String response = generateGrantDocument(CW_PART_SUCC, GENERATE_GRANT);
 
-        assertTrue(response.contains(PROBATE_PRACTITIONER_123_LONDON_LONDON));
+        assertThat("should match practioner name and address",
+                response, matchesRegex(PROBATE_PRACTITIONER_123_LONDON_LONDON));
     }
 
     @Test
     void verifySuccessForDigitalGrantAddressesFirm() throws IOException {
         final String response = generateGrantDocument(CW_PART, GENERATE_GRANT);
 
-        assertTrue(response.contains(PROBATE_PRACTITIONER_123_LONDON_LONDON));
+        assertThat("should match practioner name and address",
+                response, matchesRegex(PROBATE_PRACTITIONER_123_LONDON_LONDON));
     }
 
     @Test
     void verifySuccessForDigitalGrantDraftAddressesFirm() throws IOException {
         final String response = generateGrantDocument(CW_PART, GENERATE_GRANT_DRAFT);
 
-        assertTrue(response.contains(PROBATE_PRACTITIONER_123_LONDON_LONDON));
+        assertThat("should match practioner name and address",
+                response, matchesRegex(PROBATE_PRACTITIONER_123_LONDON_LONDON));
     }
 
     @Test
