@@ -7,9 +7,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -65,32 +65,32 @@ class CaveatControllerIT {
     @Autowired
     private TestUtils testUtils;
 
-    @MockBean
+    @MockitoBean
     private NotificationService notificationService;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private RegistrarDirectionService registrarDirectionService;
-    @MockBean
+    @MockitoBean
     private FeeService feeService;
-    @MockBean
+    @MockitoBean
     private FeesResponse feesResponseMock;
-    @MockBean
+    @MockitoBean
     private PaymentsService paymentsService;
-    @MockBean
+    @MockitoBean
     private ServiceRequestTransformer serviceRequestTransformer;
-    @MockBean
+    @MockitoBean
     private SecurityUtils securityUtils;
-    @MockBean
+    @MockitoBean
     private AuditEventService auditEventService;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
 
 
-    @SpyBean
+    @MockitoSpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
 
     @BeforeEach

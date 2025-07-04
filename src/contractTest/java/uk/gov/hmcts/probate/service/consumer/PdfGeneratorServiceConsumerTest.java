@@ -15,7 +15,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
@@ -54,7 +54,7 @@ public class PdfGeneratorServiceConsumerTest {
     private PDFServiceConfiguration pdfServiceConfiguration;
     @Autowired
     private FileSystemResourceService fileSystemResourceService;
-    @MockBean
+    @MockitoBean
     private AuthTokenGenerator serviceTokenGenerator;
 
     // TBD consumer 'Name'

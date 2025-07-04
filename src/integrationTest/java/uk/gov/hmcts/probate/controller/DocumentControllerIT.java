@@ -14,9 +14,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -108,25 +108,25 @@ class DocumentControllerIT {
     @Autowired
     private TestUtils testUtils;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private NotificationService notificationService;
 
-    @SpyBean
+    @MockitoSpyBean
     private DocumentService documentService;
 
-    @MockBean
+    @MockitoBean
     private BulkPrintService bulkPrintService;
 
-    @MockBean
+    @MockitoBean
     private DocumentGeneratorService documentGeneratorService;
 
-    @MockBean
+    @MockitoBean
     private EvidenceUploadService evidenceUploadService;
 
-    @MockBean
+    @MockitoBean
     private IdamApi idamApi;
 
     @Mock
@@ -135,16 +135,16 @@ class DocumentControllerIT {
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
 
-    @MockBean
+    @MockitoBean
     private UserInfoService userInfoService;
 
-    @SpyBean
+    @MockitoSpyBean
     private SecurityUtils securityUtils;
 
-    @MockBean
+    @MockitoBean
     private CaseDocumentClient caseDocumentClient;
 
-    @MockBean
+    @MockitoBean
     private FeatureToggleService featureToggleService;
 
     @BeforeEach
