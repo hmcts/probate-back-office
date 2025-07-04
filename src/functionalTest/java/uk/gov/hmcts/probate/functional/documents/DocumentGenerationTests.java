@@ -15,8 +15,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -43,10 +44,15 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
         final CaseData caseData = CaseData.builder().build();
         final String response = generateNonProbateDocument(DEFAULT_WILL_NO_DOCS_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
 
-        String expectedText = removeCrLfs(utils.getJsonFromFile("willLodgementDepositReceiptResponse.txt"));
-        expectedText = expectedText.replace("19th November 2020", caseData.convertDate(LocalDate.now()));
+        String expectedRegex = utils.getJsonFromFile("willLodgementDepositReceiptResponse.txt");
+        String expectedRegexOneLine = expectedRegex
+                .replaceAll("#.*\n", "")
+                .replaceAll("\n", "")
+                .replaceAll("\r", "")
+                .replace("19th November 2020", caseData.convertDate(LocalDate.now()));
 
-        assertTrue(response.contains(expectedText));
+
+        assertThat(response, matchesPattern(expectedRegexOneLine));
     }
 
 

@@ -156,7 +156,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccess(PAYLOAD_CAVEAT_NO_DOB, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB, EMAIL_NOTIFICATION_URL, responseBody,
+        assertExpectedContentsRegexWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB, EMAIL_NOTIFICATION_URL, responseBody,
             replacements);
     }
 
@@ -166,7 +166,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         replacements.put(EXPIRY_DATE_WELSH_KEY, utils.convertToWelsh(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_RESPONSE_WELSH, EMAIL_NOTIFICATION_URL,
+        assertExpectedContentsRegexWithExpectedReplacement(DEFAULT_PAYLOAD_RESPONSE_WELSH, EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
 
@@ -175,7 +175,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR, CAVEAT_WITHDRAW);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE,
+        assertExpectedContentsRegexWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE,
             EMAIL_NOTIFICATION_URL, responseBody, replacements);
     }
 
@@ -184,7 +184,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_WELSH, CAVEAT_WITHDRAW);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE_WELSH,
+        assertExpectedContentsRegexWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE_WELSH,
             EMAIL_NOTIFICATION_URL, responseBody, replacements);
     }
 
@@ -194,7 +194,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         replacements.put(EXPIRY_DATE_WELSH_KEY, utils.convertToWelsh(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB_WELSH, EMAIL_NOTIFICATION_URL,
+        assertExpectedContentsRegexWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB_WELSH, EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
 
@@ -203,7 +203,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_NO_DOB_WELSH,
+        assertExpectedContentsRegexWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_NO_DOB_WELSH,
             EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
@@ -213,7 +213,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(RESPONSE_PAYLOAD_SOLICITOR_NO_DOB, EMAIL_NOTIFICATION_URL,
+        assertExpectedContentsRegexWithExpectedReplacement(RESPONSE_PAYLOAD_SOLICITOR_NO_DOB, EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
 

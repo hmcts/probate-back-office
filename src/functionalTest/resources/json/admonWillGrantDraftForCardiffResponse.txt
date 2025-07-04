@@ -1,1 +1,33 @@
-DRAFT COPY - NOT FOR CIRCULATIONHigh Court of Justice England and WalesProbate Registry of Wales3rd Floor, Cardiff Magistrates’ CourtFitzalan PlaceCardiffSouth WalesCF24 0RZ0300 303 0648 Letters of Administration with willCase Reference: 1528365719153338Date of Issue: 18th November 2020  of Deceased First Name Deceased Last Name 1 2 Presumed died on  domiciled in 1st January 2000 England and WalesThe Last Will and Testament of  (An official copy of which Deceased First Name Deceased Last Nameis available from the Court) was proved and registered before the High Court of Justice. The Administration of 's estate is granted by this court to the Deceased First Name Deceased Last Namefollowing administratorsof  Executor Name 1 Executor Last Name 1 1 2 of and Eileen Executor 1 2The application has stated that the gross value of the estate in England and Wales amounts to £10,000 and the net value amounts to £8,000DISTRICT REGISTRARExtracted personallyIf you wish to validate the information contained within this document please call 0300 303 0648
+.*
+DRAFT COPY[ ]*-[ ]*NOT FOR CIRCULATION[ ]*
+High Court of Justice England and Wales[ ]*
+Probate Registry of Wales[ ]*
+3rd Floor, Cardiff Magistrates’ Court[ ]*
+Fitzalan Place[ ]*
+Cardiff[ ]*
+South Wales[ ]*
+CF24 0RZ[ ]*
+0300 303 0648[ ]*
+Letters of Administration with will[ ]*
+Case Reference: 1528365719153338[ ]*
+Date of Issue: 18th November 2020[ ]*
+(of Deceased First Name Deceased Last Name 1 2
+|Deceased First Name Deceased Last Name of 1 2
+)[ ]*
+(Presumed died on  domiciled in 1st January 2000 England and Wales
+|Presumed died on 1st January 2000 domiciled in England and Wales
+)[ ]*
+(The Last Will and Testament of  \(An official copy of which Deceased First Name Deceased Last Nameis available from the Court\) was proved and registered before the High Court of Justice.
+|The Last Will and Testament of Deceased First Name Deceased Last Name \(An official copy of which is available from the Court\) was proved and registered before the High Court of Justice.
+)[ ]*
+(The Administration of 's estate is granted by this court to the Deceased First Name Deceased Last Namefollowing administrators
+|The Administration of Deceased First Name Deceased Last Name's estate is granted by this court to the following administrators
+)[ ]*
+(of  Executor Name 1 Executor Last Name 1 1 2 of and Eileen Executor 1 2
+|Executor Name 1 Executor Last Name 1 of 1 2[ ]+and Eileen Executor of 1 2
+)[ ]*
+The application has stated that the gross value of the estate in England and Wales amounts to £10,000 and the net value amounts to £8,000[ ]*
+DISTRICT REGISTRAR[ ]*
+Extracted personally[ ]*
+If you wish to validate the information contained within this document please call 0300 303 0648
+.*
