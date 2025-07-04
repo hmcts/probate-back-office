@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,11 +35,10 @@ public class GenericMapperService {
     private static final String POST_TOWN = "postTown";
     private final RegistriesProperties registriesProperties;
     private final FileSystemResourceService fileSystemResourceService;
-    private ObjectMapper mapper;
+    private final ObjectMapper objectMapper;
 
     public Map<String, Object> addCaseData(CaseData caseData) {
-        mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        Map<String, Object> placeholders = mapper.convertValue(caseData, Map.class);
+        Map<String, Object> placeholders = objectMapper.convertValue(caseData, Map.class);
         placeholders.replace(DECEASED_DATE_OF_DEATH, DATE_FORMAT.format(caseData.getDeceasedDateOfDeath()));
         placeholders.replace(DECEASED_DATE_OF_BIRTH, DATE_FORMAT.format(caseData.getDeceasedDateOfBirth()));
         return placeholders;
@@ -51,7 +49,7 @@ public class GenericMapperService {
         Registry registry = registriesProperties.getRegistries().get(
             caseData.getRegistryLocation().toLowerCase());
         Map<String, Object> placeholders = addCaseData(caseData);
-        Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
+        Map<String, Object> registryPlaceholders = objectMapper.convertValue(registry, Map.class);
 
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
         placeholders.put(GRANT_OF_REPRESENTATION_CASE_ID, caseDetails.getId().toString());
