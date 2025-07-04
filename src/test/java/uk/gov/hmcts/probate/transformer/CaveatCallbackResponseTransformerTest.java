@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -807,15 +808,19 @@ class CaveatCallbackResponseTransformerTest {
     void shouldTransformRollbackState() {
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
-        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.applicationType(SOLICITOR)
+                .autoClosedExpiry(YES);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         when(auditEventService.getLatestAuditEventByState(any(), any(), any(), any()))
                 .thenReturn(Optional.ofNullable(AuditEvent.builder()
-                        .stateId("SolsAppUpdated")
+                        .stateId("CaveatNotMatched")
                         .createdDate(LocalDateTime.now())
                         .build()));
         CaveatCallbackResponse callbackResponse = underTest.rollback(caveatCallbackRequestMock);
-        assertEquals("SolsAppUpdated", callbackResponse.getCaveatData().getState());
+        assertAll(
+                () -> assertEquals("CaveatNotMatched", callbackResponse.getCaveatData().getState()),
+                () -> assertNull(callbackResponse.getCaveatData().getAutoClosedExpiry())
+        );
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
