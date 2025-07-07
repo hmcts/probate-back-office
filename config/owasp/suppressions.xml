@@ -9,4 +9,7 @@
         -->
         <cve>CVE-2025-1686</cve>
     </suppress>
+    <suppress until = "2025-10-15">
+        <cve>CVE-2025-48976</cve>
+    </suppress>
 </suppressions>
