@@ -34,7 +34,6 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
     private static final int DOC_UUID_LENGTH = 36;
     private static final boolean DELETE_PERMANENT = true;
-    private static final String BEARER_PREFIX = "Bearer ";
     private final SecurityUtils securityUtils;
     private final CaseDocumentClient caseDocumentClient;
     private final DocumentManagementRequestBuilder documentManagementRequestBuilder;
@@ -46,15 +45,9 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             documentManagementRequestBuilder.perpareDocumentUploadRequest(file,
             documentType);
 
-        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        String auth = securityDTO.getAuthorisation();
-        if (auth == null) {
-            securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
-            auth = securityDTO.getAuthorisation();
-        }
-        if (!auth.contains(BEARER_PREFIX)) {
-            auth = BEARER_PREFIX + auth;
-        }
+        SecurityDTO securityDTO = securityUtils.getOrDefaultCaseworkerSecurityDTO();
+        String auth = securityUtils.getBearerToken(securityDTO.getAuthorisation());
+
         return caseDocumentClient.uploadDocuments(auth, securityDTO.getServiceAuthorisation(),
                 documentUploadRequest.getCaseTypeId(), documentUploadRequest.getJurisdictionId(),
                 documentUploadRequest.getFiles(), PRIVATE);
@@ -66,10 +59,8 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
                                            DocumentType documentType) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         String serviceAuthorisation = securityDTO.getServiceAuthorisation();
-        String auth  = authorizationToken;
-        if (!auth.contains(BEARER_PREFIX)) {
-            auth = BEARER_PREFIX + auth;
-        }
+        String auth  = securityUtils.getBearerToken(authorizationToken);
+
         DocumentUploadRequest documentUploadRequest =
             documentManagementRequestBuilder.perpareDocumentUploadRequestForCitizen(multipartFileList,
                 documentType);

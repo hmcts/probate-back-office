@@ -248,6 +248,7 @@
   {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "selectionList", "Label": "Please select the information you would like to amend", "FieldType": "FixedList", "FieldTypeParameter": "selectionFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "scannedDocuments", "Label": "Documents scanned", "FieldType": "Collection", "FieldTypeParameter": "ScannedDocument", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "evidenceHandled", "Label": "Supplementary evidence handled", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "evidenceHandledDate", "Label": "Supplementary evidence handled Date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "spouseOrPartner", "Label": "Did the person who has died leave a surviving spouse or civil partner? ", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "childrenSurvived", "Label": "Were there any sons or daughters of the person who died survived them? ", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "childrenOverEighteenSurvived", "Label": "How many over 18 years old?", "FieldType": "Text", "SecurityClassification": "Public"},
@@ -522,5 +523,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "resolveCaveatStopState", "Label": "Which state do you wish to return the case to?", "FieldType": "FixedList", "FieldTypeParameter": "resolveCaveatStopStateFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "TTL", "Label": "Set up TTL", "FieldType": "TTL", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "executorsNamed", "Label": "Executors named", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyExecutorsDied", "Label": "Any executors died", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyExecutorsDied", "Label": "Any executors died", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "firstStopReminderSentDate", "Label": "First stop reminder sent date", "FieldType": "Date", "SecurityClassification": "Public"}
 ]
