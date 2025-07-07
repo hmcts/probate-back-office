@@ -21,4 +21,7 @@ public class NotificationsProperties {
 
     @Valid
     private NotificationTemplates templates;
+
+    @Valid
+    private StopReasonCode stop;
 }

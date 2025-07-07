@@ -631,6 +631,8 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
     private final String executorsNamed;
+    private LocalDate firstStopReminderSentDate;
+    private final String evidenceHandledDate;
 
     private TTL ttl;
 

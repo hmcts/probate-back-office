@@ -166,6 +166,14 @@ notifications:
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "pa-disposal-reminder"
           draftCasePaymentSuccess: "pa-draft-case-payment-success"
+          firstStopReminder: "pa-first-stop-reminder"
+          firstStopReminderForHub: "pa-first-stop-reminder-for-hub"
+          hseReminder: "pa-hse-reminder"
+          hseReminderForHub: "pa-hse-reminder-for-hub"
+          dormantWarning: "pa-dormant-warning"
+          unsubmittedApplication: "pa-unsubmitted-application"
+          declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant"
+          declarationNotSignedExecutors: "pa-declaration-not-signed-executors"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -190,6 +198,10 @@ notifications:
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "sol-disposal-reminder"
           draftCasePaymentSuccess: "sol-draft-case-payment-success"
+          firstStopReminder: "sol-first-stop-reminder"
+          hseReminder: "sol-hse-reminder"
+          dormantWarning: "sol-dormant-warning"
+          unsubmittedApplication: "sol-unsubmitted-application"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -215,6 +227,14 @@ notifications:
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "pa-disposal-reminder-welsh"
           draftCasePaymentSuccess: "pa-draft-case-payment-success-welsh"
+          firstStopReminder: "pa-first-stop-reminder-welsh"
+          firstStopReminderForHub: "pa-first-stop-reminder-for-hub-welsh"
+          hseReminder: "pa-hse-reminder-welsh"
+          hseReminderForHub: "pa-hse-reminder-for-hub-welsh"
+          dormantWarning: "pa-dormant-warning-welsh"
+          unsubmittedApplication: "pa-unsubmitted-application-welsh"
+          declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant-welsh"
+          declarationNotSignedExecutors: "pa-declaration-not-signed-executors-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -238,6 +258,10 @@ notifications:
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "sol-disposal-reminder-welsh"
           draftCasePaymentSuccess: "sol-draft-case-payment-success-welsh"
+          firstStopReminder: "sol-first-stop-reminder-welsh"
+          hseReminder: "sol-hse-reminder-welsh"
+          dormantWarning: "sol-dormant-warning-welsh"
+          unsubmittedApplication: "sol-unsubmitted-application-welsh"
 
 documents:
   templates:
@@ -511,3 +535,13 @@ disposal:
   startDate: 1900-01-01
   personalNotificationLink: ${FRONTEND_URL:http://localhost:3000}
   solsNotificationLink: ${MANAGE_CASE_URL:http://localhost:3001}
+
+automated_notification:
+  stop_reminder:
+    first_notification_days: 56
+    second_notification_days: 28
+  hse_reminder:
+    awaiting_documentation_days: 30
+  dormant_warning_days: 150
+  unsubmitted_application_days: 28
+  declaration_not_signed_days: 3

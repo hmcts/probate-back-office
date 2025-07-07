@@ -72,7 +72,7 @@ docmosis:
     admonWillGrantReissueDraft:
       templateName: FL-PRB-GRP-ENG-01296.doc
     adColligendaBonaGrantReissueDraft:
-        templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     digitalGrantReissue:
       templateName: FL-PRB-GRP-ENG-01296.doc
     intestacyGrantReissue:
@@ -235,6 +235,12 @@ notifications:
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
           disposalReminder: "2e29cce0-66d9-458a-82a3-20aa0e4d5112"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "f3d0ab70-3fed-4590-ab53-108f6adbea9c"
+          firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
+          dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
+          unsubmittedApplication: "3f3965ca-1c8a-4b44-be66-75b929513e65"
+          declarationNotSignedPrimaryApplicant: "c04e65be-51f4-46b1-bce4-8795c1113ae7"
+          declarationNotSignedExecutors: "38f8f966-1a7b-4d2b-ae2c-a67f41e4d788"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -262,6 +268,9 @@ notifications:
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
           disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "eed3eae4-3f01-4d0b-a68f-5b0ab149e328"
+          dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
+          unsubmittedApplication: "ab5d7b24-6b40-403b-8a8f-4a21bc48ed6f"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
@@ -288,6 +297,12 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
           disposalReminder: "34fe5d9d-c57b-4bc2-9ceb-008e82cd5594"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "f3d0ab70-3fed-4590-ab53-108f6adbea9c"
+          firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
+          dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
+          unsubmittedApplication: "ac18f977-de08-407b-9c35-1e62d9cd80ff"
+          declarationNotSignedPrimaryApplicant: "08c35f45-453d-45bc-99d1-a7752fde98a1"
+          declarationNotSignedExecutors: "2bbd7b4d-2308-4b92-ae13-3a5f8608c94b"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -314,6 +329,9 @@ notifications:
           noticeOfChangeReceived: "4f1f3c47-1d84-4584-b251-2a77d64510f2"
           disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "eed3eae4-3f01-4d0b-a68f-5b0ab149e328"
+          dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
+          unsubmittedApplication: "7440ee74-4cde-4cd4-ab76-038d70674424"
 
 documents:
   templates:
@@ -486,7 +504,7 @@ core_case_data:
   api:
     url: ${services.coreCaseData.baseUrl:http://localhost:4452}
   elasticsearch:
-    querySize: 500
+    querySize: 100
 
 excelaEmail: ${EXCELA_EMAIL:exela@probate-test.com}
 
@@ -571,3 +589,13 @@ disposal:
   startDate: 1900-01-01
   personalNotificationLink: http://localhost:3000
   solsNotificationLink: http://localhost:3001
+
+automated_notification:
+  stop_reminder:
+    first_notification_days: 56
+    second_notification_days: 28
+  hse_reminder:
+    awaiting_documentation_days: 30
+  dormant_warning_days: 150
+  unsubmitted_application_days: 28
+  declaration_not_signed_days: 3
