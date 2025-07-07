@@ -499,6 +499,7 @@ bootWithCCD {
   environment 'PROBATE_POSTGRESQL_USER', 'postgres'
   environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
   environment 'CASE_DOCUMENT_S2S_AUTHORISED_SERVICES', 'ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,em_npa_app,fprl_dgs_api,dg_docassembly_api,cmc_claim_store,civil_service,civil_general_applications,bulk_scan_orchestrator,ethos_repl_service,et_cos,nfdiv_case_api,divorce_frontend,probate_backend'
+  environment("spring.profiles.active", "local")
 
   if (new Boolean(System.getenv('USE_LOCAL_SUPPORT_SERVICES'))) {
     dependsOn buildBackOfficeXlsx
