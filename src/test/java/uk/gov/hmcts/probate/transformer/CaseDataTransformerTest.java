@@ -290,6 +290,7 @@ class CaseDataTransformerTest {
     @Test
     void setsIhtFormEstateToDefaultIHT400WhenNull() {
         caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstateValuesCompleted("Yes")
                 .ihtEstateGrossValue(new BigDecimal(new BigInteger("100"), 0))
                 .ihtEstateNetValue(new BigDecimal(new BigInteger("100"), 0))
                 .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("100"), 0)).build();
