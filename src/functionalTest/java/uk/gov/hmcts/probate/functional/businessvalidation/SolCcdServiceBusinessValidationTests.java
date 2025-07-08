@@ -506,7 +506,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"PaperForm\",");
 
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormYesResponse.txt",
+        assertExpectedContentsRegex("caseworkerCreatedPersonalEmailPaperFormYesResponse.txt",
             NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
@@ -554,7 +554,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"PaperForm\",");
 
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt",
+        assertExpectedContentsRegex("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt",
             NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 

@@ -20,6 +20,7 @@ public class FeatureToggleService {
     private static final String DORMANT_WARNING_TOGGLE = "probate-cron-dormant-warning";
     private static final String UNSUBMITTED_APPLICATION_TOGGLE = "probate-cron-unsubmitted-application";
     private static final String DECLARATION_NOT_SIGNED_TOGGLE = "probate-cron-declaration-not-signed";
+    private static final String USE_COMMONS_PDF_GEN = "probate-use-commons-pdf-gen";
 
     @Autowired
     public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,
@@ -97,5 +98,9 @@ public class FeatureToggleService {
     public boolean isDeclarationNotSignedFeatureToggleOn() {
         return this.isFeatureToggleOn(
                 DECLARATION_NOT_SIGNED_TOGGLE, false);
+    }
+
+    public boolean useCommonsPdfGen() {
+        return this.isFeatureToggleOn(USE_COMMONS_PDF_GEN, false);
     }
 }

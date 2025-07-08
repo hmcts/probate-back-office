@@ -9,7 +9,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.matchesPattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,9 +31,12 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        String legalStatementExpectedTextOneLine = legalStatementExpectedText
+                .replaceAll("#.*\n", "")
+                .replaceAll("\n", "")
+                .replaceAll("\r", "");
 
-        assertEquals(legalStatementExpectedText, legalStatementText);
-
+        assertThat(legalStatementText, matchesPattern(legalStatementExpectedTextOneLine));
     }
 
     @Test
@@ -44,8 +50,12 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
+        String legalStatementExpectedTextOneLine = legalStatementExpectedText
+                .replaceAll("#.*\n", "")
+                .replaceAll("\n", "")
+                .replaceAll("\r", "");
 
+        assertThat(legalStatementText, matchesPattern(legalStatementExpectedTextOneLine));
     }
 
     @Test
@@ -59,8 +69,12 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        String legalStatementExpectedTextOneLine = legalStatementExpectedText
+                .replaceAll("#.*\n", "")
+                .replaceAll("\n", "")
+                .replaceAll("\r", "");
 
-        assertEquals(legalStatementExpectedText, legalStatementText);
+        assertThat(legalStatementText, matchesPattern(legalStatementExpectedTextOneLine));
     }
 
 
@@ -75,8 +89,12 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        String legalStatementExpectedTextOneLine = legalStatementExpectedText
+                .replaceAll("#.*\n", "")
+                .replaceAll("\n", "")
+                .replaceAll("\r", "");
 
-        assertEquals(legalStatementExpectedText, legalStatementText);
+        assertThat(legalStatementText, matchesPattern(legalStatementExpectedTextOneLine));
     }
 
     protected JsonPath postAndGetJsonPathResponse(String jsonFileName, String path) throws IOException {

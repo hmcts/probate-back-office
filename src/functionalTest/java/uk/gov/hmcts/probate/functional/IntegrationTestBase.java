@@ -21,7 +21,10 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.matchesRegex;
+import static org.hamcrest.Matchers.nullValue;
 
 
 @Slf4j
@@ -159,6 +162,19 @@ public abstract class IntegrationTestBase {
         return validatePostSuccessForPayload(request, path);
     }
 
+    protected void assertExpectedContentsRegex(
+            final String expectedResponseFile,
+            final String responseDocumentUrl,
+            final ResponseBody responseBody) throws IOException {
+        final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
+
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(responseDocumentUrl);
+        final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
+
+        assertThat("Matching against file: " + expectedResponseFile, response, matchesRegex(expectedText));
+    }
+
     protected void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl,
                                           ResponseBody responseBody) throws IOException {
         final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
@@ -166,7 +182,34 @@ public abstract class IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(responseDocumentUrl);
         final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
-        assertTrue(response.contains(expectedText));
+        if (!response.contains(expectedText)) {
+            log.error("Expected response (from {}) does not contain expected text:\nexpected:\n{}\n\nresponse:\n{}\n\n",
+                    expectedResponseFile, expectedText, response);
+        }
+        assertThat("Expect to contain content from file: " + expectedResponseFile,
+                response,
+                containsString(expectedText));
+    }
+
+    protected void assertExpectedContentsRegexWithExpectedReplacement(
+            final String expectedResponseFile,
+            final String responseDocumentUrl,
+            final ResponseBody responseBody,
+            final HashMap<String, String> expectedKeyValuerelacements) throws IOException {
+        String unfilteredFile = getJsonFromFile(expectedResponseFile);
+        String filtered = Pattern.compile("^#.*$", Pattern.MULTILINE)
+                .matcher(unfilteredFile).replaceAll("");
+        String expectedText = removeCrLfs(filtered);
+
+        for (Map.Entry<String, String> entry : expectedKeyValuerelacements.entrySet()) {
+            expectedText = expectedText.replace(entry.getKey(), entry.getValue());
+        }
+
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String documentUrl = jsonPath.get(responseDocumentUrl);
+        final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
+        assertThat("Matching against file: " + expectedResponseFile,
+                response, matchesRegex(expectedText));
     }
 
     protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile,
@@ -180,12 +223,13 @@ public abstract class IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(responseDocumentUrl);
         final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
-        assertTrue(response.contains(expectedText));
+        assertThat("Expected to contain content from file: " + expectedResponseFile,
+                response, containsString(expectedText));
     }
 
     protected void assertExpectedContentsMissing(String expectedContentMissing, ResponseBody responseBody) {
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(expectedContentMissing);
-        assertTrue(documentUrl == null);
+        assertThat("Expect documentUrl to be null", documentUrl, nullValue());
     }
 }

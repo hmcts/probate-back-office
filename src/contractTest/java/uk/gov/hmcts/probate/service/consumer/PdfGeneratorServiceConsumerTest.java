@@ -21,6 +21,7 @@ import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFGeneratorService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -43,7 +44,7 @@ import static org.mockito.Mockito.when;
 @TestPropertySource(locations = {"/application.properties"})
 public class PdfGeneratorServiceConsumerTest {
 
-    private static final String HTML = ".html";
+    private static final String PEB = ".peb";
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
     private final String someServiceAuthToken = "someServiceAuthToken";
     @Autowired
@@ -56,20 +57,23 @@ public class PdfGeneratorServiceConsumerTest {
     private FileSystemResourceService fileSystemResourceService;
     @MockBean
     private AuthTokenGenerator serviceTokenGenerator;
+    @MockBean
+    private FeatureToggleService featureToggleService;
 
     // TBD consumer 'Name'
     @Pact(provider = "rpePdfService_PDFGenerationEndpointV2", consumer = "probate_backOffice")
     public RequestResponsePact generatePdfFromTemplate(PactDslWithProvider builder) throws JSONException, IOException {
+        final GeneratePdfRequest expectedPdfReq = buildGenerateDocumentRequest(
+                        DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT.getCommonsTemplateName().orElseThrow(),
+                        createJsonObjectAsString("willLodgementPayload.json"));
+        final String expectedBody = createJsonObject(expectedPdfReq);
         // @formatter:off
         return builder
             .given("A request to generate a Probate PDF document")
             .uponReceiving("A request to generate a Probate PDF document")
             .method("POST")
             .headers("Accept","application/pdf")
-            .body(createJsonObject(
-                buildGenerateDocumentRequest(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT.getTemplateName(),
-                    createJsonObjectAsString("willLodgementPayload.json"))),
-                "application/vnd.uk.gov.hmcts.pdf-service.v2+json;charset=UTF-8")
+            .body(expectedBody, "application/vnd.uk.gov.hmcts.pdf-service.v2+json;charset=UTF-8")
             .path("/pdfs")
             .willRespondWith()
             .matchHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/pdf")
@@ -82,6 +86,7 @@ public class PdfGeneratorServiceConsumerTest {
     public void verifyGeneratePdfFromTemplatePact() throws IOException, JSONException {
 
         when(serviceTokenGenerator.generate()).thenReturn(someServiceAuthToken);
+        when(featureToggleService.useCommonsPdfGen()).thenReturn(false);
 
         EvidenceManagementFileUpload response = pdfGenerationService
             .generatePdf(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT,
@@ -92,7 +97,7 @@ public class PdfGeneratorServiceConsumerTest {
 
     private GeneratePdfRequest buildGenerateDocumentRequest(String templateName, String callBackRequestJson)
         throws IOException {
-        String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + HTML;
+        String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + PEB;
         String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);
 
         Map<String, Object> paramMap = this.asMap(callBackRequestJson);

@@ -9,8 +9,10 @@ import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.DateFormat;
@@ -229,6 +231,13 @@ public class FunctionalTestUtils {
 
         try {
             byte[] byteArray = IOUtils.toByteArray(inputStream);
+
+            File output = File.createTempFile("pdf", ".pdf");
+            log.info("writing pdf to file://" + output.getAbsolutePath());
+            OutputStream outputStream = new FileOutputStream(output);
+            outputStream.write(byteArray);
+            log.info("wrote to file://" + output.getAbsolutePath());
+
             RandomAccessRead randomAccessRead = new RandomAccessBuffer(byteArray);
             parser = new PDFParser(randomAccessRead);
             parser.parse();
