@@ -3,9 +3,9 @@ package uk.gov.hmcts.probate.service.caseaccess;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.service.IdamApi;
@@ -23,16 +23,16 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {CcdDataStoreService.class})
 @ExtendWith(SpringExtension.class)
 class CcdDataStoreServiceTest {
-    @MockBean
+    @MockitoBean
     private AuthTokenGenerator authTokenGenerator;
 
-    @MockBean
+    @MockitoBean
     private CaseRoleClient caseRoleClient;
 
     @Autowired
     private CcdDataStoreService ccdDataStoreService;
 
-    @MockBean
+    @MockitoBean
     private IdamApi idamApi;
 
     @Test
