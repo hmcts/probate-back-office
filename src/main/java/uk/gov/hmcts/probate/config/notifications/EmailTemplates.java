@@ -34,4 +34,14 @@ public class EmailTemplates {
     private String disposalReminder;
     private String caveatDisposalReminder;
     private String draftCasePaymentSuccess;
+    private String firstStopReminder;
+    private String firstStopReminderForHub;
+    private String secondStopReminder;
+    private String secondStopReminderForHub;
+    private String hseReminder;
+    private String hseReminderForHub;
+    private String dormantWarning;
+    private String unsubmittedApplication;
+    private String declarationNotSignedPrimaryApplicant;
+    private String declarationNotSignedExecutors;
 }
