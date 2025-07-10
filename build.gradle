@@ -161,7 +161,7 @@ def versions = [
         authCheckerLib                  : '3.1.1',
         ccdClient                       : '5.1.1',
         commonsIO                       : '2.19.0',
-        commonsValidator                : '1.9.0',
+        commonsValidator                : '1.10.0',
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '7.17.29',
         fortifyClientVersion            : '1.4.9',
