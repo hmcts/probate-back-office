@@ -10,7 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
@@ -57,13 +57,13 @@ class LifeEventCCDServiceTest {
     final Long caseId = 1234L;
     @Autowired
     LifeEventCCDService lifeEventCCDService;
-    @MockBean
+    @MockitoBean
     DeathService deathService;
-    @MockBean
+    @MockitoBean
     CcdClientApi ccdClientApi;
-    @MockBean
+    @MockitoBean
     DeathRecordService deathRecordService;
-    @MockBean
+    @MockitoBean
     HandOffLegacyService handOffLegacyService;
     @Mock
     CaseDetails caseDetails;
