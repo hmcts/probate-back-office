@@ -338,7 +338,7 @@ export class SolCreateCasePage extends BasePage {
     ).toBeVisible();
     await expect(
       this.page.getByText(makePaymentConfig.payNowLinkText)
-    ).not.toBeVisible();
+    ).toBeHidden();
     await this.postPaymentReviewDetails(caseRef);
     for (let i = 0; i <= 6; i++) {
       await expect(this.eventHistoryTab).toBeEnabled();

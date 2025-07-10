@@ -54,7 +54,7 @@ export class BasePage {
 
   async getCaseRefFromUrl() {
     await this.page.waitForTimeout(testConfig.GetCaseRefFromUrlDelay);
-    const url = await this.page.url();
+    const url = this.page.url();
     return url
       .replace("#Event%20History", "")
       .replace("#Case%20Progress", "")

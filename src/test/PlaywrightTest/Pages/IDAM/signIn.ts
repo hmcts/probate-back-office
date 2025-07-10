@@ -52,7 +52,7 @@ export class SignInPage extends BasePage {
     await expect(this.submitButtonLocator).toBeEnabled();
     await this.submitButtonLocator.click();
 
-    await expect(this.usernameLocator).not.toBeVisible();
+    await expect(this.usernameLocator).toBeHidden();
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
   }
