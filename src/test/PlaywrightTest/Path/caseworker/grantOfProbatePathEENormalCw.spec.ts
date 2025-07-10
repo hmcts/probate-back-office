@@ -268,7 +268,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     await cwEventActionsPage.chooseNextStep(nextStepConfig.issueGrant);
     await cwEventActionsPage.issueGrant(caseRef);
     endState = "Grant issued";
-    await basePage.logInfo(testInfo, scenarioName, caseRef);
+    await basePage.logInfo(testInfo.title, scenarioName, caseRef);
 
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
 

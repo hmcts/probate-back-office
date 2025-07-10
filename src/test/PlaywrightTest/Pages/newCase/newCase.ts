@@ -6,12 +6,13 @@ import commonConfig from '../common/commonConfig.json' with { type: 'json' };
 import createCaveatConfig from '../createCaveat/createCaveatConfig.json' with { type: 'json' };
 import createGrantofProbateAmendConfig from '../createGrantOfProbate/createGrantOfProbateConfig.json' with { type: 'json' };
 import createGrantOfProbateConfig from '../createGrantOfProbateManual/createGrantOfProbateManualConfig.json' with { type: 'json' };
+import createGrantOfProbateManualProbateManCaseConfig from '../createGrantOfProbateManualForProbateMan/createGrantOfProbateManualProbateManCaseConfig.json' with { type: 'json' };
 import createWillLodgementConfig from '../createWillLodgement/createWillLodgementConfig.json' with { type: 'json' };
 import eventSummaryConfig from '../eventSummary/eventSummaryConfig.json' with { type: 'json' };
 import { BasePage } from '../utility/basePage.ts';
 import newCaseConfig from './newCaseConfig.json' with { type: 'json' };
 
-type CreateGrantOfProbateConfig = typeof createGrantOfProbateConfig;
+type CreateGrantOfProbateConfig = typeof createGrantOfProbateConfig | typeof createGrantOfProbateManualProbateManCaseConfig;
 type CaseProgressConfig = typeof caseProgressConfig;
 
 export class CreateCasePage extends BasePage {
