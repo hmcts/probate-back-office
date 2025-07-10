@@ -242,6 +242,8 @@ class DocumentControllerIT {
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
 
         when(featureToggleService.enableAmendLegalStatementFiletypeCheck()).thenReturn(true);
+
+        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
     }
 
     @Test
@@ -1116,9 +1118,6 @@ class DocumentControllerIT {
     void shouldAcceptPdfValidateAmendLegalStatement() throws Exception {
         String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_probate.json");
 
-        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
-        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
-
         final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
                 uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
                         .mimeType(MediaType.APPLICATION_PDF_VALUE)
@@ -1167,9 +1166,6 @@ class DocumentControllerIT {
     @Test
     void shouldRejectNonPdfValidateAmendLegalStatement() throws Exception {
         String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_probate.json");
-
-        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
-        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
 
         final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
                 uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
