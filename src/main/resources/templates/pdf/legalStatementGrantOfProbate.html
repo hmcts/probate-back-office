@@ -45,7 +45,6 @@
 <body>
 <table>
     {% set multipleExecutors = case_details.case_data.executorsApplyingLegalStatement|length > 1 %}
-    {% set singleExecutor = case_details.case_data.executorsApplyingLegalStatement|length == 1 %}
     {% set multipleOtherPartners = 0 %}
     {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes"
     and (case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin") %}
@@ -218,7 +217,7 @@
 
             {% if multipleExecutors %}
                 <p>Nyni yw’r ysgutorion a enwir yn yr ewyllys.</p>
-            {% elseif singleExecutor %}
+            {% else %}
                 <p>Myfi yw’r ysgutor a enwir yn yr ewyllys.</p>
             {% endif %}
 
@@ -251,7 +250,7 @@
                             {{ executor.value.notApplyingExecutorName }} i’r sawl sy'n cadw'r hawl.
                         </span></p>
                         {% else %}
-                        <p><span>{% if (multipleExecutors) %}Rydym{% else %}yr wyf{% endif %} ar y cyd â hyn yn gwneud cais i’r rhybudd o gais hwn gael ei hepgor o dan Reol 27(3) Rheolau Profiant Diwrthwynebiad 1987 i {{ executor.value.notApplyingExecutorName }}
+                        <p><span>{% if (multipleExecutors) %}Rydym{% else %}Yr wyf{% endif %} ar y cyd â hyn yn gwneud cais i’r rhybudd o gais hwn gael ei hepgor o dan Reol 27(3) Rheolau Profiant Diwrthwynebiad 1987 i {{ executor.value.notApplyingExecutorName }}
                             i’r sawl sy'n cadw'r hawl.
                         </span></p>
                         {% endif %}
@@ -565,7 +564,7 @@
             {% endfor %}
             {% if multipleExecutors %}
                 <p>We are the executors named in the will.</p>
-            {% elseif singleExecutor %}
+            {% else %}
                 <p>I am the executor named in the will.</p>
             {% endif %}
 
@@ -914,7 +913,7 @@
 
             {% if multipleExecutors %}
                 <p>We are the executors named in the will.</p>
-            {% elseif singleExecutor %}
+            {% else %}
                 <p>I am the executor named in the will.</p>
             {% endif %}
 
