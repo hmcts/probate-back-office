@@ -1,5 +1,7 @@
 server:
   port: ${probate.sol.ccd.port}
+  tomcat:
+    maxSwallowSize: ${MAX_SWALLOW_SIZE:10MB}
 
 resttemplate:
   httpclient:
@@ -123,7 +125,7 @@ docmosis:
     welshAdmonWillGrant:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdColligendaBonaGrant:
-        templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
     welshDigitalGrantDraft:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshIntestacyGrantDraft:
@@ -184,6 +186,10 @@ ccd.data.store.api:
   caseMatchingPath: /searchCases
 
 spring:
+  servlet:
+    multipart:
+      maxFileSize: ${MAX_FILE_SIZE:10MB}
+      maxRequestSize: ${MAX_REQUEST_SIZE:10MB}
   jackson:
     serialization:
       wrap_root_value: false
@@ -198,18 +204,12 @@ spring:
     hibernate.ddl-auto: none
   config:
     import: "optional:configtree:/mnt/secrets/probate/"
-
   datasource:
     url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}
     username:  ${probate.postgresql.user}
     password:  ${probate.postgresql.password}
+    driverClassName: org.postgresql.Driver
 
-  database.driverClassName: org.postgresql.Driver
-
-
-spring.document.retriever.service.api.baseurl: localhost:5006
-
-spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
@@ -729,7 +729,7 @@ case_document_am:
 
 document_management:
   fileupload:
-    extensions: ".pdf .jpeg .bmp .tif .tiff .png"
+    extensions: ".pdf .jpeg .bmp .tif .tiff .png .jpg"
     mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
 
 dormancy:
