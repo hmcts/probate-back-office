@@ -45,6 +45,7 @@
 <body>
 <table>
     {% set multipleExecutors = case_details.case_data.executorsApplyingLegalStatement|length > 1 %}
+    {% set singleExecutor = case_details.case_data.executorsApplyingLegalStatement|length == 1 %}
     {% set multipleOtherPartners = 0 %}
     {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes"
     and (case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin") %}
@@ -215,13 +216,10 @@
 
             {% endfor %}
 
-            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing"
-                or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                {% if multipleExecutors %}
-                    <p>Nyni yw’r ysgutorion a enwir yn yr ewyllys.</p>
-                {% else %}
-                    <p>Myfi yw’r ysgutor a enwir yn yr ewyllys.</p>
-                {% endif %}
+            {% if multipleExecutors %}
+                <p>Nyni yw’r ysgutorion a enwir yn yr ewyllys.</p>
+            {% elseif singleExecutor %}
+                <p>Myfi yw’r ysgutor a enwir yn yr ewyllys.</p>
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
@@ -565,13 +563,10 @@
             {% endif %}
 
             {% endfor %}
-            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing"
-                or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                {% if multipleExecutors %}
-                    <p>We are the executors named in the will.</p>
-                {% else %}
-                    <p>I am the executor named in the will.</p>
-                {% endif %}
+            {% if multipleExecutors %}
+                <p>We are the executors named in the will.</p>
+            {% elseif singleExecutor %}
+                <p>I am the executor named in the will.</p>
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
@@ -916,13 +911,11 @@
             {% endif %}
 
             {% endfor %}
-            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing"
-                or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                {% if multipleExecutors %}
-                    <p>We are the executors named in the will.</p>
-                {% else %}
-                    <p>I am the executor named in the will.</p>
-                {% endif %}
+
+            {% if multipleExecutors %}
+                <p>We are the executors named in the will.</p>
+            {% elseif singleExecutor %}
+                <p>I am the executor named in the will.</p>
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
