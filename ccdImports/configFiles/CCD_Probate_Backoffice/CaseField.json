@@ -83,7 +83,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormCompletedOnline", "Label": "IHT Form completed Online", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtReferenceNumber", "Label": "IHT Reference Number", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtGrossValue", "Label": "What is the gross value of assets for probate?", "FieldType": "MoneyGBP", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtNetValue", "Label": "What is the net value of the estate for probate?", "FieldType": "MoneyGBP", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtNetValue", "Label": "What is the net value of assets for probate?", "FieldType": "MoneyGBP", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormNetValue", "Label": "Net value of the estate for probate", "FieldType": "MoneyGBP", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dateOfDeathAfterEstateSwitch", "Label": "DOD is after switch date", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "iht400Switch", "Label": "IHT400 switch", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
