@@ -24,7 +24,6 @@ public class OCRFieldIhtGrossValueMapper {
             return Optional.ofNullable(ihtGrossValue)
                     .orElseThrow(() -> ocrMappingException);
         } else {
-            log.info("Iht gross value for version1 {}", ocrFields.getIhtGrossValue());
             return OCRFieldIhtMoneyMapper.poundsToPennies("IhtGrossValue", ocrFields.getIhtGrossValue());
         }
     }
@@ -56,10 +55,6 @@ public class OCRFieldIhtGrossValueMapper {
     }
 
     private Long getIht400GrossValue(ExceptionRecordOCRFields ocrFields) {
-
-        log.info("get the gross value from iht400 {}, {}", ocrFields.getProbateGrossValueIht400(),
-                ocrFields.getProbateNetValueIht400());
-        log.info("get the iht process value from iht400 {}", ocrFields.getIht400process());
         if (TRUE.equalsIgnoreCase(ocrFields.getIht400process())) {
             return OCRFieldIhtMoneyMapper.poundsToPennies("ProbateGrossValueIht400",
                     ocrFields.getProbateGrossValueIht400());
