@@ -95,7 +95,7 @@ docmosis:
     admonWillGrantReissueDraft:
       templateName: FL-PRB-GRP-ENG-01296.doc
     adColligendaBonaGrantReissueDraft:
-        templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     digitalGrantReissue:
       templateName: FL-PRB-GRP-ENG-01296.doc
     intestacyGrantReissue:
@@ -103,7 +103,7 @@ docmosis:
     admonWillGrantReissue:
       templateName: FL-PRB-GRP-ENG-01296.doc
     adColligendaBonaGrantReissue:
-        templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
@@ -131,7 +131,7 @@ docmosis:
     welshAdmonWillGrantDraft:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdColligendaBonaGrantDraft:
-        templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
     welshDigitalGrantReissueDraft:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshIntestacyGrantReissueDraft:
@@ -139,7 +139,7 @@ docmosis:
     welshAdmonWillGrantReissueDraft:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdColligendaBonaGrantReissueDraft:
-        templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
     welshDigitalGrantReissue:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshIntestacyGrantReissue:
@@ -147,7 +147,7 @@ docmosis:
     welshAdmonWillGrantReissue:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdColligendaBonaGrantReissue:
-        templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
 
 fee.api:
   url: http://localhost:4411
@@ -246,6 +246,110 @@ notifications:
   grantDelayedNotificationReleaseDate: "2020-05-08"
   grantAwaitingDocumentationNotificationPeriodDays: 35
   govNotifyApiKey: ${PROBATE_NOTIFY_KEY:dummykey}
+  stop:
+    reasons:
+      english:
+        deceasedAddressMissing: "Address of deceased missing"
+        affidavit: "Affidavit"
+        anyOtherWills: "Any other wills"
+        applicantNameIssue: "Applicant Name (missing, spelling etc)"
+        awaitingUniqueIHTCode: "Awaiting unique probate IHT code"
+        caveatMatch: "Caveat match"
+        datesDiffer: "Dates differ (will, Birth, Death)"
+        deathCertIssue: "Death Cert (missing, not original, unreadable)"
+        deceasedName: "Deceased Name"
+        documentsRequired: "Documents required"
+        duplicateEmailAddresses: "Duplicate email addresses"
+        execNotAccountedFor: "Executor not accounted for"
+        fee: "Fee"
+        foreignDomicile: "Foreign Domicile"
+        iht421Awaiting: "IHT 421 awaiting"
+        ihtFiguresIncorrect: "IHT figures incorrect"
+        ihtIssue: "IHT forms not received"
+        lostWill: "Lost Will"
+        matchingApplication: "Matching application – (informing Sol or citizen that there is a matching application so their case cannot proceed)"
+        noMinorityLife: "No minority or life interest – we ask solicitors to certify this if missing on the Legal Statement"
+        notEligible: "Not eligible for digital process"
+        notEntitled: "Not entitled to make application"
+        originalDocsRequired: "Original Docs required"
+        willNotEnclosed: "Original will not enclosed"
+        permanentCaveat: "Permanent Caveat"
+        probateFiguresIncorrect: "Probate figures incorrect"
+        redeclareTitleClearing: "Re-declare Legal Statement due to Title/Clearing – this would only be on Solicitor applications"
+        solicitorsLegalStatementNotSigned: "Solicitors Legal Statement Not Signed"
+        trustCorp: "Trust Corp"
+        willCondition: "Will (condition)"
+        willContent: "Will (content, inc not signed)"
+        welshTranslationRequired: "Welsh Translation Required"
+        other: "*** NOT TO BE USED (Other) ***"
+        affidavits: "Affidavits"
+        capA5C: "CAP A5C"
+        decreeAbsolute: "Decree Absolute"
+        grants: "Grants"
+        iht205: "IHT 205"
+        iht207: "IHT 207"
+        pa11: "PA11"
+        pa12: "PA12"
+        pa13: "PA13"
+        pa14: "PA14"
+        pa15: "PA15"
+        pa16: "PA16"
+        pa17: "PA17"
+        pa19: "PA19"
+        powerOfAttorney: "Power of attorney"
+        renunciation: "Renunciation"
+        resolutions: "Resolutions"
+      welsh:
+        deceasedAddressMissing: "Cyfeiriad yr ymadawedig ar goll"
+        affidavit: "Affidafid"
+        anyOtherWills: "Unrhyw ewyllysiau eraill"
+        applicantNameIssue: "Enw'r Ceisydd (ar goll, sillafiad ayb)"
+        awaitingUniqueIHTCode: "Yn aros am god profiant unigryw Treth Etifeddiant (IHT)"
+        caveatMatch: "Cafeat yn cyd-fynd"
+        datesDiffer: "Dyddiadau'n wahanol (ewyllys, dyddiad geni, marwolaeth)"
+        deathCertIssue: "Tystysgrif Marwolaeth (ar goll, nid y gwreiddiol, annarllenadwy)"
+        deceasedName: "Enw'r ymadawedig"
+        documentsRequired: "Angen dogfennau"
+        duplicateEmailAddresses: "Cyfeiriadau e-bost dyblyg"
+        execNotAccountedFor: "Ysgutor heb ei gynnwys"
+        fee: "Ffi"
+        foreignDomicile: "Byw Dramor"
+        iht421Awaiting: "Aros am IHT 421"
+        ihtFiguresIncorrect: "Mae’r ffigurau IHT yn anghywir"
+        ihtIssue: "Ffurflenni IHT heb ddod i law"
+        lostWill: "Mae’r ewyllys ar goll"
+        matchingApplication: "Cais cyfatebol – (hysbysu'r cyfreithiwr neu'r dinesydd bod cais cyfatebol fel na all eu hachos fynd yn ei flaen)"
+        noMinorityLife: "Dim budd i blentyn na budd am oes – gofynnwn i gyfreithwyr ardystio hyn os yw ar goll ar y Datganiad Cyfreithiol"
+        notEligible : "Nid yw'n gymwys ar gyfer y broses ddigidol"
+        notEntitled: "Ni ellir gwneud cais"
+        originalDocsRequired: "Angen y Dogfennau Gwreiddiol"
+        willNotEnclosed: "Ewyllys wreiddiol heb ei chynnwys"
+        permanentCaveat: "Cafeat parhaol"
+        probateFiguresIncorrect: "Mae ffigurau profiant yn anghywir"
+        redeclareTitleClearing: "Ail-ddatgan y Datganiad Cyfreithiol oherwydd Teitl/Clirio – dim ond ar geisiadau Cyfreithiwr y byddai hyn"
+        solicitorsLegalStatementNotSigned: "Datganiad Cyfreithiol y Cyfreithiwr - heb ei lofnodi"
+        trustCorp: "Corfforaeth Ymddiriedolaeth"
+        willCondition: "Ewyllys (cyflwr)"
+        willContent: "Ewyllys (cynnwys, gan gynnwys heb ei llofnodi)"
+        welshTranslationRequired: "Angen Cyfieithiad Cymraeg"
+        other: "*** NI DDYLID EI DDEFNYDDIO (Arall) ***"
+        affidavits: "Affidafidau"
+        capA5C: "CAP A5C"
+        decreeAbsolute: "Dyfarniad Absoliwt"
+        grants: "Grantiau"
+        iht205: "IHT 205"
+        iht207: "IHT 207"
+        pa11: "PA11"
+        pa12: "PA12"
+        pa13: "PA13"
+        pa14: "PA14"
+        pa15: "PA15"
+        pa16: "PA16"
+        pa17: "PA17"
+        pa19: "PA19"
+        powerOfAttorney: "Atwrneiaeth Arhosol"
+        renunciation: "Gwrthodwyd"
+        resolutions: "Datrysiadau"
   templates:
     email:
       english:
@@ -266,8 +370,8 @@ notifications:
           grantRaisedCtsc: "8560e744-2b60-4fd9-97bd-9dda83a0a4d4"
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
-          requestInformation: "c871adf7-c902-4a18-934f-abeb504ab5d9"
-          requestInformationByPost: "a657ba93-bfc0-4d71-a5f8-2e474e111701"
+          requestInformation: "7e6da132-b710-472a-b41a-56596ad86c75"
+          requestInformationByPost: "4e13a901-5cf4-4865-b2e8-77c1e8b2b208"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
           grantIssuedIntestacy: "9a10802b-f449-486c-ae40-b76d1cbe78eb"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
@@ -276,6 +380,16 @@ notifications:
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
           disposalReminder: "2e29cce0-66d9-458a-82a3-20aa0e4d5112"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "3c4d8cae-2992-4950-95ab-2d1fd7e8ad7d"
+          firstStopReminderForHub: "a2856f90-39a7-4ff4-9107-13f9b053485c"
+          secondStopReminder: "66de5dc4-bd56-4169-813d-648bdcb36498"
+          secondStopReminderForHub: "284a9158-2386-411d-b92e-693932e53885"
+          hseReminder: "38e4f0e6-5656-4ae9-82f7-ac3da178100f"
+          hseReminderForHub: "f039720f-8bdb-48f8-9549-f0068d7a5688"
+          dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
+          unsubmittedApplication: "3f3965ca-1c8a-4b44-be66-75b929513e65"
+          declarationNotSignedPrimaryApplicant: "c04e65be-51f4-46b1-bce4-8795c1113ae7"
+          declarationNotSignedExecutors: "38f8f966-1a7b-4d2b-ae2c-a67f41e4d788"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -293,7 +407,7 @@ notifications:
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
-          requestInformation: "8d115656-d54e-4650-b7ec-80db83c29503"
+          requestInformation: "b20619ef-2eaa-45ab-9b0e-a53b6c220cac"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
@@ -304,6 +418,11 @@ notifications:
           disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
           caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "9089ab1d-abe7-4bee-a777-b4bcb7d85ea1"
+          secondStopReminder: "2b57f57d-e492-4648-b92d-0c604df722e9"
+          hseReminder: "70d352c7-42e1-4f24-b7b4-8cc99f766862"
+          dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
+          unsubmittedApplication: "ab5d7b24-6b40-403b-8a8f-4a21bc48ed6f"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
@@ -321,8 +440,8 @@ notifications:
           grantRaisedPaperFormBulkScan: "6e8a1de8-a05b-455c-98b0-e669f2fa0470"
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
-          requestInformation: "3d9ee152-ffbd-4eee-a781-951e708c9c81"
-          requestInformationByPost: "f53d0465-bba5-4d55-801a-78478689f968"
+          requestInformation: "e0be211b-89c1-4bc0-9e03-43da906fa756"
+          requestInformationByPost: "0eeadc74-3ced-4b26-9126-ebdc055c79a6"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
           grantIssuedIntestacy: "37adbe0b-a119-44be-b094-f62cbbbe2178"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
@@ -330,6 +449,16 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
           disposalReminder: "34fe5d9d-c57b-4bc2-9ceb-008e82cd5594"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "ab697deb-7739-44d1-b0ea-642fcea0fc0d"
+          firstStopReminderForHub: "8732675b-8869-4177-acd2-b2bb1cb23641"
+          secondStopReminder: "67673f61-38ed-42dc-8197-93c3839d2da8"
+          secondStopReminderForHub: "a28af333-ee4f-41d3-9e1a-1ea149560007"
+          hseReminder: "aad3c46b-a915-4b31-9612-a630620a51c5"
+          hseReminderForHub: "abfe8fd2-faa5-4da5-a839-8c652ff6807b"
+          dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
+          unsubmittedApplication: "ac18f977-de08-407b-9c35-1e62d9cd80ff"
+          declarationNotSignedPrimaryApplicant: "08c35f45-453d-45bc-99d1-a7752fde98a1"
+          declarationNotSignedExecutors: "2bbd7b4d-2308-4b92-ae13-3a5f8608c94b"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -347,7 +476,7 @@ notifications:
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
-          requestInformation: "0d99b3a1-52ca-4e00-b113-a24c67316f2c"
+          requestInformation: "0f761ecd-0665-44d9-a877-eb9333598fdc"
           redeclarationSot: "c34256d7-c8f5-451c-b7a6-1a9580622f1c"
           grantIssuedIntestacy: "9863cfe5-240b-42ed-912b-188a5f7e1e76"
           caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
@@ -357,6 +486,11 @@ notifications:
           disposalReminder: "bd041f52-5f87-4d90-87ab-302e20e7215d"
           caveatDisposalReminder: "f5268c11-f0eb-436a-a8f8-df3a85519c2d"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "e06d92b6-e59f-4a78-8654-9c1a9f70411b"
+          secondStopReminder: "206a11a2-1171-464b-ad03-5ca83b928968"
+          hseReminder: "0146b124-a67c-4753-b38e-85bcb37d8562"
+          dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
+          unsubmittedApplication: "7440ee74-4cde-4cd4-ab76-038d70674424"
 
 documents:
   templates:
@@ -534,7 +668,7 @@ core_case_data:
   api:
     url: ${services.coreCaseData.baseUrl:http://localhost:4452}
   elasticsearch:
-    querySize: 500
+    querySize: 100
 
 excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
 
@@ -645,3 +779,13 @@ disposal:
   startDate: 1900-01-01
   personalNotificationLink: ${FRONTEND_URL:http://localhost:3000}
   solsNotificationLink: ${MANAGE_CASE_URL:http://localhost:3001}
+
+automated_notification:
+  stop_reminder:
+    first_notification_days: 56
+    second_notification_days: 28
+  hse_reminder:
+    awaiting_documentation_days: 30
+  dormant_warning_days: 150
+  unsubmitted_application_days: 28
+  declaration_not_signed_days: 3

@@ -14,9 +14,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -91,6 +91,8 @@ class DocumentControllerIT {
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
     private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final String USER_ID_HEADER = "user-id";
+    private static final String USER_ID = "someUserId";
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
             .familyName("familyName")
             .givenName("givenname")
@@ -106,25 +108,25 @@ class DocumentControllerIT {
     @Autowired
     private TestUtils testUtils;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private NotificationService notificationService;
 
-    @SpyBean
+    @MockitoSpyBean
     private DocumentService documentService;
 
-    @MockBean
+    @MockitoBean
     private BulkPrintService bulkPrintService;
 
-    @MockBean
+    @MockitoBean
     private DocumentGeneratorService documentGeneratorService;
 
-    @MockBean
+    @MockitoBean
     private EvidenceUploadService evidenceUploadService;
 
-    @MockBean
+    @MockitoBean
     private IdamApi idamApi;
 
     @Mock
@@ -133,16 +135,16 @@ class DocumentControllerIT {
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
 
-    @MockBean
+    @MockitoBean
     private UserInfoService userInfoService;
 
-    @SpyBean
+    @MockitoSpyBean
     private SecurityUtils securityUtils;
 
-    @MockBean
+    @MockitoBean
     private CaseDocumentClient caseDocumentClient;
 
-    @MockBean
+    @MockitoBean
     private FeatureToggleService featureToggleService;
 
     @BeforeEach
@@ -1124,6 +1126,8 @@ class DocumentControllerIT {
         when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/validateAmendLegalStatement")
+                .header(AUTH_HEADER, AUTH_TOKEN)
+                .header(USER_ID_HEADER, USER_ID)
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -1174,6 +1178,8 @@ class DocumentControllerIT {
         when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/validateAmendLegalStatement")
+                .header(AUTH_HEADER, AUTH_TOKEN)
+                .header(USER_ID_HEADER, USER_ID)
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 

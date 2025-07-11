@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -2653,6 +2654,8 @@ class CallbackResponseTransformerTest {
             callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
         assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
+        assertEquals(callbackResponse.getData().getEvidenceHandledDate(),
+                LocalDate.now().toString());
     }
 
     @Test
@@ -2679,6 +2682,8 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getExpectedResponseDate());
         assertNull(callbackResponse.getData().getDocumentUploadIssue());
         assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
+        assertEquals(callbackResponse.getData().getEvidenceHandledDate(),
+                LocalDate.now().toString());
     }
 
     @Test
@@ -4746,11 +4751,12 @@ class CallbackResponseTransformerTest {
         assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
     }
 
-    @Test
-    void shouldReturnExistingDateWhenExcludedEventIsMatched() {
+    @ParameterizedTest
+    @ValueSource(strings = {"boHistoryCorrection", "boCorrection"})
+    void shouldReturnExistingDateWhenExcludedEventIsMatched(String excludedEvent) {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .lastModifiedDateForDormant(dateTime);
-        when(callbackRequestMock.getEventId()).thenReturn("boHistoryCorrection");
+        when(callbackRequestMock.getEventId()).thenReturn(excludedEvent);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
@@ -4871,6 +4877,8 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getInformationNeeded());
         assertNull(callbackResponse.getData().getInformationNeededByPost());
         assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
+        assertEquals(callbackResponse.getData().getEvidenceHandledDate(),
+                LocalDate.now().toString());
     }
 
     @Test

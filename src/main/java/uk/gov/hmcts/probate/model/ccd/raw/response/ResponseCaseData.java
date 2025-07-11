@@ -178,6 +178,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String applicationSubmittedDate;
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
     private final String evidenceHandled;
+    private final String evidenceHandledDate;
 
     private final String caseType;
     private final String paperForm;
@@ -418,4 +419,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<String>> autoCaseWarnings;
     private final TTL ttl;
     private final String executorsNamed;
+    private final LocalDate firstStopReminderSentDate;
 }
