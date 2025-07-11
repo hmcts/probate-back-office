@@ -215,10 +215,12 @@
 
             {% endfor %}
 
-            {% if multipleExecutors %}
-                <p>Nyni yw’r ysgutorion a enwir yn yr ewyllys.</p>
-            {% else %}
-                <p>Myfi yw’r ysgutor a enwir yn yr ewyllys.</p>
+            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                {% if multipleExecutors %}
+                    <p>Nyni yw’r ysgutorion a enwir yn yr ewyllys.</p>
+                {% else %}
+                    <p>Myfi yw’r ysgutor a enwir yn yr ewyllys.</p>
+                {% endif %}
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
@@ -562,10 +564,13 @@
             {% endif %}
 
             {% endfor %}
-            {% if multipleExecutors %}
-                <p>We are the executors named in the will.</p>
-            {% else %}
-                <p>I am the executor named in the will.</p>
+
+            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                {% if multipleExecutors %}
+                    <p>We are the executors named in the will.</p>
+                {% else %}
+                    <p>I am the executor named in the will.</p>
+                {% endif %}
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
@@ -911,10 +916,12 @@
 
             {% endfor %}
 
-            {% if multipleExecutors %}
-                <p>We are the executors named in the will.</p>
-            {% else %}
-                <p>I am the executor named in the will.</p>
+            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                {% if multipleExecutors %}
+                    <p>We are the executors named in the will.</p>
+                {% else %}
+                    <p>I am the executor named in the will.</p>
+                {% endif %}
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
