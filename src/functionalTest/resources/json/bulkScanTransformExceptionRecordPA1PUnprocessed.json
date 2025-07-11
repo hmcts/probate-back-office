@@ -144,7 +144,6 @@
     { "name": "domicilityCountry", "value": "" },
     { "name": "domicilityEntrustingDocument", "value": "" },
     { "name": "domicilitySuccessionIHTCert", "value": "true" },
-    { "name": "formVersion", "value": "1" },
     { "name": "ihtFormCompletedOnline", "value": "true" },
     { "name": "ihtReferenceNumber", "value": "IHT-557238-A01" },
     { "name": "ihtFormId", "value": "" },

@@ -29,6 +29,27 @@ public class BulkScanPA1FormV3OCRTransformationTests extends IntegrationTestBase
     }
 
     @Test
+    void shouldSetIht400ByDefaultBeforeSwitchDate() {
+        jsonRequest = utils
+                .getStringFromFile("/json/bulkscan/version3/transformation/PA1P_No_Form_PRE_EE.json");
+        transformExceptionPostSuccess(jsonRequest, IHT_FORM_ID,"IHT400");
+    }
+
+    @Test
+    void shouldSetAndTransformWithDefaultValuesBeforeSwitchDate() {
+        jsonRequest = utils
+                .getStringFromFile("/json/bulkscan/version3/transformation"
+                        + "/PA1P_No_Mandatory_Fields_PRE_EE.json");
+        transformExceptionPostSuccess(jsonRequest, IHT_FORM_ID,"IHT400");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.deceasedDateOfDeath",
+                "1990-01-01");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtGrossValue",
+                "111");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.solsSolicitorIsApplying",
+                "No");
+    }
+
+    @Test
     void shouldSetIht400AfterSwitchDate() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400_POST_EE.json");
         transformExceptionPostSuccess(jsonRequest, IHT_FORM_ESTATE,"IHT400");

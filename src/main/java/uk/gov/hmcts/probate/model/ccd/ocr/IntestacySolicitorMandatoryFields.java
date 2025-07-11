@@ -3,29 +3,9 @@ package uk.gov.hmcts.probate.model.ccd.ocr;
 import java.util.Arrays;
 
 public enum IntestacySolicitorMandatoryFields {
-    PRIMARY_APPLICANT_FORENAMES("primaryApplicantForenames", "Primary applicant first names"),
-    PRIMARY_APPLICANT_SURNAME("primaryApplicantSurname", "Primary applicant last name"),
-    PRIMARY_APPLICANT_ADDRESS_LINE1("primaryApplicantAddressLine1", "Primary applicant address line 1"),
-    PRIMARY_APPLICANT_ADDRESS_POSTCODE("primaryApplicantAddressPostCode", "Primary applicant postcode"),
-    DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
-    DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
-    DECEASED_ADDRESS_LINE1("deceasedAddressLine1", "Deceased address line 1"),
-    DECEASED_ADDRESS_POSTCODE("deceasedAddressPostCode", "Deceased postcode"),
-    DECEASED_DIED_ON_AFTER_SWITCH_DATE("deceasedDiedOnAfterSwitchDate",
-            "Did the person die on or after 1 January 2022?", "3"),
-    DECEASED_DOB("deceasedDateOfBirth", "Deceased date of birth"),
-    DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
-    DECEASED_ANY_OTHER_NAMES("deceasedAnyOtherNames", "Did the deceased have assets in any other names?"),
-    DECEASED_DOMICILE_IN_ENG_WALES("deceasedDomicileInEngWales",
-            "Was the deceased domiciled in England or Wales at the time of their death?"),
-    SOLICITOR_APPLYING("solsSolicitorIsApplying","Do you have legal representative acting for you?"),
-    SOLICITOR_REPRESENTATIVE_NAME("solsSolicitorRepresentativeName", "Solicitor representative name"),
-    SOLICITOR_FIRM_NAME("solsSolicitorFirmName", "Solicitors Firm name"),
-    SOLICITOR_APP_REFERENCE("solsSolicitorAppReference", "Solictor application reference"),
-    SOLICITOR_EMAIL_ADDRESS("solsSolicitorEmail", "Solictor email address"),
     FORM_VERSION("formVersion", "Form version"),
-    IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "1", "2"),
-    IHT_NET_VALUE("ihtNetValue", "Net value of the estate", "1", "2");
+    IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "0"),
+    IHT_NET_VALUE("ihtNetValue", "Net value of the estate", "0");
 
     private final String key;
     private final String value;
