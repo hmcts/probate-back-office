@@ -8,6 +8,7 @@
 /node_modules/**
 /src/test/end-to-end/output/**
 /src/test/end-to-end/functional-output/**
+mochawesome-report/**
 output/
 /output/**
 functional-output/

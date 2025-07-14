@@ -59,6 +59,10 @@ withNightlyPipeline("nodejs", product, component) {
         env.ENV = 'aat'
     }
 
+    afterAlways('fullFunctionalTest') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'src/test/end-to-end/functional-output/**/*'
+    }
+
     afterAlways('crossBrowserTest') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }
