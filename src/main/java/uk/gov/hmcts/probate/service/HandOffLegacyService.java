@@ -44,7 +44,10 @@ public class HandOffLegacyService {
 
     public List<CollectionMember<HandoffReason>> setHandoffReason(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-        List<CollectionMember<HandoffReason>> handoffReasonsList = new ArrayList<>();
+        List<CollectionMember<HandoffReason>> handoffReasonsList = caseData.getBoHandoffReasonList();
+        if (handoffReasonsList == null) {
+            handoffReasonsList = new ArrayList<>();
+        }
         if ((StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
                 || YES.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite()))
                 && (null == caseData.getBoHandoffReasonList() || caseData.getBoHandoffReasonList().isEmpty())) {
