@@ -65,6 +65,10 @@ withNightlyPipeline("nodejs", product, component) {
         sh 'mkdir -p functional-output'
     }
 
+    afterAlways('fullFunctionalTest') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+    }
+
     afterAlways('crossBrowserTest') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }
