@@ -206,5 +206,7 @@
   {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "addedRepresentative", "FieldType": "AddedRepresentative", "ElementLabel": "Added Representative", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "boHandoffReason", "ListElementCode": "caseHandoffReason", "FieldType": "FixedList", "FieldTypeParameter": "handoffReasonFixedList", "ElementLabel": "Select a reason for Handoff", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "citizenHubResponse", "ListElementCode": "citizenResponse", "FieldType": "TextArea", "ElementLabel": "Citizen's response", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "citizenHubResponse", "ListElementCode": "submittedDate", "FieldType": "DateTime", "ElementLabel": "Submitted Date", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "citizenHubResponse", "ListElementCode": "submittedDate", "FieldType": "DateTime", "ElementLabel": "Submitted Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "fieldName", "FieldType": "Text", "ElementLabel": "OCR Field", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "originalValue", "FieldType": "Text", "ElementLabel": "Original Value", "SecurityClassification": "Public"}
 ]
