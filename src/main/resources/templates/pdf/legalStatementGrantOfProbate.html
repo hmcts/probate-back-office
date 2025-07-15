@@ -532,8 +532,10 @@
             <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} in the firm
                 {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
-                    {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                {% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %}, at the date of death of the deceased.
+                    {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% else %}
+                    {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% endif %} at the date of death of the deceased.
             </p>
             {% endif %}
 
@@ -541,10 +543,10 @@
             <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} in the firm
                 {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
-                    {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                    {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }},
                 {% else %}
-                    {{ case_details.case_data.nameOfFirmNamedInWill }}
-                {% endif %}, at the date of death of the deceased. The other executors have renounced probate.
+                    {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% endif %} at the date of death of the deceased. The other executors have renounced probate.
             </p>
             {% endif %}
             {% endif %}
@@ -884,9 +886,11 @@
             {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
             <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                at the date of death of the deceased.
+                in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% else %}
+                    {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% endif %} at the date of death of the deceased.
             </p>
             {% endif %}
 
