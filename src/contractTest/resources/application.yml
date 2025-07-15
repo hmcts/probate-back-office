@@ -584,6 +584,20 @@ reactivate_dormant:
 grand_delay:
   number_of_weeks: 12
 
+bulkscan:
+  default-value:
+    name: MISSING
+    postcode: MI55 1NG
+    dob: 01011990
+    email: contactprobate@justice.gov.uk
+    phone: 1234
+    deceasedAnyOtherNames: FALSE
+    deceasedDomicileInEngWales: TRUE
+    legalRepresentative: TRUE
+    ihtForm: FALSE
+    grossNetValue: 1.11
+    solsSolicitorIsApplying: TRUE
+
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
   inactivityNotificationPeriod: 90
