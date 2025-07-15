@@ -23,16 +23,27 @@ public class IHTFormIDValidationRule {
 
     public void validate(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-        if (!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
-                && (NOT_APPLICABLE_VALUE.equalsIgnoreCase(caseData.getIhtFormId())
-                || IHT400421_VALUE.equalsIgnoreCase(caseData.getIhtFormId()))
-        ) {
-            String userMessage = businessValidationMessageRetriever
-                    .getMessage("ihtFormIDInvalid", null, Locale.UK);
-            String userMessageWelsh = businessValidationMessageRetriever
-                    .getMessage("ihtFormIDInvalidWelsh", null, Locale.UK);
-            throw new BusinessValidationException(userMessage,
-                    "IHTFormID is invalid: " + caseDetails.getId(), userMessageWelsh);
+        if (!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
+            if (NOT_APPLICABLE_VALUE.equalsIgnoreCase(caseData.getIhtFormId())
+                    || IHT400421_VALUE.equalsIgnoreCase(caseData.getIhtFormId())) {
+                String userMessage = businessValidationMessageRetriever
+                        .getMessage("ihtFormIDInvalid", null, Locale.UK);
+                String userMessageWelsh = businessValidationMessageRetriever
+                        .getMessage("ihtFormIDInvalidWelsh", null, Locale.UK);
+                throw new BusinessValidationException(userMessage,
+                        "IHTFormID is invalid: " + caseDetails.getId(), userMessageWelsh);
+            }
+        } else {
+            final String ihtFormEstate = caseData.getIhtFormEstate();
+            if (ihtFormEstate.equalsIgnoreCase(NOT_APPLICABLE_VALUE)
+            || ihtFormEstate.equalsIgnoreCase(IHT400421_VALUE)) {
+                String userMessage = businessValidationMessageRetriever
+                        .getMessage("ihtFormEstateInvalid", null, Locale.UK);
+                String userMessageWelsh = businessValidationMessageRetriever
+                        .getMessage("ihtFormEstateInvalidWelsh", null, Locale.UK);
+                throw new BusinessValidationException(userMessage,
+                        "IHTFormEstate is invalid: " + caseDetails.getId(), userMessageWelsh);
+            }
         }
     }
 }
