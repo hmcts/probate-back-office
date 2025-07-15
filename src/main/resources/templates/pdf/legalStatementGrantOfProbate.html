@@ -194,9 +194,7 @@
             <p>Mae'r ysgutor {{ executor.value.applyingExecutorName }}, yn {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} sy’n rhannu elw
                 yn y cwmni {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
                 a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                ar ddyddiad marwolaeth yr unigolyn a fu farw. Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} arall sy’n rhannu elw
-                yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }}
-                yn ymwrthod â’i hawl i gael profiant.
+                ar ddyddiad marwolaeth yr unigolyn a fu farw.
             </p>
             {% endif %}
             {% endif %}
