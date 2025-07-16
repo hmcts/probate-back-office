@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.util.ReflectionUtils;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
@@ -45,9 +44,6 @@ class PDFGeneratorServiceTest {
 
     @Mock
     private PDFServiceClientException pdfServiceClientExceptionMock;
-
-    @Mock
-    private AppInsights appInsights;
 
     @Mock
     private PDFServiceClient pdfServiceClient;

@@ -19,4 +19,12 @@ export CW_USER_PASSWORD=${CW_USER_PASSWORD}
 # Paths
 export E2E_OUTPUT_DIR='./functional-output'
 
+# Run with xvfb
+export DISPLAY=:99
+Xvfb :99 -screen 0 1280x720x24 &
+XVFB_PID=$!
+
 yarn test:functional
+
+# Clean up
+kill $XVFB_PID

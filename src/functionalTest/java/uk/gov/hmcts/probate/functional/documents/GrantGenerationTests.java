@@ -81,10 +81,14 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     public static final String GOP_JSON = "gop.json";
     public static final String DECEASED_DOMICILE_IN_ENG_WALES_YES = "\"deceasedDomicileInEngWales\": \"Yes\"";
     public static final String DECEASED_DOMICILE_IN_ENG_WALES_NO = "\"deceasedDomicileInEngWales\": \"No\"";
+    public static final String LIMITATION_TEXT_NO = "\"boLimitationText\": \"\"";
+    public static final String LIMITATION_TEXT_YES = "\"boLimitationText\": \"medical negligence\"";
     public static final String ADMON_WILL_JSON = "admonWill.json";
     public static final String ADMON_WILL_REISSUE_JSON = "admonWillReissue.json";
     public static final String INTESTACY_JSON = "intestacy.json";
     public static final String INTESTACY_REISSUE_JSON = "intestacyReissue.json";
+    public static final String AD_COLLIGENDA_JSON = "adColligenda.json";
+    public static final String AD_COLLIGENDA_REISSUE_JSON = "adColligendaReissue.json";
     public static final String NOVEMBER_2020 = "18th November 2020";
     public static final String PROBATE_PRACTITIONER_123_LONDON_LONDON = "Probate Practitioner 123 London London";
     public static final String MORE_PARTNERS_HOLDING_POWER_RESERVED_NO = "\"morePartnersHoldingPowerReserved\": \"No\"";
@@ -138,10 +142,16 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         "solicitorPayloadTrustCorpsNotNamedPowerReserved.json";
     private static final String PARTNERS_FIRM_POWER_RESERVED_PAYLOAD =
         "solicitorPayloadTrustCorpsPartnersInFirmPowerReserved.json";
+    private static final String AD_COLLIGENDA_PAYLOAD =
+            "solicitorPayloadNotificationsAdColligendaBona.json";
     private static final String FRAGMENT_WITH_NO_MULTIPLE_ANDS =
         "ExecutorsSmithof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom of and "
             + "Fred FlintstoneApplying 7 Ashley Avenue Burnham-on-Sea Somerset SN15JU United Kingdom"
             + "The application has stated that the gross value";
+    private static final String AD_COLLIGENDA_GRANT_TEXT = "This is an Ad Colligenda Bona grant and is limited for the "
+            + "purposes only of collecting getting in and receiving the estate and doing such acts as may be necessary "
+            + "for the preservation of the same in particular, to deal with issues and if necessary to sell";
+    private static final String LIMITATION_TEXT = "medical negligence";
 
     @Test
     void verifySolicitorGenerateGrantShouldReturnOkResponseCode() throws IOException {
@@ -163,6 +173,15 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         validatePostSuccess("solicitorPayloadNotificationsIntestacy.json", GENERATE_GRANT_DRAFT);
     }
 
+    @Test
+    void verifySolicitorGenerateAdColligendaBonaGrantShouldReturnOkResponseCode() throws IOException {
+        validatePostSuccess(AD_COLLIGENDA_PAYLOAD, GENERATE_GRANT);
+    }
+
+    @Test
+    void verifySolicitorGenerateAdColligendaBonaGrantDraftShouldReturnOkResponseCode() throws IOException {
+        validatePostSuccess(AD_COLLIGENDA_PAYLOAD, GENERATE_GRANT_DRAFT);
+    }
 
     @Test
     void verifySolicitorGenerateAdmonWillGrantShouldReturnOkResponseCode() throws IOException {
@@ -436,6 +455,59 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
 
         response = generateGrantDocumentFromPayload(intestacyPayloadReissue, GENERATE_GRANT_REISSUE);
         assertTrue(response.contains(expectedText));
+    }
+
+    @Test
+    void verifyGenerateAllEnglishAdColligendaPersonalGrantTypeDraft() throws IOException {
+        String adColligendaPayload = "/default/adColligenda/personal/";
+        String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON,
+                GENERATE_GRANT_DRAFT);
+        assertTrue("Draft grant document does not contain expected text.",
+                response.contains(AD_COLLIGENDA_GRANT_TEXT));
+    }
+
+    @Test
+    void verifyGenerateFreeTextAdColligendaPersonalGrantTypeDraft() throws IOException {
+        String adColligendaPayload = "/default/adColligenda/personal/";
+        String payload = replaceAllInString(getJsonFromFile(adColligendaPayload + AD_COLLIGENDA_JSON),
+                LIMITATION_TEXT_NO, LIMITATION_TEXT_YES);
+        String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_DRAFT);
+        assertTrue("Draft grant document does not contain expected text.",
+                response.contains(LIMITATION_TEXT));
+    }
+
+    @Test
+    void verifyGenerateAllEnglishAdColligendaPersonalGrantType() throws IOException {
+        String adColligendaPayload = "/default/adColligenda/personal/";
+        String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON, GENERATE_GRANT);
+        assertTrue("Grant document does not contain expected text.",
+                response.contains(AD_COLLIGENDA_GRANT_TEXT));
+    }
+
+    @Test
+    void verifyGenerateAllEnglishAdColligendaPersonalGrantTypeReissue() throws IOException {
+        String adColligendaPayload = "/default/adColligenda/personal/";
+        String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_REISSUE_JSON,
+                GENERATE_GRANT_REISSUE);
+        assertTrue("Reissue grant document does not contain expected text.",
+                response.contains(AD_COLLIGENDA_GRANT_TEXT));
+    }
+
+    @Test
+    void verifyGenerateAllEnglishAdColligendaSolicitorGrantTypes()
+            throws IOException {
+        String adColligendaPayload = "/default/adColligenda/solicitor/";
+
+        String response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON,
+                GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
+
+        response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_JSON, GENERATE_GRANT);
+        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
+
+        response = generateGrantDocument(adColligendaPayload + AD_COLLIGENDA_REISSUE_JSON,
+                GENERATE_GRANT_REISSUE);
+        assertTrue(response.contains(AD_COLLIGENDA_GRANT_TEXT));
     }
 
     @Test

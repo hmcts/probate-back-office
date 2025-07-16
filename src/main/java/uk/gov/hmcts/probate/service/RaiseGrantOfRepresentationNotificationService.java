@@ -8,10 +8,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
@@ -26,7 +28,8 @@ public class RaiseGrantOfRepresentationNotificationService {
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
-    public CallbackResponse handleGrantReceivedNotification(CallbackRequest callbackRequest)
+    public CallbackResponse handleGrantReceivedNotification(CallbackRequest callbackRequest,
+                                                            Optional<UserInfo> caseworkerInfo)
         throws NotificationClientException {
 
         log.info("Preparing to send notifications for raising a grant application.");
@@ -50,7 +53,7 @@ public class RaiseGrantOfRepresentationNotificationService {
         }
 
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.grantRaised(callbackRequest, documents, letterId);
+            response = callbackResponseTransformer.grantRaised(callbackRequest, documents, letterId, caseworkerInfo);
         }
         return response;
     }

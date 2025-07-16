@@ -23,20 +23,19 @@ public class IronMountainFileService extends BaseFileService {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
     private static final String DELIMITER = "|";
     private final TextFileBuilderService textFileBuilderService;
-    private ImmutableList.Builder<String> fileData;
 
     public File createIronMountainFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
         log.info("Creating IronMountain file=" + fileName);
-        fileData = new ImmutableList.Builder<>();
+        ImmutableList.Builder<String> fileData = new ImmutableList.Builder<>();
         fileData.add("\n");
         for (ReturnedCaseDetails ccdCase : ccdCases) {
-            prepareData(ccdCase.getId(), ccdCase.getData());
+            prepareData(ccdCase.getId(), ccdCase.getData(), fileData);
         }
         log.info("Created IronMountain file=" + fileName);
-        return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
+        return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName, "IronMountain");
     }
 
-    private void prepareData(Long id, CaseData data) {
+    private void prepareData(Long id, CaseData data, ImmutableList.Builder<String> fileData) {
         try {
             final List<String> deceasedAddress = addressManager(data.getDeceasedAddress());
             final List<String> applicantAddress = addressManager(data.getApplicationType().equals(ApplicationType
@@ -61,8 +60,8 @@ public class IronMountainFileService extends BaseFileService {
                 .add(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data.getPrimaryApplicantSurname() :
                     data.getSolsSolicitorFirmName());
             addAddress(fileData, applicantAddress);
-            fileData.add(getPoundValue(data.getIhtGrossValue()));
-            fileData.add(getPoundValue(data.getIhtNetValue()));
+            fileData.add(data.getIhtGrossValuePounds());
+            fileData.add(data.getIhtNetValuePounds());
             fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
             fileData.add(registryLocationCheck(data.getRegistryLocation()));
             fileData.add("\n");

@@ -11,7 +11,7 @@
 <li>further information from the applicant or Probate practitioner is needed</li>
 </ul>
 <p class="govuk-body-s">You will be notified by email if we need any information from you to progress the case.</p>
-<p class="govuk-body-s">You'll usually get the grant within 16 weeks. It can take longer if you need to provide additional information.</p>
+<p class="govuk-body-s">You'll usually get the grant within 12 weeks. It can take longer if you need to provide additional information.</p>
 <p class="govuk-body-s">You don't need to do anything else now, we'll email you if we need more information</p>
 <p class="govuk-body-s">Cafodd yr achos ei atal ar <today-welsh/> am un o ddau reswm:</p>
 <ul class="govuk-list govuk-list--bullet">
@@ -19,7 +19,7 @@
 <li>Mae angen rhagor o wybodaeth gan y ceisydd neu'r ymarferydd profiant</li>
 </ul>
 <p class="govuk-body-s">Fe'ch hysbysir drwy e-bost os bydd arnom angen unrhyw wybodaeth gennych i symud yr achos yn ei flaen.</p>
-<p class="govuk-body-s">Byddwch fel arfer yn cael y grant o fewn 16 wythnos. Gall gymryd mwy o amser os oes angen i chi ddarparu gwybodaeth ychwanegol.</p>
+<p class="govuk-body-s">Byddwch fel arfer yn cael y grant o fewn 12 wythnos. Gall gymryd mwy o amser os oes angen i chi ddarparu gwybodaeth ychwanegol.</p>
 <p class="govuk-body-s">Nid oes angen i chi wneud unrhyw beth arall nawr, byddwn yn anfon e-bost atoch os oes arnom angen mwy o wybodaeth.</p>
 <h2 class="govuk-heading-l">Get help with your application</h2>
 <h2 class="govuk-heading-l">Cael help gyda'ch cais</h2>

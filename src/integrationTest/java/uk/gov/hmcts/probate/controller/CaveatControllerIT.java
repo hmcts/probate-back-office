@@ -7,9 +7,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -17,10 +17,14 @@ import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
@@ -29,7 +33,10 @@ import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.service.notify.NotificationClientException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -58,28 +65,32 @@ class CaveatControllerIT {
     @Autowired
     private TestUtils testUtils;
 
-    @MockBean
+    @MockitoBean
     private NotificationService notificationService;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private RegistrarDirectionService registrarDirectionService;
-    @MockBean
+    @MockitoBean
     private FeeService feeService;
-    @MockBean
+    @MockitoBean
     private FeesResponse feesResponseMock;
-    @MockBean
+    @MockitoBean
     private PaymentsService paymentsService;
-    @MockBean
+    @MockitoBean
     private ServiceRequestTransformer serviceRequestTransformer;
+    @MockitoBean
+    private SecurityUtils securityUtils;
+    @MockitoBean
+    private AuditEventService auditEventService;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
 
 
-    @SpyBean
+    @MockitoSpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
 
     @BeforeEach
@@ -385,6 +396,17 @@ class CaveatControllerIT {
 
     @Test
     void shouldRollback() throws Exception {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventService.getLatestAuditEventByName(any(), any(), any(), any()))
+                .thenReturn(Optional.ofNullable(AuditEvent.builder()
+                        .stateId("SolsAppUpdated")
+                        .createdDate(LocalDateTime.now())
+                        .build()));
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotificationsOrgPolicy.json");
         mockMvc.perform(post(ROLLBACK).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

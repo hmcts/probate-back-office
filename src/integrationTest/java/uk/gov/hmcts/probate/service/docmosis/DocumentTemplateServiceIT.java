@@ -4,20 +4,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
-import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.SendEmailResponse;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -28,19 +27,16 @@ class DocumentTemplateServiceIT {
     @Autowired
     private DocumentTemplateService documentTemplateService;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private CoreCaseDataApi coreCaseDataApi;
 
-    @MockBean
+    @MockitoBean
     private CaveatQueryService caveatQueryServiceMock;
 
-    @MockBean
-    private AppInsights appInsights;
-
-    @MockBean
+    @MockitoBean
     private SendEmailResponse sendEmailResponse;
 
     @Test
@@ -173,5 +169,67 @@ class DocumentTemplateServiceIT {
                 DocumentCaseType.ADMON_WILL);
         assertEquals(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT, responseReissueWelshDraft);
 
+    }
+
+    @Test
+    void shouldGetAdColligendaBonaTemplate() {
+        assertAll("AdColligendaBonaTemplate",
+                () -> {
+                    DocumentType responseEnglish = documentTemplateService
+                            .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.GRANT,
+                                    DocumentCaseType.AD_COLLIGENDA_BONA);
+                    assertEquals(DocumentType.AD_COLLIGENDA_BONA_GRANT, responseEnglish,
+                            "Expected AD_COLLIGENDA_BONA_GRANT for English FINAL GRANT");
+                },
+                () -> {
+                    DocumentType responseEnglishDraft = documentTemplateService
+                            .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT,
+                                    DocumentCaseType.AD_COLLIGENDA_BONA);
+                    assertEquals(DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT, responseEnglishDraft,
+                            "Expected AD_COLLIGENDA_BONA_GRANT_DRAFT for English PREVIEW GRANT");
+                },
+                () -> {
+                    DocumentType response = documentTemplateService
+                            .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,
+                                    DocumentCaseType.AD_COLLIGENDA_BONA);
+                    assertEquals(DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE, response,
+                            "Expected AD_COLLIGENDA_BONA_GRANT_REISSUE for English FINAL REISSUE");
+                },
+                () -> {
+                    DocumentType responseWelsh = documentTemplateService
+                            .getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.GRANT,
+                                    DocumentCaseType.AD_COLLIGENDA_BONA);
+                    assertEquals(DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT, responseWelsh,
+                            "Expected WELSH_AD_COLLIGENDA_BONA_GRANT for Welsh FINAL GRANT");
+                },
+                () -> {
+                    DocumentType responseDraft = documentTemplateService
+                            .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType
+                                            .REISSUE, DocumentCaseType.AD_COLLIGENDA_BONA);
+                    assertEquals(DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT, responseDraft,
+                            "Expected AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT for English PREVIEW REISSUE");
+                },
+                () -> {
+                    DocumentType responseDraftWelsh = documentTemplateService
+                            .getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT,
+                                    DocumentCaseType.AD_COLLIGENDA_BONA);
+                    assertEquals(DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT, responseDraftWelsh,
+                            "Expected WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT for Welsh PREVIEW GRANT");
+                },
+                () -> {
+                    DocumentType responseReissueWelsh = documentTemplateService
+                            .getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,
+                                    DocumentCaseType.AD_COLLIGENDA_BONA);
+                    assertEquals(DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE, responseReissueWelsh,
+                            "Expected WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE for Welsh FINAL REISSUE");
+                },
+                () -> {
+                    DocumentType responseReissueWelshDraft = documentTemplateService
+                            .getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,
+                                    DocumentCaseType.AD_COLLIGENDA_BONA);
+                    assertEquals(DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT, responseReissueWelshDraft,
+                            "Expected WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT for Welsh PREVIEW REISSUE");
+                }
+        );
     }
 }

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -25,12 +26,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.ANSWER_NO;
 
 class CaseDataTest {
 
@@ -92,10 +95,12 @@ class CaseDataTest {
 
     private CaseData underTest;
 
-    @BeforeEach
-    public void setup() {
+    private AutoCloseable closeableMocks;
 
-        openMocks(this);
+    @BeforeEach
+    void setup() {
+
+        closeableMocks = openMocks(this);
 
         when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);
         when(additionalExecutors2Mock.getValue()).thenReturn(additionalExecutor2Mock);
@@ -134,6 +139,11 @@ class CaseDataTest {
             .solsAdditionalExecutorList(additionalExecutorsList)
             .otherExecutorExists(YES)
             .build();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeableMocks.close();
     }
 
     @Test
@@ -952,5 +962,59 @@ class CaseDataTest {
         assertEquals("9/2021", caseData.getCodicilsDamageDate());
 
         assertEquals("Yes", caseData.getDeceasedWrittenWishes());
+    }
+
+    @Test
+    void clearPrimaryApplicantClearsPrimaryApplicant() {
+        final SolsAddress nullAddress = SolsAddress.builder().build();
+
+        final CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder()
+                .primaryApplicantHasAlias(ANSWER_NO)
+                .primaryApplicantAddress(nullAddress);
+
+        final CaseData baseCaseData = caseDataBuilder.build();
+
+        final SolsAddress applAddress = SolsAddress.builder()
+                .addressLine1("addr1")
+                .addressLine2("addr2")
+                .addressLine3("addr3")
+                .country("country")
+                .county("county")
+                .postCode("postcode")
+                .postTown("town")
+                .build();
+
+        final CaseData applCaseData =  caseDataBuilder
+                .primaryApplicantIsApplying("yes")
+                .primaryApplicantHasAlias("yes")
+                .primaryApplicantForenames("fname")
+                .primaryApplicantSurname("sname")
+                .primaryApplicantHasAlias("yes")
+                .primaryApplicantAlias("alias")
+                .primaryApplicantEmailAddress("email")
+                .primaryApplicantPhoneNumber("phone")
+                .primaryApplicantAddress(applAddress)
+                .build();
+
+        applCaseData.clearPrimaryApplicant();
+
+        assertEquals(baseCaseData, applCaseData);
+    }
+
+    @Test
+    void clearAdditionalExecutorListClearsAdditionalExecutorList() {
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
+        additionalExecutorsList.add(additionalExecutors1Mock);
+        additionalExecutorsList.add(additionalExecutors2Mock);
+
+        CaseData caseData = CaseData.builder()
+                .solsAdditionalExecutorList(additionalExecutorsList)
+                .otherExecutorExists(NO)
+                .build();
+
+        caseData.clearAdditionalExecutorList();
+
+        assertTrue(caseData.getSolsAdditionalExecutorList().isEmpty());
+        assertEquals(NO, caseData.getOtherExecutorExists());
     }
 }

@@ -80,12 +80,6 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
     }
 
     @Test
-    void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogressadmonwill/10-caseMatchingReadyToIssue.json",
-            CASE_MATCHING_READY_TO_ISSUE_URL, "/admonwill/case-matching-ready-to-issue-html.txt");
-    }
-
-    @Test
     void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/11-markReadyToIssue.json",
             CASE_MATCHING_EXAMINING_URL, "/admonwill/case-mark-ready-to-issue-html.txt");

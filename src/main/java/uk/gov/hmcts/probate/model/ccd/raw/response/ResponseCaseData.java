@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.RegistrarEscalateReason;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -37,10 +38,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
+import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
 
 import java.math.BigDecimal;
@@ -109,6 +113,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String paymentReferenceNumber;
     private final DocumentLink solsLegalStatementDocument;
     private final DocumentLink statementOfTruthDocument;
+    private final DocumentLink amendedLegalStatement;
     private final DocumentLink solsCoversheetDocument;
     private final List<CollectionMember<Document>> probateDocumentsGenerated;
     private final List<CollectionMember<Document>> probateNotificationsGenerated;
@@ -173,11 +178,13 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String applicationSubmittedDate;
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
     private final String evidenceHandled;
+    private final String evidenceHandledDate;
 
     private final String caseType;
     private final String paperForm;
     private final String channelChoice;
     private final String languagePreferenceWelsh;
+    private final RegistrarEscalateReason registrarEscalateReason;
 
     //paper form case creator fields
     private final String primaryApplicantSecondPhoneNumber;
@@ -395,4 +402,22 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String deceasedAliasFirstNameOnWill;
     private final String deceasedAliasLastNameOnWill;
     private String matches;
+    private final String lastModifiedCaseworkerForenames;
+    private final String lastModifiedCaseworkerSurname;
+    private final String informationNeeded;
+    private final String informationNeededByPost;
+    private final DocumentLink emailPreview;
+    private final String citizenResponse;
+    private final String documentUploadIssue;
+    private final String citizenResponseCheckbox;
+    private final String expectedResponseDate;
+    private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
+    private final List<CollectionMember<CitizenResponse>> citizenResponses;
+    private final String isSaveAndClose;
+    private final String informationNeededByPostSwitch;
+    private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
+    private final List<CollectionMember<String>> autoCaseWarnings;
+    private final TTL ttl;
+    private final String executorsNamed;
+    private final LocalDate firstStopReminderSentDate;
 }

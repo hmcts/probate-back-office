@@ -64,6 +64,12 @@
 </div>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
+<p><strong>Submitted on <today/></strong></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
 <p class="govuk-body-s"><font color="#505a5f">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p>
 </div>
 <div class="govuk-grid-column-one-third">&nbsp;</div>
@@ -75,6 +81,12 @@
 <div class="govuk-grid-column-one-third">
 <p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed-welsh.png" alt="CWBLHAWYD" title="CWBLHAWYD" /></p>
 </div>
+</div>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p><strong>Cyflwynwyd ar <today-welsh/></strong></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
 </div>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">

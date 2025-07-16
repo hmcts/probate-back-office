@@ -9,17 +9,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
-import uk.gov.hmcts.probate.model.caseaccess.Organisation;
-import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -30,20 +28,28 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.PrepareNocService;
 import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -145,10 +151,10 @@ class BusinessValidationControllerIT {
     private static final String SOLS_VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String CASE_PRINTED = "/case/casePrinted";
-    private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String CHANGE_CASE_STATE_URL = "/case/changeCaseState";
+    private static final String RESOLVE_CAVEAT_STOP_URL = "/case/resolveCaveatStopState";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
@@ -158,6 +164,7 @@ class BusinessValidationControllerIT {
     private static final String PA_CREATE_URL = "/case/pa-create";
     private static final String DEFAULT_REGISTRARS_DECISION = "/case/default-registrars-decision";
     private static final String REGISTRARS_DECISION = "/case/registrars-decision";
+    private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
     private static final String CASE_WORKER_ESCALATED = "/case/case-worker-escalated";
@@ -171,7 +178,10 @@ class BusinessValidationControllerIT {
     private static final String CHANGE_DOB = "/case/changeDob";
     private static final String LAST_MODIFIED_DATE = "/case/setLastModifiedDate";
     private static final String INVALID_EVENT = "/case/invalidEvent";
+    private static final String CAVEAT_EVENT = "/case/use-caveat-notification-event";
+    private static final String ASSEMBLE_LETTER_EVENT = "/case/use-assemble-letter-event";
     private static final String SUPER_USER_MAKE_DORMANT = "/case/superUserMakeDormantCase";
+    private static final String VALIDATE_STOP_REASON = "/case/validate-stop-reason";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -197,6 +207,12 @@ class BusinessValidationControllerIT {
                 .item("Item")
                 .value("999.99")
                 .build()));
+    private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
+            .familyName("familyName")
+            .givenName("givenname")
+            .roles(Arrays.asList("caseworker-probate"))
+            .build());
+
     private final TestUtils testUtils = new TestUtils();
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -204,24 +220,34 @@ class BusinessValidationControllerIT {
     private MockMvc mockMvc;
     private CaseDataBuilder caseDataBuilder;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private CaseStoppedService caseStoppedService;
 
-    @MockBean
+    @MockitoBean
     private NotificationService notificationService;
-    @MockBean
+    @MockitoBean
     private CaseDataTransformer caseDataTransformer;
-    @MockBean
+    @MockitoBean
     private CcdDataStoreService ccdDataStoreService;
-    @MockBean
+    @MockitoBean
     private RegistrarDirectionService registrarDirectionService;
-    @MockBean
+    @MockitoBean
     private PrepareNocService prepareNocService;
+    @MockitoBean
+    private UserInfoService userInfoService;
+    @MockitoBean
+    private SecurityUtils securityUtils;
+    @MockitoBean
+    private AuditEventService auditEventService;
+    @MockitoBean
+    private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
-    @SpyBean
+
+
+    @MockitoSpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
 
     @BeforeEach
@@ -286,6 +312,7 @@ class BusinessValidationControllerIT {
         doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(ID.toString(),
                 AUTH_TOKEN);
 
+        doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
     @Test
@@ -685,7 +712,8 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(url).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -702,7 +730,8 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(url).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -719,7 +748,8 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(url).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -737,7 +767,8 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(url).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
@@ -769,7 +800,8 @@ class BusinessValidationControllerIT {
     void shouldReturnAliasNameTransformed() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
 
-        mockMvc.perform(post(CASE_PRINTED).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(CASE_PRINTED).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -778,56 +810,8 @@ class BusinessValidationControllerIT {
     void shouldReturnAdditionalExecutorsTransformed() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
-        mockMvc.perform(post(CASE_PRINTED).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
-    void shouldReturnCheckListValidateSuccessfulQAState() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
-
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
-    void shouldReturnCheckListValidateUnSuccessfulQ1IsNo() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
-
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("Ensure all checks have been completed, cancel to return to the examining state"))
-            .andExpect(jsonPath("$.errors[1]")
-                    .value("Sicrhewch bod yr holl wiriadau wedi'u cwblhau, canslo i ddychwelyd i'r cam "
-                            + "arholi"))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-    }
-
-    @Test
-    void shouldReturnCheckListValidateUnSuccessfulQ2IsNo() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadChecklist.json");
-
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("Ensure all checks have been completed, cancel to return to the examining state"))
-            .andExpect(jsonPath("$.errors[1]")
-                    .value("Sicrhewch bod yr holl wiriadau wedi'u cwblhau, canslo i ddychwelyd i'r cam "
-                            + "arholi"))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-    }
-
-    @Test
-    void shouldReturnCheckListValidateSuccessful() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutorsReadyToIssue.json");
-
-        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(CASE_PRINTED).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -842,7 +826,8 @@ class BusinessValidationControllerIT {
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
             .thenReturn(emailDocument);
 
-        mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(PAPER_FORM_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.schemaVersion", is("2.0.0")))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -862,7 +847,8 @@ class BusinessValidationControllerIT {
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
                 .thenReturn(emailDocument);
 
-        mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(PAPER_FORM_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.schemaVersion").doesNotExist())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -874,7 +860,8 @@ class BusinessValidationControllerIT {
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
             .thenReturn(null);
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(PAPER_FORM_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -887,7 +874,8 @@ class BusinessValidationControllerIT {
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
             .thenReturn(document);
 
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(PAPER_FORM_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -898,7 +886,8 @@ class BusinessValidationControllerIT {
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
                 .thenReturn(null);
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(PAPER_FORM_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -907,7 +896,8 @@ class BusinessValidationControllerIT {
     void shouldReturnScannedDocumentsAndStartAwaitingDocumentationPeriod() throws Exception {
         String scannedDocumentsJson = testUtils.getStringFromFile("scannedDocuments.json");
 
-        mockMvc.perform(post(CASE_PRINTED).content(scannedDocumentsJson).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(CASE_PRINTED).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(scannedDocumentsJson).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().string(containsString("controlNumber\":\"1234")))
@@ -920,7 +910,8 @@ class BusinessValidationControllerIT {
     void shouldStopCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
-        mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(CASE_STOPPED_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
@@ -931,7 +922,8 @@ class BusinessValidationControllerIT {
     void shouldSetStateToBOCaseQAAfterResolveStateChoice() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForBOCaseQA.json");
 
-        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(RESOLVE_STOP_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -943,7 +935,8 @@ class BusinessValidationControllerIT {
     void shouldSetStateToCasePrintedAfterResolveStateChoice() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopCasePrinted.json");
 
-        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(RESOLVE_STOP_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.state").value("CasePrinted"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -956,7 +949,8 @@ class BusinessValidationControllerIT {
         String solicitorPayload =
                 testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForReadyToIssue.json");
 
-        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(RESOLVE_STOP_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.state").value("BOReadyToIssue"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -969,7 +963,8 @@ class BusinessValidationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile(
                 "solicitorPayloadResolveStopForCaseMatchingIssueGrant.json");
 
-        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(RESOLVE_STOP_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.state").value("BOCaseMatchingIssueGrant"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -982,7 +977,8 @@ class BusinessValidationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile(
                 "solicitorPayloadCaseWorkerEscalation.json");
 
-        mockMvc.perform(post(CASE_WORKER_RESOLVED_ESCALATED).content(solicitorPayload)
+        mockMvc.perform(post(CASE_WORKER_RESOLVED_ESCALATED).header(AUTH_HEADER, AUTH_TOKEN)
+                .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -993,7 +989,8 @@ class BusinessValidationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile(
                 "solicitorPayloadCaseWorkerResolveEscalation.json");
 
-        mockMvc.perform(post(CASE_WORKER_RESOLVED_ESCALATED).content(solicitorPayload)
+        mockMvc.perform(post(CASE_WORKER_RESOLVED_ESCALATED).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
@@ -1005,7 +1002,19 @@ class BusinessValidationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile(
                 "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
 
-        mockMvc.perform(post(CHANGE_CASE_STATE_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(CHANGE_CASE_STATE_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOCaseMatchingIssueGrant"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void shouldSetStateToBOCaseMatchingIssueGrantAfterResolveCaveatStopState() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadResolveCaveatStopStateForCaseMatchingIssueGrant.json");
+
+        mockMvc.perform(post(RESOLVE_CAVEAT_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOCaseMatchingIssueGrant"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -1015,7 +1024,8 @@ class BusinessValidationControllerIT {
     void shouldSetStateForRedeclarationCompleteToRedec() throws Exception {
         String payload = testUtils.getStringFromFile("payloadWithResponseRecorded.json");
 
-        mockMvc.perform(post(REDEC_COMPLETE).content(payload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(REDEC_COMPLETE).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.state").value(REDEC_NOTIFICATION_SENT_STATE))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -1028,7 +1038,8 @@ class BusinessValidationControllerIT {
         Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
             .thenReturn(document);
-        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(REDECE_SOT).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
                         .value("You can only use this event for digital cases."))
@@ -1079,7 +1090,8 @@ class BusinessValidationControllerIT {
     void shouldValidateWithDigitalCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
 
-        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(REDECE_SOT).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -1089,7 +1101,7 @@ class BusinessValidationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
 
         mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
-            .header("Authorization", "Auth")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -1113,7 +1125,7 @@ class BusinessValidationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeIntestacy.json");
 
         mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
-            .header("Authorization", "Auth")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -1137,7 +1149,7 @@ class BusinessValidationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeAdmon.json");
 
         mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
-            .header("Authorization", "Auth")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -1171,7 +1183,7 @@ class BusinessValidationControllerIT {
         String caseDetails = testUtils.getStringFromFile("caseDetailWithOrgPolicy.json");
 
         mockMvc.perform(post("/case/sols-created")
-                .header("Authorization", AUTH_TOKEN)
+                .header(AUTH_HEADER, AUTH_TOKEN)
                 .content(caseDetails)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -1179,10 +1191,51 @@ class BusinessValidationControllerIT {
     }
 
     @Test
+    void shouldOkValidateStopReason() throws Exception {
+        List<CollectionMember<StopReason>> stopReasonList = Arrays.asList(
+                new CollectionMember<>(null,
+                        StopReason.builder()
+                                .caseStopReason("Item")
+                                .build()));
+        LocalDateTime dod = LocalDateTime.parse("2021-07-01T00:00:00.000");
+        caseDataBuilder.boCaseStopReasonList(stopReasonList);
+        caseDataBuilder.applicationSubmittedDate(APPLICATION_SUBMITTED_DATE);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(VALIDATE_STOP_REASON).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldErrorValidateStopReason() throws Exception {
+        List<CollectionMember<StopReason>> stopReasonList = Arrays.asList(
+                new CollectionMember<>(null,
+                        StopReason.builder()
+                                .caseStopReason("Other")
+                                .build()));
+        LocalDateTime dod = LocalDateTime.parse("2021-07-01T00:00:00.000");
+        caseDataBuilder.boCaseStopReasonList(stopReasonList);
+        caseDataBuilder.applicationSubmittedDate(APPLICATION_SUBMITTED_DATE);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(VALIDATE_STOP_REASON).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("You cannot use stop reason **NOT TO BE USED (Other)**. "
+                                + "You must select a specific stop reason from the case stop reason list"));
+
+    }
+
+    @Test
     void shouldNotSendEmailForErrorCase() throws Exception {
         String caseCreatorJson = testUtils.getStringFromFile("paperFormWithoutExecutorAddress.json");
 
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(PAPER_FORM_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors[0]")
                         .value("The executor address line 1 cannot be empty"));
@@ -1194,11 +1247,12 @@ class BusinessValidationControllerIT {
         String caseDetails = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post(PA_CREATE_URL)
-                        .header("Authorization", AUTH_TOKEN)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
                         .content(caseDetails)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(caseDataTransformer).transformCaseDataForEvidenceHandled(any(CallbackRequest.class));
+        verify(caseDataTransformer).transformIhtFormCaseDataByDeceasedDOD(any(CallbackRequest.class));
     }
 
     @Test
@@ -1218,7 +1272,8 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(REACTIVATE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(REACTIVATE_CASE).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
 
@@ -1238,7 +1293,8 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(REGISTRARS_DECISION).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(REGISTRARS_DECISION).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -1265,15 +1321,17 @@ class BusinessValidationControllerIT {
 
     @Test
     void shouldValidateRollback() throws Exception {
-        OrganisationPolicy policy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("ABC")
-                        .organisationName("OrgName")
-                        .build())
-                .orgPolicyReference(null)
-                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
                 .build();
-        caseDataBuilder.applicantOrganisationPolicy(policy);
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventService.getLatestAuditEventByName(any(), any(), any(), any()))
+                .thenReturn(Optional.ofNullable(AuditEvent.builder()
+                        .stateId("SolsAppUpdated")
+                        .createdDate(LocalDateTime.now())
+                        .build()));
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -1290,7 +1348,8 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(CHANGE_DOB).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(CHANGE_DOB).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(CoreMatchers.containsString("1800-12-31")));
     }
@@ -1301,7 +1360,8 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(LAST_MODIFIED_DATE).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(LAST_MODIFIED_DATE).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -1323,8 +1383,34 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(SUPER_USER_MAKE_DORMANT).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(SUPER_USER_MAKE_DORMANT).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldThrowErrorToUseCaveatNotificationForNoInformationNeeded() throws Exception {
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CAVEAT_EVENT).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString(
+                        "you must use the 'Caveat notification' event")));
+    }
+
+    @Test
+    void shouldThrowErrorToUseAssembleLetterForNoEmail() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(ASSEMBLE_LETTER_EVENT).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString(
+                        "you must use the 'Assemble a letter' event to request information instead.")));
     }
 }
 

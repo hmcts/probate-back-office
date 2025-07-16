@@ -1,0 +1,28 @@
+{
+  "event": {
+    "id": "EVENT_PARM",
+    "description": "Probate Application created by FT",
+    "summary": "Probate application"
+  },
+  "ignore_warning": true,
+  "event_token": "TOKEN_PARM",
+  "data": {
+    "applicationType": "Solicitor",
+    "registryLocation": "ctsc",
+    "solsSolicitorFirmName": "The Firm & Co",
+    "caveatorEmailAddress": "caveator@probate-test.com",
+    "solsSolicitorPhoneNumber": "07070707077",
+    "caveatorForenames": "cav first name",
+    "caveatorSurname": "cav surname",
+    "caveatorAddress": {
+      "AddressLine1": "2",
+      "AddressLine2": "",
+      "AddressLine3": "",
+      "County": "",
+      "PostTown": "",
+      "PostCode": "2",
+      "Country": ""
+    },
+    "solsSolicitorAppReference": "REFREFREFREFREFREFREFREFREFREF"
+  }
+}

@@ -1,29 +1,32 @@
 package uk.gov.hmcts.probate.security;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import uk.gov.hmcts.probate.exception.NoSecurityContextException;
 import uk.gov.hmcts.probate.exception.model.InvalidTokenException;
 import uk.gov.hmcts.probate.service.IdamApi;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.validators.AuthTokenValidator;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
-
-import static com.microsoft.applicationinsights.boot.dependencies.apachecommons.lang3.StringUtils.isBlank;
 
 @Component
 @Slf4j
@@ -69,19 +72,61 @@ public class SecurityUtils {
     private List<String> allowedToUpdateDetails;
 
     public SecurityDTO getSecurityDTO() {
-        return SecurityDTO.builder()
-            .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
-            .userId(httpServletRequest.getHeader(USER_ID))
-            .serviceAuthorisation(generateServiceToken())
-            .build();
+        String authorisation = getHeader(AUTHORIZATION);
+        String userId = getHeader(USER_ID);
+
+        if (StringUtils.isNotBlank(authorisation) && StringUtils.isNotBlank(userId)) {
+            return buildSecurityDTO(authorisation, userId);
+        }
+
+        log.warn("Missing authorisation or userId from headers, checking SecurityContext");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            if (StringUtils.isBlank(authorisation)) {
+                authorisation = getAuthCredentials(auth);
+            }
+
+            if (StringUtils.isBlank(userId)) {
+                try {
+                    userId = getUserId(authorisation);
+                } catch (FeignException | NullPointerException e) {
+                    log.error("Failed to resolve user ID from token: {}", e.getMessage());
+                }
+            }
+        }
+
+        if (StringUtils.isBlank(authorisation)) {
+            log.error("Unable to resolve security context: missing authorisation token");
+            throw new NoSecurityContextException();
+        }
+        if (StringUtils.isBlank(userId)) {
+            log.error("Unable to resolve security context: missing userId");
+            throw new NoSecurityContextException();
+        }
+
+        return buildSecurityDTO(authorisation, userId);
     }
 
-    public SecurityDTO getUserAndServiceSecurityDTO() {
-        return SecurityDTO.builder()
-            .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
-            .userId(getUserId())
-            .serviceAuthorisation(generateServiceToken())
-            .build();
+    public SecurityDTO getOrDefaultCaseworkerSecurityDTO() {
+        try {
+            return getSecurityDTO();
+        } catch (NoSecurityContextException e) {
+            log.info("Unable to getSecurityDTO, use default caseworker token");
+        }
+        return getUserByCaseworkerTokenAndServiceSecurityDTO();
+    }
+
+    private String getHeader(String headerName) {
+        try {
+            return httpServletRequest != null ? httpServletRequest.getHeader(headerName) : null;
+        } catch (IllegalStateException e) {
+            log.warn("HttpServletRequest not available");
+            return null;
+        }
+    }
+
+    private String getAuthCredentials(Authentication auth) {
+        return auth.getCredentials() != null ? auth.getCredentials().toString() : null;
     }
 
     public SecurityDTO getUserBySchedulerTokenAndServiceSecurityDTO() {
@@ -103,15 +148,8 @@ public class SecurityUtils {
     }
 
     public String getUserId(String authToken) {
-        UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
+        UserInfo userInfo = idamApi.retrieveUserInfo(getBearerToken(authToken));
         return Objects.requireNonNull(userInfo.getUid());
-    }
-
-    public String getUserId() {
-        return ((ServiceAndUserDetails) SecurityContextHolder.getContext()
-            .getAuthentication()
-            .getPrincipal())
-            .getUsername();
     }
 
     public String generateServiceToken() {
@@ -127,6 +165,11 @@ public class SecurityUtils {
     public void setSecurityContextUserAsCaseworker() {
         SecurityContextHolder.getContext()
                 .setAuthentication(new UsernamePasswordAuthenticationToken(caseworkerUserName, getCaseworkerToken()));
+    }
+
+    public void setSecurityContextUserAsScheduler() {
+        SecurityContextHolder.getContext()
+                .setAuthentication(new UsernamePasswordAuthenticationToken(schedulerUserName, getSchedulerToken()));
     }
 
     public String getCaseworkerToken() {
@@ -151,7 +194,7 @@ public class SecurityUtils {
                                 authRedirectUrl,
                                 username,
                                 password,
-                                "openid profile roles",
+                                "openid profile roles search-user",
                                 null,
                                 null
                         ));
@@ -159,7 +202,7 @@ public class SecurityUtils {
             }
             idamOpenIdTokenResponse = cacheSchedulerTokenResponse;
             log.info("Getting AccessToken...");
-            return BEARER + idamOpenIdTokenResponse.accessToken;
+            return getBearerToken(idamOpenIdTokenResponse.accessToken);
         } catch (Exception e) {
             log.error("Exception on IDAM token" + e.getMessage());
             throw e;
@@ -179,7 +222,7 @@ public class SecurityUtils {
                 idamOpenIdTokenResponse = cacheTokenResponse;
             }
             log.info("Getting AccessToken...");
-            return BEARER + idamOpenIdTokenResponse.accessToken;
+            return getBearerToken(idamOpenIdTokenResponse.accessToken);
         } catch (Exception e) {
             log.error("Exception on IDAM token" + e.getMessage());
             throw e;
@@ -195,7 +238,7 @@ public class SecurityUtils {
                         authRedirectUrl,
                         username,
                         password,
-                        "openid profile roles",
+                        "openid profile roles search-user",
                         null,
                         null
                 ));
@@ -214,7 +257,7 @@ public class SecurityUtils {
     }
 
     public String getBearerToken(String token) {
-        if (isBlank(token)) {
+        if (StringUtils.isBlank(token)) {
             return token;
         }
 
@@ -222,7 +265,7 @@ public class SecurityUtils {
     }
 
     public String authenticate(String authHeader) throws InvalidTokenException {
-        if (isBlank(authHeader)) {
+        if (StringUtils.isBlank(authHeader)) {
             throw new InvalidTokenException("Provided S2S token is missing or invalid");
         }
         String bearerAuthToken = getBearerToken(authHeader);
@@ -247,5 +290,27 @@ public class SecurityUtils {
     public List<String> getRoles(String authToken) {
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
         return userInfo.getRoles();
+    }
+
+    public UserInfo getUserInfo(String authToken) {
+        return idamApi.retrieveUserInfo(authToken);
+    }
+
+    public UserDetails getUserDetailsByUserId(String authToken, String userId) {
+        log.info("Getting user details by userId: {}", userId);
+        List<UserDetails> userList = idamApi.searchUsers(authToken, getSearchQuery(userId));
+        return !userList.isEmpty() ? userList.get(0) : null;
+    }
+
+    private String getSearchQuery(String userId) {
+        return MessageFormat.format("id:{0}", userId);
+    }
+
+    private SecurityDTO buildSecurityDTO(String authorisation, String userId) {
+        return SecurityDTO.builder()
+                .authorisation(authorisation)
+                .userId(userId)
+                .serviceAuthorisation(generateServiceToken())
+                .build();
     }
 }

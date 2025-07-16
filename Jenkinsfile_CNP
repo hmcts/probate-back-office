@@ -41,6 +41,8 @@ def secrets = [
                 secret('excelaEmail', 'EXCELA_EMAIL'),
                 secret('smeeAndFordEmail', 'SMEE_AND_FORD_EMAIL'),
                 secret('hmrcEmail', 'HMRC_EMAIL'),
+                secret('sealedAndCertifiedEmail', 'SEALED_AND_CERTIFIED_EMAIL'),
+                secret('draftCaseWithPaymentEmail', 'DRAFT_CASES_WITH_PAYMENT_EMAIL'),
                 secret('ftpSignature', 'FTP_SIGNATURE'),
                 secret('ftpEnv', 'FTP_ENV'),
                 secret('probate-bo-grantSignatureKey', 'PDF_SERVICE_GRANTSIGNATURESECRETKEY'),
@@ -185,7 +187,6 @@ def archiveCoreCaseDataDefinitions(env) {
   }
 
 withPipeline("java", product, component) {
-  env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
   env.CASE_DOCUMENT_AM_URL='http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
   pipelineConf = config;
@@ -327,6 +328,14 @@ withPipeline("java", product, component) {
  docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_PRO_URL/health
  docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
  """
+  }
+
+  before('functionalTest:preview') {
+    env.SERVICES_CORECASEDATA_BASEURL = "https://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+  }
+
+  before('functionalTest:aat') {
+    env.SERVICES_CORECASEDATA_BASEURL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
   }
 }
 

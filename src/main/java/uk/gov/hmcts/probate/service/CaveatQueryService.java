@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.exception.ClientDataException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
@@ -32,8 +31,7 @@ import java.util.Locale;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +48,6 @@ public class CaveatQueryService {
     private static final String CAVEAT_NOT_FOUND_CODE_WELSH = "caveatNotFoundWelsh";
 
     private final RestTemplate restTemplate;
-    private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
@@ -82,6 +79,17 @@ public class CaveatQueryService {
         return foundCaveats.get(0).getData();
     }
 
+    public List<ReturnedCaveatDetails> findCaveatDraftCases(String startDate,
+                                                                   String endDate, CaseType caseType) {
+        BoolQueryBuilder query = boolQuery();
+
+        query.must(matchQuery(STATE, PA_APP_CREATED));
+        query.filter(rangeQuery("last_modified").gte(startDate).lte(endDate));
+        String jsonQuery = new SearchSourceBuilder().query(query).toString();
+
+        return runQuery(caseType, jsonQuery);
+    }
+
     private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {
         log.debug("CaveatMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
@@ -107,14 +115,11 @@ public class CaveatQueryService {
         try {
             returnedCaveats = nonNull(restTemplate.postForObject(uri, entity, ReturnedCaveats.class));
         } catch (HttpClientErrorException e) {
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION.toString(),
-                appInsights.trackingMap("exception", e.getMessage()));
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
 
-        appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url", uri.toString()));
         return returnedCaveats.getCaveats();
     }
 }

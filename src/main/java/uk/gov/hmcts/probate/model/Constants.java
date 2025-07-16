@@ -12,6 +12,8 @@ public final class Constants {
 
     public static final String YES = "Yes";
     public static final String NO = "No";
+    public static final String TRUE = "TRUE";
+    public static final String FALSE = "FALSE";
     public static final int CAVEAT_LIFESPAN = 6;
     public static final int CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS = 6;
     public static final int STANDING_SEARCH_LIFESPAN = 6;
@@ -21,6 +23,8 @@ public final class Constants {
     public static final String EXTRACT_PROBATE = "PROBATE";
     public static final String EXTRACT_ADMINISTRATION = "ADMINISTRATION";
     public static final String EXTRACT_ADMON_WILL = "ADMON/WILL";
+
+    public static final String EXTRACT_AD_COLLIGENDA_BONA = "AdCol";
     public static final String PRINCIPAL_REGISTRY = "Principal Registry";
     public static final String DOC_SUBTYPE_WILL = "will";
     public static final String DOC_TYPE_COVERSHEET = "coversheet";
@@ -35,7 +39,7 @@ public final class Constants {
     public static final String DOC_TYPE_CHERISHED = "cherished";
     public static final String DOC_TYPE_OTHER = "other";
     public static final String DATE_OF_DEATH_TYPE_DEFAULT = "diedOn";
-    public static final String CASE_TYPE_DEFAULT = "gop";
+    public static final String CASE_TYPE_GRANT_OF_PROBATE = "gop";
     public static final String DOCMOSIS_OUTPUT_PDF = "pdf";
     public static final String DOCMOSIS_OUTPUT_HTML = "html";
     public static final String REDEC_NOTIFICATION_SENT_STATE = "BORedecNotificationSent";
@@ -74,6 +78,7 @@ public final class Constants {
     public static final String TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING = "TCTPartOthersRenouncing";
     public static final String TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING = "TCTPartSuccAllRenouncing";
     public static final String TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING = "TCTPartAllRenouncing";
+    public static final String TITLE_AND_CLEARING_NONE_OF_THESE = "TCTNoT";
     public static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
     public static final String REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE = "MentallyIncapable";
     public static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";

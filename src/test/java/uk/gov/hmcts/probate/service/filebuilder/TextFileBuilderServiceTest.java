@@ -46,7 +46,7 @@ class TextFileBuilderServiceTest {
     }
 
     private BufferedReader createFile(String fileName) throws IOException {
-        File file = textFileBuilderService.createFile(data, "|", fileName);
+        File file = textFileBuilderService.createFile(data, "|", fileName, "TEST");
         file.deleteOnExit();
         FileReader reader = new FileReader(file);
         return new BufferedReader(reader);

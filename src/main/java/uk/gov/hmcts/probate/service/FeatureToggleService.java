@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
-import com.launchdarkly.sdk.LDUser;
+import com.launchdarkly.sdk.LDContext;
 import com.launchdarkly.sdk.server.LDClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,32 +10,92 @@ import org.springframework.stereotype.Service;
 public class FeatureToggleService {
 
     private final LDClient ldClient;
-    private final LDUser ldUser;
-    private final LDUser.Builder ldUserBuilder;
+    private final LDContext ldContext;
+    private static final String SMEE_AND_FORD_POUND_VALUE_TOGGLE = "probate-smee-ford-pound-value";
+    private static final String IRON_MOUNTAIN_IN_BACK_OFFICE = "probate-iron-mountain-in-back-office";
+    private static final String EXELA_IN_BACK_OFFICE = "probate-exela-in-back-office";
+    private static final String FIRST_STOP_REMINDER_TOGGLE = "probate-cron-first-stop-reminder";
+    private static final String SECOND_STOP_REMINDER_TOGGLE = "probate-cron-second-stop-reminder";
+    private static final String HSE_REMINDER_TOGGLE = "probate-cron-hse-reminder";
+    private static final String DORMANT_WARNING_TOGGLE = "probate-cron-dormant-warning";
+    private static final String UNSUBMITTED_APPLICATION_TOGGLE = "probate-cron-unsubmitted-application";
+    private static final String DECLARATION_NOT_SIGNED_TOGGLE = "probate-cron-declaration-not-signed";
 
     @Autowired
     public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,
                                 @Value("${ld.user.firstName}") String ldUserFirstName,
                                 @Value("${ld.user.lastName}") String ldUserLastName) {
+        final String contextName = new StringBuilder()
+                .append(ldUserFirstName)
+                .append(" ")
+                .append(ldUserLastName)
+                .toString();
+
         this.ldClient = ldClient;
-       
-        this.ldUserBuilder = new LDUser.Builder(ldUserKey)
-            .firstName(ldUserFirstName)
-            .lastName(ldUserLastName)
-            .custom("timestamp", String.valueOf(System.currentTimeMillis()));
-        this.ldUser = this.ldUserBuilder.build();
+        this.ldContext = LDContext.builder(ldUserKey)
+                .name(contextName)
+                .kind("application")
+                .set("timestamp", String.valueOf(System.currentTimeMillis()))
+                .build();
+
     }
 
     public boolean isNewFeeRegisterCodeEnabled() {
-        return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, true);
+        return isFeatureToggleOn("probate-newfee-register-code", true);
     }
 
     public boolean enableNewMarkdownFiltering() {
-        return this.ldClient.boolVariation("probate-enable-new-markdown-filtering", this.ldUser, false);
+        return isFeatureToggleOn("probate-enable-new-markdown-filtering", false);
     }
 
     public boolean isFeatureToggleOn(String featureToggleCode, boolean defaultValue) {
-        return this.ldClient.boolVariation(featureToggleCode, this.ldUser, defaultValue);
+        return this.ldClient.boolVariation(featureToggleCode, this.ldContext, defaultValue);
     }
 
+    public boolean enableAmendLegalStatementFiletypeCheck() {
+        return this.isFeatureToggleOn("enable-amend-legal-statement-filetype-check", false);
+    }
+
+    public boolean isPoundValueFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
+    }
+
+    public boolean isIronMountainInBackOffice() {
+        return this.isFeatureToggleOn(IRON_MOUNTAIN_IN_BACK_OFFICE, false);
+    }
+
+    public boolean isExelaInBackOffice() {
+        return this.isFeatureToggleOn(EXELA_IN_BACK_OFFICE, false);
+    }
+
+    public boolean isFirstStopReminderFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                FIRST_STOP_REMINDER_TOGGLE, false);
+    }
+
+    public boolean isSecondStopReminderFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                SECOND_STOP_REMINDER_TOGGLE, false);
+    }
+
+    public boolean isHseReminderFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                HSE_REMINDER_TOGGLE, false);
+    }
+
+    public boolean isDormantWarningFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                DORMANT_WARNING_TOGGLE, false);
+    }
+
+    public boolean isUnsubmittedApplicationFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                UNSUBMITTED_APPLICATION_TOGGLE, false);
+    }
+
+    public boolean isDeclarationNotSignedFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                DECLARATION_NOT_SIGNED_TOGGLE, false);
+    }
 }

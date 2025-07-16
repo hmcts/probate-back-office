@@ -11,14 +11,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -52,9 +51,7 @@ class LifeEventCCDIntegrationIT {
     private MockMvc mockMvc;
     @Autowired
     private TestUtils testUtils;
-    @MockBean
-    private AppInsights appInsights;
-    @MockBean
+    @MockitoBean
     private SecurityUtils securityUtils;
     @Autowired
     private WebApplicationContext webApplicationContext;

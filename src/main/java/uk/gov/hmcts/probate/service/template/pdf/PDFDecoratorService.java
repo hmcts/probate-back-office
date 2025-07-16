@@ -20,6 +20,8 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -97,6 +99,8 @@ public class PDFDecoratorService {
                     || documentType.equals(INTESTACY_GRANT_DRAFT)
                     || documentType.equals(ADMON_WILL_GRANT)
                     || documentType.equals(ADMON_WILL_GRANT_DRAFT)
+                    || documentType.equals(AD_COLLIGENDA_BONA_GRANT)
+                    || documentType.equals(AD_COLLIGENDA_BONA_GRANT_DRAFT)
             ) {
                 CaseData caseData = ((CallbackRequest) data).getCaseDetails().getData();
                 updatedJson = removePenceDecorator.decorate(caseData, documentType);

@@ -9,15 +9,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.ClientException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -44,18 +43,16 @@ class DataExtractControllerIT {
     public static final String PERFORM_HMRC_DATA_EXTRACT_FINISHED = "Perform HMRC data extract finished";
     public static final String PERFORM_IM_DATA_EXTRACT_FINISHED = "Perform Iron Mountain data extract finished";
 
-    @MockBean
+    @MockitoBean
     private HmrcDataExtractService hmrcDataExtractService;
-    @MockBean
+    @MockitoBean
     private IronMountainDataExtractService ironMountainDataExtractService;
-    @MockBean
+    @MockitoBean
     private ExelaDataExtractService exelaDataExtractService;
-    @MockBean
+    @MockitoBean
     private SmeeAndFordDataExtractService smeeAndFordDataExtractService;
-    @MockBean
+    @MockitoBean
     private DataExtractDateValidator dataExtractDateValidator;
-    @MockBean
-    private AppInsights appInsights;
     @Autowired
     private MockMvc mockMvc;
     @Autowired

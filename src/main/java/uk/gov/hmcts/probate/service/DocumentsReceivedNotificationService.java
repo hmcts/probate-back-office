@@ -11,10 +11,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
@@ -33,7 +35,8 @@ public class DocumentsReceivedNotificationService {
     private static final String NOTIFICATION_OFF = "toggle probate-documents-received-notification off";
     private static final String NOTIFICATION_NOT_REQUESTED = "notification not requested";
 
-    public CallbackResponse handleDocumentReceivedNotification(CallbackRequest callbackRequest)
+    public CallbackResponse handleDocumentReceivedNotification(CallbackRequest callbackRequest,
+                                                               Optional<UserInfo> caseworkerInfo)
         throws NotificationClientException {
 
         log.info("Preparing to send email notification for documents being recieved");
@@ -51,7 +54,8 @@ public class DocumentsReceivedNotificationService {
             if (response.getErrors().isEmpty()) {
                 Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
                 documents.add(documentsReceivedSentEmail);
-                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+                response = callbackResponseTransformer
+                        .addDocuments(callbackRequest, documents, null, null, caseworkerInfo);
             }
         } else {
             String reasonIgnored;
@@ -63,7 +67,8 @@ public class DocumentsReceivedNotificationService {
                 reasonIgnored = NOTIFICATION_NOT_REQUESTED;
             }
             log.info("No notification on Document received for case: {} " + reasonIgnored, caseDetails.getId());
-            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+            response = callbackResponseTransformer
+                    .addDocuments(callbackRequest, documents, null, null, caseworkerInfo);
         }
         return response;
     }

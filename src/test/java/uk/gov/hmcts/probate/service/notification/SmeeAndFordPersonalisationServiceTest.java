@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.util.TestUtils;
 
@@ -49,15 +50,21 @@ class SmeeAndFordPersonalisationServiceTest {
     @Mock
     private FileSystemResourceService fileSystemResourceService;
 
+    @Mock
+    private FeatureToggleService featureToggleService;
+
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
     private ReturnedCaseDetails returnedCaseDetailsSolicitor;
     private ReturnedCaseDetails returnedCaseDetailsTypeWill;
 
     private static final Long ID = 1234567812345678L;
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
+
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
     private static final BigDecimal NET = BigDecimal.valueOf(900000);
 
+    private static final BigDecimal GROSS_WITH_DECIMAL = BigDecimal.valueOf(1000000.34);
+    private static final BigDecimal NET_WITH_DECIMAL = BigDecimal.valueOf(900000.56);
     private TestUtils testUtils = new TestUtils();
 
     @BeforeEach
@@ -77,6 +84,7 @@ class SmeeAndFordPersonalisationServiceTest {
                 + "applicant Country|Gross|Net|Solicitor Name|Solicitor Reference|Solicitor Address|Solicitor Town|"
                 + "Solicitor County|Solicitor Postcode|Solicitor Country|date of birth|Field which alerts us to "
                 + "Codicil being present|pdf file name field for Wills|pdf for Digital Grant");
+        when(featureToggleService.isPoundValueFeatureToggleOn()).thenReturn(true);
     }
 
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType,
@@ -246,7 +254,8 @@ class SmeeAndFordPersonalisationServiceTest {
     void shouldMapAllAttributesWithDelimetersInContents() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
                 "YesWithoutTypeWill", true, true, true,
-            false, true, true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
+            false, true, true)
+                .primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
                 "YesWithoutTypeWill", true, false,
             false, false, true, false).build(), LAST_MODIFIED, ID);

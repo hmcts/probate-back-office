@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -62,6 +64,7 @@ class RemovePenceDecoratorTest {
 
     private static Stream<DocumentType> grantDocumentTypeStream() {
         return Stream.of(ADMON_WILL_GRANT, ADMON_WILL_GRANT_DRAFT, DIGITAL_GRANT, DIGITAL_GRANT_DRAFT,
-                DIGITAL_GRANT_REISSUE, DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT, INTESTACY_GRANT_DRAFT);
+                DIGITAL_GRANT_REISSUE, DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT, INTESTACY_GRANT_DRAFT,
+                AD_COLLIGENDA_BONA_GRANT, AD_COLLIGENDA_BONA_GRANT_DRAFT);
     }
 }

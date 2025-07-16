@@ -10,6 +10,7 @@ exports.config = {
             'waitForAction': 1000,
             'show': testConfig.TestShowBrowserWindow,
             'waitForNavigation': 'domcontentloaded',
+            'headless': 'true',
             'chrome': {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,
@@ -18,7 +19,7 @@ exports.config = {
                     'height': 960
                 },
                 args: [
-                    // '--headless',
+                    '--headless=new',
                     '--disable-gpu',
                     '--no-sandbox',
                     '--allow-running-insecure-content',
@@ -54,9 +55,24 @@ exports.config = {
     },
     'mocha': {
         'reporterOptions': {
-            'reportDir': testConfig.TestOutputDir,
-            'reportName': 'index',
-            'inlineAssets': true
+            'codeceptjs-cli-reporter': {
+                stdout: '-',
+                options: {steps: true}
+            },
+            'mocha-junit-reporter': {
+                stdout: '-',
+                options: {
+                    mochaFile: `${testConfig.TestOutputDir}/result.xml`
+                }
+            },
+            'mochawesome': {
+                stdout: `${testConfig.TestOutputDir}/console.log`,
+                options: {
+                    'reportDir': testConfig.TestOutputDir,
+                    'reportName': 'index',
+                    'inlineAssets': true
+                }
+            }
         }
     },
     'name': 'Codecept Tests'

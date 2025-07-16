@@ -22,12 +22,16 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_SOLE_PRINCIPLE;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
@@ -246,22 +250,34 @@ class ExecutorsTransformerTest {
         assertEquals(SOLICITOR_NOT_APPLYING_REASON, cd.getSolsSolicitorNotApplyingReason());
     }
 
+    /* Should this test be in this Test class? It's testing a subclass and is really relying on a third
+     * service (ExecutorListMapperService) to do most of the work here.
+     */
     @Test
     void shouldSwapSolicitorToNotApplyingList() {
-        caseDataBuilder
+        final CaseData caseData = CaseData.builder()
                 .additionalExecutorsApplying(additionalExecutorApplying)
                 .additionalExecutorsNotApplying(additionalExecutorNotApplying)
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
-                .primaryApplicantForenames(EXEC_FIRST_NAME);
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .build();
 
-        final CaseData cd = caseDataBuilder.build();
+        final var executorListMapperSpy = spy(ExecutorListMapperService.class);
 
-        new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService(), new DateFormatterService())
-                .mapSolicitorExecutorFieldsOnCompletion(cd);
+        // We only need these to construct the SolicitorXformer object, we verifyNoInteractions to confirm
+        final var dateFormatterMock = mock(DateFormatterService.class);
 
-        assertEquals(0, cd.getAdditionalExecutorsApplying().size());
-        assertEquals(1, cd.getAdditionalExecutorsNotApplying().size());
+        final var solXformer = new SolicitorApplicationCompletionTransformer(
+                executorListMapperSpy,
+                dateFormatterMock);
+        solXformer.mapSolicitorExecutorFieldsOnCompletion(caseData);
+
+        assertAll(
+                () -> assertEquals(0, caseData.getAdditionalExecutorsApplying().size()),
+                () -> assertEquals(1, caseData.getAdditionalExecutorsNotApplying().size()),
+                () -> verifyNoInteractions(dateFormatterMock)
+        );
     }
 
     @Test

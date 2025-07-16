@@ -1,17 +1,19 @@
 package uk.gov.hmcts.probate.security;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.TestSecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.gov.hmcts.probate.exception.NoSecurityContextException;
 import uk.gov.hmcts.probate.exception.model.InvalidTokenException;
 import uk.gov.hmcts.probate.service.IdamApi;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.validators.AuthTokenValidator;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
@@ -19,7 +21,6 @@ import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atMostOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -60,6 +62,11 @@ class SecurityUtilsTest {
     @Mock
     private HttpServletRequest httpServletRequestMock;
 
+    @AfterEach
+    void clearSecurityContext() {
+        SecurityContextHolder.clearContext();
+    }
+
     @Test
     void shouldGetSecurityDTO() {
         when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH");
@@ -67,30 +74,6 @@ class SecurityUtilsTest {
 
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         assertEquals("AUTH", securityDTO.getAuthorisation());
-    }
-
-    @Test
-    void shouldGetUserAndServiceSecurityDTO() {
-        UserDetails serviceAndUserDetails = new ServiceAndUserDetails("username", USER_TOKEN,
-                Collections.EMPTY_LIST, "servicename");
-        TestSecurityContextHolder.getContext().setAuthentication(
-                new TestingAuthenticationToken(serviceAndUserDetails, USER_TOKEN, "ROLE_USER"));
-        when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH");
-        when(httpServletRequestMock.getHeader("user-id")).thenReturn("USER");
-
-        SecurityDTO securityDTO = securityUtils.getUserAndServiceSecurityDTO();
-        assertEquals("AUTH", securityDTO.getAuthorisation());
-        assertEquals("username", securityDTO.getUserId());
-    }
-
-    @Test
-    void shouldGetUserId() {
-        UserDetails serviceAndUserDetails = new ServiceAndUserDetails("username", USER_TOKEN,
-                Collections.EMPTY_LIST, "servicename");
-        TestSecurityContextHolder.getContext().setAuthentication(
-                new TestingAuthenticationToken(serviceAndUserDetails, USER_TOKEN, "ROLE_USER"));
-        String id = securityUtils.getUserId();
-        assertEquals("username", id);
     }
 
     @Test
@@ -258,7 +241,7 @@ class SecurityUtilsTest {
     }
 
     @Test()
-    void authenticateABlankToken() throws InvalidTokenException {
+    void authenticateABlankToken() {
         assertThrows(InvalidTokenException.class, () -> {
             securityUtils.authenticate(" ");
         });
@@ -277,5 +260,108 @@ class SecurityUtilsTest {
         List<String> roles = securityUtils.getRoles("AuthToken");
 
         assertEquals(List.of("caseworker-probate"), roles);
+    }
+
+    @Test
+    void shouldGetUserInfo() {
+        UserInfo userInfo = UserInfo.builder().build();
+        when(idamApi.retrieveUserInfo(USER_TOKEN)).thenReturn(userInfo);
+        UserInfo userInfoResponse = securityUtils.getUserInfo(USER_TOKEN);
+        assertEquals(userInfo, userInfoResponse);
+    }
+
+    @Test
+    void shouldGetUserDetailsById() {
+        uk.gov.hmcts.reform.idam.client.models.UserDetails userDetails =
+                uk.gov.hmcts.reform.idam.client.models.UserDetails.builder()
+                        .id("1234")
+                        .email("test@probate.com")
+                        .build();
+        when(idamApi.searchUsers(USER_TOKEN, "id:1234")).thenReturn(List.of(userDetails));
+        uk.gov.hmcts.reform.idam.client.models.UserDetails userDetailsResponse  =
+                securityUtils.getUserDetailsByUserId(USER_TOKEN, "1234");
+        assertEquals(userDetails, userDetailsResponse);
+    }
+
+    @Test
+    void shouldReturnSecurityDTOFromSecurityContextHolderWhenRequestHeadersAreNull() {
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(AUTH_CLIENT_ID, USER_TOKEN)
+        );
+
+        HttpServletRequest nullRequest = mock(HttpServletRequest.class);
+        when(nullRequest.getHeader("Authorization")).thenReturn(null);
+        when(nullRequest.getHeader("user-id")).thenReturn(null);
+        when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKEN);
+        UserInfo userInfo = UserInfo.builder().uid(AUTH_CLIENT_ID).build();
+        when(idamApi.retrieveUserInfo(any())).thenReturn(userInfo);
+
+        SecurityDTO dto = securityUtils.getSecurityDTO();
+
+        assertEquals(USER_TOKEN, dto.getAuthorisation());
+        assertEquals(AUTH_CLIENT_ID, dto.getUserId());
+        assertEquals(SERVICE_TOKEN, dto.getServiceAuthorisation());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNoHeaderAndNoSecurityContext() {
+        when(httpServletRequestMock.getHeader("Authorization")).thenReturn(null);
+
+        SecurityContextHolder.clearContext();
+
+        assertThrows(NoSecurityContextException.class, () -> {
+            securityUtils.getSecurityDTO();
+        });
+    }
+
+    @Test
+    void shouldGetUserIdIfHeaderMissing() {
+        when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH_HEADER");
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn(null);
+
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken("userFromContext", "AUTH_HEADER")
+        );
+        when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKEN);
+        UserInfo userInfo = UserInfo.builder().uid("userFromContext").build();
+        when(idamApi.retrieveUserInfo(any())).thenReturn(userInfo);
+
+        SecurityDTO dto = securityUtils.getSecurityDTO();
+
+        assertEquals("AUTH_HEADER", dto.getAuthorisation());
+        assertEquals("userFromContext", dto.getUserId());
+        assertEquals(SERVICE_TOKEN, dto.getServiceAuthorisation());
+    }
+
+    @Test
+    void shouldReturnSecurityDTOWhenAvailableInContext() {
+        when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH_HEADER");
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn("USER_ID");
+        when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKEN);
+
+        SecurityDTO dto = securityUtils.getOrDefaultCaseworkerSecurityDTO();
+
+        assertEquals("AUTH_HEADER", dto.getAuthorisation());
+        assertEquals("USER_ID", dto.getUserId());
+        assertEquals(SERVICE_TOKEN, dto.getServiceAuthorisation());
+    }
+
+    @Test
+    void shouldFallbackToCaseworkerSecurityDTOWhenNoContextAvailable() {
+        when(httpServletRequestMock.getHeader("Authorization")).thenReturn(null);
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn(null);
+        SecurityContextHolder.clearContext();
+
+        when(authTokenGenerator.generate()).thenReturn("fallback-service");
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(new TokenResponse("fallback-auth", "3600", "id", null, null, null));
+        when(idamApi.retrieveUserInfo(any()))
+                .thenReturn(UserInfo.builder().uid("fallback-user").build());
+
+        SecurityDTO dto = securityUtils.getOrDefaultCaseworkerSecurityDTO();
+
+        assertEquals("Bearer fallback-auth", dto.getAuthorisation());
+        assertEquals("fallback-user", dto.getUserId());
+        assertEquals("fallback-service", dto.getServiceAuthorisation());
     }
 }

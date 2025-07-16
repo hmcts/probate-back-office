@@ -159,9 +159,21 @@ notifications:
           caveatRaised: "pa-caveat-raised"
           caveatExtend: "pa-ctsc-caveat-extend"
           requestInformation: "pa-request-information"
+          requestInformationByPost: "pa-request-information-by-post"
           redeclarationSot: "pa-redeclaration-sot"
           grantDelayed: "pa-grantDelayed"
           grantAwaitingDocumentation: "pa-grantAwaitingDoc"
+          sealedAndCertified: "sealed-and-certified"
+          disposalReminder: "pa-disposal-reminder"
+          draftCasePaymentSuccess: "pa-draft-case-payment-success"
+          firstStopReminder: "pa-first-stop-reminder"
+          firstStopReminderForHub: "pa-first-stop-reminder-for-hub"
+          hseReminder: "pa-hse-reminder"
+          hseReminderForHub: "pa-hse-reminder-for-hub"
+          dormantWarning: "pa-dormant-warning"
+          unsubmittedApplication: "pa-unsubmitted-application"
+          declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant"
+          declarationNotSignedExecutors: "pa-declaration-not-signed-executors"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -183,6 +195,13 @@ notifications:
           grantDelayed: "sols-grantDelayed"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc"
           noticeOfChangeReceived: "sols-noc"
+          sealedAndCertified: "sealed-and-certified"
+          disposalReminder: "sol-disposal-reminder"
+          draftCasePaymentSuccess: "sol-draft-case-payment-success"
+          firstStopReminder: "sol-first-stop-reminder"
+          hseReminder: "sol-hse-reminder"
+          dormantWarning: "sol-dormant-warning"
+          unsubmittedApplication: "sol-unsubmitted-application"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -201,9 +220,21 @@ notifications:
           caveatRaised: "pa-caveat-raised-welsh"
           caveatExtend: "pa-ctsc-caveat-extend-welsh"
           requestInformation: "pa-request-information-welsh"
+          requestInformationByPost: "pa-request-information-by-post-welsh"
           redeclarationSot: "pa-redeclaration-sot-welsh"
           grantDelayed: "pa-grantDelayed-welsh"
           grantAwaitingDocumentation: "pa-grantAwaitingDoc-welsh"
+          sealedAndCertified: "sealed-and-certified"
+          disposalReminder: "pa-disposal-reminder-welsh"
+          draftCasePaymentSuccess: "pa-draft-case-payment-success-welsh"
+          firstStopReminder: "pa-first-stop-reminder-welsh"
+          firstStopReminderForHub: "pa-first-stop-reminder-for-hub-welsh"
+          hseReminder: "pa-hse-reminder-welsh"
+          hseReminderForHub: "pa-hse-reminder-for-hub-welsh"
+          dormantWarning: "pa-dormant-warning-welsh"
+          unsubmittedApplication: "pa-unsubmitted-application-welsh"
+          declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant-welsh"
+          declarationNotSignedExecutors: "pa-declaration-not-signed-executors-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -224,6 +255,13 @@ notifications:
           grantDelayed: "sols-grantDelayed-welsh"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc-welsh"
           noticeOfChangeReceived: "sols-noc"
+          sealedAndCertified: "sealed-and-certified"
+          disposalReminder: "sol-disposal-reminder-welsh"
+          draftCasePaymentSuccess: "sol-draft-case-payment-success-welsh"
+          firstStopReminder: "sol-first-stop-reminder-welsh"
+          hseReminder: "sol-hse-reminder-welsh"
+          dormantWarning: "sol-dormant-warning-welsh"
+          unsubmittedApplication: "sol-unsubmitted-application-welsh"
 
 documents:
   templates:
@@ -234,38 +272,46 @@ documents:
             intestacy: INTESTACY_GRANT_REISSUE
             admonWill: ADMON_WILL_GRANT_REISSUE
             gop: DIGITAL_GRANT_REISSUE
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_REISSUE
           grant:
             intestacy: INTESTACY_GRANT
             admonWill: ADMON_WILL_GRANT
             gop: DIGITAL_GRANT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT
         preview:
           reissue:
             intestacy: INTESTACY_GRANT_REISSUE_DRAFT
             admonWill: ADMON_WILL_GRANT_REISSUE_DRAFT
             gop: DIGITAL_GRANT_REISSUE_DRAFT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT
           grant:
             intestacy: INTESTACY_GRANT_DRAFT
             admonWill: ADMON_WILL_GRANT_DRAFT
             gop: DIGITAL_GRANT_DRAFT
+            adColligendaBona: AD_COLLIGENDA_BONA_GRANT_DRAFT
       welsh:
         final:
           reissue:
             intestacy: WELSH_INTESTACY_GRANT_REISSUE
             admonWill: WELSH_ADMON_WILL_GRANT_REISSUE
             gop: WELSH_DIGITAL_GRANT_REISSUE
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE
           grant:
             intestacy: WELSH_INTESTACY_GRANT
             admonWill: WELSH_ADMON_WILL_GRANT
             gop: WELSH_DIGITAL_GRANT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT
         preview:
           reissue:
             intestacy: WELSH_INTESTACY_GRANT_REISSUE_DRAFT
             admonWill: WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT
             gop: WELSH_DIGITAL_GRANT_REISSUE_DRAFT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT
           grant:
             intestacy: WELSH_INTESTACY_GRANT_DRAFT
             admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
             gop: WELSH_DIGITAL_GRANT_DRAFT
+            adColligendaBona: WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT
 
 registry:
   registries:
@@ -376,7 +422,11 @@ registry:
 
 auth.idam.client.baseUrl: http://localhost:5000
 
-core_case_data.api.url: http://localhost:4452
+core_case_data:
+  api:
+    url: http://localhost:4452
+  elasticsearch:
+    querySize: 500
 
 document:
   retriever:
@@ -406,6 +456,8 @@ idam-s2s-auth:
 excelaEmail: exela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
+sealedAndCertifiedEmail: SealedAndCertified@probate-test.com
+draftCaseWithPaymentEmail: draftCases@probate-test.com
 
 data-extract:
   pagination:
@@ -433,7 +485,7 @@ blobstorage:
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
-shcedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
+schedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
 
 feature:
   blobstorage:
@@ -446,11 +498,6 @@ ld:
     key: ${LD_USER_KEY:off}
     firstName: Probate
     lastName: Backend
-
-azure:
-  app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
-  application-insights:
-    instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
 
 aca:
   api:
@@ -468,6 +515,9 @@ dormancy:
   period_months: 6
   start_date: 1900-01-01
 
+draft_payment:
+  start_date: 1900-01-01
+
 make_dormant:
   add_time_minutes: 5
 
@@ -476,3 +526,38 @@ reactivate_dormant:
 
 grand_delay:
   number_of_weeks: 16
+
+bulkscan:
+  default-value:
+    name: MISSING
+    postcode: MI55 1NG
+    dob: 01011990
+    email: contactprobate@justice.gov.uk
+    phone: 1234
+    deceasedAnyOtherNames: FALSE
+    deceasedDomicileInEngWales: TRUE
+    legalRepresentative: TRUE
+    ihtForm: FALSE
+    grossNetValue: 1.11
+    solsSolicitorIsApplying: TRUE
+
+  number_of_weeks: 12
+
+disposal:
+  adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
+  inactivityNotificationPeriod: ${INACTIVITY_NOTIFICATION_PERIOD:90}
+  disposalGracePeriod: ${DISPOSAL_GRACE_PERIOD:90}
+  switchDate: ${RETENTION_SWITCH_DATE:2024-03-04}
+  startDate: 1900-01-01
+  personalNotificationLink: ${FRONTEND_URL:http://localhost:3000}
+  solsNotificationLink: ${MANAGE_CASE_URL:http://localhost:3001}
+
+automated_notification:
+  stop_reminder:
+    first_notification_days: 56
+    second_notification_days: 28
+  hse_reminder:
+    awaiting_documentation_days: 30
+  dormant_warning_days: 150
+  unsubmitted_application_days: 28
+  declaration_not_signed_days: 3

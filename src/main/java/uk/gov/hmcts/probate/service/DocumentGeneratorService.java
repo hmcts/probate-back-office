@@ -7,13 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.NotFoundException;
-import uk.gov.hmcts.probate.model.ApplicationType;
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -41,6 +38,8 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
@@ -51,6 +50,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_DRAFT;
@@ -73,8 +74,6 @@ public class DocumentGeneratorService {
     private static final String SEAL_FILE_PATH = "sealImage.txt";
     private static final String WATERMARK = "draftbackground";
     private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
-    private static final String FULL_REDEC = "fullRedec";
-    private static final String APP_NAME = "applicantName";
     private static final String LETTER_TYPE = "letterType";
     private static final String BLANK = "blank";
     private static final String TEMPLATE = "template";
@@ -158,27 +157,6 @@ public class DocumentGeneratorService {
         return coversheet;
     }
 
-    public Document generateRequestForInformation(CaseDetails caseDetails, ExecutorsApplyingNotification exec) {
-        log.info("Initiate call to generate information request letter for case id {}", caseDetails.getId());
-        Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
-        String appName;
-
-        if (caseDetails.getData().getApplicationType() == ApplicationType.SOLICITOR) {
-            appName = caseDetails.getData().getSolsSOTName();
-        } else {
-            appName = exec.getName();
-        }
-
-        placeholders.put(APP_NAME, appName);
-        placeholders.put(FULL_REDEC, NO);
-
-        Document letter = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-            DocumentType.SOT_INFORMATION_REQUEST);
-        log.info("Successful response for letter for case id {}", caseDetails.getId());
-
-        return letter;
-    }
-
     public Document generateSoT(CallbackRequest callbackRequest) {
         final Document statementOfTruth;
         DocumentType documentType = DocumentType.STATEMENT_OF_TRUTH;
@@ -229,7 +207,7 @@ public class DocumentGeneratorService {
         }
     }
 
-    private DocumentType getSolicitorSoTDocType(CallbackRequest callbackRequest) {
+    public DocumentType getSolicitorSoTDocType(CallbackRequest callbackRequest) {
         DocumentType documentType;
         switch (callbackRequest.getCaseDetails().getData().getCaseType()) {
             case ADMON_WILL:
@@ -259,11 +237,11 @@ public class DocumentGeneratorService {
     private void expireDrafts(CallbackRequest callbackRequest) {
         log.info("Expiring drafts");
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-            ADMON_WILL_GRANT_REISSUE_DRAFT, WELSH_DIGITAL_GRANT_DRAFT, WELSH_ADMON_WILL_GRANT_DRAFT,
-            WELSH_INTESTACY_GRANT_DRAFT,
+            AD_COLLIGENDA_BONA_GRANT_DRAFT, DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+            ADMON_WILL_GRANT_REISSUE_DRAFT, AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT, WELSH_DIGITAL_GRANT_DRAFT,
+            WELSH_ADMON_WILL_GRANT_DRAFT, WELSH_INTESTACY_GRANT_DRAFT, WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT,
             WELSH_DIGITAL_GRANT_REISSUE_DRAFT, WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT,
-            WELSH_INTESTACY_GRANT_REISSUE_DRAFT};
+            WELSH_INTESTACY_GRANT_REISSUE_DRAFT, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }

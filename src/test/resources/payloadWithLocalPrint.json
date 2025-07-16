@@ -90,6 +90,7 @@
         "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
       },
       "extraCopiesOfGrant": null,
+      "outsideUKGrantCopies": 1,
       "solsPaymentMethods": "fee account",
       "solsSolicitorFirmPostcode": "KT10 0LA",
       "deceasedForenames": "Deceased First Name",

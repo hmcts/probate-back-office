@@ -1,0 +1,137 @@
+{
+  "case_details": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "CaseCreated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "case_data": {
+      "caseType": "adColligendaBona",
+      "payments": [
+        {
+          "id": "ba372bd2-cee9-4402-b209-0e8f95e71522",
+          "value": {
+            "amount": "21500",
+            "method": "online",
+            "siteId": "P223",
+            "status": "Success",
+            "reference": "RC-1634-9026-5882-3025",
+            "transactionId": "d22d7e8h5qlbt1njm816vctl77"
+          }
+        }
+      ],
+      "taskList": "",
+      "ihtFormId": "IHT207",
+      "paperForm": "No",
+      "willExists": "No",
+      "bulkPrintId": [],
+      "caseMatches": [],
+      "declaration": {},
+      "ihtNetValue": "800000",
+      "ihtGrossValue": "1000000",
+      "boLimitationText": "",
+      "legalStatement": {
+        "executorsApplying": [],
+        "executorsNotApplying": []
+      },
+      "applicationType": "Personal",
+      "dateOfDeathType": "diedOn",
+      "deceasedAddress": {
+        "Country": "United Kingdom",
+        "PostCode": "EC3A 2AD",
+        "PostTown": "London",
+        "AddressLine1": "Dusted Design Partners Ltd",
+        "AddressLine2": "65-68 Leadenhall Street"
+      },
+      "deceasedSurname": "Eased",
+      "registryAddress": "Line 1 Ox\nLine 2 Ox\nLine 3 Ox\nPostCode Ox\n",
+      "paragraphDetails": [],
+      "registryLocation": "ctsc",
+      "boSendToBulkPrint": "Yes",
+      "bulkScanEnvelopes": [],
+      "deceasedForenames": "Dec",
+      "extraCopiesOfGrant": 0,
+      "ihtReferenceNumber": "Not applicable",
+      "boDocumentsUploaded": [],
+      "deceasedDateOfBirth": "1900-01-01",
+      "deceasedDateOfDeath": "2020-01-01",
+      "declarationCheckbox": "Yes",
+      "otherExecutorExists": "No",
+      "legalDeclarationJson": "{\"declarations\":[{\"headers\":[\"In the High Court of Justice\",\"Family Division\",\"(Intestacy)\"],\"sections\":[{\"headingType\":\"large\",\"title\":\"Legal statement\",\"declarationItems\":[{\"title\":\"I, Appfn Appsn of Frederick Gibberd Partnership 117-121 Curtain Road London SE22 9QD United Kingdom, make the following statement:\"}]},{\"headingType\":\"small\",\"title\":\"The person who died\",\"declarationItems\":[{\"title\":\"That Dec Eased, of Dusted Design Partners Ltd 65-68 Leadenhall Street London EC3A 2AD United Kingdom, was born on 1 January 1900 and died on 1 January 2020 intestate. \"},{\"title\":\"They were married or in a civil partnership and domiciled in England and Wales.\"},{\"title\":\"No children under 18 are entitled to the estate.\"}]},{\"headingType\":\"small\",\"title\":\"The estate of the person who died\",\"declarationItems\":[{\"title\":\"The gross value for the estate amounts to £10000.00 and the net value for the estate amounts to £8000.00.\"},{\"title\":\"To the best of my knowledge, information and belief, there was no land vested in Dec Eased which was settled previously to the death of Dec Eased and which remained settled land notwithstanding such death.\"},{\"title\":\"I am the lawful spouse or civil partner of Dec Eased and the only person now entitled to the estate.\"},{\"title\":\"I am applying for letters of administration. I have provided what I believe to be true and accurate information about Dec Eased.\"}]},{\"headingType\":\"large\",\"title\":\"Declaration\",\"declarationItems\":[{\"title\":\"I confirm that I will administer the estate of Dec Eased, according to law. I will:\",\"values\":[\"collect the whole estate\",\"keep full details (an inventory) of the estate\",\"keep a full account of how the estate has been distributed\"]},{\"title\":\"If the probate registry (court) asks me to do so, I will:\",\"values\":[\"provide the full details of the estate and how it has been distributed\",\"return the letters of administration to the court\"]},{\"title\":\"I understand that:\",\"values\":[\"my application will be rejected if I do not provide information (if asked)\",\"proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant\"]}]}]}],\"dateCreated\":\"22/10/2021, 12:36:54\",\"deceased\":\"Dec Eased\"}",
+      "registryEmailAddress": "ctsc@email.com",
+      "deceasedAnyOtherNames": "No",
+      "deceasedMaritalStatus": "marriedCivilPartnership",
+      "deceasedDomicileInEngWales": "Yes",
+      "deceasedDiedEngOrWales": "Yes",
+      "ihtFormCompletedOnline": "No",
+      "registrySequenceNumber": 3,
+      "checkAnswersSummaryJson": "{\"sections\":[{\"title\":\"About the person who died\",\"type\":\"govuk-heading-m\",\"questionAndAnswers\":[{\"question\":\"Do you require a bilingual grant in English and Welsh?\",\"answers\":[\"No\"]},{\"question\":\"First name and any middle names\",\"answers\":[\"Dec\"]},{\"question\":\"Last name\",\"answers\":[\"Eased\"]},{\"question\":\"Did Dec Eased have assets in another name?\",\"answers\":[\"No\"]},{\"question\":\"What was their date of birth?\",\"answers\":[\"1 January 1900\"]},{\"question\":\"What was the date that they died?\",\"answers\":[\"1 January 2020\"]},{\"question\":\"What was Dec Eased’s marital status?\",\"answers\":[\"Married or in a civil partnership\"]},{\"question\":\"What was the permanent address at the time of their death?\",\"answers\":[\"Dusted Design Partners Ltd 65-68 Leadenhall Street London EC3A 2AD United Kingdom\"]},{\"question\":\"Did Dec Eased die in England or Wales?\",\"answers\":[\"Yes\"]},{\"question\":\"Do you have a death certificate or an interim death certificate?\",\"answers\":[\"Death certificate\"]}]},{\"title\":\"Inheritance tax\",\"type\":\"govuk-heading-m\",\"questionAndAnswers\":[{\"question\":\"How was the Inheritance Tax (IHT) form submitted?\",\"answers\":[\"By post\"]},{\"question\":\"Which paper form was filled in?\",\"answers\":[\"IHT 207 - there was no inheritance tax to pay and the person who died lived abroad\"]},{\"question\":\"Gross value of the estate in £\",\"answers\":[\"10000.00\"]},{\"question\":\"Net value of the estate in £\",\"answers\":[\"8000.00\"]}]},{\"title\":\"About the people applying\",\"type\":\"govuk-heading-m\",\"questionAndAnswers\":[{\"question\":\"What was your relationship to the person who died?\",\"answers\":[\"Husband, wife or civil partner (this does not include common law partners even if you lived together)\"]}]},{\"title\":\"About you\",\"type\":\"govuk-heading-s\",\"questionAndAnswers\":[{\"question\":\"First name and any middle names\",\"answers\":[\"Appfn\"]},{\"question\":\"Last name\",\"answers\":[\"Appsn\"]},{\"question\":\"Phone number\",\"answers\":[\"123456789\"]},{\"question\":\"What is your address?\",\"answers\":[\"Frederick Gibberd Partnership 117-121 Curtain Road London SE22 9QD United Kingdom\"]}]}],\"mainParagraph\":\"Check the information below carefully. This will form a record of your application for probate. It will also be stored as a public record, and will be able to be viewed online.\",\"pageTitle\":\"Check your answers\"}",
+      "languagePreferenceWelsh": "No",
+      "primaryApplicantAddress": {
+        "Country": "United Kingdom",
+        "PostCode": "SE22 9QD",
+        "PostTown": "London",
+        "AddressLine1": "Frederick Gibberd Partnership",
+        "AddressLine2": "117-121 Curtain Road"
+      },
+      "primaryApplicantSurname": "Appsn",
+      "applicationSubmittedDate": "2021-10-22",
+      "deceasedDeathCertificate": "deathCertificate",
+      "primaryApplicantHasAlias": "No",
+      "statementOfTruthDocument": {
+        "document_url": "http://dm-store:8080/documents/37f5fb01-ba76-4851-ab51-d298b8f4243b",
+        "document_filename": "SOT.pdf",
+        "document_binary_url": "http://dm-store:8080/documents/37f5fb01-ba76-4851-ab51-d298b8f4243b/binary"
+      },
+      "primaryApplicantForenames": "Appfn",
+      "probateDocumentsGenerated": [],
+      "deceasedHasAssetsOutsideUK": "No",
+      "primaryApplicantIsApplying": "Yes",
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "primaryApplicantPhoneNumber": "123456789",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "primaryApplicantEmailAddress": "testusername@test.com",
+      "probateSotDocumentsGenerated": [],
+      "boCaveatStopEmailNotification": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "probateNotificationsGenerated": [
+        {
+          "id": "b9702d98-aced-4789-b2da-933a41e6c4ce",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/735f1fbc-42fe-4db1-a1e4-c590df9d5a2e",
+              "document_filename": "sentEmail.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/735f1fbc-42fe-4db1-a1e4-c590df9d5a2e/binary"
+            },
+            "DocumentType": "sentEmail",
+            "DocumentFileName": "dfed04c2-027e-4a03-8329-a6c40577263d.pdf",
+            "DocumentDateAdded": "2021-10-22"
+          }
+        }
+      ],
+      "boEmailGrantIssuedNotification": "No",
+      "boEmailRequestInfoNotification": "No",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "No",
+      "boEmailGrantReissuedNotification": "No",
+      "primaryApplicantRelationshipToDeceased": "partner"
+    }
+  }
+}

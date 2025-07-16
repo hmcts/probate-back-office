@@ -91,7 +91,11 @@ public class FunctionalTestUtils {
     @Value("${case_document_am.url}")
     private String caseDocumentManagermentUrl;
 
-    private final Cache<String, String> cache = Caffeine.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES).build();
+    private final Cache<String, String> cachedToken = Caffeine.newBuilder()
+            .expireAfterWrite(30, TimeUnit.MINUTES).build();
+
+    private final Cache<String, String> cachedId = Caffeine.newBuilder()
+            .expireAfterWrite(30, TimeUnit.MINUTES).build();
 
     @PostConstruct
     public void init() {
@@ -274,10 +278,12 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithCaseworkerUser() {
         final String authorizationToken = getCachedIdamOpenIdToken(caseworkerEmail, caseworkerPassword);
+        final String id = getCachedUserId(caseworkerEmail, caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", authorizationToken));
+            new Header("Authorization", authorizationToken),
+            new Header("user-id", id));
     }
 
     public Headers getHeadersNoUser() {
@@ -288,23 +294,27 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithSolicitorUser() {
         String authorizationToken = getCachedIdamOpenIdToken(solicitorEmail, solicitorPassword);
+        final String id = getCachedUserId(solicitorEmail, solicitorPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", authorizationToken));
+            new Header("Authorization", authorizationToken),
+            new Header("user-id", id));
     }
 
     public Headers getHeadersWithSolicitor2User() {
         String authorizationToken = getCachedIdamOpenIdToken(solicitor2Email, solicitor2Password);
+        final String id = getCachedUserId(solicitor2Email, solicitor2Password);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", authorizationToken));
+            new Header("Authorization", authorizationToken),
+            new Header("user-id", id));
     }
 
     public Headers getHeadersWithSchedulerCaseworkerUser() {
         final String authorizationToken = getCachedIdamOpenIdToken(schedulerEmail, schedulerPassword);
-        final String id = getUserId(schedulerEmail, schedulerPassword);
+        final String id = getCachedUserId(schedulerEmail, schedulerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -329,6 +339,26 @@ public class FunctionalTestUtils {
             .headers(getHeadersWithCaseworkerUser())
             .body(caseCreateJson)
             .when().post(submitForCaseworkerUrl).andReturn();
+        return submitResponse.getBody().asString();
+    }
+
+    public String createCaveatCaseAsCaseworker(String caseJson, String eventId) {
+        final String user = getCaseworkerUserId();
+        final String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+                + "/jurisdictions/PROBATE/case-types/Caveat/event-triggers/" + eventId + "/token";
+        final Response startResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithCaseworkerUser())
+                .when().get(ccdStartAsCaseworkerUrl).andReturn();
+        final String token = startResponse.getBody().jsonPath().get("token");
+        final String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
+        final String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+                + "/jurisdictions/PROBATE/case-types/Caveat/cases";
+        Response submitResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithCaseworkerUser())
+                .body(caseCreateJson)
+                .when().post(submitForCaseworkerUrl).andReturn();
         return submitResponse.getBody().asString();
     }
 
@@ -430,11 +460,20 @@ public class FunctionalTestUtils {
     }
 
     private String getCachedIdamOpenIdToken(String userName, String password) {
-        String userToken = cache.getIfPresent(userName);
+        String userToken = cachedToken.getIfPresent(userName);
         if (userToken == null) {
             userToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(userName, password);
-            cache.put(userName, userToken);
+            cachedToken.put(userName, userToken);
         }
         return userToken;
+    }
+
+    private String getCachedUserId(String userName, String password) {
+        String userId = cachedId.getIfPresent(userName);
+        if (userId == null) {
+            userId = getUserId(userName, password);
+            cachedId.put(userName, userId);
+        }
+        return userId;
     }
 }

@@ -27,10 +27,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.TTL;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -167,6 +169,8 @@ public class CaveatData {
     private String serviceRequestReference;
     private String paymentTaken;
     private String applicationSubmittedBy;
+
+    private TTL ttl;
 
     @Builder.Default
     private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();

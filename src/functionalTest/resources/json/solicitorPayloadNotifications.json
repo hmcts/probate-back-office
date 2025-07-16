@@ -73,6 +73,7 @@
         "AddressLine3": ""
       },
       "solsSolicitorEmail": "solicitor@probate-test.com",
+      "boCaseStopCaveatId": "1691481848274878",
       "applicationGrounds": "Grounds for application",
       "ukEstate": [
         {
@@ -121,7 +122,19 @@
       "solsSOTJobTitle": "job title",
       "boExaminationChecklistQ1": "yes",
       "boExaminationChecklistQ2": "yes",
-      "boExaminationChecklistRequestQA": "yes"
+      "boExaminationChecklistRequestQA": "yes",
+      "caveatorForenames": "Caveator First Name",
+      "caveatorSurname": "Caveator Last Name",
+      "caveatorAddress": {
+        "proCountry": "",
+        "proCounty": "",
+        "proPostCode": "2",
+        "proPostTown": "",
+        "proAddressLine1": "1",
+        "proAddressLine2": "",
+        "proAddressLine3": ""
+      },
+      "expiryDate": "2023-12-12"
     }
   }
 }

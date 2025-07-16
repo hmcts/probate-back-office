@@ -273,6 +273,7 @@ aac-manage-case-assignment:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  devmemoryLimits: 1.5Gi
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
@@ -287,6 +288,8 @@ java:
     BACK_OFFICE_BASEURL: https://${SERVICE_NAME}.preview.platform.hmcts.net
     ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
     PROBATE_POSTGRESQL_HOSTNAME_VAL: '{{ .Values.global.postgresHostname }}'
+    MANAGE_CASE_URL: https://xui-${SERVICE_FQDN}.preview.platform.hmcts.net
+    FRONTEND_URL: http://probate.aat.platform.hmcts.net
 
   keyVaults:
     probate:
@@ -305,6 +308,10 @@ java:
           alias: smeeAndFordEmail
         - name: hmrcEmail
           alias: hmrcEmail
+        - name: sealedAndCertifiedEmail
+          alias: sealedAndCertifiedEmail
+        - name: draftCaseWithPaymentEmail
+          alias: draftCaseWithPaymentEmail
         - name: ftpSignature
           alias: ftp.client.signature
         - name: ftpEnv
