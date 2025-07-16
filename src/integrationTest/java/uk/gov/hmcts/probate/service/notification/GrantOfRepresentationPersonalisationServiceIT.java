@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -352,7 +353,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
                 .applicationType(PERSONAL)
                 .deceasedForenames("Jack")
                 .deceasedSurname("Michelson")
-                .build(), null, ID));
+                .build(), null, DRAFT, ID));
         Map<String, Object> response =
                 grantOfRepresentationPersonalisationService.getCaveatDraftCaseWithPaymentPersonalisation(cases,
                         "01/01/2025", "01/05/2025");
