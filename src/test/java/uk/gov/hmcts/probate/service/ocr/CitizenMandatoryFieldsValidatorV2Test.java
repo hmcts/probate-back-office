@@ -50,21 +50,21 @@ class CitizenMandatoryFieldsValidatorV2Test {
     void shouldCheckIht207CompletedIfIht400421completedFalse() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
+                .name("iht400421completed")
+                .value("false")
+                .description("IHT Completed online?").build();
         OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("true")
-            .description("IHT Completed").build();
+                .name("iht207completed")
+                .value("true")
+                .description("IHT Completed").build();
         ocrFields.add(iht400421completed);
         ocrFields.add(iht207completed);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
-            ArgumentCaptor.forClass(DefaultKeyValue.class);
+                ArgumentCaptor.forClass(DefaultKeyValue.class);
         verify(mandatoryFieldsValidatorUtils, times(1)).addWarningIfEmpty(any(), any(),
-            defaultKeyValueArgumentCaptor.capture());
+                defaultKeyValueArgumentCaptor.capture());
         List<DefaultKeyValue> defaultKeyValueArgumentCaptorValues = defaultKeyValueArgumentCaptor.getAllValues();
         assertEquals(1, defaultKeyValueArgumentCaptorValues.size());
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
@@ -74,21 +74,21 @@ class CitizenMandatoryFieldsValidatorV2Test {
     void shouldCheckDateOfDeathAgainstSwitchDate() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
+                .name("iht400421completed")
+                .value("false")
+                .description("IHT Completed online?").build();
         OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
+                .name("iht207completed")
+                .value("false")
+                .description("IHT Completed").build();
         OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("true")
-            .description("deceasedDiedOnAfterSwitchDate").build();
+                .name("deceasedDiedOnAfterSwitchDate")
+                .value("true")
+                .description("deceasedDiedOnAfterSwitchDate").build();
         OCRField deceasedDateOfDeath = OCRField.builder()
-            .name("deceasedDateOfDeath")
-            .value("01012021")
-            .description("deceasedDateOfDeath").build();
+                .name("deceasedDateOfDeath")
+                .value("01012021")
+                .description("deceasedDateOfDeath").build();
         ocrFields.add(iht400421completed);
         ocrFields.add(iht207completed);
         ocrFields.add(deceasedDiedOnAfterSwitchDate);
@@ -100,25 +100,25 @@ class CitizenMandatoryFieldsValidatorV2Test {
         List<String> argumentCaptorValues = argumentCaptor.getAllValues();
         assertEquals(1, argumentCaptorValues.size());
         assertEquals("Deceased date of death not consistent with the question: "
-            + "Did the deceased die on or after 1 January 2022? (deceasedDiedOnAfterSwitchDate)",
-            argumentCaptorValues.get(0));
+                        + "Did the deceased die on or after 1 January 2022? (deceasedDiedOnAfterSwitchDate)",
+                argumentCaptorValues.get(0));
     }
 
     @Test
     void shouldNotCheckDateOfDeathAgainstSwitchDate() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
+                .name("iht400421completed")
+                .value("false")
+                .description("IHT Completed online?").build();
         OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
+                .name("iht207completed")
+                .value("false")
+                .description("IHT Completed").build();
         OCRField deceasedDateOfDeath = OCRField.builder()
-            .name("deceasedDateOfDeath")
-            .value("01012021")
-            .description("deceasedDateOfDeath").build();
+                .name("deceasedDateOfDeath")
+                .value("01012021")
+                .description("deceasedDateOfDeath").build();
         ocrFields.add(iht400421completed);
         ocrFields.add(iht207completed);
         ocrFields.add(deceasedDateOfDeath);
@@ -132,21 +132,21 @@ class CitizenMandatoryFieldsValidatorV2Test {
     void shouldCheckSwitchDateAndIHTEstateFields() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
+                .name("iht400421completed")
+                .value("false")
+                .description("IHT Completed online?").build();
         OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
+                .name("iht207completed")
+                .value("false")
+                .description("IHT Completed").build();
         OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("true")
-            .description("deceasedDiedOnAfterSwitchDate").build();
+                .name("deceasedDiedOnAfterSwitchDate")
+                .value("true")
+                .description("deceasedDiedOnAfterSwitchDate").build();
         OCRField deceasedDateOfDeath = OCRField.builder()
-            .name("deceasedDateOfDeath")
-            .value("01012022")
-            .description("deceasedDateOfDeath").build();
+                .name("deceasedDateOfDeath")
+                .value("01012022")
+                .description("deceasedDateOfDeath").build();
         ocrFields.add(iht400421completed);
         ocrFields.add(iht207completed);
         ocrFields.add(deceasedDiedOnAfterSwitchDate);
@@ -154,9 +154,9 @@ class CitizenMandatoryFieldsValidatorV2Test {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
-            ArgumentCaptor.forClass(DefaultKeyValue.class);
+                ArgumentCaptor.forClass(DefaultKeyValue.class);
         verify(mandatoryFieldsValidatorUtils, times(2)).addWarningIfEmpty(any(), any(),
-            defaultKeyValueArgumentCaptor.capture());
+                defaultKeyValueArgumentCaptor.capture());
         List<DefaultKeyValue> defaultKeyValueArgumentCaptorValues = defaultKeyValueArgumentCaptor.getAllValues();
         assertEquals(2, defaultKeyValueArgumentCaptorValues.size());
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
@@ -165,8 +165,8 @@ class CitizenMandatoryFieldsValidatorV2Test {
         ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
                 ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(1))
-            .addWarningsForConditionalFields(any(), any(),
-                    gorCitizenMandatoryFieldsArgumentCaptor.capture());
+                .addWarningsForConditionalFields(any(), any(),
+                        gorCitizenMandatoryFieldsArgumentCaptor.capture());
         GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
         assertEquals(3, capturedArgs.length);
         assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS, capturedArgs[0]);
@@ -412,26 +412,26 @@ class CitizenMandatoryFieldsValidatorV2Test {
     void shouldCheckSwitchDateAndIHT205CompletedOnline() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
+                .name("iht400421completed")
+                .value("false")
+                .description("IHT Completed online?").build();
         OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
+                .name("iht207completed")
+                .value("false")
+                .description("IHT Completed").build();
         OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("false")
-            .description("deceasedDiedOnAfterSwitchDate").build();
+                .name("deceasedDiedOnAfterSwitchDate")
+                .value("false")
+                .description("deceasedDiedOnAfterSwitchDate").build();
         ocrFields.add(iht400421completed);
         ocrFields.add(iht207completed);
         ocrFields.add(deceasedDiedOnAfterSwitchDate);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
-            ArgumentCaptor.forClass(DefaultKeyValue.class);
+                ArgumentCaptor.forClass(DefaultKeyValue.class);
         verify(mandatoryFieldsValidatorUtils, times(3)).addWarningIfEmpty(any(), any(),
-            defaultKeyValueArgumentCaptor.capture());
+                defaultKeyValueArgumentCaptor.capture());
         List<DefaultKeyValue> defaultKeyValueArgumentCaptorValues = defaultKeyValueArgumentCaptor.getAllValues();
         assertEquals(3, defaultKeyValueArgumentCaptorValues.size());
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
@@ -439,56 +439,56 @@ class CitizenMandatoryFieldsValidatorV2Test {
         assertEquals(IHT_205_COMPLETED_ONLINE.getValue(), defaultKeyValueArgumentCaptorValues.get(2).getValue());
 
         verify(mandatoryFieldsValidatorUtils, times(0))
-            .addWarningsForConditionalFields(any(), any(), any());
+                .addWarningsForConditionalFields(any(), any(), any());
     }
 
     @Test
     void shouldNotCheckIHT205CompletedOnline() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
+                .name("iht400421completed")
+                .value("false")
+                .description("IHT Completed online?").build();
         OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
+                .name("iht207completed")
+                .value("false")
+                .description("IHT Completed").build();
         ocrFields.add(iht400421completed);
         ocrFields.add(iht207completed);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
-            ArgumentCaptor.forClass(DefaultKeyValue.class);
+                ArgumentCaptor.forClass(DefaultKeyValue.class);
         verify(mandatoryFieldsValidatorUtils, times(2)).addWarningIfEmpty(any(), any(),
-            defaultKeyValueArgumentCaptor.capture());
+                defaultKeyValueArgumentCaptor.capture());
         List<DefaultKeyValue> defaultKeyValueArgumentCaptorValues = defaultKeyValueArgumentCaptor.getAllValues();
         assertEquals(2, defaultKeyValueArgumentCaptorValues.size());
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
         assertEquals(DIED_AFTER_SWITCH_DATE.getValue(), defaultKeyValueArgumentCaptorValues.get(1).getValue());
 
         verify(mandatoryFieldsValidatorUtils, times(0))
-            .addWarningsForConditionalFields(any(), any(), any());
+                .addWarningsForConditionalFields(any(), any(), any());
     }
 
     @Test
     void shouldCheckIHTCompletedOnline() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
+                .name("iht400421completed")
+                .value("false")
+                .description("IHT Completed online?").build();
         OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
+                .name("iht207completed")
+                .value("false")
+                .description("IHT Completed").build();
         OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("false")
-            .description("deceasedDiedOnAfterSwitchDate").build();
+                .name("deceasedDiedOnAfterSwitchDate")
+                .value("false")
+                .description("deceasedDiedOnAfterSwitchDate").build();
         OCRField iht205completedOnline = OCRField.builder()
-            .name("iht205completedOnline")
-            .value("true")
-            .description("Did you complete the IHT205 online with HMRC?").build();
+                .name("iht205completedOnline")
+                .value("true")
+                .description("Did you complete the IHT205 online with HMRC?").build();
         ocrFields.add(iht400421completed);
         ocrFields.add(iht207completed);
         ocrFields.add(deceasedDiedOnAfterSwitchDate);
@@ -496,9 +496,9 @@ class CitizenMandatoryFieldsValidatorV2Test {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
-            ArgumentCaptor.forClass(DefaultKeyValue.class);
+                ArgumentCaptor.forClass(DefaultKeyValue.class);
         verify(mandatoryFieldsValidatorUtils, times(3)).addWarningIfEmpty(any(), any(),
-            defaultKeyValueArgumentCaptor.capture());
+                defaultKeyValueArgumentCaptor.capture());
         List<DefaultKeyValue> defaultKeyValueArgumentCaptorValues = defaultKeyValueArgumentCaptor.getAllValues();
         assertEquals(3, defaultKeyValueArgumentCaptorValues.size());
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
@@ -511,25 +511,25 @@ class CitizenMandatoryFieldsValidatorV2Test {
     void shouldCheckIHTFormIdSetCorrectly() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
+                .name("iht400421completed")
+                .value("false")
+                .description("IHT Completed online?").build();
         OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
+                .name("iht207completed")
+                .value("false")
+                .description("IHT Completed").build();
         OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("false")
-            .description("deceasedDiedOnAfterSwitchDate").build();
+                .name("deceasedDiedOnAfterSwitchDate")
+                .value("false")
+                .description("deceasedDiedOnAfterSwitchDate").build();
         OCRField iht205completedOnline = OCRField.builder()
-            .name("iht205completedOnline")
-            .value("false")
-            .description("Did you complete the IHT205 online with HMRC?").build();
+                .name("iht205completedOnline")
+                .value("false")
+                .description("Did you complete the IHT205 online with HMRC?").build();
         OCRField ihtFormId = OCRField.builder()
-            .name("ihtFormId")
-            .value("IHT205")
-            .description("ihtFormId").build();
+                .name("ihtFormId")
+                .value("IHT205")
+                .description("ihtFormId").build();
         ocrFields.add(iht400421completed);
         ocrFields.add(iht207completed);
         ocrFields.add(deceasedDiedOnAfterSwitchDate);
@@ -538,9 +538,9 @@ class CitizenMandatoryFieldsValidatorV2Test {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
-            ArgumentCaptor.forClass(DefaultKeyValue.class);
+                ArgumentCaptor.forClass(DefaultKeyValue.class);
         verify(mandatoryFieldsValidatorUtils, times(3)).addWarningIfEmpty(any(), any(),
-            defaultKeyValueArgumentCaptor.capture());
+                defaultKeyValueArgumentCaptor.capture());
         List<DefaultKeyValue> defaultKeyValueArgumentCaptorValues = defaultKeyValueArgumentCaptor.getAllValues();
         assertEquals(3, defaultKeyValueArgumentCaptorValues.size());
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());

@@ -44,6 +44,7 @@ import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
 
 import java.math.BigDecimal;
@@ -414,6 +415,8 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<CitizenResponse>> citizenResponses;
     private final String isSaveAndClose;
     private final String informationNeededByPostSwitch;
+    private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
+    private final List<CollectionMember<String>> autoCaseWarnings;
     private final TTL ttl;
     private final String executorsNamed;
     private final LocalDate firstStopReminderSentDate;
