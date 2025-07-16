@@ -65,7 +65,7 @@ class HseReminderNotificationTest {
     void shouldHseReminderEmail() throws NotificationClientException {
         when(notificationService.sendHseReminderEmail(caseDetails)).thenReturn(mockDocument);
 
-        Document result = underTest.sendEmail(caseDetails);
+        Document result = underTest.sendNotification(caseDetails);
 
         verify(notificationService, times(1)).sendHseReminderEmail(caseDetails);
         assertEquals(mockDocument, result);

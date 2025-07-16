@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
 import uk.gov.hmcts.probate.service.notification.DeclarationNotSignedNotification;
+import uk.gov.hmcts.probate.service.notification.DormantReminderNotification;
 import uk.gov.hmcts.probate.service.notification.DormantWarningNotification;
 import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
 import uk.gov.hmcts.probate.service.notification.HseReminderNotification;
@@ -64,6 +65,9 @@ class SendNotificationsTaskTest {
     private DormantWarningNotification dormantWarningNotification;
 
     @Mock
+    private DormantReminderNotification dormantReminderNotification;
+
+    @Mock
     private UnsubmittedApplicationNotification unsubmittedApplicationNotification;
 
     @Mock
@@ -75,6 +79,7 @@ class SendNotificationsTaskTest {
     private static final int SECOND_STOP_REMINDER_NOTIFICATION_DAYS = 28;
     private static final int HSE_REMINDER_NOTIFICATION_DAYS = 30;
     private static final int DORMANT_WARNING_NOTIFICATION_DAYS = 150;
+    private static final int DORMANT_REMINDER_NOTIFICATION_DAYS = 360;
     private static final int UNSUBMITTED_APPLICATION_NOTIFICATION_DAYS = 28;
     private static final int DECLARATION_NOT_SIGNED_NOTIFICATION_DAYS = 3;
 
@@ -121,12 +126,14 @@ class SendNotificationsTaskTest {
                 secondStopReminderNotification,
                 hseReminderNotification,
                 dormantWarningNotification,
+                dormantReminderNotification,
                 unsubmittedApplicationNotification,
                 declarationNotSignedNotification,
                 FIRST_STOP_REMINDER_NOTIFICATION_DAYS,
                 SECOND_STOP_REMINDER_NOTIFICATION_DAYS,
                 HSE_REMINDER_NOTIFICATION_DAYS,
                 DORMANT_WARNING_NOTIFICATION_DAYS,
+                DORMANT_REMINDER_NOTIFICATION_DAYS,
                 UNSUBMITTED_APPLICATION_NOTIFICATION_DAYS,
                 DECLARATION_NOT_SIGNED_NOTIFICATION_DAYS,
                 AD_HOC_DATE);

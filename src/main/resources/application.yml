@@ -112,6 +112,8 @@ docmosis:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
       templateName: FL-PRB-SOT-ENG-00092.doc
+    dormantReminder:
+      templateName: FL-PRB-GNO-ENG-postal-dormant-reminder-v001.docx
     welshStatementOfTruth:
       templateName: FL-PRB-SOT-WEL-00236.doc
     assembledLetter:
@@ -150,6 +152,8 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdColligendaBonaGrantReissue:
       templateName: FL-PRB-GRP-WEL-00237.doc
+    WelshDormantReminder:
+      templateName: FL-PRB-GNO-WEL-postal-dormant-reminder-v001.docx
 
 fee.api:
   url: http://localhost:4411
@@ -784,5 +788,6 @@ automated_notification:
   hse_reminder:
     awaiting_documentation_days: 30
   dormant_warning_days: 150
+  dormant_reminder_days: 365
   unsubmitted_application_days: 28
   declaration_not_signed_days: 3
