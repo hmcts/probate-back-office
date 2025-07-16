@@ -48,7 +48,6 @@ public class LifeEventServiceTest extends IntegrationTestBase {
 
 
     @Test
-    @Disabled
     public void shouldAddDeathRecordWhenManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStart.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -69,7 +68,6 @@ public class LifeEventServiceTest extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled
     public void shouldReturnErrorManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStartNonExistent.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
