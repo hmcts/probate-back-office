@@ -152,7 +152,7 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdColligendaBonaGrantReissue:
       templateName: FL-PRB-GRP-WEL-00237.doc
-    WelshDormantReminder:
+    welshDormantReminder:
       templateName: FL-PRB-GNO-WEL-postal-dormant-reminder-v001.docx
 
 fee.api:

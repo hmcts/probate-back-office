@@ -198,13 +198,12 @@ public class AutomatedNotificationCCDService {
                 .documentUrl(boDocument.getDocumentLink().getDocumentUrl())
                 .build();
         ProbateDocumentType probateDocumentType = ProbateDocumentType.valueOf(boDocument.getDocumentType().name());
-        System.out.println("***************************************Document Type: " + probateDocumentType);
         return ProbateDocument.builder()
                 .documentDateAdded(boDocument.getDocumentDateAdded())
                 .documentFileName(boDocument.getDocumentFileName())
                 .documentGeneratedBy(boDocument.getDocumentGeneratedBy())
                 .documentLink(probateDocumentLink)
-                .documentType(ProbateDocumentType.SENT_EMAIL)
+                .documentType(probateDocumentType)
                 .build();
     }
 }
