@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -45,6 +44,8 @@ public class AutomatedNotificationPersonalisationService {
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_DISPLAY_SINGLE_STOP_REASON = "display-single-stop-reason";
     private static final String PERSONALISATION_DISPLAY_MULTIPLE_STOP_REASONS = "display-multiple-stop-reasons";
+    private static final String TODAY = "today";
+    private static final String TODAY_WELSH = "today_welsh";
     private static final String CASE_ID_STRING = "<CASE_ID>";
     private static final String CASE_TYPE_STRING = "<CASE_TYPE>";
     private static final String SOLICITOR_CASE_URL = "/cases/case-details/<CASE_ID>";
@@ -92,6 +93,9 @@ public class AutomatedNotificationPersonalisationService {
         log.info("AutomatedNotificationPersonalisationService getPersonalisation");
         Map<String, Object> caseData = caseDetails.getData();
         HashMap<String, Object> personalisation = new HashMap<>();
+
+        personalisation.put(TODAY, LocalDate.now().format(DATE_FORMAT));
+        personalisation.put(TODAY_WELSH, localDateToWelshStringConverter.convert(LocalDate.now()));
         personalisation.put(PERSONALISATION_DATE_CREATED, DATE_FORMAT.format(caseDetails.getCreatedDate()));
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
         personalisation.put(PERSONALISATION_RESPOND_DATE, DATE_FORMAT.format(LocalDate.now().plusDays(14)));

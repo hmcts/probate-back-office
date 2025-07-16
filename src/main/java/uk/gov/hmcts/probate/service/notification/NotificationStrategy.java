@@ -16,7 +16,7 @@ public interface NotificationStrategy {
 
     boolean matchesType(NotificationType type);
 
-    Document sendEmail(CaseDetails caseDetails) throws NotificationClientException;
+    Document sendNotification(CaseDetails caseDetails) throws NotificationClientException;
 
     String getEventSummary();
 

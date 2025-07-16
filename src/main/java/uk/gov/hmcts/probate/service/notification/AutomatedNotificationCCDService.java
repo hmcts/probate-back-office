@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -159,6 +158,10 @@ public class AutomatedNotificationCCDService {
                     -> GrantOfRepresentationData.builder()
                     .probateNotificationsGenerated(notifications)
                     .build();
+            case DORMANT_REMINDER -> GrantOfRepresentationData.builder()
+                    .uniqueProbateCodeId((String)data.get("letterId")) //***need to change to  bulkPrintSendLetterId
+                    .probateNotificationsGenerated(notifications)
+                    .build();
         };
     }
 
@@ -195,12 +198,13 @@ public class AutomatedNotificationCCDService {
                 .documentUrl(boDocument.getDocumentLink().getDocumentUrl())
                 .build();
         ProbateDocumentType probateDocumentType = ProbateDocumentType.valueOf(boDocument.getDocumentType().name());
+        System.out.println("***************************************Document Type: " + probateDocumentType);
         return ProbateDocument.builder()
                 .documentDateAdded(boDocument.getDocumentDateAdded())
                 .documentFileName(boDocument.getDocumentFileName())
                 .documentGeneratedBy(boDocument.getDocumentGeneratedBy())
                 .documentLink(probateDocumentLink)
-                .documentType(probateDocumentType)
+                .documentType(ProbateDocumentType.SENT_EMAIL)
                 .build();
     }
 }
