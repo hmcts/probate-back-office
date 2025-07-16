@@ -64,6 +64,8 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -635,6 +637,9 @@ public class CaseData extends CaseDataParent {
     private final String evidenceHandledDate;
 
     private TTL ttl;
+
+    private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
+    private final List<CollectionMember<String>> autoCaseWarnings;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

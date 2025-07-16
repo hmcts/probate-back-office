@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -102,11 +103,14 @@ class GenericMapperServiceTest {
     @Mock
     private FileSystemResourceService fileSystemResourceService;
 
+    @Mock
+    private ObjectMapper objectMapper;
+
     @InjectMocks
     private GenericMapperService genericMapperService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
 
         registry.setPhone("01010101010101");
@@ -122,6 +126,9 @@ class GenericMapperServiceTest {
         registryMap.put(CTSC, registry);
 
         when(registriesProperties.getRegistries()).thenReturn(registryMap);
+
+        when(objectMapper.convertValue(registry, Map.class))
+                .thenReturn(getRegistryPlaceholders());
 
         CaseData caseData = CaseData.builder()
             .deceasedForenames("Nigel")
@@ -149,6 +156,9 @@ class GenericMapperServiceTest {
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
+        when(objectMapper.convertValue(caseData, Map.class))
+                .thenReturn(expectedMappedCaseData());
+
         images.put(CREST_IMAGE, CREST_FILE_PATH);
         images.put(SEAL_IMAGE, SEAL_FILE_PATH);
         images.put(WATERMARK, WATERMARK_FILE_PATH);
@@ -156,6 +166,18 @@ class GenericMapperServiceTest {
         when(fileSystemResourceService.getFileFromResourceAsString(CREST_FILE_PATH)).thenReturn("Crest");
         when(fileSystemResourceService.getFileFromResourceAsString(SEAL_FILE_PATH)).thenReturn("Seal");
         when(fileSystemResourceService.getFileFromResourceAsString(WATERMARK_FILE_PATH)).thenReturn("Watermark");
+    }
+
+    private static Map<String, Object> getRegistryPlaceholders() {
+        Map<String, Object> registryPlaceholders = new HashMap<>();
+        registryPlaceholders.put("phone",            "01010101010101");
+        registryPlaceholders.put("addressLine1",     "registry address 1");
+        registryPlaceholders.put("addressLine2",     "registry address 2");
+        registryPlaceholders.put("addressLine3",     "registry address 3");
+        registryPlaceholders.put("addressLine4",     "registry address 4");
+        registryPlaceholders.put("postcode",         "registry postcode");
+        registryPlaceholders.put("town",             "registry town");
+        return registryPlaceholders;
     }
 
     @Test

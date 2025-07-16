@@ -12,6 +12,8 @@ public final class Constants {
 
     public static final String YES = "Yes";
     public static final String NO = "No";
+    public static final String TRUE = "TRUE";
+    public static final String FALSE = "FALSE";
     public static final int CAVEAT_LIFESPAN = 6;
     public static final int CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS = 6;
     public static final int STANDING_SEARCH_LIFESPAN = 6;

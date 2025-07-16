@@ -187,9 +187,6 @@ spring.jackson.serialization.write_dates_as_timestamps: false
 evidence.management.host: http://localhost:5006
 evidence.management.upload.file.url: /documents
 
-http.connect.timeout: 60000
-http.connect.request.timeout: 60000
-
 idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 logging:
@@ -583,6 +580,20 @@ reactivate_dormant:
 
 grand_delay:
   number_of_weeks: 12
+
+bulkscan:
+  default-value:
+    name: MISSING
+    postcode: MI55 1NG
+    dob: 01011990
+    email: contactprobate@justice.gov.uk
+    phone: 1234
+    deceasedAnyOtherNames: FALSE
+    deceasedDomicileInEngWales: TRUE
+    legalRepresentative: TRUE
+    ihtForm: FALSE
+    grossNetValue: 1.11
+    solsSolicitorIsApplying: TRUE
 
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}

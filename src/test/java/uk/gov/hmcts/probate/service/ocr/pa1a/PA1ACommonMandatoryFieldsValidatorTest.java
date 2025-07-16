@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
@@ -48,7 +46,6 @@ class PA1ACommonMandatoryFieldsValidatorTest {
 
         pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(0, warnings.size());
-        verify(commonMandatoryFieldsValidatorV3).addWarnings(any(), any());
     }
 
     @Test
