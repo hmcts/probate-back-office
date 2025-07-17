@@ -56,7 +56,8 @@ public class CaveatCallbackResponseTransformer {
     public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
-    private static final List<String> ROLLBACK_STATE_LIST = List.of("PAAppCreated", "SolAppCreated", "SolAppUpdated");
+    private static final List<String> ROLLBACK_STATE_LIST = List.of("CaveatNotMatched",
+            "AwaitingCaveatResolution", "AwaitingWarningResponse", "WarningValidation");
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
@@ -405,6 +406,7 @@ public class CaveatCallbackResponseTransformer {
                 log.info("Audit event found: Case ID = {}, Event State = {}",
                         callbackRequest.getCaseDetails().getId(), auditEvent.getStateId());
                 responseCaseDataBuilder.state(auditEvent.getStateId());
+                responseCaseDataBuilder.autoClosedExpiry(null);
             });
         return transformResponse(responseCaseDataBuilder.build());
     }
