@@ -44,7 +44,17 @@ public class HandOffLegacyService {
 
     public List<CollectionMember<HandoffReason>> setHandoffReason(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-        List<CollectionMember<HandoffReason>> handoffReasonsList = new ArrayList<>();
+        List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<HandoffReason>> handoffReasons = caseData
+                .getBoHandoffReasonList();
+
+        List<CollectionMember<HandoffReason>> handoffReasonsList;
+        if (handoffReasons == null) {
+            handoffReasonsList = new ArrayList<>();
+        } else {
+            handoffReasonsList = handoffReasons.stream()
+                    .map(cm -> new CollectionMember<>(cm.getId(), cm.getValue()))
+                    .toList();
+        }
         if ((StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
                 || YES.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite()))
                 && (null == caseData.getBoHandoffReasonList() || caseData.getBoHandoffReasonList().isEmpty())) {
