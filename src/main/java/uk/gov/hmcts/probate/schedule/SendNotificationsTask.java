@@ -237,6 +237,5 @@ public class SendNotificationsTask implements Runnable {
             log.error("Error on SendNotificationsTask Scheduler Send Dormant Warning task ", e);
         }
 
-        System.exit(0);
     }
 }
