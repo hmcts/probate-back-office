@@ -194,17 +194,7 @@
             <p>Mae'r ysgutor {{ executor.value.applyingExecutorName }}, yn {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} sy’n rhannu elw
                 yn y cwmni {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
                 a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                ar ddyddiad marwolaeth yr unigolyn a fu farw. Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} arall sy’n rhannu elw
-                yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }}
-                yn ymwrthod â’i hawl i gael profiant.
-            </p>
-            {% endif %}
-
-            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
-            <p>Mae'r ysgutor {{ executor.value.applyingExecutorName }}, yn {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} sy’n rhannu elw
-                yn y cwmni {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
-                a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                ar ddyddiad marwolaeth yr unigolyn a fu farw. Mae’r ysgutorion eraill wedi ymwrthod â’u hawl i gael profiant.
+                ar ddyddiad marwolaeth yr unigolyn a fu farw.
             </p>
             {% endif %}
             {% endif %}
@@ -222,14 +212,14 @@
             {% endif %}
 
             {% endfor %}
-            <p>{% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
-                {% if multipleExecutors %}Nyni yw’r ysgutorion a enwir yn yr ewyllys.{% else %}Myfi yw’r ysgutor a enwir yn yr ewyllys.{% endif %}
-                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.{% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
-                {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
-                Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }}
-                a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}
-                ar ddyddiad marwolaeth yr unigolyn a fu farw wedi ymwrthod â’r hawl i gael profiant.{% endif %}</p>
+
+            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                {% if multipleExecutors %}
+                    <p>Nyni yw’r ysgutorion a enwir yn yr ewyllys.</p>
+                {% else %}
+                    <p>Myfi yw’r ysgutor a enwir yn yr ewyllys.</p>
+                {% endif %}
+            {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
             <p>Mae'r ysgutor{% if multipleOtherPartners > 1%}ion{% endif %} {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes" %}
@@ -252,30 +242,61 @@
     <tr>
         <td colspan="2">
             {% if case_details.case_data.executorsNotApplyingLegalStatement|length>0 %}
-            {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
-            {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
-            {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
-            <p><span>Mae rhybudd o’r cais hwn ar {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
-                wedi’i hepgor o dan Reol 27(3) Rheolau Profiant Diwrthwynebiad 1987 i
-                {{ executor.value.notApplyingExecutorName }} i’r sawl sy'n cadw'r hawl.
-            </span></p>
+                {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
+                    {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
+                        {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
+                        <p><span>Mae rhybudd o’r cais hwn ar {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
+                            wedi’i hepgor o dan Reol 27(3) Rheolau Profiant Diwrthwynebiad 1987 i
+                            {{ executor.value.notApplyingExecutorName }} i’r sawl sy'n cadw'r hawl.
+                        </span></p>
+                        {% else %}
+                        <p><span>{% if (multipleExecutors) %}Rydym{% else %}Yr wyf{% endif %} ar y cyd â hyn yn gwneud cais i’r rhybudd o gais hwn gael ei hepgor o dan Reol 27(3) Rheolau Profiant Diwrthwynebiad 1987 i {{ executor.value.notApplyingExecutorName }}
+                            i’r sawl sy'n cadw'r hawl.
+                        </span></p>
+                        {% endif %}
+                    {% else %}
+                    <p><span>Nid yw {{ executor.value.notApplyingExecutorName }}, ysgutor arall a enwyd yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} neu godisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} neu godisiliau{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} fel {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
+                                {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}wedi marw yn ystod oes yr unigolyn a fu farw.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} wedi goroesi’r unigolyn a fu farw ac wedi marw’n ddiweddarach.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}yn gwneud y cais hwn, ond mae’n cadw'r hawl i wneud hynny ar ddyddiad diweddarach. Maent wedi cael eu hysbysu am hyn yn ysgrifenedig.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "Renunciation" %}wedi ymwrthod â phrofiant a llythyrau gweinyddu pan fydd yna ewyllys.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}nid oes ganddynt y gallu meddyliol i reoli eu materion dan Ddeddf Galluedd Meddyliol 2005 ac nid ydynt yn gallu gweithredu fel ysgutor.{% endif %}
+                    </span></p>
+                    {% endif %}
+                {% endfor %}
+                {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
+                    <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} {{ case_details.case_data.nameOfFirmNamedInWill }}
+                        ar ddyddiad marwolaeth yr unigolyn a fu farw wedi ymwrthod â’r hawl i gael profiant.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                    <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }}
+                    a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}
+                    ar ddyddiad marwolaeth yr unigolyn a fu farw wedi ymwrthod â’r hawl i gael profiant.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+                    <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} sy’n weddill sy’n rhannu elw yn y cwmni
+                        {{ case_details.case_data.nameOfFirmNamedInWill }} yn ymwrthod â’u hawl i brofiant.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
+                        sy’n weddill sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }} a wnaeth olynu a pharhau â phractis y cwmni
+                        {{ case_details.case_data.nameOfFirmNamedInWill }} yn ymwrthod â’u hawl i brofiant.</p>
+                {% endif %}
             {% else %}
-            <p><span>{% if (multipleExecutors) %}Rydym{% else %}yr wyf{% endif %} ar y cyd â hyn yn gwneud cais i’r rhybudd o gais hwn gael ei hepgor o dan Reol 27(3) Rheolau Profiant Diwrthwynebiad 1987 i {{ executor.value.notApplyingExecutorName }}
-                i’r sawl sy'n cadw'r hawl.
-            </span></p>
-            {% endif %}
-            {% else %}
-            <p><span>Nid yw {{ executor.value.notApplyingExecutorName }}, ysgutor arall a enwyd yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} neu godisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} neu godisiliau{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} fel {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
-                        {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}wedi marw yn ystod oes yr unigolyn a fu farw.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} wedi goroesi’r unigolyn a fu farw ac wedi marw’n ddiweddarach.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}yn gwneud y cais hwn, ond mae’n cadw'r hawl i wneud hynny ar ddyddiad diweddarach. Maent wedi cael eu hysbysu am hyn yn ysgrifenedig.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "Renunciation" %}wedi ymwrthod â phrofiant a llythyrau gweinyddu pan fydd yna ewyllys.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}nid oes ganddynt y gallu meddyliol i reoli eu materion dan Ddeddf Galluedd Meddyliol 2005 ac nid ydynt yn gallu gweithredu fel ysgutor.{% endif %}
-            </span></p>
-            {% endif %}
-            {% endfor %}
-            {% else %}
-            <p>Dim.</p>
+                {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
+                    <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} {{ case_details.case_data.nameOfFirmNamedInWill }}
+                        ar ddyddiad marwolaeth yr unigolyn a fu farw wedi ymwrthod â’r hawl i gael profiant.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                    <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }}
+                    a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}
+                    ar ddyddiad marwolaeth yr unigolyn a fu farw wedi ymwrthod â’r hawl i gael profiant.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+                    <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} sy’n weddill sy’n rhannu elw yn y cwmni
+                        {{ case_details.case_data.nameOfFirmNamedInWill }} yn ymwrthod â’u hawl i brofiant.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
+                        sy’n weddill sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }} a wnaeth olynu a pharhau â phractis y cwmni
+                        {{ case_details.case_data.nameOfFirmNamedInWill }} yn ymwrthod â’u hawl i brofiant.</p>
+                {% else %}
+                    <p>Dim.</p>
+                {% endif %}
             {% endif %}
         </td>
     </tr>
@@ -291,7 +312,7 @@
             {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Y dystiolaeth bellach sy’n bodoli i gefnogi’r cais hwn yw:
             <p> {{ case_details.case_data.furtherEvidenceForApplication }} </p>
             {% endif %}
-            <p>{% if (multipleExecutors) %}ni{% else %}Rwy’n{% endif %} cadarnhau bod yr wybodaeth {% if (multipleExecutors) %}ni{% else %}Rwy’n{% endif %} wyf wedi’i rhoi yn gywir hyd eithaf {% if (multipleExecutors) %}ein{% else %}fy{% endif %} ngwybodaeth.</p>
+            <p>{% if (multipleExecutors) %}Ni{% else %}Rwy’n{% endif %} cadarnhau bod yr wybodaeth {% if (multipleExecutors) %}ni{% else %}Rwy’n{% endif %} wyf wedi’i rhoi yn gywir hyd eithaf {% if (multipleExecutors) %}ein{% else %}fy{% endif %} ngwybodaeth.</p>
         </td>
     </tr>
     <tr>
@@ -507,24 +528,25 @@
             </p>
             {% endif %}
 
-            {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
+            {% if case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
             <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
-                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                at the date of death of the deceased. The remaining profit-sharing
-                {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
-                in the firm {{ case_details.case_data.nameOfSucceededFirm }}
-                are renouncing their right to probate.
+                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} in the firm
+                {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% else %}
+                    {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% endif %} at the date of death of the deceased.
             </p>
             {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
             <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
-                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                at the date of death of the deceased. The other executors have renounced probate.
+                {{ case_details.case_data.singularProfitSharingTextForLegalStatement }} in the firm
+                {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                    {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% else %}
+                    {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% endif %} at the date of death of the deceased. The other executors have renounced probate.
             </p>
             {% endif %}
             {% endif %}
@@ -542,14 +564,14 @@
             {% endif %}
 
             {% endfor %}
-            <p>{% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
-                {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
-                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.{% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
-                {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
-                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.{% endif %}</p>
+
+            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                {% if multipleExecutors %}
+                    <p>We are the executors named in the will.</p>
+                {% else %}
+                    <p>I am the executor named in the will.</p>
+                {% endif %}
+            {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
             <p>The executor{% if multipleOtherPartners > 1%}s{% endif %} {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes" %}
@@ -596,8 +618,37 @@
             </span></p>
             {% endif %}
             {% endfor %}
+                {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                        <p>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                        {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                            {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
+                        {% endif %}
+                            {{ case_details.case_data.nameOfFirmNamedInWill }} at the date of death of the deceased have renounced probate.</p>
+
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                    {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                        {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
+                    {% endif %}
+                        {{ case_details.case_data.nameOfFirmNamedInWill }} are renouncing their right to probate.</p>
+                {% endif %}
             {% else %}
-            <p>None.</p>
+                {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                        <p>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                        {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                            {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
+                        {% endif %}
+                            {{ case_details.case_data.nameOfFirmNamedInWill }} at the date of death of the deceased have renounced probate.</p>
+
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                    {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                        {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
+                    {% endif %}
+                        {{ case_details.case_data.nameOfFirmNamedInWill }} are renouncing their right to probate.</p>
+                {% else %}
+                    <p>None.</p>
+                {% endif %}
             {% endif %}
         </td>
     </tr>
@@ -835,12 +886,11 @@
             {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
             <p>The executor {{ executor.value.applyingExecutorName }}, is a profit-sharing
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
-                in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}{{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
-                at the date of death of the deceased. The remaining profit-sharing
-                {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
-                in the firm {{ case_details.case_data.nameOfSucceededFirm }}
-                are renouncing their right to probate.
+                in the firm {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% else %}
+                    {{ case_details.case_data.nameOfFirmNamedInWill }},
+                {% endif %} at the date of death of the deceased.
             </p>
             {% endif %}
 
@@ -867,14 +917,14 @@
             {% endif %}
 
             {% endfor %}
-            <p>{% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
-                {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
-                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.{% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
-                {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
-                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                at the date of death of the deceased have renounced probate.{% endif %}</p>
+
+            {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                {% if multipleExecutors %}
+                    <p>We are the executors named in the will.</p>
+                {% else %}
+                    <p>I am the executor named in the will.</p>
+                {% endif %}
+            {% endif %}
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
             <p>The executor{% if multipleOtherPartners > 1%}s{% endif %} {% if case_details.case_data.solsSolicitorIsExec == "No" and case_details.case_data.solsSolicitorIsApplying == "Yes" %}
@@ -921,8 +971,37 @@
             </span></p>
             {% endif %}
             {% endfor %}
+                {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                        <p>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                        {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                            {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
+                        {% endif %}
+                            {{ case_details.case_data.nameOfFirmNamedInWill }} at the date of death of the deceased have renounced probate.</p>
+
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                    {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                        {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
+                    {% endif %}
+                        {{ case_details.case_data.nameOfFirmNamedInWill }} are renouncing their right to probate.</p>
+                {% endif %}
             {% else %}
-            <p>None.</p>
+                {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                        <p>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                        {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
+                            {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
+                        {% endif %}
+                            {{ case_details.case_data.nameOfFirmNamedInWill }} at the date of death of the deceased have renounced probate.</p>
+
+                {% elseif case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                    <p>The remaining profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
+                    {% if case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
+                        {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
+                    {% endif %}
+                        {{ case_details.case_data.nameOfFirmNamedInWill }} are renouncing their right to probate.</p>
+                {% else %}
+                    <p>None.</p>
+                {% endif %}
             {% endif %}
         </td>
     </tr>
