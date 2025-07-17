@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_REMINDER;
-import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_WARNING;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_DORMANT;
 
 @Service
