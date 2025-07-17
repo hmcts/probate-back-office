@@ -24,17 +24,18 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 import static uk.gov.hmcts.probate.model.NotificationType.DECLARATION_NOT_SIGNED;
+import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_WARNING;
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
-import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
+import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.UNSUBMITTED_APPLICATION;
 
 @ExtendWith(SpringExtension.class)
@@ -92,6 +93,8 @@ class SendNotificationsTaskTest {
             LocalDate.parse(AD_HOC_DATE).minusDays(HSE_REMINDER_NOTIFICATION_DAYS).toString(); // 2022-08-06
     private static final String DORMANT_WARNING_DATE =
             LocalDate.parse(AD_HOC_DATE).minusDays(DORMANT_WARNING_NOTIFICATION_DAYS).toString(); //2022-04-08
+    private static final String DORMANT_REMINDER_DATE =
+            LocalDate.parse(AD_HOC_DATE).minusDays(DORMANT_REMINDER_NOTIFICATION_DAYS).toString();
     private static final String UNSUBMITTED_APPLICATION_DATE =
             LocalDate.parse(AD_HOC_DATE).minusDays(UNSUBMITTED_APPLICATION_NOTIFICATION_DAYS).toString(); // 2022-08-08
     private static final String DECLARATION_NOT_SIGNED_DATE =
@@ -284,5 +287,60 @@ class SendNotificationsTaskTest {
         verify(automatedNotificationService).sendNotification(DORMANT_WARNING_DATE, DORMANT_WARNING);
         verify(automatedNotificationService).sendNotification(UNSUBMITTED_APPLICATION_DATE, UNSUBMITTED_APPLICATION);
         verify(automatedNotificationService).sendNotification(DECLARATION_NOT_SIGNED_DATE, DECLARATION_NOT_SIGNED);
+    }
+
+    @Test
+    void skipsDormantReminderWhenFeatureToggleIsOff() {
+        when(featureToggleService.isDormantReminderFeatureToggleOn()).thenReturn(false);
+
+        underTest.run();
+
+        verifyNoInteractions(dormantReminderNotification);
+        //verifyNoInteractions(automatedNotificationService);
+    }
+
+    @Test
+    void sendsDormantReminderWhenFeatureToggleIsOn() {
+        when(featureToggleService.isDormantReminderFeatureToggleOn()).thenReturn(true);
+        ReflectionTestUtils.setField(underTest, "adHocJobDate", AD_HOC_DATE);
+
+        underTest.run();
+
+        verify(dataExtractDateValidator).dateValidator(DORMANT_REMINDER_DATE);
+        verify(dormantReminderNotification).setReferenceDate(LocalDate.parse(DORMANT_REMINDER_DATE));
+        verify(automatedNotificationService).sendNotification(DORMANT_REMINDER_DATE, DORMANT_REMINDER);
+    }
+
+
+    @Test
+    void handlesGenericExceptionDuringDormantReminder() {
+        when(featureToggleService.isDormantReminderFeatureToggleOn()).thenReturn(true);
+        ReflectionTestUtils.setField(underTest, "adHocJobDate", AD_HOC_DATE);
+        doThrow(new RuntimeException("Unexpected error"))
+                .when(automatedNotificationService).sendNotification(DORMANT_REMINDER_DATE, DORMANT_REMINDER);
+
+        underTest.run();
+
+        verify(dataExtractDateValidator).dateValidator(DORMANT_REMINDER_DATE);
+        verify(dormantReminderNotification).setReferenceDate(LocalDate.parse(DORMANT_REMINDER_DATE));
+        verify(automatedNotificationService).sendNotification(DORMANT_REMINDER_DATE, DORMANT_REMINDER);
+    }
+
+    @Test
+    void shouldOnlyDormantReminder() {
+        ReflectionTestUtils.setField(underTest, "adHocJobDate", AD_HOC_DATE);
+        when(featureToggleService.isFirstStopReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isSecondStopReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isHseReminderFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isDormantWarningFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isUnsubmittedApplicationFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isDeclarationNotSignedFeatureToggleOn()).thenReturn(false);
+        when(featureToggleService.isDormantReminderFeatureToggleOn()).thenReturn(true);
+
+        underTest.run();
+
+        verify(dataExtractDateValidator).dateValidator(DORMANT_REMINDER_DATE);
+        verify(automatedNotificationService).sendNotification(DORMANT_REMINDER_DATE, DORMANT_REMINDER);
+        verifyNoMoreInteractions(automatedNotificationService);
     }
 }
