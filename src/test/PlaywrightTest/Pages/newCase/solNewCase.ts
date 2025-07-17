@@ -1,5 +1,5 @@
+import { expect, Page, TestInfo } from "@playwright/test";
 import dateFns from "date-fns";
-import { expect, Page, TestInfo } from "playwright/test";
 import { testConfig } from "../../Configs/config.ts";
 import postPaymentReviewTabConfig from "../caseDetails/solicitorApplyProbate/postPaymentReviewTabConfig.json" with { type: "json" };
 import serviceRequestTabConfig from "../caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
