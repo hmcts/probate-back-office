@@ -66,7 +66,7 @@ class DormantWarningNotificationTest {
     void shouldSendDormantWarningEmail() throws NotificationClientException {
         when(notificationService.sendDormantWarningEmail(caseDetails)).thenReturn(mockDocument);
 
-        Document result = underTest.sendEmail(caseDetails);
+        Document result = underTest.sendNotification(caseDetails);
 
         verify(notificationService, times(1)).sendDormantWarningEmail(caseDetails);
         assertEquals(mockDocument, result);

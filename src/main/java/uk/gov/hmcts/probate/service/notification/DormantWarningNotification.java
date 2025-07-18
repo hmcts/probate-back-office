@@ -45,7 +45,7 @@ public class DormantWarningNotification implements NotificationStrategy {
     }
 
     @Override
-    public Document sendEmail(CaseDetails caseDetails) throws NotificationClientException {
+    public Document sendNotification(CaseDetails caseDetails) throws NotificationClientException {
         return notificationService.sendDormantWarningEmail(caseDetails);
     }
 
