@@ -594,6 +594,7 @@ bulkscan:
     ihtForm: FALSE
     grossNetValue: 1.11
     solsSolicitorIsApplying: TRUE
+    solicitorNotApplying: FALSE
 
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
