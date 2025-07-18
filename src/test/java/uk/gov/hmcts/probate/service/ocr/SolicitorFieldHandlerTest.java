@@ -77,7 +77,7 @@ class SolicitorFieldHandlerTest {
         when(bulkScanConfig.getPhone()).thenReturn(DEFAULT_PHONE_VALUE);
         when(bulkScanConfig.getDeceasedAnyOtherNames()).thenReturn(DEFAULT_DECEASED_ANY_OTHER_NAMES_VALUE);
         when(bulkScanConfig.getDeceasedDomicileInEngWales()).thenReturn(DEFAULT_DECEASED_DOMICILE_IN_ENG_WALES_VALUE);
-        when(bulkScanConfig.getSolicitorApplying()).thenReturn(FALSE);
+        when(bulkScanConfig.getSolicitorNotApplying()).thenReturn(FALSE);
 
         Field bulkScanConfigField = SolicitorFieldHandler.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);

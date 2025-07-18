@@ -763,7 +763,7 @@ bulkscan:
     dateOfDeathForDiedOnOrAfterSwitchDateFalse: "01011990"
     deceasedDiedOnOrAfterSwitchDateTrue: TRUE
     deceasedDiedOnOrAfterSwitchDateFalse: FALSE
-    solicitorApplying: FALSE
+    solicitorNotApplying: FALSE
     executorsNotApplyingReason: A
     fieldsNotCompleted: FALSE
     defaultForm: IHT400
