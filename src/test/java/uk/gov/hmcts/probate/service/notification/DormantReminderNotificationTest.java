@@ -100,6 +100,16 @@ class DormantReminderNotificationTest {
     }
 
     @Test
+    void shouldSendDormantReminder() throws NotificationClientException {
+        when(notificationService.sendDormantReminder(caseDetails)).thenReturn(mockDocument);
+
+        Document result = underTest.sendNotification(caseDetails);
+
+        verify(notificationService, times(1)).sendDormantReminder(caseDetails);
+        assertEquals(mockDocument, result);
+    }
+
+    @Test
     void returnsEventId() {
         EventId result = underTest.getEventId();
 
