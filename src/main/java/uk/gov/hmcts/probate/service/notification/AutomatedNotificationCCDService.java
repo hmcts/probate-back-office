@@ -159,7 +159,7 @@ public class AutomatedNotificationCCDService {
                     .probateNotificationsGenerated(notifications)
                     .build();
             case DORMANT_REMINDER -> GrantOfRepresentationData.builder()
-                    .uniqueProbateCodeId((String)data.get("letterId")) //***need to change to  bulkPrintSendLetterId
+                    .bulkPrintSendLetterId((String)data.get("letterId"))
                     .probateNotificationsGenerated(notifications)
                     .build();
         };

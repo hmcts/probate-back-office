@@ -296,7 +296,7 @@ class AutomatedNotificationCCDServiceTest {
         assertNotNull(result);
         assertNotNull(result.getProbateNotificationsGenerated());
         assertEquals(1, result.getProbateNotificationsGenerated().size());
-        assertEquals("12345", result.getUniqueProbateCodeId());
+        assertEquals("12345", result.getBulkPrintSendLetterId());
     }
 
 
