@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -70,13 +71,13 @@ class GrantOfRepresentationPersonalisationServiceIT {
     Registry registry = new Registry();
     @InjectMocks
     private GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
-    @MockBean
+    @MockitoBean
     private CoreCaseDataApi coreCaseDataApi;
-    @MockBean
+    @MockitoBean
     private CaveatQueryService caveatQueryServiceMock;
-    @MockBean
+    @MockitoBean
     private SendEmailResponse sendEmailResponse;
     @Mock
     private RegistriesProperties registriesPropertiesMock;
@@ -352,7 +353,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
                 .applicationType(PERSONAL)
                 .deceasedForenames("Jack")
                 .deceasedSurname("Michelson")
-                .build(), null, ID));
+                .build(), null, DRAFT, ID));
         Map<String, Object> response =
                 grantOfRepresentationPersonalisationService.getCaveatDraftCaseWithPaymentPersonalisation(cases,
                         "01/01/2025", "01/05/2025");

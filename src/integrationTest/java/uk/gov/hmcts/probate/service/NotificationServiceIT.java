@@ -11,8 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
@@ -49,6 +49,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.probate.model.cases.CaseState;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 import uk.gov.service.notify.NotificationClient;
@@ -156,15 +157,15 @@ class NotificationServiceIT {
     @Autowired
     private LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
-    @MockBean
+    @MockitoBean
     private SendEmailResponse sendEmailResponse;
-    @MockBean
+    @MockitoBean
     private TemplatePreview templatePreviewResponse;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private CaveatQueryService caveatQueryServiceMock;
 
     @Mock
@@ -179,19 +180,19 @@ class NotificationServiceIT {
     @Mock
     private DateFormatterService dateFormatterService;
 
-    @MockBean
+    @MockitoBean
     private AuthTokenGenerator tokenGenerator;
 
-    @MockBean
+    @MockitoBean
     private DocumentManagementService documentManagementService;
 
-    @MockBean
+    @MockitoBean
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
-    @MockBean
+    @MockitoBean
     private UserInfoService userInfoService;
 
-    @SpyBean
+    @MockitoSpyBean
     private NotificationClient notificationClient;
 
     private CaseDetails personalCaseDataOxford;
@@ -2319,7 +2320,8 @@ class NotificationServiceIT {
     void sendEmailForCaveatSuccessfulPayment() throws NotificationClientException {
         CaveatData caseData = CaveatData.builder()
                 .applicationType(SOLICITOR).languagePreferenceWelsh("No").build();
-        List<ReturnedCaveatDetails> cases = List.of(new ReturnedCaveatDetails(caseData, null, ID));
+        List<ReturnedCaveatDetails> cases =
+                List.of(new ReturnedCaveatDetails(caseData, null, CaseState.CAVEAT_RAISED, ID));
         String fromDate = "2022-01-01";
         String toDate = "2022-01-31";
 

@@ -13,8 +13,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -41,9 +41,9 @@ public class PBARetrievalConsumerTest {
 
     @Autowired
     ObjectMapper objectMapper;
-    @MockBean
+    @MockitoBean
     SecurityUtils securityUtils;
-    @MockBean
+    @MockitoBean
     AuthTokenGenerator authTokenGenerator;
 
     @Pact(provider = "referenceData_organisationalExternalPbas", consumer = "probate_backOffice")
