@@ -74,12 +74,12 @@ public class DormantReminderNotification implements NotificationStrategy {
     @Override
     public EventId getEventId() {
         return EventId.AUTO_NOTIFICATION_DORMANT_REMINDER;
-    } // need to change this to the correct event ID
+    }
 
     @Override
     public NotificationType getType() {
         return DORMANT_REMINDER;
-    } // need to change this to the correct event ID
+    }
 
     @Override
     public Predicate<CaseDetails> accepts() {
