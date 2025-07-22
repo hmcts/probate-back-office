@@ -296,7 +296,6 @@ class SendNotificationsTaskTest {
         underTest.run();
 
         verifyNoInteractions(dormantReminderNotification);
-        //verifyNoInteractions(automatedNotificationService);
     }
 
     @Test
