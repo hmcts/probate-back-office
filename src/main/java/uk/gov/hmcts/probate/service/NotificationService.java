@@ -882,7 +882,7 @@ public class NotificationService {
         log.info("Dormant Reminder generate docmosis for case id: {}", caseDetails.getId());
 
         LanguagePreference languagePreference = getLanguagePreference(caseDetails);
-        //DocumentType documentType = DocumentType.CAVEAT_EXTENDED; // need to change DocumentType.DORMANT_REMINDER;
+
         DocumentType documentType = DocumentType.DORMANT_REMINDER;
         if (!languagePreference.equals(LanguagePreference.ENGLISH)) {
             documentType = DocumentType.WELSH_DORMANT_REMINDER;
