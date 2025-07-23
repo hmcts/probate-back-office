@@ -23,6 +23,8 @@ ccd:
       enabled: false
     s2s:
       enabled: false
+    printService:
+      enabled: true
     elastic:
       enabled: true
     ras:
@@ -51,6 +53,17 @@ ccd:
         - name: "pr-${CHANGE_ID}-user-profile"
         - name: "pr-${CHANGE_ID}-role-assignment"
         - name: "pr-${CHANGE_ID}-probatemandb"
+  ccd-case-print-service:
+    enabled: true
+    nodejs:
+      imagePullPolicy: Always
+      disableKeyVaults: true
+      autoscaling:
+        enabled: false
+      environment:
+        IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
+      ingressHost:
+        ccd-case-print-service-${SERVICE_FQDN}
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
@@ -59,6 +72,7 @@ ccd:
         IDAM_SERVICE_KEY: ${API_GATEWAY_S2S_KEY}
         IDAM_OAUTH2_CLIENT_SECRET: ${API_GATEWAY_IDAM_SECRET}
         PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
+        PROXY_PRINT_SERVICE: http://ccd-case-print-service-${SERVICE_FQDN}
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
       keyVaults: []
