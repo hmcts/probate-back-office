@@ -101,7 +101,7 @@
   <strong>Record type:</strong> SOLS<br>
 </p>
 <p>
-  <strong>Date digital application submitted:</strong> {{ last_modified | date("DD/MM/YYYY") }}
+  <strong>Date digital application submitted:</strong> {{ case_data.applicationSubmittedDate | date("DD/MM/YYYY") }}
 </p>
 <pre>
   <table border="0">
@@ -169,6 +169,10 @@
     <tr>
       <td colspan="2">Deceased was domiciled in England or Wales:</td>
       <td>{% if case_data.deceasedDomicileInEngWales %}{{ case_data.deceasedDomicileInEngWales }}{% endif %}</td>
+    </tr>
+    <tr>
+      <td colspan="2">Deceased Domicility Country:</td>
+      <td>{% if case_data.domicilityCountry %}{{ case_data.domicilityCountry }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
