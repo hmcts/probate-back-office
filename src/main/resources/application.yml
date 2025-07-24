@@ -217,9 +217,6 @@ spring:
 evidence.management.host: http://localhost:5006
 evidence.management.upload.file.url: /documents
 
-http.connect.timeout: 60000
-http.connect.request.timeout: 60000
-
 idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 logging:
