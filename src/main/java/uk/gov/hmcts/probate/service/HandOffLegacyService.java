@@ -14,6 +14,7 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -53,7 +54,7 @@ public class HandOffLegacyService {
         } else {
             handoffReasonsList = handoffReasons.stream()
                     .map(cm -> new CollectionMember<>(cm.getId(), cm.getValue()))
-                    .toList();
+                    .collect(Collectors.toList());
         }
         if ((StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
                 || YES.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite()))
