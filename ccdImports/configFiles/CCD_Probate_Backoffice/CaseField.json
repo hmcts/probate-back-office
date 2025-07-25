@@ -89,7 +89,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "iht400Switch", "Label": "IHT400 switch", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtNetValueSwitch", "Label": "IHT Net value switch", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "showIht400421Page", "Label": "Show the IHT400421 page", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormEstateValuesCompleted", "Label": "Did you need to submit form IHT400 to HMRC to report the estate’s value?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormEstateValuesCompleted", "Label": "Were any Inheritance Tax (IHT) forms completed to report the value of the estate?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormEstateValuesLabel", "Label": "What are the values of the estate for Inheritance tax?", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "calcCheckCompleted", "Label": "DON'T SHOW", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormEstate", "Label": "Which IHT forms did you complete to report the estate’s value?", "FieldType": "FixedRadioList", "FieldTypeParameter": "IHTFormEstate", "SecurityClassification": "Public"},
