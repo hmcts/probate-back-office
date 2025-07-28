@@ -294,6 +294,8 @@
                     <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
                         sy’n weddill sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }} a wnaeth olynu a pharhau â phractis y cwmni
                         {{ case_details.case_data.nameOfFirmNamedInWill }} yn ymwrthod â’u hawl i brofiant.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTFirmCeasedTradingNoSucc" %}
+                    <p>{{ case_details.case_data.nameOfFirmNamedInWill }} have ceased trading at the deceased's date of death and there is no one successor firm</p>
                 {% else %}
                     <p>Dim.</p>
                 {% endif %}
@@ -646,6 +648,8 @@
                         {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
                     {% endif %}
                         {{ case_details.case_data.nameOfFirmNamedInWill }} are renouncing their right to probate.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTFirmCeasedTradingNoSucc" %}
+                    <p>{{ case_details.case_data.nameOfFirmNamedInWill }} have ceased trading at the deceased's date of death and there is no one successor firm</p>
                 {% else %}
                     <p>None.</p>
                 {% endif %}
@@ -999,6 +1003,8 @@
                         {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
                     {% endif %}
                         {{ case_details.case_data.nameOfFirmNamedInWill }} are renouncing their right to probate.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTFirmCeasedTradingNoSucc" %}
+                    <p>{{ case_details.case_data.nameOfFirmNamedInWill }} have ceased trading at the deceased's date of death and there is no one successor firm</p>
                 {% else %}
                     <p>None.</p>
                 {% endif %}
