@@ -8,11 +8,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SerenityJUnit5Extension.class)
-public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
+class LegalStatementGenerationTests extends DocumentGenerationTestBase {
 
     // Legal statement fields
     private static final String DECLARATION_CIVIL_WORDING =
@@ -97,6 +98,8 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     private static final String GOP_PAYLOAD_TRUSTCORP_SINGLE_CODICIL =
         "solicitorPayloadTrustCorpsSchemaSingleCodicil.json";
     private static final String GOP_PAYLOAD_TRUSTCORP_NO_CODICIL = "solicitorPayloadTrustCorpsNoSolExecRepeat.json";
+    private static final String GOP_PAYLOAD_TRUSTCORP_FIRM_CEASED_TRADING =
+            "solicitorPayloadTrustCorpsFirmCeasedTrading.json";
     private static final String SOT_DOC_NAME = "probateSotDocumentsGenerated[0].value.DocumentLink";
     private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
 
@@ -105,154 +108,174 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     void verifySuccessForGetPdfLegalStatementProbateWithSingleExecutorSols() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
-        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(LEGAL_STATEMENT_GOP));
-        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
-
-        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+        assertAll(
+                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
+                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
+                () -> assertTrue(!response.contains(AUTHORISED_SOLICITOR)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_GOP)),
+                () -> assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT)),
+                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+        );
     }
 
     @Test
     void verifySuccessForGetPdfLegalStatementProbateForLanguagePreferenceBilingual() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_PROBATE_WELSH_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(LEGAL_STATEMENT_WELSH));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH));
-        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(LEGAL_STATEMENT_GOP));
-        assertTrue(response.contains(LEGAL_STATEMENT_GOP_WELSH));
-        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
-
-        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+        assertAll(
+                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_WELSH)),
+                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
+                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_GOP)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_GOP_WELSH)),
+                () -> assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT)),
+                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+        );
     }
 
     @Test
     void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() throws IOException {
         final String response = generateSotDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(!response.contains(AUTHORISED_SOLICITOR));
-        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(LEGAL_STATEMENT_GOP));
-        assertTrue(response.contains(APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA));
-
-        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+        assertAll(
+                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
+                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
+                () -> assertTrue(!response.contains(AUTHORISED_SOLICITOR)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_GOP)),
+                () -> assertTrue(response.contains(APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA)),
+                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+        );
     }
 
     @Test
     void verifySuccessForGetPdfLegalStatementIntestacyWithSingleExecutorSols() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(AUTHORISED_SOLICITOR));
-        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA));
-        assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
-
-        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+        assertAll(
+                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
+                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
+                () -> assertTrue(response.contains(AUTHORISED_SOLICITOR)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE)),
+                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+        );
     }
 
     @Test
     void verifySuccessForGetPdfLegalStatementIntestacyForLanguagePreferenceBilingual() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_INTESTACY_WELSH_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(LEGAL_STATEMENT_WELSH));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH));
-        assertTrue(response.contains(AUTHORISED_SOLICITOR));
-        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA));
-        assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
-        assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE_WELSH));
+        assertAll(
+                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_WELSH)),
+                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
+                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH)),
+                () -> assertTrue(response.contains(AUTHORISED_SOLICITOR)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE_WELSH))
+        );
     }
 
     @Test
     void verifySuccessForGetPdfLegalStatementAdmonWillSols() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(AUTHORISED_SOLICITOR));
-        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
 
-        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+        assertAll(
+                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
+                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
+                () -> assertTrue(response.contains(AUTHORISED_SOLICITOR)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL)),
+                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+        );
     }
 
     @Test
     void verifySuccessForGetPdfLegalStatementAdmonWillSolsForLanguagePreferenceBilingual() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_WELSH_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(LEGAL_STATEMENT_WELSH));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
-        assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH));
-        assertTrue(response.contains(AUTHORISED_SOLICITOR));
-        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
-        assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
-        assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL_WELSH));
 
-        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+        assertAll(
+                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_WELSH)),
+                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
+                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH)),
+                () -> assertTrue(response.contains(AUTHORISED_SOLICITOR)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL)),
+                () -> assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL_WELSH)),
+                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+        );
     }
 
     @Test
     void verifySuccessForFurtherEvidenceAdmonWill() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(FURTHER_EVIDENCE));
-        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
-        assertTrue(response.contains(FIRM_AUTHORISATION));
-        assertTrue(response.contains(WILL_NO_CODICILS));
+        assertAll(
+                () -> assertTrue(response.contains(FURTHER_EVIDENCE)),
+                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_UK)),
+                () -> assertTrue(response.contains(FIRM_AUTHORISATION)),
+                () -> assertTrue(response.contains(WILL_NO_CODICILS))
+        );
     }
 
     @Test
     void verifySuccessForFurtherEvidenceAdmonWillWithWillDateAndCodicils() throws IOException {
         final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_CODICILS_DATES, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(FURTHER_EVIDENCE));
-        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
-        assertTrue(response.contains(FIRM_AUTHORISATION));
-        assertTrue(response.contains(WILL_NO_CODICILS));
-        assertTrue(response.contains(SIGNED_DATE));
-        assertTrue(response.contains(CODICIL_DATES));
+        assertAll(
+                () -> assertTrue(response.contains(FURTHER_EVIDENCE)),
+                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_UK)),
+                () -> assertTrue(response.contains(FIRM_AUTHORISATION)),
+                () -> assertTrue(response.contains(WILL_NO_CODICILS)),
+                () -> assertTrue(response.contains(SIGNED_DATE)),
+                () -> assertTrue(response.contains(CODICIL_DATES))
+        );
     }
 
     @Test
     void verifySuccessForAdmonWillWithWillAndOneCodicilAdded() throws IOException {
         final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_ONE_CODICILS, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
-        assertTrue(response.contains(FIRM_AUTHORISATION));
-        assertTrue(response.contains(WILL_WITH_CODICIL));
-        assertTrue(response.contains(WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION));
+        assertAll(
+                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
+                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_UK)),
+                () -> assertTrue(response.contains(FIRM_AUTHORISATION)),
+                () -> assertTrue(response.contains(WILL_WITH_CODICIL)),
+                () -> assertTrue(response.contains(WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION))
+        );
     }
 
     @Test
     void verifySuccessForAdmonWillWithWillAndMultipleCodicilAdded() throws IOException {
         final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_MULTIPLE_CODICILS, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
-        assertTrue(response.contains(FIRM_AUTHORISATION));
-        assertTrue(response.contains(WILL_WITH__MULTIPLE_CODICILS));
+        assertAll(
+                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
+                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_UK)),
+                () -> assertTrue(response.contains(FIRM_AUTHORISATION)),
+                () -> assertTrue(response.contains(WILL_WITH__MULTIPLE_CODICILS))
+        );
     }
 
     @Test
     void verifySuccessForAdmonWillWithWillAndNoCodicil() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(LEGAL_STATEMENT));
-        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
-        assertTrue(response.contains(FIRM_AUTHORISATION));
-        assertTrue(!response.contains(WILL_WITH_CODICIL));
-        assertTrue(!response.contains(WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION));
+        assertAll(
+                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
+                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_UK)),
+                () -> assertTrue(response.contains(FIRM_AUTHORISATION)),
+                () -> assertTrue(!response.contains(WILL_WITH_CODICIL)),
+                () -> assertTrue(!response.contains(WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION))
+        );
     }
 
     @Test
@@ -266,17 +289,21 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     void verifySuccessForCodicilsIntestacy() throws IOException {
         final String response = generateSotDocument(CODICILS_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(DOMICILITY_SENTENCE_NON_UK));
-        assertTrue(response.contains(FIRM_AUTHORISATION));
+        assertAll(
+                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_NON_UK)),
+                () -> assertTrue(response.contains(FIRM_AUTHORISATION))
+        );
     }
 
     @Test
     void verifySuccessForFurtherEvidenceTrustCorpProbate() throws IOException {
         final String response = generateSotDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(SIGNED_DATE));
-        assertTrue(response.contains("1st January 2021"));
-        assertTrue(response.contains(FURTHER_EVIDENCE));
+        assertAll(
+                () -> assertTrue(response.contains(SIGNED_DATE)),
+                () -> assertTrue(response.contains("1st January 2021")),
+                () -> assertTrue(response.contains(FURTHER_EVIDENCE))
+        );
     }
 
     @Test
@@ -308,12 +335,12 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     void verifySoTExecutorDiedBeforeAndAfterDeceased() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
-            "executor1_name, another executor named in the will, "
-            + "has died in the lifetime of the deceased."));
-        assertTrue(response.contains(
-            "executor2_name, another executor named in the will, "
-            + "has survived the deceased and died since."));
+        assertAll(
+                () -> assertTrue(response.contains(
+                    "executor1_name, another executor named in the will, has died in the lifetime of the deceased.")),
+                () -> assertTrue(response.contains(
+                    "executor2_name, another executor named in the will, has survived the deceased and died since."))
+        );
     }
 
     @Test
@@ -588,7 +615,8 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.split("Jim Smith").length == 5);
     }
 
-    public void verifyDefaultEvidenceToYesFromNull() throws IOException {
+    @Test
+    void verifyDefaultEvidenceToYesFromNull() throws IOException {
         Response jsonResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
@@ -674,6 +702,14 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_NO_CODICIL, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("which was settled previously to the death "
                 + "(and not by the will) of"));
+    }
+
+    @Test
+    void verifyTrustCorpGOPLegalStatementTCTFirmCeasedTradingNoSucc() throws IOException {
+        final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_FIRM_CEASED_TRADING,
+                GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("Ceased Trading Firm have ceased trading at the deceased's date of death "
+                + "and there is no one successor firm"));
     }
 
     private String generateSotDocument(String jsonFileName, String path) throws IOException {
