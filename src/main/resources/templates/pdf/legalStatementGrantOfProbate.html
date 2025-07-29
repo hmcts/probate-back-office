@@ -295,7 +295,7 @@
                         sy’n weddill sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }} a wnaeth olynu a pharhau â phractis y cwmni
                         {{ case_details.case_data.nameOfFirmNamedInWill }} yn ymwrthod â’u hawl i brofiant.</p>
                 {% elseif case_details.case_data.titleAndClearingType == "TCTFirmCeasedTradingNoSucc" %}
-                    <p>{{ case_details.case_data.nameOfFirmNamedInWill }} have ceased trading at the deceased's date of death and there is no one successor firm</p>
+                    <p>Mae {{ case_details.case_data.nameOfFirmNamedInWill }} wedi rhoi’r gorau i fasnachu ar ddyddiad marwolaeth yr ymadawedig oherwydd nid oes cwmni olynydd.</p>
                 {% else %}
                     <p>Dim.</p>
                 {% endif %}
