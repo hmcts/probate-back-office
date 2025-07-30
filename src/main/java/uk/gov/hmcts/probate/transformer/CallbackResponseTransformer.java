@@ -36,7 +36,6 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
@@ -133,11 +132,10 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
-    private static final String SOL_AS_EXEC_ID = "solicitor";
-    private static final String PBA_PAYMENT_METHOD = "pba";
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final String IHT400 = "IHT400";
-    private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection", "boCorrection");
+    private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection",
+            "boCorrection");
     private static final List<String> ROLLBACK_STATE_LIST = List.of("Pending", "CasePaymentFailed", "SolAdmonCreated",
             "SolAppCreatedDeceasedDtls", "SolAppCreatedSolicitorDtls", "SolAppUpdated", "SolProbateCreated",
             "SolIntestacyCreated", "Deleted", "Stopped");
@@ -155,7 +153,6 @@ public class CallbackResponseTransformer {
     private final IhtEstateDefaulter ihtEstateDefaulter;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
-    private final FeatureToggleService featureToggleService;
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
 
@@ -322,6 +319,7 @@ public class CallbackResponseTransformer {
                         caseworkerInfo,
                         false);
         responseCaseDataBuilder.evidenceHandled(YES);
+        responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (isHubResponseRequired(caseData)) {
             responseCaseDataBuilder.citizenResponseCheckbox(null)
@@ -347,6 +345,7 @@ public class CallbackResponseTransformer {
         if (YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())
                 && !YES.equalsIgnoreCase(caseData.getIsSaveAndClose())) {
             responseCaseDataBuilder.evidenceHandled(YES);
+            responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
 
             if (nothingSubmitted(caseData)) {
                 resetRequestInformationFields(responseCaseDataBuilder);
@@ -420,6 +419,7 @@ public class CallbackResponseTransformer {
                     .grantIssuedDate(grantIssuedDate);
 
             responseCaseDataBuilder.evidenceHandled(YES);
+            responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
 
         } else if (documentTransformer.hasDocumentWithType(documents, EDGE_CASE)) {
             String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
@@ -1406,6 +1406,8 @@ public class CallbackResponseTransformer {
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
+            .modifiedOCRFieldList(caseData.getModifiedOCRFieldList())
+            .autoCaseWarnings(caseData.getAutoCaseWarnings())
             .lastModifiedCaseworkerForenames(caseData.getLastModifiedCaseworkerForenames())
             .lastModifiedCaseworkerSurname(caseData.getLastModifiedCaseworkerSurname())
             .informationNeeded(caseData.getInformationNeeded())
@@ -1417,20 +1419,15 @@ public class CallbackResponseTransformer {
             .citizenResponses(caseData.getCitizenResponses())
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
             .isSaveAndClose(caseData.getIsSaveAndClose())
-            .ttl(caseData.getTtl());
+            .executorsNamed(caseData.getExecutorsNamed())
+            .ttl(caseData.getTtl())
+            .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
+            .evidenceHandledDate(caseData.getEvidenceHandledDate());
 
-        if (featureToggleService.enableNewAliasTransformation()) {
-            handleDeceasedAliases(
-                    builder,
-                    caseData,
-                    caseDetails.getId());
-        } else {
-            builder.solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData));
-
-            builder.deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill());
-            builder.deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill());
-            builder.deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill());
-        }
+        handleDeceasedAliases(
+                builder,
+                caseData,
+                caseDetails.getId());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

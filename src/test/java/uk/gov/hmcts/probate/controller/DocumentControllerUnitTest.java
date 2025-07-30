@@ -14,6 +14,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -26,6 +27,7 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
@@ -50,12 +52,15 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -100,6 +105,8 @@ class DocumentControllerUnitTest {
     private EvidenceUploadService evidenceUploadService;
     @Mock
     private UserInfoService userInfoService;
+    @Mock
+    private FeatureToggleService featureToggleService;
 
     /// The object under test
     private DocumentController documentController;
@@ -116,18 +123,20 @@ class DocumentControllerUnitTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        documentValidation = new DocumentValidation(documentManagementService);
-        ReflectionTestUtils.setField(documentValidation,
+        // ick
+        DocumentValidation realDocumentValidation = new DocumentValidation(documentManagementService);
+        ReflectionTestUtils.setField(realDocumentValidation,
             "allowedFileExtensions", ".pdf .jpeg .bmp .tif .tiff .png");
-        ReflectionTestUtils.setField(documentValidation,
+        ReflectionTestUtils.setField(realDocumentValidation,
             "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
+        documentValidation = spy(realDocumentValidation);
 
         documentController = new DocumentController(documentGeneratorService, registryDetailsService,
                     pdfManagementService, callbackResponseTransformer, caseDataTransformer,
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
-            evidenceUploadService, userInfoService);
+            evidenceUploadService, userInfoService, featureToggleService);
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
@@ -338,6 +347,88 @@ class DocumentControllerUnitTest {
         ResponseEntity<CallbackResponse> response = documentController.startAmendLegalStatement(callbackRequest);
 
         verify(redeclarationSoTValidationRule, times(1)).validate(caseDetailsMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSuccessfullyValidateAmendLegalStatementWhenFlagSetAndNoErrorReturned() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        CaseData caseDataMock = mock(CaseData.class);
+        DocumentLink documentLinkMock = mock(DocumentLink.class);
+        CallbackResponse callbackResponseMock = mock(CallbackResponse.class);
+
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getAmendedLegalStatement()).thenReturn(documentLinkMock);
+
+        when(featureToggleService.enableAmendLegalStatementFiletypeCheck()).thenReturn(true);
+        doReturn(Optional.empty())
+                .when(documentValidation)
+                .validateUploadedDocumentIsType(any(), any(), any());
+
+        when(callbackResponseTransformer.transformCase(any(), any()))
+                .thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = documentController.validateAmendLegalStatement(callbackRequest);
+
+        verify(documentValidation, times(1)).validateUploadedDocumentIsType(
+                any(),
+                any(),
+                any());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
+    void shouldFailToValidateAmendLegalStatementWhenFlagSetAndErrorReturned() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        CaseData caseDataMock = mock(CaseData.class);
+        DocumentLink documentLinkMock = mock(DocumentLink.class);
+        String error = "ERROR";
+        CallbackResponse callbackResponseMock = mock(CallbackResponse.class);
+
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getAmendedLegalStatement()).thenReturn(documentLinkMock);
+
+        when(featureToggleService.enableAmendLegalStatementFiletypeCheck()).thenReturn(true);
+        doReturn(Optional.of(error))
+                .when(documentValidation)
+                .validateUploadedDocumentIsType(any(), any(), any());
+
+        when(callbackResponseTransformer.transformCase(any(), any()))
+                .thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = documentController.validateAmendLegalStatement(callbackRequest);
+
+        verify(documentValidation, times(1)).validateUploadedDocumentIsType(
+                any(),
+                any(),
+                any());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+        assertThat(response.getBody().getErrors(), contains(error));
+    }
+
+    @Test
+    void shouldNotCallValidateFileTypeForValidateAmendLegalStatementWhenFlagUnset() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        CaseData caseDataMock = mock(CaseData.class);
+
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        when(featureToggleService.enableAmendLegalStatementFiletypeCheck()).thenReturn(false);
+
+        ResponseEntity<CallbackResponse> response = documentController.validateAmendLegalStatement(callbackRequest);
+
+        verify(documentValidation, never()).validateUploadedDocumentIsType(
+                any(),
+                any(),
+                any());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

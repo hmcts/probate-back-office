@@ -60,6 +60,7 @@ import uk.gov.hmcts.probate.validator.StopReasonValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.ZeroApplyingExecutorsValidationRule;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -73,6 +74,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -197,6 +199,8 @@ class BusinessValidationUnitTest {
     private AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
     @Mock
     private UserInfoService userInfoServiceMock;
+    @Mock
+    private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -239,6 +243,7 @@ class BusinessValidationUnitTest {
             registrarDirectionServiceMock,
             pre1900DOBValidationRuleMock,
             adColligendaBonaCaseTypeValidationRule,
+            zeroApplyingExecutorsValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock);
 
@@ -791,6 +796,17 @@ class BusinessValidationUnitTest {
     void shouldSetGrantStoppedDateAfterCaseFailQa() {
         ResponseEntity<CallbackResponse> response = underTest.caseFailQa(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldUpdateTaskListWithEmptyCaseworkerInfo() {
+        CallbackResponse expectedResponse = Mockito.mock(CallbackResponse.class);
+        when(callbackResponseTransformerMock.updateTaskList(callbackRequestMock, Optional.empty()))
+                .thenReturn(expectedResponse);
+
+        ResponseEntity<CallbackResponse> response = underTest.caseFailQa(callbackRequestMock);
+        assertEquals(expectedResponse, response.getBody());
+        verify(callbackResponseTransformerMock).updateTaskList(callbackRequestMock, Optional.empty());
     }
 
     @Test

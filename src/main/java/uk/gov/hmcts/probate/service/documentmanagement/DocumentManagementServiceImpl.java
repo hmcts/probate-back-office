@@ -34,7 +34,6 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
     private static final int DOC_UUID_LENGTH = 36;
     private static final boolean DELETE_PERMANENT = true;
-    private static final String BEARER_PREFIX = "Bearer ";
     private final SecurityUtils securityUtils;
     private final CaseDocumentClient caseDocumentClient;
     private final DocumentManagementRequestBuilder documentManagementRequestBuilder;
@@ -43,18 +42,13 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     @Nullable
     public UploadResponse upload(EvidenceManagementFileUpload file, DocumentType documentType) {
         DocumentUploadRequest documentUploadRequest =
-            documentManagementRequestBuilder.perpareDocumentUploadRequest(file,
-            documentType);
+            documentManagementRequestBuilder.perpareDocumentUploadRequest(file, documentType);
 
-        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        String auth = securityDTO.getAuthorisation();
-        if (auth == null) {
-            securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
-            auth = securityDTO.getAuthorisation();
-        }
-        if (!auth.contains(BEARER_PREFIX)) {
-            auth = BEARER_PREFIX + auth;
-        }
+        /* This handles payment callback and cron jobs where there is no HttpServletRequest,
+         or where the Authorization and/or user-id header are absent */
+        SecurityDTO securityDTO = securityUtils.getOrDefaultCaseworkerSecurityDTO();
+        String auth = securityUtils.getBearerToken(securityDTO.getAuthorisation());
+
         return caseDocumentClient.uploadDocuments(auth, securityDTO.getServiceAuthorisation(),
                 documentUploadRequest.getCaseTypeId(), documentUploadRequest.getJurisdictionId(),
                 documentUploadRequest.getFiles(), PRIVATE);
@@ -66,10 +60,8 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
                                            DocumentType documentType) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         String serviceAuthorisation = securityDTO.getServiceAuthorisation();
-        String auth  = authorizationToken;
-        if (!auth.contains(BEARER_PREFIX)) {
-            auth = BEARER_PREFIX + auth;
-        }
+        String auth  = securityUtils.getBearerToken(authorizationToken);
+
         DocumentUploadRequest documentUploadRequest =
             documentManagementRequestBuilder.perpareDocumentUploadRequestForCitizen(multipartFileList,
                 documentType);
@@ -86,7 +78,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         String s2s = securityDTO.getServiceAuthorisation();
         String selfHref = document.getDocumentLink().getDocumentUrl();
         UUID docId = UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
-        log.info("Deleting document wth id:{}", docId.toString());
+        log.info("Deleting document wth id:{}", docId);
         caseDocumentClient.deleteDocument(auth, s2s, docId, DELETE_PERMANENT);
     }
 

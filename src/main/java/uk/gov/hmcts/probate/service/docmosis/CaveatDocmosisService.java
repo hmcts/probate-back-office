@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -31,15 +30,15 @@ public class CaveatDocmosisService {
     private final RegistriesProperties registriesProperties;
     private final CcdReferenceFormatterService ccdReferenceFormatterService;
     private final DateFormatterService dateFormatterService;
+    private final ObjectMapper objectMapper;
 
     public Map<String, Object> caseDataAsPlaceholders(CaveatDetails caveatDetails) {
 
-        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        Map<String, Object> placeholders = mapper.convertValue(caveatDetails.getData(), Map.class);
+        Map<String, Object> placeholders = objectMapper.convertValue(caveatDetails.getData(), Map.class);
 
         Registry registry = registriesProperties.getRegistries().get(
             caveatDetails.getData().getRegistryLocation().toLowerCase());
-        Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
+        Map<String, Object> registryPlaceholders = objectMapper.convertValue(registry, Map.class);
 
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 

@@ -31,7 +31,6 @@ public class ExceptedEstateDateOfDeathChecker {
         try {
             DateTimeFormatter ocrDataDateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
             dod = LocalDate.parse(dateOfDeath, ocrDataDateFormatter);
-
         } catch (DateTimeParseException dtpe) {
             String errorMessage = DOD_FIELD_NAME
                     + ": Date field '" + dateOfDeath + "' not in expected format " + OCR_DATE_FORMAT;

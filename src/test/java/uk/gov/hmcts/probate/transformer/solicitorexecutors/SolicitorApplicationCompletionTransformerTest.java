@@ -17,7 +17,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.DateFormatterService;
-import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.math.BigDecimal;
@@ -62,8 +61,6 @@ class SolicitorApplicationCompletionTransformerTest {
     @Mock
     private ExecutorListMapperService executorListMapperServiceMock;
 
-    @Mock
-    private FeatureToggleService featureToggleServiceMock;
 
     @InjectMocks
     private SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformer;
@@ -79,7 +76,7 @@ class SolicitorApplicationCompletionTransformerTest {
     private static final String NOT_APPLICABLE = "NotApplicable";
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         additionalExecutorApplying = new ArrayList<>();
         additionalExecutorApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
@@ -131,15 +128,14 @@ class SolicitorApplicationCompletionTransformerTest {
 
         final var solApplComplXform = new SolicitorApplicationCompletionTransformer(
                 executorListMapperSpy,
-                dateFormatterServiceMock,
-                featureToggleServiceMock);
+                dateFormatterServiceMock);
 
         solApplComplXform.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
         assertAll(
                 () -> assertEquals(2, caseData.getAdditionalExecutorsApplying().size()),
                 () -> assertEquals(3, caseData.getExecutorsApplyingLegalStatement().size()),
-                () -> verifyNoInteractions(dateFormatterServiceMock, featureToggleServiceMock)
+                () -> verifyNoInteractions(dateFormatterServiceMock)
         );
     }
 
@@ -276,8 +272,6 @@ class SolicitorApplicationCompletionTransformerTest {
         final CaseData caseData = mock(CaseData.class);
         final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
 
-        when(featureToggleServiceMock.enableDuplicateExecutorFiltering()).thenReturn(true);
-
         when(caseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
         when(caseData.getTitleAndClearingType()).thenReturn("");
         when(caseData.isPrimaryApplicantApplying()).thenReturn(true);
@@ -299,7 +293,6 @@ class SolicitorApplicationCompletionTransformerTest {
         final CaseData caseData = mock(CaseData.class);
         final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
 
-        when(featureToggleServiceMock.enableDuplicateExecutorFiltering()).thenReturn(true);
 
         when(caseData.getCaseType()).thenReturn("");
         when(caseData.getTitleAndClearingType()).thenReturn("");
@@ -322,7 +315,6 @@ class SolicitorApplicationCompletionTransformerTest {
         final CaseData caseData = mock(CaseData.class);
         final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
 
-        when(featureToggleServiceMock.enableDuplicateExecutorFiltering()).thenReturn(true);
 
         when(caseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
         when(caseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_NONE_OF_THESE);
@@ -346,7 +338,6 @@ class SolicitorApplicationCompletionTransformerTest {
         final CaseData spyCaseData = spy(realCaseData);
         final CaseDetails caseDetails = new CaseDetails(spyCaseData, null, 0L);
 
-        when(featureToggleServiceMock.enableDuplicateExecutorFiltering()).thenReturn(true);
 
         when(spyCaseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
         when(spyCaseData.getTitleAndClearingType()).thenReturn("");
@@ -358,27 +349,18 @@ class SolicitorApplicationCompletionTransformerTest {
         verify(spyCaseData, times(0)).clearPrimaryApplicant();
     }
 
-    // given Case
-    // and CaseType is GrantOfProbate
-    // and TitleClearingType is not NoneOfThese
-    // and PrimaryApplicantApplying is true
-    // and enableDuplicateApplicant is false
-    // when transformer clearPrimaryForNoneOfThese called
-    // then primaryApplicantClear is called
     @Test
-    void givenCaseWithoutNoneOfTheseTtlClrngTypeANDPrmryApplANDDuplDisabled_whenChecked_thenPrmryApplDataNOTCleared() {
+    void givenNoAdditionalExecutorsCausesAdditionalExecutorsIsExplicitlyCleared() {
         final CaseData caseData = mock(CaseData.class);
         final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
 
-        when(featureToggleServiceMock.enableDuplicateExecutorFiltering()).thenReturn(false);
-
         when(caseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
         when(caseData.getTitleAndClearingType()).thenReturn("");
-        when(caseData.isPrimaryApplicantApplying()).thenReturn(true);
+        when(caseData.getOtherExecutorExists()).thenReturn(NO);
 
-        solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
-                caseDetails);
+        solicitorApplicationCompletionTransformer.clearAdditionalExecutorWhenUpdatingApplicantDetails(caseDetails);
 
-        verify(caseData, times(0)).clearPrimaryApplicant();
+        verify(caseData, times(1)).clearAdditionalExecutorList();
+        assertEquals(0, caseDetails.getData().getSolsAdditionalExecutorList().size());
     }
 }

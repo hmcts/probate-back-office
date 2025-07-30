@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -97,7 +98,7 @@ class CaseDataTest {
     private AutoCloseable closeableMocks;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
 
         closeableMocks = openMocks(this);
 
@@ -998,5 +999,22 @@ class CaseDataTest {
         applCaseData.clearPrimaryApplicant();
 
         assertEquals(baseCaseData, applCaseData);
+    }
+
+    @Test
+    void clearAdditionalExecutorListClearsAdditionalExecutorList() {
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
+        additionalExecutorsList.add(additionalExecutors1Mock);
+        additionalExecutorsList.add(additionalExecutors2Mock);
+
+        CaseData caseData = CaseData.builder()
+                .solsAdditionalExecutorList(additionalExecutorsList)
+                .otherExecutorExists(NO)
+                .build();
+
+        caseData.clearAdditionalExecutorList();
+
+        assertTrue(caseData.getSolsAdditionalExecutorList().isEmpty());
+        assertEquals(NO, caseData.getOtherExecutorExists());
     }
 }
