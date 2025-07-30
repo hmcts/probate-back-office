@@ -34,6 +34,8 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -2178,7 +2180,7 @@ class NotificationServiceIT {
     }
 
     @Test
-    void verifyEmailPreview() throws NotificationClientException {
+    void verifyEmailPreview() throws NotificationClientException, IOException {
         String expectedHtml = "<html><body>Test</body></html>";
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
@@ -2190,8 +2192,17 @@ class NotificationServiceIT {
                 .deceasedDateOfDeath(LocalDate.of(2022, 12, 12))
                 .boStopDetails("stopDetails")
                 .boStopDetailsDeclarationParagraph("No")
+                .cwDocumentsUpload(List.of(
+                        new CollectionMember<>(UploadDocument.builder()
+                                .documentLink(DocumentLink.builder()
+                                        .documentBinaryUrl("http://example.com/test.pdf")
+                                        .build())
+                                .build())
+                ))
                 .build(), LAST_MODIFIED, ID);
         when(templatePreviewResponse.getHtml()).thenReturn(Optional.of(expectedHtml));
+        when(documentManagementService.getDocumentByBinaryUrl("http://example.com/test.pdf"))
+                .thenReturn(new byte[] {1, 2, 3});
 
         notificationService.emailPreview(caseDetails);
         verify(pdfManagementService).rerenderAsXhtml(expectedHtml);

@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -48,6 +49,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApp
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
+import uk.gov.service.notify.RetentionPeriodDuration;
 
 import jakarta.validation.Valid;
 import uk.gov.service.notify.TemplatePreview;
@@ -56,6 +58,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -180,6 +183,7 @@ public class NotificationService {
     public Document emailPreview(CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
+        List<CollectionMember<UploadDocument>> cwDocumentsUpload = caseData.getCwDocumentsUpload();
 
         String templateId = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION,
             caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
@@ -189,12 +193,43 @@ public class NotificationService {
                         registry);
 
         updatePersonalisationForSolicitor(caseData, personalisation);
+        if (cwDocumentsUpload != null && cwDocumentsUpload.size() > 0) {
+            log.info("Got cwDocumentsUpload for case: {}", cwDocumentsUpload);
+            addCwDocumentToPersonalisation(cwDocumentsUpload, personalisation);
+        }
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
         TemplatePreview previewResponse =
                 notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
         return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
+    }
+
+    private void addCwDocumentToPersonalisation(
+            List<CollectionMember<UploadDocument>> cwDocumentsUpload,
+            Map<String, Object> personalisation) {
+        UploadDocument document = cwDocumentsUpload.getFirst().getValue();
+        log.info("Got cwDocumentsUpload for case: {}", document.getDocumentLink());
+        try {
+            byte[] fileContents = documentManagementService.getDocumentByBinaryUrl(document.getDocumentLink()
+                    .getDocumentBinaryUrl());
+            cwPrepareUpload(fileContents, personalisation);
+        } catch (IOException e) {
+            log.error("Error reading CW document file   : {}", e.getMessage());
+        }
+    }
+
+    private void cwPrepareUpload(byte[] fileContents, Map<String, Object> personalisation) {
+        try {
+            personalisation.put("link_to_file",
+                    NotificationClient.prepareUpload(
+                            fileContents,
+                            false,
+                            new RetentionPeriodDuration(26, ChronoUnit.WEEKS)
+                    ));
+        } catch (NotificationClientException e) {
+            log.error("Error Preparing to send email : {} ", e.getMessage());
+        }
     }
 
     void updatePersonalisationForSolicitor(CaseData caseData, Map<String, Object> personalisation) {
