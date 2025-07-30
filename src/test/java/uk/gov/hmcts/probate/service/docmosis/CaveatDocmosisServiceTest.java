@@ -42,6 +42,8 @@ class CaveatDocmosisServiceTest {
     private DateFormatterService dateFormatterService;
     @Mock
     private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
+    @Mock
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setUp() {
@@ -60,6 +62,11 @@ class CaveatDocmosisServiceTest {
             .registryLocation("leeds")
             .expiryDate(LocalDate.of(2019, 12, 31))
             .build();
+        Map<String, Object> result = new HashMap<>();
+        result.put("registryLocation", "leeds");
+        result.put("expiryDate", LocalDate.of(2019, 12, 31));
+        when(objectMapper.convertValue(caveatData, Map.class))
+                .thenReturn(result);
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
         Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);
@@ -80,6 +87,10 @@ class CaveatDocmosisServiceTest {
             .build();
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
+        Map<String, Object> result = new HashMap<>();
+        result.put("registryLocation", "leeds");
+        when(objectMapper.convertValue(caveatData, Map.class))
+                .thenReturn(result);
         Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);
 
         assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));

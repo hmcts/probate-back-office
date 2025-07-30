@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +16,6 @@ import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
@@ -22,6 +23,7 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -31,8 +33,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
-import uk.gov.hmcts.probate.service.notification.DisposalReminderPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
+import uk.gov.hmcts.probate.service.notification.AutomatedNotificationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
@@ -42,6 +44,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -53,12 +56,16 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
@@ -75,7 +82,12 @@ public class NotificationService {
     private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String APPLICATION_TYPE = "applicationType";
+    private static final String CHANNEL_CHOICE = "channelChoice";
+    private static final String INFORMATION_NEEDED_BY_POST = "informationNeededByPost";
+    private static final String EXECUTORS_APPLYING = "executorsApplying";
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
+    private static final String PERSONALISATION_EXECUTOR_NAME = "executor_name";
+    private static final String PERSONALISATION_EXECUTOR_NAMES_LIST = "executor_names_list";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
 
@@ -97,8 +109,10 @@ public class NotificationService {
     private final DocumentManagementService documentManagementService;
     private final PersonalisationValidationRule personalisationValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
-    private final DisposalReminderPersonalisationService disposalReminderPersonalisationService;
+    private final AutomatedNotificationPersonalisationService automatedNotificationPersonalisationService;
     private final UserInfoService userInfoService;
+    private final ObjectMapper objectMapper;
+    private final EmailValidationService emailValidationService;
 
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -137,15 +151,7 @@ public class NotificationService {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
         }
 
-        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
-            if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
-                personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
-            } else if (!StringUtils.isEmpty(caseData.getSolsSOTForenames()) && !StringUtils
-                    .isEmpty(caseData.getSolsSOTSurname())) {
-                personalisation.replace(PERSONALISATION_APPLICANT_NAME,
-                        String.join(" ", caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()));
-            }
-        }
+        updatePersonalisationForSolicitor(caseData, personalisation);
 
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
@@ -161,6 +167,16 @@ public class NotificationService {
         return getSentEmailDocument(state, emailAddress, response);
     }
 
+    private void sendEmail(String emailAddress,
+                           String templateId,
+                           Map<String, Object> personalisation,
+                           String caseId) throws NotificationClientException {
+        log.info("sendEmail with templateId: {} for case: {}", templateId, caseId);
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress, personalisation, caseId);
+        log.info("Email response notificationId: {}", response.getNotificationId());
+    }
+
     public Document emailPreview(CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
@@ -172,11 +188,25 @@ public class NotificationService {
                 grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                         registry);
 
+        updatePersonalisationForSolicitor(caseData, personalisation);
+
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
         TemplatePreview previewResponse =
                 notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
         return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
+    }
+
+    void updatePersonalisationForSolicitor(CaseData caseData, Map<String, Object> personalisation) {
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
+                personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
+            } else if (!StringUtils.isEmpty(caseData.getSolsSOTForenames()) && !StringUtils
+                    .isEmpty(caseData.getSolsSOTSurname())) {
+                personalisation.replace(PERSONALISATION_APPLICANT_NAME,
+                        String.join(" ", caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()));
+            }
+        }
     }
 
     public Document sendSealedAndCertifiedEmail(CaseDetails caseDetails) throws NotificationClientException {
@@ -254,6 +284,30 @@ public class NotificationService {
         return getSentEmailDocument(state, emailAddress, response);
     }
 
+    public void sendEmailForGORSuccessfulPayment(List<ReturnedCaseDetails> cases, String fromDate, String toDate)
+            throws NotificationClientException {
+        log.info("Sending email for Draft cases with payment status as Success");
+        ApplicationType applicationType = cases.get(0).getData().getApplicationType();
+
+        String templateId = getTemplateId(applicationType);
+        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService
+                .getGORDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate);
+
+        sendEmailForDraftCases(templateId, personalisation);
+    }
+
+    public void sendEmailForCaveatSuccessfulPayment(List<ReturnedCaveatDetails> cases, String fromDate, String toDate)
+            throws NotificationClientException {
+        log.info("Sending email for Draft cases with payment status as Success");
+        ApplicationType applicationType = cases.get(0).getData().getApplicationType();
+
+        String templateId = getTemplateId(applicationType);
+        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService
+                .getCaveatDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate);
+
+        sendEmailForDraftCases(templateId, personalisation);
+    }
+
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
         throws NotificationClientException {
 
@@ -295,7 +349,7 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddress, documentType);
     }
 
-    public Document sendExelaEmail(List<ReturnedCaseDetails> caseDetails) throws
+    public void sendExelaEmail(List<ReturnedCaseDetails> caseDetails) throws
         NotificationClientException {
         String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
             .get(caseDetails.get(0).getData().getApplicationType())
@@ -308,8 +362,6 @@ public class NotificationService {
         response = notificationClientService.sendEmail(templateId, emailAddresses.getExcelaEmail(),
             personalisation, reference);
         log.info("Exela email reference response: {}", response.getReference());
-
-        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
     }
 
     public SendEmailResponse sendSmeeAndFordEmail(List<ReturnedCaseDetails> caseDetails, String fromDate,
@@ -336,7 +388,7 @@ public class NotificationService {
         log.info("Sending Disposal Reminder email");
         Map<String, Object> data = caseDetails.getData();
         if (data == null) {
-            log.error("Case data is null for case ID: {}", caseDetails.getId());
+            log.error("sendDisposalReminderEmail Case data is null for case ID: {}", caseDetails.getId());
             return;
         }
         String emailAddress = Optional.of(data)
@@ -349,16 +401,13 @@ public class NotificationService {
                 })
                 .orElseGet(() -> getUserEmail(caseDetails.getId()));
         if (emailAddress == null) {
-            throw new NotificationClientException("Email address not found for case ID: " + caseDetails.getId());
+            throw new NotificationClientException("sendDisposalReminderEmail address not found for case ID: "
+                    + caseDetails.getId());
         }
         ApplicationType applicationType = getApplicationType(caseDetails);
 
-        LanguagePreference languagePreference = Optional.ofNullable(
-                caseDetails.getData().get("languagePreferenceWelsh"))
-                .map(Object::toString)
-                .filter("Yes"::equalsIgnoreCase)
-                .map(yes -> LanguagePreference.WELSH)
-                .orElse(LanguagePreference.ENGLISH);
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+
         log.info("ApplicationType: {}, LanguagePreference: {}", applicationType, languagePreference);
         String templateId;
         if (isCaveat) {
@@ -375,13 +424,15 @@ public class NotificationService {
 
         log.info("templateId: {}", templateId);
         Map<String, String> personalisation =
-                disposalReminderPersonalisationService.getDisposalReminderPersonalisation(caseDetails, applicationType);
+                automatedNotificationPersonalisationService
+                    .getDisposalReminderPersonalisation(caseDetails, applicationType);
         log.info("start sendEmail");
         SendEmailResponse response =
                 notificationClientService.sendEmail(templateId, emailAddress,
                         personalisation, caseDetails.getId().toString());
         log.info("Disposal Reminder email reference response: {}", response.getReference());
     }
+
 
     public Document sendEmailWithDocumentAttached(CaseDetails caseDetails, ExecutorsApplyingNotification executor,
                                                   State state) throws NotificationClientException, IOException {
@@ -500,14 +551,14 @@ public class NotificationService {
 
     private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
                                           DocumentType docType) {
+        final String previewXhtml = pdfManagementService.rerenderAsXhtml(response.getHtml().orElseThrow());
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
-                .body(response.getBody())
+                .body(previewXhtml)
                 .build();
-        Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
-        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
+        return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails) {
@@ -518,7 +569,7 @@ public class NotificationService {
         String evidenceHandled = caseData.getEvidenceHandled();
         if (!StringUtils.isEmpty(evidenceHandled)) {
             log.info("Evidence Handled flag {} ", evidenceHandled);
-            if (evidenceHandled.equals(Constants.NO)
+            if (evidenceHandled.equals(NO)
                 && caseData.getGrantDelayedNotificationDate() == null
                 && !LocalDate.now().isBefore(grantDelayedNotificationReleaseLocalDate)) {
                 log.info("Grant delay notification {} ", caseData.getGrantDelayedNotificationDate());
@@ -667,10 +718,46 @@ public class NotificationService {
                         : ApplicationType.SOLICITOR);
     }
 
+    private LanguagePreference getLanguagePreference(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails) {
+        return Optional.ofNullable(
+                        caseDetails.getData().get("languagePreferenceWelsh"))
+                .map(Object::toString)
+                .filter("Yes"::equalsIgnoreCase)
+                .map(yes -> LanguagePreference.WELSH)
+                .orElse(LanguagePreference.ENGLISH);
+    }
+
+    private String getChannelChoice(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails) {
+        return Optional.ofNullable(caseDetails.getData().get(CHANNEL_CHOICE))
+                .map(Object::toString)
+                .orElse(CHANNEL_CHOICE_DIGITAL);
+    }
+
+    private String getInformationNeededByPost(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails) {
+        return Optional.ofNullable(caseDetails.getData().get(INFORMATION_NEEDED_BY_POST))
+                .map(Object::toString)
+                .orElse(NO);
+    }
+
     private String removedSolicitorNameForPersonalisation(CaseData caseData) {
         return caseData.getRemovedRepresentative() != null
                 ? String.join(" ", caseData.getRemovedRepresentative().getSolicitorFirstName(),
                 caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
+    }
+
+    private String getTemplateId(ApplicationType applicationType) {
+        return notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
+                .get(applicationType)
+                .getDraftCasePaymentSuccess();
+    }
+
+    private void sendEmailForDraftCases(String templateId, Map<String, Object> personalisation)
+            throws NotificationClientException {
+        String reference = LocalDateTime.now().format(EXELA_DATE);
+        log.info("start sendEmail for Draft cases with payment status as Success");
+        SendEmailResponse response = notificationClientService.sendEmail(templateId,
+                emailAddresses.getDraftCaseWithPaymentEmail(), personalisation, reference);
+        log.info("Draft cases email reference response: {}", response.getReference());
     }
 
     CommonNotificationResult doCommonNotificationServiceHandling(
@@ -696,5 +783,194 @@ public class NotificationService {
     enum CommonNotificationResult {
         ALL_OK,
         FOUND_HTML;
+    }
+
+    public Document sendStopReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
+                                          boolean isFirstStopReminder)
+            throws NotificationClientException {
+        log.info("sendStopReminderEmail for case id: {}", caseDetails.getId());
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("sendStopReminderEmail Case data is null for case ID: {}", caseDetails.getId());
+            return null;
+        }
+        String emailAddress = Optional.ofNullable(getEmail(data))
+                .orElseThrow(() -> new NotificationClientException(
+                        "sendStopReminderEmail address not found for case ID: " + caseDetails.getId()));
+        ApplicationType applicationType = getApplicationType(caseDetails);
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+        String templateId = templateService.getStopReminderTemplateId(applicationType, languagePreference,
+                getChannelChoice(caseDetails), getInformationNeededByPost(caseDetails), isFirstStopReminder);
+        log.info("sendStopReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
+        Map<String, Object> personalisation =
+                automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
+        log.info("sendStopReminderEmail start sendEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("Stop Reminder email reference response: {} isFirstStopReminder: {}", response.getReference(),
+                isFirstStopReminder);
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
+    public Document sendHseReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
+            throws NotificationClientException {
+        log.info("sendHseReminderEmail for case id: {}", caseDetails.getId());
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("sendHseReminderEmail Case data is null for HSe case ID: {}", caseDetails.getId());
+            return null;
+        }
+        String emailAddress = getEmail(data);
+        if (emailAddress == null) {
+            throw new NotificationClientException("Email address not found for HSE case ID: " + caseDetails.getId());
+        }
+        ApplicationType applicationType = getApplicationType(caseDetails);
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+        String templateId = templateService.getHseReminderTemplateId(applicationType, languagePreference,
+                getChannelChoice(caseDetails), getInformationNeededByPost(caseDetails));
+        log.info("sendHseReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
+        Map<String, Object> personalisation =
+                automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
+        log.info("start HSE sendEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("Stop HSE Reminder email reference response: {} ", response.getReference());
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
+    public Document sendDormantWarningEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
+            throws NotificationClientException {
+        log.info("sendDormantWarningEmail for case id: {}", caseDetails.getId());
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("sendDormantWarningEmail Case data is null for case ID: {}", caseDetails.getId());
+            return null;
+        }
+        String emailAddress = Optional.ofNullable(getEmail(data))
+                .orElseThrow(() -> new NotificationClientException(
+                        "sendDormantWarningEmail address not found for case ID: " + caseDetails.getId()));
+        ApplicationType applicationType = getApplicationType(caseDetails);
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+        String templateId = templateService.getDormantWarningTemplateId(applicationType, languagePreference);
+        log.info("sendDormantWarningEmail applicationType {}, templateId: {}", applicationType, templateId);
+        Map<String, Object> personalisation =
+                automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
+        log.info("sendDormantWarningEmail start sendEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("Dormant Warning email reference response: {}", response.getReference());
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
+    public void sendUnsubmittedApplicationEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
+            throws NotificationClientException {
+        log.info("sendUnsubmittedApplicationEmail for case id: {}", caseDetails.getId());
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("sendUnsubmittedApplicationEmail Case data is null for case ID: {}", caseDetails.getId());
+            return;
+        }
+        String emailAddress = Optional.ofNullable(getEmail(data))
+                .orElseThrow(() -> new NotificationClientException(
+                        "sendUnsubmittedApplicationEmail address not found for case ID: " + caseDetails.getId()));
+        ApplicationType applicationType = getApplicationType(caseDetails);
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+        String templateId = templateService.getUnsubmittedApplicationTemplateId(applicationType, languagePreference);
+        log.info("sendUnsubmittedApplicationEmail applicationType {}, templateId: {}", applicationType, templateId);
+        Map<String, Object> personalisation =
+                automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
+        log.info("start sendEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("Unsubmitted Application email reference response: {}", response.getReference());
+    }
+
+    public void sendDeclarationNotSignedEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
+            throws NotificationClientException {
+        String caseId = String.valueOf(caseDetails.getId());
+        log.info("sendDeclarationNotSignedEmail for case id: {}", caseId);
+        Map<String, Object> data = caseDetails.getData();
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+        if (data == null) {
+            log.warn("sendDeclarationNotSignedEmail Case data is null for case id {}", caseId);
+            return;
+        }
+
+        Map<String, Object> personalisation =
+                automatedNotificationPersonalisationService.getPersonalisation(caseDetails, ApplicationType.PERSONAL);
+        List<CollectionMember<ExecutorApplying>> unsignedExecutorList = getExecutorsApplyingList(data).stream()
+                .filter(Objects::nonNull)
+                .filter(this::isUnsignedExecutor)
+                .toList();
+        boolean primaryApplicantEmailFailed = false;
+        try {
+            log.info("Preparing to send declarationNotSigned email to primary applicant for case id: {}", caseId);
+            personalisation
+                    .put(PERSONALISATION_EXECUTOR_NAMES_LIST, getExecutorsNamesList(unsignedExecutorList));
+            String templateId = templateService.getDeclarationNotSignedTemplateId(languagePreference, true);
+            String emailAddress = Optional.ofNullable(getEmail(data))
+                    .orElseThrow(() -> new NotificationClientException(
+                            "sendDeclarationNotSignedEmail address not found for case ID: {}" + caseId));
+            sendEmail(emailAddress, templateId, personalisation, caseId);
+        } catch (NotificationClientException e) {
+            log.error("Failed to send declarationNotSigned email to primary applicant for case id: {}", caseId, e);
+            primaryApplicantEmailFailed = true;
+        }
+
+        boolean executorsEmailFailed = false;
+        log.info("Preparing to send declarationNotSigned email to executors for case id: {}", caseId);
+        String templateId = templateService.getDeclarationNotSignedTemplateId(languagePreference, false);
+        for (CollectionMember<ExecutorApplying> executorApplying : unsignedExecutorList) {
+            String emailAddress = executorApplying.getValue().getApplyingExecutorEmail();
+            try {
+                personalisation
+                        .put(PERSONALISATION_EXECUTOR_NAME, executorApplying.getValue().getApplyingExecutorName());
+                sendEmail(emailAddress, templateId, personalisation, caseId);
+            } catch (NotificationClientException e) {
+                log.error("Failed to send declarationNotSigned to executor email: {} for case id: {}",
+                        emailValidationService.getHashedEmail(emailAddress), caseId, e);
+                executorsEmailFailed = true;
+            }
+        }
+
+        if (primaryApplicantEmailFailed || executorsEmailFailed) {
+            String errorMessage = "Failed to send declarationNotSigned email for case ID: " + caseId;
+            throw new NotificationClientException(errorMessage);
+        }
+    }
+
+    private List<CollectionMember<ExecutorApplying>> getExecutorsApplyingList(Map<String, Object> data) {
+        Object raw = data.get(EXECUTORS_APPLYING);
+        if (raw == null) {
+            return Collections.emptyList();
+        }
+
+        try {
+            return objectMapper.convertValue(raw, new TypeReference<List<CollectionMember<ExecutorApplying>>>() {});
+        } catch (Exception e) {
+            log.warn("Failed to parse executorsApplying", e);
+            throw e;
+        }
+    }
+
+    private boolean isUnsignedExecutor(CollectionMember<ExecutorApplying> executorMember) {
+        ExecutorApplying executor = executorMember.getValue();
+        return Boolean.TRUE.equals(executor.getApplyingExecutorEmailSent())
+                && !Boolean.TRUE.equals(executor.getApplyingExecutorAgreed());
+    }
+
+    private List<String> getExecutorsNamesList(List<CollectionMember<ExecutorApplying>> executors) {
+        if (executors == null || executors.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return executors.stream()
+            .map(CollectionMember::getValue)
+            .filter(Objects::nonNull)
+            .map(ExecutorApplying::getApplyingExecutorName)
+            .toList();
     }
 }

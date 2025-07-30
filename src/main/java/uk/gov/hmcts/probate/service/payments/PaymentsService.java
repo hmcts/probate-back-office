@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service.payments;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +64,7 @@ public class PaymentsService {
     private final PDFManagementService pdfManagementService;
     private final DocumentTransformer documentTransformer;
     private final CaveatNotificationService caveatNotificationService;
+    private final ObjectMapper objectMapper;
 
     public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
@@ -129,9 +129,8 @@ public class PaymentsService {
             uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrievedCaseDetails,
             ServiceRequestUpdateResponseDto response) {
 
-        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        Map<String, Object> placeholders = mapper.convertValue(retrievedCaseDetails.getData(), Map.class);
-        CaseData caseData = mapper.convertValue(placeholders, CaseData.class);
+        Map<String, Object> placeholders = objectMapper.convertValue(retrievedCaseDetails.getData(), Map.class);
+        CaseData caseData = objectMapper.convertValue(placeholders, CaseData.class);
 
         CaseDetails caseDetails = new CaseDetails(caseData, null, retrievedCaseDetails.getId());
         caseDetails.setState(retrievedCaseDetails.getState());
@@ -208,9 +207,8 @@ public class PaymentsService {
     private CaveatData buildCaveatData(
             uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrievedCaseDetails,
             ServiceRequestUpdateResponseDto response) {
-        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        Map<String, Object> placeholders = mapper.convertValue(retrievedCaseDetails.getData(), Map.class);
-        uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = mapper.convertValue(placeholders,
+        Map<String, Object> placeholders = objectMapper.convertValue(retrievedCaseDetails.getData(), Map.class);
+        uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = objectMapper.convertValue(placeholders,
                 uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.class);
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, null, retrievedCaseDetails.getId());
         return isSuccessfulPayment(response.getServiceRequestStatus())

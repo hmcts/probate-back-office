@@ -21,6 +21,8 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
@@ -105,22 +107,31 @@ class PDFManagementServiceTest {
     private FileSystemResourceService fileSystemResourceServiceMock;
     @Mock
     private Map<String, Object> placeholdersMock;
+    @Mock
+    private SecurityUtils securityUtils;
 
     private PDFManagementService underTest;
+
+    private final SecurityDTO securityDTO = SecurityDTO.builder()
+            .userId("mock-user")
+            .authorisation("authToken")
+            .serviceAuthorisation("serviceAuthToken")
+            .build();
 
     private static final String SELF_URL = "selfURL";
     private static final String BINARY_URL = "binaryURL";
 
     @BeforeEach
     public void setUp() {
+        when(securityUtils.getOrDefaultCaseworkerSecurityDTO()).thenReturn(securityDTO);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetails);
         when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetails);
         when(pdfServiceConfiguration.getGrantSignatureEncryptedFile()).thenReturn("image.png");
         when(pdfServiceConfiguration.getGrantSignatureSecretKey()).thenReturn("testkey123456789");
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(any(String.class)))
                 .thenReturn("1kbCfLrFBFTQpS2PnDDYW2r11jfRBVFbjhdLYDEMCR8=");
-        underTest = new PDFManagementService(pdfGeneratorServiceMock, httpServletRequest, documentManagementServiceMock,
-                pdfServiceConfiguration, fileSystemResourceServiceMock, pdfDecoratorService);
+        underTest = new PDFManagementService(pdfGeneratorServiceMock, documentManagementServiceMock,
+                pdfServiceConfiguration, fileSystemResourceServiceMock, pdfDecoratorService, securityUtils);
     }
 
     @Test
@@ -367,5 +378,16 @@ class PDFManagementServiceTest {
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(BINARY_URL, response.getDocumentLink().getDocumentBinaryUrl());
         assertEquals(SELF_URL, response.getDocumentLink().getDocumentUrl());
+        assertEquals("mock-user", response.getDocumentGeneratedBy());
+    }
+
+    @Test
+    void testXhtmlReplacesBrTag() {
+        final String inputHtml = "<p>something</p><br><p>other</p>";
+        final String expectedXhtml = "<p>something</p><br /><p>other</p>";
+
+        final String actualXhtml = underTest.rerenderAsXhtml(inputHtml);
+
+        assertEquals(expectedXhtml, actualXhtml, "Expected result to have closed <br /> tag");
     }
 }

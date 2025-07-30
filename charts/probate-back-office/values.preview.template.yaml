@@ -274,6 +274,7 @@ aac-manage-case-assignment:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  devmemoryLimits: 1.5Gi
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
@@ -310,6 +311,8 @@ java:
           alias: hmrcEmail
         - name: sealedAndCertifiedEmail
           alias: sealedAndCertifiedEmail
+        - name: draftCaseWithPaymentEmail
+          alias: draftCaseWithPaymentEmail
         - name: ftpSignature
           alias: ftp.client.signature
         - name: ftpEnv

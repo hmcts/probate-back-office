@@ -14,9 +14,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.BulkPrintService;
@@ -90,6 +91,8 @@ class DocumentControllerIT {
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
     private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final String USER_ID_HEADER = "user-id";
+    private static final String USER_ID = "someUserId";
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
             .familyName("familyName")
             .givenName("givenname")
@@ -105,25 +108,25 @@ class DocumentControllerIT {
     @Autowired
     private TestUtils testUtils;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private NotificationService notificationService;
 
-    @SpyBean
+    @MockitoSpyBean
     private DocumentService documentService;
 
-    @MockBean
+    @MockitoBean
     private BulkPrintService bulkPrintService;
 
-    @MockBean
+    @MockitoBean
     private DocumentGeneratorService documentGeneratorService;
 
-    @MockBean
+    @MockitoBean
     private EvidenceUploadService evidenceUploadService;
 
-    @MockBean
+    @MockitoBean
     private IdamApi idamApi;
 
     @Mock
@@ -132,14 +135,17 @@ class DocumentControllerIT {
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
 
-    @MockBean
+    @MockitoBean
     private UserInfoService userInfoService;
 
-    @SpyBean
+    @MockitoSpyBean
     private SecurityUtils securityUtils;
 
-    @MockBean
+    @MockitoBean
     private CaseDocumentClient caseDocumentClient;
+
+    @MockitoBean
+    private FeatureToggleService featureToggleService;
 
     @BeforeEach
     public void setUp() throws NotificationClientException {
@@ -234,6 +240,10 @@ class DocumentControllerIT {
                 .thenCallRealMethod();
 
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
+
+        when(featureToggleService.enableAmendLegalStatementFiletypeCheck()).thenReturn(true);
+
+        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
     }
 
     @Test
@@ -1108,9 +1118,6 @@ class DocumentControllerIT {
     void shouldAcceptPdfValidateAmendLegalStatement() throws Exception {
         String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_probate.json");
 
-        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
-        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
-
         final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
                 uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
                         .mimeType(MediaType.APPLICATION_PDF_VALUE)
@@ -1118,6 +1125,8 @@ class DocumentControllerIT {
         when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/validateAmendLegalStatement")
+                .header(AUTH_HEADER, AUTH_TOKEN)
+                .header(USER_ID_HEADER, USER_ID)
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -1158,9 +1167,6 @@ class DocumentControllerIT {
     void shouldRejectNonPdfValidateAmendLegalStatement() throws Exception {
         String payload = testUtils.getStringFromFile("uploadAmendedLegalStatement_PP_probate.json");
 
-        // unclear why when(sU.gST()).thenReturn("sA"); doesn't work, but this does.
-        doReturn("serviceAuth").when(securityUtils).generateServiceToken();
-
         final uk.gov.hmcts.reform.ccd.document.am.model.Document mockDocument =
                 uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
                         .mimeType(MediaType.IMAGE_PNG_VALUE)
@@ -1168,6 +1174,8 @@ class DocumentControllerIT {
         when(caseDocumentClient.getMetadataForDocument(any(), any(), anyString())).thenReturn(mockDocument);
 
         final var request = post("/document/validateAmendLegalStatement")
+                .header(AUTH_HEADER, AUTH_TOKEN)
+                .header(USER_ID_HEADER, USER_ID)
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON);
 
