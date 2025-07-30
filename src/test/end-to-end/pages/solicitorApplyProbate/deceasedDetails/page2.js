@@ -3,25 +3,15 @@
 const deceasedDetailsConfig = require('./deceasedDetailsConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (applicationType, iHTFormsCompleted, whichIHTFormsCompleted) {
+module.exports = async function (applicationType, iHTFormsCompleted) {
     const I = this;
     await I.runAccessibilityTest();
 
     if (applicationType === 'EE') {
         if (iHTFormsCompleted === 'Yes') {
-            await I.click(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionYes}`);
             await I.waitForText(deceasedDetailsConfig.page2_whichIHTFormsLabel);
-            await I.waitForText(deceasedDetailsConfig.page2_IHT207Label);
-            await I.waitForText(deceasedDetailsConfig.page2_IHT400421Label);
-            await I.waitForText(deceasedDetailsConfig.page2_IHT400Label);
+            await I.click(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionYes}`);
 
-            if (whichIHTFormsCompleted === 'IHT207') {
-                await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE207}`});
-            } else if (whichIHTFormsCompleted === 'IHT400') {
-                await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400}`});
-            } else {
-                await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400421}`});
-            }
         } else {
             await I.click(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionNo}`);
             await I.waitForText(deceasedDetailsConfig.page2_grossValueIHTEstateLabel);
