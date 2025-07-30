@@ -183,22 +183,23 @@ public class NotificationService {
     public Document emailPreview(CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
-        List<CollectionMember<UploadDocument>> cwDocumentsUpload = caseData.getCwDocumentsUpload();
 
-        String templateId = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION,
-            caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
-                null, caseData.getChannelChoice(), caseData.getInformationNeededByPost());
         Map<String, Object> personalisation =
                 grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                         registry);
 
         updatePersonalisationForSolicitor(caseData, personalisation);
+        List<CollectionMember<UploadDocument>> cwDocumentsUpload = caseData.getCwDocumentsUpload();
         if (cwDocumentsUpload != null && cwDocumentsUpload.size() > 0) {
             log.info("Got cwDocumentsUpload for case: {}", cwDocumentsUpload);
             addCwDocumentToPersonalisation(cwDocumentsUpload, personalisation);
         }
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
+
+        String templateId = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION,
+                caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
+                null, caseData.getChannelChoice(), caseData.getInformationNeededByPost());
 
         TemplatePreview previewResponse =
                 notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
