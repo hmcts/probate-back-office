@@ -56,8 +56,8 @@ public class AutomatedNotificationService {
         SearchResult searchResult = elasticSearchRepository.fetchFirstPage(
                 securityDTO.getAuthorisation(), strategy.getCaseTypeName(),
                 query, date, date);
-        log.info("sendStopReminder query executed for date: {}, cases found: {}",
-                date, searchResult.getTotal());
+        log.info("{} query executed for date: {}, cases found: {}",
+                strategy.getType(), date, searchResult.getTotal());
         if (searchResult.getTotal() == 0) {
             log.info("No cases found for query: {} for date: {}", query, date);
             return;
