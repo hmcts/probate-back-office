@@ -328,24 +328,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hmcts/playwright-common@npm:1.0.32":
-  version: 1.0.32
-  resolution: "@hmcts/playwright-common@npm:1.0.32"
+"@hmcts/playwright-common@npm:^1.0.32":
+  version: 1.0.33
+  resolution: "@hmcts/playwright-common@npm:1.0.33"
   dependencies:
     "@axe-core/playwright": "npm:^4.10.0"
     "@eslint/js": "npm:^9.11.1"
     "@typescript-eslint/eslint-plugin": "npm:^8.8.0"
     eslint: "npm:^9.11.1"
-    eslint-plugin-playwright: "npm:^1.6.2"
+    eslint-plugin-playwright: "npm:^2.0.0"
     get-port: "npm:^7.1.0"
-    globals: "npm:^15.10.0"
+    globals: "npm:^16.0.0"
     lighthouse: "npm:^12.2.1"
     playwright-lighthouse: "npm:^4.0.0"
     typescript: "npm:^5.6.2"
     typescript-eslint: "npm:^8.8.0"
   peerDependencies:
     "@playwright/test": ^1.53.0
-  checksum: 10/cec3a079d220c2402e9621693d3b0581b3e6bac8e33304c93d418ae8de73f05f18611413d9d26697a5c5a55d31610d75381388e79ed2eabd7bc6d21764163496
+  checksum: 10/bcdde79e4dfd16635614493c234ed49fc6ecd7d8c0d33d649c8b368e262d37a986fbfcaf9ea99d30b00899304986ede7626ab02626dc5b8ea6e5fd4b53953052
   languageName: node
   linkType: hard
 
@@ -1610,7 +1610,7 @@ __metadata:
   dependencies:
     "@axe-core/playwright": "npm:^4.9.1"
     "@date-fns/upgrade": "npm:^1.0.3"
-    "@hmcts/playwright-common": "npm:1.0.32"
+    "@hmcts/playwright-common": "npm:^1.0.32"
     "@playwright/test": "npm:^1.43.1"
     "@types/node": "npm:^22.0.0"
     chai: "npm:^4.1.0"
@@ -3934,18 +3934,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-playwright@npm:^1.6.2":
-  version: 1.8.3
-  resolution: "eslint-plugin-playwright@npm:1.8.3"
+"eslint-plugin-playwright@npm:^2.0.0":
+  version: 2.2.1
+  resolution: "eslint-plugin-playwright@npm:2.2.1"
   dependencies:
     globals: "npm:^13.23.0"
   peerDependencies:
     eslint: ">=8.40.0"
-    eslint-plugin-jest: ">=25"
-  peerDependenciesMeta:
-    eslint-plugin-jest:
-      optional: true
-  checksum: 10/8a0b9f51ba1eb09e64e15452cc78ab7fc82a68e45a432185acc2851eb0ad67b683e9bb2ca9ac9791267608ca0ceb0fca2b551868d494831e1ed62b2c566c099e
+  checksum: 10/9196ae13506f5f088842886990d5850cadb0d47508de50b3927d387cefa70a70a53f7891e7a095d1813d880bf81fe4e0d183af703ef01c864d05a487dc20bc58
   languageName: node
   linkType: hard
 
@@ -5168,10 +5164,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^15.10.0, globals@npm:^15.14.0":
+"globals@npm:^15.14.0":
   version: 15.15.0
   resolution: "globals@npm:15.15.0"
   checksum: 10/7f561c87b2fd381b27fc2db7df8a4ea7a9bb378667b8a7193e61fd2ca3a876479174e2a303a74345fbea6e1242e16db48915c1fd3bf35adcf4060a795b425e18
+  languageName: node
+  linkType: hard
+
+"globals@npm:^16.0.0":
+  version: 16.3.0
+  resolution: "globals@npm:16.3.0"
+  checksum: 10/accb0939d993a1c461df8d961ce9911a9a96120929e0a61057ae8e75b7df0a8bf8089da0f4e3a476db0211156416fbd26e222a56f74b389a140b34481c0a72b0
   languageName: node
   linkType: hard
 
