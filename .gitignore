@@ -36,6 +36,7 @@ node_modules/\.bin/
 node_modules/
 
 src/test/end-to-end/functional-output/
+src/test/end-to-end/.env
 /src/main/build/
 
 
@@ -46,6 +47,7 @@ src/test/end-to-end/functional-output/
 /src/main/generated/
 
 .aat-env
+src/test/PlaywrightTest/.env
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -57,18 +59,4 @@ src/test/end-to-end/functional-output/
 /playwright-report/
 /playwright/.cache/
 /test-results/
-/playwright-report/
 /blob-report/
-/playwright/.cache/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
