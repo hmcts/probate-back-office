@@ -1142,6 +1142,7 @@ class CallbackResponseTransformerTest {
         assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
         assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
         assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
+        assertNull(callbackResponse.getData().getApplicationSubmittedDate());
     }
 
     @Test
@@ -1231,7 +1232,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
                 SENTEMAIL, coversheetMock, USER_ID);
 
-        assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
+        assertNull(callbackResponse.getData().getDeceasedDateOfBirth());
     }
 
     @Test
@@ -1243,7 +1244,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
                 SENTEMAIL, coversheetMock, USER_ID);
 
-        assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
+        assertNull(callbackResponse.getData().getDeceasedDateOfDeath());
     }
 
     @Test
@@ -1266,6 +1267,22 @@ class CallbackResponseTransformerTest {
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
         assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
+    }
+
+    @Test
+    void shouldSetApplicationSubmittedDateForNoPaymentRequired() {
+        CaseData caseData = caseDataBuilder.build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.ZERO);
+
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+                SENTEMAIL, coversheetMock, USER_ID);
+        assertAll(
+                () -> assertEquals(BigDecimal.ZERO.toString(), callbackResponse.getData().getTotalFee()),
+                () -> assertEquals(CallbackResponseTransformer.dateTimeFormatter.format(LocalDate.now()),
+                callbackResponse.getData().getApplicationSubmittedDate())
+        );
     }
 
     @Test

@@ -164,8 +164,7 @@ public class CaveatController {
             @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest,
             BindingResult bindingResult,
-            HttpServletRequest request)
-        throws NotificationClientException {
+            HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
             log.error("Case Id: {} ERROR: {}", caveatCallbackRequest.getCaseDetails().getId(), bindingResult);

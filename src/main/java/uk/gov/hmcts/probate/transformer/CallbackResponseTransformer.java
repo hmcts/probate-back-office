@@ -742,7 +742,8 @@ public class CallbackResponseTransformer {
         final var applicationFee = transformMoneyGBPToString(feesResponse.getApplicationFeeResponse().getFeeAmount());
         final var totalFee = transformMoneyGBPToString(feesResponse.getTotalAmount());
 
-        final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
+        final var applicationSubmittedDate = feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO) == 0
+                ? dateTimeFormatter.format(LocalDate.now()) : null;
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
         caseDataTransformer
                 .transformForSolicitorApplicationCompletion(callbackRequest, feesResponse.getTotalAmount());
