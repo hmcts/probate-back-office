@@ -8,9 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SerenityJUnit5Extension.class)
 class LegalStatementGenerationTests extends DocumentGenerationTestBase {
@@ -109,13 +111,13 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
-                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
-                () -> assertTrue(!response.contains(AUTHORISED_SOLICITOR)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_GOP)),
-                () -> assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT)),
-                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+                () -> assertThat(response, containsString(LEGAL_STATEMENT)),
+                () -> assertThat(response, containsString(DECLARATION_CIVIL_WORDING)),
+                () -> assertThat(response, not(containsString(AUTHORISED_SOLICITOR))),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_GOP)),
+                () -> assertThat(response, containsString(PRIMARY_APPLICANT_STATEMENT)),
+                () -> assertThat(response, not(containsString(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC)))
         );
     }
 
@@ -124,15 +126,15 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_PROBATE_WELSH_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_WELSH)),
-                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
-                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_GOP)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_GOP_WELSH)),
-                () -> assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT)),
-                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+                () -> assertThat(response, containsString(LEGAL_STATEMENT)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_WELSH)),
+                () -> assertThat(response, containsString(DECLARATION_CIVIL_WORDING)),
+                () -> assertThat(response, containsString(DECLARATION_CIVIL_WORDING_WELSH)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_GOP)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_GOP_WELSH)),
+                () -> assertThat(response, containsString(PRIMARY_APPLICANT_STATEMENT)),
+                () -> assertThat(response, not(containsString(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC)))
         );
     }
 
@@ -141,13 +143,13 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
-                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
-                () -> assertTrue(!response.contains(AUTHORISED_SOLICITOR)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_GOP)),
-                () -> assertTrue(response.contains(APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA)),
-                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+                () -> assertThat(response, containsString(LEGAL_STATEMENT)),
+                () -> assertThat(response, containsString(DECLARATION_CIVIL_WORDING)),
+                () -> assertThat(response, not(containsString(AUTHORISED_SOLICITOR))),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_GOP)),
+                () -> assertThat(response, containsString(APPLYING_EXECUTOR_STATEMENT_OLD_SCHEMA)),
+                () -> assertThat(response, not(containsString(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC)))
         );
     }
 
@@ -156,13 +158,13 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
-                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
-                () -> assertTrue(response.contains(AUTHORISED_SOLICITOR)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
-                () -> assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE)),
-                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+                () -> assertThat(response, containsString(LEGAL_STATEMENT)),
+                () -> assertThat(response, containsString(DECLARATION_CIVIL_WORDING)),
+                () -> assertThat(response, containsString(AUTHORISED_SOLICITOR)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertThat(response, containsString(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_INTESTATE)),
+                () -> assertThat(response, not(containsString(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC)))
         );
     }
 
@@ -171,15 +173,15 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_INTESTACY_WELSH_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_WELSH)),
-                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
-                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH)),
-                () -> assertTrue(response.contains(AUTHORISED_SOLICITOR)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
-                () -> assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE_WELSH))
+                () -> assertThat(response, containsString(LEGAL_STATEMENT)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_WELSH)),
+                () -> assertThat(response, containsString(DECLARATION_CIVIL_WORDING)),
+                () -> assertThat(response, containsString(DECLARATION_CIVIL_WORDING_WELSH)),
+                () -> assertThat(response, containsString(AUTHORISED_SOLICITOR)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertThat(response, containsString(PRIMARY_APPLICANT_STATEMENT_OLD_SCHEMA)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_INTESTATE)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_INTESTATE_WELSH))
         );
     }
 
@@ -188,12 +190,12 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
-                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
-                () -> assertTrue(response.contains(AUTHORISED_SOLICITOR)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL)),
-                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+                () -> assertThat(response, containsString(LEGAL_STATEMENT)),
+                () -> assertThat(response, containsString(DECLARATION_CIVIL_WORDING)),
+                () -> assertThat(response, containsString(AUTHORISED_SOLICITOR)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_ADMON_WILL)),
+                () -> assertThat(response, not(containsString(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC)))
         );
     }
 
@@ -202,15 +204,15 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_WELSH_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_WELSH)),
-                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING)),
-                () -> assertTrue(response.contains(DECLARATION_CIVIL_WORDING_WELSH)),
-                () -> assertTrue(response.contains(AUTHORISED_SOLICITOR)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL)),
-                () -> assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL_WELSH)),
-                () -> assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC))
+                () -> assertThat(response, containsString(LEGAL_STATEMENT)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_WELSH)),
+                () -> assertThat(response, containsString(DECLARATION_CIVIL_WORDING)),
+                () -> assertThat(response, containsString(DECLARATION_CIVIL_WORDING_WELSH)),
+                () -> assertThat(response, containsString(AUTHORISED_SOLICITOR)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_DIED_ON)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_ADMON_WILL)),
+                () -> assertThat(response, containsString(LEGAL_STATEMENT_ADMON_WILL_WELSH)),
+                () -> assertThat(response, not(containsString(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC)))
         );
     }
 
@@ -219,10 +221,10 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(FURTHER_EVIDENCE)),
-                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_UK)),
-                () -> assertTrue(response.contains(FIRM_AUTHORISATION)),
-                () -> assertTrue(response.contains(WILL_NO_CODICILS))
+                () -> assertThat(response, containsString(FURTHER_EVIDENCE)),
+                () -> assertThat(response, containsString(DOMICILITY_SENTENCE_UK)),
+                () -> assertThat(response, containsString(FIRM_AUTHORISATION)),
+                () -> assertThat(response, containsString(WILL_NO_CODICILS))
         );
     }
 
@@ -231,12 +233,12 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_CODICILS_DATES, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(FURTHER_EVIDENCE)),
-                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_UK)),
-                () -> assertTrue(response.contains(FIRM_AUTHORISATION)),
-                () -> assertTrue(response.contains(WILL_NO_CODICILS)),
-                () -> assertTrue(response.contains(SIGNED_DATE)),
-                () -> assertTrue(response.contains(CODICIL_DATES))
+                () -> assertThat(response, containsString(FURTHER_EVIDENCE)),
+                () -> assertThat(response, containsString(DOMICILITY_SENTENCE_UK)),
+                () -> assertThat(response, containsString(FIRM_AUTHORISATION)),
+                () -> assertThat(response, containsString(WILL_NO_CODICILS)),
+                () -> assertThat(response, containsString(SIGNED_DATE)),
+                () -> assertThat(response, containsString(CODICIL_DATES))
         );
     }
 
@@ -245,11 +247,11 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_ONE_CODICILS, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
-                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_UK)),
-                () -> assertTrue(response.contains(FIRM_AUTHORISATION)),
-                () -> assertTrue(response.contains(WILL_WITH_CODICIL)),
-                () -> assertTrue(response.contains(WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION))
+                () -> assertThat(response, containsString(LEGAL_STATEMENT)),
+                () -> assertThat(response, containsString(DOMICILITY_SENTENCE_UK)),
+                () -> assertThat(response, containsString(FIRM_AUTHORISATION)),
+                () -> assertThat(response, containsString(WILL_WITH_CODICIL)),
+                () -> assertThat(response, containsString(WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION))
         );
     }
 
@@ -258,10 +260,10 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_MULTIPLE_CODICILS, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
-                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_UK)),
-                () -> assertTrue(response.contains(FIRM_AUTHORISATION)),
-                () -> assertTrue(response.contains(WILL_WITH__MULTIPLE_CODICILS))
+                () -> assertThat(response, containsString(LEGAL_STATEMENT)),
+                () -> assertThat(response, containsString(DOMICILITY_SENTENCE_UK)),
+                () -> assertThat(response, containsString(FIRM_AUTHORISATION)),
+                () -> assertThat(response, containsString(WILL_WITH__MULTIPLE_CODICILS))
         );
     }
 
@@ -270,11 +272,11 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(LEGAL_STATEMENT)),
-                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_UK)),
-                () -> assertTrue(response.contains(FIRM_AUTHORISATION)),
-                () -> assertTrue(!response.contains(WILL_WITH_CODICIL)),
-                () -> assertTrue(!response.contains(WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION))
+                () -> assertThat(response, containsString(LEGAL_STATEMENT)),
+                () -> assertThat(response, containsString(DOMICILITY_SENTENCE_UK)),
+                () -> assertThat(response, containsString(FIRM_AUTHORISATION)),
+                () -> assertThat(response, not(containsString(WILL_WITH_CODICIL))),
+                () -> assertThat(response, not(containsString(WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION)))
         );
     }
 
@@ -282,7 +284,7 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     void verifySuccessForFurtherEvidenceIntestacy() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains(FURTHER_EVIDENCE));
+        assertThat(response, containsString(FURTHER_EVIDENCE));
     }
 
     @Test
@@ -290,8 +292,8 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(CODICILS_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(DOMICILITY_SENTENCE_NON_UK)),
-                () -> assertTrue(response.contains(FIRM_AUTHORISATION))
+                () -> assertThat(response, containsString(DOMICILITY_SENTENCE_NON_UK)),
+                () -> assertThat(response, containsString(FIRM_AUTHORISATION))
         );
     }
 
@@ -300,45 +302,45 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertAll(
-                () -> assertTrue(response.contains(SIGNED_DATE)),
-                () -> assertTrue(response.contains("1st January 2021")),
-                () -> assertTrue(response.contains(FURTHER_EVIDENCE))
+                () -> assertThat(response, containsString(SIGNED_DATE)),
+                () -> assertThat(response, containsString("1st January 2021")),
+                () -> assertThat(response, containsString(FURTHER_EVIDENCE))
         );
     }
 
     @Test
     void verifySoTDomiciledInEnglandAndWales() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("Main Applicant of Test, Test, A1 2BC, UK make the following"
-            + " statement:The person who diedDe Ceased, of Test, Test, Test, A1 2BC, was born on"
-            + " 23/01/1998 and died on 23/01/2020, domiciled in England and Wales."));
+        assertThat(response, containsString("Main Applicant of Test, Test, A1 2BC, UK make the following"
+                + " statement:The person who diedDe Ceased, of Test, Test, Test, A1 2BC, was born on"
+                + " 23/01/1998 and died on 23/01/2020, domiciled in England and Wales."));
     }
 
     @Test
     void verifySoTIndividualExecutorPowerReserved() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("executor4_name, another executor named in the will,"
-            + " is not making this application but reserves power to do so at a later date."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString("executor4_name, another executor named in the will,"
+                + " is not making this application but reserves power to do so at a later date."));
     }
 
     @Test
     void verifySoTIndividualExecutorRenunciation() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("executor3_name, another executor named in the will, "
-            + "has renounced probate and letters "
-            + "of administration with will annexed"));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString("executor3_name, another executor named in the will, "
+                + "has renounced probate and letters "
+                + "of administration with will annexed"));
     }
 
     @Test
     void verifySoTExecutorDiedBeforeAndAfterDeceased() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
-            GENERATE_LEGAL_STATEMENT);
+                GENERATE_LEGAL_STATEMENT);
         assertAll(
-                () -> assertTrue(response.contains(
+                () -> assertThat(response, containsString(
                     "executor1_name, another executor named in the will, has died in the lifetime of the deceased.")),
-                () -> assertTrue(response.contains(
+                () -> assertThat(response, containsString(
                     "executor2_name, another executor named in the will, has survived the deceased and died since."))
         );
     }
@@ -346,130 +348,132 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     @Test
     void verifySoTExecutorLacksMentalCapacity() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
-            "executor5_name, another executor named in the will, lacks capacity to manage their"
-                + " affairs under the Mental Capacity Act 2005 and is unable to act as an executor."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString(
+                "executor5_name, another executor named in the will, lacks capacity to manage their"
+                        + " affairs under the Mental Capacity Act 2005 and is unable to act as an executor."));
     }
 
     @Test
     void verifySoTExecutorPowerReservedAndNoticeDispenseGiven() throws IOException {
         final String response = generateSotDocument("solicitorPayloadDispenseNotGiven.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("Notice of this application has on the 10th October 2010 "
-            + "been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules "
-            + "1987 to executor1_name to whom power is to be reserved."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString("Notice of this application has on the 10th October 2010 "
+                + "been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules "
+                + "1987 to executor1_name to whom power is to be reserved."));
     }
 
     @Test
     void verifySoTExecutorConcurrentApplication() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("We are concurrently applying for notice of this application"
-            + " to be dispensed with under Rule 27(3) of the Non-Contentious Probate Rules"
-            + " 1987 to executor6_name to whom power is to be reserved."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString("We are concurrently applying for notice of this application"
+                + " to be dispensed with under Rule 27(3) of the Non-Contentious Probate Rules"
+                + " 1987 to executor6_name to whom power is to be reserved."));
     }
 
     @Test
     void verifySoTFirstParagraphPersonWhoDiedForClearingOne() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
-            "The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
-                + " BA5 2PA, United Kingdom was born on 12/01/2020 and died on 14/01/2020, "
-                + "domiciled in England and Wales. The will appoints an executor."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString(
+                "The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
+                        + " BA5 2PA, United Kingdom was born on 12/01/2020 and died on 14/01/2020, "
+                        + "domiciled in England and Wales. The will appoints an executor."));
     }
 
     @Test
     void verifySoTFirstParagraphPersonWhoDiedForClearingTwo() throws IOException {
         final String response = generateSotDocument("solicitorPayloadPartnersInFirm.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
-            "The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
-                + " BA5 2PA, United Kingdom was born on 12/01/2020 and died on 14/01/2020, "
-                + "domiciled in England and Wales. The will appoints an executor."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString(
+                "The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
+                        + " BA5 2PA, United Kingdom was born on 12/01/2020 and died on 14/01/2020, "
+                        + "domiciled in England and Wales. The will appoints an executor."));
     }
 
 
     @Test
     void verifySecondParagraphFirmSuccessionForClearingThree() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString(
             "The executor Partner Exec, is the only profit-sharing partner and stakeholder in the firm "
-                + "Successor firm that had succeeded to and carried on the practice of the firm Firmname will, "
-                + "at the date of death of the deceased."));
+                    + "Successor firm that had succeeded to and carried on the practice of the firm Firmname will, "
+                    + "at the date of death of the deceased."));
 
     }
 
     @Test
     void verifySoTSecondParagraphFirmSuccessionForClearingFour() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("The executor Partner Exec, is the only profit-sharing partner and "
-            + "stakeholder in the firm Firmname will, at the date of death of the deceased."));
+        assertThat(response, containsString("The executor Partner Exec, is the only profit-sharing partner and "
+                + "stakeholder in the firm Firmname will, at the date of death of the deceased."));
 
     }
 
     @Test
     void verifySoTThirdParagraphOthersRenouncingInSuccessorClearingNine() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmRenounce.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
-            "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
-                + " that had succeeded to and carried on the practice of the "
-                + "firm Firmname will, at the date of death of the deceased."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString(
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
+                        + " that had succeeded to and carried on the practice of the "
+                        + "firm Firmname will, at the date of death of the deceased."));
 
     }
 
     @Test
     void verifySoTThirdParagraphOthersRenouncingInPartnerFirmClearingTen() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmRenounce.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
-            "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
-                + " that had succeeded to and carried on the practice of the "
-                + "firm Firmname will, at the date of death of the deceased."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString(
+                "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
+                        + " that had succeeded to and carried on the practice of the "
+                        + "firm Firmname will, at the date of death of the deceased."));
 
     }
 
     @Test
     void verifySoTFourthParagraphAllSuccessorPartnersRenouncingClearingFive() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmAllRenounceNoAdditional.json",
-            GENERATE_LEGAL_STATEMENT);
+                GENERATE_LEGAL_STATEMENT);
         // all partners are renouncing, so other partners in the collection are ignored, and wording is
         // 'the executor named in the will' as opposed to 'an executor named in the will'
-        assertTrue(response.contains("Probate Practioner, the executor named in the will, is applying for probate."));
+        assertThat(response,
+                containsString("Probate Practioner, the executor named in the will, is applying for probate."));
     }
 
     @Test
     void verifySoTFourthParagraphAllPartnerFirmsRenouncingClearingSix() throws IOException {
         final String response = generateSotDocument("solicitorPayloadPartnersAllRenounce.json",
-            GENERATE_LEGAL_STATEMENT);
+                GENERATE_LEGAL_STATEMENT);
         // all partners are renouncing, so other partners in the collection are ignored, and wording is
         // 'the executor named in the will' as opposed to 'an executor named in the will'
-        assertTrue(response.contains("Probate Practioner, the executor named in the will, is applying for probate."));
+        assertThat(response,
+                containsString("Probate Practioner, the executor named in the will, is applying for probate."));
     }
 
     @Test
     void verifySoTFifthParagraphSeniorJudgeDistrictClearingSeven() throws IOException {
         final String response = generateSotDocument("solicitorPayloadJudgeSeniorDistrict.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString(
             "The executor named in the will has by a resolution, which has been filed with the "
-                + "Senior District Judge or Registry,"
-                + " in which Exfn1 Exln1 identified by the position they hold and which is still in force, "
-                + "appointed them "
-                + "for the purpose of applying for probate of the will or for grants of probate on its behalf."));
+                    + "Senior District Judge or Registry,"
+                    + " in which Exfn1 Exln1 identified by the position they hold and which is still in force, "
+                    + "appointed them "
+                    + "for the purpose of applying for probate of the will or for grants of probate on its behalf."));
 
     }
 
     @Test
     void verifySoTFifthParagraphLodgedApplicationClearingEight() throws IOException {
         final String response = generateSotDocument("solicitorPayloadLodgeApp.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("The executor named in the will has by a resolution, certified copy"
-            + " of which is lodged with this application, in which Exfn1 Exln1 identified by the position"
-            + " they hold and which is still in force, appointed them for the purpose of applying for probate"
-            + " of the will or for grants of probate on its behalf."));
+        assertThat(response, containsString("The executor named in the will has by a resolution, certified copy"
+                + " of which is lodged with this application, in which Exfn1 Exln1 identified by the position"
+                + " they hold and which is still in force, appointed them for the purpose of applying for probate"
+                + " of the will or for grants of probate on its behalf."));
 
     }
 
@@ -477,238 +481,246 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     @Test
     void verifySoTFirstParagraphClearancePartnerSucceeded() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString(
             "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm"
-                + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
-                + " at the date of death of the deceased."));
+                    + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
+                    + " at the date of death of the deceased."));
 
     }
 
     @Test
     void verifySoTSecondParagraphSoleSucceeded() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString(
             "The executor Partner Exec, is the only profit-sharing partner and stakeholder in the firm"
-                + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
-                + " at the date of death of the deceased."));
+                    + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will,"
+                    + " at the date of death of the deceased."));
 
     }
 
     @Test
     void verifySoTThirdParagraphPartnerRenounceSucceeded() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmRenounce.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains(
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString(
             "The executor Partner Exec, is a profit-sharing partner and stakeholder in the "
-                + "firm Successor firm that had succeeded to and carried on the practice of the firm Firmname "
-                + "will, at the date of death of the deceased."));
+                    + "firm Successor firm that had succeeded to and carried on the practice of the firm Firmname "
+                    + "will, at the date of death of the deceased."));
 
     }
 
     @Test
     void verifySoTFourthParagraphPartnerAllRenounceSucceeded() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmAllRenounce.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("Probate Practioner, an executor named in the will, is applying for probate."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response,
+                containsString("Probate Practioner, an executor named in the will, is applying for probate."));
     }
 
     @Test
     void verifySoTFifthParagraphJudgeSeniorDistrict() throws IOException {
         final String response = generateSotDocument("solicitorPayloadJudgeSeniorDistrict.json",
-            GENERATE_LEGAL_STATEMENT);
+                GENERATE_LEGAL_STATEMENT);
 
-        assertTrue(response.contains("We, Probate Practioner of Chapter Of Wells, Wells Cathedral, Wells, Somerset, "
-            + "BA5 2PA, United Kingdom and Exfn1 Exln1 of Chapter Of Wells, Wells Cathedral, Somerset, Wells, "
-            + "Somerset, BA5 2PA, United Kingdom make the following statement:"));
-
-        assertTrue(response.contains("The executor named in the will has by a resolution,"
-            + " which has been filed with the Senior District Judge or Registry, in which Exfn1 Exln1 identified by"
-            + " the position they hold and which is still in force, "
-            + "appointed them for the purpose of applying for probate"
-            + " of the will or for grants of probate on its behalf."));
-
-        assertTrue(response.contains("Exfn1 Exln1 is acting on behalf of Trust_Corporation_pls trust corporation. "
-            + "They hold the position of Solicitor as per the resolution."));
+        assertAll(
+                () -> assertThat(response,
+                    containsString("We, Probate Practioner of Chapter Of Wells, Wells Cathedral, Wells, Somerset, "
+                    + "BA5 2PA, United Kingdom and Exfn1 Exln1 of Chapter Of Wells, Wells Cathedral, Somerset, Wells, "
+                    + "Somerset, BA5 2PA, United Kingdom make the following statement:")),
+                () -> assertThat(response, containsString("The executor named in the will has by a resolution,"
+                + " which has been filed with the Senior District Judge or Registry,"
+                + " in which Exfn1 Exln1 identified by"
+                + " the position they hold and which is still in force, "
+                + "appointed them for the purpose of applying for probate"
+                + " of the will or for grants of probate on its behalf.")),
+                () -> assertThat(response,
+                    containsString("Exfn1 Exln1 is acting on behalf of Trust_Corporation_pls trust corporation. "
+                    + "They hold the position of Solicitor as per the resolution."))
+        );
     }
 
     @Test
     void verifySoTSixthParagraphTrustCorpResolutionLodged() throws IOException {
         final String response = generateSotDocument("verifySolPayloadTrustCorpResolutionLodged.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("The executor named in the will has by a resolution, "
-            + "certified copy of which is lodged"
-            + " with this application, in which Exfn1 Exln1 identified by the position they hold and which"
-            + " is still in force, appointed them for the purpose of applying for probate of "
-            + "the will or for grants of probate on its behalf."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString("The executor named in the will has by a resolution, "
+                + "certified copy of which is lodged"
+                + " with this application, in which Exfn1 Exln1 identified by the position they hold and which"
+                + " is still in force, appointed them for the purpose of applying for probate of "
+                + "the will or for grants of probate on its behalf."));
     }
 
     @Test
     void verifySoTNoDuplicateSolExecutors() throws IOException {
         final String response = generateSotDocument(NO_DUPE_SOL_EXECUTORS, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response
-            .contains("The executor believes that all the information stated in the legal statement is true."));
-        assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm "
-            + "fdgfg, at the date of death"));
-        assertTrue(response.split("Fred Smith").length == 4);
+
+        assertAll(
+                () -> assertThat(response,
+                    containsString("The executor believes that all the information"
+                        + " stated in the legal statement is true.")),
+                () -> assertThat(response, containsString("Fred Smith, is a profit-sharing partner in the firm "
+                    + "fdgfg, at the date of death")),
+                () -> assertEquals(4, response.split("Fred Smith").length)
+        );
     }
 
     @Test
     void verifySoTAliasNameForExec() throws IOException {
         final String response = generateSotDocument(EXEC_WITH_ALIAS, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("Carlos Juan otherwise known as Karakiozis of"));
+        assertThat(response, containsString("Carlos Juan otherwise known as Karakiozis of"));
     }
 
     public void verifySoTSolePartnerWording() throws IOException {
         final String response = generateSotDocument(SOLE_PRIN, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("Fred Smith, is a profit-sharing partner in the firm "
-            + "fdgfg, at the date of death"));
-        assertTrue(response.split("Fred Smith").length == 4);
+        assertAll(
+                () -> assertThat(response, containsString("Fred Smith, is a profit-sharing partner in the firm "
+                    + "fdgfg, at the date of death")),
+                () -> assertEquals(4, response.split("Fred Smith").length)
+        );
     }
 
     public void verifySoTPartAllRenouncingWording() throws IOException {
         final String response = generateSotDocument(PART_ALL_RENOUNCING, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response
-            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
-                + " Firmname will at the date of death of the deceased have renounced probate."));
+        assertThat(response,
+                containsString("I am the executor named in the will."
+                    + " The profit-sharing partners and stakeholders in the firm"
+                    + " Firmname will at the date of death of the deceased have renounced probate."));
     }
 
     @Test
     void verifySoTPartSuccAllRenouncingWording() throws IOException {
         final String response = generateSotDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response
-            .contains("I am the executor named in the will."));
+        assertThat(response, containsString("I am the executor named in the will."));
     }
 
     @Test
     void verifySoTPartOthersRenouncingWording() throws IOException {
         final String response = generateSotDocument(PART_ALL_OTHERS_RENOUNCING, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response
-            .contains("The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm "
-                + "Firmname will, at the date of death of the deceased."));
+        assertThat(response,
+                containsString("The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm "
+                        + "Firmname will, at the date of death of the deceased."));
     }
 
     @Test
     void verifySoTSolPartnersWording() throws IOException {
         final String response = generateSotDocument(SOLE_PRIN_OTHER_PARTNERS, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response
-            .contains("The executors Probate Practitioner, Partner Exec, are the profit-sharing partners and "
-                + "stakeholders in the firm "));
+        assertThat(response,
+                containsString("The executors Probate Practitioner, Partner Exec, are the profit-sharing partners and "
+                        + "stakeholders in the firm "));
     }
 
     @Test
     void verifySoTSolPartnersWordingSingleExec() throws IOException {
         final String response = generateSotDocument(SOLE_PRIN_OTHER_PARTNERS_SINGLE, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response
-            .contains("The executor Partner Exec, is the only profit-sharing partner and "
-                + "stakeholder in the firm "));
+        assertThat(response, containsString("The executor Partner Exec, is the only profit-sharing partner and "
+                        + "stakeholder in the firm "));
     }
 
     @Test
     void verifySoTSolNotRepeated() throws IOException {
         final String response = generateSotDocument(SOL_NOT_REPEATED, GENERATE_LEGAL_STATEMENT);
-        assertFalse(response
-            .contains("Jim Smith (executor)"));
-        assertTrue(response
-            .contains("Jim Smith (Probate practitioner and executor)"));
-        assertTrue(response.split("Jim Smith").length == 5);
+        assertAll(
+                () -> assertThat(response, not(containsString("Jim Smith (executor)"))),
+                () -> assertThat(response, containsString("Jim Smith (Probate practitioner and executor)")),
+                () -> assertEquals(5, response.split("Jim Smith").length)
+        );
     }
 
     @Test
     void verifyDefaultEvidenceToYesFromNull() throws IOException {
         Response jsonResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile(DEFAULT_SOLS_PAYLOAD))
-            .when().post(GENERATE_GRANT).andReturn();
-        assertTrue(jsonResponse.prettyPrint().contains("\"evidenceHandled\": \"Yes\""));
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(DEFAULT_SOLS_PAYLOAD))
+                .when().post(GENERATE_GRANT).andReturn();
+        assertThat(jsonResponse.prettyPrint(), containsString("\"evidenceHandled\": \"Yes\""));
     }
 
     @Test
     void verifyDefaultEvidenceToYesFromNo() throws IOException {
         Response jsonResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("evidenceHandledNo.json"))
-            .when().post(GENERATE_GRANT).andReturn();
-        assertTrue(jsonResponse.prettyPrint().contains("\"evidenceHandled\": \"Yes\""));
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("evidenceHandledNo.json"))
+                .when().post(GENERATE_GRANT).andReturn();
+        assertThat(jsonResponse.prettyPrint(), containsString("\"evidenceHandled\": \"Yes\""));
     }
 
     @Test
     void verifyDefaultEvidenceToYesFromYes() throws IOException {
         Response jsonResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("evidenceHandledYes.json"))
-            .when().post(GENERATE_GRANT).andReturn();
-        assertTrue(jsonResponse.prettyPrint().contains("\"evidenceHandled\": \"Yes\""));
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("evidenceHandledYes.json"))
+                .when().post(GENERATE_GRANT).andReturn();
+        assertThat(jsonResponse.prettyPrint(), containsString("\"evidenceHandled\": \"Yes\""));
     }
 
 
     @Test
     void verifyWillAccessNoLegalStatementAdmonWillSols() throws IOException {
         final String response = generateSotDocument("solicitorPDFPayloadAdmonWillNoAccess.json",
-            GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("I authorise Firm Name to send on my behalf what I believe to be the true"
-            + " and original last will and testament , as contained in a notarial/official copy of De Ceased."));
+                GENERATE_LEGAL_STATEMENT);
+        assertThat(response, containsString("I authorise Firm Name to send on my behalf what I believe to be the true"
+                + " and original last will and testament , as contained in a notarial/official copy of De Ceased."));
     }
 
     @Test
     void verifyWillAccessYesLegalStatementAdmonWillSols() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("I authorise Firm Name to send on my behalf what "
-            + "I believe to be the true and original last will and"
-            + " testament of De Ceased"));
+        assertThat(response, containsString("I authorise Firm Name to send on my behalf what "
+                + "I believe to be the true and original last will and"
+                + " testament of De Ceased"));
     }
 
     @Test
     void verifyGOPLegalStatementMultipleCodicils() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_MULTIPLE_CODICILS, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("which was settled previously to the death "
+        assertThat(response, containsString("which was settled previously to the death "
                 + "(and not by the will and codicils) of"));
     }
 
     @Test
     void verifyGOPLegalStatementSingleCodicil() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_SINGLE_CODICIL, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("which was settled previously to the death "
+        assertThat(response, containsString("which was settled previously to the death "
                 + "(and not by the will and codicil) of"));
     }
 
     @Test
     void verifyGOPLegalStatementNoCodicil() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_NO_CODICIL, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("which was settled previously to the death "
+        assertThat(response, containsString("which was settled previously to the death "
                 + "(and not by the will) of"));
     }
 
     @Test
     void verifyTrustCorpGOPLegalStatementMultipleCodicils() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_MULTIPLE_CODICILS, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("which was settled previously to the death "
+        assertThat(response, containsString("which was settled previously to the death "
                 + "(and not by the will and codicils) of"));
     }
 
     @Test
     void verifyTrustCorpGOPLegalStatementSingleCodicil() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_SINGLE_CODICIL, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("which was settled previously to the death "
+        assertThat(response, containsString("which was settled previously to the death "
                 + "(and not by the will and codicil) of"));
     }
 
     @Test
     void verifyTrustCorpGOPLegalStatementNoCodicil() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_NO_CODICIL, GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("which was settled previously to the death "
-                + "(and not by the will) of"));
+        assertThat(response, containsString("which was settled previously to the death (and not by the will) of"));
     }
 
     @Test
     void verifyTrustCorpGOPLegalStatementTCTFirmCeasedTradingNoSucc() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_FIRM_CEASED_TRADING,
                 GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("Ceased Trading Firm have ceased trading at the deceased's date of death "
+        assertThat(response, containsString("Ceased Trading Firm have ceased trading at the deceased's date of death "
                 + "and there is no one successor firm"));
     }
 
