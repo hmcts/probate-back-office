@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "lint": "NODE_PATH=. eslint . && yarn tsc -p tsconfig.json",
-    "load-e2e-secrets": "yarn node src/test/PLaywrightTest/scripts/get-secrets.js",
+    "load-e2e-secrets": "yarn node ./src/test/PLaywrightTest/scripts/get-secrets.js && yarn node ./src/test/end-to-end/get-secrets.js",
     "eslint": "NODE_PATH=. eslint .",
     "eslint-src": "NODE_PATH=. eslint ./src",
     "eslint-test": "NODE_PATH=. eslint ./src/test",
@@ -70,13 +70,12 @@
   },
   "dependencies": {
     "@date-fns/upgrade": "^1.0.3",
-    "@hmcts/playwright-common": "^1.0.24",
-    "dotenv": "^16.5.0",
     "html_codesniffer": "^2.5.1",
     "require-directory": "^2.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@hmcts/playwright-common": "^1.0.32",
     "@playwright/test": "^1.54.0",
     "@types/node": "^22.0.0",
     "chai": "^4.1.0",
@@ -84,6 +83,7 @@
     "chai-string": "^1.5.0",
     "codeceptjs": "3.4.0",
     "date-fns": "^2.21.3",
+    "dotenv": "^17.2.0",
     "eslint": "^9.11.1",
     "eslint-plugin-playwright": "^1.6.2",
     "istanbul": "^0.4.5",
