@@ -156,6 +156,12 @@ public class NotificationService {
 
         updatePersonalisationForSolicitor(caseData, personalisation);
 
+        List<CollectionMember<UploadDocument>> cwDocumentsUpload = caseData.getCwDocumentsUpload();
+        if (cwDocumentsUpload != null && cwDocumentsUpload.size() > 0) {
+            log.info("Got cwDocumentsUpload for case: {}", cwDocumentsUpload);
+            addCwDocumentToPersonalisation(cwDocumentsUpload, personalisation);
+        }
+
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         String reference = caseData.getSolsSolicitorAppReference();
@@ -209,7 +215,7 @@ public class NotificationService {
     private void addCwDocumentToPersonalisation(
             List<CollectionMember<UploadDocument>> cwDocumentsUpload,
             Map<String, Object> personalisation) {
-        UploadDocument document = cwDocumentsUpload.getFirst().getValue();
+        UploadDocument document = cwDocumentsUpload.getLast().getValue();
         log.info("Got cwDocumentsUpload for case: {}", document.getDocumentLink());
         try {
             byte[] fileContents = documentManagementService.getDocumentByBinaryUrl(document.getDocumentLink()
