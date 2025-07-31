@@ -110,7 +110,8 @@ class OCRFieldModifierUtilsTest {
         when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue()).thenReturn("01012022");
         when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse()).thenReturn("01011990");
         when(bulkScanConfig.getExecutorsNotApplyingReason()).thenReturn("A");
-        when(bulkScanConfig.getSolicitorApplying()).thenReturn(FALSE);
+        when(bulkScanConfig.getSolicitorNotApplying()).thenReturn(FALSE);
+        when(bulkScanConfig.getSolsSolicitorIsApplying()).thenReturn(TRUE);
 
         Field bulkScanConfigField = OCRFieldModifierUtils.class.getDeclaredField("bulkScanConfig");
         bulkScanConfigField.setAccessible(true);
@@ -219,14 +220,27 @@ class OCRFieldModifierUtilsTest {
     }
 
     @Test
-    void shouldSetSolicitorIsApplyingToDefaultWhenEmpty() {
+    void shouldSetSolicitorIsApplyingToDefaultTrueWhenEmpty() {
         ocrFields.setSolsSolicitorIsApplying("");
         List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
                 GrantType.GRANT_OF_PROBATE);
 
         assertEquals(1, modifiedFields.size());
         assertEquals(SOLICITOR_IS_APPLYING, modifiedFields.getFirst().getValue().getFieldName());
-        assertEquals(bulkScanConfig.getSolicitorApplying(), ocrFields.getSolsSolicitorIsApplying());
+        assertEquals(bulkScanConfig.getSolsSolicitorIsApplying(), ocrFields.getSolsSolicitorIsApplying());
+    }
+
+    @Test
+    void shouldSetSolicitorIsApplyingToDefaultFalseWhenEmpty() {
+        ocrFields.setSolsSolicitorIsApplying("");
+        ocrFields.setSolsSolicitorRepresentativeName("");
+        ocrFields.setSolsSolicitorFirmName("");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(SOLICITOR_IS_APPLYING, modifiedFields.getFirst().getValue().getFieldName());
+        assertEquals(bulkScanConfig.getSolicitorNotApplying(), ocrFields.getSolsSolicitorIsApplying());
     }
 
     @Test

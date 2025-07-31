@@ -33,7 +33,7 @@ What you need to do now
 ==================================================
 **You must complete payment next**
 
-Go to the Service Request tab on you case details
+Go to the Service Request tab on your case details
 
 Complete the payment process
 
