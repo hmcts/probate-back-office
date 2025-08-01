@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -157,6 +156,10 @@ public class AutomatedNotificationCCDService {
                  UNSUBMITTED_APPLICATION,
                  DECLARATION_NOT_SIGNED
                     -> GrantOfRepresentationData.builder()
+                    .probateNotificationsGenerated(notifications)
+                    .build();
+            case DORMANT_REMINDER -> GrantOfRepresentationData.builder()
+                    .bulkPrintSendLetterId((String)data.get("letterId"))
                     .probateNotificationsGenerated(notifications)
                     .build();
         };
