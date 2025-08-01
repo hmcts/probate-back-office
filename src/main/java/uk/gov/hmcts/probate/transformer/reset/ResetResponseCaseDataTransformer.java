@@ -28,6 +28,10 @@ public class ResetResponseCaseDataTransformer {
         } else if (titleAndClearingTypeService.trustCorpTitleAndClearingOptionSelected(caseData)) {
             nullPartnerOptions(builder);
 
+        } else if (titleAndClearingTypeService.firmCeasedTradingNoSuccTitleAndClearingOptionSelected(caseData)) {
+            nullTrustCorpOptions(builder);
+            nullPartnerOptionsExcludeFirmNamedInWill(builder);
+
         } else {
             nullTrustCorpOptions(builder);
             nullPartnerOptions(builder);
@@ -64,6 +68,15 @@ public class ResetResponseCaseDataTransformer {
                 .dispenseWithNoticeLeaveGivenDate(null)
                 .dispenseWithNoticeOverview(null)
                 .dispenseWithNoticeSupportingDocs(null);
+    }
+
+    private void nullPartnerOptionsExcludeFirmNamedInWill(ResponseCaseData.ResponseCaseDataBuilder<?, ?> builder) {
+        builder
+                .otherPartnersApplyingAsExecutors(null)
+                .nameOfSucceededFirm(null)
+                .addressOfFirmNamedInWill(null)
+                .addressOfSucceededFirm(null)
+                .whoSharesInCompanyProfits(null);
     }
 
 }
