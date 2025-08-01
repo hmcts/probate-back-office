@@ -4,7 +4,7 @@
       "filter": [
         {
           "range": {
-            "data.moveToDormantDateTime": {
+            "data.lastModifiedDateForDormant": {
               "gte": "%s",
               "lte": "%s"
             }

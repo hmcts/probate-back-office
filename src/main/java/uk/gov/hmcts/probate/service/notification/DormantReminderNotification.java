@@ -25,7 +25,7 @@ public class DormantReminderNotification implements NotificationStrategy {
             "Failed to send Dormant 12-month Reminder (AN)";
     private static final String DORMANT_REMINDER_FAILURE_EVENT_SUMMARY =
             "Failed to send Dormant 12-month Reminder (AN)";
-    private static final String MOVE_TO_DORMANT_DATE_TIME = "moveToDormantDateTime";
+    private static final String LAST_MODIFIED_DATE_FOR_DORMANT = "lastModifiedDateForDormant";
 
     private final NotificationService notificationService;
 
@@ -87,15 +87,16 @@ public class DormantReminderNotification implements NotificationStrategy {
                 && cd.getData() != null
                 && referenceDate != null
                 && STATE_DORMANT.equals(cd.getState())
-                && isValidMoveToDormantDateTime(cd);
+                && isValidLastMofifiedDateForDormant(cd);
 
     }
 
-    private boolean isValidMoveToDormantDateTime(CaseDetails caseDetails) {
-        return Optional.ofNullable(caseDetails.getData().get(MOVE_TO_DORMANT_DATE_TIME))
+    private boolean isValidLastMofifiedDateForDormant(CaseDetails caseDetails) {
+        return Optional.ofNullable(caseDetails.getData().get(LAST_MODIFIED_DATE_FOR_DORMANT))
                 .map(Object::toString)
                 .map(LocalDateTime::parse)
-                .map(moveToDormantDateTime -> !moveToDormantDateTime.isAfter(referenceDate.plusDays(1).atStartOfDay()))
+                .map(lastModifiedDateForDormant -> !lastModifiedDateForDormant
+                        .isAfter(referenceDate.plusDays(1).atStartOfDay()))
                 .orElse(false);
     }
 }
