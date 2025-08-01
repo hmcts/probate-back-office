@@ -162,6 +162,26 @@ public class TemplateService {
             return emailTemplates.getDeclarationNotSignedExecutors();
         }
     }
+
+    public String getPostGrantIssueTemplateId(
+            final LanguagePreference languagePreference,
+            final ApplicationType applicationType) {
+        final EmailTemplates emailTemplates = notificationTemplates.getEmail()
+                .get(languagePreference)
+                .get(applicationType);
+
+        return emailTemplates.getPostGrantIssuedNotification();
+    }
+    public String getPostGrantIssueFailedTemplateId(
+            final LanguagePreference languagePreference,
+            final ApplicationType applicationType) {
+        final EmailTemplates emailTemplates = notificationTemplates.getEmail()
+                .get(languagePreference)
+                .get(applicationType);
+
+        return emailTemplates.getPostGrantIssuedFailedNotification();
+    }
+
 }
 
 
