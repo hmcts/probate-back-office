@@ -76,7 +76,6 @@ public class ExceptionRecordController {
             erRequest.getFormType(), erRequest.getExceptionRecordId());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
-        SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
         List<String> warnings = ocrToCCDMandatoryField
             .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()),
                 formType);
@@ -93,6 +92,8 @@ public class ExceptionRecordController {
 
         log.info("Validation check passed, attempting to transform case for form-type {}, caseId {}", formType,
             erRequest.getExceptionRecordId());
+
+        SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
         switch (formType) {
             case PA8A:
                 callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
