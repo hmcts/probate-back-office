@@ -93,7 +93,7 @@
     "nock": "^13.0.7",
     "nodemon": "^3.0.0",
     "nsp": "^3.2.1",
-    "pa11y": "^8.0.0",
+    "pa11y": "^9.0.0",
     "phantomjs-prebuilt": "^2.1.13",
     "playwright": "^1.52.0",
     "proxyquire": "^2.1.3",
