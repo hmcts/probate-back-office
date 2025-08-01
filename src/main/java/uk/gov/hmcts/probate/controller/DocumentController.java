@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -42,6 +43,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
@@ -50,8 +52,6 @@ import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
-
-import jakarta.validation.Valid;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -99,6 +99,7 @@ public class DocumentController {
     private final EvidenceUploadService evidenceUploadService;
     private final UserInfoService userInfoService;
     private final FeatureToggleService featureToggleService;
+    private final DocumentTransformer documentTransformer;
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -351,8 +352,13 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest)
+            throws NotificationClientException {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
+        if (callbackRequest.getCaseDetails().getData().getApplicationType().equals(SOLICITOR)) {
+            Document document = notificationService.sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
+            documentTransformer.addDocument(callbackRequest, document, false);
+        }
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
