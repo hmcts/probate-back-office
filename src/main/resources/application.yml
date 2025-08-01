@@ -263,7 +263,7 @@ notifications:
         iht421Awaiting: "IHT 421 awaiting"
         ihtFiguresIncorrect: "IHT figures incorrect"
         ihtIssue: "IHT forms not received"
-        intestacyMinorityInterest: "Inestacy Minority Interest"
+        intestacyMinorityInterest: "Intestacy Minority Interest"
         lostWill: "Lost Will"
         matchingApplication: "Matching application – (informing Sol or citizen that there is a matching application so their case cannot proceed)"
         noMinorityLife: "No minority or life interest – we ask solicitors to certify this if missing on the Legal Statement"
