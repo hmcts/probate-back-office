@@ -135,7 +135,7 @@ class DormantReminderNotificationTest {
     @Test
     void acceptsShouldReturnFalseWhenMoveToDormantDateTimeIsInvalid() {
         when(caseDetails.getState()).thenReturn("Dormant");
-        when(caseDetails.getData()).thenReturn(Map.of("moveToDormantDateTime", "invalid-date"));
+        when(caseDetails.getData()).thenReturn(Map.of("lastModifiedDateForDormant", "invalid-date"));
 
         boolean result = underTest.accepts().test(caseDetails);
 
@@ -146,7 +146,7 @@ class DormantReminderNotificationTest {
     void acceptsShouldReturnFalseWhenMoveToDormantDateTimeIsAfterReferenceDatePlusOneDay() {
         underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
         when(caseDetails.getState()).thenReturn("Dormant");
-        when(caseDetails.getData()).thenReturn(Map.of("moveToDormantDateTime", "2023-10-03T00:00:00"));
+        when(caseDetails.getData()).thenReturn(Map.of("lastModifiedDateForDormant", "2023-10-03T00:00:00"));
 
         boolean result = underTest.accepts().test(caseDetails);
 
@@ -158,7 +158,7 @@ class DormantReminderNotificationTest {
     void acceptsShouldReturnFalseWhenStateIsNotDormant() {
         underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
         when(caseDetails.getState()).thenReturn("BOGrantIssued");
-        when(caseDetails.getData()).thenReturn(Map.of("moveToDormantDateTime", "2023-09-30T00:00:00"));
+        when(caseDetails.getData()).thenReturn(Map.of("lastModifiedDateForDormant", "2023-09-30T00:00:00"));
 
         boolean result = underTest.accepts().test(caseDetails);
 
@@ -169,7 +169,7 @@ class DormantReminderNotificationTest {
     void acceptsShouldReturnTrueWhenCaseDetailsAreValid() {
         underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
         when(caseDetails.getState()).thenReturn("Dormant");
-        when(caseDetails.getData()).thenReturn(Map.of("moveToDormantDateTime", "2023-09-30T00:00:00"));
+        when(caseDetails.getData()).thenReturn(Map.of("lastModifiedDateForDormant", "2023-09-30T00:00:00"));
 
         boolean result = underTest.accepts().test(caseDetails);
 
