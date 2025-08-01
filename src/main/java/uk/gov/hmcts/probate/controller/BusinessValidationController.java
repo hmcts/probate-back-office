@@ -25,12 +25,14 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
@@ -135,6 +137,7 @@ public class BusinessValidationController {
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
     private final DocumentTransformer documentTransformer;
+    private final SecurityUtils securityUtils;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
@@ -725,7 +728,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, Optional.empty()));
     }
 
-
     @PostMapping(path = "/setLastModifiedDate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> setLastModifiedDateForDormant(
             @RequestBody CallbackRequest callbackRequest) {
@@ -767,6 +769,33 @@ public class BusinessValidationController {
                 .build();
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    @PostMapping(
+            path = "/moveToPostGrantIssued",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> moveToPostGrantIssue(
+            @RequestBody final CallbackRequest callbackRequest,
+            final HttpServletRequest httpRequest) {
+        logRequest(httpRequest.getRequestURI(), callbackRequest);
+
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+        if (caseworkerInfo.isEmpty()) {
+            log.warn("Unable to find caseworker info for move to postGrantIssued in case: {}", caseDetails.getId());
+        }
+
+        final Document sentNotification = notificationService.sendPostGrantIssuedNotification(
+                caseDetails,
+                caseworkerInfo);
+
+        final List<CollectionMember<Document>> notifications = caseDetails
+                .getData()
+                .getProbateNotificationsGenerated();
+        notifications.add(new CollectionMember<>(null, sentNotification));
+
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {

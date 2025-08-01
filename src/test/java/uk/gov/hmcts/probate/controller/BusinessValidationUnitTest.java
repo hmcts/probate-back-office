@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -22,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
@@ -75,6 +77,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -205,6 +208,8 @@ class BusinessValidationUnitTest {
     private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     @Mock
     private DocumentTransformer documentTransformerMock;
+    @Mock
+    SecurityUtils securityUtilsMock;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -250,7 +255,8 @@ class BusinessValidationUnitTest {
             zeroApplyingExecutorsValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
-            documentTransformerMock);
+            documentTransformerMock,
+            securityUtilsMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
@@ -1195,5 +1201,34 @@ class BusinessValidationUnitTest {
         verify(notificationService).sendStopResponseReceivedEmail(caseDetailsMock);
         verify(documentTransformerMock, times(0)).addDocument(callbackRequestMock, documentMock, false);
         verify(callbackResponseTransformerMock).transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+    }
+
+    @Test
+    void shouldAttemptToEmailWhenEnterPostGrantIssued() {
+        final String mockAuth = "mockAuth";
+        final String mockEmail = "mockEmail";
+        final Document documentMock = Mockito.mock(Document.class);
+
+        final List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
+
+        when(notificationService.sendPostGrantIssuedNotification(any(), any()))
+                .thenReturn(documentMock);
+
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData())
+                .thenReturn(caseDataMock);
+        when(caseDataMock.getProbateNotificationsGenerated())
+                .thenReturn(notificationsGenerated);
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .moveToPostGrantIssue(callbackRequestMock, httpServletRequest);
+
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+
+        assertAll(
+                () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
+                () -> assertThat(notificationsGenerated.size(), is(1)));
     }
 }
