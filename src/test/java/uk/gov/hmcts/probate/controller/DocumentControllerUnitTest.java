@@ -66,6 +66,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 @ExtendWith(SpringExtension.class)
 class DocumentControllerUnitTest {
@@ -218,7 +219,7 @@ class DocumentControllerUnitTest {
     @Test
     void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() throws NotificationClientException {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        CaseData mockCaseData = CaseData.builder()
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
             .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
         mockCaseDetails.setState("BOCaseStopped");
