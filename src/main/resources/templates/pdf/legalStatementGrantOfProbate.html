@@ -278,6 +278,8 @@
                     <p>Mae’r {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
                         sy’n weddill sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }} a wnaeth olynu a pharhau â phractis y cwmni
                         {{ case_details.case_data.nameOfFirmNamedInWill }} yn ymwrthod â’u hawl i brofiant.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTFirmCeasedTradingNoSucc" %}
+                    <p>Mae {{ case_details.case_data.nameOfFirmNamedInWill }} wedi rhoi’r gorau i fasnachu ar ddyddiad marwolaeth yr ymadawedig oherwydd nid oes cwmni olynydd.</p>
                 {% endif %}
             {% else %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" %}
@@ -597,29 +599,29 @@
     <tr>
         <td colspan="2">
             {% if case_details.case_data.executorsNotApplyingLegalStatement|length>0 %}
-            {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
-            {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
-            {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
-            <p><span>Notice of this application has on the {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
-                been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules 1987 to
-                {{ executor.value.notApplyingExecutorName }} to whom power is to be reserved.
-            </span></p>
-            {% else %}
-            <p><span>{% if (multipleExecutors) %}We are{% else %}I am{% endif %} concurrently applying for notice of this application to be dispensed with under
-                Rule 27(3) of the Non-Contentious Probate Rules 1987 to {{ executor.value.notApplyingExecutorName }}
-                to whom power is to be reserved.
-            </span></p>
-            {% endif %}
-            {% else %}
-            <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
-                        {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} has survived the deceased and died since.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "Renunciation" %}has renounced probate and letters of administration with will annexed.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}lacks capacity to manage their affairs under the Mental Capacity Act 2005 and is unable to act as an executor.{% endif %}
-            </span></p>
-            {% endif %}
-            {% endfor %}
+                {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
+                    {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
+                        {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
+                        <p><span>Notice of this application has on the {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
+                            been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules 1987 to
+                            {{ executor.value.notApplyingExecutorName }} to whom power is to be reserved.
+                        </span></p>
+                        {% else %}
+                        <p><span>{% if (multipleExecutors) %}We are{% else %}I am{% endif %} concurrently applying for notice of this application to be dispensed with under
+                            Rule 27(3) of the Non-Contentious Probate Rules 1987 to {{ executor.value.notApplyingExecutorName }}
+                            to whom power is to be reserved.
+                        </span></p>
+                        {% endif %}
+                    {% else %}
+                    <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
+                                {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} has survived the deceased and died since.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "Renunciation" %}has renounced probate and letters of administration with will annexed.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}lacks capacity to manage their affairs under the Mental Capacity Act 2005 and is unable to act as an executor.{% endif %}
+                    </span></p>
+                    {% endif %}
+                {% endfor %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
                         <p>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
                         {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
@@ -633,6 +635,8 @@
                         {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
                     {% endif %}
                         {{ case_details.case_data.nameOfFirmNamedInWill }} are renouncing their right to probate.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTFirmCeasedTradingNoSucc" %}
+                    <p>{{ case_details.case_data.nameOfFirmNamedInWill }} have ceased trading at the deceased's date of death and there is no one successor firm.</p>
                 {% endif %}
             {% else %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
@@ -952,29 +956,29 @@
     <tr>
         <td colspan="2">
             {% if case_details.case_data.executorsNotApplyingLegalStatement|length>0 %}
-            {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
-            {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
-            {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
-            <p><span>Notice of this application has on the {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
-                been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules 1987 to
-                {{ executor.value.notApplyingExecutorName }} to whom power is to be reserved.
-            </span></p>
-            {% else %}
-            <p><span>{% if (multipleExecutors) %}We are{% else %}I am{% endif %} concurrently applying for notice of this application to be dispensed with under
-                Rule 27(3) of the Non-Contentious Probate Rules 1987 to {{ executor.value.notApplyingExecutorName }}
-                to whom power is to be reserved.
-            </span></p>
-            {% endif %}
-            {% else %}
-            <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
-                        {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} has survived the deceased and died since.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "Renunciation" %}has renounced probate and letters of administration with will annexed.{% endif %}
-                        {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}lacks capacity to manage their affairs under the Mental Capacity Act 2005 and is unable to act as an executor.{% endif %}
-            </span></p>
-            {% endif %}
-            {% endfor %}
+                {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
+                    {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
+                        {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
+                        <p><span>Notice of this application has on the {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
+                            been dispensed with under Rule 27(3) of the Non-Contentious Probate Rules 1987 to
+                            {{ executor.value.notApplyingExecutorName }} to whom power is to be reserved.
+                        </span></p>
+                        {% else %}
+                        <p><span>{% if (multipleExecutors) %}We are{% else %}I am{% endif %} concurrently applying for notice of this application to be dispensed with under
+                            Rule 27(3) of the Non-Contentious Probate Rules 1987 to {{ executor.value.notApplyingExecutorName }}
+                            to whom power is to be reserved.
+                        </span></p>
+                        {% endif %}
+                    {% else %}
+                    <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
+                                {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} has survived the deceased and died since.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "Renunciation" %}has renounced probate and letters of administration with will annexed.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}lacks capacity to manage their affairs under the Mental Capacity Act 2005 and is unable to act as an executor.{% endif %}
+                    </span></p>
+                    {% endif %}
+                {% endfor %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
                         <p>The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm
                         {% if case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
@@ -988,6 +992,8 @@
                         {{ case_details.case_data.nameOfSucceededFirm }} that had succeeded to and carried on the practice of the firm
                     {% endif %}
                         {{ case_details.case_data.nameOfFirmNamedInWill }} are renouncing their right to probate.</p>
+                {% elseif case_details.case_data.titleAndClearingType == "TCTFirmCeasedTradingNoSucc" %}
+                    <p>{{ case_details.case_data.nameOfFirmNamedInWill }} have ceased trading at the deceased's date of death and there is no one successor firm.</p>
                 {% endif %}
             {% else %}
                 {% if case_details.case_data.titleAndClearingType == "TCTPartAllRenouncing" or case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}

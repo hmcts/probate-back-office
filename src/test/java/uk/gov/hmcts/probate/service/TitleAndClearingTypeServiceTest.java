@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_FIRM_CEASED_TRADING_NO_SUCCESSOR;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 
@@ -56,6 +57,19 @@ class TitleAndClearingTypeServiceTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         Boolean result = titleAndClearingTypeService.successorFirmTitleAndClearingOptionSelected(
+                caseDetailsMock.getData());
+
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldReturnTrueIfTitleAndClearingTypeIsFirmCeasedTradingNoSucc() {
+
+        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_FIRM_CEASED_TRADING_NO_SUCCESSOR);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        Boolean result = titleAndClearingTypeService.firmCeasedTradingNoSuccTitleAndClearingOptionSelected(
                 caseDetailsMock.getData());
 
         assertTrue(result);
