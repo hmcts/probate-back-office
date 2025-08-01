@@ -55,11 +55,15 @@ import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -81,6 +85,8 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 @Component
 public class NotificationService {
 
+    private static final SimpleDateFormat NUMERIC_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    private static final SimpleDateFormat CASE_DATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
@@ -1048,6 +1054,98 @@ public class NotificationService {
     public Document sendPostGrantIssuedNotification(
             final CaseDetails caseDetails,
             final Optional<UserInfo> caseworkerInfo) {
+        /*
+        CaseData caseData = caseDetails.getData();
+        String reference = caseDetails.getId().toString();
+        String deceasedName = caseData.getDeceasedFullName();
+
+        String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
+                .get(caseData.getApplicationType()).getSealedAndCertified();
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getSealedAndCertifiedPersonalisation(caseDetails.getId(),
+                         deceasedName);
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
+
+        log.info("Sealed And Certified get the email response for case {}", caseDetails.getId());
+
+        SendEmailResponse response = notificationClientService.sendEmail(templateId,
+                emailAddresses.getSealedAndCertifiedEmail(), personalisation, reference);
+
+        log.info("Send Sealed And Certified completed for case {}", caseDetails.getId());
+        return getGeneratedSentEmailDocument(response, emailAddresses.getSealedAndCertifiedEmail(), SENT_EMAIL);
+         */
+        final CaseData caseData = caseDetails.getData();
+        final String templateId = templateService.getPostGrantIssueTemplateId(
+                caseData.getLanguagePreference(),
+                caseData.getApplicationType());
+
+        final String recipientEmail = getEmail(caseData);
+        final String caseRef = caseDetails.getId().toString();
+        final String deceasedName = caseData.getDeceasedFullName();
+        final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
+        final String deceasedDiedOn = NUMERIC_DATE_FORMAT.format(deceasedDeathDate);
+
+        final String grantIssuedCase = caseData.getGrantIssuedDate();
+        final Date grantIssuedDate;
+        try {
+            grantIssuedDate = CASE_DATA_DATE_FORMAT.parse(grantIssuedCase);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        final String grantIssuedOn = NUMERIC_DATE_FORMAT.format(grantIssuedDate);
+
+        final String addresseeName = switch (caseData.getApplicationType()) {
+            case PERSONAL -> caseData.getPrimaryApplicantFullName();
+            case SOLICITOR -> caseData.getSolsSOTName();
+        };
+
+        final Map<String, Object> personalisation = Map.of(
+                "ccd_reference", caseRef,
+                "deceased_name", deceasedName,
+                "deceased_dod", deceasedDiedOn,
+                "applicant_name", addresseeName,
+                "grant_issued_date", grantIssuedOn);
+
+        try {
+            final SendEmailResponse response = notificationClientService.sendEmail(
+                    templateId,
+                    recipientEmail,
+                    personalisation,
+                    caseRef);
+        } catch (NotificationClientException e) {
+            log.warn("Failed to send Post Grant Issued notification for case {}, message: {}", caseRef, e.getMessage());
+
+            if (caseworkerInfo.isEmpty()) {
+                log.warn("No caseworker info found to send failed notification for case {}", caseRef);
+            } else {
+                final UserInfo cwInfo = caseworkerInfo.get();
+
+                final String failedTemplateId = templateService.getPostGrantIssueTemplateId(
+                        caseData.getLanguagePreference(),
+                        caseData.getApplicationType());
+
+                final String caseworkerName = cwInfo.getGivenName() + " " + cwInfo.getFamilyName();
+                final String caseworkerEmail = cwInfo.getSub();
+
+                final Map<String, Object> failedPersonalisation = Map.of(
+                        "caseworker_name", caseworkerName,
+                        "ccd_reference", caseRef,
+                        "deceased_name", deceasedName);
+
+                try {
+                    final SendEmailResponse failedResponse = notificationClientService.sendEmail(
+                            failedTemplateId,
+                            caseworkerEmail,
+                            failedPersonalisation,
+                            caseRef);
+                } catch (NotificationClientException e2) {
+                    log.warn("Failed to send Post Grant Issued Failed notification for case {}, message: {}",
+                            caseRef,
+                            e2.getMessage());
+                }
+            }
+        }
+
         return null;
     }
 }
