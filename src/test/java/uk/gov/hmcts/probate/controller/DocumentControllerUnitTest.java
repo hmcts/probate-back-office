@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
@@ -43,6 +44,7 @@ import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
+import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -107,6 +109,8 @@ class DocumentControllerUnitTest {
     private UserInfoService userInfoService;
     @Mock
     private FeatureToggleService featureToggleService;
+    @Mock
+    private DocumentTransformer documentTransformer;
 
     /// The object under test
     private DocumentController documentController;
@@ -136,7 +140,7 @@ class DocumentControllerUnitTest {
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
-            evidenceUploadService, userInfoService, featureToggleService);
+            evidenceUploadService, userInfoService, featureToggleService,documentTransformer);
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
@@ -212,7 +216,7 @@ class DocumentControllerUnitTest {
     }
 
     @Test
-    void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() {
+    void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() throws NotificationClientException {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseData mockCaseData = CaseData.builder()
             .build();

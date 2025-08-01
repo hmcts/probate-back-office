@@ -790,6 +790,32 @@ public class NotificationService {
         FOUND_HTML;
     }
 
+    public Document sendStopResponseReceivedEmail(CaseDetails caseDetails)
+            throws NotificationClientException {
+        log.info("sendStopResponseReceivedEmail for case id: {}", caseDetails.getId());
+        if (caseDetails.getData() == null) {
+            log.error("sendHseReminderEmail Case data is null for HSe case ID: {}", caseDetails.getId());
+            return null;
+        }
+        String emailAddress = getEmail(caseDetails.getData());
+        if (emailAddress == null) {
+            throw new NotificationClientException("Email address not found for StopResponseReceivedEmail case ID: "
+                    + caseDetails.getId());
+        }
+        ApplicationType applicationType = caseDetails.getData().getApplicationType();
+        LanguagePreference languagePreference = caseDetails.getData().getLanguagePreference();
+        String templateId = templateService.getStopResponseReceivedTemplateId(applicationType, languagePreference);
+        log.info("sendHseReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
+        Map<String, String> personalisation = grantOfRepresentationPersonalisationService
+                .getStopResponseReceivedPersonalisation(caseDetails.getId(), caseDetails.getData().getSolsSOTName());
+        log.info("start StopResponseReceivedEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("StopResponseReceivedEmail reference response: {} ", response.getReference());
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
     public Document sendStopReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
                                           boolean isFirstStopReminder)
             throws NotificationClientException {
