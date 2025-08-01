@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static uk.gov.hmcts.probate.model.Constants.TRUE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.BILINGUAL_GRANT;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_IS_APPLYING;
@@ -68,8 +69,15 @@ public class OCRFieldModifierUtils {
 
     private void handleSolicitorFields(ExceptionRecordOCRFields ocrFields,
                                        List<CollectionMember<ModifiedOCRField>> modifiedFields) {
-        setFieldIfBlank(ocrFields::getSolsSolicitorIsApplying, ocrFields::setSolsSolicitorIsApplying,
-                SOLICITOR_IS_APPLYING, bulkScanConfig.getSolicitorApplying(), modifiedFields);
+        if (isNotBlank(ocrFields.getSolsSolicitorRepresentativeName()) || isNotBlank(ocrFields
+                .getSolsSolicitorFirmName())) {
+            setFieldIfBlank(ocrFields::getSolsSolicitorIsApplying, ocrFields::setSolsSolicitorIsApplying,
+                    SOLICITOR_IS_APPLYING, bulkScanConfig.getSolsSolicitorIsApplying(), modifiedFields);
+        } else {
+            setFieldIfBlank(ocrFields::getSolsSolicitorIsApplying, ocrFields::setSolsSolicitorIsApplying,
+                    SOLICITOR_IS_APPLYING, bulkScanConfig.getSolicitorNotApplying(), modifiedFields);
+        }
+
         if (BooleanUtils.toBoolean(ocrFields.getSolsSolicitorIsApplying())) {
             solicitorFieldHandler.handleGorSolicitorFields(ocrFields, modifiedFields);
         }
