@@ -239,7 +239,7 @@ class DocumentControllerUnitTest {
     @Test
     void shouldUpdateLastEvidenceAddedDateWhenStoppedAsRobot() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        CaseData mockCaseData = CaseData.builder()
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
                 .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
         mockCaseDetails.setState("BOCaseStopped");
@@ -261,7 +261,7 @@ class DocumentControllerUnitTest {
     @Test
     void shouldUpdateLastEvidenceAddedDateWhenOngoingAsRobot() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        CaseData mockCaseData = CaseData.builder()
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
                 .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
         mockCaseDetails.setState("BOExamining");

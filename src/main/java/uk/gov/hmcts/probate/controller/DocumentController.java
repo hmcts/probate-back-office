@@ -352,13 +352,18 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
+    public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
-        if (callbackRequest.getCaseDetails().getData().getApplicationType().equals(SOLICITOR)) {
-            Document document = notificationService.sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
-            documentTransformer.addDocument(callbackRequest, document, false);
+        try {
+            if (callbackRequest.getCaseDetails().getData().getApplicationType().equals(SOLICITOR)) {
+                Document document = notificationService.sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
+                documentTransformer.addDocument(callbackRequest, document, false);
+            }
+        } catch (NotificationClientException e) {
+            log.info("evidenceAdded fail to send StopResponseReceived notification for case: {}",
+                    callbackRequest.getCaseDetails().getId());
         }
+
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
@@ -383,6 +388,15 @@ public class DocumentController {
         }
         if (Boolean.TRUE.equals(update)) {
             evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
+        }
+        try {
+            if (callbackRequest.getCaseDetails().getData().getApplicationType().equals(SOLICITOR)) {
+                Document document = notificationService.sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
+                documentTransformer.addDocument(callbackRequest, document, false);
+            }
+        } catch (NotificationClientException e) {
+            log.info("evidenceAdded fail to send StopResponseReceived notification for case: {}",
+                    callbackRequest.getCaseDetails().getId());
         }
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, Optional.empty());
         return ResponseEntity.ok(response);
