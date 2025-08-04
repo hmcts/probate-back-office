@@ -493,6 +493,24 @@ class TemplateServiceIT {
     }
 
     @Test
+    void getStopResponseReceived() {
+        assertAll(
+                () -> {
+                    String response = templateService.getStopResponseReceivedTemplateId(SOLICITOR, LanguagePreference.ENGLISH);
+                    assertEquals("sol-stop-response-received", response);
+                });
+    }
+
+    @Test
+    void getStopResponseReceivedWelsh() {
+        assertAll(
+                () -> {
+                    String response = templateService.getStopResponseReceivedTemplateId(SOLICITOR, LanguagePreference.WELSH);
+                    assertEquals("sol-stop-response-received-welsh", response);
+                }
+        );
+    }
+    @Test
     void getUnsubmittedApplication() {
         assertAll(
             () -> {
