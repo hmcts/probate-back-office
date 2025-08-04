@@ -103,7 +103,7 @@ class IHTFieldHandlerTest {
         when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateTrue()).thenReturn("01012022");
         when(bulkScanConfig.getDateOfDeathForDiedOnOrAfterSwitchDateFalse()).thenReturn("01011990");
         when(bulkScanConfig.getExecutorsNotApplyingReason()).thenReturn("A");
-        when(bulkScanConfig.getSolicitorApplying()).thenReturn(FALSE);
+        when(bulkScanConfig.getSolicitorNotApplying()).thenReturn(FALSE);
         when(bulkScanConfig.getDefaultForm()).thenReturn(DEFAULT_FORM);
 
         Field bulkScanConfigField = IHTFieldHandler.class.getDeclaredField("bulkScanConfig");

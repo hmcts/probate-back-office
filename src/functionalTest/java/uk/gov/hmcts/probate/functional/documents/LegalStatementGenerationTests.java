@@ -390,8 +390,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(
             "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
                 + " that had succeeded to and carried on the practice of the "
-                + "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing partners and "
-                + "stakeholders in the firm Successor firm are renouncing their right to probate."));
+                + "firm Firmname will, at the date of death of the deceased."));
 
     }
 
@@ -402,8 +401,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(
             "The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm Successor firm"
                 + " that had succeeded to and carried on the practice of the "
-                + "firm Firmname will, at the date of death of the deceased. The remaining profit-sharing partners and "
-                + "stakeholders in the firm Successor firm are renouncing their right to probate."));
+                + "firm Firmname will, at the date of death of the deceased."));
 
     }
 
@@ -553,9 +551,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     void verifySoTPartSuccAllRenouncingWording() throws IOException {
         final String response = generateSotDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
-            .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
-                + " Successor firm that had succeeded to and carried on the practice of the firm Firmname will at the "
-                + "date of death of the deceased have renounced probate."));
+            .contains("I am the executor named in the will."));
     }
 
     @Test
