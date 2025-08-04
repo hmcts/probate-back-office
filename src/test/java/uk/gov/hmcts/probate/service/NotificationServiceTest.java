@@ -294,7 +294,7 @@ class NotificationServiceTest {
         Document result = notificationService.sendDormantReminder(caseDetails);
 
         assertNotNull(result);
-        assertTrue(data.containsKey("letterId"));
+        assertTrue(data.containsKey("bulkPrint"));
         verify(pdfManagementServiceMock).generateDocmosisDocumentAndUpload(any(), eq(DocumentType.DORMANT_REMINDER));
         verify(bulkPrintServiceMock).sendToBulkPrintForGrant(any(), any(), any());
     }
@@ -318,7 +318,7 @@ class NotificationServiceTest {
         Document result = notificationService.sendDormantReminder(caseDetails);
 
         assertNotNull(result);
-        assertTrue(data.containsKey("letterId"));
+        assertTrue(data.containsKey("bulkPrint"));
         verify(pdfManagementServiceMock).generateDocmosisDocumentAndUpload(any(),
                 eq(DocumentType.WELSH_DORMANT_REMINDER));
         verify(bulkPrintServiceMock).sendToBulkPrintForGrant(any(), any(), any());
