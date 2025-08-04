@@ -164,7 +164,7 @@ def versions = [
         commonsValidator                : '1.10.0',
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '7.17.29',
-        fortifyClientVersion            : '1.4.9',
+        fortifyClientVersion            : '1.4.10',
         hmctsJavaLogging                : '6.1.9',
         jacksonDatabind                 : '2.17.1',
         jsoup                           : '1.21.1',
