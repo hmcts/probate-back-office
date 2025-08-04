@@ -35,7 +35,7 @@ public class BulkScanConfig {
 
     private String deceasedDiedOnOrAfterSwitchDateTrue;
     private String deceasedDiedOnOrAfterSwitchDateFalse;
-    private String solicitorApplying;
+    private String solicitorNotApplying;
     private String executorsNotApplyingReason;
     private String fieldsNotCompleted;
     private String defaultForm;
