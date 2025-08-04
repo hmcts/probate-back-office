@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.cases.BulkPrint;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.lang.reflect.Method;
@@ -282,7 +283,10 @@ class AutomatedNotificationCCDServiceTest {
     @Test
     void buildsCaseDataWithDormantReminder() throws Exception {
         Map<String, Object> data = new HashMap<>();
-        data.put("letterId", "12345");
+        BulkPrint bulkprint = BulkPrint.builder()
+                .sendLetterId("12345")
+                .build();
+        data.put("bulkPrint", bulkprint);
         Document sentEmail = createMockDocument("email.pdf");
         NotificationType notificationType = NotificationType.DORMANT_REMINDER;
 
@@ -296,7 +300,7 @@ class AutomatedNotificationCCDServiceTest {
         assertNotNull(result);
         assertNotNull(result.getProbateNotificationsGenerated());
         assertEquals(1, result.getProbateNotificationsGenerated().size());
-        assertEquals("12345", result.getBulkPrintSendLetterId());
+        assertEquals("12345", result.getBulkPrintId().get(0).getValue().getSendLetterId());
     }
 
 

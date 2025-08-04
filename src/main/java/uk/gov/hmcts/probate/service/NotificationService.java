@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
+import uk.gov.hmcts.reform.probate.model.cases.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -901,7 +902,11 @@ public class NotificationService {
                 bulkPrintService.sendToBulkPrintForGrant(callbackRequest, dormantReminder, coversheet);
         String letterId = sendLetterResponse != null ? sendLetterResponse.letterId.toString() : null;
         log.info("Dormant postal Reminder letter Id: {}", letterId);
-        data.put("letterId", letterId);
+        BulkPrint bulkPrint = BulkPrint.builder()
+                .templateName(documentType.getTemplateName())
+                .sendLetterId(letterId)
+                .build();
+        data.put("bulkPrint", bulkPrint);
         return dormantReminder;
     }
 
