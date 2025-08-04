@@ -10,6 +10,10 @@
         <cve>CVE-2025-1686</cve>
     </suppress>
     <suppress until = "2025-10-15">
-        <cve>CVE-2025-48976</cve>
+        <!--
+            Apache Commons Lang ClassUtils.getClass(...) can throw an Error
+            on long inputs. We do not use this method.
+        -->
+        <cve>CVE-2025-48924</cve>
     </suppress>
 </suppressions>
