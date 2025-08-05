@@ -40,6 +40,7 @@ import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalis
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
+import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
@@ -63,7 +64,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -124,6 +124,7 @@ public class NotificationService {
     private final UserInfoService userInfoService;
     private final ObjectMapper objectMapper;
     private final EmailValidationService emailValidationService;
+    private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -1054,26 +1055,7 @@ public class NotificationService {
     public Document sendPostGrantIssuedNotification(
             final CaseDetails caseDetails,
             final Optional<UserInfo> caseworkerInfo) {
-        /*
-        CaseData caseData = caseDetails.getData();
-        String reference = caseDetails.getId().toString();
-        String deceasedName = caseData.getDeceasedFullName();
 
-        String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
-                .get(caseData.getApplicationType()).getSealedAndCertified();
-        Map<String, Object> personalisation =
-                grantOfRepresentationPersonalisationService.getSealedAndCertifiedPersonalisation(caseDetails.getId(),
-                         deceasedName);
-        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
-
-        log.info("Sealed And Certified get the email response for case {}", caseDetails.getId());
-
-        SendEmailResponse response = notificationClientService.sendEmail(templateId,
-                emailAddresses.getSealedAndCertifiedEmail(), personalisation, reference);
-
-        log.info("Send Sealed And Certified completed for case {}", caseDetails.getId());
-        return getGeneratedSentEmailDocument(response, emailAddresses.getSealedAndCertifiedEmail(), SENT_EMAIL);
-         */
         final CaseData caseData = caseDetails.getData();
         final String templateId = templateService.getPostGrantIssueTemplateId(
                 caseData.getLanguagePreference(),
@@ -1084,6 +1066,7 @@ public class NotificationService {
         final String deceasedName = caseData.getDeceasedFullName();
         final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
         final String deceasedDiedOn = NUMERIC_DATE_FORMAT.format(deceasedDeathDate);
+        final String deceasedDiedOnCy = localDateToWelshStringConverter.convert(deceasedDeathDate);
 
         final String grantIssuedCase = caseData.getGrantIssuedDate();
         final Date grantIssuedDate;
@@ -1103,6 +1086,7 @@ public class NotificationService {
                 "ccd_reference", caseRef,
                 "deceased_name", deceasedName,
                 "deceased_dod", deceasedDiedOn,
+                "deceased_dod_cy", deceasedDiedOnCy,
                 "applicant_name", addresseeName,
                 "grant_issued_date", grantIssuedOn);
 
@@ -1112,6 +1096,12 @@ public class NotificationService {
                     recipientEmail,
                     personalisation,
                     caseRef);
+            log.info("Sent notification for move to Post Grant Issued for case: {}", caseRef);
+            final Document sentEmail = getGeneratedSentEmailDocument(
+                    response,
+                    recipientEmail,
+                    SENT_EMAIL);
+            return sentEmail;
         } catch (NotificationClientException e) {
             log.warn("Failed to send Post Grant Issued notification for case {}, message: {}", caseRef, e.getMessage());
 
@@ -1138,6 +1128,12 @@ public class NotificationService {
                             caseworkerEmail,
                             failedPersonalisation,
                             caseRef);
+                    log.info("Sent failed to send notification for move to Post Grant Issued for case: {}", caseRef);
+                    final Document sentCaseworkerEmail = getGeneratedSentEmailDocument(
+                            failedResponse,
+                            caseworkerEmail,
+                            SENT_EMAIL);
+                    return sentCaseworkerEmail;
                 } catch (NotificationClientException e2) {
                     log.warn("Failed to send Post Grant Issued Failed notification for case {}, message: {}",
                             caseRef,
@@ -1145,7 +1141,7 @@ public class NotificationService {
                 }
             }
         }
-
+        log.warn("Failed to send any notifications for moving to Post Grant Issued for case: {}", caseRef);
         return null;
     }
 }
