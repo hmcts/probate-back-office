@@ -360,7 +360,7 @@ public class DocumentController {
                 documentTransformer.addDocument(callbackRequest, document, false);
             }
         } catch (NotificationClientException e) {
-            log.info("evidenceAdded fail to send StopResponseReceived notification for case: {}",
+            log.info("evidenceAdded fails to send StopResponseReceived notification for case: {}",
                     callbackRequest.getCaseDetails().getId());
         }
 
@@ -395,7 +395,7 @@ public class DocumentController {
                 documentTransformer.addDocument(callbackRequest, document, false);
             }
         } catch (NotificationClientException e) {
-            log.info("evidenceAdded fail to send StopResponseReceived notification for case: {}",
+            log.info("evidenceAddedRPARobot fails to send StopResponseReceived notification for case: {}",
                     callbackRequest.getCaseDetails().getId());
         }
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, Optional.empty());
