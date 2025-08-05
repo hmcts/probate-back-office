@@ -789,11 +789,12 @@ public class BusinessValidationController {
         final Document sentNotification = notificationService.sendPostGrantIssuedNotification(
                 caseDetails,
                 caseworkerInfo);
-
-        final List<CollectionMember<Document>> notifications = caseDetails
-                .getData()
-                .getProbateNotificationsGenerated();
-        notifications.add(new CollectionMember<>(null, sentNotification));
+        if (sentNotification != null) {
+            final List<CollectionMember<Document>> notifications = caseDetails
+                    .getData()
+                    .getProbateNotificationsGenerated();
+            notifications.add(new CollectionMember<>(null, sentNotification));
+        }
 
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
