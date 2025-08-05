@@ -56,15 +56,14 @@ import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.time.format.DateTimeParseException;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -84,9 +83,8 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 @RequiredArgsConstructor
 @Component
 public class NotificationService {
-
-    private static final SimpleDateFormat NUMERIC_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-    private static final SimpleDateFormat CASE_DATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private static final DateTimeFormatter CASE_DATA_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            .withLocale(Locale.UK);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
@@ -1065,17 +1063,20 @@ public class NotificationService {
         final String caseRef = caseDetails.getId().toString();
         final String deceasedName = caseData.getDeceasedFullName();
         final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
-        final String deceasedDiedOn = NUMERIC_DATE_FORMAT.format(deceasedDeathDate);
+        final String deceasedDiedOn = caseData.getDeceasedDateOfDeathFormatted();
         final String deceasedDiedOnCy = localDateToWelshStringConverter.convert(deceasedDeathDate);
 
         final String grantIssuedCase = caseData.getGrantIssuedDate();
-        final Date grantIssuedDate;
+        final LocalDate grantIssuedDate;
         try {
-            grantIssuedDate = CASE_DATA_DATE_FORMAT.parse(grantIssuedCase);
-        } catch (ParseException e) {
+            grantIssuedDate = LocalDate.parse(grantIssuedCase, CASE_DATA_DATE_FORMAT);
+        } catch (DateTimeParseException e) {
+            // this would be simpler if we stored this date in the case data as a date rather than a String but...
+            log.warn("Failed to parse grant issued date: {} from case: {}", grantIssuedCase, caseRef, e);
             throw new RuntimeException(e);
         }
-        final String grantIssuedOn = NUMERIC_DATE_FORMAT.format(grantIssuedDate);
+        final String grantIssuedOn = caseData.getGrantIssuedDateFormatted();
+        final String grantIssuedOnCy = localDateToWelshStringConverter.convert(grantIssuedDate);
 
         final String addresseeName = switch (caseData.getApplicationType()) {
             case PERSONAL -> caseData.getPrimaryApplicantFullName();
@@ -1088,7 +1089,8 @@ public class NotificationService {
                 "deceased_dod", deceasedDiedOn,
                 "deceased_dod_cy", deceasedDiedOnCy,
                 "applicant_name", addresseeName,
-                "grant_issued_date", grantIssuedOn);
+                "grant_issued_date", grantIssuedOn,
+                "grant_issued_date_cy", grantIssuedOnCy);
 
         try {
             final SendEmailResponse response = notificationClientService.sendEmail(
@@ -1110,7 +1112,7 @@ public class NotificationService {
             } else {
                 final UserInfo cwInfo = caseworkerInfo.get();
 
-                final String failedTemplateId = templateService.getPostGrantIssueTemplateId(
+                final String failedTemplateId = templateService.getPostGrantIssueFailedTemplateId(
                         caseData.getLanguagePreference(),
                         caseData.getApplicationType());
 
