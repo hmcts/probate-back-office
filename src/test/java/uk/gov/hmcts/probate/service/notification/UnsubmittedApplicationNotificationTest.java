@@ -56,7 +56,7 @@ class UnsubmittedApplicationNotificationTest {
 
     @Test
     void shouldSendUnsubmittedApplicationEmail() throws NotificationClientException {
-        underTest.sendEmail(caseDetails);
+        underTest.sendNotification(caseDetails);
 
         verify(notificationService, times(1)).sendUnsubmittedApplicationEmail(caseDetails);
     }

@@ -16,9 +16,9 @@ import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
+import uk.gov.hmcts.reform.probate.model.cases.BulkPrint;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
-
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -34,6 +34,7 @@ public class AutomatedNotificationCCDService {
     private final CoreCaseDataApi coreCaseDataApi;
     private final ObjectMapper objectMapper;
     private static final String PROBATE_NOTIFICATIONS_GENERATED = "probateNotificationsGenerated";
+    private static final String BULK_PRINT_ID = "bulkPrintId";
 
     public StartEventResponse startEvent(final String caseId,
                                          final SecurityDTO securityDTO,
@@ -159,7 +160,35 @@ public class AutomatedNotificationCCDService {
                     -> GrantOfRepresentationData.builder()
                     .probateNotificationsGenerated(notifications)
                     .build();
+            case DORMANT_REMINDER -> GrantOfRepresentationData.builder()
+                    .bulkPrintId(getBulkPrintCollection((BulkPrint)data.get("bulkPrint"),data))
+                    .probateNotificationsGenerated(notifications)
+                    .build();
         };
+    }
+
+    private List<CollectionMember<BulkPrint>> getBulkPrintCollection(BulkPrint bulkPrint, Map<String, Object> data) {
+        List<CollectionMember<BulkPrint>> existingBulkPrints = new ArrayList<>();
+        Object rawData = data.get(BULK_PRINT_ID);
+
+        if (rawData != null) {
+            try {
+                List<?> rawList = (List<?>) rawData;
+                for (Object item : rawList) {
+                    CollectionMember<BulkPrint> member = objectMapper.convertValue(
+                            item,
+                            objectMapper.getTypeFactory()
+                                    .constructParametricType(CollectionMember.class, BulkPrint.class)
+                    );
+                    existingBulkPrints.add(member);
+                }
+            } catch (Exception e) {
+                throw new CcdUpdateNotificationException("Failed to deserialize existing notifications", e);
+            }
+        }
+        existingBulkPrints.add(new CollectionMember<>(null, bulkPrint));
+
+        return existingBulkPrints;
     }
 
     private List<CollectionMember<ProbateDocument>> getProbateDocuments(

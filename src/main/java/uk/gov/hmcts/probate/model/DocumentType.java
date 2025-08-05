@@ -155,6 +155,9 @@ public enum DocumentType {
     @JsonProperty("blankLetter")
     BLANK_LETTER("blankLetter"),
 
+    @JsonProperty("dormantReminder")
+    DORMANT_REMINDER("dormantReminder"),
+
     @JsonProperty("welshDigitalGrantDraft")
     WELSH_DIGITAL_GRANT_DRAFT("welshDigitalGrantDraft"),
 
@@ -201,7 +204,10 @@ public enum DocumentType {
     WELSH_ADMON_WILL_GRANT_REISSUE("welshAdmonWillGrantReissue"),
 
     @JsonProperty("welshAdColligendaBonaGrantReissue")
-    WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE("welshAdColligendaBonaGrantReissue");
+    WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE("welshAdColligendaBonaGrantReissue"),
+
+    @JsonProperty("welshDormantReminder")
+    WELSH_DORMANT_REMINDER("welshDormantReminder");
 
     private final String templateName;
 

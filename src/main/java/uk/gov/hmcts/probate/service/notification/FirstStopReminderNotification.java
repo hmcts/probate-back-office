@@ -52,7 +52,7 @@ public class FirstStopReminderNotification implements NotificationStrategy {
     }
 
     @Override
-    public Document sendEmail(CaseDetails caseDetails) throws NotificationClientException {
+    public Document sendNotification(CaseDetails caseDetails) throws NotificationClientException {
         return notificationService.sendStopReminderEmail(caseDetails, true);
     }
 
