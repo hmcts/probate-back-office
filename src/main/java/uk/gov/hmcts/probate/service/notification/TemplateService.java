@@ -166,6 +166,7 @@ public class TemplateService {
 
         return emailTemplates.getPostGrantIssuedNotification();
     }
+
     public String getPostGrantIssueFailedTemplateId(
             final LanguagePreference languagePreference,
             final ApplicationType applicationType) {
