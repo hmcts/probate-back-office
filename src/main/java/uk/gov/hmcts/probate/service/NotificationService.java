@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -46,7 +47,6 @@ import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
-import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -55,6 +55,7 @@ import jakarta.validation.Valid;
 import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -980,9 +981,7 @@ public class NotificationService {
             .toList();
     }
 
-    public Document sendPostGrantIssuedNotification(
-            final CaseDetails caseDetails,
-            final Optional<UserInfo> caseworkerInfo) {
+    public Document sendPostGrantIssuedNotification(final CaseDetails caseDetails) {
 
         final CaseData caseData = caseDetails.getData();
         final String templateId = templateService.getPostGrantIssueTemplateId(
@@ -1003,7 +1002,10 @@ public class NotificationService {
         } catch (DateTimeParseException e) {
             // this would be simpler if we stored this date in the case data as a date rather than a String but...
             log.error("Failed to parse grant issued date: {} from case: {}", grantIssuedCase, caseRef, e);
-            throw new RuntimeException(e);
+            final String message = MessageFormat.format(
+                    "Unable to parse grant issued date: [{}] (expecting yyyy-mm-dd format)",
+                    grantIssuedCase);
+            throw new BusinessValidationException(message, e.getMessage());
         }
         final String grantIssuedOn = caseData.getGrantIssuedDateFormatted();
         final String grantIssuedOnCy = localDateToWelshStringConverter.convert(grantIssuedDate);
@@ -1018,7 +1020,7 @@ public class NotificationService {
                 "deceased_name", deceasedName,
                 "deceased_dod", deceasedDiedOn,
                 "deceased_dod_cy", deceasedDiedOnCy,
-                "applicant_name", addresseeName,
+                PERSONALISATION_APPLICANT_NAME, addresseeName,
                 "grant_issued_date", grantIssuedOn,
                 "grant_issued_date_cy", grantIssuedOnCy);
 
@@ -1033,6 +1035,7 @@ public class NotificationService {
                     response,
                     recipientEmail,
                     SENT_EMAIL);
+            log.info("Got PDF of Post Grant Issued notification for case: {}", caseRef);
             return sentEmail;
         } catch (NotificationClientException e) {
             log.info("Failed to send Post Grant Issued notification for case {}, message: {}", caseRef, e.getMessage());

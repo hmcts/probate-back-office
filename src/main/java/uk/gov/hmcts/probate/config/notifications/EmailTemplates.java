@@ -45,5 +45,4 @@ public class EmailTemplates {
     private String declarationNotSignedPrimaryApplicant;
     private String declarationNotSignedExecutors;
     private String postGrantIssuedNotification;
-    private String postGrantIssuedFailedNotification;
 }
