@@ -210,6 +210,7 @@ public enum DocumentType {
     }
 
     private static Map<String, DocumentType> map = new HashMap<>();
+
     static {
         for (DocumentType s : DocumentType.values()) {
             map.put(s.name(), s);
