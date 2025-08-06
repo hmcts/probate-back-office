@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.core.IsSame;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,6 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule.PersonalisationValidationResult;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -50,6 +48,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -309,9 +308,6 @@ class NotificationServiceTest {
         final CaseData caseData = mock(CaseData.class);
         final CaseDetails caseDetails = mock(CaseDetails.class);
 
-        final UserInfo caseworker = mock(UserInfo.class);
-        final Optional<UserInfo> caseworkerInfo = Optional.of(caseworker);
-
         final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
 
         final Document documentMock = mock(Document.class);
@@ -348,9 +344,7 @@ class NotificationServiceTest {
         when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
                 .thenReturn(documentMock);
 
-        final Document result = notificationService.sendPostGrantIssuedNotification(
-                caseDetails,
-                caseworkerInfo);
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
 
         @SuppressWarnings("unchecked")
         final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
@@ -365,7 +359,7 @@ class NotificationServiceTest {
                 () -> assertThat(captured, hasKey("applicant_name")),
                 () -> assertThat(captured, hasKey("grant_issued_date")),
                 () -> assertThat(captured, hasKey("grant_issued_date_cy")),
-                () -> assertThat(result, new IsSame<>(documentMock)));
+                () -> assertThat(result, sameInstance(documentMock)));
     }
 
     @Test
@@ -383,9 +377,6 @@ class NotificationServiceTest {
 
         final CaseData caseData = mock(CaseData.class);
         final CaseDetails caseDetails = mock(CaseDetails.class);
-
-        final UserInfo caseworker = mock(UserInfo.class);
-        final Optional<UserInfo> caseworkerInfo = Optional.of(caseworker);
 
         final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
 
@@ -423,9 +414,7 @@ class NotificationServiceTest {
         when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
                 .thenReturn(documentMock);
 
-        final Document result = notificationService.sendPostGrantIssuedNotification(
-                caseDetails,
-                caseworkerInfo);
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
 
         @SuppressWarnings("unchecked")
         final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
@@ -440,7 +429,7 @@ class NotificationServiceTest {
                 () -> assertThat(captured, hasKey("applicant_name")),
                 () -> assertThat(captured, hasKey("grant_issued_date")),
                 () -> assertThat(captured, hasKey("grant_issued_date_cy")),
-                () -> assertThat(result, new IsSame<>(documentMock)));
+                () -> assertThat(result, sameInstance(documentMock)));
     }
 
     @Test
@@ -459,9 +448,6 @@ class NotificationServiceTest {
 
         final CaseData caseData = mock(CaseData.class);
         final CaseDetails caseDetails = mock(CaseDetails.class);
-
-
-        final Optional<UserInfo> caseworkerInfo = Optional.empty();
 
         final NotificationClientException notificationClientExceptionMock = mock(NotificationClientException.class);
 
@@ -492,8 +478,6 @@ class NotificationServiceTest {
 
         when(templateServiceMock.getPostGrantIssueTemplateId(any(), any()))
                 .thenReturn(tmplId);
-        when(templateServiceMock.getPostGrantIssueFailedTemplateId(any(), any()))
-                .thenReturn(tmplFailedId);
 
         when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
                 .thenThrow(notificationClientExceptionMock);
@@ -501,9 +485,7 @@ class NotificationServiceTest {
         when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
                 .thenReturn(documentMock);
 
-        final Document result = notificationService.sendPostGrantIssuedNotification(
-                caseDetails,
-                caseworkerInfo);
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
 
         verify(notificationClientServiceMock, times(1)).sendEmail(any(), any(), any(), any());
         assertThat(result, nullValue());

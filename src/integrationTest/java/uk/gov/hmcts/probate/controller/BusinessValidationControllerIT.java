@@ -1427,7 +1427,7 @@ class BusinessValidationControllerIT {
 
         final String requestJson = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
-        when(notificationService.sendPostGrantIssuedNotification(any(), any()))
+        when(notificationService.sendPostGrantIssuedNotification(any()))
                 .thenReturn(document);
 
         mockMvc.perform(post(MOVE_TO_POST_GRANT_ISSUED)
