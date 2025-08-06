@@ -786,9 +786,7 @@ public class BusinessValidationController {
             log.warn("Unable to find caseworker info for move to postGrantIssued in case: {}", caseDetails.getId());
         }
 
-        final Document sentNotification = notificationService.sendPostGrantIssuedNotification(
-                caseDetails,
-                caseworkerInfo);
+        final Document sentNotification = notificationService.sendPostGrantIssuedNotification(caseDetails);
         if (sentNotification != null) {
             final List<CollectionMember<Document>> notifications = caseDetails
                     .getData()
