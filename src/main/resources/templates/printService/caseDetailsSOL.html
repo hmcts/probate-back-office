@@ -172,6 +172,7 @@
     </tr>
     <tr>
       <td colspan="2">Deceased Domicility Country:</td>
+      <td>{% if case_data.domicilityCountry %}{{ case_data.domicilityCountry }}{% else %}N/A{% endif %}</td>
       <td>{% if case_data.domicilityCountry %}{{ case_data.domicilityCountry }}{% endif %}</td>
     </tr>
     <tr>
