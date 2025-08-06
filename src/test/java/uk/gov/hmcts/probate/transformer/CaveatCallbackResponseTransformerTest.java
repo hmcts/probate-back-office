@@ -838,48 +838,53 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     private void assertCommonDetails(CaveatCallbackResponse caveatCallbackResponse) {
-
-        assertEquals(CAV_DECEASED_FORENAMES, caveatCallbackResponse.getCaveatData().getDeceasedForenames());
-        assertEquals(CAV_DECEASED_SURNAME, caveatCallbackResponse.getCaveatData().getDeceasedSurname());
-        assertEquals("2017-12-31", caveatCallbackResponse.getCaveatData().getDeceasedDateOfDeath());
-        assertEquals("2016-12-31", caveatCallbackResponse.getCaveatData().getDeceasedDateOfBirth());
-        assertEquals(CAV_DECEASED_HAS_ALIAS, caveatCallbackResponse.getCaveatData().getDeceasedAnyOtherNames());
-        assertEquals(CAV_DECEASED_ADDRESS, caveatCallbackResponse.getCaveatData().getDeceasedAddress());
-
-        assertEquals(CAV_CAVEATOR_FORENAMES, caveatCallbackResponse.getCaveatData().getCaveatorForenames());
-        assertEquals(CAV_CAVEATOR_SURNAME, caveatCallbackResponse.getCaveatData().getCaveatorSurname());
-        assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorEmailAddress());
-        assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorAddress());
-        assertEquals(DATE_SUBMITTED.toString(), caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
-
-        assertEquals(CAV_SOLICITOR_FIRMNAME, caveatCallbackResponse.getCaveatData().getSolsSolicitorFirmName());
-        assertEquals(CAV_SOLICITOR_PHONENUMBER, caveatCallbackResponse.getCaveatData().getSolsSolicitorPhoneNumber());
-        assertEquals(CAV_SOLICITOR_APP_REFERENCE,
-            caveatCallbackResponse.getCaveatData().getSolsSolicitorAppReference());
-
-        assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
-        assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
-        assertEquals(CAV_REOPEN_REASON, caveatCallbackResponse.getCaveatData().getCaveatReopenReason());
-
-        assertEquals(CAV_RECORD_ID, caveatCallbackResponse.getCaveatData().getRecordId());
-        assertEquals(CAV_LEGACY_CASE_TYPE, caveatCallbackResponse.getCaveatData().getLegacyType());
-        assertEquals(CAV_LEGACY_CASE_URL, caveatCallbackResponse.getCaveatData().getLegacyCaseViewUrl());
-
-        assertEquals(SOLS_PAYMENT_METHOD, caveatCallbackResponse.getCaveatData().getSolsPaymentMethods());
-        assertEquals(SOLS_FEE_ACC, caveatCallbackResponse.getCaveatData().getSolsFeeAccountNumber());
-        assertEquals(SOLS_SELECTED_PBA, caveatCallbackResponse.getCaveatData().getSolsPBANumber().getValue().getCode());
-
-        assertEquals(YES, caveatCallbackResponse.getCaveatData().getAutoClosedExpiry());
-        assertEquals(CAV_SOLICITOR_APP_REFERENCE, caveatCallbackResponse.getCaveatData().getPcqId());
-        assertEquals(CAV_CAVEATOR_PHONENUMBER, caveatCallbackResponse.getCaveatData().getCaveatorPhoneNumber());
-        assertEquals(CAV_PROBATE_FEE, caveatCallbackResponse.getCaveatData().getProbateFee());
-        assertEquals(CAV_HELP_WITH_FEES_REFERENCE, caveatCallbackResponse.getCaveatData().getHelpWithFeesReference());
-        assertEquals(CAV_PROBATE_FEE_NOT_INCLUDED_REASON,
-            caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedReason());
-        assertEquals(CAV_NOT_INCLUDED_EXPLANATION,
-            caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedExplanation());
-        assertEquals(CAV_FEE_ACCOUNT_NUMBER, caveatCallbackResponse.getCaveatData().getProbateFeeAccountNumber());
-        assertEquals(CAV_FEE_ACCOUNT_REFERENCE, caveatCallbackResponse.getCaveatData().getProbateFeeAccountReference());
+        assertAll(
+            () -> assertEquals(CAV_DECEASED_FORENAMES, caveatCallbackResponse.getCaveatData().getDeceasedForenames()),
+            () -> assertEquals(CAV_DECEASED_SURNAME, caveatCallbackResponse.getCaveatData().getDeceasedSurname()),
+            () -> assertEquals("2017-12-31", caveatCallbackResponse.getCaveatData().getDeceasedDateOfDeath()),
+            () -> assertEquals("2016-12-31", caveatCallbackResponse.getCaveatData().getDeceasedDateOfBirth()),
+            () -> assertEquals(CAV_DECEASED_HAS_ALIAS,
+                    caveatCallbackResponse.getCaveatData().getDeceasedAnyOtherNames()),
+            () -> assertEquals(CAV_DECEASED_ADDRESS, caveatCallbackResponse.getCaveatData().getDeceasedAddress()),
+            () -> assertEquals(CAV_CAVEATOR_FORENAMES, caveatCallbackResponse.getCaveatData().getCaveatorForenames()),
+            () -> assertEquals(CAV_CAVEATOR_SURNAME, caveatCallbackResponse.getCaveatData().getCaveatorSurname()),
+            () -> assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS,
+                    caveatCallbackResponse.getCaveatData().getCaveatorEmailAddress()),
+            () -> assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorAddress()),
+            () -> assertEquals(DATE_SUBMITTED.toString(),
+                    caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate()),
+            () -> assertEquals(CAV_SOLICITOR_FIRMNAME,
+                    caveatCallbackResponse.getCaveatData().getSolsSolicitorFirmName()),
+            () -> assertEquals(CAV_SOLICITOR_PHONENUMBER,
+                    caveatCallbackResponse.getCaveatData().getSolsSolicitorPhoneNumber()),
+            () -> assertEquals(CAV_SOLICITOR_APP_REFERENCE,
+                    caveatCallbackResponse.getCaveatData().getSolsSolicitorAppReference()),
+            () -> assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate()),
+            () -> assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent()),
+            () -> assertEquals(CAV_REOPEN_REASON, caveatCallbackResponse.getCaveatData().getCaveatReopenReason()),
+            () -> assertEquals(CAV_RECORD_ID, caveatCallbackResponse.getCaveatData().getRecordId()),
+            () -> assertEquals(CAV_LEGACY_CASE_TYPE, caveatCallbackResponse.getCaveatData().getLegacyType()),
+            () -> assertEquals(CAV_LEGACY_CASE_URL, caveatCallbackResponse.getCaveatData().getLegacyCaseViewUrl()),
+            () -> assertEquals(SOLS_PAYMENT_METHOD, caveatCallbackResponse.getCaveatData().getSolsPaymentMethods()),
+            () -> assertEquals(SOLS_FEE_ACC, caveatCallbackResponse.getCaveatData().getSolsFeeAccountNumber()),
+            () -> assertEquals(SOLS_SELECTED_PBA,
+                    caveatCallbackResponse.getCaveatData().getSolsPBANumber().getValue().getCode()),
+            () -> assertEquals(YES, caveatCallbackResponse.getCaveatData().getAutoClosedExpiry()),
+            () -> assertEquals(CAV_SOLICITOR_APP_REFERENCE, caveatCallbackResponse.getCaveatData().getPcqId()),
+            () -> assertEquals(CAV_CAVEATOR_PHONENUMBER,
+                    caveatCallbackResponse.getCaveatData().getCaveatorPhoneNumber()),
+            () -> assertEquals(CAV_PROBATE_FEE, caveatCallbackResponse.getCaveatData().getProbateFee()),
+            () -> assertEquals(CAV_HELP_WITH_FEES_REFERENCE,
+                    caveatCallbackResponse.getCaveatData().getHelpWithFeesReference()),
+            () -> assertEquals(CAV_PROBATE_FEE_NOT_INCLUDED_REASON,
+                    caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedReason()),
+            () -> assertEquals(CAV_NOT_INCLUDED_EXPLANATION,
+                    caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedExplanation()),
+            () -> assertEquals(CAV_FEE_ACCOUNT_NUMBER,
+                    caveatCallbackResponse.getCaveatData().getProbateFeeAccountNumber()),
+            () -> assertEquals(CAV_FEE_ACCOUNT_REFERENCE,
+                    caveatCallbackResponse.getCaveatData().getProbateFeeAccountReference())
+        );
     }
 
     private void assertCaveatPayment(CaveatCallbackResponse caveatCallbackResponse) {
