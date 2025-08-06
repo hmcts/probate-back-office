@@ -176,7 +176,6 @@ notifications:
           declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant"
           declarationNotSignedExecutors: "pa-declaration-not-signed-executors"
           postGrantIssuedNotification: "post-grant-issued-notification-pa"
-          postGrantIssuedFailedNotification: "post-grant-issued-notification-failed-pa"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -207,7 +206,6 @@ notifications:
           dormantWarning: "sol-dormant-warning"
           unsubmittedApplication: "sol-unsubmitted-application"
           postGrantIssuedNotification: "post-grant-issued-notification-pp"
-          postGrantIssuedFailedNotification: "post-grant-issued-notification-failed-pp"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -243,7 +241,6 @@ notifications:
           declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant-welsh"
           declarationNotSignedExecutors: "pa-declaration-not-signed-executors-welsh"
           postGrantIssuedNotification: "post-grant-issued-notification-pa-welsh"
-          postGrantIssuedFailedNotification: "post-grant-issued-notification-failed-pa-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -273,7 +270,6 @@ notifications:
           dormantWarning: "sol-dormant-warning-welsh"
           unsubmittedApplication: "sol-unsubmitted-application-welsh"
           postGrantIssuedNotification: "post-grant-issued-notification-pp-welsh"
-          postGrantIssuedFailedNotification: "post-grant-issued-notification-failed-pp-welsh"
 
 documents:
   templates:

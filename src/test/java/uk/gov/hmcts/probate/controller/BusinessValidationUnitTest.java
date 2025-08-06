@@ -1205,13 +1205,10 @@ class BusinessValidationUnitTest {
 
     @Test
     void shouldAttemptToEmailWhenEnterPostGrantIssued() {
-        final String mockAuth = "mockAuth";
-        final String mockEmail = "mockEmail";
-        final Document documentMock = Mockito.mock(Document.class);
 
         final List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
 
-        when(notificationService.sendPostGrantIssuedNotification(any(), any()))
+        when(notificationService.sendPostGrantIssuedNotification(any()))
                 .thenReturn(documentMock);
 
         when(callbackRequestMock.getCaseDetails())
