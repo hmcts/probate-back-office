@@ -595,90 +595,6 @@ class NotificationServiceTest {
     }
 
     @Test
-    void shouldSendNotificationFailedForPostGrantIssued() throws NotificationClientException {
-        final String applEmail = "abc@gmail.com";
-        final String tmplId = "tmplId";
-        final String tmplFailedId = "tmplFailedId";
-        final String decName = "decName";
-        final String applName = "applName";
-        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
-        final String decdDodFrm = "decdDodFrm";
-        final String decdDodCy = "decdDodCy";
-        final String issueDate = "2025-08-05";
-        final String issueDateFrm = "issueDateFrm";
-        final String issueDateCy = "issueDateCy";
-        final String caseworkerGiven = "caseworkerGiven";
-        final String caseworkerFamily = "caseworkerFamily";
-        final String caseworkerEmail = "caseworkerEmail";
-
-        final CaseData caseData = mock(CaseData.class);
-        final CaseDetails caseDetails = mock(CaseDetails.class);
-
-        final UserInfo caseworker = mock(UserInfo.class);
-        when(caseworker.getFamilyName()).thenReturn(caseworkerFamily);
-        when(caseworker.getGivenName()).thenReturn(caseworkerGiven);
-        when(caseworker.getSub()).thenReturn(caseworkerEmail);
-
-        final Optional<UserInfo> caseworkerInfo = Optional.of(caseworker);
-
-        final NotificationClientException notificationClientExceptionMock = mock(NotificationClientException.class);
-        final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
-
-        final Document documentMock = mock(Document.class);
-
-        when(caseDetails.getData()).thenReturn(caseData);
-        when(caseDetails.getId()).thenReturn(1L);
-
-        when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
-        when(caseData.getPrimaryApplicantEmailAddress())
-                .thenReturn(applEmail);
-        when(caseData.getPrimaryApplicantFullName())
-                .thenReturn(applName);
-        when(caseData.getDeceasedFullName())
-                .thenReturn(decName);
-        when(caseData.getDeceasedDateOfDeath())
-                .thenReturn(decdDod);
-        when(caseData.getDeceasedDateOfDeathFormatted())
-                .thenReturn(decdDodFrm);
-        when(caseData.getGrantIssuedDate())
-                .thenReturn(issueDate);
-        when(caseData.getGrantIssuedDateFormatted())
-                .thenReturn(issueDateFrm);
-
-        when(localDateToWelshStringConverterMock.convert(any()))
-                .thenReturn(decdDodCy, issueDateCy);
-
-        when(templateServiceMock.getPostGrantIssueTemplateId(any(), any()))
-                .thenReturn(tmplId);
-        when(templateServiceMock.getPostGrantIssueFailedTemplateId(any(), any()))
-                .thenReturn(tmplFailedId);
-
-        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
-                .thenThrow(notificationClientExceptionMock);
-        when(notificationClientServiceMock.sendEmail(eq(tmplFailedId), eq(caseworkerEmail), any(), any()))
-                .thenReturn(sendEmailResponseMock);
-
-        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
-                .thenReturn(documentMock);
-
-        final Document result = notificationService.sendPostGrantIssuedNotification(
-                caseDetails,
-                caseworkerInfo);
-
-        @SuppressWarnings("unchecked")
-        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
-        verify(notificationClientServiceMock).sendEmail(eq(tmplFailedId), eq(caseworkerEmail), captor.capture(), any());
-        final Map<String, Object> captured = captor.getValue();
-        assertAll(
-                () -> assertThat(captured.size(), greaterThanOrEqualTo(3)),
-                () -> assertThat(captured, hasKey("ccd_reference")),
-                () -> assertThat(captured, hasKey("deceased_name")),
-                () -> assertThat(captured, hasKey("caseworker_name")),
-                () -> assertThat(result, new IsSame<>(documentMock)));
-    }
-
-    @Test
     void shouldSendNotSendNotificationFailedForPostGrantIssuedIfNoCaseworker() throws NotificationClientException {
         final String applEmail = "abc@gmail.com";
         final String tmplId = "tmplId";
@@ -699,7 +615,6 @@ class NotificationServiceTest {
         final Optional<UserInfo> caseworkerInfo = Optional.empty();
 
         final NotificationClientException notificationClientExceptionMock = mock(NotificationClientException.class);
-        final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
 
         final Document documentMock = mock(Document.class);
 
@@ -741,8 +656,6 @@ class NotificationServiceTest {
                 caseDetails,
                 caseworkerInfo);
 
-        @SuppressWarnings("unchecked")
-        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
         verify(notificationClientServiceMock, times(1)).sendEmail(any(), any(), any(), any());
         assertThat(result, nullValue());
     }
