@@ -1072,7 +1072,7 @@ public class NotificationService {
             grantIssuedDate = LocalDate.parse(grantIssuedCase, CASE_DATA_DATE_FORMAT);
         } catch (DateTimeParseException e) {
             // this would be simpler if we stored this date in the case data as a date rather than a String but...
-            log.warn("Failed to parse grant issued date: {} from case: {}", grantIssuedCase, caseRef, e);
+            log.error("Failed to parse grant issued date: {} from case: {}", grantIssuedCase, caseRef, e);
             throw new RuntimeException(e);
         }
         final String grantIssuedOn = caseData.getGrantIssuedDateFormatted();
@@ -1105,45 +1105,8 @@ public class NotificationService {
                     SENT_EMAIL);
             return sentEmail;
         } catch (NotificationClientException e) {
-            log.warn("Failed to send Post Grant Issued notification for case {}, message: {}", caseRef, e.getMessage());
-
-            if (caseworkerInfo.isEmpty()) {
-                log.warn("No caseworker info found to send failed notification for case {}", caseRef);
-            } else {
-                final UserInfo cwInfo = caseworkerInfo.get();
-
-                final String failedTemplateId = templateService.getPostGrantIssueFailedTemplateId(
-                        caseData.getLanguagePreference(),
-                        caseData.getApplicationType());
-
-                final String caseworkerName = cwInfo.getGivenName() + " " + cwInfo.getFamilyName();
-                final String caseworkerEmail = cwInfo.getSub();
-
-                final Map<String, Object> failedPersonalisation = Map.of(
-                        "caseworker_name", caseworkerName,
-                        "ccd_reference", caseRef,
-                        "deceased_name", deceasedName);
-
-                try {
-                    final SendEmailResponse failedResponse = notificationClientService.sendEmail(
-                            failedTemplateId,
-                            caseworkerEmail,
-                            failedPersonalisation,
-                            caseRef);
-                    log.info("Sent failed to send notification for move to Post Grant Issued for case: {}", caseRef);
-                    final Document sentCaseworkerEmail = getGeneratedSentEmailDocument(
-                            failedResponse,
-                            caseworkerEmail,
-                            SENT_EMAIL);
-                    return sentCaseworkerEmail;
-                } catch (NotificationClientException e2) {
-                    log.warn("Failed to send Post Grant Issued Failed notification for case {}, message: {}",
-                            caseRef,
-                            e2.getMessage());
-                }
-            }
+            log.info("Failed to send Post Grant Issued notification for case {}, message: {}", caseRef, e.getMessage());
+            return null;
         }
-        log.warn("Failed to send any notifications for moving to Post Grant Issued for case: {}", caseRef);
-        return null;
     }
 }
