@@ -32,7 +32,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
@@ -134,7 +133,6 @@ public class BusinessValidationController {
     private final ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
-    private final SecurityUtils securityUtils;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
