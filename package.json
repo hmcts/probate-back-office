@@ -115,8 +115,8 @@
     "when": "^3.7.7"
   },
   "resolutions": {
-    "yargs-parser": "^20.2.9",
-    "http-cache-semantics": ">=4.1.1"
+    "yargs-parser": "^22.0.0",
+    "http-cache-semantics": "^4.2.0"
   },
   "packageManager": "yarn@4.9.2",
   "license": "MIT"
