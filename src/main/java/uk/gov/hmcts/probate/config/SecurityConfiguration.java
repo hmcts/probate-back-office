@@ -99,6 +99,7 @@ public class SecurityConfiguration {
                 "/swagger-ui.html",
                 "/swagger-resources/**",
                 "/v2/api-docs",
+                "/v3/api-docs",
                 "/health",
                 "/health/liveness",
                 "/info",
