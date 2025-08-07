@@ -40,10 +40,15 @@ public class LifeEventService {
         try {
             records = deathService.searchForDeathRecordsByNamesAndDate(deceasedForenames, deceasedSurname,
                 deceasedDateOfDeath);
-            log.info("LifeEventService.getDeathRecordsByNamesAndDate {}:",
-                    records.get(0).getDeceased().getDateOfDeath());
-            log.info("LifeEventService.getDeathRecordsByNamesAndDate alias:",
-                    records.get(0).getDeceased().getAliases().get(0).getForenames());
+            if(records!=null && records.size()>0) {
+                log.info("LifeEventService.getDeathRecordsByNamesAndDate {}:",
+                        records.get(0).getDeceased().getDateOfDeath());
+                log.info("LifeEventService.getDeathRecordsByNamesAndDate alias:",
+                        records.get(0).getDeceased().getAliases().get(0).getForenames());
+            }else{
+                log.info("LifeEventService.getDeathRecordsByNamesAndDate is null or empty");
+            }
+
         } catch (Exception e) {
             log.error("Error during LEV call", e);
             throw e;
