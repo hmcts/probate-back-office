@@ -37,11 +37,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 16
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: branch
           path: build/branch
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           name: master
           path: build/master
