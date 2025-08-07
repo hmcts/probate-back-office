@@ -1,9 +1,9 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
@@ -17,13 +17,16 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
+import uk.gov.hmcts.probate.service.notification.AutomatedNotificationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
+import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.NotificationService.CommonNotificationResult;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule.PersonalisationValidationResult;
@@ -84,9 +87,18 @@ class NotificationServiceTest {
     @Mock
     private PersonalisationValidationRule personalisationValidationRuleMock;
     @Mock
-    private BusinessValidationMessageService businessValidationMessageService;
+    private BusinessValidationMessageService businessValidationMessageServiceMock;
+    @Mock
+    private AutomatedNotificationPersonalisationService automatedNotificationPersonalisationServiceMock;
+    @Mock
+    private UserInfoService userInfoServiceMock;
+    @Mock
+    private ObjectMapper objectMapperMock;
+    @Mock
+    private EmailValidationService emailValidationServiceMock;
+    @Mock
+    private LocalDateToWelshStringConverter localDateToWelshStringConverterMock;
 
-    @InjectMocks
     private NotificationService notificationService;
 
     private AutoCloseable closeableMocks;
@@ -95,6 +107,31 @@ class NotificationServiceTest {
     @BeforeEach
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
+
+        notificationService = new NotificationService(
+                emailAddressesMock,
+                notificationTemplatesMock,
+                registriesPropertiesMock,
+                notificationClientMock,
+                markdownTransformationServiceMock,
+                pdfManagementServiceMock,
+                eventValidationServiceMock,
+                emailAddressNotifyValidationRulesMock,
+                grantOfRepresentationPersonalisationServiceMock,
+                smeeAndFordPersonalisationServiceMock,
+                caveatPersonalisationServiceMock,
+                sentEmailPersonalisationServiceMock,
+                templateServiceMock,
+                serviceAuthTokenGeneratorMock,
+                notificationClientServiceMock,
+                documentManagementServiceMock,
+                personalisationValidationRuleMock,
+                businessValidationMessageServiceMock,
+                automatedNotificationPersonalisationServiceMock,
+                userInfoServiceMock,
+                objectMapperMock,
+                emailValidationServiceMock,
+                localDateToWelshStringConverterMock);
     }
 
     @AfterEach
