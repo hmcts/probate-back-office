@@ -39,12 +39,9 @@ public class LifeEventCallbackResponseService {
     }
 
     public CallbackResponse getDeathRecordsByNamesAndDate(CallbackRequest request) {
-        log.info("getDeathRecordsByNamesAndDate id {}:", request.getCaseDetails().getId());
         final CaseDetails caseDetails = request.getCaseDetails();
         final List<CollectionMember<DeathRecord>> deathRecords
             = lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
-        log.info("getDeathRecordsByNamesAndDate deathRecords id {}:", deathRecords.get(0).getId());
-        log.info("getDeathRecordsByNamesAndDate deathRecords id {}:", deathRecords.get(0).getValue().getName());
         final CallbackResponse response = callbackResponseTransformer.updateTaskList(request, Optional.empty());
         response.getData().setDeathRecords(deathRecords);
         response.getData().setNumberOfDeathRecords(deathRecords.size());
