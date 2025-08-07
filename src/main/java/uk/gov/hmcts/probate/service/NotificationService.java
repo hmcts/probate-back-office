@@ -40,6 +40,7 @@ import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalis
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
+import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
@@ -48,6 +49,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -117,6 +119,7 @@ public class NotificationService {
     private final UserInfoService userInfoService;
     private final ObjectMapper objectMapper;
     private final EmailValidationService emailValidationService;
+    private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -1010,6 +1013,97 @@ public class NotificationService {
         if (primaryApplicantEmailFailed || executorsEmailFailed) {
             String errorMessage = "Failed to send declarationNotSigned email for case ID: " + caseId;
             throw new NotificationClientException(errorMessage);
+        }
+    }
+
+    public Document sendRegistrarEscalationNotification(
+            final CaseDetails caseDetails,
+            final Optional<UserInfo> caseworkerInfo) {
+        final CaseData caseData = caseDetails.getData();
+        final String templateId = templateService.getRegistrarEscalationNotification(
+                caseData.getApplicationType(),
+                caseData.getLanguagePreference());
+
+        final String recipientEmail = getEmail(caseData);
+        final String caseRef = caseDetails.getId().toString();
+        final String deceasedName = caseData.getDeceasedFullName();
+        final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
+        final String deceasedDiedOn = caseData.getDeceasedDateOfDeathFormatted();
+        final String deceasedDiedOnCy = localDateToWelshStringConverter.convert(deceasedDeathDate);
+
+        final String addresseeName = switch (caseData.getApplicationType()) {
+            case PERSONAL -> caseData.getPrimaryApplicantFullName();
+            case SOLICITOR -> caseData.getSolsSOTName();
+        };
+
+        final Map<String, Object> personalisation = Map.of(
+                "ccd_reference", caseRef,
+                "deceased_name", deceasedName,
+                "deceased_dod", deceasedDiedOn,
+                "deceased_dod_cy", deceasedDiedOnCy,
+                PERSONALISATION_APPLICANT_NAME, addresseeName);
+
+        try {
+            final SendEmailResponse response = notificationClientService.sendEmail(
+                    templateId,
+                    recipientEmail,
+                    personalisation,
+                    caseRef);
+            log.info("Sent notification for escalation to registrar for case: {}", caseRef);
+            final Document sentEmail = getGeneratedSentEmailDocument(
+                    response,
+                    recipientEmail,
+                    SENT_EMAIL);
+            log.info("Got PDF of escalation to registrar notification for case: {}", caseRef);
+            return sentEmail;
+        } catch (NotificationClientException e) {
+            log.info("Failed to send escalation to registrar notification for case {}, message: {}",
+                    caseRef,
+                    e.getMessage());
+            return sendRegistrarEscalationNotificationFailed(caseData, caseworkerInfo, caseRef, deceasedName);
+        }
+    }
+
+    Document sendRegistrarEscalationNotificationFailed(
+            final CaseData caseData,
+            final Optional<UserInfo> caseworkerInfo,
+            final String caseRef,
+            final String deceasedName) {
+        if (caseworkerInfo.isEmpty()) {
+            log.warn("No caseworker info to send registrar escalation notification failed for case: {}", caseRef);
+            return null;
+        }
+        final UserInfo caseworker = caseworkerInfo.get();
+        final String failedTemplateId = templateService.getRegistrarEscalationNotificationFailed(
+                caseData.getApplicationType(),
+                caseData.getLanguagePreference());
+
+        final String caseworkerEmail = caseworker.getSub();
+        final String caseworkerName = caseworker.getName();
+
+        final Map<String, Object> personalisation = Map.of(
+                "ccd_reference", caseRef,
+                "deceased_name", deceasedName,
+                "caseworker_name", caseworkerName);
+
+        try {
+            final SendEmailResponse response = notificationClientService.sendEmail(
+                    failedTemplateId,
+                    caseworkerEmail,
+                    personalisation,
+                    caseRef);
+            log.info("Sent notification failed for escalation to registrar for case: {}", caseRef);
+            final Document sentEmail = getGeneratedSentEmailDocument(
+                    response,
+                    caseworkerEmail,
+                    SENT_EMAIL);
+            log.info("Got PDF of notification failed for escalation to registrar for case: {}", caseRef);
+            return sentEmail;
+        } catch (NotificationClientException e) {
+            log.info("Failed to send escalation to registrar notification for case {}, message: {}",
+                    caseRef,
+                    e.getMessage());
+            return null;
         }
     }
 

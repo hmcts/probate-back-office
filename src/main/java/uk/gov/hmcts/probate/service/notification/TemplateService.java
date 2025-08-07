@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.notification;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.notifications.EmailTemplates;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
@@ -161,6 +162,26 @@ public class TemplateService {
         } else {
             return emailTemplates.getDeclarationNotSignedExecutors();
         }
+    }
+
+    public String getRegistrarEscalationNotification(
+            final ApplicationType applicationType,
+            final LanguagePreference languagePreference) {
+        final EmailTemplates emailTemplates = notificationTemplates.getEmail()
+                .get(languagePreference)
+                .get(applicationType);
+
+        return emailTemplates.getRegistrarEscalationNotification();
+    }
+
+    public String getRegistrarEscalationNotificationFailed(
+            final ApplicationType applicationType,
+            final LanguagePreference languagePreference) {
+        final EmailTemplates emailTemplates = notificationTemplates.getEmail()
+                .get(languagePreference)
+                .get(applicationType);
+
+        return emailTemplates.getRegistrarEscalationNotificationFailed();
     }
 }
 
