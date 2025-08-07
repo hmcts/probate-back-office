@@ -58,6 +58,7 @@ public class LifeEventController {
 
     @PostMapping(path = "/manualUpdateAboutToStart", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> manualUpdateAboutToStart(@RequestBody CallbackRequest request) {
+        log.info("manualUpdateAboutToStart id {}:", request.getCaseDetails().getId());
         return ResponseEntity.ok(lifeEventCallBackResponseService.getDeathRecordsByNamesAndDate(request));
     }
 
