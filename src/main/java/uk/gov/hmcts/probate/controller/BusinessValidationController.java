@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -411,6 +412,18 @@ public class BusinessValidationController {
 
         caseEscalatedService.caseEscalated(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final Document sentNotification = notificationService.sendRegistrarEscalationNotification(
+                caseDetails,
+                caseworkerInfo);
+        if (sentNotification != null) {
+            final List<CollectionMember<Document>> notifications = caseDetails
+                    .getData()
+                    .getProbateNotificationsGenerated();
+            notifications.add(new CollectionMember<>(null, sentNotification));
+        }
+
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
