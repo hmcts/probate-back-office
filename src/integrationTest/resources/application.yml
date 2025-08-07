@@ -175,6 +175,8 @@ notifications:
           unsubmittedApplication: "pa-unsubmitted-application"
           declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant"
           declarationNotSignedExecutors: "pa-declaration-not-signed-executors"
+          registrarEscalationNotification: "pa-registrar-escalation"
+          registrarEscalationNotificationFailed: "pa-registrar-escalation-failed"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -204,6 +206,8 @@ notifications:
           hseReminder: "sol-hse-reminder"
           dormantWarning: "sol-dormant-warning"
           unsubmittedApplication: "sol-unsubmitted-application"
+          registrarEscalationNotification: "pp-registrar-escalation"
+          registrarEscalationNotificationFailed: "pp-registrar-escalation-failed"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -238,6 +242,8 @@ notifications:
           unsubmittedApplication: "pa-unsubmitted-application-welsh"
           declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant-welsh"
           declarationNotSignedExecutors: "pa-declaration-not-signed-executors-welsh"
+          registrarEscalationNotification: "pa-registrar-escalation-welsh"
+          registrarEscalationNotificationFailed: "pa-registrar-escalation-failed-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -266,6 +272,8 @@ notifications:
           hseReminder: "sol-hse-reminder-welsh"
           dormantWarning: "sol-dormant-warning-welsh"
           unsubmittedApplication: "sol-unsubmitted-application-welsh"
+          registrarEscalationNotification: "pp-registrar-escalation-welsh"
+          registrarEscalationNotificationFailed: "pp-registrar-escalation-failed-welsh"
 
 documents:
   templates:
