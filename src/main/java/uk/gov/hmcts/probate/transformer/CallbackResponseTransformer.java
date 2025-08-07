@@ -19,6 +19,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioListElement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -185,6 +187,50 @@ public class CallbackResponseTransformer {
         return transformResponse(builder.build());
     }
 
+    private DynamicRadioList getAppropriateIhtFormEstateRadioList(CaseData caseData) {
+        List<DynamicRadioListElement> listItems = new ArrayList<>();
+        String ihtFormEstate = caseData.getIhtFormEstate();
+        DynamicRadioList ihtFormsReported = caseData.getIhtFormsReported();
+
+        boolean showAllOptions = false;
+        if (ihtFormsReported != null && ihtFormsReported.getValue() != null) {
+            String code = ihtFormsReported.getValue().getCode();
+            showAllOptions = "NA".equals(code) || "IHT400421".equals(code);
+        }
+
+        if (showAllOptions) {
+            listItems.add(buildRadioListItem("IHT400", "IHT400"));
+            listItems.add(buildRadioListItem("IHT400421", "IHT400421"));
+            listItems.add(buildRadioListItem("IHT207", "IHT207"));
+            listItems.add(buildRadioListItem("NA", "NA"));
+        } else {
+            listItems.add(buildRadioListItem("IHT400", "IHT400"));
+            listItems.add(buildRadioListItem("IHT207", "IHT207"));
+        }
+
+        DynamicRadioListElement selectedValue = null;
+        if (ihtFormsReported != null && ihtFormsReported.getValue() != null && ihtFormsReported
+                .getValue().getCode() != null) {
+            String code = ihtFormsReported.getValue().getCode();
+            selectedValue = listItems.stream()
+                    .filter(item -> code.equals(item.getCode()))
+                    .findFirst()
+                    .orElse(null);
+        }
+
+        return DynamicRadioList.builder()
+                .listItems(listItems)
+                .value(selectedValue)
+                .build();
+    }
+
+    private DynamicRadioListElement buildRadioListItem(String code, String label) {
+        return DynamicRadioListElement.builder()
+                .code(code)
+                .label(label)
+                .build();
+    }
+
     public CallbackResponse setupOriginalDocumentsForRemoval(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
@@ -203,6 +249,9 @@ public class CallbackResponseTransformer {
                 callbackRequest.getEventId(), Optional.empty(),true);
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(callbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder);
+        DynamicRadioList ihtFormEstate = getAppropriateIhtFormEstateRadioList(callbackRequest
+                .getCaseDetails().getData());
+        responseCaseDataBuilder.ihtFormsReported(ihtFormEstate);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1422,7 +1471,8 @@ public class CallbackResponseTransformer {
             .executorsNamed(caseData.getExecutorsNamed())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
-            .evidenceHandledDate(caseData.getEvidenceHandledDate());
+            .evidenceHandledDate(caseData.getEvidenceHandledDate())
+            .ihtFormsReported(caseData.getIhtFormsReported());
 
         handleDeceasedAliases(
                 builder,
