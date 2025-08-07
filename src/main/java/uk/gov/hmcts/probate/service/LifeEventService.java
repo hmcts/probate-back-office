@@ -41,10 +41,14 @@ public class LifeEventService {
             records = deathService.searchForDeathRecordsByNamesAndDate(deceasedForenames, deceasedSurname,
                 deceasedDateOfDeath);
             if (records != null && records.size() > 0) {
+                log.info("LifeEventService.getDeathRecordsByNamesAndDate alias size {}:",
+                        records.get(0).getDeceased().getAliases().size());
                 log.info("LifeEventService.getDeathRecordsByNamesAndDate {}:",
                         records.get(0).getDeceased().getDateOfDeath());
-                log.info("LifeEventService.getDeathRecordsByNamesAndDate alias:",
+                log.info("LifeEventService.getDeathRecordsByNamesAndDate alias getForenames:",
                         records.get(0).getDeceased().getAliases().get(0).getForenames());
+                log.info("LifeEventService.getDeathRecordsByNamesAndDate alias getSurname:",
+                        records.get(0).getDeceased().getAliases().get(0).getSurname());
             } else {
                 log.info("LifeEventService.getDeathRecordsByNamesAndDate is null or empty");
             }
