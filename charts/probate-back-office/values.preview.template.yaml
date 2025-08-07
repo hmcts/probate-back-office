@@ -61,7 +61,7 @@ ccd:
       autoscaling:
         enabled: false
       environment:
-        CASE_DATA_PROBATE_TEMPLATE_URL: http://${SERVICE_NAME}-xui-webapp
+        #CASE_DATA_PROBATE_TEMPLATE_URL: http://${SERVICE_NAME}-xui-webapp
         IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
       ingressHost:
         ccd-case-print-service-${SERVICE_FQDN}
