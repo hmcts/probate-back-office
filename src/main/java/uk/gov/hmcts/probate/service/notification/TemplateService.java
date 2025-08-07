@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.notification;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.notifications.EmailTemplates;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
