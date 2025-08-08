@@ -366,6 +366,15 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/transformIhtFormEstate", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> transformIhtFormEstate(
+            @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
+            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        return ResponseEntity.ok(callbackResponseTransformer.transformAmendDetails(callbackRequest));
+    }
+
     @PostMapping(path = "/case-stopped", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
