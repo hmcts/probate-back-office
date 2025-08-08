@@ -65,6 +65,7 @@ class DormantCaseServiceTest {
                 .build();
         CaseData caseData1 = CaseData.builder()
                 .deceasedSurname("Doe")
+                .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))
                 .moveToDormantDateTime(DATE_FORMAT.format(LocalDateTime.now(ZoneOffset.UTC)
                 .minusMonths(1L)))
                 .build();
