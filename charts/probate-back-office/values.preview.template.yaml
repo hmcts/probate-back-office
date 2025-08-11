@@ -65,7 +65,7 @@ ccd:
         IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
       ingressHost:
         //ccd-case-print-service-${SERVICE_FQDN}
-        ccd-case-print-service-pr-574-nodejs
+        ccd-case-print-service-pr-574
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
