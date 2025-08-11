@@ -23,8 +23,8 @@ ccd:
       enabled: false
     s2s:
       enabled: false
-    #printService:
-    #  enabled: true
+    printService:
+      enabled: true
     elastic:
       enabled: true
     ras:
