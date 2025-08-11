@@ -39,7 +39,7 @@ def secrets = [
                 secret('prof-user-sac-username', 'PROF_USER_SAC'),
                 secret('prof-user-sac-password', 'PROF_USER_PASSWORD_SAC'),
                 secret('prof-user-noc-username', 'PROF_USER_NOC'),
-                secret('prof-user-noc-password', 'PROF_USER_PASSWORD_NOC')
+                secret('prof-user-noc-password', 'PROF_USER_PASSWORD_NOC'),
                 secret('authTokenEmail', 'AUTH_TOKEN_EMAIL'),
                 secret('authTokenPassword', 'AUTH_TOKEN_PASSWORD'),
                 secret('excelaEmail', 'EXCELA_EMAIL'),
