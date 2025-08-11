@@ -64,7 +64,8 @@ ccd:
         CASE_DATA_PROBATE_TEMPLATE_URL: http://${SERVICE_NAME}-xui-webapp
         IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
       ingressHost:
-        ccd-case-print-service-${SERVICE_FQDN}
+        //ccd-case-print-service-${SERVICE_FQDN}
+        ccd-case-print-service-pr-574-nodejs
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
@@ -74,7 +75,7 @@ ccd:
         IDAM_OAUTH2_CLIENT_SECRET: ${API_GATEWAY_IDAM_SECRET}
         PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
         //PROXY_PRINT_SERVICE: http://${SERVICE_NAME}-ccd-case-print-service
-        PROXY_PRINT_SERVICE: http://ccd-case-print-service-pr-574
+        PROXY_PRINT_SERVICE: http://ccd-case-print-service-pr-574-nodejs
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
       keyVaults: []
