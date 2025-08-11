@@ -74,7 +74,7 @@ ccd:
         IDAM_OAUTH2_CLIENT_SECRET: ${API_GATEWAY_IDAM_SECRET}
         PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
         //PROXY_PRINT_SERVICE: http://${SERVICE_NAME}-ccd-case-print-service
-        PROXY_PRINT_SERVICE: http://ccd-case-print-service-pr-574-nodejs
+        PROXY_PRINT_SERVICE: http://ccd-case-print-service-pr-574
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
       keyVaults: []
