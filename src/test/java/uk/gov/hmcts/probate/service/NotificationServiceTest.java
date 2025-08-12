@@ -105,7 +105,7 @@ class NotificationServiceTest {
     void tearDown() throws Exception {
         closeableMocks.close();
     }
-    
+
     @Test
     void givenPersonalisationWithMarkdown_whenCommonValidation_thenThrows() {
         final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
@@ -256,6 +256,7 @@ class NotificationServiceTest {
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
         when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantFullName()).thenReturn("Applicant Name");
         when(caseData.getSolsSolicitorEmail()).thenReturn("test@example.com");
         when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());

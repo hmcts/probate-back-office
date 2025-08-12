@@ -71,6 +71,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_REC
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED_INTESTACY;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_GRANT_ISSUED;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.EDGE_CASE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 
@@ -355,13 +356,18 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         try {
-            if (callbackRequest.getCaseDetails().getData().getApplicationType().equals(SOLICITOR)) {
+            final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+            if (caseDetails.getData().getApplicationType().equals(SOLICITOR)
+                && !caseDetails.getState().equalsIgnoreCase(STATE_BO_GRANT_ISSUED)) {
                 Document document = notificationService.sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
                 documentTransformer.addDocument(callbackRequest, document, false);
             }
         } catch (NotificationClientException e) {
-            log.info("evidenceAdded fails to send StopResponseReceived notification for case: {}",
+            log.warn("evidenceAdded fails to send StopResponseReceived notification for case: {}",
                     callbackRequest.getCaseDetails().getId());
+        } catch (RuntimeException e) {
+            log.warn("evidenceAddedRPARobot fails to generate or upload notification pdf for case: {}",
+                    callbackRequest.getCaseDetails().getId(), e);
         }
 
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
@@ -373,7 +379,7 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> evidenceAddedRPARobot(@RequestBody CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
-        Boolean update = true;
+        boolean update = true;
         if (caseDetails.getState().equalsIgnoreCase(STATE_BO_CASE_STOPPED)) {
             log.info("Case is stopped: {} ", caseDetails.getId());
             if (caseData.getDocumentUploadedAfterCaseStopped() != null
@@ -386,17 +392,21 @@ public class DocumentController {
         } else {
             log.info("Case is ongoing: {} ", caseDetails.getId());
         }
-        if (Boolean.TRUE.equals(update)) {
+        if (update) {
             evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
         }
         try {
-            if (callbackRequest.getCaseDetails().getData().getApplicationType().equals(SOLICITOR)) {
+            if (caseDetails.getData().getApplicationType().equals(SOLICITOR)
+                    && !caseDetails.getState().equalsIgnoreCase(STATE_BO_GRANT_ISSUED)) {
                 Document document = notificationService.sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
                 documentTransformer.addDocument(callbackRequest, document, false);
             }
         } catch (NotificationClientException e) {
-            log.info("evidenceAddedRPARobot fails to send StopResponseReceived notification for case: {}",
-                    callbackRequest.getCaseDetails().getId());
+            log.warn("evidenceAddedRPARobot fails to send StopResponseReceived notification for case: {}, message: {}",
+                    callbackRequest.getCaseDetails().getId(), e.getHttpResult());
+        } catch (RuntimeException e) {
+            log.warn("evidenceAddedRPARobot fails to generate or upload notification pdf for case: {}",
+                    callbackRequest.getCaseDetails().getId(), e);
         }
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, Optional.empty());
         return ResponseEntity.ok(response);
