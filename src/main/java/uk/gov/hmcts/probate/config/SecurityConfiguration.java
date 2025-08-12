@@ -61,6 +61,8 @@ public class SecurityConfiguration {
                         "/swagger-ui.html",
                         "/swagger-resources/**",
                         "/v2/api-docs",
+                        "/v3/api-docs",
+                        "/swagger-ui/**",
                         "/health",
                         "/health/liveness",
                         "/info",
