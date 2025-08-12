@@ -1043,24 +1043,30 @@ public class NotificationService {
                 "deceased_dod_cy", deceasedDiedOnCy,
                 PERSONALISATION_APPLICANT_NAME, addresseeName);
 
+        final SendEmailResponse response;
         try {
-            final SendEmailResponse response = notificationClientService.sendEmail(
+             response = notificationClientService.sendEmail(
                     templateId,
                     recipientEmail,
                     personalisation,
                     caseRef);
             log.info("Sent notification for escalation to registrar for case: {}", caseRef);
+        } catch (NotificationClientException e) {
+            log.info("Failed to send escalation to registrar notification for case {}, message: {}",
+                    caseRef,
+                    e.getMessage());
+            return sendRegistrarEscalationNotificationFailed(caseData, caseworkerInfo, caseRef, deceasedName);
+        }
+        try {
             final Document sentEmail = getGeneratedSentEmailDocument(
                     response,
                     recipientEmail,
                     SENT_EMAIL);
             log.info("Got PDF of escalation to registrar notification for case: {}", caseRef);
             return sentEmail;
-        } catch (NotificationClientException e) {
-            log.info("Failed to send escalation to registrar notification for case {}, message: {}",
-                    caseRef,
-                    e.getMessage());
-            return sendRegistrarEscalationNotificationFailed(caseData, caseworkerInfo, caseRef, deceasedName);
+        } catch (RuntimeException e) {
+            log.warn("Failed to generate or upload notification pdf for case {}", caseRef, e);
+            return null;
         }
     }
 
@@ -1086,23 +1092,29 @@ public class NotificationService {
                 "deceased_name", deceasedName,
                 "caseworker_name", caseworkerName);
 
+        final SendEmailResponse response;
         try {
-            final SendEmailResponse response = notificationClientService.sendEmail(
+            response = notificationClientService.sendEmail(
                     failedTemplateId,
                     caseworkerEmail,
                     personalisation,
                     caseRef);
             log.info("Sent notification failed for escalation to registrar for case: {}", caseRef);
+        } catch (NotificationClientException e) {
+            log.info("Failed to send escalation to registrar notification for case {}, message: {}",
+                    caseRef,
+                    e.getMessage());
+            return null;
+        }
+        try {
             final Document sentEmail = getGeneratedSentEmailDocument(
                     response,
                     caseworkerEmail,
                     SENT_EMAIL);
             log.info("Got PDF of notification failed for escalation to registrar for case: {}", caseRef);
             return sentEmail;
-        } catch (NotificationClientException e) {
-            log.info("Failed to send escalation to registrar notification for case {}, message: {}",
-                    caseRef,
-                    e.getMessage());
+        } catch (RuntimeException e) {
+            log.warn("Failed to generate or upload notification failed pdf for case {}", caseRef, e);
             return null;
         }
     }
