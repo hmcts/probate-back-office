@@ -1045,7 +1045,7 @@ public class NotificationService {
 
         final SendEmailResponse response;
         try {
-             response = notificationClientService.sendEmail(
+            response = notificationClientService.sendEmail(
                     templateId,
                     recipientEmail,
                     personalisation,
