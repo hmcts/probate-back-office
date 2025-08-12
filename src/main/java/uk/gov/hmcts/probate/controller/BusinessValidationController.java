@@ -780,9 +780,6 @@ public class BusinessValidationController {
 
         final CaseDetails caseDetails = callbackRequest.getCaseDetails();
         final Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
-        if (caseworkerInfo.isEmpty()) {
-            log.warn("Unable to find caseworker info for move to postGrantIssued in case: {}", caseDetails.getId());
-        }
 
         final Document sentNotification = notificationService.sendPostGrantIssuedNotification(caseDetails);
         if (sentNotification != null) {
