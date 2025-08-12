@@ -58,6 +58,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -182,6 +184,7 @@ class BusinessValidationControllerIT {
     private static final String ASSEMBLE_LETTER_EVENT = "/case/use-assemble-letter-event";
     private static final String SUPER_USER_MAKE_DORMANT = "/case/superUserMakeDormantCase";
     private static final String VALIDATE_STOP_REASON = "/case/validate-stop-reason";
+    private static final String ESCALATE_TO_REGISTRAR = "/case/case-escalated";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -1411,6 +1414,31 @@ class BusinessValidationControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string(CoreMatchers.containsString(
                         "you must use the 'Assemble a letter' event to request information instead.")));
+    }
+
+    @Test
+    void shouldSendEmailWhenRegistarEscalation() throws Exception {
+        final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        final CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        final Document document = new Document();
+        final String docName = UUID.randomUUID().toString();
+        document.setDocumentFileName(docName);
+
+        final String requestJson = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        when(notificationService.sendRegistrarEscalationNotification(any(), any()))
+                .thenReturn(document);
+
+        mockMvc.perform(post(ESCALATE_TO_REGISTRAR)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(requestJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // validate that the generated notification has been added as the last entry in the list of notifs
+                .andExpect(jsonPath("$.data.probateNotificationsGenerated[-1].value.DocumentFileName")
+                        .value(document.getDocumentFileName()));
     }
 }
 
