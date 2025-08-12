@@ -217,7 +217,7 @@ class DocumentControllerUnitTest {
     }
 
     @Test
-    void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() throws NotificationClientException {
+    void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
             .build();
@@ -234,6 +234,24 @@ class DocumentControllerUnitTest {
 
         verify(evidenceUploadService, times(2))
                 .updateLastEvidenceAddedDate(mockCaseDetails);
+    }
+
+    @Test
+    void shouldNotAddSentEmailWhenExceptionThrownInCaseworkerUploadEvent() throws NotificationClientException {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
+                .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+        mockCaseDetails.setState("BOCaseStopped");
+        when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
+        when(notificationService.sendStopResponseReceivedEmail(mockCaseDetails))
+                .thenThrow(new NotificationClientException("Error sending email"));
+
+        ResponseEntity<CallbackResponse> response = documentController
+                .evidenceAdded(callbackRequest);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        verify(documentTransformer, times(0)).addDocument(any(), any(), any());
     }
 
     @Test
@@ -276,6 +294,25 @@ class DocumentControllerUnitTest {
         assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));
         verify(evidenceUploadService, times(2))
                 .updateLastEvidenceAddedDate(mockCaseDetails);
+        verify(documentTransformer, times(2)).addDocument(any(), any(), any());
+    }
+
+    @Test
+    void shouldNotAddSentEmailWhenExceptionThrownInRobotUploadEvent() throws NotificationClientException {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
+                .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+        mockCaseDetails.setState("BOExamining");
+        when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
+        when(notificationService.sendStopResponseReceivedEmail(mockCaseDetails))
+                .thenThrow(new NotificationClientException("Error sending email"));
+
+        ResponseEntity<CallbackResponse> response = documentController
+                .evidenceAddedRPARobot(callbackRequest);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        verify(documentTransformer, times(0)).addDocument(any(), any(), any());
     }
 
     @Test

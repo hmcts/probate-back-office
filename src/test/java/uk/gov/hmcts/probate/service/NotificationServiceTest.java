@@ -336,6 +336,7 @@ class NotificationServiceTest {
         when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
         when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantFullName()).thenReturn("Applicant Name");
         when(caseData.getSolsSolicitorEmail()).thenReturn("test@example.com");
         when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());

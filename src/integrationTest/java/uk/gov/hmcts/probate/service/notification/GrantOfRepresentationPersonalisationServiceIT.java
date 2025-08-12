@@ -378,7 +378,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
 
         assertNotNull(result);
         assertEquals("12345", result.get("ccd_reference"));
-        assertEquals("John Doe", result.get("solicitor_name"));
+        assertEquals("John Doe", result.get("applicant_name"));
     }
 
     @Test

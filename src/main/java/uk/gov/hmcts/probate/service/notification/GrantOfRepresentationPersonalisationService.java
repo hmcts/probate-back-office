@@ -74,10 +74,10 @@ public class GrantOfRepresentationPersonalisationService {
         return personalisation;
     }
 
-    public Map<String, String> getStopResponseReceivedPersonalisation(Long id, String solicitorNames) {
+    public Map<String, String> getStopResponseReceivedPersonalisation(Long id, String addresseeName) {
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put(PERSONALISATION_CCD_REFERENCE, id.toString());
-        personalisation.put(PERSONALISATION_SOLICITOR_NAME,solicitorNames);
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, addresseeName);
         return personalisation;
 
     }

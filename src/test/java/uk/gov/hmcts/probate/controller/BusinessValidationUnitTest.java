@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
@@ -93,7 +94,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_P
 
 class BusinessValidationUnitTest {
 
-    private static Optional<String> STATE_GRANT_TYPE_PROBATE = Optional.of("SolProbateCreated");
+    private static final Optional<String> STATE_GRANT_TYPE_PROBATE = Optional.of("SolProbateCreated");
     private static final String PAPERFORM = "PaperForm";
     private static final String AUTH_TOKEN = "AuthToken";
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
@@ -101,6 +102,7 @@ class BusinessValidationUnitTest {
             .givenName("givenname")
             .roles(Arrays.asList("caseworker-probate"))
             .build());
+    private static final String UPLOAD_DOCUMENT_EVENT = "uploadDocumentsDormantCase";
     @Mock
     private EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     @Mock
@@ -201,6 +203,8 @@ class BusinessValidationUnitTest {
     private UserInfoService userInfoServiceMock;
     @Mock
     private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
+    @Mock
+    private DocumentTransformer documentTransformerMock;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -245,7 +249,8 @@ class BusinessValidationUnitTest {
             adColligendaBonaCaseTypeValidationRule,
             zeroApplyingExecutorsValidationRule,
             businessValidationMessageServiceMock,
-            userInfoServiceMock);
+            userInfoServiceMock,
+            documentTransformerMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
@@ -1123,5 +1128,72 @@ class BusinessValidationUnitTest {
         verify(callbackResponseTransformerMock, times(1))
                 .superUserMakeCaseDormant(callbackRequestMock, CASEWORKER_USERINFO);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSendEmailAndAddDocumentForSolicitorOnUploadDocumentsEvent() throws NotificationClientException {
+        when(callbackRequestMock.getEventId()).thenReturn(UPLOAD_DOCUMENT_EVENT.toUpperCase());
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(notificationService.sendStopResponseReceivedEmail(caseDetailsMock)).thenReturn(documentMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+
+        ResponseEntity<CallbackResponse> response = underTest.reactivateCase(callbackRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(caseStoppedServiceMock).setEvidenceHandledNo(caseDetailsMock);
+        verify(notificationService).sendStopResponseReceivedEmail(caseDetailsMock);
+        verify(documentTransformerMock).addDocument(callbackRequestMock, documentMock, false);
+        verify(callbackResponseTransformerMock).transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+    }
+
+    @Test
+    void shouldNotSendEmailForPAOnUploadDocumentsEvent() {
+        when(callbackRequestMock.getEventId()).thenReturn(UPLOAD_DOCUMENT_EVENT.toUpperCase());
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+
+        ResponseEntity<CallbackResponse> response = underTest.reactivateCase(callbackRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(caseStoppedServiceMock).setEvidenceHandledNo(caseDetailsMock);
+        verify(callbackResponseTransformerMock).transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+    }
+
+    @Test
+    void shouldNotSendEmailForPAOnReactivateEvent() {
+        when(callbackRequestMock.getEventId()).thenReturn("stopDormantCase");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+
+        ResponseEntity<CallbackResponse> response = underTest.reactivateCase(callbackRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(caseStoppedServiceMock).setEvidenceHandledNo(caseDetailsMock);
+        verify(callbackResponseTransformerMock).transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+    }
+
+    @Test
+    void shouldNotAddDocumentWhenNotificationClientExceptionThrown() throws NotificationClientException {
+        when(callbackRequestMock.getEventId()).thenReturn(UPLOAD_DOCUMENT_EVENT.toUpperCase());
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(notificationService.sendStopResponseReceivedEmail(caseDetailsMock))
+                .thenThrow(new NotificationClientException("Error sending email"));
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+
+        ResponseEntity<CallbackResponse> response = underTest.reactivateCase(callbackRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(caseStoppedServiceMock).setEvidenceHandledNo(caseDetailsMock);
+        verify(notificationService).sendStopResponseReceivedEmail(caseDetailsMock);
+        verify(documentTransformerMock, times(0)).addDocument(callbackRequestMock, documentMock, false);
+        verify(callbackResponseTransformerMock).transformCase(callbackRequestMock, CASEWORKER_USERINFO);
     }
 }

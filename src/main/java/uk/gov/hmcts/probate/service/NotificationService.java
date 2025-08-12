@@ -793,10 +793,7 @@ public class NotificationService {
     public Document sendStopResponseReceivedEmail(CaseDetails caseDetails)
             throws NotificationClientException {
         log.info("sendStopResponseReceivedEmail for case id: {}", caseDetails.getId());
-        if (caseDetails.getData() == null) {
-            log.error("sendHseReminderEmail Case data is null for HSe case ID: {}", caseDetails.getId());
-            return null;
-        }
+        final CaseData caseData = caseDetails.getData();
         String emailAddress = getEmail(caseDetails.getData());
         if (emailAddress == null) {
             throw new NotificationClientException("Email address not found for StopResponseReceivedEmail case ID: "
@@ -805,9 +802,13 @@ public class NotificationService {
         ApplicationType applicationType = caseDetails.getData().getApplicationType();
         LanguagePreference languagePreference = caseDetails.getData().getLanguagePreference();
         String templateId = templateService.getStopResponseReceivedTemplateId(applicationType, languagePreference);
-        log.info("sendHseReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
+        log.info("sendStopResponseReceivedEmail applicationType {}, templateId: {}", applicationType, templateId);
+        final String addresseeName = switch (caseData.getApplicationType()) {
+            case PERSONAL -> caseData.getPrimaryApplicantFullName();
+            case SOLICITOR -> caseData.getSolsSOTName();
+        };
         Map<String, String> personalisation = grantOfRepresentationPersonalisationService
-                .getStopResponseReceivedPersonalisation(caseDetails.getId(), caseDetails.getData().getSolsSOTName());
+                .getStopResponseReceivedPersonalisation(caseDetails.getId(), addresseeName);
         log.info("start StopResponseReceivedEmail");
         SendEmailResponse response =
                 notificationClientService.sendEmail(templateId, emailAddress,
