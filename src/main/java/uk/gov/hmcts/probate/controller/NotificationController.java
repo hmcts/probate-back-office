@@ -50,6 +50,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -71,8 +72,9 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Gran
 @Slf4j
 public class NotificationController {
 
-    private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
-    private static final String INVALID_PAYLOAD = "Invalid payload";
+    private static final List<String> RECEIPT_OF_RESPONSE_EXCLUDED_STATE_LIST = Arrays.asList("BOGrantIssued",
+            "CaseCreated", "BOCaseClosed");
+
     @Autowired
     private final DocumentGeneratorService documentGeneratorService;
     private final ScannedDocumentOrderingService scannedDocumentOrderingService;
@@ -235,7 +237,7 @@ public class NotificationController {
     public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
-        HttpServletRequest request) throws NotificationClientException {
+        HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
         notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
@@ -243,13 +245,27 @@ public class NotificationController {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         scannedDocumentOrderingService.orderScannedDocuments(caseData);
+        final String caseState = callbackRequest.getCaseDetails().getState();
+        boolean shouldSendReceiptOfResponse = RECEIPT_OF_RESPONSE_EXCLUDED_STATE_LIST.stream()
+                .noneMatch(s -> s.equalsIgnoreCase(caseState));
         Document document = null;
         if (isAnEmailAddressPresent(caseData)
             && eventValidationService
-                .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules).getErrors().isEmpty()
-            && (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState()))) {
-            document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
-            caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
+                .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules).getErrors().isEmpty()) {
+            try {
+                if (CASE_PRINTED_NAME.equals(caseState)) {
+                    document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+                    caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
+                } else if (shouldSendReceiptOfResponse) {
+                    document = notificationService.sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
+                }
+            } catch (NotificationClientException e) {
+                log.warn("startDelayedNotificationPeriod fails to send notification for case: {}",
+                        callbackRequest.getCaseDetails().getId());
+            } catch (RuntimeException e) {
+                log.warn("startDelayedNotificationPeriod fails to generate or upload notification pdf for case: {}",
+                        callbackRequest.getCaseDetails().getId(), e);
+            }
         }
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer
