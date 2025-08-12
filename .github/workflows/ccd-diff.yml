@@ -10,7 +10,7 @@ jobs:
   buildBranch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: build/branch
       - uses: actions/upload-artifact@v4
@@ -21,7 +21,7 @@ jobs:
   buildMaster:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: master
           path: build/master
