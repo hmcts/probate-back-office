@@ -1094,21 +1094,27 @@ public class NotificationService {
                 "grant_issued_date", grantIssuedOn,
                 "grant_issued_date_cy", grantIssuedOnCy);
 
+        final SendEmailResponse response;
         try {
-            final SendEmailResponse response = notificationClientService.sendEmail(
+            response = notificationClientService.sendEmail(
                     templateId,
                     recipientEmail,
                     personalisation,
                     caseRef);
             log.info("Sent notification for move to Post Grant Issued for case: {}", caseRef);
+        } catch (NotificationClientException e) {
+            log.info("Failed to send Post Grant Issued notification for case {}, message: {}", caseRef, e.getMessage());
+            return null;
+        }
+        try {
             final Document sentEmail = getGeneratedSentEmailDocument(
                     response,
                     recipientEmail,
                     SENT_EMAIL);
             log.info("Got PDF of Post Grant Issued notification for case: {}", caseRef);
             return sentEmail;
-        } catch (NotificationClientException e) {
-            log.info("Failed to send Post Grant Issued notification for case {}, message: {}", caseRef, e.getMessage());
+        } catch (RuntimeException e) {
+            log.warn("Failed to generate or upload notification pdf for case {}", caseRef, e);
             return null;
         }
     }

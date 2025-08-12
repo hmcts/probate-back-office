@@ -641,4 +641,73 @@ class NotificationServiceTest {
         verify(notificationClientServiceMock, times(1)).sendEmail(any(), any(), any(), any());
         assertThat(result, nullValue());
     }
+
+    @Test
+    void shouldReturnNullWhenPostGrantIssuedPdfUploadFails() throws NotificationClientException {
+        final String applEmail = "abc@gmail.com";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+        final String issueDate = "2025-08-05";
+        final String issueDateFrm = "issueDateFrm";
+        final String issueDateCy = "issueDateCy";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+        when(caseData.getPrimaryApplicantFullName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+        when(caseData.getGrantIssuedDate())
+                .thenReturn(issueDate);
+        when(caseData.getGrantIssuedDateFormatted())
+                .thenReturn(issueDateFrm);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy, issueDateCy);
+
+        when(templateServiceMock.getPostGrantIssueTemplateId(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
+                .thenReturn(sendEmailResponseMock);
+
+        final RuntimeException rteMock = mock(RuntimeException.class);
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenThrow(rteMock);
+
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(applEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(7)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("deceased_dod")),
+                () -> assertThat(captured, hasKey("deceased_dod_cy")),
+                () -> assertThat(captured, hasKey("applicant_name")),
+                () -> assertThat(captured, hasKey("grant_issued_date")),
+                () -> assertThat(captured, hasKey("grant_issued_date_cy")),
+                () -> assertThat(result, nullValue()));
+    }
 }
