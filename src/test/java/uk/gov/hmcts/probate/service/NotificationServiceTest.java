@@ -566,7 +566,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void shouldThrowIfSendRegistrarEscalatedFailed() throws NotificationClientException, RegistrarEscalationException {
+    void shouldThrowIfSendRegistrarEscalatedFailed() throws NotificationClientException {
         final String applEmail = "abc@gmail.com";
         final String tmplId = "tmplId";
         final String decName = "decName";
