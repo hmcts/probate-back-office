@@ -2,6 +2,7 @@ const testConfig = require('src/test/config.js');
 
 exports.config = {
     'tests': testConfig.TestPathToRun,
+    'name': 'probate-back-office-functional',
     'output': '../../../functional-output/functional/reports',
     'helpers': {
         'Playwright': {
@@ -75,5 +76,4 @@ exports.config = {
             }
         }
     },
-    'name': 'Codecept Tests'
 };
