@@ -414,9 +414,15 @@ public class BusinessValidationController {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
 
         final CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        final Document sentNotification = notificationService.sendRegistrarEscalationNotification(
-                caseDetails,
-                caseworkerInfo);
+        Document sentNotification;
+        try {
+            sentNotification = notificationService.sendRegistrarEscalationNotification(caseDetails);
+        } catch (NotificationService.RegistrarEscalationException e) {
+            log.info("Sending registrar escalation notification failed for case: {}", caseDetails.getId());
+            sentNotification = notificationService.sendRegistrarEscalationNotificationFailed(
+                    caseDetails,
+                    caseworkerInfo);
+        }
         if (sentNotification != null) {
             final List<CollectionMember<Document>> notifications = caseDetails
                     .getData()
