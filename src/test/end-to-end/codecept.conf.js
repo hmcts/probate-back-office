@@ -2,7 +2,7 @@ const testConfig = require('src/test/config.js');
 
 exports.config = {
     'tests': testConfig.TestPathToRun,
-    'output': testConfig.TestOutputDir,
+    'output': '../../../functional-output/functional/reports',
     'helpers': {
         'Playwright': {
             'waitForTimeout': 60000,
