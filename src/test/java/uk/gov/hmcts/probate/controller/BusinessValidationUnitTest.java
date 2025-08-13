@@ -662,7 +662,6 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
-        Document documentMock = mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
             .thenReturn(documentMock);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock, CASEWORKER_USERINFO))
@@ -689,7 +688,6 @@ class BusinessValidationUnitTest {
                 .thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class)))
             .thenReturn(Arrays.asList(FieldErrorResponse.builder().build()));
-        Document documentMock = mock(Document.class);
         ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
             bindingResultMock);
 
@@ -709,7 +707,6 @@ class BusinessValidationUnitTest {
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
-        Document documentMock = mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
             .thenReturn(documentMock);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock, CASEWORKER_USERINFO))
@@ -942,7 +939,6 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
                 .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
-        Document documentMock = mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
                 .thenReturn(documentMock);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock, CASEWORKER_USERINFO))
@@ -1099,7 +1095,6 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
                 .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
-        Document documentMock = mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
                 .thenReturn(documentMock);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock, CASEWORKER_USERINFO))
