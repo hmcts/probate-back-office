@@ -584,8 +584,6 @@ class NotificationServiceTest {
 
         final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
 
-        final Document documentMock = mock(Document.class);
-
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseDetails.getId()).thenReturn(1L);
 
@@ -693,7 +691,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void shouldSendRegistrarEscalatedFailed() throws NotificationClientException, RegistrarEscalationException {
+    void shouldSendRegistrarEscalatedFailed() throws NotificationClientException {
         final String cwEmail = "abc@gmail.com";
         final String cwName = "cwName";
         final String tmplId = "tmplId";
@@ -748,8 +746,6 @@ class NotificationServiceTest {
 
     @Test
     void shouldNotSendRegistrarEscalatedFailedIfNoCaseworker() {
-        final String cwEmail = "abc@gmail.com";
-        final String tmplId = "tmplId";
         final String decName = "decName";
 
         final CaseData caseData = mock(CaseData.class);
