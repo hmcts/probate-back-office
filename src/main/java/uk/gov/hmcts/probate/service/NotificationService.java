@@ -1016,9 +1016,17 @@ public class NotificationService {
         }
     }
 
+    /**
+     * Attempts to send a notification that the case has been escalated to the registrar. Uses either the applicant
+     * email or the solicitor email based on the applicationType. If the email cannot be sent throws a
+     * RegistrarEscalationException to signal that the failed notification is needed. If the email is sent but the pdf
+     * cannot be generated returns null.
+     * @param caseDetails the case details to send a notification for
+     * @return The Document representing the generated pdf (or null if the generation process had some issue).
+     * @throws RegistrarEscalationException If the notification could not be sent for whatever reason.
+     */
     public Document sendRegistrarEscalationNotification(
-            final CaseDetails caseDetails,
-            final Optional<UserInfo> caseworkerInfo) {
+            final CaseDetails caseDetails) throws RegistrarEscalationException {
         final CaseData caseData = caseDetails.getData();
         final String templateId = templateService.getRegistrarEscalationNotification(
                 caseData.getApplicationType(),
@@ -1055,7 +1063,7 @@ public class NotificationService {
             log.info("Failed to send escalation to registrar notification for case {}, message: {}",
                     caseRef,
                     e.getMessage());
-            return sendRegistrarEscalationNotificationFailed(caseData, caseworkerInfo, caseRef, deceasedName);
+            throw new RegistrarEscalationException(e);
         }
         try {
             final Document sentEmail = getGeneratedSentEmailDocument(
@@ -1070,15 +1078,24 @@ public class NotificationService {
         }
     }
 
-    Document sendRegistrarEscalationNotificationFailed(
-            final CaseData caseData,
-            final Optional<UserInfo> caseworkerInfo,
-            final String caseRef,
-            final String deceasedName) {
+    public static final class RegistrarEscalationException extends Exception {
+        public RegistrarEscalationException(Throwable cause) {
+            super(cause);
+        }
+    }
+
+    public Document sendRegistrarEscalationNotificationFailed(
+            final CaseDetails caseDetails,
+            final Optional<UserInfo> caseworkerInfo) {
+        final CaseData caseData = caseDetails.getData();
+        final String caseRef = caseDetails.getId().toString();
+        final String deceasedName = caseData.getDeceasedFullName();
+
         if (caseworkerInfo.isEmpty()) {
             log.warn("No caseworker info to send registrar escalation notification failed for case: {}", caseRef);
             return null;
         }
+
         final UserInfo caseworker = caseworkerInfo.get();
         final String failedTemplateId = templateService.getRegistrarEscalationNotificationFailed(
                 caseData.getApplicationType(),

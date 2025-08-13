@@ -1427,7 +1427,7 @@ class BusinessValidationControllerIT {
 
         final String requestJson = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
-        when(notificationService.sendRegistrarEscalationNotification(any(), any()))
+        when(notificationService.sendRegistrarEscalationNotification(any()))
                 .thenReturn(document);
 
         mockMvc.perform(post(ESCALATE_TO_REGISTRAR)
