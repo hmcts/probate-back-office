@@ -193,22 +193,16 @@ public class CallbackResponseTransformer {
     private DynamicRadioList getAppropriateIhtFormEstateRadioList(CaseData caseData) {
         List<DynamicRadioListElement> listItems = new ArrayList<>();
         String ihtFormEstate = caseData.getIhtFormEstate();
+        String ihtFormId = caseData.getIhtFormId();
         DynamicRadioList ihtFormsReported = caseData.getIhtFormsReported();
 
-        boolean showAllOptions = false;
-        if (ihtFormsReported != null && ihtFormsReported.getValue() != null) {
-            String code = ihtFormsReported.getValue().getCode();
-            showAllOptions = "NA".equals(code) || "IHT400421".equals(code);
-        }
-
-        if ("IHT400421".equals(ihtFormEstate) || "NA".equals(ihtFormEstate) || showAllOptions) {
+        if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
             listItems.add(buildRadioListItem("IHT400", "IHT400"));
-            listItems.add(buildRadioListItem("IHT400421", "IHT400421"));
             listItems.add(buildRadioListItem("IHT207", "IHT207"));
-            listItems.add(buildRadioListItem("NA", "NA"));
         } else {
             listItems.add(buildRadioListItem("IHT400", "IHT400"));
             listItems.add(buildRadioListItem("IHT207", "IHT207"));
+            listItems.add(buildRadioListItem("IHT205", "IHT205"));
         }
 
         DynamicRadioListElement selectedValue = null;
@@ -222,6 +216,11 @@ public class CallbackResponseTransformer {
         } else if (ihtFormEstate != null) {
             selectedValue = listItems.stream()
                     .filter(item -> ihtFormEstate.equals(item.getCode()))
+                    .findFirst()
+                    .orElse(null);
+        } else if (ihtFormId != null) {
+            selectedValue = listItems.stream()
+                    .filter(item -> ihtFormId.equals(item.getCode()))
                     .findFirst()
                     .orElse(null);
         }
@@ -257,15 +256,10 @@ public class CallbackResponseTransformer {
                 callbackRequest.getEventId(), Optional.empty(),true);
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(callbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder);
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
-    public CallbackResponse transformAmendDetails(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
-                callbackRequest.getEventId(), Optional.empty(),true);
         DynamicRadioList ihtFormEstate = getAppropriateIhtFormEstateRadioList(callbackRequest
                 .getCaseDetails().getData());
         responseCaseDataBuilder.ihtFormsReported(ihtFormEstate);
+
         return transformResponse(responseCaseDataBuilder.build());
     }
 
