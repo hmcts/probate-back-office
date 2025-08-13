@@ -417,7 +417,8 @@ class NotificationServiceTest {
     }
 
     @Test
-    void shouldReturnNullIfRegistrarEscalatedDocumentGenThrows() throws NotificationClientException, RegistrarEscalationException {
+    void shouldReturnNullIfRegistrarEscalatedDocumentGenThrows()
+            throws NotificationClientException, RegistrarEscalationException {
         final String applEmail = "abc@gmail.com";
         final String tmplId = "tmplId";
         final String decName = "decName";
@@ -577,7 +578,9 @@ class NotificationServiceTest {
         when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
                 .thenReturn(documentMock);
 
-        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(caseDetails, caseworkerInfo);
+        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(
+                caseDetails,
+                caseworkerInfo);
 
         @SuppressWarnings("unchecked")
         final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
@@ -608,14 +611,16 @@ class NotificationServiceTest {
         when(caseData.getDeceasedFullName())
                 .thenReturn(decName);
 
-        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(caseDetails, caseworkerInfo);
+        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(
+                caseDetails,
+                caseworkerInfo);
 
         verify(templateServiceMock, never()).getRegistrarEscalationNotificationFailed(any(), any());
         assertThat(result, nullValue());
     }
 
     @Test
-    void shouldReturnNullIfSendRegistrarEscalatedFailedFails() throws NotificationClientException, RegistrarEscalationException {
+    void shouldReturnNullIfSendRegistrarEscalatedFailedFails() throws NotificationClientException {
         final String cwEmail = "abc@gmail.com";
         final String cwName = "cwName";
         final String tmplId = "tmplId";
@@ -647,7 +652,9 @@ class NotificationServiceTest {
         when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(cwEmail), any(), any()))
                 .thenThrow(notificationClientExceptionMock);
 
-        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(caseDetails, caseworkerInfo);
+        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(
+                caseDetails,
+                caseworkerInfo);
 
         @SuppressWarnings("unchecked")
         final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
@@ -665,7 +672,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void shouldReturnNullIfSendRegistrarEscalatedDocGenFails() throws NotificationClientException, RegistrarEscalationException {
+    void shouldReturnNullIfSendRegistrarEscalatedDocGenFails() throws NotificationClientException {
         final String cwEmail = "abc@gmail.com";
         final String cwName = "cwName";
         final String tmplId = "tmplId";
@@ -702,7 +709,9 @@ class NotificationServiceTest {
         when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
                 .thenThrow(runtimeExceptionMock);
 
-        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(caseDetails, caseworkerInfo);
+        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(
+                caseDetails,
+                caseworkerInfo);
 
         @SuppressWarnings("unchecked")
         final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
