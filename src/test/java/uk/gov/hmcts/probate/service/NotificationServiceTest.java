@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
@@ -587,7 +588,6 @@ class NotificationServiceTest {
     void shouldSendNotSendNotificationFailedForPostGrantIssuedIfNoCaseworker() throws NotificationClientException {
         final String applEmail = "abc@gmail.com";
         final String tmplId = "tmplId";
-        final String tmplFailedId = "tmplFailedId";
         final String decName = "decName";
         final String applName = "applName";
         final LocalDate decdDod = LocalDate.of(2024, 8, 5);
@@ -640,6 +640,49 @@ class NotificationServiceTest {
 
         verify(notificationClientServiceMock, times(1)).sendEmail(any(), any(), any(), any());
         assertThat(result, nullValue());
+    }
+
+    @Test
+    void shouldThrowWhenIssuedDateUnparsableForPostGrantIssued() {
+        final String applEmail = "abc@gmail.com";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+        final String issueDate = "2025-13-05";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+        when(caseData.getPrimaryApplicantFullName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+        when(caseData.getGrantIssuedDate())
+                .thenReturn(issueDate);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy);
+
+        when(templateServiceMock.getPostGrantIssueTemplateId(any(), any()))
+                .thenReturn(tmplId);
+
+        assertThrows(
+                BusinessValidationException.class,
+                () -> notificationService.sendPostGrantIssuedNotification(caseDetails));
     }
 
     @Test
