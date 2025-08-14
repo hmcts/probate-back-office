@@ -181,6 +181,7 @@ def versions = [
         springBootVersion               : '3.5.4',
         springCloud                     : '4.1.5',
         springDocOpenUi                 : '2.8.9',
+        swaggerAnnotations              : '2.2.35',
         springSecurityVersion           : '6.5.2',
 ]
 
@@ -244,6 +245,7 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonDatabind
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonDatabind
   implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: versions.springDocOpenUi
+  implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: versions.swaggerAnnotations
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   implementation group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
