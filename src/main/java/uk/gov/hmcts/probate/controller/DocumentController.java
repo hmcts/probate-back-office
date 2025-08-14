@@ -366,7 +366,7 @@ public class DocumentController {
             log.warn("evidenceAdded fails to send StopResponseReceived notification for case: {}",
                     callbackRequest.getCaseDetails().getId());
         } catch (RuntimeException e) {
-            log.warn("evidenceAddedRPARobot fails to generate or upload notification pdf for case: {}",
+            log.warn("evidenceAdded fails to generate or upload notification pdf for case: {}",
                     callbackRequest.getCaseDetails().getId(), e);
         }
 
