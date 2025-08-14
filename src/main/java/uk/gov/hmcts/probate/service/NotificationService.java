@@ -1073,7 +1073,7 @@ public class NotificationService {
             // this would be simpler if we stored this date in the case data as a date rather than a String but...
             log.error("Failed to parse grant issued date: {} from case: {}", grantIssuedCase, caseRef, e);
             final String message = MessageFormat.format(
-                    "Unable to parse grant issued date: [{}] (expecting yyyy-mm-dd format)",
+                    "Unable to parse grant issued date: [{0}] (expecting yyyy-mm-dd format)",
                     grantIssuedCase);
             throw new BusinessValidationException(message, e.getMessage());
         }
