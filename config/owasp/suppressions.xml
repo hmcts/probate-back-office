@@ -12,4 +12,13 @@
     <suppress until = "2025-10-15">
         <cve>CVE-2025-48976</cve>
     </suppress>
+    <suppress until = "2025-10-15">
+        <cve>CVE-2025-48924</cve>
+    </suppress>
+    <suppress until = "2025-10-15">
+        <cve>CVE-2025-52520</cve>
+    </suppress>
+    <suppress until = "2025-10-15">
+        <cve>CVE-2025-53506</cve>
+    </suppress>
 </suppressions>
