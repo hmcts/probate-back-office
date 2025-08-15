@@ -35,6 +35,7 @@ public class StopReasonService {
             case "IHT421Awaiting" -> stopReasonCodes.getIht421Awaiting();
             case "IHTFiguresIncorrect" -> stopReasonCodes.getIhtFiguresIncorrect();
             case "IHTIssue" -> stopReasonCodes.getIhtIssue();
+            case "IntestacyMinorityInterest" -> stopReasonCodes.getIntestacyMinorityInterest();
             case "LostWill" -> stopReasonCodes.getLostWill();
             case "MatchingApplication" -> stopReasonCodes.getMatchingApplication();
             case "NoMinorityLife" -> stopReasonCodes.getNoMinorityLife();
