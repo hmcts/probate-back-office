@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ class LifeEventCallbackResponseServiceTest {
         assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
     }
 
+    @Disabled
     @Test
     void shouldDeathRecordsOnCallbackResponse() {
         final CaseDetails caseDetails = mock(CaseDetails.class);

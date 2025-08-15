@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.github.hmcts.lifeevents.client.model.Alias;
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import com.github.hmcts.lifeevents.client.service.DeathService;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,19 @@ public class LifeEventService {
         try {
             records = deathService.searchForDeathRecordsByNamesAndDate(deceasedForenames, deceasedSurname,
                 deceasedDateOfDeath);
+            for (V1Death record : records) {
+                log.info("LifeEventService.getDeathRecordsByNamesAndDate record: {}", record);
+                if (record.getDeceased() != null) {
+                    log.info("Aliases size: {}", record.getDeceased().getAliases().size());
+                    log.info("Date of death: {}", record.getDeceased().getDateOfDeath());
+                    if (!record.getDeceased().getAliases().isEmpty()) {
+                        for (Alias alias : record.getDeceased().getAliases()) {
+                            log.info("Alias forenames: {}", alias.getForenames());
+                            log.info("Alias surname: {}", alias.getSurname());
+                        }
+                    }
+                }
+            }
         } catch (Exception e) {
             log.error("Error during LEV call", e);
             throw e;
