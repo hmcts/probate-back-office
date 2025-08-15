@@ -3,6 +3,9 @@ package uk.gov.hmcts.probate.controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.BindingResult;
+import uk.gov.hmcts.probate.model.ApplicationState;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
@@ -53,6 +57,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -65,7 +70,10 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
+import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.ApplicationState.CASE_CLOSED;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.ApplicationState.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
@@ -289,7 +297,7 @@ class NotificationControllerUnitTest {
     }
 
     @Test
-    void shouldOrderScannedDocumentsForAttachDocs() throws NotificationClientException {
+    void shouldOrderScannedDocumentsForAttachDocs() {
         List scannedDocMock = mock(List.class);
         CaseData caseData = CaseData.builder()
                 .scannedDocuments(scannedDocMock)
@@ -303,18 +311,52 @@ class NotificationControllerUnitTest {
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 
-    @Test
-    void shouldSendNotificationForAttachDocsCasePrinted() throws NotificationClientException {
+    @ParameterizedTest
+    @MethodSource("validStates")
+    void shouldSendNotificationForAttachDocsOnState(ApplicationState state,
+                                                    boolean shouldSendDocReceived,
+                                                    boolean shouldSendReceiptOfResponse
+    ) throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
         CaseDetails caseDetails = new CaseDetails(CaseData.builder().primaryApplicantEmailAddress("pa@probate-test.com")
                 .build(), LAST_MODIFIED, ID);
-        caseDetails.setState(CASE_PRINTED.getId());
+        caseDetails.setState(state.getId());
         callbackRequest = new CallbackRequest(caseDetails);
         ResponseEntity<CallbackResponse> callbackResponse =
                 notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
-        verify(notificationService).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
-        verify(caseDataTransformer).transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
+        if (shouldSendDocReceived) {
+            verify(notificationService).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+            verify(caseDataTransformer).transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
+        }
+        if (shouldSendReceiptOfResponse) {
+            verify(notificationService).sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
+        }
+        assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    private static Stream<Arguments> validStates() {
+        return Stream.of(
+                Arguments.of(CASE_PRINTED, true, false),
+                Arguments.of(BO_CASE_STOPPED, false, true),
+                Arguments.of(CASE_CLOSED, false, false),
+                Arguments.of(GRANT_ISSUED, false, false)
+        );
+    }
+
+    @Test
+    void shouldNotAddNotificationForAttachDocsWhenExceptionThrown() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().build(), LAST_MODIFIED, ID);
+        caseDetails.setState(BO_CASE_STOPPED.getId());
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(notificationService.sendStopResponseReceivedEmail(caseDetails))
+                .thenThrow(new NotificationClientException("Error sending email"));
+        ResponseEntity<CallbackResponse> callbackResponse =
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
+                        httpServletRequest);
+        verify(callbackResponseTransformer)
+                .transformCaseForAttachScannedDocs(callbackRequest, null, CASEWORKER_USERINFO);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 
