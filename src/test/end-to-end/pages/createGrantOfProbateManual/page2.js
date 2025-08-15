@@ -22,7 +22,6 @@ module.exports = async function (crud) {
     } else {
         await I.waitForText(caseProgressConfig.IHT205Label);
         await I.waitForText(caseProgressConfig.IHT400Label);
-        await I.waitForText(caseProgressConfig.IHT400421Label);
         await I.click({css: `#ihtFormId-${caseProgressConfig.IHT400Option}`});
     }
 
