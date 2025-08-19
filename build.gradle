@@ -183,6 +183,7 @@ def versions = [
         springDocOpenUi                 : '2.8.9',
         swaggerAnnotations              : '2.2.35',
         springSecurityVersion           : '6.5.2',
+        tomcat                          : '10.1.44'
 ]
 
 jacocoTestReport {
@@ -223,6 +224,10 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
   //Solves CVE-2025-48976
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
+  //Solves CVE-2025-48989
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcat
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el', version: versions.tomcat
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcat
 
   implementation group: 'com.google.guava', name: 'guava', version: '33.4.8-jre'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootVersion
