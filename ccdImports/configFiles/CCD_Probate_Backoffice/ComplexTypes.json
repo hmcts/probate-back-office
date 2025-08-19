@@ -182,7 +182,7 @@
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "sex", "FieldType": "Text", "ElementLabel": "Sex", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "address", "FieldType": "Text", "ElementLabel": "Address", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "dateOfDeath", "FieldType": "Date", "ElementLabel": "Date of death", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "aliases", "FieldType": "Collection", "ElementLabel": "Aliases", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "aliases", "FieldType": "Collection", "FieldTypeParameter": "Aliases", "ElementLabel": "Aliases", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "valid", "FieldType": "YesOrNo", "ElementLabel": "Is match valid?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Aliases", "ListElementCode": "type", "FieldType": "Text", "ElementLabel": "Type", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Aliases", "ListElementCode": "prefix", "FieldType": "Text", "ElementLabel": "Prefix", "SecurityClassification": "Public"},
