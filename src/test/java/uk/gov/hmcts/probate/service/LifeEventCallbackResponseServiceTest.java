@@ -60,7 +60,6 @@ class LifeEventCallbackResponseServiceTest {
         assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
     }
 
-    @Disabled
     @Test
     void shouldDeathRecordsOnCallbackResponse() {
         final CaseDetails caseDetails = mock(CaseDetails.class);

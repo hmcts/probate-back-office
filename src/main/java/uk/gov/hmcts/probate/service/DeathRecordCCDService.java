@@ -76,6 +76,6 @@ public class DeathRecordCCDService {
                         .type(alias.getType())
                         .suffix(alias.getSuffix())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
     }
 }
