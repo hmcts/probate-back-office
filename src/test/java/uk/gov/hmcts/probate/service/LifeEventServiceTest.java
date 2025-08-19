@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.service;
 
+import com.github.hmcts.lifeevents.client.model.Alias;
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import com.github.hmcts.lifeevents.client.service.DeathService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -39,6 +39,11 @@ class LifeEventServiceTest {
     final Long caseId = 1234L;
     final String firstName = "Wibble";
     final String lastName = "Wobble";
+    final String aliasFirstName = "Webble";
+    final String aliasLastName = "Wubble";
+    final String aliasPrefix = "Mr";
+    final String aliasSuffix = "Jr";
+    final String aliasType = "Otherwise known as";
     @Autowired
     LifeEventService lifeEventService;
     @MockitoBean
@@ -60,11 +65,18 @@ class LifeEventServiceTest {
     @BeforeEach
     public void setup() {
         localDate = LocalDate.of(1900, 1, 1);
-
+        final Alias alias = new Alias();
+        alias.setPrefix(aliasPrefix);
+        alias.setForenames(aliasFirstName);
+        alias.setSurname(aliasLastName);
+        alias.setSuffix(aliasSuffix);
+        alias.setType(aliasType);
         final Deceased deceased = new Deceased();
         deceased.setForenames(firstName);
         deceased.setSurname(lastName);
         deceased.setSex(Deceased.SexEnum.INDETERMINATE);
+        deceased.setAliases(List.of(alias));
+        deceased.setDateOfBirth(localDate);
         v1Death = new V1Death();
         v1Death.setDeceased(deceased);
         deathRecords = new ArrayList<>();
@@ -90,7 +102,6 @@ class LifeEventServiceTest {
         assertEquals("Test exception", exception.getMessage());
     }
 
-    @Disabled
     @Test
     void shouldThowBusinessValidationExceptionWhenNoDeathRecordsFound() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenReturn(emptyList());
@@ -101,7 +112,6 @@ class LifeEventServiceTest {
         assertEquals("No death records found", exception.getMessage());
     }
 
-    @Disabled
     @Test
     void shouldSearchByNameAndDate() {
         lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
