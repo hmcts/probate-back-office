@@ -168,7 +168,7 @@ def versions = [
         hmctsJavaLogging                : '6.1.9',
         jacksonDatabind                 : '2.17.1',
         jsoup                           : '1.21.2',
-        lifeEventsClientVersion         : '1.5.0-beta1',
+        lifeEventsClientVersion         : '1.5.0',
         lombok                          : '1.18.42',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
