@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.nonNull;
+import static uk.gov.hmcts.probate.service.DeathRecordCCDService.getAliases;
 
 @Component
 @RequiredArgsConstructor
@@ -47,7 +48,8 @@ public class DeathRecordService {
                     .dateOfBirth(deceased.getDateOfBirth())
                     .sex(null == deceased.getSex() ? null : deceased.getSex().getValue())
                     .address(deceased.getAddress())
-                    .dateOfDeath(deceased.getDateOfDeath());
+                    .dateOfDeath(deceased.getDateOfDeath())
+                    .aliases(getAliases(deceased));
         }
 
         return builder.build();
