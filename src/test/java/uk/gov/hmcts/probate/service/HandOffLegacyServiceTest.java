@@ -297,4 +297,37 @@ public class HandOffLegacyServiceTest {
         assertEquals(HandoffReasonId.EXTENDED_INTESTACY,
                 handoffReasonsList.get(0).getValue().getCaseHandoffReason());
     }
+
+    @Test
+    void handoffReasonsListShouldMapAllItemsWhenHandoffReasonsIsNotNull() {
+        HandoffReason reason1 = HandoffReason.builder().caseHandoffReason(HandoffReasonId.TRUST_CORPORATION).build();
+        HandoffReason reason2 = HandoffReason.builder().caseHandoffReason(HandoffReasonId.FOREIGN_DOMICILE).build();
+        uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<HandoffReason> cm1 =
+                new uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<>(null, reason1);
+        uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<HandoffReason> cm2 =
+                new uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<>(null, reason2);
+
+        CaseData caseData = CaseData.builder()
+                .boHandoffReasonList(List.of(cm1, cm2))
+                .build();
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        List<CollectionMember<HandoffReason>> result = handOffLegacyService.setHandoffReason(caseDetails);
+
+        assertEquals(2, result.size());
+        assertEquals(HandoffReasonId.TRUST_CORPORATION, result.get(0).getValue().getCaseHandoffReason());
+        assertEquals(HandoffReasonId.FOREIGN_DOMICILE, result.get(1).getValue().getCaseHandoffReason());
+    }
+
+    @Test
+    void handoffReasonsListShouldBeEmptyWhenHandoffReasonsIsNull() {
+        CaseData caseData = CaseData.builder()
+                .boHandoffReasonList(null)
+                .build();
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        List<CollectionMember<HandoffReason>> result = handOffLegacyService.setHandoffReason(caseDetails);
+
+        assertEquals(0, result.size());
+    }
 }

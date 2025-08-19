@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.List;
 
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -48,7 +47,6 @@ public class LifeEventServiceTest extends IntegrationTestBase {
 
 
     @Test
-    @Disabled
     public void shouldAddDeathRecordWhenManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStart.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -69,7 +67,6 @@ public class LifeEventServiceTest extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled
     public void shouldReturnErrorManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStartNonExistent.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
