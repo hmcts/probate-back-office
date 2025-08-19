@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,7 @@ class LifeEventCallbackResponseServiceTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         final CallbackResponse callbackResponse =
             lifeEventCallbackResponseService.setNumberOfDeathRecords(callbackRequest);
-        assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
+        assertEquals(5, callbackResponse.getData().getNumberOfDeathRecords());
     }
 
     @Test
@@ -68,7 +67,7 @@ class LifeEventCallbackResponseServiceTest {
 
         final CallbackResponse callbackResponse =
             lifeEventCallbackResponseService.getDeathRecordsByNamesAndDate(callbackRequest);
-        assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
+        assertEquals(5, callbackResponse.getData().getNumberOfDeathRecords());
         assertEquals(callbackResponse.getData().getDeathRecords(), deathRecords);
     }
 }
