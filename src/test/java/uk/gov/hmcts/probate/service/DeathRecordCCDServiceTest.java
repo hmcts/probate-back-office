@@ -29,12 +29,13 @@ class DeathRecordCCDServiceTest {
         alias.setType("AliasType");
         alias.setPrefix("AliasPrefix");
         alias.setSuffix("AliasSuffix");
+        Alias alias2 = new Alias();
         Deceased deceased = new Deceased();
         deceased.setForenames("Firstname");
         deceased.setSurname("LastName");
         deceased.setSex(Deceased.SexEnum.INDETERMINATE);
         deceased.setAddress("An address");
-        deceased.setAliases(List.of(alias));
+        deceased.setAliases(List.of(alias, alias2));
         V1Death v1Death = new V1Death();
         v1Death.setDeceased(deceased);
         v1Death.setId(1234);
@@ -55,6 +56,7 @@ class DeathRecordCCDServiceTest {
                 () -> assertEquals(deceased.getSex().getValue(), deathRecord.getSex()),
                 () -> assertEquals(deceased.getAddress(), deathRecord.getAddress()),
 
+                () -> assertEquals(1, deathRecord.getAliases().size()),
                 () -> assertEquals(alias.getForenames(), mappedAlias.getForenames()),
                 () -> assertEquals(alias.getSurname(), mappedAlias.getLastName()),
                 () -> assertEquals(alias.getType(), mappedAlias.getType()),
