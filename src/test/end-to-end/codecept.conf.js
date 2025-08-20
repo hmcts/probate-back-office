@@ -67,6 +67,7 @@ exports.config = {
                     reportDir: testConfig.TestOutputDir,
                     reportName: 'index',
                     inlineAssets: true,
+                    overwrite: false,
                 },
             },
         },
