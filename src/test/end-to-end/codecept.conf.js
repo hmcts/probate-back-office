@@ -64,10 +64,11 @@ exports.config = {
             mochawesome: {
                 stdout: `${testConfig.TestOutputDir}/console.log`,
                 options: {
-                    reportDir: testConfig.TestOutputDir,
-                    reportName: 'index',
+                    reportDir: './temp-reports',
                     inlineAssets: true,
                     overwrite: false,
+                    html: false,
+                    json: true,
                 },
             },
         },
