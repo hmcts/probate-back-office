@@ -61,7 +61,7 @@ public class DeathRecordCCDService {
     }
 
     @NotNull
-    static List<Alias> getAliases(Deceased deceased) {
+    static List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<Alias>> getAliases(Deceased deceased) {
         final List<com.github.hmcts.lifeevents.client.model.Alias> aliases = deceased.getAliases();
         if (aliases == null || aliases.isEmpty()) {
             return Collections.emptyList();
@@ -76,6 +76,7 @@ public class DeathRecordCCDService {
                         .type(alias.getType())
                         .suffix(alias.getSuffix())
                         .build())
+                .map(a -> new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>(null, a))
                 .toList();
     }
 }

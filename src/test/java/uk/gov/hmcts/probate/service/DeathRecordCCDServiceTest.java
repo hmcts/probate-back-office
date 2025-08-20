@@ -43,7 +43,7 @@ class DeathRecordCCDServiceTest {
             deathRecordCCDService.mapDeathRecord(v1Death);
 
         uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Alias mappedAlias =
-                deathRecord.getAliases().getFirst();
+                deathRecord.getAliases().getFirst().getValue();
         assertAll(
                 () -> assertEquals(v1Death.getId(), deathRecord.getSystemNumber()),
                 () -> assertEquals(

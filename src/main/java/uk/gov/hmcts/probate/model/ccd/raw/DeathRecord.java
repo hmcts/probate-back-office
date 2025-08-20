@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model.ccd.raw;
 
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Alias;
 
 import java.time.LocalDate;
@@ -16,6 +17,6 @@ public class DeathRecord {
     private final String sex;
     private final String address;
     private final LocalDate dateOfDeath;
-    private final List<Alias> aliases;
+    private final List<CollectionMember<Alias>> aliases;
     private final String valid;
 }
