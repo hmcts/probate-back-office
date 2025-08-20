@@ -24,7 +24,7 @@
     "test:functional-galaxyS4": "yarn playwright install chromium  && yarn playwright test --project=GalaxyS4 ",
     "test:fullfunctional-cw": "E2E_TEST_PATH='./paths/caseworker/*.js' ./bin/run-e2e-tests.sh",
     "test:fullfunctional-nightly": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --project=chromium --project=webkit --project=firefox",
-    "merge-reports": "mochawesome-merge ./temp-reports/*.json > './functional-output/functional/reports/Functional test report.json' && marge './functional-output/functional/reports/Functional test report.json' -f 'Functional test report' -o ./functional-output/functional/reports --inline && rm -rf ./temp-reports",
+    "merge-reports": "mochawesome-merge ./temp-reports/*.json > ./functional-output/merged.json && marge ./functional-output/merged.json -f 'functional_report' -o ./functional-output/reports --inline && rm -rf ./temp-reports",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
     "dev-scripts-comment": "Developer scripts for running/debugging a single test locally are specified below.",
     "setup-wiremocks": "./bin/wiremock.sh",

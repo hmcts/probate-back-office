@@ -71,8 +71,8 @@ withNightlyPipeline("nodejs", product, component) {
         allowMissing: true,
         alwaysLinkToLastBuild: true,
         keepAll: true,
-        reportDir: "functional-output",
-        reportFiles: 'mochawesome.html',
+        reportDir: "./functional-output/reports",
+        reportFiles: 'functional_report.html',
         reportName: 'Functional Test Report'
       ])
     }
