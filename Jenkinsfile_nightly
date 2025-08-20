@@ -66,6 +66,7 @@ withNightlyPipeline("nodejs", product, component) {
     }
 
     afterAlways('fullFunctionalTest') {
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
       publishHTML([
         allowMissing: true,
         alwaysLinkToLastBuild: true,

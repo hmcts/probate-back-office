@@ -1652,9 +1652,8 @@ __metadata:
     html_codesniffer: "npm:^2.5.1"
     istanbul: "npm:^0.4.5"
     mocha: "npm:^11.0.0"
-    mocha-jenkins-reporter: "npm:^0.4.5"
-    mocha-junit-reporter: "npm:^2.0.0"
-    mocha-multi: "npm:^1.1.3"
+    mocha-junit-reporter: "npm:^2.2.1"
+    mocha-multi: "npm:^1.1.7"
     mochawesome: "npm:^7.1.3"
     moment: "npm:^2.29.1"
     nock: "npm:^14.0.0"
@@ -3373,13 +3372,6 @@ __metadata:
     asap: "npm:^2.0.0"
     wrappy: "npm:1"
   checksum: 10/895389c6aead740d2ab5da4d3466d20fa30f738010a4d3f4dcccc9fc645ca31c9d10b7e1804ae489b1eb02c7986f9f1f34ba132d409b043082a86d9a4e745624
-  languageName: node
-  linkType: hard
-
-"diff@npm:4.0.1":
-  version: 4.0.1
-  resolution: "diff@npm:4.0.1"
-  checksum: 10/30985a0c7d979bb0071f5c6caf1c2f182df63640592a171b3d569ede9874e2c59c7eefbab0468d4287c65c37c9b48015ec321b56e6d5f51cb6c95a1d1a1cf7f4
   languageName: node
   linkType: hard
 
@@ -6818,19 +6810,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha-jenkins-reporter@npm:^0.4.5":
-  version: 0.4.8
-  resolution: "mocha-jenkins-reporter@npm:0.4.8"
-  dependencies:
-    diff: "npm:4.0.1"
-    mkdirp: "npm:^1.0.4"
-    xml: "npm:^1.0.1"
-  peerDependencies:
-    mocha: ^5.2.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0
-  checksum: 10/9567fd290e9c295e4bf379564ea1578f9b679e34bf44d488fd38ca04732e673d8c58c06266580d7b64a781502a3309705d5e284ed3af64b36e103a40d646a3b0
-  languageName: node
-  linkType: hard
-
 "mocha-junit-reporter@npm:^1.23.3":
   version: 1.23.3
   resolution: "mocha-junit-reporter@npm:1.23.3"
@@ -6846,7 +6825,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha-junit-reporter@npm:^2.0.0":
+"mocha-junit-reporter@npm:^2.2.1":
   version: 2.2.1
   resolution: "mocha-junit-reporter@npm:2.2.1"
   dependencies:
@@ -6861,7 +6840,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha-multi@npm:^1.1.3":
+"mocha-multi@npm:^1.1.7":
   version: 1.1.7
   resolution: "mocha-multi@npm:1.1.7"
   dependencies:
