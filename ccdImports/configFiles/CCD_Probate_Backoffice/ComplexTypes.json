@@ -179,7 +179,7 @@
   {"LiveFrom": "01/01/2017", "ID": "Aliases", "ListElementCode": "type", "FieldType": "Text", "ElementLabel": "Type", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Aliases", "ListElementCode": "prefix", "FieldType": "Text", "ElementLabel": "Prefix", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Aliases", "ListElementCode": "forenames", "FieldType": "Text", "ElementLabel": "Alias first name(s)", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "Aliases", "ListElementCode": "lastname", "FieldType": "Text", "ElementLabel": "Alias last name", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Aliases", "ListElementCode": "lastName", "FieldType": "Text", "ElementLabel": "Alias last name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Aliases", "ListElementCode": "suffix", "FieldType": "Text", "ElementLabel": "Suffix", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "systemNumber", "FieldType": "Number", "ElementLabel": "System Number", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DeathRecord", "ListElementCode": "name", "FieldType": "Text", "ElementLabel": "Name", "SecurityClassification": "Public"},
