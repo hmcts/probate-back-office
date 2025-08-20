@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service;
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
@@ -69,6 +70,7 @@ public class DeathRecordCCDService {
 
         return aliases.stream()
                 .filter(Objects::nonNull)
+                .filter(DeathRecordCCDService::isNotEmpty)
                 .map(alias -> Alias.builder()
                         .prefix(alias.getPrefix())
                         .forenames(alias.getForenames())
@@ -78,5 +80,9 @@ public class DeathRecordCCDService {
                         .build())
                 .map(a -> new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>(null, a))
                 .toList();
+    }
+
+    private static boolean isNotEmpty(com.github.hmcts.lifeevents.client.model.Alias alias) {
+        return StringUtils.isNotEmpty(alias.getForenames()) || StringUtils.isNotEmpty(alias.getSurname());
     }
 }
