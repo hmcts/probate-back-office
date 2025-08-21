@@ -548,7 +548,9 @@ welsh:
     12: "Rhagfyr"
 
 blobstorage:
-  connection: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+  connection:
+    smeeandford: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+    nfi: ${PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING:dummy}
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}

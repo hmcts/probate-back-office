@@ -68,7 +68,8 @@ def secrets = [
                 secret('levDeathUrl', 'LEV_DEATH_URL'),
                 secret('definition-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
                 secret('definition-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
-                secret('probate-storage-account-primary-connection-string','PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING')
+                secret('probate-storage-account-primary-connection-string','PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING'),
+                secret('probate-storage-account-nfi-primary-connection-string','PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
