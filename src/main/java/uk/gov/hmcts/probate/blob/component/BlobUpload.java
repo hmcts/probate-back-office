@@ -16,28 +16,27 @@ import static java.util.Objects.nonNull;
 @Slf4j
 public class BlobUpload {
 
-    @Value(value = "${blobstorage.connection}")
-    private String storageConnectionString;
-
-    //Create a unique name for the container
-    String containerName = "smee-and-ford-document-feed";
+    @Value(value = "${blobstorage.connection.smeeandford}")
+    private String smeeAndFordStorageConnectionString;
 
     public void uploadFile(File blobFile) {
+        uploadFile(blobFile, "smee-and-ford-document-feed", smeeAndFordStorageConnectionString);
+    }
 
+    public void uploadFile(File blobFile, String container, String connectionString) {
         // Create a BlobServiceClient object which will be used to create a container client
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-            .connectionString(storageConnectionString).buildClient();
+                .connectionString(connectionString).buildClient();
 
         // Get a reference to a blob
-        BlobClient blobClient = getContainerClient(blobServiceClient, containerName).getBlobClient(blobFile.getName());
+        BlobContainerClient containerClient = getContainerClient(blobServiceClient, container);
+        BlobClient blobClient = containerClient.getBlobClient(blobFile.getName());
 
-        log.info("Uploading to Blob storage as blob:" + blobClient.getBlobUrl());
+        log.info("Uploading to Blob storage as blob: {} container: {}", blobClient.getBlobUrl(), container);
 
         // Upload the blob
         blobClient.uploadFromFile(blobFile.getPath(), true);
-
     }
-
 
     // Create the container and return a container client object, this logic works fine for existing containers
     // but fails if the container is to be newly created. Needs fixing but not urgent
@@ -45,7 +44,7 @@ public class BlobUpload {
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
 
         if (nonNull(containerClient)) {
-            return  containerClient;
+            return containerClient;
         } else {
             return blobServiceClient.createBlobContainer(containerName);
         }

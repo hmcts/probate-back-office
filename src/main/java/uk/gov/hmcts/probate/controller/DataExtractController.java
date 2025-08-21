@@ -17,12 +17,14 @@ import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
+import uk.gov.hmcts.probate.service.dataextract.DataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.DataExtractType.NATIONAL_FRAUD_INITIATIVE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -36,6 +38,7 @@ public class DataExtractController {
     private final ExelaDataExtractService exelaDataExtractService;
     private final SmeeAndFordDataExtractService smeeAndFordDataExtractService;
     private final DataExtractDateValidator dataExtractDateValidator;
+    private final DataExtractService dataExtractService;
 
     @Operation(summary = "Initiate HMRC data extract within 2 dates",
             description = "Dates MUST be in format 'yyyy-MM-dd'")
@@ -124,4 +127,22 @@ public class DataExtractController {
         return ResponseEntity.accepted().body(null);
     }
 
+    @Operation(summary = "Initiate NFI data extract", description = " Date MUST be in format 'yyyy-MM-dd'")
+    @PostMapping(path = "/nfi")
+    public ResponseEntity initiateNFIExtract(
+            @Parameter(name = "Date to find cases against", required = true)
+            @RequestParam(value = "fromDate") String fromDate,
+            @RequestParam(value = "toDate") String toDate) {
+
+        dataExtractDateValidator.dateValidator(fromDate, toDate);
+
+        log.info("Calling perform NFI data extract from date...");
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        executor.submit(() -> {
+            dataExtractService.performExtractForDateRange(fromDate, toDate, NATIONAL_FRAUD_INITIATIVE);
+        });
+        log.info("Perform NFI data extract from date finished");
+
+        return ResponseEntity.accepted().body(null);
+    }
 }
