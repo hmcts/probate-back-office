@@ -36,9 +36,12 @@ import java.util.zip.ZipEntry;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
+import static uk.gov.hmcts.probate.model.DataExtractType.NATIONAL_FRAUD_INITIATIVE;
 
 @ExtendWith(SpringExtension.class)
 class ZipFileServiceTest {
@@ -184,4 +187,68 @@ class ZipFileServiceTest {
         Files.delete(tempFile.toPath());
     }
 
+    @Test
+    void shouldCreateZipForDataExtractTypeOnlyAllCasesCsv() throws Exception {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_NFI_Docs_" + todayDate + ".zip");
+
+        File returned = zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate,
+                NATIONAL_FRAUD_INITIATIVE);
+
+        Assertions.assertEquals(zipFile.getAbsolutePath(), returned.getAbsolutePath());
+        Assertions.assertTrue(returned.exists());
+
+        try (ZipFile zip = new ZipFile(returned)) {
+            Assertions.assertTrue(
+                    zip.stream().map(ZipEntry::getName)
+                            .anyMatch(name -> name.equalsIgnoreCase("all_cases_data_" + todayDate + ".csv")),
+                    "ZIP should contain all_cases_data_<date>.csv"
+            );
+            Assertions.assertFalse(
+                    zip.stream().map(ZipEntry::getName).anyMatch(name -> name.equalsIgnoreCase("manifest_file.csv")),
+                    "ZIP must not contain manifest_file.csv for data-extract overload"
+            );
+            Assertions.assertFalse(
+                    zip.stream().map(ZipEntry::getName).anyMatch(name -> name.contains("digitalGrant")),
+                    "ZIP must not contain grant documents for data-extract overload"
+            );
+            Assertions.assertEquals(1, zip.size(), "ZIP should contain exactly one entry");
+        }
+
+        verifyNoInteractions(documentManagementService);
+        verifyNoInteractions(blobUpload);
+
+        Files.deleteIfExists(zipFile.toPath());
+    }
+
+    @Test
+    void shouldThrowZipFileExceptionWhenFileIsInvalidForDataExtractType() {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("");
+
+        Assertions.assertThrows(ZipFileException.class, () ->
+                zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate, NATIONAL_FRAUD_INITIATIVE)
+        );
+
+        verifyNoInteractions(documentManagementService);
+        verifyNoInteractions(blobUpload);
+    }
+
+    @Test
+    void shouldPropagateZipFileExceptionWhenSmeeAndFordByteArrayFails() throws Exception {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_NFI_Docs_" + todayDate + ".zip");
+
+        doThrow(new RuntimeException("boom"))
+                .when(smeeAndFordPersonalisationService).getSmeeAndFordByteArray(anyList());
+
+        Assertions.assertThrows(ZipFileException.class, () ->
+                zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate, NATIONAL_FRAUD_INITIATIVE)
+        );
+
+        verifyNoInteractions(documentManagementService);
+        verifyNoInteractions(blobUpload);
+
+        Files.deleteIfExists(zipFile.toPath());
+    }
 }
