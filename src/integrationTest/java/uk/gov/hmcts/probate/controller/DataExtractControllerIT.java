@@ -41,7 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DataExtractControllerIT {
 
     public static final String PERFORM_HMRC_DATA_EXTRACT_FINISHED = "Perform HMRC data extract finished";
-    public static final String PERFORM_IM_DATA_EXTRACT_FINISHED = "Perform Iron Mountain data extract finished";
 
     @MockitoBean
     private HmrcDataExtractService hmrcDataExtractService;
@@ -183,5 +182,17 @@ class DataExtractControllerIT {
     void smeeAndFordShouldReturnErrorWithNoDateOnPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/smee-and-ford"))
             .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void nfiShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
+        mockMvc.perform(post("/data-extract/nfi?fromDate=2019-02-13&toDate=2019-02-13"))
+                .andExpect(status().isAccepted());
+    }
+
+    @Test
+    void nfiShouldReturnErrorWithNoDateOnPathParam() throws Exception {
+        mockMvc.perform(post("/data-extract/nfi"))
+                .andExpect(status().is4xxClientError());
     }
 }
