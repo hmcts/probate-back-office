@@ -10,4 +10,7 @@ public class ReturnedCaveats {
 
     @JsonProperty(value = "cases")
     private final List<ReturnedCaveatDetails> caveats;
+
+    @JsonProperty(value = "total")
+    private final int total;
 }
