@@ -29,6 +29,7 @@ public class DataExtractTests extends IntegrationTestBase {
     private static final String EXELA_URL = "/data-extract/exela";
     private static final String SMEE_AND_FORD_URL = "/data-extract/smee-and-ford";
     private static final String HMRC_URL = "/data-extract/hmrc";
+    private static final String NFI_URL = "/data-extract/nfi";
 
     private static final String HMRC_DATA_EXTRACT_COMPLETION_MESSAGE = "Perform HMRC data extract finished";
 
@@ -198,5 +199,18 @@ public class DataExtractTests extends IntegrationTestBase {
             .when()
             .post(SMEE_AND_FORD_URL)
             .then().assertThat().statusCode(202);
+    }
+
+    @Test
+    void verifyValidDateRequestReturnsAcceptedStatusForNFI() {
+        RestAssured.given()
+                .config(config)
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeaders(email, password, id))
+                .queryParam("fromDate", "2019-02-03")
+                .queryParam("toDate", "2019-02-03")
+                .when()
+                .post(NFI_URL)
+                .then().assertThat().statusCode(202);
     }
 }
