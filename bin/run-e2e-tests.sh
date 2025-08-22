@@ -25,6 +25,7 @@ Xvfb :99 -screen 0 1280x720x24 &
 XVFB_PID=$!
 
 yarn test:functional
+yarn merge-reports
 
 # Clean up
 kill $XVFB_PID
