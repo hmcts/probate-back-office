@@ -22,7 +22,7 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.LifeEventCCDService;
 import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
-import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
@@ -83,7 +83,7 @@ class LifeEventControllerIT {
     private LifeEventValidationRule lifeEventValidationRule;
 
     @MockitoBean
-    private CallbackResponseTransformer callbackResponseTransformer;
+    private HandOffLegacyTransformer handOffLegacyTransformer;
 
     @Captor
     private ArgumentCaptor<CaseDetails> caseDetailsArgumentCaptor;
@@ -230,7 +230,7 @@ class LifeEventControllerIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(callbackResponseTransformer).updateTaskList(callbackRequestArgumentCaptor.capture(), any());
+        verify(handOffLegacyTransformer).setHandOffToLegacySiteYes(callbackRequestArgumentCaptor.capture());
         final CallbackRequest callbackRequest = callbackRequestArgumentCaptor.getValue();
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         assertEquals(1621002468661478L, caseDetails.getId().longValue());
