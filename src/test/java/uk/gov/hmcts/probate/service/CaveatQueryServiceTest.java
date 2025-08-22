@@ -30,6 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.PA_APP_CREATED;
 
 class CaveatQueryServiceTest {
 
@@ -73,7 +74,7 @@ class CaveatQueryServiceTest {
         List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
                 new ReturnedCaveatDetails(caveatData, LAST_MODIFIED, DRAFT, 1L))
                 .build();
-        ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
+        ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList, 1);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
     }
@@ -90,7 +91,7 @@ class CaveatQueryServiceTest {
         assertThrows(BusinessValidationException.class, () -> {
             List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>()
                     .build();
-            ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
+            ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList, 1);
 
             when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
 
@@ -120,5 +121,25 @@ class CaveatQueryServiceTest {
     void findCaveatWithExpiryDate() {
         List<ReturnedCaveatDetails> result = caveatQueryService.findCaveatExpiredCases("2023-10-01");
         assertEquals("Smith", result.getFirst().getData().getDeceasedSurname());
+    }
+
+    @Test
+    void findCaveatCasesWithPayment() {
+        CaveatData caseData = CaveatData.builder()
+                .deceasedSurname("Smith")
+                .build();
+        List<ReturnedCaveatDetails> caseList =
+                new ImmutableList.Builder<ReturnedCaveatDetails>().add(new ReturnedCaveatDetails(caseData,
+                                LAST_MODIFIED, PA_APP_CREATED,1L))
+                        .build();
+        ReturnedCaveats returnedCases = new ReturnedCaveats(caseList, 1);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
+
+        List<ReturnedCaveatDetails> cases = caveatQueryService.findCaveatDraftCases("2023-10-01",
+                "2023-10-10", CaseType.CAVEAT);
+
+        assertEquals(1, cases.size());
+        assertEquals(1, cases.getFirst().getId().intValue());
+        assertEquals("Smith", cases.getFirst().getData().getDeceasedSurname());
     }
 }
