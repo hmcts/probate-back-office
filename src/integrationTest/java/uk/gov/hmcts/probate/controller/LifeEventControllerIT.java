@@ -22,6 +22,8 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.LifeEventCCDService;
 import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
@@ -32,6 +34,7 @@ import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -41,6 +44,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.AD_COLLIGENDA_BONA;
+import static uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId.FOREIGN_WILL;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -77,6 +83,9 @@ class LifeEventControllerIT {
 
     @MockitoBean
     private LifeEventValidationRule lifeEventValidationRule;
+
+    @MockitoBean
+    private CallbackResponseTransformer callbackResponseTransformer;
 
     @Captor
     private ArgumentCaptor<CaseDetails> caseDetailsArgumentCaptor;
@@ -213,4 +222,25 @@ class LifeEventControllerIT {
         verify(lifeEventValidationRule).validate(any());
     }
 
+    @Test
+    void shouldPreserveHandoffReasons() throws Exception {
+        String payload = testUtils.getStringFromFile("existingHandoffReason.json");
+
+        mockMvc.perform(post("/lifeevent/handOffToLegacySite")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(callbackResponseTransformer).updateTaskList(callbackRequestArgumentCaptor.capture(), any());
+        final CallbackRequest callbackRequest = callbackRequestArgumentCaptor.getValue();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        assertEquals(1621002468661478L, caseDetails.getId().longValue());
+        final CaseData caseData = caseDetails.getData();
+        assertEquals(YES, caseData.getCaseHandedOffToLegacySite());
+        assertEquals(FOREIGN_WILL, caseData.getBoHandoffReasonList()
+                .getFirst().getValue().getCaseHandoffReason());
+        assertEquals(AD_COLLIGENDA_BONA, caseData.getBoHandoffReasonList()
+                .getLast().getValue().getCaseHandoffReason());
+    }
 }
