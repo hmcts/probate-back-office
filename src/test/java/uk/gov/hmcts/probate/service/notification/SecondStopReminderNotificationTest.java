@@ -59,7 +59,7 @@ class SecondStopReminderNotificationTest {
     void shouldSendFirstStopReminderEmail() throws NotificationClientException {
         when(notificationService.sendStopReminderEmail(caseDetails, false)).thenReturn(mockDocument);
 
-        Document result = underTest.sendEmail(caseDetails);
+        Document result = underTest.sendNotification(caseDetails);
 
         verify(notificationService, times(1)).sendStopReminderEmail(caseDetails, false);
         assertEquals(mockDocument, result);
