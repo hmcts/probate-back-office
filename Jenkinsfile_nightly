@@ -28,7 +28,11 @@ def secrets = [
     secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
     secret('solicitorUserPass', 'SOL_USER_PASSWORD'),
     secret('solicitor2UserEmail', 'SOL2_USER_EMAIL'),
-    secret('solicitor2UserPass', 'SOL2_USER_PASSWORD')
+    secret('solicitor2UserPass', 'SOL2_USER_PASSWORD'),
+    secret('prof-user-sac-username', 'PROF_USER_SAC'),
+    secret('prof-user-sac-password', 'PROF_USER_PASSWORD_SAC'),
+    secret('prof-user-noc-username', 'PROF_USER_NOC'),
+    secret('prof-user-noc-password', 'PROF_USER_PASSWORD_NOC')
   ]
 ]
 
@@ -50,6 +54,8 @@ withNightlyPipeline("nodejs", product, component) {
     enableSecurityScan()
     enableFortifyScan('probate-aat')
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
+
+
     before('fullFunctionalTest') {
         yarnBuilder.yarn('yarn-update')
         yarnBuilder.yarn('install-dependencies')
