@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -28,6 +29,7 @@ import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.NotificationService.RegistrarEscalationException;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
@@ -73,12 +75,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -651,7 +657,6 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
-        Document documentMock = Mockito.mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
             .thenReturn(documentMock);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock, CASEWORKER_USERINFO))
@@ -678,7 +683,6 @@ class BusinessValidationUnitTest {
                 .thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class)))
             .thenReturn(Arrays.asList(FieldErrorResponse.builder().build()));
-        Document documentMock = Mockito.mock(Document.class);
         ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
             bindingResultMock);
 
@@ -698,7 +702,6 @@ class BusinessValidationUnitTest {
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
-        Document documentMock = Mockito.mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
             .thenReturn(documentMock);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock, CASEWORKER_USERINFO))
@@ -800,7 +803,7 @@ class BusinessValidationUnitTest {
 
     @Test
     void shouldUpdateTaskListWithEmptyCaseworkerInfo() {
-        CallbackResponse expectedResponse = Mockito.mock(CallbackResponse.class);
+        CallbackResponse expectedResponse = mock(CallbackResponse.class);
         when(callbackResponseTransformerMock.updateTaskList(callbackRequestMock, Optional.empty()))
                 .thenReturn(expectedResponse);
 
@@ -931,7 +934,6 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
                 .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
-        Document documentMock = Mockito.mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
                 .thenReturn(documentMock);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock, CASEWORKER_USERINFO))
@@ -1088,7 +1090,6 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
                 .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
-        Document documentMock = Mockito.mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
                 .thenReturn(documentMock);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock, CASEWORKER_USERINFO))
@@ -1123,5 +1124,103 @@ class BusinessValidationUnitTest {
         verify(callbackResponseTransformerMock, times(1))
                 .superUserMakeCaseDormant(callbackRequestMock, CASEWORKER_USERINFO);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldAttemptToEmailWhenEscalateToRegistrar() throws RegistrarEscalationException {
+
+        final List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
+
+        when(notificationService.sendRegistrarEscalationNotification(any()))
+                .thenReturn(documentMock);
+
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData())
+                .thenReturn(caseDataMock);
+        when(caseDataMock.getProbateNotificationsGenerated())
+                .thenReturn(notificationsGenerated);
+
+        final ResponseEntity<CallbackResponse> response = underTest
+                .caseEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+
+        verify(notificationService, times(1))
+                .sendRegistrarEscalationNotification(any());
+        verify(notificationService, never())
+                .sendRegistrarEscalationNotificationFailed(any(), any());
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+
+        assertAll(
+                () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
+                () -> assertThat(notificationsGenerated.size(), is(1)));
+    }
+
+    @Test
+    void shouldAttemptToEmailCaseworkerWhenEscalateToRegistrarFails() throws RegistrarEscalationException {
+
+        final List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
+
+        final RegistrarEscalationException registrarEscalationExceptionMock = mock(RegistrarEscalationException.class);
+        when(notificationService.sendRegistrarEscalationNotification(any()))
+                .thenThrow(registrarEscalationExceptionMock);
+
+        when(notificationService.sendRegistrarEscalationNotificationFailed(any(), any()))
+                .thenReturn(documentMock);
+
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData())
+                .thenReturn(caseDataMock);
+        when(caseDataMock.getProbateNotificationsGenerated())
+                .thenReturn(notificationsGenerated);
+
+        final ResponseEntity<CallbackResponse> response = underTest
+                .caseEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+
+        verify(notificationService, times(1))
+                .sendRegistrarEscalationNotification(any());
+        verify(notificationService, times(1))
+                .sendRegistrarEscalationNotificationFailed(any(), any());
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+
+        assertAll(
+                () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
+                () -> assertThat(notificationsGenerated.size(), is(1)));
+    }
+
+    @Test
+    void shouldNotAttemptToEmailCaseworkerWhenEscalateToRegistrarReturnsNoDocument()
+            throws RegistrarEscalationException {
+
+        final List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
+
+        when(notificationService.sendRegistrarEscalationNotification(any()))
+                .thenReturn(null);
+
+        when(notificationService.sendRegistrarEscalationNotificationFailed(any(), any()))
+                .thenReturn(documentMock);
+
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData())
+                .thenReturn(caseDataMock);
+        when(caseDataMock.getProbateNotificationsGenerated())
+                .thenReturn(notificationsGenerated);
+
+        final ResponseEntity<CallbackResponse> response = underTest
+                .caseEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+
+        verify(notificationService, times(1))
+                .sendRegistrarEscalationNotification(any());
+        verify(notificationService, never())
+                .sendRegistrarEscalationNotificationFailed(any(), any());
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+
+        assertAll(
+                () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
+                () -> assertThat(notificationsGenerated, empty()));
     }
 }
