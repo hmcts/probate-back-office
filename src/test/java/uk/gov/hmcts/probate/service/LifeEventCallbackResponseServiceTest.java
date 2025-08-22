@@ -56,7 +56,7 @@ class LifeEventCallbackResponseServiceTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         final CallbackResponse callbackResponse =
             lifeEventCallbackResponseService.setNumberOfDeathRecords(callbackRequest);
-        assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
+        assertEquals(5, callbackResponse.getData().getNumberOfDeathRecords());
     }
 
     @Test
@@ -67,7 +67,7 @@ class LifeEventCallbackResponseServiceTest {
 
         final CallbackResponse callbackResponse =
             lifeEventCallbackResponseService.getDeathRecordsByNamesAndDate(callbackRequest);
-        assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
+        assertEquals(5, callbackResponse.getData().getNumberOfDeathRecords());
         assertEquals(callbackResponse.getData().getDeathRecords(), deathRecords);
     }
 }

@@ -29,7 +29,7 @@ public class LifeEventService {
         this.deathRecordCCDService = deathRecordCCDService;
     }
 
-    public List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>> 
+    public List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>>
         getDeathRecordsByNamesAndDate(final CaseDetails caseDetails) {
         final CaseData caseData = caseDetails.getData();
         final String deceasedForenames = caseData.getDeceasedForenames();
