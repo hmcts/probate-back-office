@@ -47,6 +47,7 @@ import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
+import uk.gov.hmcts.probate.validator.IHTFormIDValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
@@ -192,6 +193,8 @@ class BusinessValidationUnitTest {
     @Mock
     private NaValidationRule naValidationRule;
     @Mock
+    private IHTFormIDValidationRule ihtFormIDValidationRule;
+    @Mock
     private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
     @Mock
     private BusinessValidationMessageService businessValidationMessageServiceMock;
@@ -234,6 +237,7 @@ class BusinessValidationUnitTest {
             uniqueCodeValidationRule,
             stopReasonValidationRule,
             naValidationRule,
+            ihtFormIDValidationRule,
             solicitorPostcodeValidationRule,
             caseworkersSolicitorPostcodeValidationRule,
             assignCaseAccessService,
