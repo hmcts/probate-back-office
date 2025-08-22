@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.template.printservice;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -10,6 +11,7 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PrintService {
@@ -28,6 +30,7 @@ public class PrintService {
     private String printServicePath;
 
     public String getSolicitorCaseDetailsTemplateForPrintService() {
+        log.info("/case-details/sol html {}", TEMPLATE_CASE_DETAILS_SOL);
         return getFileAsString(TEMPLATE_CASE_DETAILS_SOL);
     }
 

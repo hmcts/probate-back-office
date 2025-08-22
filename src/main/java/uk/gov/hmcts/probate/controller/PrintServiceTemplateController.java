@@ -38,7 +38,6 @@ public class PrintServiceTemplateController {
             log.error("Case Id: {} ERROR: {}", caseDetails.getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
-
         List<DocumentResponse> docs = printService.getAllDocuments(caseDetails);
 
 
@@ -48,13 +47,14 @@ public class PrintServiceTemplateController {
     @GetMapping(path = "/case-details/sol", consumes = APPLICATION_JSON_VALUE, produces = {TEXT_HTML_VALUE})
     public ResponseEntity<String> getSolicitorCaseDetailsTemplate() {
 
+        log.info("/case-details/sol html path {}", printService.getSolicitorCaseDetailsTemplateForPrintService());
         String callbackResponse = printService.getSolicitorCaseDetailsTemplateForPrintService();
         return ResponseEntity.ok(callbackResponse);
     }
 
     @GetMapping(path = "/case-details/pa", consumes = APPLICATION_JSON_VALUE, produces = {TEXT_HTML_VALUE})
     public ResponseEntity<String> getPACaseDetailsTemplate() {
-
+        log.info("/case-details/pa html path {}", printService.getPACaseDetailsTemplateForPrintService());
         String callbackResponse = printService.getPACaseDetailsTemplateForPrintService();
         return ResponseEntity.ok(callbackResponse);
     }
