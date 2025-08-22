@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -42,6 +43,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
@@ -50,8 +52,6 @@ import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
-
-import jakarta.validation.Valid;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -71,6 +71,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_REC
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED_INTESTACY;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_GRANT_ISSUED;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.EDGE_CASE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 
@@ -99,6 +100,7 @@ public class DocumentController {
     private final EvidenceUploadService evidenceUploadService;
     private final UserInfoService userInfoService;
     private final FeatureToggleService featureToggleService;
+    private final DocumentTransformer documentTransformer;
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -353,6 +355,21 @@ public class DocumentController {
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
+        try {
+            final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+            if (caseDetails.getData().getApplicationType().equals(SOLICITOR)
+                && !caseDetails.getState().equalsIgnoreCase(STATE_BO_GRANT_ISSUED)) {
+                Document document = notificationService.sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
+                documentTransformer.addDocument(callbackRequest, document, false);
+            }
+        } catch (NotificationClientException e) {
+            log.warn("evidenceAdded fails to send StopResponseReceived notification for case: {}",
+                    callbackRequest.getCaseDetails().getId());
+        } catch (RuntimeException e) {
+            log.warn("evidenceAdded fails to generate or upload notification pdf for case: {}",
+                    callbackRequest.getCaseDetails().getId(), e);
+        }
+
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
@@ -362,7 +379,7 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> evidenceAddedRPARobot(@RequestBody CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
-        Boolean update = true;
+        boolean update = true;
         if (caseDetails.getState().equalsIgnoreCase(STATE_BO_CASE_STOPPED)) {
             log.info("Case is stopped: {} ", caseDetails.getId());
             if (caseData.getDocumentUploadedAfterCaseStopped() != null
@@ -375,8 +392,21 @@ public class DocumentController {
         } else {
             log.info("Case is ongoing: {} ", caseDetails.getId());
         }
-        if (Boolean.TRUE.equals(update)) {
+        if (update) {
             evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
+        }
+        try {
+            if (caseDetails.getData().getApplicationType().equals(SOLICITOR)
+                    && !caseDetails.getState().equalsIgnoreCase(STATE_BO_GRANT_ISSUED)) {
+                Document document = notificationService.sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
+                documentTransformer.addDocument(callbackRequest, document, false);
+            }
+        } catch (NotificationClientException e) {
+            log.warn("evidenceAddedRPARobot fails to send StopResponseReceived notification for case: {}, message: {}",
+                    callbackRequest.getCaseDetails().getId(), e.getHttpResult());
+        } catch (RuntimeException e) {
+            log.warn("evidenceAddedRPARobot fails to generate or upload notification pdf for case: {}",
+                    callbackRequest.getCaseDetails().getId(), e);
         }
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, Optional.empty());
         return ResponseEntity.ok(response);
