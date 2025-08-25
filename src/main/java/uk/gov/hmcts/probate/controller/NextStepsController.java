@@ -72,6 +72,7 @@ public class NextStepsController {
         HttpServletRequest request) throws NotificationClientException {
 
         logRequest(request.getRequestURI(), callbackRequest);
+        handOffLegacyTransformer.resetHandOffToLegacySite(callbackRequest);
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
 
         CallbackResponse callbackResponse;

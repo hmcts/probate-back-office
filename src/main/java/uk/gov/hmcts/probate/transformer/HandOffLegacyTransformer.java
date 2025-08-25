@@ -41,4 +41,10 @@ public class HandOffLegacyTransformer {
     private CollectionMember<HandoffReason> buildHandOffReason(HandoffReason reason) {
         return new CollectionMember<>(null, reason);
     }
+
+    public void resetHandOffToLegacySite(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        caseData.setCaseHandedOffToLegacySite(null);
+        caseData.setBoHandoffReasonList(null);
+    }
 }
