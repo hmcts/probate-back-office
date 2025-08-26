@@ -7840,6 +7840,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pirates@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "pirates@npm:4.0.7"
+  checksum: 10/2427f371366081ae42feb58214f04805d6b41d6b84d74480ebcc9e0ddbd7105a139f7c653daeaf83ad8a1a77214cf07f64178e76de048128fec501eab3305a96
+  languageName: node
+  linkType: hard
+
 "playwright-core@npm:1.55.0":
   version: 1.55.0
   resolution: "playwright-core@npm:1.55.0"
@@ -8526,11 +8533,12 @@ __metadata:
   linkType: hard
 
 "rewire@npm:^9.0.0":
-  version: 9.0.0
-  resolution: "rewire@npm:9.0.0"
+  version: 9.0.1
+  resolution: "rewire@npm:9.0.1"
   dependencies:
     eslint: "npm:^9.30"
-  checksum: 10/300bfe6b3c2b09697195b77bff871de8799af237f57683340b32f02d991cb6b3df07329157ad5ec0639b68195378c00f19e112915e38ea34dac7aa28f62a0800
+    pirates: "npm:^4.0.7"
+  checksum: 10/db79654385447285ef34a241afc7ba147c6242d2eb6765ce1f00e134df793ef1bf92fb14b56625a2d23c88fb2f1f078a490b29becfd5db4b1d170fbb21ac1572
   languageName: node
   linkType: hard
 
