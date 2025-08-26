@@ -21,6 +21,7 @@ public class StopReasonCode {
     private String iht421Awaiting;
     private String ihtFiguresIncorrect;
     private String ihtIssue;
+    private String intestacyMinorityInterest;
     private String lostWill;
     private String matchingApplication;
     private String noMinorityLife;
