@@ -336,12 +336,13 @@ __metadata:
   linkType: hard
 
 "@hmcts/playwright-common@npm:^1.0.32":
-  version: 1.0.33
-  resolution: "@hmcts/playwright-common@npm:1.0.33"
+  version: 1.0.34
+  resolution: "@hmcts/playwright-common@npm:1.0.34"
   dependencies:
     "@axe-core/playwright": "npm:^4.10.0"
     "@eslint/js": "npm:^9.11.1"
     "@typescript-eslint/eslint-plugin": "npm:^8.8.0"
+    axe-html-reporter: "npm:^2.2.11"
     eslint: "npm:^9.11.1"
     eslint-plugin-playwright: "npm:^2.0.0"
     get-port: "npm:^7.1.0"
@@ -352,7 +353,7 @@ __metadata:
     typescript-eslint: "npm:^8.8.0"
   peerDependencies:
     "@playwright/test": ^1.53.0
-  checksum: 10/bcdde79e4dfd16635614493c234ed49fc6ecd7d8c0d33d649c8b368e262d37a986fbfcaf9ea99d30b00899304986ede7626ab02626dc5b8ea6e5fd4b53953052
+  checksum: 10/aa4670e95586f0f05806b53c382e16116885d0844ae67d459542faad450ef92501a9e964f63de00cce57e560c885c3183e6de072615f1bd1434afacbc94ce8f7
   languageName: node
   linkType: hard
 
@@ -2123,6 +2124,17 @@ __metadata:
   version: 4.10.3
   resolution: "axe-core@npm:4.10.3"
   checksum: 10/9ff51ad0fd0fdec5c0247ea74e8ace5990b54c7f01f8fa3e5cd8ba98b0db24d8ebd7bab4a9bd4d75c28c4edcd1eac455b44c8c6c258c6a98f3d2f88bc60af4cc
+  languageName: node
+  linkType: hard
+
+"axe-html-reporter@npm:^2.2.11":
+  version: 2.2.11
+  resolution: "axe-html-reporter@npm:2.2.11"
+  dependencies:
+    mustache: "npm:^4.0.1"
+  peerDependencies:
+    axe-core: ">=3"
+  checksum: 10/489a904c62fe5c74db9490773a624e8573906b54a9c8264b831ee50b648f623ba292a011598d257bd6b8dc35eede21998fc25c799bd99eb9ca8ecf2d05ef92a1
   languageName: node
   linkType: hard
 
@@ -7089,7 +7101,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mustache@npm:~4.2.0":
+"mustache@npm:^4.0.1, mustache@npm:~4.2.0":
   version: 4.2.0
   resolution: "mustache@npm:4.2.0"
   bin:
