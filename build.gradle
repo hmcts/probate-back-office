@@ -238,7 +238,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: versions.sendLetterClientVersion
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: versions.lifeEventsClientVersion
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.4'
-  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.31.1'
+  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.31.2'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: versions.applicationInsightsVersion
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-runtime-attach', version: versions.applicationInsightsVersion
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.1'
