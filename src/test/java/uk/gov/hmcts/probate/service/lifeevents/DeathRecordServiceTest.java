@@ -1,8 +1,12 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.lifeevents;
 
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
 
@@ -13,9 +17,14 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockitoExtension.class)
 class DeathRecordServiceTest {
 
-    DeathRecordService deathRecordService = new DeathRecordService();
+    @Mock
+    private AliasMapper aliasMapper;
+
+    @InjectMocks
+    private DeathRecordService deathRecordService;
 
     @Test
     void mapDeathRecordsShouldHandleEmptyList() {

@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.lifeevents;
 
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import com.github.hmcts.lifeevents.client.service.DeathService;

@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.lifeevents;
 
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.nonNull;
-import static uk.gov.hmcts.probate.service.DeathRecordCCDService.getAliases;
 
 @Component
 @RequiredArgsConstructor
 public class DeathRecordService {
+    private final AliasMapper aliasMapper;
 
     public List<CollectionMember<DeathRecord>> mapDeathRecords(List<V1Death> deathRecords) {
         return Optional.ofNullable(deathRecords)
@@ -49,7 +49,7 @@ public class DeathRecordService {
                     .sex(null == deceased.getSex() ? null : deceased.getSex().getValue())
                     .address(deceased.getAddress())
                     .dateOfDeath(deceased.getDateOfDeath())
-                    .aliases(getAliases(deceased));
+                    .aliases(aliasMapper.map(deceased));
         }
 
         return builder.build();

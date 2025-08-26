@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.lifeevents;
 
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.HandOffLegacyService;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
@@ -40,14 +41,14 @@ import static org.mockito.Mockito.same;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION;
-import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_ERROR_SUMMARY;
-import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_DESCRIPTION;
-import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_SUMMARY;
-import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_DESCRIPTION;
-import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_SUMMARY;
-import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION;
-import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY;
+import static uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService.LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION;
+import static uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService.LIFE_EVENT_VERIFICATION_ERROR_SUMMARY;
+import static uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_DESCRIPTION;
+import static uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService.LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_SUMMARY;
+import static uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_DESCRIPTION;
+import static uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService.LIFE_EVENT_VERIFICATION_SUCCESSFUL_SUMMARY;
+import static uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION;
+import static uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY;
 
 
 @ExtendWith(SpringExtension.class)
@@ -81,7 +82,7 @@ class LifeEventCCDServiceTest {
     SecurityUtils securityUtils;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         final String firstName = "Wibble";
         final String lastName = "Wobble";
         localDate = LocalDate.of(1900, 1, 1);
@@ -324,6 +325,4 @@ class LifeEventCCDServiceTest {
 
         assertNull(lastModified);
     }
-
-
 }
