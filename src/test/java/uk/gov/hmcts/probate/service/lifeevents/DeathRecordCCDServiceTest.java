@@ -1,9 +1,13 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.lifeevents;
 
 import com.github.hmcts.lifeevents.client.model.Alias;
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 
@@ -16,10 +20,15 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class DeathRecordCCDServiceTest {
+    @Mock
+    private AliasMapper aliasMapper;
 
-    DeathRecordCCDService deathRecordCCDService = new DeathRecordCCDService();
+    @InjectMocks
+    private DeathRecordCCDService deathRecordCCDService;
 
     @Test
     void shouldMapDeathRecordToCCDFormat() {
@@ -40,11 +49,26 @@ class DeathRecordCCDServiceTest {
         v1Death.setDeceased(deceased);
         v1Death.setId(1234);
 
+        uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Alias mappedAlias =
+                uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Alias.builder()
+                        .forenames(alias.getForenames())
+                        .lastName(alias.getSurname())
+                        .type(alias.getType())
+                        .prefix(alias.getPrefix())
+                        .suffix(alias.getSuffix())
+                        .build();
+
+        uk.gov.hmcts.reform.probate.model.cases.CollectionMember<
+                uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Alias> mappedAliasCollectionMember =
+                new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>(null, mappedAlias);
+
+        when(aliasMapper.map(deceased)).thenReturn(List.of(mappedAliasCollectionMember));
+
         final uk.gov.hmcts.probate.model.ccd.raw.DeathRecord deathRecord =
             deathRecordCCDService.mapDeathRecord(v1Death);
 
-        uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Alias mappedAlias =
-                deathRecord.getAliases().getFirst().getValue();
+        uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Alias resultAlias =
+                deathRecord.getAliases().get(0).getValue();
         assertAll(
                 () -> assertEquals(v1Death.getId(), deathRecord.getSystemNumber()),
                 () -> assertEquals(
@@ -56,12 +80,13 @@ class DeathRecordCCDServiceTest {
                 () -> assertEquals(deceased.getSex().getValue(), deathRecord.getSex()),
                 () -> assertEquals(deceased.getAddress(), deathRecord.getAddress()),
 
+
                 () -> assertEquals(1, deathRecord.getAliases().size()),
-                () -> assertEquals(alias.getForenames(), mappedAlias.getForenames()),
-                () -> assertEquals(alias.getSurname(), mappedAlias.getLastName()),
-                () -> assertEquals(alias.getType(), mappedAlias.getType()),
-                () -> assertEquals(alias.getPrefix(), mappedAlias.getPrefix()),
-                () -> assertEquals(alias.getSuffix(), mappedAlias.getSuffix())
+                () -> assertEquals(alias.getForenames(), resultAlias.getForenames()),
+                () -> assertEquals(alias.getSurname(), resultAlias.getLastName()),
+                () -> assertEquals(alias.getType(), resultAlias.getType()),
+                () -> assertEquals(alias.getPrefix(), resultAlias.getPrefix()),
+                () -> assertEquals(alias.getSuffix(), resultAlias.getSuffix())
         );
     }
 

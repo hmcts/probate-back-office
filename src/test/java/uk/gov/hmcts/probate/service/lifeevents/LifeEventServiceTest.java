@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.lifeevents;
 
 import com.github.hmcts.lifeevents.client.model.Alias;
 import com.github.hmcts.lifeevents.client.model.Deceased;
@@ -63,7 +63,7 @@ class LifeEventServiceTest {
     V1Death v1Death;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         localDate = LocalDate.of(1900, 1, 1);
         final Alias alias = new Alias();
         alias.setPrefix(aliasPrefix);
