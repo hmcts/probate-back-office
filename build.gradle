@@ -306,7 +306,7 @@ dependencies {
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '4.3.0'
-  testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.7'
+  testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.13.0'
   testFunctionalImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   testFunctionalImplementation group: 'com.github.hmcts', name: 'pdf-service-client', version: versions.pdfServiceClientVersion
   testFunctionalImplementation group: 'net.thucydides', name: 'thucydides-core', version: '0.9.275'
@@ -320,7 +320,7 @@ dependencies {
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenity
-  testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.7'
+  testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.13.0'
   testCaseCreatorImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   testCaseCreatorImplementation sourceSets.main.runtimeClasspath
   testCaseCreatorImplementation sourceSets.test.runtimeClasspath
