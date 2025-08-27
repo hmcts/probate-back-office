@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -x
 
 # Base export
 export TEST_E2E_URL=${TEST_E2E_URL}
