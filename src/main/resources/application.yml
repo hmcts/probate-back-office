@@ -112,6 +112,8 @@ docmosis:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
       templateName: FL-PRB-SOT-ENG-00092.doc
+    dormantReminder:
+      templateName: FL-PRB-GNO-ENG-postal-dormant-reminder-v001.docx
     welshStatementOfTruth:
       templateName: FL-PRB-SOT-WEL-00236.doc
     assembledLetter:
@@ -150,6 +152,8 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdColligendaBonaGrantReissue:
       templateName: FL-PRB-GRP-WEL-00237.doc
+    welshDormantReminder:
+      templateName: FL-PRB-GNO-WEL-postal-dormant-reminder-v001.docx
 
 fee.api:
   url: http://localhost:4411
@@ -263,6 +267,7 @@ notifications:
         iht421Awaiting: "IHT 421 awaiting"
         ihtFiguresIncorrect: "IHT figures incorrect"
         ihtIssue: "IHT forms not received"
+        intestacyMinorityInterest: "Intestacy Minority Interest"
         lostWill: "Lost Will"
         matchingApplication: "Matching application – (informing Sol or citizen that there is a matching application so their case cannot proceed)"
         noMinorityLife: "No minority or life interest – we ask solicitors to certify this if missing on the Legal Statement"
@@ -314,6 +319,7 @@ notifications:
         iht421Awaiting: "Aros am IHT 421"
         ihtFiguresIncorrect: "Mae’r ffigurau IHT yn anghywir"
         ihtIssue: "Ffurflenni IHT heb ddod i law"
+        intestacyMinorityInterest: "Budd i blentyn pan nad oes ewyllys"
         lostWill: "Mae’r ewyllys ar goll"
         matchingApplication: "Cais cyfatebol – (hysbysu'r cyfreithiwr neu'r dinesydd bod cais cyfatebol fel na all eu hachos fynd yn ei flaen)"
         noMinorityLife: "Dim budd i blentyn na budd am oes – gofynnwn i gyfreithwyr ardystio hyn os yw ar goll ar y Datganiad Cyfreithiol"
@@ -784,5 +790,6 @@ automated_notification:
   hse_reminder:
     awaiting_documentation_days: 30
   dormant_warning_days: 150
+  dormant_reminder_days: 365
   unsubmitted_application_days: 28
   declaration_not_signed_days: 3
