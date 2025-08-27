@@ -34,6 +34,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
 import java.util.Collections;
@@ -101,6 +102,8 @@ class NotificationServiceTest {
     private PersonalisationValidationRule personalisationValidationRuleMock;
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
+    @Mock
+    private SendEmailResponse sendEmailResponseMock;
 
     @Mock
     private ObjectMapper objectMapperMock;
@@ -123,7 +126,7 @@ class NotificationServiceTest {
     void tearDown() throws Exception {
         closeableMocks.close();
     }
-    
+
     @Test
     void givenPersonalisationWithMarkdown_whenCommonValidation_thenThrows() {
         final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
@@ -324,4 +327,78 @@ class NotificationServiceTest {
         verify(bulkPrintServiceMock).sendToBulkPrintForGrant(any(), any(), any());
     }
 
+    @Test
+    void sendStopResponseReceivedEmailSuccessfully() throws NotificationClientException {
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        CaseData caseData = mock(CaseData.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantFullName()).thenReturn("Applicant Name");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("test@example.com");
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        when(templateServiceMock.getStopResponseReceivedTemplateId(ApplicationType.SOLICITOR,
+                LanguagePreference.ENGLISH))
+                .thenReturn("template-id");
+        when(grantOfRepresentationPersonalisationServiceMock.getStopResponseReceivedPersonalisation(
+                12345L, "Solicitor Name"))
+                .thenReturn(Map.of("key", "value"));
+        when(notificationClientServiceMock.sendEmail("template-id",
+                "test@example.com", Map.of("key", "value"), "12345"))
+                .thenReturn(sendEmailResponseMock);
+        when(sendEmailResponseMock.getReference()).thenReturn(Optional.of("email-reference"));
+
+        Document result = notificationService.sendStopResponseReceivedEmail(caseDetails);
+
+        assertNotNull(result);
+        verify(notificationClientServiceMock).sendEmail("template-id",
+                "test@example.com", Map.of("key", "value"), "12345");
+    }
+
+    @Test
+    void sendStopResponseReceivedEmailThrowsExceptionWhenCaseDataIsNull() {
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        CaseData caseData = mock(CaseData.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+
+        NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
+                notificationService.sendStopResponseReceivedEmail(caseDetails)
+        );
+
+        assertEquals("Email address not found for StopResponseReceivedEmail case ID: 12345",
+                exception.getMessage());
+    }
+
+    @Test
+    void sendStopResponseReceivedEmailThrowsExceptionWhenEmailIsNull() throws NotificationClientException {
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        CaseData caseData = mock(CaseData.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(templateServiceMock.getStopResponseReceivedTemplateId(
+                ApplicationType.PERSONAL, LanguagePreference.ENGLISH)).thenReturn("template-id");
+        when(grantOfRepresentationPersonalisationServiceMock.getStopResponseReceivedPersonalisation(
+                12345L, "Solicitor Name"))
+                .thenReturn(Map.of("key", "value"));
+        when(notificationClientServiceMock.sendEmail("template-id", null,
+                Map.of("key", "value"), "12345"))
+                .thenThrow(new NotificationClientException("Email address not found"));
+
+        NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
+                notificationService.sendStopResponseReceivedEmail(caseDetails)
+        );
+
+        assertEquals("Email address not found for StopResponseReceivedEmail case ID: 12345",
+                exception.getMessage());
+    }
 }

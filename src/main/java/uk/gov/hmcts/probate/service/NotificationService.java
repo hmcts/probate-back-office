@@ -790,6 +790,33 @@ public class NotificationService {
         FOUND_HTML;
     }
 
+    public Document sendStopResponseReceivedEmail(CaseDetails caseDetails)
+            throws NotificationClientException {
+        log.info("sendStopResponseReceivedEmail for case id: {}", caseDetails.getId());
+        final CaseData caseData = caseDetails.getData();
+        String emailAddress = getEmail(caseDetails.getData());
+        if (emailAddress == null) {
+            throw new NotificationClientException("Email address not found for StopResponseReceivedEmail case ID: "
+                    + caseDetails.getId());
+        }
+        ApplicationType applicationType = caseDetails.getData().getApplicationType();
+        LanguagePreference languagePreference = caseDetails.getData().getLanguagePreference();
+        String templateId = templateService.getStopResponseReceivedTemplateId(applicationType, languagePreference);
+        log.info("sendStopResponseReceivedEmail applicationType {}, templateId: {}", applicationType, templateId);
+        final String addresseeName = switch (caseData.getApplicationType()) {
+            case PERSONAL -> caseData.getPrimaryApplicantFullName();
+            case SOLICITOR -> caseData.getSolsSOTName();
+        };
+        Map<String, String> personalisation = grantOfRepresentationPersonalisationService
+                .getStopResponseReceivedPersonalisation(caseDetails.getId(), addresseeName);
+        log.info("start StopResponseReceivedEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("StopResponseReceivedEmail reference response: {} ", response.getReference());
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
     public Document sendStopReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
                                           boolean isFirstStopReminder)
             throws NotificationClientException {
