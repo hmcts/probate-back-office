@@ -678,7 +678,7 @@ smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFordData@probate-test.com}
 hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
 
 sealedAndCertifiedEmail: ${SEALED_AND_CERTIFIED_EMAIL:sealedAndCertified@probate-test.com}
-draftCaseWithPaymentEmail: "Iswarya.Pepakayala@justice.gov.uk"
+draftCaseWithPaymentEmail: ${DRAFT_CASES_WITH_PAYMENT_EMAIL:draftCases@probate-test.com}
 
 welsh:
   months:

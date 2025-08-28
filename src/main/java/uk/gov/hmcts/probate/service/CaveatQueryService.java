@@ -111,7 +111,7 @@ public class CaveatQueryService {
                                                                CaseType caseType) {
 
         List<ReturnedCaveatDetails> allResults = new ArrayList<>();
-        List<ReturnedCaveatDetails> pagedResults = new ArrayList<>();
+        List<ReturnedCaveatDetails> pagedResults;
         int index = 0;
         int pageStart = 0;
         int total = 10000000;
