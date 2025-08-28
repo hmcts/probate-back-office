@@ -89,7 +89,7 @@ public class ZipFileService {
         }
     }
 
-    public void generateZipFile(List<ReturnedCaseDetails> cases, File tempFile, String fromDate) {
+    public void generateAndUploadZipFile(List<ReturnedCaseDetails> cases, File tempFile, String fromDate) {
         log.info("Smee And Ford generateZipFile for {} cases", cases.size());
 
         List<ZippedManifestData> manifestDataList = new ArrayList<>();
@@ -107,9 +107,6 @@ public class ZipFileService {
             zipOut.close();
             fos.close();
             blobUpload.uploadFile(tempFile);
-        } catch (IOException e) {
-            log.error(ERROR_MASSAGE, e);
-            throw new ZipFileException(e.getMessage());
         } catch (Exception e) {
             log.error(ERROR_MASSAGE, e);
             throw new ZipFileException(e.getMessage());

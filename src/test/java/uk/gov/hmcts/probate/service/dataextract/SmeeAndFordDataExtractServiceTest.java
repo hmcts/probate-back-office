@@ -141,7 +141,7 @@ class SmeeAndFordDataExtractServiceTest {
 
             verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
             verify(zipFileService, times(1)).createTempZipFile(anyString());
-            verify(zipFileService, times(1)).generateZipFile(returnedCases, zipFile, "2000-12-30");
+            verify(zipFileService, times(1)).generateAndUploadZipFile(returnedCases, zipFile, "2000-12-30");
             verify(blobUpload, times(1)).uploadFile(zipFile);
         });
     }

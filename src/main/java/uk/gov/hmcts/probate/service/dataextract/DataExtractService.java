@@ -45,7 +45,6 @@ public class DataExtractService {
             log.info("Zip file generated for type: {} date: {} filename: {}", type, date, zipFile.getName());
             strategy.uploadToBlobStorage(zipFile);
             log.info("Data extract for type: {} date: {} completed successfully", type, date);
-            log.info("Zipfile exists: {}", zipFile.exists());
         } catch (Exception e) {
             final String errorMsg = String.format("Error running data extract for type: %s for date: %s", type, date);
             log.error(errorMsg, e);
