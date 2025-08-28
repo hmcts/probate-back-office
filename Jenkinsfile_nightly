@@ -59,6 +59,18 @@ withNightlyPipeline("nodejs", product, component) {
         env.ENV = 'aat'
     }
 
+    afterAlways('fullFunctionalTest') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+        publishHTML([
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: "./functional-output/reports",
+                reportFiles: 'functional_report.html',
+                reportName: 'Functional Test Report'
+        ])
+    }
+
     afterAlways('crossBrowserTest') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }

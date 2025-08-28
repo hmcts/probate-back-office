@@ -252,6 +252,18 @@ withPipeline("java", product, component) {
     ]
   }
 
+  afterAlways('fullfunctional-prTest') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+    publishHTML([
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: "./functional-output/reports",
+            reportFiles: 'functional_report.html',
+            reportName: 'Functional Test Report'
+    ])
+  }
+
   afterSuccess('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
