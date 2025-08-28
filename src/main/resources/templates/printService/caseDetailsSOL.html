@@ -134,35 +134,35 @@
     </tr>
     <tr>
       <td colspan="2">Solicitor app reference:</td>
-      <td>{% if case_data.solsSolicitorAppReference %}{{ case_data.solsSolicitorAppReference }}{% endif %}</td>
+      <td>{% if case_data.solsSolicitorAppReference %}{{ case_data.solsSolicitorAppReference }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor Forenames:</td>
-      <td>{% if case_data.solsSOTForenames %}{{ case_data.solsSOTForenames }}{% endif %}</td>
+      <td>{% if case_data.solsSOTForenames %}{{ case_data.solsSOTForenames }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor Surname:</td>
-      <td>{% if case_data.solsSOTSurname %}{{ case_data.solsSOTSurname }}{% endif %}</td>
+      <td>{% if case_data.solsSOTSurname %}{{ case_data.solsSOTSurname }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor Alias Names:</td>
-      <td>{% if case_data.solsExecutorAliasNames %}{{ case_data.solsExecutorAliasNames }}{% endif %}</td>
+      <td>{% if case_data.solsExecutorAliasNames %}{{ case_data.solsExecutorAliasNames }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor Address:</td>
-      <td>{% if case_data.solsExecutorAddress %}{{ case_data.solsExecutorAddress }}{% endif %}</td>
+      <td>{% if case_data.solsExecutorAddress %}{{ case_data.solsExecutorAddress }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor Is Applying:</td>
-      <td>{% if case_data.solsSolicitorIsApplying %}{{ case_data.solsSolicitorIsApplying }}{% endif %}</td>
+      <td>{% if case_data.solsSolicitorIsApplying %}{{ case_data.solsSolicitorIsApplying }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor Not Applying Reason:</td>
-      <td>{% if case_data.solsSolicitorNotApplyingReason %}{{ case_data.solsSolicitorNotApplyingReason }}{% endif %}</td>
+      <td>{% if case_data.solsSolicitorNotApplyingReason %}{{ case_data.solsSolicitorNotApplyingReason }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Other Executor Exists:</td>
-      <td>{% if case_data.otherExecutorExists %}{{ case_data.otherExecutorExists }}{% endif %}</td>
+      <td>{% if case_data.otherExecutorExists %}{{ case_data.otherExecutorExists }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
@@ -209,11 +209,10 @@
     <tr>
       <td colspan="2">Deceased Domicility Country:</td>
       <td>{% if case_data.domicilityCountry %}{{ case_data.domicilityCountry }}{% else %}N/A{% endif %}</td>
-      <td>{% if case_data.domicilityCountry %}{{ case_data.domicilityCountry }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Did the deceased have a late spouse or civil partner:</td>
-      <td>{% if case_data.deceasedHasLateSpouseOrCivilPartner %}{{ case_data.deceasedHasLateSpouseOrCivilPartner }}{% endif %}</td>
+      <td>{% if case_data.deceasedHasLateSpouseOrCivilPartner %}{{ case_data.deceasedHasLateSpouseOrCivilPartner }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
