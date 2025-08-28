@@ -44,6 +44,7 @@ public class NFIDataExtractStrategy implements DataExtractStrategy {
         blobUpload.uploadFile(file, NFI_CONTAINER_NAME, nfiStorageConnectionString);
         log.info("File uploaded to blob storage: {}", file.getName());
         Files.delete(file.toPath());
+        log.info("Temp File deleted: {}", !file.exists());
     }
 
     @Override
