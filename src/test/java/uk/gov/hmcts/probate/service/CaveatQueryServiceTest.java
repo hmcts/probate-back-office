@@ -142,4 +142,28 @@ class CaveatQueryServiceTest {
         assertEquals(1, cases.getFirst().getId().intValue());
         assertEquals("Smith", cases.getFirst().getData().getDeceasedSurname());
     }
+
+    @Test
+    void findCaveatCasesWithPaymentAndMoreThanDefaultSize() {
+        int caseCount = 15;
+        List<ReturnedCaveatDetails> caseList = new ImmutableList.Builder<ReturnedCaveatDetails>().build();
+        for (int i = 1; i <= caseCount; i++) {
+            CaveatData caseData = CaveatData.builder()
+                    .deceasedSurname("Smith" + i)
+                    .build();
+            caseList = new ImmutableList.Builder<ReturnedCaveatDetails>()
+                    .addAll(caseList)
+                    .add(new ReturnedCaveatDetails(caseData, LAST_MODIFIED, PA_APP_CREATED, (long) i))
+                    .build();
+        }
+        ReturnedCaveats returnedCases = new ReturnedCaveats(caseList, caseCount);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
+
+        List<ReturnedCaveatDetails> cases = caveatQueryService.findCaveatDraftCases("2023-10-01",
+                "2023-10-10", CaseType.CAVEAT);
+
+        assertEquals(caseCount, cases.size());
+        assertEquals("Smith1", cases.getFirst().getData().getDeceasedSurname());
+        assertEquals("Smith15", cases.getLast().getData().getDeceasedSurname());
+    }
 }
