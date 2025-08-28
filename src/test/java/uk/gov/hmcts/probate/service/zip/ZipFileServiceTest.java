@@ -148,7 +148,7 @@ class ZipFileServiceTest {
     void shouldCreateZip() throws IOException {
         String todayDate = DATE_FORMAT.format(LocalDate.now());
         File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
-        zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate);
+        zipFileService.generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate);
         Assertions.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
         ZipFile zip = new ZipFile(zipFile);
         Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
@@ -173,7 +173,7 @@ class ZipFileServiceTest {
         String todayDate = DATE_FORMAT.format(LocalDate.now());
         File zipFile = new File("");
         Assertions.assertThrows(ZipFileException.class, () ->
-                zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate));
+                zipFileService.generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate));
     }
 
     @Test

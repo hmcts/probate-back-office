@@ -52,9 +52,9 @@ public class DataExtractController {
         log.info("Calling perform HMRC data extract from dates...");
         ExecutorService executor = Executors.newFixedThreadPool(1);
         executor.submit(() -> hmrcDataExtractService.performHmrcExtractFromDate(fromDate, toDate));
-        log.info("Perform HMRC data extract from dates finished");
+        log.info("Perform HMRC data extract from dates called");
 
-        return ResponseEntity.accepted().body("Perform HMRC data extract finished");
+        return ResponseEntity.accepted().body("Perform HMRC data extract called");
     }
 
     @Operation(summary = "Initiate IronMountain data extract with date",
@@ -75,7 +75,7 @@ public class DataExtractController {
         String resendDate = callbackRequest.getCaseDetails().getData().getResendDate();
         CallbackResponse callbackResponse = CallbackResponse.builder().build();
         ResponseEntity responseEntity = executeIronMountainExtractForDate(resendDate);
-        if (responseEntity.getBody().equals("Perform Iron Mountain data extract finished")) {
+        if (responseEntity.getBody().equals("Perform Iron Mountain data extract called")) {
             return ResponseEntity.ok(callbackResponse);
         } else {
             return null;
@@ -87,8 +87,8 @@ public class DataExtractController {
         log.info("Calling perform Iron Mountain data extract from date {}", date);
         ExecutorService executor = Executors.newFixedThreadPool(1);
         executor.submit(() -> ironMountainDataExtractService.performIronMountainExtractForDate(date));
-        log.info("Perform Iron Mountain data extract from date finished");
-        return ResponseEntity.accepted().body("Perform Iron Mountain data extract finished");
+        log.info("Perform Iron Mountain data extract from date called");
+        return ResponseEntity.accepted().body("Perform Iron Mountain data extract called");
     }
 
     @Operation(summary = "Initiate Exela data extract", description = " Date MUST be in format 'yyyy-MM-dd'")
@@ -103,14 +103,14 @@ public class DataExtractController {
         log.info("Calling perform Exela data extract from date...");
         ExecutorService executor = Executors.newFixedThreadPool(1);
         executor.submit(() -> exelaDataExtractService.performExelaExtractForDateRange(fromDate, toDate));
-        log.info("Perform Exela data extract from date finished");
+        log.info("Perform Exela data extract from date called");
 
-        return ResponseEntity.accepted().body("Exela data extract finished");
+        return ResponseEntity.accepted().body("Exela data extract called");
     }
 
     @Operation(summary = "Initiate Smee And Ford data extract", description = " Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/smee-and-ford")
-    public ResponseEntity<String> initiateSmeeAndFordExtract(
+    public ResponseEntity<Void> initiateSmeeAndFordExtract(
                 @Parameter(name = "Date to find cases against", required = true)
                 @RequestParam(value = "fromDate") String fromDate,
                 @RequestParam(value = "toDate") String toDate) {
@@ -121,12 +121,12 @@ public class DataExtractController {
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(fromDate, toDate);
         log.info("Perform Smee And Ford data extract from date finished");
 
-        return ResponseEntity.accepted().body(null);
+        return ResponseEntity.accepted().build();
     }
 
     @Operation(summary = "Initiate NFI data extract", description = " Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/nfi")
-    public ResponseEntity<String> initiateNFIExtract(
+    public ResponseEntity<Void> initiateNFIExtract(
             @Parameter(name = "Date to find cases against", required = true)
             @RequestParam(value = "fromDate") String fromDate,
             @RequestParam(value = "toDate") String toDate) {
@@ -137,8 +137,8 @@ public class DataExtractController {
         ExecutorService executor = Executors.newFixedThreadPool(1);
         executor.submit(() ->
                 dataExtractService.performExtractForDateRange(fromDate, toDate, NATIONAL_FRAUD_INITIATIVE));
-        log.info("Perform NFI data extract from date finished");
+        log.info("Perform NFI data extract from date called");
 
-        return ResponseEntity.accepted().body(null);
+        return ResponseEntity.accepted().build();
     }
 }
