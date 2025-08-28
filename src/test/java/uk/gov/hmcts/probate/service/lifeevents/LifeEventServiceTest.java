@@ -28,7 +28,6 @@ import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -87,7 +86,7 @@ class LifeEventServiceTest {
         when(caseData.getDeceasedSurname()).thenReturn(lastName);
         when(caseData.getDeceasedDateOfDeath()).thenReturn(localDate);
         when(caseDetails.getId()).thenReturn(caseId);
-        when(deathService.searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate)))
+        when(deathService.searchForDeathRecordsByNamesAndDate(firstName, lastName, localDate))
             .thenReturn(deathRecords);
     }
 
@@ -115,7 +114,7 @@ class LifeEventServiceTest {
     @Test
     void shouldSearchByNameAndDate() {
         lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
-        verify(deathService).searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate));
-        verify(deathRecordCCDService).mapDeathRecords(eq(deathRecords));
+        verify(deathService).searchForDeathRecordsByNamesAndDate(firstName, lastName, localDate);
+        verify(deathRecordCCDService).mapDeathRecords(deathRecords);
     }
 }

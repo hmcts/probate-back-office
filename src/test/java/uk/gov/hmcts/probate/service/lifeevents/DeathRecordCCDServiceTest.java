@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -117,14 +118,14 @@ class DeathRecordCCDServiceTest {
         final List<CollectionMember<DeathRecord>>
             collectionMembers = deathRecordCCDService
             .mapDeathRecords(Collections.emptyList());
-        assert (collectionMembers.isEmpty());
+        assertTrue(collectionMembers.isEmpty());
     }
 
     @Test
     void mapDeathRecordsCCDShouldHandleNull() {
         final List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>>
             collectionMembers = deathRecordCCDService.mapDeathRecords(null);
-        assert (collectionMembers.isEmpty());
+        assertTrue(collectionMembers.isEmpty());
     }
 
 
@@ -134,7 +135,7 @@ class DeathRecordCCDServiceTest {
         list.add(null);
         final List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>>
             collectionMembers = deathRecordCCDService.mapDeathRecords(list);
-        assert (collectionMembers.isEmpty());
+        assertTrue(collectionMembers.isEmpty());
     }
 
     @Test
@@ -151,7 +152,7 @@ class DeathRecordCCDServiceTest {
         final List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>>
             deathRecordCollectionMembers = deathRecordCCDService.mapDeathRecords(asList(v1Death));
 
-        assertEquals(deathRecordCollectionMembers.size(), 1);
+        assertEquals(1, deathRecordCollectionMembers.size());
         final uk.gov.hmcts.probate.model.ccd.raw.DeathRecord value = deathRecordCollectionMembers.get(0).getValue();
 
         assertEquals(value.getSystemNumber(), v1Death.getId());
