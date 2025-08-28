@@ -73,6 +73,7 @@ public class ZipFileService {
         ADMON_WILL_GRANT_REISSUE, AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE,
         WELSH_INTESTACY_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE};
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/ManifestFileHeaderRow.csv";
+    private static final String ERROR_MASSAGE = "Exception occurred while generating zip file ";
 
     public File generateZipFile(List<ReturnedCaseDetails> cases, File tempFile, String date, DataExtractType type) {
         log.info("{} generateZipFile for {} cases", type, cases.size());
@@ -81,11 +82,9 @@ public class ZipFileService {
              final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
             getSmeeAndFordCaseData(zipOut, cases, date);
             zipOut.closeEntry();
-            zipOut.close();
-            fos.close();
             return tempFile;
         } catch (Exception e) {
-            log.error("Exception occurred while generating zip file ", e);
+            log.error(ERROR_MASSAGE, e);
             throw new ZipFileException(e.getMessage());
         }
     }
@@ -109,10 +108,10 @@ public class ZipFileService {
             fos.close();
             blobUpload.uploadFile(tempFile);
         } catch (IOException e) {
-            log.error("Exception occurred while generating zip file ", e);
+            log.error(ERROR_MASSAGE, e);
             throw new ZipFileException(e.getMessage());
         } catch (Exception e) {
-            log.error("Exception occurred while generating zip file ", e);
+            log.error(ERROR_MASSAGE, e);
             throw new ZipFileException(e.getMessage());
         }
     }
