@@ -66,7 +66,11 @@ exports.config = {
                 options: {
                     reportDir: testConfig.TestOutputDir,
                     reportName: 'index',
+                    reportDir: './temp-reports',
                     inlineAssets: true,
+                    overwrite: false,
+                    html: false,
+                    json: true,
                 },
             },
         },
