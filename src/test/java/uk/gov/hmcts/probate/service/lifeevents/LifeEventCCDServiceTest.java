@@ -101,7 +101,7 @@ class LifeEventCCDServiceTest {
         when(caseData.getDeceasedSurname()).thenReturn(lastName);
         when(caseData.getDeceasedDateOfDeath()).thenReturn(localDate);
         when(caseDetails.getId()).thenReturn(caseId);
-        when(deathService.searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate)))
+        when(deathService.searchForDeathRecordsByNamesAndDate(firstName, lastName, localDate))
             .thenReturn(deathRecords);
 
         mappedRecords = mock(List.class);
@@ -120,7 +120,7 @@ class LifeEventCCDServiceTest {
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, true);
 
         verify(deathService, timeout(1000))
-            .searchForDeathRecordsByNamesAndDate(eq("Wibble"), eq("Wobble"), eq(localDate));
+            .searchForDeathRecordsByNamesAndDate("Wibble", "Wobble", localDate);
     }
 
     @Test

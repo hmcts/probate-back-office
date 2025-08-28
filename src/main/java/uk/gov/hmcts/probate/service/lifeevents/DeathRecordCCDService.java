@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.nonNull;
@@ -30,7 +29,7 @@ public class DeathRecordCCDService {
             .filter(Objects::nonNull)
             .map(this::mapCollectionMember)
             .flatMap(Optional::stream)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     private Optional<CollectionMember<DeathRecord>> mapCollectionMember(@NotNull V1Death v1Death) {
