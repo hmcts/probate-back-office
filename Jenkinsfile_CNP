@@ -256,7 +256,7 @@ withPipeline("java", product, component) {
     ]
   }
 
-  afterAlways('fullfunctional-prTest') {
+  afterAlways('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     publishHTML([
             allowMissing: true,
