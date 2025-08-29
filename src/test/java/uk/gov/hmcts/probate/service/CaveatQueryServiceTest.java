@@ -27,8 +27,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.PA_APP_CREATED;
 
@@ -165,5 +164,25 @@ class CaveatQueryServiceTest {
         assertEquals(caseCount, cases.size());
         assertEquals("Smith1", cases.getFirst().getData().getDeceasedSurname());
         assertEquals("Smith15", cases.getLast().getData().getDeceasedSurname());
+    }
+
+    @Test
+    void findCaveatCasesWithPaymentWhenTotalIsGreaterThanPageSize() {
+        int caseCount = 15;
+        CaveatData caseData = CaveatData.builder()
+                .deceasedSurname("Smith")
+                .build();
+        List<ReturnedCaveatDetails> caseList = new ImmutableList.Builder<ReturnedCaveatDetails>()
+                .add(new ReturnedCaveatDetails(caseData, LAST_MODIFIED, PA_APP_CREATED, 1L))
+                .build();
+            ReturnedCaveats returnedCases = new ReturnedCaveats(caseList, caseCount);
+            when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
+
+        List<ReturnedCaveatDetails> cases = caveatQueryService.findCaveatDraftCases("2023-10-01",
+                "2023-10-10", CaseType.CAVEAT);
+
+        assertEquals(caseCount, cases.size());
+        assertEquals("Smith", cases.getFirst().getData().getDeceasedSurname());
+        verify(restTemplate, times(15)).postForObject(any(), any(), any());
     }
 }
