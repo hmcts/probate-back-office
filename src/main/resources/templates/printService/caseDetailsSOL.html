@@ -483,7 +483,7 @@
     </tr>
     <tr>
       <td colspan="2">Title and Clearing Type:</td>
-      <td>{% if case_data.titleAndClearingType %}{{ case_data.titleAndClearingType }}{% else %}N/A{% endif %</td>
+      <td>{% if case_data.titleAndClearingType %}{{ case_data.titleAndClearingType }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Trust Corp Name:</td>
@@ -491,7 +491,7 @@
     </tr>
     <tr>
       <td colspan="2">Trust Corp Address:</td>
-      <td>{% if case_data.trustCorpAddress %}{{ case_data.trustCorpAddress }}{% else %}N/A{% endif %}</td>
+      <td>{% if case_data.trustCorpAddress %}{{ address(case_data.trustCorpAddress) }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Any Other Applying Partners:</td>
