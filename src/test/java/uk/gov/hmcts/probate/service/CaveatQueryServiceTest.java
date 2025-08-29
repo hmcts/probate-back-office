@@ -27,7 +27,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.PA_APP_CREATED;
 
@@ -175,8 +177,8 @@ class CaveatQueryServiceTest {
         List<ReturnedCaveatDetails> caseList = new ImmutableList.Builder<ReturnedCaveatDetails>()
                 .add(new ReturnedCaveatDetails(caseData, LAST_MODIFIED, PA_APP_CREATED, 1L))
                 .build();
-            ReturnedCaveats returnedCases = new ReturnedCaveats(caseList, caseCount);
-            when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
+        ReturnedCaveats returnedCases = new ReturnedCaveats(caseList, caseCount);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
 
         List<ReturnedCaveatDetails> cases = caveatQueryService.findCaveatDraftCases("2023-10-01",
                 "2023-10-10", CaseType.CAVEAT);
