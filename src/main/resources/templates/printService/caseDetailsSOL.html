@@ -122,7 +122,7 @@
     </tr>
     <tr>
       <td colspan="2">Solicitor firm phone number:</td>
-      <td>{% if case_data.solsSolicitorPhoneNumber %}{{ case_data.solsSolicitorPhoneNumber }}{% endif %}</td>
+      <td>{% if case_data.solsSolicitorPhoneNumber %}{{ case_data.solsSolicitorPhoneNumber }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor name:</td>
@@ -130,7 +130,7 @@
     </tr>
     <tr>
       <td colspan="2">Solicitor job title:</td>
-      <td>{% if case_data.solsSOTJobTitle %}{{ case_data.solsSOTJobTitle }}{% endif %}</td>
+      <td>{% if case_data.solsSOTJobTitle %}{{ case_data.solsSOTJobTitle }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor app reference:</td>
@@ -200,7 +200,7 @@
     </tr>
     <tr>
       <td colspan="2">Date of death type:</td>
-      <td>{% if case_data.dateOfDeathType %}{{ case_data.dateOfDeathType }}{% endif %}</td>
+      <td>{% if case_data.dateOfDeathType %}{{ case_data.dateOfDeathType }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Deceased was domiciled in England or Wales:</td>
@@ -428,16 +428,16 @@
     </tr>
     {% endif %}
     <tr>
-      <td colspan="2">Claiming unused IHT allowance</td>
-      <td>{% if case_data.ihtUnusedAllowanceClaimed %}{{ case_data.ihtUnusedAllowanceClaimed }}{% endif %}</td>
+      <td colspan="2">Claiming unused IHT allowance:</td>
+      <td>{% if case_data.ihtUnusedAllowanceClaimed %}{{ case_data.ihtUnusedAllowanceClaimed }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Payment reference:</td>
-      <td>{% if case_data.paymentReferenceNumber %}{{ case_data.paymentReferenceNumber }}{% endif %}</td>
+      <td>{% if case_data.paymentReferenceNumber %}{{ case_data.paymentReferenceNumber }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
-      <td colspan="2">Unique probate code</td>
-      <td>{% if case_data.uniqueProbateCodeId %}{{ case_data.uniqueProbateCodeId }}{% endif %}</td>
+      <td colspan="2">Unique probate code:</td>
+      <td>{% if case_data.uniqueProbateCodeId %}{{ case_data.uniqueProbateCodeId }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
@@ -483,19 +483,19 @@
     </tr>
     <tr>
       <td colspan="2">Title and Clearing Type:</td>
-      <td>{{ case_data.titleAndClearingType }}</td>
+      <td>{% if case_data.titleAndClearingType %}{{ case_data.titleAndClearingType }}{% else %}N/A{% endif %</td>
     </tr>
     <tr>
       <td colspan="2">Trust Corp Name:</td>
-      <td>{{ case_data.trustCorpName }}</td>
+      <td>{% if case_data.trustCorpName %}{{ case_data.trustCorpName }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Trust Corp Address:</td>
-      <td>{{ case_data.trustCorpAddress }}</td>
+      <td>{% if case_data.trustCorpAddress %}{{ address(case_data.trustCorpAddress) }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Any Other Applying Partners:</td>
-      <td>{{ case_data.anyOtherApplyingPartners }}</td>
+      <td>{% if case_data.anyOtherApplyingPartners %}{{ case_data.anyOtherApplyingPartners }}{% else %}N/A{% endif %}</td>
     </tr>
   </table>
 </pre>
