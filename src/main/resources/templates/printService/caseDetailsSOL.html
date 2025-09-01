@@ -150,7 +150,7 @@
     </tr>
     <tr>
       <td colspan="2">Solicitor Address:</td>
-      <td>{% if case_data.solsExecutorAddress %}{{ case_data.solsExecutorAddress }}{% else %}N/A{% endif %}</td>
+      <td>{{ case_data.solsExecutorAddress }}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor Is Applying:</td>
@@ -459,18 +459,20 @@
     </tr>
     <tr>
       <td colspan="2">Number of codicils:</td>
-      <td>{% if case_data.willNumberOfCodicils %}{{ case_data.willNumberOfCodicils }}{% endif %}</td>
+        <td>{% if case_data.willHasCodicils == "No" %}N/A</td>
+        <td>{% elseif case_data.willNumberOfCodicils %}{{ case_data.willNumberOfCodicils }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Number of extra copies of grant required (UK):</td>
-      <td>{% if case_data.extraCopiesOfGrant %}{{ case_data.extraCopiesOfGrant }}{% endif %}</td>
+      <td>{% if case_data.extraCopiesOfGrant %}{{ case_data.extraCopiesOfGrant }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Number of copies of grant required (outside of UK):</td>
-      <td>{% if case_data.outsideUKGrantCopies %}{{ case_data.outsideUKGrantCopies }}{% endif %}</td>
+      <td>{% if case_data.outsideUKGrantCopies %}{{ case_data.outsideUKGrantCopies }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Total fee due:</td>
+        <td>{{ case_data.totalFee }}</td>
       <td>{% if case_data.totalFee %}&pound;{{ (case_data.totalFee/100) | money('0,0.00') }}{% endif %}</td>
     </tr>
     <tr>
