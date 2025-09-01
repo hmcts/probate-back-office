@@ -33,7 +33,7 @@ public class PrintServiceTemplateController {
 
         log.info("POST /template/documents ", "Case id: {} ", caseDetails.getId());
         log.debug("POST /template/documents: {}", caseDetails);
-
+        log.info("CaseDetails: {}", caseDetails);
         if (bindingResult.hasErrors()) {
             log.error("Case Id: {} ERROR: {}", caseDetails.getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
