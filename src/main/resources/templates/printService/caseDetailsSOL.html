@@ -477,11 +477,11 @@
     </tr>
     <tr>
       <td colspan="2">Registry location:</td>
-      <td>{{ case_data.registryLocation }}</td>
+      <td>{% if case_data.registryLocation %}{{ case_data.registryLocation }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Application Type:</td>
-      <td>{{ case_data.applicationType }}</td>
+      <td>{% if case_data.applicationType %}{{ case_data.applicationType }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Title and Clearing Type:</td>
