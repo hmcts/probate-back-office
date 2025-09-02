@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -43,12 +44,15 @@ class NFIDataExtractStrategyTest {
     void matchesTypeAndGetType() {
         strategy = new NFIDataExtractStrategy(zipFileService, blobUpload);
 
-        assertTrue(strategy.matchesType(NATIONAL_FRAUD_INITIATIVE));
-        assertEquals(NATIONAL_FRAUD_INITIATIVE, strategy.getType());
+        assertAll(
+            () -> assertFalse(strategy.matchesType(null)),
+            () -> assertTrue(strategy.matchesType(NATIONAL_FRAUD_INITIATIVE)),
+            () -> assertEquals(NATIONAL_FRAUD_INITIATIVE, strategy.getType())
+        );
     }
 
     @Test
-    void generateZipFile_delegatesAndReturnsFile() throws Exception {
+    void generateZipFileDelegatesAndReturnsFile() throws Exception {
         strategy = new NFIDataExtractStrategy(zipFileService, blobUpload);
         String date = "2025-08-20";
         List<ReturnedCaseDetails> cases = Collections.emptyList();
@@ -69,7 +73,7 @@ class NFIDataExtractStrategyTest {
     }
 
     @Test
-    void generateZipFile_propagatesIOException() throws Exception {
+    void generateZipFilePropagatesIOException() throws Exception {
         strategy = new NFIDataExtractStrategy(zipFileService, blobUpload);
         String date = "2025-08-20";
 
@@ -82,7 +86,7 @@ class NFIDataExtractStrategyTest {
     }
 
     @Test
-    void uploadToBlobStorage_uploadsToNfiContainerAndDeletesFile() throws Exception {
+    void uploadToBlobStorageUploadsToNfiContainerAndDeletesFile() throws Exception {
         strategy = new NFIDataExtractStrategy(zipFileService, blobUpload);
         ReflectionTestUtils.setField(strategy, "nfiStorageConnectionString", "dummy-connection-string");
 
