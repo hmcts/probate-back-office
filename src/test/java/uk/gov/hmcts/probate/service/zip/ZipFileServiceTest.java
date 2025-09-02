@@ -20,7 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.dataextract.SmeeAndFOrdDataExtractStrategy;
+import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractStrategy;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
@@ -64,7 +64,7 @@ class ZipFileServiceTest {
     private ZipFileService zipFileService;
 
     @Mock
-    private SmeeAndFOrdDataExtractStrategy smeeAndFOrdDataExtractStrategy;
+    private SmeeAndFordDataExtractStrategy smeeAndFOrdDataExtractStrategy;
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final List<ByteArrayResource> byteArrayResourceList = new ArrayList<>();

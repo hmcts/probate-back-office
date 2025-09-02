@@ -52,7 +52,7 @@ class SmeeAndFordDataExtractServiceTest {
     @Mock
     private BlobUpload blobUpload;
     @Mock
-    private SmeeAndFOrdDataExtractStrategy smeeAndFOrdDataExtractStrategy;
+    private SmeeAndFordDataExtractStrategy smeeAndFOrdDataExtractStrategy;
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
 

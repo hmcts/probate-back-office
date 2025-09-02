@@ -18,7 +18,7 @@ import static uk.gov.hmcts.probate.model.DataExtractType.SMEE_AND_FORD;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SmeeAndFOrdDataExtractStrategy implements  DataExtractStrategy {
+public class SmeeAndFordDataExtractStrategy implements  DataExtractStrategy {
     private final BlobUpload blobUpload;
 
     @Value(value = "${blobstorage.connection.smeeandford}")
@@ -33,8 +33,7 @@ public class SmeeAndFOrdDataExtractStrategy implements  DataExtractStrategy {
 
     @Override
     public File generateZipFile(List<ReturnedCaseDetails> cases, String date) {
-        //not implemented
-        return null;
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
