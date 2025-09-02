@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.service.dataextract;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.blob.component.BlobUpload;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
@@ -40,10 +40,15 @@ class NFIDataExtractStrategyTest {
 
     private NFIDataExtractStrategy strategy;
 
+    private static final String CONNECTION_STRING = "UseDevelopmentStorage=true";
+
+    @BeforeEach
+    void setUp() {
+        strategy = new NFIDataExtractStrategy(zipFileService, blobUpload, CONNECTION_STRING);
+    }
+
     @Test
     void matchesTypeAndGetType() {
-        strategy = new NFIDataExtractStrategy(zipFileService, blobUpload);
-
         assertAll(
             () -> assertFalse(strategy.matchesType(null)),
             () -> assertTrue(strategy.matchesType(NATIONAL_FRAUD_INITIATIVE)),
@@ -53,7 +58,6 @@ class NFIDataExtractStrategyTest {
 
     @Test
     void generateZipFileDelegatesAndReturnsFile() throws Exception {
-        strategy = new NFIDataExtractStrategy(zipFileService, blobUpload);
         String date = "2025-08-20";
         List<ReturnedCaseDetails> cases = Collections.emptyList();
 
@@ -74,7 +78,6 @@ class NFIDataExtractStrategyTest {
 
     @Test
     void generateZipFilePropagatesIOException() throws Exception {
-        strategy = new NFIDataExtractStrategy(zipFileService, blobUpload);
         String date = "2025-08-20";
 
         when(zipFileService.createTempZipFile("Probate_NFI_Docs_" + date))
@@ -87,17 +90,12 @@ class NFIDataExtractStrategyTest {
 
     @Test
     void uploadToBlobStorageUploadsToNfiContainerAndDeletesFile() throws Exception {
-        strategy = new NFIDataExtractStrategy(zipFileService, blobUpload);
-        ReflectionTestUtils.setField(strategy, "nfiStorageConnectionString", "dummy-connection-string");
-
         File file = Files.createTempFile("nfi_upload_test_", ".zip").toFile();
-        assertTrue(file.exists());
 
         strategy.uploadToBlobStorage(file);
 
-        verify(blobUpload).uploadFile(file, "nfi-document-feed", "dummy-connection-string");
+        verify(blobUpload).uploadFile(file, "nfi-document-feed", CONNECTION_STRING);
         assertFalse(file.exists(), "File should be deleted after successful upload");
-
         Files.deleteIfExists(file.toPath());
     }
 }
