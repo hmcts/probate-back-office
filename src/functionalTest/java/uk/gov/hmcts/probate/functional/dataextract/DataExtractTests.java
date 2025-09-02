@@ -31,7 +31,7 @@ public class DataExtractTests extends IntegrationTestBase {
     private static final String HMRC_URL = "/data-extract/hmrc";
     private static final String NFI_URL = "/data-extract/nfi";
 
-    private static final String HMRC_DATA_EXTRACT_COMPLETION_MESSAGE = "Perform HMRC data extract called";
+    private static final String HMRC_DATA_EXTRACT_COMPLETION_MESSAGE = "Perform HMRC data extract task submitted";
 
     @Value("${probate.caseworker.email}")
     private String email;
