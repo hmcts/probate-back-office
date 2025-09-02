@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.dataextract;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,14 +16,19 @@ import static uk.gov.hmcts.probate.model.DataExtractType.SMEE_AND_FORD;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class SmeeAndFordDataExtractStrategy implements  DataExtractStrategy {
     private final BlobUpload blobUpload;
 
-    @Value(value = "${blobstorage.connection.smeeandford}")
-    private String smeeAndFordStorageConnectionString;
+    private final String smeeAndFordStorageConnectionString;
 
     private static final String SMEE_AND_FORD_CONTAINER_NAME = "smee-and-ford-document-feed";
+
+    public SmeeAndFordDataExtractStrategy(
+            BlobUpload blobUpload,
+            @Value("${blobstorage.connection.smeeandford}") String smeeAndFordStorageConnectionString) {
+        this.blobUpload = blobUpload;
+        this.smeeAndFordStorageConnectionString = smeeAndFordStorageConnectionString;
+    }
 
     @Override
     public boolean matchesType(DataExtractType type) {
