@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.dataextract;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -29,10 +30,15 @@ class SmeeAndFordExtractStrategyTest {
 
     private SmeeAndFordDataExtractStrategy strategy;
 
+    private static final String CONNECTION_STRING = "UseDevelopmentStorage=true";
+
+    @BeforeEach
+    void setUp() {
+        strategy = new SmeeAndFordDataExtractStrategy(blobUpload, CONNECTION_STRING);
+    }
+
     @Test
     void matchesTypeAndGetType() {
-        strategy = new SmeeAndFordDataExtractStrategy(blobUpload);
-
         assertAll(
                 () -> assertFalse(strategy.matchesType(null)),
                 () -> assertTrue(strategy.matchesType(SMEE_AND_FORD)),
@@ -44,12 +50,7 @@ class SmeeAndFordExtractStrategyTest {
     void uploadToBlobStorageShouldUploadAndDeleteFile() throws Exception {
         File tempFile = Files.createFile(tempDir.resolve("test-upload.txt")).toFile();
 
-        SmeeAndFordDataExtractStrategy sut = new SmeeAndFordDataExtractStrategy(blobUpload);
-        var field = SmeeAndFordDataExtractStrategy.class.getDeclaredField("smeeAndFordStorageConnectionString");
-        field.setAccessible(true);
-        field.set(sut, "UseDevelopmentStorage=true");
-
-        sut.uploadToBlobStorage(tempFile);
+        strategy.uploadToBlobStorage(tempFile);
 
         verify(blobUpload, times(1)).uploadFile(
                 tempFile,
