@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.dataextract;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,15 +17,20 @@ import static uk.gov.hmcts.probate.model.DataExtractType.NATIONAL_FRAUD_INITIATI
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class NFIDataExtractStrategy implements DataExtractStrategy {
     private final ZipFileService zipFileService;
     private final BlobUpload blobUpload;
-
-    @Value(value = "${blobstorage.connection.nfi}")
-    private String nfiStorageConnectionString;
+    private final String nfiStorageConnectionString;
 
     private static final String NFI_CONTAINER_NAME = "nfi-document-feed";
+
+    public NFIDataExtractStrategy(ZipFileService zipFileService,
+                                  BlobUpload blobUpload,
+                                  @Value("${blobstorage.connection.nfi}") String nfiStorageConnectionString) {
+        this.zipFileService = zipFileService;
+        this.blobUpload = blobUpload;
+        this.nfiStorageConnectionString = nfiStorageConnectionString;
+    }
 
     @Override
     public boolean matchesType(DataExtractType type) {
