@@ -44,7 +44,7 @@ import static uk.gov.hmcts.probate.model.DataExtractType.NATIONAL_FRAUD_INITIATI
 @AutoConfigureMockMvc
 class DataExtractControllerIT {
 
-    public static final String PERFORM_HMRC_DATA_EXTRACT_FINISHED = "Perform HMRC data extract called";
+    public static final String PERFORM_HMRC_DATA_EXTRACT_FINISHED = "Perform HMRC data extract task submitted";
 
     @MockitoBean
     private HmrcDataExtractService hmrcDataExtractService;
@@ -72,7 +72,7 @@ class DataExtractControllerIT {
     void ironMountainShouldReturnOkResponseOnValidDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/iron-mountain?date=2019-03-13"))
             .andExpect(status().isAccepted())
-            .andExpect(content().string("Perform Iron Mountain data extract called"));
+            .andExpect(content().string("Perform Iron Mountain data extract task submitted"));
     }
 
     @Test
@@ -162,14 +162,14 @@ class DataExtractControllerIT {
     void exelaShouldReturnOkResponseOnValidDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/exela?fromDate=2019-02-13&toDate=2019-02-13"))
             .andExpect(status().isAccepted())
-            .andExpect(content().string("Exela data extract called"));
+            .andExpect(content().string("Exela data extract task submitted"));
     }
 
     @Test
     void exelaShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
         mockMvc.perform(post("/data-extract/exela?fromDate=2019-02-13&toDate=2019-02-14"))
             .andExpect(status().isAccepted())
-            .andExpect(content().string("Exela data extract called"));
+            .andExpect(content().string("Exela data extract task submitted"));
     }
 
     @Test

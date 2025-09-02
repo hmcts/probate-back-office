@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.dataextract.SmeeAndFOrdDataExtractStrategy;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
@@ -34,8 +35,10 @@ import java.util.List;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -59,6 +62,9 @@ class ZipFileServiceTest {
     private BlobUpload blobUpload;
 
     private ZipFileService zipFileService;
+
+    @Mock
+    private SmeeAndFOrdDataExtractStrategy smeeAndFOrdDataExtractStrategy;
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final List<ByteArrayResource> byteArrayResourceList = new ArrayList<>();
@@ -148,7 +154,9 @@ class ZipFileServiceTest {
     void shouldCreateZip() throws IOException {
         String todayDate = DATE_FORMAT.format(LocalDate.now());
         File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
-        zipFileService.generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate);
+        doNothing().when(smeeAndFOrdDataExtractStrategy).uploadToBlobStorage(any(File.class));
+        zipFileService
+                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate, smeeAndFOrdDataExtractStrategy);
         Assertions.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
         ZipFile zip = new ZipFile(zipFile);
         Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
@@ -173,7 +181,8 @@ class ZipFileServiceTest {
         String todayDate = DATE_FORMAT.format(LocalDate.now());
         File zipFile = new File("");
         Assertions.assertThrows(ZipFileException.class, () ->
-                zipFileService.generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate));
+                zipFileService.generateAndUploadZipFile(returnedCaseDetails, zipFile,
+                        todayDate, smeeAndFOrdDataExtractStrategy));
     }
 
     @Test
