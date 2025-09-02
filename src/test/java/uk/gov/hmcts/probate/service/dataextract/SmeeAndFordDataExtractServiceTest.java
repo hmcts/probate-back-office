@@ -51,6 +51,8 @@ class SmeeAndFordDataExtractServiceTest {
     private ZipFileService zipFileService;
     @Mock
     private BlobUpload blobUpload;
+    @Mock
+    private SmeeAndFOrdDataExtractStrategy smeeAndFOrdDataExtractStrategy;
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
 
@@ -135,14 +137,14 @@ class SmeeAndFordDataExtractServiceTest {
             File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
             smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
             when(zipFileService.createTempZipFile(anyString())).thenReturn(zipFile);
-            doNothing().when(blobUpload).uploadFile(any());
-
+            doNothing().when(blobUpload).uploadFile(any(),anyString(),anyString());
             smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
             verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
             verify(zipFileService, times(1)).createTempZipFile(anyString());
-            verify(zipFileService, times(1)).generateAndUploadZipFile(returnedCases, zipFile, "2000-12-30");
-            verify(blobUpload, times(1)).uploadFile(zipFile);
+            verify(zipFileService, times(1))
+                    .generateAndUploadZipFile(returnedCases, zipFile, "2000-12-30", smeeAndFOrdDataExtractStrategy);
+            verify(blobUpload, times(1)).uploadFile(zipFile, anyString(), anyString());
         });
     }
 }
