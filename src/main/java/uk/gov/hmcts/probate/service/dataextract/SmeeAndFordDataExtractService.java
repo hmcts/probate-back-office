@@ -26,7 +26,7 @@ public class SmeeAndFordDataExtractService {
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
     private final ZipFileService zipFileService;
-    private final SmeeAndFOrdDataExtractStrategy smeeAndFOrdDataExtractStrategy;
+    private final SmeeAndFordDataExtractStrategy smeeAndFOrdDataExtractStrategy;
     @Value("${feature.blobstorage.smeeandford.enabled}")
     public boolean featureBlobStorageSmeeAndFord;
 
