@@ -27,11 +27,11 @@ class SmeeAndFordExtractStrategyTest {
     @TempDir
     Path tempDir;
 
-    private SmeeAndFOrdDataExtractStrategy strategy;
+    private SmeeAndFordDataExtractStrategy strategy;
 
     @Test
     void matchesTypeAndGetType() {
-        strategy = new SmeeAndFOrdDataExtractStrategy(blobUpload);
+        strategy = new SmeeAndFordDataExtractStrategy(blobUpload);
 
         assertAll(
                 () -> assertFalse(strategy.matchesType(null)),
@@ -44,8 +44,8 @@ class SmeeAndFordExtractStrategyTest {
     void uploadToBlobStorageShouldUploadAndDeleteFile() throws Exception {
         File tempFile = Files.createFile(tempDir.resolve("test-upload.txt")).toFile();
 
-        SmeeAndFOrdDataExtractStrategy sut = new SmeeAndFOrdDataExtractStrategy(blobUpload);
-        var field = SmeeAndFOrdDataExtractStrategy.class.getDeclaredField("smeeAndFordStorageConnectionString");
+        SmeeAndFordDataExtractStrategy sut = new SmeeAndFordDataExtractStrategy(blobUpload);
+        var field = SmeeAndFordDataExtractStrategy.class.getDeclaredField("smeeAndFordStorageConnectionString");
         field.setAccessible(true);
         field.set(sut, "UseDevelopmentStorage=true");
 
