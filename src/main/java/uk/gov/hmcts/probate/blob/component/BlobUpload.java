@@ -5,7 +5,6 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,13 +14,6 @@ import static java.util.Objects.nonNull;
 @Service
 @Slf4j
 public class BlobUpload {
-
-    @Value(value = "${blobstorage.connection.smeeandford}")
-    private String smeeAndFordStorageConnectionString;
-
-    public void uploadFile(File blobFile) {
-        uploadFile(blobFile, "smee-and-ford-document-feed", smeeAndFordStorageConnectionString);
-    }
 
     public void uploadFile(File blobFile, String container, String connectionString) {
         // Create a BlobServiceClient object which will be used to create a container client
