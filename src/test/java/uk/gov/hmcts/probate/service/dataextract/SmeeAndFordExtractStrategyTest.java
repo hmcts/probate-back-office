@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.probate.model.DataExtractType.SMEE_AND_FORD;
@@ -44,7 +43,6 @@ class SmeeAndFordExtractStrategyTest {
     @Test
     void uploadToBlobStorageShouldUploadAndDeleteFile() throws Exception {
         File tempFile = Files.createFile(tempDir.resolve("test-upload.txt")).toFile();
-        BlobUpload blobUpload = mock(BlobUpload.class);
 
         SmeeAndFOrdDataExtractStrategy sut = new SmeeAndFOrdDataExtractStrategy(blobUpload);
         var field = SmeeAndFOrdDataExtractStrategy.class.getDeclaredField("smeeAndFordStorageConnectionString");
