@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.zip.ZippedManifestData;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.dataextract.DataExtractStrategy;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 
@@ -89,7 +90,10 @@ public class ZipFileService {
         }
     }
 
-    public void generateAndUploadZipFile(List<ReturnedCaseDetails> cases, File tempFile, String fromDate) {
+    public void generateAndUploadZipFile(List<ReturnedCaseDetails> cases,
+                                         File tempFile,
+                                         String fromDate,
+                                         DataExtractStrategy strategy) {
         log.info("Smee And Ford generateZipFile for {} cases", cases.size());
 
         List<ZippedManifestData> manifestDataList = new ArrayList<>();
@@ -106,7 +110,7 @@ public class ZipFileService {
             zipOut.closeEntry();
             zipOut.close();
             fos.close();
-            blobUpload.uploadFile(tempFile);
+            strategy.uploadToBlobStorage(tempFile);
         } catch (Exception e) {
             log.error(ERROR_MASSAGE, e);
             throw new ZipFileException(e.getMessage());
