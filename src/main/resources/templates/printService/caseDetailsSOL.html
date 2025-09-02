@@ -474,14 +474,18 @@
       <td colspan="2">Total fee due:</td>
       <td>{% if case_data.totalFee %}&pound;{{ (case_data.totalFee/100) | money('0,0.00') }}{% endif %}</td>
     </tr>
+    {% if case_data.registryLocation %}
     <tr>
       <td colspan="2">Registry location:</td>
       <td>{% if case_data.registryLocation %}{{ case_data.registryLocation }}{% endif %}</td>
     </tr>
+    {% endif %}
+    {% if case_data.applicationType %}
     <tr>
       <td colspan="2">Application Type:</td>
-      <td>{% if case_data.applicationType %}{{ case_data.applicationType }}{% endif %}</td>
+      <td>{{ case_data.applicationType }}</td>
     </tr>
+    {% endif %}
     <tr>
       <td colspan="2">Title and Clearing Type:</td>
       <td>{% if case_data.titleAndClearingType %}{{ case_data.titleAndClearingType }}{% else %}N/A{% endif %}</td>
