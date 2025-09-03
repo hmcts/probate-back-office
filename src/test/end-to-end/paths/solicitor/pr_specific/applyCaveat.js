@@ -63,7 +63,9 @@ Scenario(scenarioName, async function ({I}) {
     endState = 'Caveat raised';
     const applicationType = 'Caveat';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
+
+    // Commenting out to check the report on failed test
+    // await I.chooseNextStep(nextStepName);
     await I.completeCaveatApplicationPage1();
     await I.completeCaveatApplicationPage2(caseRef);
     // await I.completeCaveatApplicationPage3();
