@@ -483,6 +483,11 @@
       <td colspan="2">Number of codicils:</td>
         <td>{% if case_data.codicilAddedDateList | length >= 0 %}{{case_data.codicilAddedDateList}}{% else %}N/A{% endif %}</td>
     </tr>
+    <tr>
+      <td colspan="2">Number of codicils:</td>
+        <td>{% if case_data.willHasCodicils == "No" %}N/A</td>
+        <td>{% elseif case_data.willNumberOfCodicils %}{{ case_data.willNumberOfCodicils }}{% endif %}</td>
+    </tr>
     {% if case_data.deceasedMarriedAfterWillOrCodicilDate %}
     <tr>
       <td colspan="2">Deceased Married After Will Or Codicil Date:</td>
