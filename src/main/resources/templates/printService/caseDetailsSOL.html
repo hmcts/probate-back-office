@@ -151,10 +151,6 @@
       <td>{% if case_data.solsExecutorAliasNames %}{{ case_data.solsExecutorAliasNames }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
-      <td colspan="2">Solicitor Address:</td>
-      <td>{{ case_data.solsExecutorAddress }}</td>
-    </tr>
-    <tr>
       <td colspan="2">Solicitor Is Applying:</td>
       <td>{% if case_data.solsSolicitorIsApplying %}{{ case_data.solsSolicitorIsApplying }}{% else %}N/A{% endif %}</td>
     </tr>
@@ -182,11 +178,15 @@
     </tr>
     <tr>
       <td colspan="2">Names used by the deceased for other assets:</td>
-      <td>{% for alias in case_data.solsDeceasedAliasNamesList %}{{ alias.value.SolsAliasname }}<br/>{% endfor %}</td>
+        <td>{% if case_data.solsDeceasedAliasNamesList | length == 0 %}N/A</td>
+        {% else %}
+      <td>{% for alias in case_data.solsDeceasedAliasNamesList %}{{ alias.value.SolsAliasname }}<br/>{% endfor %}{% endif %}</td>
     </tr>
     <tr>
-      <td colspan="2">Deceased Alias names</td>
-      <td>{% for alias in case_data.deceasedAliasNamesList %}{{ alias.value.aliasName }}<br/>{% endfor %}</td>
+      <td colspan="2">Deceased Alias names:</td>
+      <td>{% if case_data.deceasedAliasNamesList | length == 0 %}N/A</td>
+      {% else %}
+      <td>{% for alias in case_data.deceasedAliasNamesList %}{{ alias.value.aliasName }}<br/>{% endfor %}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="3" valign="top">Deceased address</td>
@@ -216,7 +216,7 @@
     {% endif %}
     <tr>
       <td colspan="2">Did the deceased have a late spouse or civil partner:</td>
-      <td>{% if case_data.deceasedHadLateSpouseOrCivilPartner %}{{ case_data.deceasedHadLateSpouseOrCivilPartner }}{% else %}N/A{% endif %}</td>
+      <td>{% if case_data.deceasedHadLateSpouseOrCivilPartner %}{{ case_data.deceasedHadLateSpouseOrCivilPartner }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
@@ -461,11 +461,11 @@
     </tr>
     <tr>
       <td colspan="2">Is the will original:</td>
-      <td>{% if case_data.willAccessOriginal%}{{ case_data.willAccessOriginal}}{% endif %}</td>
+      <td>{% if case_data.willAccessOriginal%}{{ case_data.willAccessOriginal}}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Will with codicils:</td>
-      <td>{% if case_data.willHasCodicils %}{{ case_data.willHasCodicils }}{% endif %}</td>
+      <td>{% if case_data.willHasCodicils %}{{ case_data.willHasCodicils }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Deceased any other name on will:</td>
