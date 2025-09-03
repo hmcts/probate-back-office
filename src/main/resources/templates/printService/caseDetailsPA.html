@@ -41,6 +41,18 @@
   </tr>
   <tr>
   <tr>
+    <td colspan="2">Deceased any other name on will:</td>
+    <td>{% if case_data.deceasedAnyOtherNameOnWill %}{{ case_data.deceasedAnyOtherNameOnWill }}{% else %}N/A{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Deceased alias first name on will:</td>
+    <td>{% if case_data.deceasedAliasFirstNameOnWill %}{{ case_data.deceasedAliasFirstNameOnWill }}{% else %}N/A{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Deceased alias last name on will:</td>
+    <td>{% if case_data.deceasedAliasLastNameOnWill %}{{ case_data.deceasedAliasLastNameOnWill }}{% else %}N/A{% endif %}</td>
+  </tr>
+  <tr>
     <td colspan="2">Address</td>
     <td>{% if case_data.deceasedAddress.AddressLine1 %}{{ case_data.deceasedAddress.AddressLine1 }}{% endif %}</td>
   </tr>
@@ -58,7 +70,11 @@
   </tr>
   <tr>
     <td colspan="2">Deceased was domiciled in England or Wales:</td>
-    <td>{% if case_data.deceasedDomicileInEngWales %}{{ case_data.deceasedDomicileInEngWales }}{% else %}N/A{% endif %}</td>
+    <td>{% if case_data.deceasedDomicileInEngWales %}{{ case_data.deceasedDomicileInEngWales }}{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Deceased have a late spouse or civil partner:</td>
+    <td>{% if case_data.deceasedHadLateSpouseOrCivilPartner %}{{ case_data.deceasedHadLateSpouseOrCivilPartner }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="3">&nbsp;</td>
@@ -157,12 +173,20 @@
     </tr>
     {% endif %}
   <tr>
+    <td colspan="2">Unused IHT allowance claimed:</td>
+    <td>{% if case_data.ihtUnusedAllowanceClaimed %}{{ case_data.ihtUnusedAllowanceClaimed }}{% else %}N/A{% endif %}</td>
+  </tr>
+  <tr>
     <td colspan="2">Payment reference:</td>
     <td>{% if case_data.paymentReferenceNumber %}{{ case_data.paymentReferenceNumber }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">Payment reference:</td>
     <td>{% if case_data.paymentReferenceNumber %}{{ case_data.paymentReferenceNumber }}{% endif %}</td>
+  </tr>
+    <tr>
+    <td colspan="2">HMRC letter id:</td>
+    <td>{% if case_data.hmrcLetterId %}{{ case_data.hmrcLetterId }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="3">&nbsp;</td>

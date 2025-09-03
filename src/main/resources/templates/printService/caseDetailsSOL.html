@@ -112,10 +112,12 @@
       <td colspan="2">Solicitor firm name:</td>
       <td>{% if case_data.solsSolicitorFirmName %}{{ case_data.solsSolicitorFirmName }}{% endif %}</td>
     </tr>
+    {% if case_data.solsSolicitorAddress %}
     <tr>
       <td colspan="2">Solicitor firm address:</td>
-      <td>{% if case_data.solsSolicitorAddress %}{{address(case_data.solsSolicitorAddress)}}{% endif %}</td>
+      <td>{{address(case_data.solsSolicitorAddress)}}</td>
     </tr>
+    {% endif %}
     <tr>
       <td colspan="2">Solicitor firm email:</td>
       <td>{% if case_data.solsSolicitorEmail %}{{ case_data.solsSolicitorEmail }}{% endif %}</td>
@@ -206,13 +208,15 @@
       <td colspan="2">Deceased was domiciled in England or Wales:</td>
       <td>{% if case_data.deceasedDomicileInEngWales %}{{ case_data.deceasedDomicileInEngWales }}{% endif %}</td>
     </tr>
+    {% if case_data.domicilityCountry %}
     <tr>
       <td colspan="2">Deceased Domicility Country:</td>
-      <td>{% if case_data.domicilityCountry %}{{ case_data.domicilityCountry }}{% else %}N/A{% endif %}</td>
+      <td>{{ case_data.domicilityCountry }}</td>
     </tr>
+    {% endif %}
     <tr>
       <td colspan="2">Did the deceased have a late spouse or civil partner:</td>
-      <td>{% if case_data.deceasedHasLateSpouseOrCivilPartner %}{{ case_data.deceasedHasLateSpouseOrCivilPartner }}{% else %}N/A{% endif %}</td>
+      <td>{% if case_data.deceasedHadLateSpouseOrCivilPartner %}{{ case_data.deceasedHadLateSpouseOrCivilPartner }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
@@ -439,6 +443,12 @@
       <td colspan="2">Unique probate code:</td>
       <td>{% if case_data.uniqueProbateCodeId %}{{ case_data.uniqueProbateCodeId }}{% else %}N/A{% endif %}</td>
     </tr>
+    {% if case_data.hmrcLetterId %}
+    <tr>
+      <td colspan="2">HMRC letter id:</td>
+      <td>{{ case_data.hmrcLetterId }}</td>
+    </tr>
+    {% endif %}
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
     </tr>
@@ -447,7 +457,7 @@
     </tr>
     <tr>
       <td colspan="2">Will Y/N:</td>
-      <td>{% if case_data.willExists%}{{ case_data.willExists }}{% endif %}</td>
+      <td>{% if case_data.willExists %}{{ case_data.willExists }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Is the will original:</td>
@@ -458,10 +468,27 @@
       <td>{% if case_data.willHasCodicils %}{{ case_data.willHasCodicils }}{% endif %}</td>
     </tr>
     <tr>
-      <td colspan="2">Number of codicils:</td>
-        <td>{% if case_data.willHasCodicils == "No" %}N/A</td>
-        <td>{% elseif case_data.willNumberOfCodicils %}{{ case_data.willNumberOfCodicils }}{% endif %}</td>
+      <td colspan="2">Deceased any other name on will:</td>
+      <td>{% if case_data.deceasedAnyOtherNameOnWill %}{{ case_data.deceasedAnyOtherNameOnWill }}{% else %}N/A{% endif %}</td>
     </tr>
+    <tr>
+      <td colspan="2">Deceased alias first name on will:</td>
+      <td>{% if case_data.deceasedAliasFirstNameOnWill %}{{ case_data.deceasedAliasFirstNameOnWill }}{% else %}N/A{% endif %}</td>
+    </tr>
+    <tr>
+      <td colspan="2">Deceased alias last name on will:</td>
+      <td>{% if case_data.deceasedAliasLastNameOnWill %}{{ case_data.deceasedAliasLastNameOnWill }}{% else %}N/A{% endif %}</td>
+    </tr>
+    <tr>
+      <td colspan="2">Number of codicils:</td>
+        <td>{% if case_data.codicilAddedDateList | length >= 0 %}{{case_data.codicilAddedDateList}}{% else %}N/A{% endif %}</td>
+    </tr>
+    {% if case_data.deceasedMarriedAfterWillOrCodicilDate %}
+    <tr>
+      <td colspan="2">Deceased Married After Will Or Codicil Date:</td>
+      <td>{{ case_data.deceasedMarriedAfterWillOrCodicilDate }}</td>
+    </tr>
+    {% endif %}
     <tr>
       <td colspan="2">Number of extra copies of grant required (UK):</td>
       <td>{% if case_data.extraCopiesOfGrant %}{{ case_data.extraCopiesOfGrant }}{% else %}N/A{% endif %}</td>
@@ -486,22 +513,36 @@
       <td>{{ case_data.applicationType }}</td>
     </tr>
     {% endif %}
+    {% if case_data.deceasedAnyOtherNames %}
+    <tr>
+        <td colspan="2">Did the deceased use any other names:</td>
+        <td>{{ case_data.deceasedAnyOtherNames }}</td>
+    </tr>
+    {% endif %}
+    {% if case_data.titleAndClearingType %}
     <tr>
       <td colspan="2">Title and Clearing Type:</td>
-      <td>{% if case_data.titleAndClearingType %}{{ case_data.titleAndClearingType }}{% else %}N/A{% endif %}</td>
+      <td>{{ case_data.titleAndClearingType }}</td>
     </tr>
+    {% endif %}
+    {% if case_data.trustCorpName %}
     <tr>
       <td colspan="2">Trust Corp Name:</td>
-      <td>{% if case_data.trustCorpName %}{{ case_data.trustCorpName }}{% else %}N/A{% endif %}</td>
+      <td>{{ case_data.trustCorpName }}</td>
     </tr>
+    {% endif %}
+    {% if case_data.trustCorpAddress %}
     <tr>
       <td colspan="2">Trust Corp Address:</td>
-      <td>{% if case_data.trustCorpAddress %}{{ address(case_data.trustCorpAddress) }}{% else %}N/A{% endif %}</td>
+      <td>{{ address(case_data.trustCorpAddress) }}</td>
     </tr>
+    {% endif %}
+    {% if case_data.anyOtherApplyingPartners %}
     <tr>
       <td colspan="2">Any Other Applying Partners:</td>
-      <td>{% if case_data.anyOtherApplyingPartners %}{{ case_data.anyOtherApplyingPartners }}{% else %}N/A{% endif %}</td>
+      <td>{{ case_data.anyOtherApplyingPartners }}</td>
     </tr>
+    {% endif %}
   </table>
 </pre>
 </body>
