@@ -1,4 +1,5 @@
 #!/bin/bash
+# Checking with -x
 set -x
 
 # Base export
