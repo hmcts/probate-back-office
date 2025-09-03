@@ -50,7 +50,7 @@ public class FetchDraftCaseService {
                 sendGORSuccessfulPaymentNotification(successfulPaymentCases, startDate, endDate);
             }
         } catch (Exception e) {
-            log.error("FetchGORCases method error {}", e.getMessage());
+            log.error("FetchGORCases method error {}", e.getMessage(), e);
         }
     }
 
@@ -79,7 +79,7 @@ public class FetchDraftCaseService {
                 sendCaveatSuccessfulPaymentNotification(successfulPaymentCases, startDate, endDate);
             }
         } catch (Exception e) {
-            log.error("fetchCaveatCases method error {}", e.getMessage());
+            log.error("fetchCaveatCases method error {}", e.getMessage(), e);
         }
     }
 
@@ -97,7 +97,7 @@ public class FetchDraftCaseService {
         try {
             notificationService.sendEmailForGORSuccessfulPayment(successfulPaymentCases, startDate, endDate);
         } catch (NotificationClientException e) {
-            log.error("NotificationClientException: {}", e.getMessage());
+            log.error("NotificationClientException for GOR report: {}", e.getMessage());
         }
     }
 
