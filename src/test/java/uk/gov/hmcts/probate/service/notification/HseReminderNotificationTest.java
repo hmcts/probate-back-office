@@ -170,7 +170,7 @@ class HseReminderNotificationTest {
     void returnsFalseWhenStateIsCaseClosed() {
         underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
         when(caseDetails.getData()).thenReturn(Map.of("evidenceHandled", "Yes", "evidenceHandledDate", "2023-10-01"));
-        when(caseDetails.getState()).thenReturn("CaseClosed");
+        when(caseDetails.getState()).thenReturn("BOCaseClosed");
 
         boolean result = underTest.accepts().test(caseDetails);
 
