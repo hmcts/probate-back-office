@@ -34,11 +34,12 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
     public void run() {
         log.info("Scheduled task FetchDraftCasesWithPaymentTask started");
         final String endDate = DATE_FORMAT.format(LocalDate.now(clock));
-        log.info("Calling perform fetch draft cases wth payment done from date, to date {} {}", startDate, endDate);
+        final String sDate = DATE_FORMAT.format(LocalDate.now(clock));
+        log.info("Calling perform fetch draft cases wth payment done from date, to date {} {}", sDate, endDate);
         try {
             dataExtractDateValidator.dateValidator(startDate, endDate);
             log.info("Perform send email for GOR draft cases wth payment  from date started");
-            fetchDraftCaseService.fetchGORCases(startDate, endDate);
+            fetchDraftCaseService.fetchGORCases(sDate, endDate);
             log.info("Perform send email for Caveat draft cases wth payment  from date started");
             fetchDraftCaseService.fetchCaveatCases(startDate, endDate);
             log.info("Perform fetch draft cases with payment from date finished");

@@ -36,7 +36,7 @@ class FetchDraftCasesWithPaymentTaskTest {
     @InjectMocks
     private FetchDraftCasesWithPaymentTask fetchDraftCasesWithPaymentTask;
     private static final String DATE_TODAY = DATE_FORMAT.format(LocalDate.now());
-    private final String adhocDate = "2022-09-05";
+    private final String adhocDate = "2025-09-03";
 
     @BeforeEach
     void setUp() {
