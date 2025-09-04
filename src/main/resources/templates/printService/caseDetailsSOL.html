@@ -216,7 +216,7 @@
     {% endif %}
     <tr>
       <td colspan="2">Did the deceased have a late spouse or civil partner:</td>
-      <td>{% if case_data.deceasedHadLateSpouseOrCivilPartner %}{{ case_data.deceasedHadLateSpouseOrCivilPartner }}{% endif %}</td>
+      <td>{% if case_data.deceasedHadLateSpouseOrCivilPartner %}{{ case_data.deceasedHadLateSpouseOrCivilPartner }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
@@ -482,11 +482,6 @@
     <tr>
       <td colspan="2">Number of codicils:</td>
         <td>{% if case_data.codicilAddedDateList | length >= 0 %}{{case_data.codicilAddedDateList | length}}{% else %}N/A{% endif %}</td>
-    </tr>
-    <tr>
-      <td colspan="2">Number of codicils:</td>
-        <td>{% if case_data.willHasCodicils == "No" %}N/A</td>
-        <td>{% elseif case_data.willNumberOfCodicils %}{{ case_data.willNumberOfCodicils }}{% endif %}</td>
     </tr>
     {% if case_data.deceasedMarriedAfterWillOrCodicilDate %}
     <tr>
