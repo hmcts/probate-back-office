@@ -131,7 +131,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Stop case', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Stop case');
         await I.caseProgressStopEscalateIssueAddCaseStoppedReason();
         await I.caseProgressContinueWithoutChangingAnything();
@@ -140,13 +140,13 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Case stopped', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressStopEscalateIssueStoppedTabCheck();
 
         await I.logInfo(scenarioName, 'Escalate case to registrar', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Escalate to registrar', caseRef);
         await I.caseProgressSelectEscalateReason();
         await I.caseProgressClickSubmitAndSignOut();
@@ -154,13 +154,13 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Case escalated', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressStopEscalateIssueEscalatedTabCheck();
 
         await I.logInfo(scenarioName, 'Stop case', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Stop case');
         await I.caseProgressStopEscalateIssueCaseStopAgainReason();
         await I.caseProgressContinueWithoutChangingAnything();
@@ -169,14 +169,14 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Case stopped', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressStopEscalateIssueStoppedTabCheck();
 
         await I.logInfo(scenarioName, 'Resolve stop', caseRef);
         const nextState = 'Awaiting documentation';
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Resolve stop', caseRef);
         await I.caseProgressStopEscalateIssueAddCaseResolveStop(nextState);
         await I.caseProgressClickSubmitAndSignOut();
@@ -184,7 +184,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Resolve stop', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 5,
             numInProgress: 1,
@@ -195,14 +195,14 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Select for QA', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Select for QA');
         await I.caseProgressClickSubmitAndSignOut();
 
         await I.logInfo(scenarioName, 'Check progress tab for Select for QA', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 7,
             numInProgress: 1,
@@ -212,14 +212,14 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Generate grant preview', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Generate grant preview');
         await I.caseProgressClickSubmitAndSignOut();
 
         await I.logInfo(scenarioName, 'Check progress tab for Generate grant preview', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 7,
             numInProgress: 1,
@@ -229,7 +229,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Find matches (Issue grant)', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Find matches (Issue grant)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Issue grant)', false, null, true);
         await I.signOut();
@@ -237,7 +237,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Case Matching (Issue grant)', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 8,
             numInProgress: 1,
@@ -248,7 +248,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Issue grant', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Issue grant');
         await I.caseProgressClickElementsAndContinue([{css: '#boSendToBulkPrint_No'}]);
         await I.caseProgressClickSubmitAndSignOut();
@@ -256,7 +256,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Issue grant', caseRef);
         // log back in as solicitor & check all sections completed
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
 
         await I.seeTabDetails(caseRef, documentUploadSolTabConfig, caseProgressConfig);
         await I.clickTab('Case Progress');

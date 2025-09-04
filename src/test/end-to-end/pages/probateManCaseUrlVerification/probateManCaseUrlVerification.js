@@ -2,16 +2,18 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function () {
+module.exports = async function (caseType) {
 
     const I = this;
 
     const probateManCaseUrlXpath = {xpath: '//span[contains(text(),\'print/probateManTypes/GRANT_APPLICATION/cases\')]'};
 
     let caseUrl = await I.grabTextFrom(probateManCaseUrlXpath);
+    const caseTypeNoSpace = await I.replaceAll(caseType,' ','');
 
     if (caseUrl.includes('ccd-api-gateway-web')) {
-        caseUrl = caseUrl.replace(/http(s?):\/\/.*?\/print/, testConfig.TestBackOfficeUrl + '/print');
+        caseUrl = caseUrl.replace(/http(s?):\/\/.*?\/print/, testConfig.TestBackOfficeUrl +
+            'PROBATE/' + caseTypeNoSpace + '/print');
     }
 
     I.amOnLoadedPage(caseUrl);

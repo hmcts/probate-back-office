@@ -135,14 +135,14 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Select for QA', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Select for QA');
         await I.caseProgressClickSubmitAndSignOut();
 
         await I.logInfo(scenarioName, 'Check progress tab for Select for QA', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 7,
             numInProgress: 1,
@@ -152,14 +152,14 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Generate grant preview', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Generate grant preview');
         await I.caseProgressClickSubmitAndSignOut();
 
         await I.logInfo(scenarioName, 'Check progress tab for Generate grant preview', caseRef);
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 7,
             numInProgress: 1,
@@ -169,7 +169,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Find matches (Issue grant)', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Find matches (Issue grant)');
         await I.selectCaseMatchesForGrantOfProbate(caseRef, 'Find matches (Issue grant)', false, null, true);
         await I.signOut();
@@ -177,7 +177,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Case Matching (Issue grant)');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 8,
             numInProgress: 1,
@@ -188,7 +188,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Issue grant');
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Issue grant');
         await I.caseProgressClickElementsAndContinue([{css: '#boSendToBulkPrint_No'}]);
         await I.caseProgressClickSubmitAndSignOut();
@@ -196,7 +196,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Check progress tab for Issue grant');
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
+        await I.navigateToCase(createCaseConfig.list2_text_gor, caseRef);
 
         await I.seeTabDetailsBilingual(caseRef, documentUploadSolTabConfigBilingual, caseProgressConfig);
         await I.clickTab('Case Progress');

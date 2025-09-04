@@ -56,6 +56,6 @@ Scenario(scenarioName, async function ({I}) {
         endState = 'Awaiting documentation';
         await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
         await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
-        await I.verifyProbateManCcdCaseNumber();
+        await I.verifyProbateManCcdCaseNumber(createCaseConfig.list2_text_gor);
     }
 }).retry(testConfig.TestRetryScenarios);
