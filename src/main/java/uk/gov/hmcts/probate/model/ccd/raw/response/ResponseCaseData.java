@@ -420,4 +420,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final TTL ttl;
     private final String executorsNamed;
     private final LocalDate firstStopReminderSentDate;
+    private final String uploadFileCheck;
+    private final List<CollectionMember<UploadDocument>> cwDocumentsUpload;
 }

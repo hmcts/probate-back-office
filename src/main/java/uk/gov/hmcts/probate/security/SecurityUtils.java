@@ -173,6 +173,7 @@ public class SecurityUtils {
     }
 
     public String getCaseworkerToken() {
+        log.info("Getting caseworker token for user: {} {}", caseworkerUserName, caseworkerPassword);
         return getIdamOauth2Token(caseworkerUserName, caseworkerPassword);
     }
 
