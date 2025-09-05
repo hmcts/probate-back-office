@@ -33,6 +33,7 @@ public enum EventId {
     AUTO_NOTIFICATION_SECOND_STOP_REMINDER("autoNotificationSecondStopReminder"),
     AUTO_NOTIFICATION_HSE_REMINDER("autoNotificationHseReminder"),
     AUTO_NOTIFICATION_DORMANT_WARNING("autoNotificationDormantWarning"),
+    AUTO_NOTIFICATION_DORMANT_REMINDER("autoNotificationDormantReminder"),
     AUTO_NOTIFICATION_UNSUBMITTED_APPLICATION("autoNotificationUnsubmittedApplication"),
     AUTO_NOTIFICATION_DECLARATION_NOT_SIGNED("autoNotificationDeclarationNotSigned"),
 

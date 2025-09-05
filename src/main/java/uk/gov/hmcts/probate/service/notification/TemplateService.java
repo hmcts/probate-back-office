@@ -140,6 +140,12 @@ public class TemplateService {
         return emailTemplates.getDormantWarning();
     }
 
+    public String getStopResponseReceivedTemplateId(ApplicationType applicationType,
+                                              LanguagePreference languagePreference) {
+        EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
+        return emailTemplates.getStopResponseReceived();
+    }
+
     public String getUnsubmittedApplicationTemplateId(ApplicationType applicationType,
                                                       LanguagePreference languagePreference) {
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);

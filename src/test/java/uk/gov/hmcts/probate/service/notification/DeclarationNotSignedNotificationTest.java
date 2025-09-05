@@ -66,7 +66,7 @@ class DeclarationNotSignedNotificationTest {
 
     @Test
     void shouldSendDeclarationNotSigned() throws NotificationClientException {
-        underTest.sendEmail(caseDetails);
+        underTest.sendNotification(caseDetails);
 
         verify(notificationService, times(1)).sendDeclarationNotSignedEmail(caseDetails);
     }

@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
@@ -43,6 +44,7 @@ import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
+import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -64,6 +66,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 @ExtendWith(SpringExtension.class)
 class DocumentControllerUnitTest {
@@ -107,6 +110,8 @@ class DocumentControllerUnitTest {
     private UserInfoService userInfoService;
     @Mock
     private FeatureToggleService featureToggleService;
+    @Mock
+    private DocumentTransformer documentTransformer;
 
     /// The object under test
     private DocumentController documentController;
@@ -136,7 +141,7 @@ class DocumentControllerUnitTest {
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
-            evidenceUploadService, userInfoService, featureToggleService);
+            evidenceUploadService, userInfoService, featureToggleService,documentTransformer);
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
@@ -214,7 +219,7 @@ class DocumentControllerUnitTest {
     @Test
     void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        CaseData mockCaseData = CaseData.builder()
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
             .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
         mockCaseDetails.setState("BOCaseStopped");
@@ -232,9 +237,27 @@ class DocumentControllerUnitTest {
     }
 
     @Test
+    void shouldNotAddSentEmailWhenExceptionThrownInCaseworkerUploadEvent() throws NotificationClientException {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
+                .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+        mockCaseDetails.setState("BOCaseStopped");
+        when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
+        when(notificationService.sendStopResponseReceivedEmail(mockCaseDetails))
+                .thenThrow(new NotificationClientException("Error sending email"));
+
+        ResponseEntity<CallbackResponse> response = documentController
+                .evidenceAdded(callbackRequest);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        verify(documentTransformer, times(0)).addDocument(any(), any(), any());
+    }
+
+    @Test
     void shouldUpdateLastEvidenceAddedDateWhenStoppedAsRobot() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        CaseData mockCaseData = CaseData.builder()
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
                 .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
         mockCaseDetails.setState("BOCaseStopped");
@@ -256,7 +279,7 @@ class DocumentControllerUnitTest {
     @Test
     void shouldUpdateLastEvidenceAddedDateWhenOngoingAsRobot() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        CaseData mockCaseData = CaseData.builder()
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
                 .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
         mockCaseDetails.setState("BOExamining");
@@ -271,6 +294,25 @@ class DocumentControllerUnitTest {
         assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));
         verify(evidenceUploadService, times(2))
                 .updateLastEvidenceAddedDate(mockCaseDetails);
+        verify(documentTransformer, times(2)).addDocument(any(), any(), any());
+    }
+
+    @Test
+    void shouldNotAddSentEmailWhenExceptionThrownInRobotUploadEvent() throws NotificationClientException {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR)
+                .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+        mockCaseDetails.setState("BOExamining");
+        when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
+        when(notificationService.sendStopResponseReceivedEmail(mockCaseDetails))
+                .thenThrow(new NotificationClientException("Error sending email"));
+
+        ResponseEntity<CallbackResponse> response = documentController
+                .evidenceAddedRPARobot(callbackRequest);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        verify(documentTransformer, times(0)).addDocument(any(), any(), any());
     }
 
     @Test
