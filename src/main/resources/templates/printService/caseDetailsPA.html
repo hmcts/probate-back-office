@@ -87,7 +87,13 @@
     <td colspan="2">Number of executors:</td>
     <td>{{( case_data.executorsApplying | length ) + ( case_data.executorsNotApplying | length ) + 1 }}</td>
   </tr>
-
+  <tr>
+    <td colspan="2">Additional Executors:</td>
+      <td>{% for executor in case_data.solsAdditionalExecutorList %}
+            {{ executor.value.SolsAdditionalExecutorName }}<br/>
+          {% endfor %}
+      </td>
+  </tr>
   <tr>
     <td><strong>Executors not applying</strong></td>
   </tr>
