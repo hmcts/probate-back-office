@@ -1,8 +1,12 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.lifeevents;
 
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
 
@@ -10,24 +14,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ExtendWith(MockitoExtension.class)
 class DeathRecordServiceTest {
 
-    DeathRecordService deathRecordService = new DeathRecordService();
+    @Mock
+    private AliasMapper aliasMapper;
+
+    @InjectMocks
+    private DeathRecordService deathRecordService;
 
     @Test
     void mapDeathRecordsShouldHandleEmptyList() {
         final List<CollectionMember<DeathRecord>> collectionMembers = deathRecordService
                 .mapDeathRecords(Collections.emptyList());
-        assert (collectionMembers.isEmpty());
+        assertTrue(collectionMembers.isEmpty());
     }
 
     @Test
     void mapDeathRecordsShouldHandleNull() {
         final List<CollectionMember<DeathRecord>> collectionMembers = deathRecordService.mapDeathRecords(null);
-        assert (collectionMembers.isEmpty());
+        assertTrue(collectionMembers.isEmpty());
     }
 
     @Test
@@ -35,7 +44,7 @@ class DeathRecordServiceTest {
         ArrayList list = new ArrayList();
         list.add(null);
         final List<CollectionMember<DeathRecord>> collectionMembers = deathRecordService.mapDeathRecords(list);
-        assert (collectionMembers.isEmpty());
+        assertTrue(collectionMembers.isEmpty());
     }
 
     @Test
@@ -50,8 +59,8 @@ class DeathRecordServiceTest {
         v1Death.setId(1234);
 
         final List<CollectionMember<DeathRecord>> deathRecordCollectionMembers = deathRecordService
-                .mapDeathRecords(asList(v1Death));
-        assertEquals(deathRecordCollectionMembers.size(), 1);
+                .mapDeathRecords(List.of(v1Death));
+        assertEquals(1, deathRecordCollectionMembers.size());
         final DeathRecord value = deathRecordCollectionMembers.get(0).getValue();
 
         assertEquals(value.getSystemNumber(), v1Death.getId());
@@ -66,8 +75,8 @@ class DeathRecordServiceTest {
     void shouldHandleDeceasedNull() {
         V1Death v1Death = new V1Death();
         final List<CollectionMember<DeathRecord>> deathRecordCollectionMembers = deathRecordService
-                .mapDeathRecords(asList(v1Death));
-        assertEquals(deathRecordCollectionMembers.size(), 1);
+                .mapDeathRecords(List.of(v1Death));
+        assertEquals(1, deathRecordCollectionMembers.size());
         final DeathRecord value = deathRecordCollectionMembers.get(0).getValue();
 
         assertEquals(value.getSystemNumber(), v1Death.getId());
@@ -81,8 +90,9 @@ class DeathRecordServiceTest {
         v1Death.setDeceased(deceased);
 
         final List<CollectionMember<DeathRecord>> deathRecordCollectionMembers = deathRecordService
-                .mapDeathRecords(asList(v1Death));
-        assertEquals(deathRecordCollectionMembers.size(), 1);
+                .mapDeathRecords(List.of(v1Death));
+        assertEquals(1, deathRecordCollectionMembers.size());
         final DeathRecord value = deathRecordCollectionMembers.get(0).getValue();
+        assertEquals("null null", value.getName());
     }
 }
