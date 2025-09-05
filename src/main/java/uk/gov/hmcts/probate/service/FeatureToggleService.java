@@ -21,6 +21,7 @@ public class FeatureToggleService {
     private static final String DORMANT_REMINDER_TOGGLE = "probate-cron-dormant-reminder";
     private static final String UNSUBMITTED_APPLICATION_TOGGLE = "probate-cron-unsubmitted-application";
     private static final String DECLARATION_NOT_SIGNED_TOGGLE = "probate-cron-declaration-not-signed";
+    private static final String NFI_DATA_EXTRACT_TOGGLE = "probate-nfi-data-extract";
 
     @Autowired
     public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,
@@ -103,5 +104,10 @@ public class FeatureToggleService {
     public boolean isDormantReminderFeatureToggleOn() {
         return this.isFeatureToggleOn(
                 DORMANT_REMINDER_TOGGLE, false);
+    }
+
+    public boolean isNfiDataExtractFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                NFI_DATA_EXTRACT_TOGGLE, false);
     }
 }
