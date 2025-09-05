@@ -7,6 +7,7 @@ public class EmailTemplates {
     private String applicationReceived;
     private String applicationReceivedNoDocs;
     private String applicationReceivedPaperFormCaseworker;
+    private String stopResponseReceived;
     private String documentReceived;
     private String caseStopped;
     private String caseStoppedCaveat;

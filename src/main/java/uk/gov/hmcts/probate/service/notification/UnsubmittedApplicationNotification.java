@@ -59,7 +59,7 @@ public class UnsubmittedApplicationNotification implements NotificationStrategy 
     }
 
     @Override
-    public Document sendEmail(CaseDetails caseDetails) throws NotificationClientException {
+    public Document sendNotification(CaseDetails caseDetails) throws NotificationClientException {
         notificationService.sendUnsubmittedApplicationEmail(caseDetails);
         return new Document(); //Dummy return, as the actual document is not used in this context.
     }

@@ -1,14 +1,12 @@
 {
-  "size": :size,
-  "from": :from,
   "query": {
     "bool": {
       "filter": [
         {
           "range": {
             "data.lastModifiedDateForDormant": {
-              "gte": ":fromDate",
-              "lte": ":toDate"
+              "gte": "%s",
+              "lte": "%s"
             }
           }
         },
@@ -20,11 +18,10 @@
       ]
     }
   },
+  "size": %s,
+  "_source": ["reference"],
   "sort": [
     {
-      "id": {
-        "order": "asc"
-      }
+      "reference.keyword": "asc"
     }
   ]
-}

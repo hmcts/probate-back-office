@@ -44,6 +44,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
@@ -96,6 +97,7 @@ public class BusinessValidationController {
     private static final String INVALID_PAYLOAD = "Invalid payload";
     private static final String INVALID_CREATION_EVENT = "Invalid creation event";
     private static final String USE_DIFFERENT_EVENT = "Use different event";
+    private static final String UPLOAD_DOCUMENTS_EVENT = "uploadDocumentsDormantCase";
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
@@ -132,6 +134,7 @@ public class BusinessValidationController {
     private final ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
+    private final DocumentTransformer documentTransformer;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
@@ -691,6 +694,19 @@ public class BusinessValidationController {
         @RequestBody CallbackRequest callbackRequest) {
         log.info("Reactivating case - " + callbackRequest.getCaseDetails().getId().toString());
         caseStoppedService.setEvidenceHandledNo(callbackRequest.getCaseDetails());
+        try {
+            if (callbackRequest.getCaseDetails().getData().getApplicationType().equals(SOLICITOR)
+                    && UPLOAD_DOCUMENTS_EVENT.equalsIgnoreCase(callbackRequest.getEventId())) {
+                Document document = notificationService.sendStopResponseReceivedEmail(callbackRequest.getCaseDetails());
+                documentTransformer.addDocument(callbackRequest, document, false);
+            }
+        } catch (NotificationClientException e) {
+            log.warn("Fails to send StopResponseReceived notification for case: {}, message: {}",
+                    callbackRequest.getCaseDetails().getId(), e.getHttpResult());
+        } catch (RuntimeException e) {
+            log.warn("Fails to generate or upload notification pdf for case: {}",
+                    callbackRequest.getCaseDetails().getId(), e);
+        }
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }

@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +25,7 @@ import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
+import uk.gov.hmcts.reform.probate.model.cases.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -33,9 +35,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
+import uk.gov.hmcts.probate.service.notification.AutomatedNotificationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
-import uk.gov.hmcts.probate.service.notification.AutomatedNotificationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
@@ -46,6 +48,7 @@ import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -58,6 +61,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
@@ -101,6 +105,8 @@ public class NotificationService {
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
     private final EventValidationService eventValidationService;
+    private final DocumentGeneratorService documentGeneratorService;
+    private final BulkPrintService bulkPrintService;
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
     private final GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
     private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
@@ -660,6 +666,7 @@ public class NotificationService {
         return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
     }
 
+
     private Document getSentEmailDocument(State state, String emailAddress, SendEmailResponse response) {
         if (state == State.CASE_STOPPED_REQUEST_INFORMATION) {
             return getGeneratedSentEmailDocmosisDocument(response, emailAddress, SENT_EMAIL);
@@ -827,6 +834,33 @@ public class NotificationService {
         FOUND_HTML;
     }
 
+    public Document sendStopResponseReceivedEmail(CaseDetails caseDetails)
+            throws NotificationClientException {
+        log.info("sendStopResponseReceivedEmail for case id: {}", caseDetails.getId());
+        final CaseData caseData = caseDetails.getData();
+        String emailAddress = getEmail(caseDetails.getData());
+        if (emailAddress == null) {
+            throw new NotificationClientException("Email address not found for StopResponseReceivedEmail case ID: "
+                    + caseDetails.getId());
+        }
+        ApplicationType applicationType = caseDetails.getData().getApplicationType();
+        LanguagePreference languagePreference = caseDetails.getData().getLanguagePreference();
+        String templateId = templateService.getStopResponseReceivedTemplateId(applicationType, languagePreference);
+        log.info("sendStopResponseReceivedEmail applicationType {}, templateId: {}", applicationType, templateId);
+        final String addresseeName = switch (caseData.getApplicationType()) {
+            case PERSONAL -> caseData.getPrimaryApplicantFullName();
+            case SOLICITOR -> caseData.getSolsSOTName();
+        };
+        Map<String, String> personalisation = grantOfRepresentationPersonalisationService
+                .getStopResponseReceivedPersonalisation(caseDetails.getId(), addresseeName);
+        log.info("start StopResponseReceivedEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("StopResponseReceivedEmail reference response: {} ", response.getReference());
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
     public Document sendStopReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
                                           boolean isFirstStopReminder)
             throws NotificationClientException {
@@ -905,6 +939,46 @@ public class NotificationService {
                         personalisation, caseDetails.getId().toString());
         log.info("Dormant Warning email reference response: {}", response.getReference());
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
+    public Document sendDormantReminder(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails) {
+        log.info("Sending Dormant Reminder letter for case id: {}", caseDetails.getId());
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("sendDormantReminder Case data is null for case ID: {}", caseDetails.getId());
+            return null;
+        }
+        ApplicationType applicationType = getApplicationType(caseDetails);
+        Map<String, Object> personalisation =
+                automatedNotificationPersonalisationService.getPersonalisation(caseDetails, applicationType);
+        log.info("Dormant Reminder generate docmosis for case id: {}", caseDetails.getId());
+
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+
+        DocumentType documentType = DocumentType.DORMANT_REMINDER;
+        if (!languagePreference.equals(LanguagePreference.ENGLISH)) {
+            documentType = DocumentType.WELSH_DORMANT_REMINDER;
+        }
+        List<Document> documents = new ArrayList<>();
+        Document dormantReminder = pdfManagementService
+                .generateDocmosisDocumentAndUpload(personalisation, documentType);
+        log.info("Dormant postal Reminder generated for dormantReminder.getDocumentType(): {}",
+                dormantReminder.getDocumentType());
+        CaseData caseData = objectMapper.convertValue(caseDetails.getData(), CaseData.class);
+        CaseDetails convertedCaseDetails = new CaseDetails(caseData, null, caseDetails.getId());
+        CallbackRequest callbackRequest = new CallbackRequest(convertedCaseDetails);
+        Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
+
+        SendLetterResponse sendLetterResponse =
+                bulkPrintService.sendToBulkPrintForGrant(callbackRequest, dormantReminder, coversheet);
+        String letterId = sendLetterResponse != null ? sendLetterResponse.letterId.toString() : null;
+        log.info("Dormant postal Reminder letter Id: {}", letterId);
+        BulkPrint bulkPrint = BulkPrint.builder()
+                .templateName(documentType.getTemplateName())
+                .sendLetterId(letterId)
+                .build();
+        data.put("bulkPrint", bulkPrint);
+        return dormantReminder;
     }
 
     public void sendUnsubmittedApplicationEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
