@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,40 +10,50 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
+import uk.gov.hmcts.probate.service.NotificationService.CommonNotificationResult;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
+import uk.gov.hmcts.probate.service.notification.AutomatedNotificationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.service.NotificationService.CommonNotificationResult;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule.PersonalisationValidationResult;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Optional;
+import java.util.UUID;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class NotificationServiceTest {
@@ -61,6 +72,12 @@ class NotificationServiceTest {
     private MarkdownTransformationService markdownTransformationServiceMock;
     @Mock
     private PDFManagementService pdfManagementServiceMock;
+
+    @Mock
+    private AutomatedNotificationPersonalisationService automatedNotificationPersonalisationServiceMock;
+
+    @Mock
+    private BulkPrintService bulkPrintServiceMock;
     @Mock
     private EventValidationService eventValidationServiceMock;
     @Mock
@@ -85,6 +102,14 @@ class NotificationServiceTest {
     private PersonalisationValidationRule personalisationValidationRuleMock;
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
+    @Mock
+    private SendEmailResponse sendEmailResponseMock;
+
+    @Mock
+    private ObjectMapper objectMapperMock;
+
+    @Mock
+    private DocumentGeneratorService documentGeneratorServiceMock;
 
     @InjectMocks
     private NotificationService notificationService;
@@ -101,7 +126,7 @@ class NotificationServiceTest {
     void tearDown() throws Exception {
         closeableMocks.close();
     }
-    
+
     @Test
     void givenPersonalisationWithMarkdown_whenCommonValidation_thenThrows() {
         final Map<String, ?> dummyPersonalisation = Collections.emptyMap();
@@ -241,5 +266,139 @@ class NotificationServiceTest {
         notificationService.updatePersonalisationForSolicitor(caseData, personalisation);
 
         assertEquals("Old Name", personalisation.get("applicant_name"));
+    }
+
+    @Test
+    void returnsNullWhenCaseDataIsNull() {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(null);
+
+        Document result = notificationService.sendDormantReminder(caseDetails);
+
+        assertNull(result);
+        verifyNoInteractions(pdfManagementServiceMock);
+        verifyNoInteractions(bulkPrintServiceMock);
+    }
+
+    @Test
+    void generatesDormantReminderSuccessfullyForEnglishLanguage() {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map<String, Object> data = new HashMap<>();
+        data.put("applicationType", ApplicationType.PERSONAL);
+        data.put("languagePreference", LanguagePreference.ENGLISH);
+        when(caseDetails.getData()).thenReturn(data);
+        when(pdfManagementServiceMock.generateDocmosisDocumentAndUpload(any(), eq(DocumentType.DORMANT_REMINDER)))
+                .thenReturn(mock(Document.class));
+        when(bulkPrintServiceMock.sendToBulkPrintForGrant(any(), any(), any()))
+                .thenReturn(new SendLetterResponse(UUID.randomUUID()));
+
+        Document result = notificationService.sendDormantReminder(caseDetails);
+
+        assertNotNull(result);
+        assertTrue(data.containsKey("bulkPrint"));
+        verify(pdfManagementServiceMock).generateDocmosisDocumentAndUpload(any(), eq(DocumentType.DORMANT_REMINDER));
+        verify(bulkPrintServiceMock).sendToBulkPrintForGrant(any(), any(), any());
+    }
+
+
+    @Test
+    void generatesDormantReminderSuccessfullyForWelshLanguage() {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map<String, Object> data = new HashMap<>();
+        data.put("applicationType", ApplicationType.PERSONAL);
+        data.put("languagePreferenceWelsh", "Yes");
+        when(caseDetails.getData()).thenReturn(data);
+
+        when(pdfManagementServiceMock.generateDocmosisDocumentAndUpload(any(Map.class),
+                eq(DocumentType.WELSH_DORMANT_REMINDER))).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).documentType(DocumentType.WELSH_DORMANT_REMINDER).build());
+        when(bulkPrintServiceMock.sendToBulkPrintForGrant(any(), any(), any()))
+                .thenReturn(new SendLetterResponse(UUID.randomUUID()));
+
+        Document result = notificationService.sendDormantReminder(caseDetails);
+
+        assertNotNull(result);
+        assertTrue(data.containsKey("bulkPrint"));
+        verify(pdfManagementServiceMock).generateDocmosisDocumentAndUpload(any(),
+                eq(DocumentType.WELSH_DORMANT_REMINDER));
+        verify(bulkPrintServiceMock).sendToBulkPrintForGrant(any(), any(), any());
+    }
+
+    @Test
+    void sendStopResponseReceivedEmailSuccessfully() throws NotificationClientException {
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        CaseData caseData = mock(CaseData.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantFullName()).thenReturn("Applicant Name");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("test@example.com");
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        when(templateServiceMock.getStopResponseReceivedTemplateId(ApplicationType.SOLICITOR,
+                LanguagePreference.ENGLISH))
+                .thenReturn("template-id");
+        when(grantOfRepresentationPersonalisationServiceMock.getStopResponseReceivedPersonalisation(
+                12345L, "Solicitor Name"))
+                .thenReturn(Map.of("key", "value"));
+        when(notificationClientServiceMock.sendEmail("template-id",
+                "test@example.com", Map.of("key", "value"), "12345"))
+                .thenReturn(sendEmailResponseMock);
+        when(sendEmailResponseMock.getReference()).thenReturn(Optional.of("email-reference"));
+
+        Document result = notificationService.sendStopResponseReceivedEmail(caseDetails);
+
+        assertNotNull(result);
+        verify(notificationClientServiceMock).sendEmail("template-id",
+                "test@example.com", Map.of("key", "value"), "12345");
+    }
+
+    @Test
+    void sendStopResponseReceivedEmailThrowsExceptionWhenCaseDataIsNull() {
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        CaseData caseData = mock(CaseData.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+
+        NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
+                notificationService.sendStopResponseReceivedEmail(caseDetails)
+        );
+
+        assertEquals("Email address not found for StopResponseReceivedEmail case ID: 12345",
+                exception.getMessage());
+    }
+
+    @Test
+    void sendStopResponseReceivedEmailThrowsExceptionWhenEmailIsNull() throws NotificationClientException {
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        CaseData caseData = mock(CaseData.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(templateServiceMock.getStopResponseReceivedTemplateId(
+                ApplicationType.PERSONAL, LanguagePreference.ENGLISH)).thenReturn("template-id");
+        when(grantOfRepresentationPersonalisationServiceMock.getStopResponseReceivedPersonalisation(
+                12345L, "Solicitor Name"))
+                .thenReturn(Map.of("key", "value"));
+        when(notificationClientServiceMock.sendEmail("template-id", null,
+                Map.of("key", "value"), "12345"))
+                .thenThrow(new NotificationClientException("Email address not found"));
+
+        NotificationClientException exception = assertThrows(NotificationClientException.class, () ->
+                notificationService.sendStopResponseReceivedEmail(caseDetails)
+        );
+
+        assertEquals("Email address not found for StopResponseReceivedEmail case ID: 12345",
+                exception.getMessage());
     }
 }

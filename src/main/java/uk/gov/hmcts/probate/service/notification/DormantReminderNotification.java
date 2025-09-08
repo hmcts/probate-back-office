@@ -14,15 +14,17 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_WARNING;
+import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_REMINDER;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_DORMANT;
 
 @Service
-public class DormantWarningNotification implements NotificationStrategy {
-    private static final String DORMANT_WARNING_EVENT_DESCRIPTION = "Send Dormant Warning";
-    private static final String DORMANT_WARNING_EVENT_SUMMARY = "Send Dormant Warning";
-    private static final String DORMANT_WARNING_FAILURE_EVENT_DESCRIPTION = "Failed to send Dormant Warning";
-    private static final String DORMANT_WARNING_FAILURE_EVENT_SUMMARY = "Failed to send Dormant Warning";
+public class DormantReminderNotification implements NotificationStrategy {
+    private static final String DORMANT_REMINDER_EVENT_DESCRIPTION = "Dormant 12-month Reminder (AN) sent";
+    private static final String DORMANT_REMINDER_EVENT_SUMMARY = "Dormant 12-month Reminder (AN) sent";
+    private static final String DORMANT_REMINDER_FAILURE_EVENT_DESCRIPTION =
+            "Failed to send Dormant 12-month Reminder (AN)";
+    private static final String DORMANT_REMINDER_FAILURE_EVENT_SUMMARY =
+            "Failed to send Dormant 12-month Reminder (AN)";
     private static final String LAST_MODIFIED_DATE_FOR_DORMANT = "lastModifiedDateForDormant";
 
     private final NotificationService notificationService;
@@ -30,53 +32,53 @@ public class DormantWarningNotification implements NotificationStrategy {
     @Setter
     private LocalDate referenceDate;
 
-    public DormantWarningNotification(NotificationService notificationService) {
+    public DormantReminderNotification(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 
     @Override
     public String getQueryTemplate() {
-        return "templates/elasticsearch/caseMatching/dormant_warning_query.json";
+        return "templates/elasticsearch/caseMatching/dormant_reminder_query.json";
     }
 
     @Override
     public boolean matchesType(NotificationType type) {
-        return type == DORMANT_WARNING;
+        return type == DORMANT_REMINDER;
     }
 
     @Override
     public Document sendNotification(CaseDetails caseDetails) throws NotificationClientException {
-        return notificationService.sendDormantWarningEmail(caseDetails);
+        return notificationService.sendDormantReminder(caseDetails);
     }
 
     @Override
     public String getEventSummary() {
-        return DORMANT_WARNING_EVENT_SUMMARY;
+        return DORMANT_REMINDER_EVENT_SUMMARY;
     }
 
     @Override
     public String getEventDescription() {
-        return DORMANT_WARNING_EVENT_DESCRIPTION;
+        return DORMANT_REMINDER_EVENT_DESCRIPTION;
     }
 
     @Override
     public String getFailureEventDescription() {
-        return DORMANT_WARNING_FAILURE_EVENT_DESCRIPTION;
+        return DORMANT_REMINDER_FAILURE_EVENT_DESCRIPTION;
     }
 
     @Override
     public String getFailureEventSummary() {
-        return DORMANT_WARNING_FAILURE_EVENT_SUMMARY;
+        return DORMANT_REMINDER_FAILURE_EVENT_SUMMARY;
     }
 
     @Override
     public EventId getEventId() {
-        return EventId.AUTO_NOTIFICATION_DORMANT_WARNING;
+        return EventId.AUTO_NOTIFICATION_DORMANT_REMINDER;
     }
 
     @Override
     public NotificationType getType() {
-        return DORMANT_WARNING;
+        return DORMANT_REMINDER;
     }
 
     @Override
@@ -84,15 +86,17 @@ public class DormantWarningNotification implements NotificationStrategy {
         return cd -> cd != null
                 && cd.getData() != null
                 && referenceDate != null
-                && !STATE_DORMANT.equals(cd.getState())
-                && isValidLastModifiedDate(cd);
+                && STATE_DORMANT.equals(cd.getState())
+                && isValidLastMofifiedDateForDormant(cd);
+
     }
 
-    private boolean isValidLastModifiedDate(CaseDetails caseDetails) {
+    private boolean isValidLastMofifiedDateForDormant(CaseDetails caseDetails) {
         return Optional.ofNullable(caseDetails.getData().get(LAST_MODIFIED_DATE_FOR_DORMANT))
                 .map(Object::toString)
                 .map(LocalDateTime::parse)
-                .map(lastModifiedDate -> !lastModifiedDate.isAfter(referenceDate.plusDays(1).atStartOfDay()))
+                .map(lastModifiedDateForDormant -> !lastModifiedDateForDormant
+                        .isAfter(referenceDate.plusDays(1).atStartOfDay()))
                 .orElse(false);
     }
 }
