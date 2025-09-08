@@ -1422,7 +1422,12 @@ public class CallbackResponseTransformer {
             .executorsNamed(caseData.getExecutorsNamed())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
-            .evidenceHandledDate(caseData.getEvidenceHandledDate());
+            .evidenceHandledDate(caseData.getEvidenceHandledDate())
+            .deceasedSeparatedInEnglandOrWales(caseData.getDeceasedSeparatedInEnglandOrWales())
+            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
+            .deceasedDivorcedDate(caseData.getDeceasedDivorcedDate())
+            .deceasedSeparatedDateKnown(caseData.getDeceasedSeparatedDateKnown())
+            .deceasedSeparatedDate(caseData.getDeceasedSeparatedDate());
 
         handleDeceasedAliases(
                 builder,
