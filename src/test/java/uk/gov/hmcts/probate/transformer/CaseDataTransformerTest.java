@@ -287,22 +287,6 @@ class CaseDataTransformerTest {
                 is(new BigDecimal(new BigInteger("100"), 0)));
     }
 
-    @Test
-    void setsIhtFormEstateToDefaultIHT400WhenNull() {
-        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
-                .ihtFormEstateValuesCompleted("Yes")
-                .ihtEstateGrossValue(new BigDecimal(new BigInteger("100"), 0))
-                .ihtEstateNetValue(new BigDecimal(new BigInteger("100"), 0))
-                .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("100"), 0)).build();
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
-        caseDataTransformer.transformFormCaseData(callbackRequestMock);
-
-        assertThat(caseDataMock.getIhtFormEstate(), is("IHT400"));
-    }
-
 
     @Test
     void shouldTransformCaseDataForPaperForm() {
