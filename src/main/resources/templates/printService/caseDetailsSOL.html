@@ -2,10 +2,10 @@
 <html lang="en">
 <meta charset="UTF-8"/>
 {% macro names(forenames, surname) %}{{ forenames }} {{ surname }}{% endmacro %}
-{% macro address(address) %}
 {% macro valueOrNA(value) %}
     {% if value %} {{ value }}{% else %}N/A{% endif %}
 {% endmacro %}
+{% macro address(address) %}
 <tr>
   <td rowspan="3"></td>
   <td rowspan="3" valign="top">Building and Street:</td>
