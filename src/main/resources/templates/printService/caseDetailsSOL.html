@@ -2,7 +2,7 @@
 <html lang="en">
 <meta charset="UTF-8"/>
 {% macro names(forenames, surname) %}{{ forenames }} {{ surname }}{% endmacro %}
-{% macro valueOrNA(value) %} {% if value %} {{ value }}{% else %}N/A{% endif %} {% endmacro %}
+{% macro valueOrNA(value) %}{% if value %}{{ value }}{% else %}N/A{% endif %}{% endmacro %}
 {% macro address(address) %}
 <tr>
   <td rowspan="3"></td>
@@ -37,7 +37,13 @@
 </tr>
 {% endmacro %}
 {% macro notApplyingReason(reason) %}
-<td valign="top">{% if reason == "DiedBefore" %}They died before the deceased.{% endif %}{% if reason == "DiedAfter" %}They died after the deceased.{% endif %}{% if reason == "PowerReserved" %}They're holding power reserved.{% endif %}{% if reason == "Renunciation" %}They have renounced.{% endif %}</td>
+<td valign="top">{% if reason == "DiedBefore" %}They died before the deceased.{% endif %}
+    {% if reason == "DiedAfter" %}They died after the deceased.{% endif %}
+    {% if reason == "PowerReserved" %}They're holding power reserved.{% endif %}
+    {% if reason == "Renunciation" %}They have renounced.{% endif %}
+    {% if reason == "PowerOfAttorney" %}They have appointed or wish to appoint another person to act as their attorney.{% endif %}
+    {% if reason == "MentallyIncapable" %}They lack capacity to act as executor and the will allows for a substitution.{% endif %}
+</td>
 {% endmacro %}
 <head>
   <title>Application for probate for {{ names(case_data.deceasedForenames,case_data.deceasedSurname) }}</title>
@@ -115,7 +121,7 @@
     </tr>
     <tr>
       <td colspan="2">Solicitor firm address:</td>
-      <td>{% if case_data.solsSolicitorAddress }}{{ address(case_data.solsSolicitorAddress) }}{% else %}N/A{% endif %}</td>
+      <td>{% if case_data.solsSolicitorAddress %}{{ address(case_data.solsSolicitorAddress) }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor firm email:</td>
@@ -160,13 +166,13 @@
     {% if case_data.solsSolicitorNotApplyingReason %}
     <tr>
       <td colspan="2">Solicitor Not Applying Reason:</td>
-      <td>{{ valueOrNA(case_data.solsSolicitorNotApplyingReason) }}</td>
+      <td>{{ case_data.solsSolicitorNotApplyingReason }}</td>
     </tr>
     {% endif %}
     {% if case_data.otherExecutorExists %}
     <tr>
       <td colspan="2">Other Executor Exists:</td>
-      <td>{{ valueOrNA(case_data.otherExecutorExists) }}</td>
+      <td>{{ case_data.otherExecutorExists }}</td>
     </tr>
     {% endif %}
     {% if case_data.solsForenames %}
