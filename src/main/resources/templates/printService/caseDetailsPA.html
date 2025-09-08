@@ -3,6 +3,7 @@
 {% macro names(forenames, surname) %}{{ forenames }} {{ surname }}{% endmacro %}
 {% macro notApplyingReason(reason) %}{% if reason == "DiedBefore" %}They died before the deceased.{% endif %}{% if reason == "DiedAfter"%}They died after the deceased.{% endif %}{% if reason == "PowerReserved" %}They're holding power reserved.{% endif%}{% if reason == "Renunciation" %}They have renounced.{% endif %}{% endmacro %}
 {% macro replaceAllEncoded(original) %}{{ original | replace('&rsquo;', '’')  | replace('&pound;', '&#163;') }}{% endmacro %}
+{% macro valueOrNA(value) %} {% if value %} {{ value }}{% else %}N/A{% endif %} {% endmacro %}
 <head>
   <title>Application for probate for {{ names(case_data.deceasedForenames,case_data.deceasedSurname) }}</title>
 </head>
@@ -42,15 +43,15 @@
   <tr>
   <tr>
     <td colspan="2">Deceased any other name on will:</td>
-    <td>{% if case_data.deceasedAnyOtherNameOnWill %}{{ case_data.deceasedAnyOtherNameOnWill }}{% else %}N/A{% endif %}</td>
+    <td>{{ valueOrNA(case_data.deceasedAnyOtherNameOnWill) }}</td>
   </tr>
   <tr>
     <td colspan="2">Deceased alias first name on will:</td>
-    <td>{% if case_data.deceasedAliasFirstNameOnWill %}{{ case_data.deceasedAliasFirstNameOnWill }}{% else %}N/A{% endif %}</td>
+    <td>{{ valueOrNA(case_data.deceasedAliasFirstNameOnWill) }}</td>
   </tr>
   <tr>
     <td colspan="2">Deceased alias last name on will:</td>
-    <td>{% if case_data.deceasedAliasLastNameOnWill %}{{ case_data.deceasedAliasLastNameOnWill }}{% else %}N/A{% endif %}</td>
+    <td>{{ valueOrNA(case_data.deceasedAliasLastNameOnWill) }}</td>
   </tr>
   <tr>
     <td colspan="2">Address</td>
@@ -74,7 +75,7 @@
   </tr>
   <tr>
     <td colspan="2">Deceased have a late spouse or civil partner:</td>
-    <td>{% if case_data.deceasedHadLateSpouseOrCivilPartner %}{{ case_data.deceasedHadLateSpouseOrCivilPartner }}{% else %}N/A{% endif %}</td>
+    <td>{{ valueOrNA(case_data.deceasedHadLateSpouseOrCivilPartner) }}</td>
   </tr>
   <tr>
     <td colspan="3">&nbsp;</td>
@@ -89,10 +90,9 @@
   </tr>
   <tr>
     <td colspan="2">Additional Executors:</td>
-      <td>{% for executor in case_data.solsAdditionalExecutorList %}
-            {{ executor.value.SolsAdditionalExecutorName }}<br/>
-          {% endfor %}
-      </td>
+      <ul>{% for executor in case_data.solsAdditionalExecutorList %}
+          <li>{{ executor.value.SolsAdditionalExecutorName }}</li>
+          {% endfor %}</ul>
   </tr>
   <tr>
     <td><strong>Executors not applying</strong></td>
@@ -180,7 +180,7 @@
     {% endif %}
   <tr>
     <td colspan="2">Unused IHT allowance claimed:</td>
-    <td>{% if case_data.ihtUnusedAllowanceClaimed %}{{ case_data.ihtUnusedAllowanceClaimed }}{% else %}N/A{% endif %}</td>
+    <td>{{ valueOrNA(case_data.ihtUnusedAllowanceClaimed) }}</td>
   </tr>
   <tr>
     <td colspan="2">Payment reference:</td>
@@ -222,11 +222,11 @@
   </tr>
     <tr>
     <td colspan="2">Reason for applicant name change on will:</td>
-    <td>{% if case_data.primaryApplicantAliasReason %}{{ case_data.primaryApplicantAliasReason }}{% else %}N/A{% endif %}</td>
+    <td>{{ valueOrNA(case_data.primaryApplicantAliasReason) }}</td>
   </tr>
   <tr>
     <td colspan="2">Other Reason for applicant name change on will:</td>
-    <td>{% if case_data.primaryApplicantOtherReason %}{{ case_data.primaryApplicantOtherReason }}{% else %}N/A{% endif %}</td>
+    <td>{{ valueOrNA(case_data.primaryApplicantOtherReason) }}</td>
   </tr>
   <tr>
     <td colspan="2">Applicant address</td>

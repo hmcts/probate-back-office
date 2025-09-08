@@ -2,9 +2,7 @@
 <html lang="en">
 <meta charset="UTF-8"/>
 {% macro names(forenames, surname) %}{{ forenames }} {{ surname }}{% endmacro %}
-{% macro valueOrNA(value) %}
-    {% if value %} {{ value }}{% else %}N/A{% endif %}
-{% endmacro %}
+{% macro valueOrNA(value) %} {% if value %} {{ value }}{% else %}N/A{% endif %} {% endmacro %}
 {% macro address(address) %}
 <tr>
   <td rowspan="3"></td>
@@ -117,7 +115,7 @@
     </tr>
     <tr>
       <td colspan="2">Solicitor firm address:</td>
-      <td>{{ address(case_data.solsSolicitorAddress) }}</td>
+      <td>{% if case_data.solsSolicitorAddress }}{{ address(case_data.solsSolicitorAddress) }}{% else %}N/A{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor firm email:</td>
