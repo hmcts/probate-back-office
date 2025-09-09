@@ -90,9 +90,10 @@
   </tr>
   <tr>
     <td colspan="2">Additional Executors:</td>
-      <ul>{% for executor in case_data.solsAdditionalExecutorList %}
-          <li>{{ executor.value.SolsAdditionalExecutorName }}</li>
-          {% endfor %}</ul>
+      <td>{% for executor in case_data.solsAdditionalExecutorList %}
+            {{ executor.value.SolsAdditionalExecutorName }}<br/>
+          {% endfor %}
+      </td>
   </tr>
   <tr>
     <td><strong>Executors not applying</strong></td>

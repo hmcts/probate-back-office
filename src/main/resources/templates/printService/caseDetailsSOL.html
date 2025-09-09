@@ -151,42 +151,30 @@
       <td colspan="2">Solicitor Surname:</td>
       <td>{{ valueOrNA(case_data.solsSOTSurname) }}</td>
     </tr>
-    {% if case_data.solsExecutorAliasNames %}
     <tr>
       <td colspan="2">Solicitor Alias Names:</td>
       <td>{{ valueOrNA(case_data.solsExecutorAliasNames) }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.solsSolicitorIsApplying %}
     <tr>
       <td colspan="2">Solicitor Is Applying:</td>
       <td>{{ case_data.solsSolicitorIsApplying }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.solsSolicitorNotApplyingReason %}
     <tr>
       <td colspan="2">Solicitor Not Applying Reason:</td>
-      <td>{{ case_data.solsSolicitorNotApplyingReason }}</td>
+      <td>{{ valueOrNA(case_data.solsSolicitorNotApplyingReason) }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.otherExecutorExists %}
     <tr>
       <td colspan="2">Other Executor Exists:</td>
       <td>{{ case_data.otherExecutorExists }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.solsForenames %}
     <tr>
         <td colspan="2">Solicitor Forenames:</td>
         <td>{{ case_data.solsForenames }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.solsSurname %}
     <tr>
         <td colspan="2">Solicitor Surnames:</td>
         <td>{{ case_data.solsSurname }}</td>
     </tr>
-    {% endif %}
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
     </tr>
@@ -229,22 +217,18 @@
       <td colspan="2">Deceased date of death:</td>
       <td>{% if case_data.deceasedDateOfDeath %}{{ case_data.deceasedDateOfDeath|date("DD/MM/YYYY", existingFormat="yyyy-MM-dd") }}{% endif %}</td>
     </tr>
-    {% if case_data.dateOfDeathType %}
     <tr>
       <td colspan="2">Date of death type:</td>
-      <td>{{ case_data.dateOfDeathType }}</td>
+      <td>{{ valueOrNA(case_data.dateOfDeathType) }}</td>
     </tr>
-    {% endif %}
     <tr>
       <td colspan="2">Deceased was domiciled in England or Wales:</td>
       <td>{% if case_data.deceasedDomicileInEngWales %}{{ case_data.deceasedDomicileInEngWales }}{% endif %}</td>
     </tr>
-    {% if case_data.domicilityCountry %}
     <tr>
       <td colspan="2">Deceased Domicility Country:</td>
-      <td>{{ case_data.domicilityCountry }}</td>
+      <td>{{ valueOrNA(case_data.domicilityCountry) }}</td>
     </tr>
-    {% endif %}
     <tr>
       <td colspan="2">Did the deceased have a late spouse or civil partner:</td>
       <td>{{ valueOrNA(case_data.deceasedHadLateSpouseOrCivilPartner) }}</td>
@@ -360,73 +344,50 @@
     {% endif %}
 
     {% if case_data.executorsApplying | length >= 1 %}
-      {% if case_data.primaryApplicantAlias %}
         <tr>
           <td colspan="2">Primary Applicant Alias</td>
           <td>{{ case_data.primaryApplicantAlias }}</td>
         </tr>
-        {% endif %}
-      {% if case_data.primaryApplicantAliasReason %}
         <tr>
           <td colspan="2">Primary Applicant Alias Reason</td>
           <td>{{ case_data.primaryApplicantAliasReason }}</td>
         </tr>
-      {% endif %}
-      {% if case_data.primaryApplicantAliasReasonOther %}
         <tr>
           <td colspan="2">Primary Applicant Alias Reason Other</td>
           <td>{{ case_data.primaryApplicantAliasReasonOther }}</td>
         </tr>
-      {% endif %}
-      {% if case_data.primaryApplicantRelationshipToDeceased %}
         <tr>
           <td colspan="2">Primary Applicant Relationship to Deceased</td>
           <td>{{ case_data.primaryApplicantRelationshipToDeceased }}</td>
-        </tr>
-      {% endif %}
-      {% if case_data.paRelationshipToDeceasedOther %}
+        </tr>}
         <tr>
           <td colspan="2">Primary Applicant Relationship to Deceased Other</td>
           <td>{{ case_data.paRelationshipToDeceasedOther }}</td>
         </tr>
-      {% endif %}
-      {% if case_data.solsApplicantRelationshipToDeceased %}
         <tr>
           <td colspan="2">Solicitor's Relationship to Deceased</td>
           <td>{{ case_data.solsApplicantRelationshipToDeceased }}</td>
         </tr>
-      {% endif %}
-      {% if case_data.solsApplicantRelationshipToDeceased %}
         <tr>
           <td colspan="2">What is the applicant’s relationship to the deceased?</td>
           <td>{{ case_data.solsApplicantRelationshipToDeceased }}</td>
         </tr>
-      {% endif %}
-      {% if case_data.primaryApplicantEmailAddress %}
         <tr>
           <td colspan="2">Primary Applicant Email Address</td>
           <td>{{ case_data.primaryApplicantEmailAddress }}</td>
         </tr>
-      {% endif %}
-      {% if case_data.primaryApplicantPhoneNumber %}
         <tr>
           <td colspan="2">Primary Applicant Phone Number</td>
           <td>{{ case_data.primaryApplicantPhoneNumber }}</td>
         </tr>
-      {% endif %}
-      {% if case_data.primaryApplicantSecondPhoneNumber %}
         <tr>
           <td colspan="2">Primary Applicant Second Phone Number</td>
           <td>{{ case_data.primaryApplicantSecondPhoneNumber }}</td>
         </tr>
-      {% endif %}
-      {% if case_data.primaryApplicantAdoptionInEnglandOrWales %}
         <tr>
           <td colspan="2">Primary Applicant Adoption in England or Wales</td>
           <td>{{ case_data.primaryApplicantAdoptionInEnglandOrWales }}</td>
         </tr>
-      {% endif %}
-
     {% endif %}
 
     <tr>
@@ -474,12 +435,10 @@
       <td colspan="2">Unique probate code:</td>
       <td>{{ valueOrNA(case_data.uniqueProbateCodeId) }}</td>
     </tr>
-    {% if case_data.hmrcLetterId %}
     <tr>
       <td colspan="2">HMRC letter id:</td>
-      <td>{{ case_data.hmrcLetterId }}</td>
+      <td>{{ valueOrNA(case_data.hmrcLetterId) }}</td>
     </tr>
-    {% endif %}
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
     </tr>
@@ -514,12 +473,10 @@
       <td colspan="2">Number of codicils:</td>
         <td>{% if case_data.codicilAddedDateList | length >= 0 %}{{case_data.codicilAddedDateList | length}}{% else %}N/A{% endif %}</td>
     </tr>
-    {% if case_data.deceasedMarriedAfterWillOrCodicilDate %}
     <tr>
       <td colspan="2">Deceased Married After Will Or Codicil Date:</td>
-      <td>{{ case_data.deceasedMarriedAfterWillOrCodicilDate }}</td>
+      <td>{{ valueOrNA(case_data.deceasedMarriedAfterWillOrCodicilDate) }}</td>
     </tr>
-    {% endif %}
     <tr>
       <td colspan="2">Number of extra copies of grant required (UK):</td>
       <td>{{ valueOrNA(case_data.extraCopiesOfGrant) }}</td>
@@ -532,48 +489,34 @@
       <td colspan="2">Total fee due:</td>
       <td>{% if case_data.totalFee %}&pound;{{ (case_data.totalFee/100) | money('0,0.00') }}{% endif %}</td>
     </tr>
-    {% if case_data.registryLocation %}
     <tr>
       <td colspan="2">Registry location:</td>
-      <td>{{ case_data.registryLocation }}</td>
+      <td>{{ valueOrNA(case_data.registryLocation) }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.applicationType %}
     <tr>
       <td colspan="2">Application Type:</td>
-      <td>{{ case_data.applicationType }}</td>
+      <td>{{ valueOrNA(case_data.applicationType) }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.deceasedAnyOtherNames %}
     <tr>
-        <td colspan="2">Did the deceased use any other names:</td>
-        <td>{{ case_data.deceasedAnyOtherNames }}</td>
+      <td colspan="2">Did the deceased use any other names:</td>
+      <td>{{ valueOrNA(case_data.deceasedAnyOtherNames) }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.titleAndClearingType %}
     <tr>
       <td colspan="2">Title and Clearing Type:</td>
-      <td>{{ case_data.titleAndClearingType }}</td>
+      <td>{{ valueOrNA(case_data.titleAndClearingType) }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.trustCorpName %}
     <tr>
       <td colspan="2">Trust Corp Name:</td>
-      <td>{{ case_data.trustCorpName }}</td>
+      <td>{{ valueOrNA(case_data.trustCorpName) }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.trustCorpAddress %}
     <tr>
       <td colspan="2">Trust Corp Address:</td>
       <td>{{ address(case_data.trustCorpAddress) }}</td>
     </tr>
-    {% endif %}
-    {% if case_data.anyOtherApplyingPartners %}
     <tr>
       <td colspan="2">Any Other Applying Partners:</td>
       <td>{{ case_data.anyOtherApplyingPartners }}</td>
     </tr>
-    {% endif %}
   </table>
 </pre>
 </body>
