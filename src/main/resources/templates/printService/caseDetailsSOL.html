@@ -37,12 +37,15 @@
 </tr>
 {% endmacro %}
 {% macro notApplyingReason(reason) %}
-<td valign="top">{% if reason == "DiedBefore" %}They died before the deceased.{% endif %}
-    {% if reason == "DiedAfter" %}They died after the deceased.{% endif %}
-    {% if reason == "PowerReserved" %}They're holding power reserved.{% endif %}
-    {% if reason == "Renunciation" %}They have renounced.{% endif %}
-    {% if reason == "PowerOfAttorney" %}They have appointed or wish to appoint another person to act as their attorney.{% endif %}
-    {% if reason == "MentallyIncapable" %}They lack capacity to act as executor and the will allows for a substitution.{% endif %}
+<td valign="top">
+    {% if reason == "DiedBefore" %}They died before the deceased.
+        {% elseif reason == "DiedAfter" %}They died after the deceased.
+        {% elseif reason == "PowerReserved" %}They're holding power reserved.
+        {% elseif reason == "Renunciation" %}They have renounced.
+        {% elseif reason == "PowerOfAttorney" %}They have appointed or wish to appoint another person to act as their attorney.
+        {% elseif reason == "MentallyIncapable" %}They lack capacity to act as executor and the will allows for a substitution.
+        {% else %}NO TEXT FOR REASON {{ reason }}
+    {% endif %}
 </td>
 {% endmacro %}
 <head>
@@ -119,6 +122,7 @@
       <td colspan="2">Solicitor firm name:</td>
       <td>{% if case_data.solsSolicitorFirmName %}{{ case_data.solsSolicitorFirmName }}{% endif %}</td>
     </tr>
+    {# Unable to use valueOrNA() macro because address(x) will always return something even if x is null/unset #}
     <tr>
       <td colspan="2">Solicitor firm address:</td>
       <td>{% if case_data.solsSolicitorAddress %}{{ address(case_data.solsSolicitorAddress) }}{% else %}N/A{% endif %}</td>
