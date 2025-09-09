@@ -44,7 +44,7 @@
         {% elseif reason == "Renunciation" %}They have renounced.
         {% elseif reason == "PowerOfAttorney" %}They have appointed or wish to appoint another person to act as their attorney.
         {% elseif reason == "MentallyIncapable" %}They lack capacity to act as executor and the will allows for a substitution.
-        {% else %}NO TEXT FOR REASON {{ reason }}
+        {% else %}No formatted reason available for value: {{ reason }}
     {% endif %}
 </td>
 {% endmacro %}
@@ -363,7 +363,7 @@
         <tr>
           <td colspan="2">Primary Applicant Relationship to Deceased</td>
           <td>{{ case_data.primaryApplicantRelationshipToDeceased }}</td>
-        </tr>}
+        </tr>
         <tr>
           <td colspan="2">Primary Applicant Relationship to Deceased Other</td>
           <td>{{ case_data.paRelationshipToDeceasedOther }}</td>
