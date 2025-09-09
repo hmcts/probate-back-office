@@ -247,7 +247,7 @@
     {% endif %}
     <tr>
       <td colspan="2">Did the deceased have a late spouse or civil partner:</td>
-      <td>{% valueOrNA(case_data.deceasedHadLateSpouseOrCivilPartner) %}</td>
+      <td>{{ valueOrNA(case_data.deceasedHadLateSpouseOrCivilPartner) }}</td>
     </tr>
     <tr>
       <td colspan="3" class="spacer">&nbsp;</td>
@@ -464,15 +464,15 @@
     {% endif %}
     <tr>
       <td colspan="2">Claiming unused IHT allowance:</td>
-      <td>{% valueOrNA(case_data.ihtUnusedAllowanceClaimed) %}</td>
+      <td>{{ valueOrNA(case_data.ihtUnusedAllowanceClaimed) }}</td>
     </tr>
     <tr>
       <td colspan="2">Payment reference:</td>
-      <td>{% valueOrNA(case_data.paymentReferenceNumber) %}</td>
+      <td>{{ valueOrNA(case_data.paymentReferenceNumber) }}</td>
     </tr>
     <tr>
       <td colspan="2">Unique probate code:</td>
-      <td>{% valueOrNA(case_data.uniqueProbateCodeId) %}</td>
+      <td>{{ valueOrNA(case_data.uniqueProbateCodeId) }}</td>
     </tr>
     {% if case_data.hmrcLetterId %}
     <tr>
@@ -492,23 +492,23 @@
     </tr>
     <tr>
       <td colspan="2">Is the will original:</td>
-      <td>{% valueOrNA(case_data.willAccessOriginal) %}</td>
+      <td>{{ valueOrNA(case_data.willAccessOriginal) }}</td>
     </tr>
     <tr>
       <td colspan="2">Will with codicils:</td>
-      <td>{% valueOrNA(case_data.willHasCodicils) %}</td>
+      <td>{{ valueOrNA(case_data.willHasCodicils) }}</td>
     </tr>
     <tr>
       <td colspan="2">Deceased any other name on will:</td>
-      <td>{% valueOrNA(case_data.deceasedAnyOtherNameOnWill) %}</td>
+      <td>{{ valueOrNA(case_data.deceasedAnyOtherNameOnWill) }}</td>
     </tr>
     <tr>
       <td colspan="2">Deceased alias first name on will:</td>
-      <td>{% valueOrNA(case_data.deceasedAliasFirstNameOnWill) %}</td>
+      <td>{{ valueOrNA(case_data.deceasedAliasFirstNameOnWill) }}</td>
     </tr>
     <tr>
       <td colspan="2">Deceased alias last name on will:</td>
-      <td>{% valueOrNA(case_data.deceasedAliasLastNameOnWill) %}</td>
+      <td>{{ valueOrNA(case_data.deceasedAliasLastNameOnWill) }}</td>
     </tr>
     <tr>
       <td colspan="2">Number of codicils:</td>
@@ -522,11 +522,11 @@
     {% endif %}
     <tr>
       <td colspan="2">Number of extra copies of grant required (UK):</td>
-      <td>{% valueOrNA(case_data.extraCopiesOfGrant) %}</td>
+      <td>{{ valueOrNA(case_data.extraCopiesOfGrant) }}</td>
     </tr>
     <tr>
       <td colspan="2">Number of copies of grant required (outside of UK):</td>
-      <td>{% valueOrNA(case_data.outsideUKGrantCopies) %}</td>
+      <td>{{ valueOrNA(case_data.outsideUKGrantCopies) }}</td>
     </tr>
     <tr>
       <td colspan="2">Total fee due:</td>
