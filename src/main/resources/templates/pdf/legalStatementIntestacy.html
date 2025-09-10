@@ -39,6 +39,9 @@
             .spacer {
                 height: 20px;
             }
+            span.welsh-char {
+                font-family: 'Arial Unicode MS', Verdana, Arial;
+            }
 
         </style>
 </head>
@@ -124,7 +127,7 @@
                 {% if case_details.case_data.deceasedMaritalStatus == "neverMarried" %}
                 erioed yn briod
                 {% elseif case_details.case_data.deceasedMaritalStatus == "widowed" %}
-                yn &wcirc;r gweddw neu’n wraig gweddw
+                yn <span class="welsh-char">ŵ</span>r gweddw neu’n wraig gweddw
                 {% elseif case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
                 yn briod neu mewn partneriaeth sifil,
                 {% elseif case_details.case_data.deceasedMaritalStatus == "divorcedCivilPartnership" %}
