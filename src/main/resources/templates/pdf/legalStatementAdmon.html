@@ -119,7 +119,7 @@
                 case_details.case_data.deceasedAddress.Country != "" %}{{
                 case_details.case_data.deceasedAddress.Country }}{% endif %}
                 ar {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
-                a bu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, ac roedd ei ddomisil yn {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}yng Nghymru a Lloegr.{% endif %}
+                a bu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, ddomisil yn {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}yng Nghymru a Lloegr.{% endif %}
             </p>
         </td>
     </tr>
