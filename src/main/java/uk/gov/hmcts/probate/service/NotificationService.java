@@ -156,8 +156,16 @@ public class NotificationService {
         }
 
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
-            if (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY) {
-                personalisation.put("case_type", caseData.getCaseType());
+            if (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY || state == State.GRANT_REISSUED) {
+                String caseTypeText = switch (caseData.getCaseType()) {
+                    case "gop" -> "grant of probate";
+                    case "intestacy" -> "letters of administration";
+                    case "admonWill" -> "letters of administration with will annexed";
+                    case "adColligendaBona" -> "Ad Colligenda Bona grant";
+                    default -> "grant of probate";
+                };
+
+                personalisation.put("case_type_text", caseTypeText);
             }
         }
 
