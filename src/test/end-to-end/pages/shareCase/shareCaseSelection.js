@@ -23,7 +23,6 @@ module.exports = async function (sacCaseRefNumber) {
     await I.wait(3);
     await I.click('//span[contains(text(),"probate.practitioner.aat.test@gmail.com")]');
     await I.click('#btn-add-user');
-    //await I.click('.govuk-accordion__open-all');
     await I.click('#accordion-with-summary-sections > div > button > span.govuk-accordion__show-all-text');
     await I.see('probate.practitioner.aat.test@gmail.com');
     await I.see('TO BE ADDED');
