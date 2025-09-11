@@ -329,6 +329,7 @@ class NotificationServiceIT {
             .registryLocation("Birmingham")
             .solsSolicitorEmail("solicitor@probate-test.com")
             .solsSolicitorAppReference("1234-5678-9012")
+            .caseType("gop")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .build(), LAST_MODIFIED, ID);
 
