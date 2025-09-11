@@ -175,7 +175,7 @@
             <p>Rwy’n awdurdodi {{ case_details.case_data.solsSolicitorFirmName }} i anfon ar fy rhan yr hyn a gredaf i fod yn ewyllys a thestament gwir a gwreiddiol olaf{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}
                 {% if case_details.case_data.codicilAddedFormattedDateList != null %}{% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} gyda {% else %}, ac {% endif %}chodisil wedi’i lofnodi a’i ddyddio {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}{% endif %}
                 {% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notariol/swyddogol {% endif %}
-                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
+                o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
             <p>Rwy’n cadarnhau bod yr wybodaeth yr wyf wedi’i rhoi yn gywir hyd eithaf fy ngwybodaeth.</p>
         </td>
     </tr>
