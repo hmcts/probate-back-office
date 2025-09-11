@@ -11,7 +11,7 @@ module.exports = async function (SacCaseRefNumber) {
     await I.click('//input[@id="select-' + SacCaseRefNumber + '"]');
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForNavigationToComplete('#btn-share-button', 2);
-    await I.click('.govuk-accordion__open-all');
+    await I.click('#accordion-with-summary-sections > div > button > span.govuk-accordion__show-all-text');
     await I.wait(1);
     await I.click('Remove', '//tr[contains(.,"' + testConfig.TestEnvProfUser + '")]');
     await I.waitForText('TO BE REMOVED', 5);
