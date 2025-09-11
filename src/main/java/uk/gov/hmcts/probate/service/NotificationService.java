@@ -155,6 +155,12 @@ public class NotificationService {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
         }
 
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            if (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY) {
+                personalisation.put("case_type", caseData.getCaseType());
+            }
+        }
+
         updatePersonalisationForSolicitor(caseData, personalisation);
 
         String emailReplyToId = registry.getEmailReplyToId();
@@ -163,7 +169,7 @@ public class NotificationService {
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
-        log.info("Personlisation complete now get the email repsonse");
+        log.info("Personalisation is complete. Fetching the email response");
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
                 caseDetails.getId());
