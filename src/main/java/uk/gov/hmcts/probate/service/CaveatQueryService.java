@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,6 +28,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import jakarta.annotation.Nullable;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,6 +63,9 @@ public class CaveatQueryService {
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final SecurityUtils securityUtils;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
+    @Value("${data-extract.pagination.size}")
+    protected int dataExtractPaginationSize;
+    private static final String SORT_COLUMN = "id";
 
     private static <T> T nonNull(@Nullable T result) {
         Assert.state(result != null, "Entity should be non null in CaveatQueryService");
@@ -74,8 +80,9 @@ public class CaveatQueryService {
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
 
-        List<ReturnedCaveatDetails> foundCaveats = runQuery(caseType, jsonQuery);
-        if (foundCaveats.size() != 1) {
+        ReturnedCaveats foundCaveats = runQuery(caseType, jsonQuery);
+
+        if (foundCaveats.getCaveats().size() != 1) {
             String[] args = {caveatId};
             String userMessage = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE, args, Locale.UK);
             String userMessageWelsh = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE_WELSH, args,
@@ -83,7 +90,7 @@ public class CaveatQueryService {
             throw new BusinessValidationException(userMessage,
                 "Could not find any caveats for the entered caveat id: " + caveatId, userMessageWelsh);
         }
-        return foundCaveats.get(0).getData();
+        return foundCaveats.getCaveats().getFirst().getData();
     }
 
     public List<ReturnedCaveatDetails> findCaveatDraftCases(String startDate,
@@ -92,12 +99,45 @@ public class CaveatQueryService {
 
         query.must(matchQuery(STATE, PA_APP_CREATED));
         query.filter(rangeQuery("last_modified").gte(startDate).lte(endDate));
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
-
-        return runQuery(caseType, jsonQuery);
+        String jsonQuery = new SearchSourceBuilder().query(query).size(dataExtractPaginationSize)
+                .from(0)
+                .sort(SORT_COLUMN).toString();
+        return runQueryWithPagination("findCaveatCasesWithPayment", jsonQuery, startDate,
+                endDate, caseType);
     }
 
-    private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {
+    private List<ReturnedCaveatDetails> runQueryWithPagination(String queryName, String jsonQuery,
+                                                             String queryDateStart, String queryDateEnd,
+                                                               CaseType caseType) {
+
+        List<ReturnedCaveatDetails> allResults = new ArrayList<>();
+        List<ReturnedCaveatDetails> pagedResults;
+        int index = 0;
+        int pageStart = 0;
+        int total = 10000000;
+        String paginatedQry = jsonQuery;
+        while (index < total) {
+            log.info("Querying for {} from date:{} to date:{}, from index:{} to index:{}", queryName, queryDateStart,
+                    queryDateEnd, pageStart, (pageStart + dataExtractPaginationSize));
+            ReturnedCaveats cases = runQuery(caseType, paginatedQry);
+            total = cases.getTotal();
+            pagedResults = cases.getCaveats();
+            if (!CollectionUtils.isEmpty(pagedResults)) {
+                log.info("index: {}, first|last case ref: {}|{}", index, pagedResults.get(0).getId(),
+                        pagedResults.get(pagedResults.size() - 1).getId());
+            } else {
+                log.info("index: {}, first|last case ref: {}|{}", index, "Not found", "Not found");
+            }
+            allResults.addAll(pagedResults);
+            index = index + pagedResults.size();
+            pageStart = pageStart + dataExtractPaginationSize;
+            paginatedQry = updatePageStartOnQry(paginatedQry, pageStart);
+        }
+
+        return allResults;
+    }
+
+    private ReturnedCaveats runQuery(CaseType caseType, String jsonQuery) {
         log.debug("CaveatQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
@@ -127,7 +167,11 @@ public class CaveatQueryService {
             throw new ClientDataException(e.getMessage());
         }
 
-        return returnedCaveats.getCaveats();
+        return returnedCaveats;
+    }
+
+    private String updatePageStartOnQry(String paginatedQry, int pageStart) {
+        return paginatedQry.replaceFirst("\"from\": *\\d*,", "\"from\":" + pageStart + ",");
     }
 
     public List<ReturnedCaveatDetails> findCaveatExpiredCases(String expiryDate) {
@@ -139,6 +183,6 @@ public class CaveatQueryService {
                 .should(matchQuery(STATE, AWAITING_WARNING_RESPONSE))
                 .minimumShouldMatch(1);
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
-        return runQuery(CAVEAT, jsonQuery);
+        return runQuery(CAVEAT, jsonQuery).getCaveats();
     }
 }
