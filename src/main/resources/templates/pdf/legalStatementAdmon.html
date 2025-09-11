@@ -130,7 +130,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>Mae gwerth gros yr ystad {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}yn y Deyrnas Unedig {% else %}yng Nghymru a Lloegr yn{% endif %}{% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn &#163;{{ case_extras.netValue }}.</p>
+            <p>Mae gwerth gros yr ystad {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}yn y Deyrnas Unedig {% else %}yng Nghymru a Lloegr yn {% endif %}{% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn &#163;{{ case_extras.netValue }}.</p>
             {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
             {% endif %}
             <p>Hyd eithaf fy ngwybodaeth a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn eu marwolaeth (ac nid gan yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length > 1 %} a chodisiliau{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length == 1 %} a chodisil{% endif %}) o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}
