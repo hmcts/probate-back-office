@@ -287,6 +287,7 @@ class CaseDataTransformerTest {
                 is(new BigDecimal(new BigInteger("100"), 0)));
     }
 
+
     @Test
     void shouldTransformCaseDataForPaperForm() {
         caseDataMock = CaseData.builder().build();
