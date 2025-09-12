@@ -342,14 +342,14 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>{% if (multipleExecutors) %}Rydym{% else %}Rwyf {% endif %} yn cadarnhau y {% if (multipleExecutors) %}byddwn{% else %}byddaf{% endif %} yn delio ag ystad {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, yn unol â’r gyfraith. {% if (multipleExecutors) %}byddwn:{% else %}byddaf yn:{% endif %}</p>
+            <p>{% if (multipleExecutors) %}Rydym{% else %}Rwyf {% endif %} yn cadarnhau y {% if (multipleExecutors) %}byddwn{% else %}byddaf{% endif %} yn delio ag ystad {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, yn unol â’r gyfraith. {% if (multipleExecutors) %}Byddwn yn:{% else %}Byddaf yn:{% endif %}</p>
             <ul>
                 <li>casglu’r ystad i gyd</li>
                 <li>cadw manylion llawn (rhestr) o’r ystad</li>
                 <li>cadw cofnod llawn o’r ffordd y mae’r ystad wedi cael ei rhannu</li>
             </ul>
 
-            <p>Os bydd y gofrestrfa brofiant (llys) yn gofyn i {% if (multipleExecutors) %}ni{% else %}fi{% endif %} i wneud hynny, {% if (multipleExecutors) %}byddwn:{% else %}byddaf yn:{% endif %}</p>
+            <p>Os bydd y gofrestrfa brofiant (llys) yn gofyn i {% if (multipleExecutors) %}ni{% else %}fi{% endif %} i wneud hynny, {% if (multipleExecutors) %}byddwn yn:{% else %}byddaf yn:{% endif %}</p>
             <ul>
                 <li>darparu manylion llawn yr ystad a’r ffordd y cafodd ei rhannu</li>
                 <li>dychwelyd y grant profiant i'r llys</li>
@@ -357,10 +357,10 @@
 
             <p>{% if (multipleExecutors) %}Rydym{% else %}Rwyf{% endif %} yn deall:</p>
             <ul>
-                <li>y bydd y cais yn cael ei wrthod os na {% if (multipleExecutors) %}fyddwn{% else %}fyddaf yn{% endif %} darparu gwybodaeth (os gofynnir)</li>
+                <li>y bydd y cais yn cael ei wrthod os na {% if (multipleExecutors) %}fyddwn yn{% else %}fyddaf yn{% endif %} darparu gwybodaeth (os gofynnir)</li>
                 <li>y gellir dwyn achos dirmyg llys yn erbyn y sawl sy’n llofnodi isod os canfyddir bod y dystiolaeth a ddarparwyd yn fwriadol anwir neu’n anonest, yn ogystal â diddymu’r grant.</li>
             </ul>
-            <p>{% if (multipleExecutors) %}Rydym{% else %}Rydw i’n{% endif %} awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, fel {% if (multipleExecutors) %}ein{% else %}fy{% endif %} ymarferydd Profiant penodedig, i gyflwyno’r cais hwn ar {% if (multipleExecutors) %}ein{% else %}fy{% endif %} rhan.</p>
+            <p>{% if (multipleExecutors) %}Rydym i’n{% else %}Rydw i’n{% endif %} awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, fel {% if (multipleExecutors) %}ein{% else %}fy{% endif %} ymarferydd Profiant penodedig, i gyflwyno’r cais hwn ar {% if (multipleExecutors) %}ein{% else %}fy{% endif %} rhan.</p>
         </td>
     </tr>
     {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
