@@ -526,5 +526,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "TTL", "Label": "Set up TTL", "FieldType": "TTL", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "executorsNamed", "Label": "Executors named", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyExecutorsDied", "Label": "Any executors died", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "firstStopReminderSentDate", "Label": "First stop reminder sent date", "FieldType": "Date", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "firstStopReminderSentDate", "Label": "First stop reminder sent date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormsReported", "Label": "Which IHT forms did you complete to report the estate’s value?", "FieldType": "DynamicRadioList", "SecurityClassification": "Public"}
 ]
