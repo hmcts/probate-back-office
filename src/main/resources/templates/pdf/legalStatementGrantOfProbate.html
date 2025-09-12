@@ -96,7 +96,7 @@
                 {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }},{% endif %}
                 {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }},{% endif %}
                 {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
-                {% if (countApplying < (case_details.case_data.executorsApplyingLegalStatement|length)) %} ac {% endif %}
+                {% if (countApplying < (case_details.case_data.executorsApplyingLegalStatement|length)) %} a {% endif %}
                 {% set countApplying = countApplying + 1 %}
                 {% endfor %}
                 yn gwneud y datganiad canlynol:</p>
