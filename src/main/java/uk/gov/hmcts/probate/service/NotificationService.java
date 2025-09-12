@@ -176,12 +176,6 @@ public class NotificationService {
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
         log.info("Personalisation is complete. Fetching the email response");
-        System.out.println("state: " + state);
-        System.out.println("templateId" + templateId);
-        System.out.println("emailReplyToId: " + emailReplyToId);
-        System.out.println("emailAddress: " + emailAddress);
-        System.out.println("personalisation: " + personalisation);
-        System.out.println("reference: " + reference);
 
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
