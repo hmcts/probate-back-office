@@ -271,12 +271,12 @@
                         </span></p>
                         {% endif %}
                     {% else %}
-                    <p><span>{{ executor.value.notApplyingExecutorName }}, ysgutor arall a enwir yn yr ewyllys {% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} neu codisil {% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} neu godisiliau{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} fel {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
+                    <p><span>{{ executor.value.notApplyingExecutorName }}, ysgutor arall a enwir yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} neu codisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} neu godisiliau{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} fel {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
                                 {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}wedi marw yn ystod oes yr unigolyn a fu farw.{% endif %}
                                 {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} wedi goroesi’r unigolyn a fu farw ac wedi marw’n ddiweddarach.{% endif %}
-                                {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}Nid yw yn gwneud y cais hwn, ond mae’n cadw'r hawl i wneud hynny ar ddyddiad diweddarach. Maent wedi cael eu hysbysu am hyn yn ysgrifenedig.{% endif %}
-                                {% if executor.value.notApplyingExecutorReason == "Renunciation" %}Mae wedi ymwrthod â phrofiant a llythyrau gweinyddu pan fydd yna ewyllys.{% endif %}
-                                {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}Nid oes gan alluedd meddyliol i reoli eu materion dan Ddeddf Galluedd Meddyliol 2005 ac nid ydynt yn gallu gweithredu fel ysgutor.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}nid yw yn gwneud y cais hwn, ond mae’n cadw'r hawl i wneud hynny ar ddyddiad diweddarach. Maent wedi cael eu hysbysu am hyn yn ysgrifenedig.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "Renunciation" %}mae wedi ymwrthod â phrofiant a llythyrau gweinyddu pan fydd yna ewyllys.{% endif %}
+                                {% if executor.value.notApplyingExecutorReason == "MentallyIncapable" %}nid oes gan alluedd meddyliol i reoli eu materion dan Ddeddf Galluedd Meddyliol 2005 ac nid ydynt yn gallu gweithredu fel ysgutor.{% endif %}
                     </span></p>
                     {% endif %}
                 {% endfor %}
