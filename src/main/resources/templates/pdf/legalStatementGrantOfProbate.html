@@ -53,6 +53,7 @@
     {% set multipleOtherPartners = multipleOtherPartners + case_details.case_data.otherPartnersApplyingAsExecutors|length %} {% endif %}
     {% set numberOfCodicils = case_details.case_data.codicilAddedDateList|length %}
     {% set currentCodicil = 1 %}
+    {% set currentWelshCodicil = 1 %}
     <thead>
     <tr>
         <td colspan="2" class="sequence">
@@ -154,9 +155,9 @@
         <td colspan="2">
             <p>Mae gwerth gros yr ystad yn {% if case_details.case_data.deceasedDomicileInEngWales == "Yes"%}y Deyrnas Unedig {% else %}Cymru a Lloegr {% endif %}
                 yn gyfanswm o {% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn cyfateb i &#163;{{ case_extras.netValue }}.</p>
-            {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
+            {% if case_extras.showIhtEstate == "Yes" %}<p>Rwy’n cadarnhau bod yr ystad yn ystad eithriedig</p>{% endif %}
             {% endif %}
-            <p>Hyd eithaf {% if (multipleExecutors) %}ein gwybodaeth{% else %}fy ngwybodaeth{% endif %} a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn eu marwolaeth (ac nid drwy yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} a’r codisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} a chodisiliau{% endif %}){{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
+            <p>Hyd eithaf {% if (multipleExecutors) %}ein gwybodaeth{% else %}fy ngwybodaeth{% endif %} a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn eu marwolaeth (ac nid drwy yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} a’r codisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} a chodisiliau{% endif %}) o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
         </td>
     </tr>
 
@@ -324,8 +325,8 @@
             <p>{% if (multipleExecutors) %}Rydym {% else %}Rydw i’n {% endif %} awdurdodi
                 {{ case_details.case_data.solsSolicitorFirmName }} i anfon ar
                 {% if (multipleExecutors) %}ein{% else %}fy {% endif %} rhan beth
-                {% if (multipleExecutors) %}rydym {% else %}Rydw i’n{% endif %} gredu i fod yn ewyllys a thestament gwir a gwreiddiol olaf{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notarïol/swyddogol{% endif %}
-                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} gyda{% else %}, a{% endif %} chodisil sydd wedi’i lofnodi a’i ddyddio {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
+                {% if (multipleExecutors) %}rydym {% else %}rydw i’n{% endif %} gredu i fod yn ewyllys a thestament gwir a gwreiddiol olaf{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notarïol/swyddogol{% endif %}
+                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentWelshCodicil == 1 %} gyda{% else %} a {% endif %} chodisil sydd wedi’i lofnodi a’i ddyddio {{ codicil.value }}{% set currentWelshCodicil = currentWelshCodicil + 1 %}{% endfor %} o
                 {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
             </p>
             {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Y dystiolaeth bellach i gefnogi’r cais hwn yw:
@@ -682,7 +683,7 @@
                 {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf what
                 {% if (multipleExecutors) %}we{% else %}I{% endif %} believe to be the
                 true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, as contained in a notarial/official copy{% endif %}
-                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with{% else %}, and{% endif %} codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
+                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with{% else %} and {% endif %} codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
                 of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
             </p>
                 {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Further evidence in support of this application is:

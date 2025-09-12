@@ -144,7 +144,7 @@
     <tr>
         <td colspan="2">
             <p>Mae gwerth gros yr ystad {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}yn y Deyrnas Unedig {% else %}yng Nghymru a Lloegr{% endif %} yn {% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn &#163;{{ case_extras.netValue }}.</p>
-            {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
+            {% if case_extras.showIhtEstate == "Yes" %}<p>Rwy’n cadarnhau bod yr ystad yn ystad eithriedig</p>{% endif %}
             {% endif %}
             <p>Hyd eithaf fy ngwybodaeth a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn marwolaeth {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
         </td>
