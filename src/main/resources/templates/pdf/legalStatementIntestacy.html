@@ -166,14 +166,14 @@
             <p>
                 {% if case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
                 {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}Fi yw priod neu bartner sifil {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a‘r unig unigolyn sydd nawr â hawl i’r ystad.
-                {% else %}Nid yw gŵr/gwraig neu bartner sifil {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} eisiau gwneud cais am lythyrau gweinyddu nawr neu yn y dyfodol. Fi yw plentyn
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} a fabwysiadwyd gan {% endif %}{{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac
+                {% else %}Nid yw priod neu bartner sifil {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} eisiau gwneud cais am lythyrau gweinyddu nawr neu yn y dyfodol. Fi yw plentyn
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} mabwysiedig {% endif %}{{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac
                 {% if case_details.case_data.ihtNetValue/100 > 250000 %} un o’r bobl sydd â hawl i’r ystad.
                 {% else %} yr unig unigolyn a allai fod â hawl i’r ystad.
                 {% endif %}
                 {% endif %}
                 {% else %}Fi yw plentyn
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} a fabwysiadwyd gan {% endif %}{{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a’r unig unigolyn sydd nawr â hawl i’r ystad
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} mabwysiedig {% endif %}{{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a’r unig unigolyn sydd nawr â hawl i’r ystad.
                 {% endif %}
             </p>
             <p>Rwy’n gwneud cais am lythyrau gweinyddu. Rwyf wedi darparu’r hyn a gredaf i fod yn wybodaeth gywir a gwir am {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
