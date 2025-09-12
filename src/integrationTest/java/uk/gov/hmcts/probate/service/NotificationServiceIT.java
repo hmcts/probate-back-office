@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,13 +20,7 @@ import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
-import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.CaseType;
-import uk.gov.hmcts.probate.model.CaseOrigin;
-import uk.gov.hmcts.probate.model.Constants;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
-import uk.gov.hmcts.probate.model.LanguagePreference;
-import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -2577,6 +2572,94 @@ class NotificationServiceIT {
                 eq("executor-three@probate-test.com"),
                 any(),
                 anyString());
+    }
+
+    @Test
+    void shouldSetCaseTypeTextForSolicitorGrantOfProbateIssued() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .caseType("gop")
+                .registryLocation("Manchester")
+                .languagePreferenceWelsh("No")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .build(), null, CASE_ID);
+
+        when(notificationClient.sendEmail(any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        notificationService.sendEmail(State.GRANT_ISSUED_INTESTACY, caseDetails);
+
+        ArgumentCaptor<Map<String, Object>> personalisationCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClient).sendEmail(any(), any(), personalisationCaptor.capture(), any());
+
+        Map<String, Object> personalisation = personalisationCaptor.getValue();
+        assertEquals("grant of probate", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void shouldSetCaseTypeTextForSolicitorIntestacyGrantIssued() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .caseType("intestacy")
+                .registryLocation("Manchester")
+                .languagePreferenceWelsh("No")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .build(), null, CASE_ID);
+
+        when(notificationClient.sendEmail(any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        notificationService.sendEmail(State.GRANT_ISSUED_INTESTACY, caseDetails);
+
+        ArgumentCaptor<Map<String, Object>> personalisationCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClient).sendEmail(any(), any(), personalisationCaptor.capture(), any());
+
+        Map<String, Object> personalisation = personalisationCaptor.getValue();
+        assertEquals("letters of administration", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void shouldSetCaseTypeTextForSolicitorAdColligendaBonaGrantIssued() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .caseType("adColligendaBona")
+                .registryLocation("Manchester")
+                .languagePreferenceWelsh("No")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .build(), null, CASE_ID);
+
+        when(notificationClient.sendEmail(any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        notificationService.sendEmail(State.GRANT_ISSUED_INTESTACY, caseDetails);
+
+        ArgumentCaptor<Map<String, Object>> personalisationCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClient).sendEmail(any(), any(), personalisationCaptor.capture(), any());
+
+        Map<String, Object> personalisation = personalisationCaptor.getValue();
+        assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void shouldSetCaseTypeTextForSolicitorAdmonWillGrantIssued() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .caseType("admonWill")
+                .registryLocation("Manchester")
+                .languagePreferenceWelsh("No")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .build(), null, CASE_ID);
+
+        when(notificationClient.sendEmail(any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        notificationService.sendEmail(State.GRANT_ISSUED_INTESTACY, caseDetails);
+
+        ArgumentCaptor<Map<String, Object>> personalisationCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClient).sendEmail(any(), any(), personalisationCaptor.capture(), any());
+
+        Map<String, Object> personalisation = personalisationCaptor.getValue();
+        assertEquals("letters of administration with will annexed", personalisation.get("case_type_text"));
     }
 
     private CollectionMember<ExecutorApplying> buildExecutor(String name,
