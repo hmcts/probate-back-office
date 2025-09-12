@@ -322,17 +322,17 @@
     </tr>
     <tr>
         <td  colspan="2">
-            <p>{% if (multipleExecutors) %}Rydym {% else %}Rydw i’n {% endif %} awdurdodi
+            <p>{% if (multipleExecutors) %}Rydym i’n {% else %}Rydw i’n {% endif %} awdurdodi
                 {{ case_details.case_data.solsSolicitorFirmName }} i anfon ar
                 {% if (multipleExecutors) %}ein{% else %}fy {% endif %} rhan beth
-                {% if (multipleExecutors) %}rydym {% else %}rydw i’n{% endif %} gredu i fod yn ewyllys a thestament gwir a gwreiddiol olaf{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notarïol/swyddogol{% endif %}
+                {% if (multipleExecutors) %}rydym i’n {% else %}rydw i’n {% endif %} gredu i fod yn ewyllys a thestament gwir a gwreiddiol olaf{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notarïol/swyddogol{% endif %}
                 {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentWelshCodicil == 1 %} gyda{% else %} a {% endif %} chodisil sydd wedi’i lofnodi a’i ddyddio {{ codicil.value }}{% set currentWelshCodicil = currentWelshCodicil + 1 %}{% endfor %} o
                 {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
             </p>
             {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Y dystiolaeth bellach i gefnogi’r cais hwn yw:
             <p> {{ case_details.case_data.furtherEvidenceForApplication }} </p>
             {% endif %}
-            <p>{% if (multipleExecutors) %}Rydym{% else %}Rydw i’n{% endif %} cadarnhau bod y wybodaeth {% if (multipleExecutors) %}rydym{% else %}rwyf{% endif %} wedi ei darparu yn gywir hyd eithaf {% if (multipleExecutors) %}ein{% else %}fy{% endif %} ngwybodaeth.</p>
+            <p>{% if (multipleExecutors) %}Rydym i’n {% else %}Rydw i’n {% endif %} cadarnhau bod y wybodaeth {% if (multipleExecutors) %}rydym{% else %}rwyf{% endif %} wedi ei darparu yn gywir hyd eithaf {% if (multipleExecutors) %}ein{% else %}fy{% endif %} ngwybodaeth.</p>
         </td>
     </tr>
     <tr>
