@@ -186,7 +186,7 @@
                 {% else %}
                 {{ case_details.case_data.singularProfitSharingTextForLegalStatement }}
                 {% endif %} arall sy’n rhannu elw
-                yn y {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}olynydd {% endif %} cwmni.
+                yn y {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}cwmni olynydd. {% endif %} cwmni.
             </p>
             {% endif %}
 
@@ -342,7 +342,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>{% if (multipleExecutors) %}Rydym{% else %}Rwyf yn{% endif %} cadarnhau y {% if (multipleExecutors) %}byddwn{% else %}byddaf{% endif %} yn delio ag ystad {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, yn unol â’r gyfraith. {% if (multipleExecutors) %}byddwn:{% else %}byddaf yn:{% endif %}</p>
+            <p>{% if (multipleExecutors) %}Rydym{% else %}Rwyf {% endif %} yn cadarnhau y {% if (multipleExecutors) %}byddwn{% else %}byddaf{% endif %} yn delio ag ystad {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, yn unol â’r gyfraith. {% if (multipleExecutors) %}byddwn:{% else %}byddaf yn:{% endif %}</p>
             <ul>
                 <li>casglu’r ystad i gyd</li>
                 <li>cadw manylion llawn (rhestr) o’r ystad</li>
