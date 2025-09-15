@@ -269,7 +269,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_ISSUED,
                 "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
-        assertExpectedContents("grantIssuedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
+        assertExpectedContents("grantIssuedAdmonWillSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
 
     @Test
