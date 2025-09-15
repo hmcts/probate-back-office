@@ -2604,6 +2604,28 @@ class NotificationServiceIT {
     }
 
     @Test
+    void shouldSetCaseTypeTextForSolicitorGrantOfProbateIssuedWelsh() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .caseType("gop")
+                .registryLocation("Manchester")
+                .languagePreferenceWelsh("Yes")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .build(), null, CASE_ID);
+
+        when(notificationClient.sendEmail(any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        notificationService.sendEmail(State.GRANT_ISSUED_INTESTACY, caseDetails);
+
+        ArgumentCaptor<Map<String, Object>> personalisationCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClient).sendEmail(any(), any(), personalisationCaptor.capture(), any());
+
+        Map<String, Object> personalisation = personalisationCaptor.getValue();
+        assertEquals("grant profiant", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
     void shouldSetCaseTypeTextForSolicitorIntestacyGrantIssued() throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
@@ -2623,6 +2645,28 @@ class NotificationServiceIT {
 
         Map<String, Object> personalisation = personalisationCaptor.getValue();
         assertEquals("letters of administration", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void shouldSetCaseTypeTextForSolicitorIntestacyGrantIssuedWelsh() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .caseType("intestacy")
+                .registryLocation("Manchester")
+                .languagePreferenceWelsh("Yes")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .build(), null, CASE_ID);
+
+        when(notificationClient.sendEmail(any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        notificationService.sendEmail(State.GRANT_ISSUED_INTESTACY, caseDetails);
+
+        ArgumentCaptor<Map<String, Object>> personalisationCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClient).sendEmail(any(), any(), personalisationCaptor.capture(), any());
+
+        Map<String, Object> personalisation = personalisationCaptor.getValue();
+        assertEquals("llythyrau gweinyddu", personalisation.get("welsh_case_type_text"));
     }
 
     @Test
@@ -2648,6 +2692,28 @@ class NotificationServiceIT {
     }
 
     @Test
+    void shouldSetCaseTypeTextForSolicitorAdColligendaBonaGrantIssuedWelsh() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .caseType("adColligendaBona")
+                .registryLocation("Manchester")
+                .languagePreferenceWelsh("Yes")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .build(), null, CASE_ID);
+
+        when(notificationClient.sendEmail(any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        notificationService.sendEmail(State.GRANT_ISSUED_INTESTACY, caseDetails);
+
+        ArgumentCaptor<Map<String, Object>> personalisationCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClient).sendEmail(any(), any(), personalisationCaptor.capture(), any());
+
+        Map<String, Object> personalisation = personalisationCaptor.getValue();
+        assertEquals("grant Ad Colligenda Bona", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
     void shouldSetCaseTypeTextForSolicitorAdmonWillGrantIssued() throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
@@ -2667,6 +2733,28 @@ class NotificationServiceIT {
 
         Map<String, Object> personalisation = personalisationCaptor.getValue();
         assertEquals("letters of administration with will annexed", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void shouldSetCaseTypeTextForSolicitorAdmonWillGrantIssuedWelsh() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .caseType("admonWill")
+                .registryLocation("Manchester")
+                .languagePreferenceWelsh("Yes")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .build(), null, CASE_ID);
+
+        when(notificationClient.sendEmail(any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        notificationService.sendEmail(State.GRANT_ISSUED_INTESTACY, caseDetails);
+
+        ArgumentCaptor<Map<String, Object>> personalisationCaptor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClient).sendEmail(any(), any(), personalisationCaptor.capture(), any());
+
+        Map<String, Object> personalisation = personalisationCaptor.getValue();
+        assertEquals("llythyrau gweinyddu pan fydd yna ewyllys", personalisation.get("welsh_case_type_text"));
     }
 
     private CollectionMember<ExecutorApplying> buildExecutor(String name,
