@@ -160,10 +160,12 @@ public class NotificationService {
         }
 
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)
-                && (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY || state == State.GRANT_REISSUED)) {
+                && (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY
+                || state == State.GRANT_REISSUED)) {
             personalisation.put("case_type_text", getCaseTypeText(caseData.getCaseType(), LanguagePreference.ENGLISH));
             if (caseData.getLanguagePreference() == LanguagePreference.WELSH) {
-                personalisation.put("welsh_case_type_text", getCaseTypeText(caseData.getCaseType(), LanguagePreference.WELSH));
+                personalisation.put("welsh_case_type_text",
+                        getCaseTypeText(caseData.getCaseType(), LanguagePreference.WELSH));
             }
         }
 
