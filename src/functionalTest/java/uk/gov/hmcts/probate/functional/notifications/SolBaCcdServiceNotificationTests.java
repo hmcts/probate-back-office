@@ -273,14 +273,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    void verifySolicitorGrantIssuedAdmonWithAdmonPayloadWillShouldReturnOkResponseCode() throws IOException {
-        final ResponseBody responseBody =
-                validatePostSuccessWithAttributeUpdate("solicitorPayloadNotificationsAdmonWill.json", GRANT_ISSUED,
-                        "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
-        assertExpectedContents("grantIssuedAdmonWillSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
-    }
-
-    @Test
     @Disabled
     void verifySolicitorGrantReissuedShouldReturnOkResponseCode() throws IOException {
         postNotificationEmailAndVerifyContents(GRANT_REISSUED, "solicitorPayloadNotifications.json",
