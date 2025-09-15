@@ -269,9 +269,14 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("solicitorPayloadNotifications.json", GRANT_ISSUED,
                 "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
-        System.out.println("responseBody: " + responseBody.asString());
-        System.out.println("=============================================================================");
-        System.out.println("responseBody: " + responseBody.prettyPrint());
+        assertExpectedContents("grantIssuedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
+    }
+
+    @Test
+    void verifySolicitorGrantIssuedAdmonWithAdmonPayloadWillShouldReturnOkResponseCode() throws IOException {
+        final ResponseBody responseBody =
+                validatePostSuccessWithAttributeUpdate("solicitorPayloadNotificationsAdmonWill.json", GRANT_ISSUED,
+                        "\"caseType\":\"gop\"", "\"caseType\":\"admonWill\"");
         assertExpectedContents("grantIssuedAdmonWillSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
 
