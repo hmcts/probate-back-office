@@ -161,7 +161,7 @@
                 {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
                 yn gwneud cais am Lythyrau Gweinyddu (gydag ewyllys wedi’i atodi) ac wedi’i enwi yn yr
-                {% if case_details.case_data.willHasCodicils == "No" %} ewyllys{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.willNumberOfCodicils == "1" %} ewyllys a/neu’r codisil{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length==1 %} ewyllys a/neu’r codisil{% else %} ewyllys a/neu’r codisiliau{% endif %} fel
+                {% if case_details.case_data.willHasCodicils == "No" %} ewyllys{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.willNumberOfCodicils == "1" %} ewyllys a/neu codisil{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length==1 %} ewyllys a/neu codisil{% else %} ewyllys a/neu’r codisiliau{% endif %} fel
                 {% if case_details.case_data.solsResiduaryType == "Legatee" %} y derbyniwr cymynrodd.
                 {% elseif case_details.case_data.solsResiduaryType == "Devisee" %} y derbyniwr cymynedig.
                 {% else %} y derbyniwr cymynrodd a chymynnwr.
