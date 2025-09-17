@@ -11,7 +11,7 @@ plugins {
   id 'au.com.dius.pact' version '4.6.17'
   id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.34'
   id 'org.sonarqube' version '6.3.1.5724'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.1861'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.1865'
 }
 
 application {
@@ -181,7 +181,7 @@ def versions = [
         springBootVersion               : '3.5.5',
         springCloud                     : '4.1.5',
         springDocOpenUi                 : '2.8.13',
-        swaggerAnnotations              : '2.2.36',
+        swaggerAnnotations              : '2.2.37',
         springSecurityVersion           : '6.5.4',
         tomcat                          : '10.1.46'
 ]
