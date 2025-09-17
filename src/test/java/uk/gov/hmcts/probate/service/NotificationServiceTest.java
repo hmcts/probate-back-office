@@ -437,7 +437,7 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "grant profiant");
+        personalisation.put("welsh_case_type_text", "grant profiant");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -480,7 +480,7 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "llythyrau gweinyddu");
+        personalisation.put("welsh_case_type_text", "llythyrau gweinyddu");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -523,7 +523,7 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "llythyrau gweinyddu pan fydd yna ewyllys");
+        personalisation.put("welsh_case_type_text", "llythyrau gweinyddu pan fydd yna ewyllys");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -566,7 +566,7 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "grant Ad Colligenda Bona");
+        personalisation.put("welsh_case_type_text", "grant Ad Colligenda Bona");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -588,7 +588,7 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "grant Ad Colligenda Bona");
+        personalisation.put("welsh_case_type_text", "grant Ad Colligenda Bona");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_REISSUED, caseData,
                 personalisation);
