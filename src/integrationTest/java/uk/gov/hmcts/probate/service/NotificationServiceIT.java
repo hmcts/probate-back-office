@@ -20,8 +20,8 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
@@ -117,6 +117,7 @@ class NotificationServiceIT {
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_APPLICANT_FORENAMES = "applicantFN";
     private static final String PERSONALISATION_APPLICANT_SURNAME = "applicantSN";
+    private static final String PERSONALISATION_APPLICANT_EMAIL = "primary@probate-test.com";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
     private static final String PERSONALISATION_DECEASED_FORNAMES = "deceasedFN";
     private static final String PERSONALISATION_DECEASED_SURNAME = "deceasedSN";
@@ -132,6 +133,7 @@ class NotificationServiceIT {
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
     private static final String PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE = "welsh_caveat_expiry_date";
+    private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveat_expiry_date";
     private static final String PERSONALISATION_CAVEAT_ENTERED = "date_caveat_entered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
@@ -327,7 +329,6 @@ class NotificationServiceIT {
             .registryLocation("Birmingham")
             .solsSolicitorEmail("solicitor@probate-test.com")
             .solsSolicitorAppReference("1234-5678-9012")
-            .caseType("gop")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .build(), LAST_MODIFIED, ID);
 
