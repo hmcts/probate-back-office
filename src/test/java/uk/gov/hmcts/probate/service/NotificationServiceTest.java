@@ -404,7 +404,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeGop() {
+    void updatePersonalisationText_ForGrantIssuedCaseTypeGop() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -425,7 +425,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeGopWelsh() {
+    void updatePersonalisationText_ForGrantIssuedCaseTypeGopWelsh() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -447,7 +447,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeIntestacy() {
+    void updatePersonalisationText_ForGrantIssuedCaseTypeIntestacy() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -468,7 +468,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeIntestacyWelsh() {
+    void updatePersonalisationText_ForGrantIssuedCaseTypeIntestacyWelsh() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -490,7 +490,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeAdmonWill() {
+    void updatePersonalisationText_ForGrantIssuedCaseTypeAdmonWill() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -511,7 +511,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeAdmonWillWelsh() {
+    void updatePersonalisationText_ForGrantIssuedCaseTypeAdmonWillWelsh() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -533,7 +533,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeAdColligendaBona() {
+    void updatePersonalisationText_ForGrantIssuedCaseTypeAdColligendaBona() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -554,7 +554,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeAdColligendaBonaWelsh() {
+    void updatePersonalisationText_ForGrantIssuedCaseTypeAdColligendaBonaWelsh() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -573,5 +573,67 @@ class NotificationServiceTest {
 
         assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
         assertEquals("grant Ad Colligenda Bona", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ForGrantReissuedCaseTypeAdColligendaBonaWelsh() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseType()).thenReturn("adColligendaBona");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantEmailAddress()).thenReturn("primary@probate-test.com");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("case_type_text", "grant Ad Colligenda Bona");
+
+        notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_REISSUED, caseData,
+                personalisation);
+
+        assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
+        assertEquals("grant Ad Colligenda Bona", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ThrowsException_ForEmptyCaseType() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseType()).thenReturn("");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantEmailAddress()).thenReturn("primary@probate-test.com");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("case_type_text", "grant Ad Colligenda Bona");
+
+        assertThrows(RequestInformationParameterException.class, () ->
+                notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
+                        personalisation));
+    }
+
+    @Test
+    void updatePersonalisationText_ThrowsException_ForUnknownCaseType() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseType()).thenReturn("foo");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantEmailAddress()).thenReturn("primary@probate-test.com");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("case_type_text", "grant Ad Colligenda Bona");
+
+        assertThrows(RequestInformationParameterException.class, () ->
+                notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
+                        personalisation));
     }
 }
