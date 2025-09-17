@@ -94,6 +94,7 @@ public class NotificationService {
     private static final String INTESTACY_CASE_TYPE = "intestacy";
     private static final String ADMON_WILL_CASE_TYPE = "admonWill";
     private static final String AD_COLLIGENDA_BONA_CASE_TYPE = "adColligendaBona";
+    private static final String EDGE_CASE_TYPE = "edgeCase";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
 
@@ -159,17 +160,8 @@ public class NotificationService {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
         }
 
-        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)
-                && (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY
-                || state == State.GRANT_REISSUED)) {
-            personalisation.put("case_type_text", getCaseTypeText(caseData.getCaseType(), LanguagePreference.ENGLISH));
-            if (caseData.getLanguagePreference() == LanguagePreference.WELSH) {
-                personalisation.put("welsh_case_type_text",
-                        getCaseTypeText(caseData.getCaseType(), LanguagePreference.WELSH));
-            }
-        }
-
         updatePersonalisationForSolicitor(caseData, personalisation);
+        updatePersonalisationForSolicitorGrantIssuedEmails(state, caseData, personalisation);
 
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
@@ -224,6 +216,18 @@ public class NotificationService {
                     .isEmpty(caseData.getSolsSOTSurname())) {
                 personalisation.replace(PERSONALISATION_APPLICANT_NAME,
                         String.join(" ", caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()));
+            }
+        }
+    }
+
+    void updatePersonalisationForSolicitorGrantIssuedEmails(State state, CaseData caseData, Map<String, Object> personalisation) {
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)
+                && (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY
+                || state == State.GRANT_REISSUED)) {
+            personalisation.put("case_type_text", getCaseTypeText(caseData.getCaseType(), LanguagePreference.ENGLISH));
+            if (caseData.getLanguagePreference() == LanguagePreference.WELSH) {
+                personalisation.put("welsh_case_type_text",
+                        getCaseTypeText(caseData.getCaseType(), LanguagePreference.WELSH));
             }
         }
     }
@@ -1060,13 +1064,21 @@ public class NotificationService {
     }
 
     private String getCaseTypeText(String caseType, LanguagePreference languagePreference) {
+        if (caseType.isBlank()) {
+            log.error("Personalisation validation failed for blank caseType");
+            throw new RequestInformationParameterException();
+        }
         if (languagePreference.equals(LanguagePreference.ENGLISH)) {
             return switch (caseType) {
                 case GOP_CASE_TYPE -> "grant of probate";
                 case INTESTACY_CASE_TYPE -> "letters of administration";
                 case ADMON_WILL_CASE_TYPE -> "letters of administration with will annexed";
                 case AD_COLLIGENDA_BONA_CASE_TYPE -> "Ad Colligenda Bona grant";
-                default -> "grant of probate";
+                case EDGE_CASE_TYPE -> "???";
+                default -> {
+                    log.error("Personalisation validation failed due to unknown caseType: {}", caseType);
+                    throw new RequestInformationParameterException();
+                }
             };
         } else {
             return switch (caseType) {
@@ -1074,7 +1086,11 @@ public class NotificationService {
                 case INTESTACY_CASE_TYPE -> "llythyrau gweinyddu";
                 case ADMON_WILL_CASE_TYPE -> "llythyrau gweinyddu pan fydd yna ewyllys";
                 case AD_COLLIGENDA_BONA_CASE_TYPE -> "grant Ad Colligenda Bona";
-                default -> "grant profiant";
+                case EDGE_CASE_TYPE -> "???";
+                default -> {
+                    log.error("Personalisation validation failed due to unknown caseType: {}", caseType);
+                    throw new RequestInformationParameterException();
+                }
             };
         }
     }
