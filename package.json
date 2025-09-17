@@ -79,7 +79,7 @@
     "@hmcts/playwright-common": "^1.0.32",
     "@playwright/test": "^1.43.1",
     "@types/node": "^22.0.0",
-    "chai": "^4.1.0",
+    "chai": "^6.0.0",
     "chai-http": "^4.3.0",
     "chai-string": "^1.5.0",
     "codeceptjs": "3.4.0",

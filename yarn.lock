@@ -1660,7 +1660,7 @@ __metadata:
     "@hmcts/playwright-common": "npm:^1.0.32"
     "@playwright/test": "npm:^1.43.1"
     "@types/node": "npm:^22.0.0"
-    chai: "npm:^4.1.0"
+    chai: "npm:^6.0.0"
     chai-http: "npm:^4.3.0"
     chai-string: "npm:^1.5.0"
     codeceptjs: "npm:3.4.0"
@@ -2516,7 +2516,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chai@npm:^4.1.0, chai@npm:^4.3.6":
+"chai@npm:^4.3.6":
   version: 4.5.0
   resolution: "chai@npm:4.5.0"
   dependencies:
@@ -2528,6 +2528,13 @@ __metadata:
     pathval: "npm:^1.1.1"
     type-detect: "npm:^4.1.0"
   checksum: 10/cde341aee15b0a51559c7cfc20788dcfb4d586a498cfb93b937bb568fd45c777b73b1461274be6092b6bf868adb4e3a63f3fec13c89f7d8fb194f84c6fa42d5f
+  languageName: node
+  linkType: hard
+
+"chai@npm:^6.0.0":
+  version: 6.0.1
+  resolution: "chai@npm:6.0.1"
+  checksum: 10/cd95aee5f98cdeaea3e24c21dcf1786d9eaf515d571861106a2378589cf5ef1ed3ddd223ca1121552656ffd744e4acd051f8881c1a9729c71551776db55fb2cb
   languageName: node
   linkType: hard
 
