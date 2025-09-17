@@ -445,4 +445,133 @@ class NotificationServiceTest {
         assertEquals("grant of probate", personalisation.get("case_type_text"));
         assertEquals("grant profiant", personalisation.get("welsh_case_type_text"));
     }
+
+    @Test
+    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeIntestacy() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseType()).thenReturn("intestacy");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantEmailAddress()).thenReturn("primary@probate-test.com");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("case_type_text", "letters of administration");
+
+        notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
+                personalisation);
+
+        assertEquals("letters of administration", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeIntestacyWelsh() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseType()).thenReturn("intestacy");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantEmailAddress()).thenReturn("primary@probate-test.com");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("case_type_text", "llythyrau gweinyddu");
+
+        notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
+                personalisation);
+
+        assertEquals("letters of administration", personalisation.get("case_type_text"));
+        assertEquals("llythyrau gweinyddu", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
+    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeAdmonWill() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseType()).thenReturn("admonWill");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantEmailAddress()).thenReturn("primary@probate-test.com");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("case_type_text", "letters of administration with will annexed");
+
+        notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
+                personalisation);
+
+        assertEquals("letters of administration with will annexed", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeAdmonWillWelsh() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseType()).thenReturn("admonWill");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantEmailAddress()).thenReturn("primary@probate-test.com");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("case_type_text", "llythyrau gweinyddu pan fydd yna ewyllys");
+
+        notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
+                personalisation);
+
+        assertEquals("letters of administration with will annexed", personalisation.get("case_type_text"));
+        assertEquals("llythyrau gweinyddu pan fydd yna ewyllys", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
+    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeAdColligendaBona() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseType()).thenReturn("adColligendaBona");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantEmailAddress()).thenReturn("primary@probate-test.com");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("case_type_text", "Ad Colligenda Bona grant");
+
+        notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
+                personalisation);
+
+        assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void sendEmail_ReturnsDocumentWithExpectedFileName_ForCaseTypeAdColligendaBonaWelsh() {
+        CaseData caseData = mock(CaseData.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.getCaseType()).thenReturn("adColligendaBona");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
+        when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
+        when(caseData.getPrimaryApplicantEmailAddress()).thenReturn("primary@probate-test.com");
+        when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
+
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("case_type_text", "grant Ad Colligenda Bona");
+
+        notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
+                personalisation);
+
+        assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
+        assertEquals("grant Ad Colligenda Bona", personalisation.get("welsh_case_type_text"));
+    }
 }
