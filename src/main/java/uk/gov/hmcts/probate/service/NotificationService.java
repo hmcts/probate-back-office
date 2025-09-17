@@ -220,7 +220,8 @@ public class NotificationService {
         }
     }
 
-    void updatePersonalisationForSolicitorGrantIssuedEmails(State state, CaseData caseData, Map<String, Object> personalisation) {
+    void updatePersonalisationForSolicitorGrantIssuedEmails(State state, CaseData caseData,
+                                                            Map<String, Object> personalisation) {
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)
                 && (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY
                 || state == State.GRANT_REISSUED)) {
