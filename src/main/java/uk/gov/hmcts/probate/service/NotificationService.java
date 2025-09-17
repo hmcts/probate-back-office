@@ -94,7 +94,6 @@ public class NotificationService {
     private static final String INTESTACY_CASE_TYPE = "intestacy";
     private static final String ADMON_WILL_CASE_TYPE = "admonWill";
     private static final String AD_COLLIGENDA_BONA_CASE_TYPE = "adColligendaBona";
-    private static final String EDGE_CASE_TYPE = "edgeCase";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
 
@@ -1075,7 +1074,6 @@ public class NotificationService {
                 case INTESTACY_CASE_TYPE -> "letters of administration";
                 case ADMON_WILL_CASE_TYPE -> "letters of administration with will annexed";
                 case AD_COLLIGENDA_BONA_CASE_TYPE -> "Ad Colligenda Bona grant";
-                case EDGE_CASE_TYPE -> "???";
                 default -> {
                     log.error("Personalisation validation failed due to unknown caseType: {}", caseType);
                     throw new RequestInformationParameterException();
@@ -1087,7 +1085,6 @@ public class NotificationService {
                 case INTESTACY_CASE_TYPE -> "llythyrau gweinyddu";
                 case ADMON_WILL_CASE_TYPE -> "llythyrau gweinyddu pan fydd yna ewyllys";
                 case AD_COLLIGENDA_BONA_CASE_TYPE -> "grant Ad Colligenda Bona";
-                case EDGE_CASE_TYPE -> "???";
                 default -> {
                     log.error("Personalisation validation failed due to unknown caseType: {}", caseType);
                     throw new RequestInformationParameterException();
