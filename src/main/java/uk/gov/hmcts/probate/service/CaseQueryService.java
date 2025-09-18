@@ -109,10 +109,42 @@ public class CaseQueryService {
     public List<ReturnedCaseDetails> findAllCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
         BoolQueryBuilder query = boolQuery();
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
+        String[] includes = {
+            "id",
+            "reference",
+            "last_modified",
+            "data.scannedDocuments",
+            "data.probateDocumentsGenerated",
+            "data.boDocumentsUploaded",
+            "data.applicationType",
+            "data.caseType",
+            "data.registryLocation",
+            "data.grantIssuedDate",
+            "data.deceasedForenames",
+            "data.deceasedSurname",
+            "data.boDeceasedHonours",
+            "data.deceasedAliasNameList",
+            "data.solsDeceasedAliasNamesList",
+            "data.deceasedDateOfDeath",
+            "data.deceasedAddress",
+            "data.executorsApplying",
+            "data.primaryApplicantForenames",
+            "data.primaryApplicantSurname",
+            "data.primaryApplicantAlias",
+            "data.primaryApplicantAddress",
+            "data.ihtGrossValue",
+            "data.ihtNetValue",
+            "data.solsSolicitorFirmName",
+            "data.solsSolicitorAppReference",
+            "data.solsSolicitorAddress",
+            "data.deceasedDateOfBirth",
+            "data.willHasCodicils"
+        };
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(0)
                 .sort(SORT_COLUMN)
+                .fetchSource(includes, null)
                 .toString();
 
         return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate,

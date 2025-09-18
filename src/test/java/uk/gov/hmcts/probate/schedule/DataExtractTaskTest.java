@@ -7,7 +7,6 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractService;
@@ -45,6 +44,7 @@ class DataExtractTaskTest {
     private DataExtractTask underTest;
 
     private static final String AD_HOC_DATE = "2025-01-31";
+    private static final String AD_HOC_TO_DATE = "2025-02-01";
 
     @BeforeEach
     void setup() {
@@ -55,6 +55,7 @@ class DataExtractTaskTest {
                 dateValidator,
                 featureToggleService,
                 dataExtractService,
+                "",
                 "");
     }
 
@@ -88,13 +89,19 @@ class DataExtractTaskTest {
     @Test
     void shouldUseAdhocDateWhenProvided() {
         when(featureToggleService.isNfiDataExtractFeatureToggleOn()).thenReturn(true);
-        ReflectionTestUtils.setField(underTest, "adHocJobDate", "2025-01-31");
+        underTest = new DataExtractTask(
+                fixedClock,
+                dateValidator,
+                featureToggleService,
+                dataExtractService,
+                AD_HOC_DATE,
+                AD_HOC_TO_DATE);
 
         underTest.run();
 
-        verify(dateValidator).dateValidator(AD_HOC_DATE, AD_HOC_DATE);
+        verify(dateValidator).dateValidator(AD_HOC_DATE, AD_HOC_TO_DATE);
         verify(dataExtractService)
-                .performExtractForDateRange(AD_HOC_DATE, AD_HOC_DATE, NATIONAL_FRAUD_INITIATIVE);
+                .performExtractForDateRange(AD_HOC_DATE, AD_HOC_TO_DATE, NATIONAL_FRAUD_INITIATIVE);
     }
 
     @Test
