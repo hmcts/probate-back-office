@@ -32,8 +32,9 @@ public class SolicitorLegalStatementPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.decorate(ihtEstateConfirmCaseExtra);
         }
-        if (caseData.getOriginalWillSignedDate() != null) {
-            String welshWillFormattedDate = localDateToWelshStringConverter.convert(caseData.getOriginalWillSignedDate());
+        if (null != caseData.getOriginalWillSignedDate()) {
+            String welshWillFormattedDate = localDateToWelshStringConverter
+                    .convert(caseData.getOriginalWillSignedDate());
             WillDateCaseExtra willDateCaseExtra = WillDateCaseExtra.builder()
                 .showWillDate(YES)
                 .originalWillSignedDateWelshFormatted(welshWillFormattedDate)
@@ -42,7 +43,7 @@ public class SolicitorLegalStatementPDFDecorator {
                     caseExtraDecorator.decorate(willDateCaseExtra));
         }
 
-        if (caseData.getCodicilAddedDateList() != null) {
+        if (null != caseData.getCodicilAddedDateList()) {
             List<CollectionMember<String>> formattedCodicilDates = new ArrayList<>();
             caseData.getCodicilAddedDateList().forEach(date -> {
                 String welshCodicilFormattedDate = localDateToWelshStringConverter.convert(date.getValue()

@@ -14,9 +14,7 @@ import uk.gov.hmcts.probate.service.template.pdf.caseextra.CodicilDateCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstateConfirmCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.WillDateCaseExtra;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,6 +37,8 @@ class SolicitorLegalStatementPDFDecoratorTest {
 
     @Test
     void shouldDecorateForIhtEstateNotCompleted() {
+        caseDataMock = CaseData.builder().originalWillSignedDate(null)
+                .codicilAddedDateList(null).build();
         when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         when(caseExtraDecorator.decorate(any(IhtEstateConfirmCaseExtra.class))).thenReturn("someJson");
         String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
@@ -47,9 +47,9 @@ class SolicitorLegalStatementPDFDecoratorTest {
 
     @Test
     void shouldDecorateForWillSignedDate() {
-        when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
         caseDataMock = CaseData.builder().originalWillSignedDate(LocalDate.of(2024, 12, 23))
                 .codicilAddedDateList(null).build();
+        when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
         when(localDateToWelshStringConverter.convert(caseDataMock.getOriginalWillSignedDate()))
                 .thenReturn("23 Rhagfyr 2024");
         String caseExtraJson
@@ -62,13 +62,14 @@ class SolicitorLegalStatementPDFDecoratorTest {
 
     @Test
     void shouldDecorateForCodicilSignedDate() {
-        when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
-        List<CollectionMember<CodicilAddedDate>> VALID_ADDED_CODICIL_DATES =
+        List<CollectionMember<CodicilAddedDate>> date =
                 List.of(new CollectionMember<>(CodicilAddedDate.builder().dateCodicilAdded(LocalDate
                         .of(2024, 12, 23)).build()));
         caseDataMock = CaseData.builder().originalWillSignedDate(null)
-                .codicilAddedDateList(VALID_ADDED_CODICIL_DATES).build();
-        when(localDateToWelshStringConverter.convert(VALID_ADDED_CODICIL_DATES.getFirst().getValue()
+                .codicilAddedDateList(date).build();
+        when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        when(localDateToWelshStringConverter.convert(date.getFirst().getValue()
                 .getDateCodicilAdded())).thenReturn("23 Rhagfyr 2024");
         String caseExtraJson
                 = "{\"showCodicilDate\" : \"Yes\",\"codicilSignedDateWelshFormatted\" : \"23 Rhagfyr 2024\"}";
@@ -80,6 +81,8 @@ class SolicitorLegalStatementPDFDecoratorTest {
 
     @Test
     void shouldNotDecorate() {
+        caseDataMock = CaseData.builder().originalWillSignedDate(null)
+                .codicilAddedDateList(null).build();
         when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
         String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
         assertEquals("", actual);
