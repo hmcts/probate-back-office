@@ -210,6 +210,8 @@ dependencyManagement {
   }
 }
 
+ext['netty.version'] = '4.1.127.Final' // CVE-2025-58056, CVE-2025-58057
+
 dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: versions.springBootVersion
