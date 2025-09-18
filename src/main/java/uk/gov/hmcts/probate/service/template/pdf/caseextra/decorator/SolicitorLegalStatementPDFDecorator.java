@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.businessrule.IhtEstateNotCompletedBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -16,6 +17,7 @@ import java.util.List;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_CONFIRM;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
+@Slf4j
 @Component
 @AllArgsConstructor
 public class SolicitorLegalStatementPDFDecorator {
@@ -31,6 +33,7 @@ public class SolicitorLegalStatementPDFDecorator {
                 .ihtEstateText(IHT_ESTATE_CONFIRM)
                 .build();
             decoration = caseExtraDecorator.decorate(ihtEstateConfirmCaseExtra);
+            log.info("IHT estate not completed decoration: {}", decoration);
         }
         if (null != caseData.getOriginalWillSignedDate()) {
             String welshWillFormattedDate = localDateToWelshStringConverter
@@ -41,6 +44,7 @@ public class SolicitorLegalStatementPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                     caseExtraDecorator.decorate(willDateCaseExtra));
+            log.info("Will signed date decoration: {}", decoration);
         }
 
         if (null != caseData.getCodicilAddedDateList()) {
@@ -50,12 +54,14 @@ public class SolicitorLegalStatementPDFDecorator {
                         .getDateCodicilAdded());
                 formattedCodicilDates.add(new CollectionMember<>(welshCodicilFormattedDate));
             });
+            log.info("codicil added date list: {}", formattedCodicilDates);
             CodicilDateCaseExtra codicilDateCaseExtra = CodicilDateCaseExtra.builder()
                 .showCodicilDate(YES)
                 .codicilSignedDateWelshFormatted(formattedCodicilDates)
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                     caseExtraDecorator.decorate(codicilDateCaseExtra));
+            log.info("Codicil signed date decoration: {}", decoration);
         }
         return decoration;
     }
