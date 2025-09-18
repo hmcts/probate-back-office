@@ -169,7 +169,7 @@ def versions = [
         jacksonDatabind                 : '2.17.1',
         jsoup                           : '1.21.2',
         lifeEventsClientVersion         : '1.4.1',
-        lombok                          : '1.18.40',
+        lombok                          : '1.18.42',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
         pdfServiceClientVersion         : '8.0.2',
