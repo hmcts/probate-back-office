@@ -503,6 +503,7 @@ public class CaseData extends CaseDataParent {
     private final String boGrantReissueSendToBulkPrint = YES;
     private final String boGrantReissueSendToBulkPrintRequested;
     private final String deceasedDivorcedInEnglandOrWales;
+    private final String deceasedDivorcedDateKnown;
     private final String primaryApplicantAdoptionInEnglandOrWales;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
