@@ -1423,11 +1423,7 @@ public class CallbackResponseTransformer {
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
-            .deceasedSeparatedInEnglandOrWales(caseData.getDeceasedSeparatedInEnglandOrWales())
-            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
-            .deceasedDivorcedDate(caseData.getDeceasedDivorcedDate())
-            .deceasedSeparatedDateKnown(caseData.getDeceasedSeparatedDateKnown())
-            .deceasedSeparatedDate(caseData.getDeceasedSeparatedDate());
+            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown());
 
         handleDeceasedAliases(
                 builder,

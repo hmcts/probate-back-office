@@ -527,9 +527,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "executorsNamed", "Label": "Executors named", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyExecutorsDied", "Label": "Any executors died", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "firstStopReminderSentDate", "Label": "First stop reminder sent date", "FieldType": "Date", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedSeparatedInEnglandOrWales", "Label": "Was the deceased separated in England or Wales?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedDivorcedDateKnown", "Label": "Do you know the date the deceased was divorced?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedDivorcedDate", "Label": "Date of divorce", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedSeparatedDateKnown", "Label": "Do you know the date the deceased was separated?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedSeparatedDate", "Label": "Date of separation", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedDivorcedDateKnown", "Label": "Do you know the date the deceased was divorced?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]
