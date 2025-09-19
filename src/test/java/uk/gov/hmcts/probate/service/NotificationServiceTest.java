@@ -416,7 +416,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "grant of probate");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -437,7 +436,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("welsh_case_type_text", "grant profiant");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -459,7 +457,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "letters of administration");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -480,7 +477,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("welsh_case_type_text", "llythyrau gweinyddu");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -502,7 +498,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "letters of administration with will annexed");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -523,7 +518,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("welsh_case_type_text", "llythyrau gweinyddu pan fydd yna ewyllys");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -545,7 +539,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "Ad Colligenda Bona grant");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -566,7 +559,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("welsh_case_type_text", "grant Ad Colligenda Bona");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                 personalisation);
@@ -588,7 +580,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("welsh_case_type_text", "grant Ad Colligenda Bona");
 
         notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_REISSUED, caseData,
                 personalisation);
@@ -610,7 +601,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "grant Ad Colligenda Bona");
 
         assertThrows(RequestInformationParameterException.class, () ->
                 notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
@@ -630,7 +620,6 @@ class NotificationServiceTest {
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
 
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("case_type_text", "grant Ad Colligenda Bona");
 
         assertThrows(RequestInformationParameterException.class, () ->
                 notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
