@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -74,7 +75,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -1195,5 +1198,57 @@ class BusinessValidationUnitTest {
         verify(notificationService).sendStopResponseReceivedEmail(caseDetailsMock);
         verify(documentTransformerMock, times(0)).addDocument(callbackRequestMock, documentMock, false);
         verify(callbackResponseTransformerMock).transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+    }
+
+    @Test
+    void shouldAttemptToEmailWhenEnterPostGrantIssued() {
+
+        final List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
+
+        when(notificationService.sendPostGrantIssuedNotification(any()))
+                .thenReturn(documentMock);
+
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData())
+                .thenReturn(caseDataMock);
+        when(caseDataMock.getProbateNotificationsGenerated())
+                .thenReturn(notificationsGenerated);
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .moveToPostGrantIssue(callbackRequestMock, httpServletRequest);
+
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+
+        assertAll(
+                () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
+                () -> assertThat(notificationsGenerated.size(), is(1)));
+    }
+
+    @Test
+    void shouldSucceedWhenDocGenFailsEnterPostGrantIssued() {
+
+        final List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
+
+        when(notificationService.sendPostGrantIssuedNotification(any()))
+                .thenReturn(null);
+
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData())
+                .thenReturn(caseDataMock);
+        when(caseDataMock.getProbateNotificationsGenerated())
+                .thenReturn(notificationsGenerated);
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .moveToPostGrantIssue(callbackRequestMock, httpServletRequest);
+
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+
+        assertAll(
+                () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
+                () -> assertThat(notificationsGenerated, empty()));
     }
 }
