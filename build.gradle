@@ -1,7 +1,7 @@
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.springframework.boot' version '3.5.5'
+  id 'org.springframework.boot' version '3.5.6'
   id 'uk.gov.hmcts.java' version '0.12.67'
   id 'com.github.ben-manes.versions' version '0.52.0'
   id 'com.gorylenko.gradle-git-properties' version '2.5.3'
@@ -11,7 +11,7 @@ plugins {
   id 'au.com.dius.pact' version '4.6.17'
   id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.34'
   id 'org.sonarqube' version '6.3.1.5724'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.1861'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.1865'
 }
 
 application {
@@ -169,7 +169,7 @@ def versions = [
         jacksonDatabind                 : '2.17.1',
         jsoup                           : '1.21.2',
         lifeEventsClientVersion         : '1.4.1',
-        lombok                          : '1.18.40',
+        lombok                          : '1.18.42',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
         pdfServiceClientVersion         : '8.0.2',
@@ -178,11 +178,11 @@ def versions = [
         sendLetterClientVersion         : '5.1.1',
         serenity                        : '4.2.34',
         serviceAuthVersion              : '5.3.3',
-        springBootVersion               : '3.5.5',
+        springBootVersion               : '3.5.6',
         springCloud                     : '4.1.5',
         springDocOpenUi                 : '2.8.13',
-        swaggerAnnotations              : '2.2.36',
-        springSecurityVersion           : '6.5.4',
+        swaggerAnnotations              : '2.2.37',
+        springSecurityVersion           : '6.5.5',
         tomcat                          : '10.1.46'
 ]
 
@@ -210,6 +210,8 @@ dependencyManagement {
   }
 }
 
+ext['netty.version'] = '4.1.127.Final' // CVE-2025-58056, CVE-2025-58057
+
 dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: versions.springBootVersion
@@ -229,7 +231,7 @@ dependencies {
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el', version: versions.tomcat
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcat
 
-  implementation group: 'com.google.guava', name: 'guava', version: '33.4.8-jre'
+  implementation group: 'com.google.guava', name: 'guava', version: '33.5.0-jre'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootVersion
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
@@ -265,7 +267,7 @@ dependencies {
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.4.4'
 
-  implementation group: 'org.pitest', name: 'pitest', version: '1.20.2'
+  implementation group: 'org.pitest', name: 'pitest', version: '1.20.3'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.26.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
