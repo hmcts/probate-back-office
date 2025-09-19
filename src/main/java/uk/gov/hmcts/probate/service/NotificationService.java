@@ -90,6 +90,10 @@ public class NotificationService {
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
     private static final String PERSONALISATION_EXECUTOR_NAME = "executor_name";
     private static final String PERSONALISATION_EXECUTOR_NAMES_LIST = "executor_names_list";
+    private static final String GOP_CASE_TYPE = "gop";
+    private static final String INTESTACY_CASE_TYPE = "intestacy";
+    private static final String ADMON_WILL_CASE_TYPE = "admonWill";
+    private static final String AD_COLLIGENDA_BONA_CASE_TYPE = "adColligendaBona";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
 
@@ -156,6 +160,7 @@ public class NotificationService {
         }
 
         updatePersonalisationForSolicitor(caseData, personalisation);
+        updatePersonalisationForSolicitorGrantIssuedEmails(state, caseData, personalisation);
 
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
@@ -163,7 +168,8 @@ public class NotificationService {
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
-        log.info("Personlisation complete now get the email repsonse");
+        log.info("Personalisation is complete. Fetching the email response");
+
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
                 caseDetails.getId());
@@ -213,6 +219,45 @@ public class NotificationService {
         }
     }
 
+    Map<String, Object> updatePersonalisationForSolicitorGrantIssuedEmails(State state, CaseData caseData,
+                                                            Map<String, Object> personalisation) {
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)
+                && (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY
+                || state == State.GRANT_REISSUED)) {
+
+            String caseType = caseData.getCaseType();
+            if (caseType.isBlank()) {
+                log.error("Personalisation validation failed for blank caseType");
+                throw new RequestInformationParameterException();
+            }
+
+            personalisation.put("case_type_text", switch (caseType) {
+                case GOP_CASE_TYPE -> "grant of probate";
+                case INTESTACY_CASE_TYPE -> "letters of administration";
+                case ADMON_WILL_CASE_TYPE -> "letters of administration with will annexed";
+                case AD_COLLIGENDA_BONA_CASE_TYPE -> "Ad Colligenda Bona grant";
+                default -> {
+                    log.error("Personalisation validation failed due to unknown caseType: {}", caseType);
+                    throw new RequestInformationParameterException();
+                }
+            });
+
+            if (caseData.getLanguagePreference() == LanguagePreference.WELSH) {
+                personalisation.put("welsh_case_type_text", switch (caseType) {
+                    case GOP_CASE_TYPE -> "grant profiant";
+                    case INTESTACY_CASE_TYPE -> "llythyrau gweinyddu";
+                    case ADMON_WILL_CASE_TYPE -> "llythyrau gweinyddu pan fydd yna ewyllys";
+                    case AD_COLLIGENDA_BONA_CASE_TYPE -> "grant Ad Colligenda Bona";
+                    default -> {
+                        log.error("Personalisation validation failed due to unknown caseType: {}", caseType);
+                        throw new RequestInformationParameterException();
+                    }
+                });
+            }
+        }
+        return personalisation;
+    }
+
     public Document sendSealedAndCertifiedEmail(CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         String reference = caseDetails.getId().toString();
@@ -252,7 +297,7 @@ public class NotificationService {
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
-        log.info("Personlisation complete now get the email response");
+        log.info("Personalisation is complete. Fetching the email response");
 
         SendEmailResponse response =
                 getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
@@ -279,7 +324,7 @@ public class NotificationService {
 
         doCommonNotificationServiceHandling(personalisation, caveatDetails.getId());
 
-        log.info("Personlisation complete now get the email response");
+        log.info("Personalisation is complete. Fetching the email response");
 
         SendEmailResponse response =
                 getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
