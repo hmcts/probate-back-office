@@ -455,6 +455,7 @@ tasks.register('buildAllXlsx', Exec) {
   commandLine project.file("ccdImports/conversionScripts/createAllXLS.sh")
   args input, input2
   // Register the inputs and outputs so Gradle can skip if up-to-date.
+  inputs.dir project.file('ccdImports/configFiles')
   outputs.dir project.file('jsonToXLS')
 }
 
