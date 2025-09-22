@@ -85,7 +85,7 @@ class SolicitorLegalStatementPDFDecoratorTest {
     void shouldDecorateForProfitSharingText() {
         caseDataMock = CaseData.builder().originalWillSignedDate(null)
                 .codicilAddedDateList(null).solsWillType(GRANT_TYPE_PROBATE).whoSharesInCompanyProfits(List
-                        .of("Partners","Members")).build();
+                        .of("Partner","Member")).build();
         when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
         String caseExtraJson
                 = "{\"welshSingularProfitSharingText\" : \"phartner ac aelod\",\"welshPluralProfitSharingText\" : "
