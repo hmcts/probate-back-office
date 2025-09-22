@@ -93,18 +93,6 @@ public class CaveatQueryService {
         return foundCaveats.getCaveats().getFirst().getData();
     }
 
-    public List<ReturnedCaveatDetails> findCaveatDraftCases(String startDate,
-                                                                   String endDate, CaseType caseType) {
-        BoolQueryBuilder query = boolQuery();
-
-        query.must(matchQuery(STATE, PA_APP_CREATED));
-        query.filter(rangeQuery("last_modified").gte(startDate).lte(endDate));
-        String jsonQuery = new SearchSourceBuilder().query(query).size(dataExtractPaginationSize)
-                .from(0)
-                .sort(SORT_COLUMN).toString();
-        return runQueryWithPagination("findCaveatCasesWithPayment", jsonQuery, startDate,
-                endDate, caseType);
-    }
 
     private List<ReturnedCaveatDetails> runQueryWithPagination(String queryName, String jsonQuery,
                                                              String queryDateStart, String queryDateEnd,

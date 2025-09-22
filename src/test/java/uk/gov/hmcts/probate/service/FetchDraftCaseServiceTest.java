@@ -5,13 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentDto;
 import uk.gov.hmcts.probate.model.payments.PaymentsResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.payments.ServiceRequestClient;
+import uk.gov.hmcts.reform.ccd.client.model.SearchResult;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.Collections;
@@ -35,7 +36,8 @@ class FetchDraftCaseServiceTest {
     private FetchDraftCaseService fetchDraftCaseService;
 
     @Mock
-    private CaseQueryService caseQueryService;
+    private ElasticSearchRepository elasticSearchRepository;
+
     @Mock
     private CaveatQueryService caveatQueryService;
     @Mock
@@ -60,10 +62,13 @@ class FetchDraftCaseServiceTest {
 
     @Test
     void fetchCasesWithSuccessfulPayment() throws NotificationClientException {
-        ReturnedCaseDetails caseDetails = mock(ReturnedCaseDetails.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getId()).thenReturn(1L);
-        when(caseQueryService.findDraftCases(anyString(), anyString())).thenReturn(List.of(caseDetails));
-
+        when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder()
+                        .total(1)
+                        .cases(List.of(caseDetails))
+                        .build());
         PaymentsResponse paymentsResponse = mock(PaymentsResponse.class);
         when(paymentsResponse.getPayments()).thenReturn(List.of(PaymentDto.builder().status("success").build()));
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
@@ -77,9 +82,13 @@ class FetchDraftCaseServiceTest {
 
     @Test
     void fetchCaveatCasesWithSuccessfulPayment() throws NotificationClientException {
-        ReturnedCaveatDetails caseDetails = mock(ReturnedCaveatDetails.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getId()).thenReturn(1L);
-        when(caveatQueryService.findCaveatDraftCases(anyString(), anyString(), any())).thenReturn(List.of(caseDetails));
+        when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder()
+                        .total(1)
+                        .cases(List.of(caseDetails))
+                        .build());
 
         PaymentsResponse paymentsResponse = mock(PaymentsResponse.class);
         when(paymentsResponse.getPayments()).thenReturn(List.of(PaymentDto.builder().status("success").build()));
@@ -94,9 +103,13 @@ class FetchDraftCaseServiceTest {
 
     @Test
     void fetchCasesWithUnsuccessfulPayment() throws NotificationClientException {
-        ReturnedCaseDetails caseDetails = mock(ReturnedCaseDetails.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getId()).thenReturn(1L);
-        when(caseQueryService.findDraftCases(anyString(), anyString())).thenReturn(List.of(caseDetails));
+        when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder()
+                        .total(1)
+                        .cases(List.of(caseDetails))
+                        .build());
 
         PaymentsResponse paymentsResponse = mock(PaymentsResponse.class);
         when(paymentsResponse.getPayments()).thenReturn(List.of(PaymentDto.builder().status("failed").build()));
@@ -111,8 +124,11 @@ class FetchDraftCaseServiceTest {
 
     @Test
     void fetchCasesWithNoDraftCases() throws NotificationClientException {
-        when(caseQueryService.findDraftCases(anyString(), anyString())).thenReturn(Collections.emptyList());
-
+        when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder()
+                        .total(0)
+                        .cases(Collections.emptyList())
+                        .build());
         assertDoesNotThrow(() -> fetchDraftCaseService.fetchDraftCases("2023-01-01", "2023-01-31", false));
 
         verify(notificationService, never()).sendEmailForDraftSuccessfulPayment(anyList(), anyString(),
@@ -121,9 +137,13 @@ class FetchDraftCaseServiceTest {
 
     @Test
     void fetchCasesWithNotificationException() throws NotificationClientException {
-        ReturnedCaseDetails caseDetails = mock(ReturnedCaseDetails.class);
+        CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getId()).thenReturn(1L);
-        when(caseQueryService.findDraftCases(anyString(), anyString())).thenReturn(List.of(caseDetails));
+        when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder()
+                        .total(1)
+                        .cases(List.of(caseDetails))
+                        .build());
 
         PaymentsResponse paymentsResponse = mock(PaymentsResponse.class);
         when(paymentsResponse.getPayments()).thenReturn(List.of(PaymentDto.builder().status("success").build()));
