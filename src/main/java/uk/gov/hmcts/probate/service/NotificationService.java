@@ -335,9 +335,8 @@ public class NotificationService {
     public void sendEmailForGORSuccessfulPayment(List<ReturnedCaseDetails> cases, String fromDate, String toDate)
             throws NotificationClientException {
         log.info("Sending email for Draft cases with payment status as Success");
-        ApplicationType applicationType = cases.get(0).getData().getApplicationType();
 
-        String templateId = getTemplateId(applicationType);
+        String templateId = getTemplateId();
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService
                 .getGORDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate);
 
@@ -346,10 +345,9 @@ public class NotificationService {
 
     public void sendEmailForCaveatSuccessfulPayment(List<ReturnedCaveatDetails> cases, String fromDate, String toDate)
             throws NotificationClientException {
-        log.info("Sending email for Draft cases with payment status as Success");
-        ApplicationType applicationType = cases.get(0).getData().getApplicationType();
+        log.info("Sending email for Draft Caveat cases with payment status as Success");
 
-        String templateId = getTemplateId(applicationType);
+        String templateId = getTemplateId();
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService
                 .getCaveatDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate);
 
@@ -794,9 +792,9 @@ public class NotificationService {
                 caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
     }
 
-    private String getTemplateId(ApplicationType applicationType) {
+    private String getTemplateId() {
         return notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
-                .get(applicationType)
+                .get(ApplicationType.PERSONAL)
                 .getDraftCasePaymentSuccess();
     }
 
