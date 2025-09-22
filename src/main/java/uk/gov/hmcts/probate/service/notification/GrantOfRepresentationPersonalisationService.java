@@ -178,8 +178,9 @@ public class GrantOfRepresentationPersonalisationService {
         StringBuilder data = new StringBuilder();
 
         for (uk.gov.hmcts.reform.ccd.client.model.CaseDetails currentCase : cases) {
-            getCaseData(data, currentCase.getId(), (String)currentCase.getData().get("deceasedForenames"),
-                    (String)currentCase.getData().get("deceasedSurname"));
+            getCaseData(data, currentCase.getId(),
+                    (String)currentCase.getData().getOrDefault("deceasedForenames",""),
+                    (String)currentCase.getData().getOrDefault("deceasedSurname",""));
         }
         return data;
     }
