@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.CodicilDateCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstateConfirmCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.ProfitSharingCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.WillDateCaseExtra;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 
 @ExtendWith(SpringExtension.class)
 class SolicitorLegalStatementPDFDecoratorTest {
@@ -74,6 +76,21 @@ class SolicitorLegalStatementPDFDecoratorTest {
         String caseExtraJson
                 = "{\"showCodicilDate\" : \"Yes\",\"codicilSignedDateWelshFormatted\" : \"23 Rhagfyr 2024\"}";
         when(caseExtraDecorator.decorate(any(CodicilDateCaseExtra.class))).thenReturn(caseExtraJson);
+        when(caseExtraDecorator.combineDecorations("", caseExtraJson)).thenReturn(caseExtraJson);
+        String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
+        assertEquals(caseExtraJson, actual);
+    }
+
+    @Test
+    void shouldDecorateForProfitSharingText() {
+        caseDataMock = CaseData.builder().originalWillSignedDate(null)
+                .codicilAddedDateList(null).solsWillType(GRANT_TYPE_PROBATE).whoSharesInCompanyProfits(List
+                        .of("Partners","Members")).build();
+        when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+        String caseExtraJson
+                = "{\"welshSingularProfitSharingText\" : \"phartner ac aelod\",\"welshPluralProfitSharingText\" : "
+                + "\"phartneriaid ac aelodau\"}";
+        when(caseExtraDecorator.decorate(any(ProfitSharingCaseExtra.class))).thenReturn(caseExtraJson);
         when(caseExtraDecorator.combineDecorations("", caseExtraJson)).thenReturn(caseExtraJson);
         String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
         assertEquals(caseExtraJson, actual);

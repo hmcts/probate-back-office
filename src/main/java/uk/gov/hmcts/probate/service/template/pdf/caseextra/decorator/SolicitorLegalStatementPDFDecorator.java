@@ -9,13 +9,16 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.CodicilDateCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstateConfirmCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.ProfitSharingCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.WillDateCaseExtra;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_CONFIRM;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.EN_TO_WELSH;
 
 @Slf4j
 @Component
@@ -63,6 +66,47 @@ public class SolicitorLegalStatementPDFDecorator {
                     caseExtraDecorator.decorate(codicilDateCaseExtra));
             log.info("Codicil signed date decoration: {}", decoration);
         }
+
+        if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && null != caseData.getWhoSharesInCompanyProfits()) {
+            ProfitSharingCaseExtra profitSharingCaseExtra = ProfitSharingCaseExtra.builder()
+                .welshSingularProfitSharingText(getWelshProfitSharingText(
+                        caseData.getWhoSharesInCompanyProfits(), false))
+                .welshPluralProfitSharingText(getWelshProfitSharingText(
+                        caseData.getWhoSharesInCompanyProfits(), true))
+                .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                    caseExtraDecorator.decorate(profitSharingCaseExtra));
+        }
         return decoration;
+    }
+
+    private static String getWelshConjunction(String nextWord) {
+        // "ac" before a, e, i, o, w, y; "a" otherwise
+        char first = Character.toLowerCase(nextWord.charAt(0));
+        return "aeiowy".indexOf(first) >= 0 ? "ac" : "a";
+    }
+
+    private String getWelshProfitSharingText(List<String> whoShares, boolean plural) {
+        if (whoShares == null || whoShares.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder profitText = new StringBuilder();
+        for (int i = 0; i < whoShares.size(); i++) {
+            String en = whoShares.get(i).toLowerCase();
+            String[] welshForms = EN_TO_WELSH.get(en);
+            if (welshForms == null) {
+                continue;
+            }
+            String welsh = plural ? welshForms[1] : welshForms[0];
+
+            if (i > 0) {
+                profitText.append(" ");
+                profitText.append(getWelshConjunction(welsh));
+                profitText.append(" ");
+            }
+            profitText.append(welsh);
+        }
+        return profitText.toString();
     }
 }

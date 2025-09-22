@@ -82,7 +82,8 @@
                 {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{ case_details.case_data.primaryApplicantAddress.PostTown }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{% if case_details.case_data.primaryApplicantAddress.Country == "United Kingdom"%}Y Deyrnas Unedig
+                {% else %}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}{% endif %}
                 yn gwneud y datganiad canlynol:</p>
         </td>
     </tr>
@@ -115,24 +116,23 @@
                 case_details.case_data.deceasedAddress.PostCode != "" %}{{
                 case_details.case_data.deceasedAddress.PostCode }},{% endif %}
                 {% if case_details.case_data.deceasedAddress.Country != null and
-                case_details.case_data.deceasedAddress.Country != "" %}{{
-                case_details.case_data.deceasedAddress.Country }}{% endif %}
+                case_details.case_data.deceasedAddress.Country != "" %}{% if case_details.case_data.deceasedAddress.Country == "United Kingdom"%}Y Deyrnas Unedig
+                {% else %}{{ case_details.case_data.deceasedAddress.Country }}{% endif %}{% endif %}
                 ar {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
                 a bu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }} heb ewyllys.
             </p>
-            <p>Nid oeddent
-                {% if case_details.case_data.deceasedMaritalStatus == "neverMarried" %}
-                erioed yn briod
+            <p>{% if case_details.case_data.deceasedMaritalStatus == "neverMarried" %}
+                Nid oeddent erioed yn briod
                 {% elseif case_details.case_data.deceasedMaritalStatus == "widowed" %}
-                yn ŵr gweddw neu’n wraig gweddw
+                Roeddent yn weddw
                 {% elseif case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
-                yn briod neu mewn partneriaeth sifil,
+                Nid oeddent yn briod neu mewn partneriaeth sifil,
                 {% elseif case_details.case_data.deceasedMaritalStatus == "divorcedCivilPartnership" %}
-                wedi ysgaru neu roedd eu partneriaeth sifil wedi’i diddymu,
+                Nid oeddent wedi ysgaru neu roedd eu partneriaeth sifil wedi’i diddymu,
                 {% else %}
-                wedi cael ymwahaniad cyfreithiol
+                Nid oeddent wedi cael ymwahaniad cyfreithiol
                 {% endif %}
-                ac roedd eu domisil yng {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}Nghymru a Lloegr.{% endif %}
+                ac roedd eu domisil {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %} yn/yng {{ case_details.case_data.domicilityCountry }}.{% else %} yng Nghymru a Lloegr.{% endif %}
             </p>
             <p>Nid oes gan unrhyw blant dan 18 oed hawl i'r ystad.</p>
         </td>

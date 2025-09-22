@@ -84,7 +84,8 @@
                 {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{ case_details.case_data.primaryApplicantAddress.PostTown }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{% if case_details.case_data.primaryApplicantAddress.Country == "United Kingdom"%}Y Deyrnas Unedig
+                {% else %}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}{% endif %}
                 yn gwneud y datganiad canlynol:</p>
         </td>
     </tr>
@@ -117,10 +118,10 @@
                 case_details.case_data.deceasedAddress.PostCode != "" %}{{
                 case_details.case_data.deceasedAddress.PostCode }},{% endif %}
                 {% if case_details.case_data.deceasedAddress.Country != null and
-                case_details.case_data.deceasedAddress.Country != "" %}{{
-                case_details.case_data.deceasedAddress.Country }}{% endif %}
+                case_details.case_data.deceasedAddress.Country != "" %}{% if case_details.case_data.deceasedAddress.Country == "United Kingdom"%}Y Deyrnas Unedig
+                {% else %}{{ case_details.case_data.deceasedAddress.Country }}{% endif %}{% endif %}
                 ar {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
-                a bu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, ddomisil yn {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}yng Nghymru a Lloegr.{% endif %}
+                a bu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, ddomisil {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}yn/yng {{ case_details.case_data.domicilityCountry }}.{% else %}yng Nghymru a Lloegr.{% endif %}
             </p>
         </td>
     </tr>
@@ -159,7 +160,8 @@
                 {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{ case_details.case_data.primaryApplicantAddress.PostTown }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{% if case_details.case_data.primaryApplicantAddress.Country == "United Kingdom"%}Y Deyrnas Unedig
+                {% else %}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}{% endif %}
                 yn gwneud cais am Lythyrau Gweinyddu (gydag ewyllys wedi’i atodi) ac wedi’i enwi yn yr
                 {% if case_details.case_data.willHasCodicils == "No" %} ewyllys{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.willNumberOfCodicils == "1" %} ewyllys a/neu codisil{% elseif case_details.case_data.willHasCodicils == "Yes" and case_details.case_data.codicilAddedDateList|length==1 %} ewyllys a/neu codisil{% else %} ewyllys a/neu codisiliau{% endif %} fel
                 {% if case_details.case_data.solsResiduaryType == "Legatee" %} y derbyniwr cymynrodd.
