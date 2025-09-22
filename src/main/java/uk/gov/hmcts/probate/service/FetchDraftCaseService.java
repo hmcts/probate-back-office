@@ -37,7 +37,7 @@ public class FetchDraftCaseService {
         try {
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
             String caseTypeName = isCaveat ? CAVEAT.getName() : GRANT_OF_REPRESENTATION.getName();
-            log.info("Fetch {} cases from date {} to {}", caseTypeName, startDate, endDate);
+            log.info("Fetch {} draft cases from date {} to {}", caseTypeName, startDate, endDate);
             List<CaseDetails> successfulPaymentDraftCases = fetchAndProcessDraftCases(securityDTO,
                     caseTypeName, startDate, endDate);
 
