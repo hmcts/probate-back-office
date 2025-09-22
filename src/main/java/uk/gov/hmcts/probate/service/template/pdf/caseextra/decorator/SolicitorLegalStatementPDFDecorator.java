@@ -76,6 +76,7 @@ public class SolicitorLegalStatementPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                     caseExtraDecorator.decorate(profitSharingCaseExtra));
+            log.info("Welsh Profit sharing decoration: {}", decoration);
         }
         return decoration;
     }
@@ -107,6 +108,7 @@ public class SolicitorLegalStatementPDFDecorator {
             }
             profitText.append(welsh);
         }
+        log.info("Profit sharing decoration: {}", profitText);
         return profitText.toString();
     }
 }
