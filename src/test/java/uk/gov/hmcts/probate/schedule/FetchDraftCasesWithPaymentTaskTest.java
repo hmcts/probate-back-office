@@ -58,7 +58,7 @@ class FetchDraftCasesWithPaymentTaskTest {
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
-        verify(fetchDraftCaseService).fetchGORCases(adhocDate, DATE_TODAY);
+        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,false);
     }
 
     @Test
@@ -69,7 +69,7 @@ class FetchDraftCasesWithPaymentTaskTest {
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
-        verify(fetchDraftCaseService).fetchGORCases(adhocDate, DATE_TODAY);
+        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,false);
     }
 
     @Test
@@ -80,7 +80,7 @@ class FetchDraftCasesWithPaymentTaskTest {
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
-        verify(fetchDraftCaseService).fetchGORCases(adhocDate, DATE_TODAY);
+        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,false);
     }
 
     @Test

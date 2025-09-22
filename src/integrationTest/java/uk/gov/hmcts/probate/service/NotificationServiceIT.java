@@ -20,8 +20,8 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
@@ -30,7 +30,6 @@ import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -49,7 +48,6 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.probate.model.cases.CaseState;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 import uk.gov.service.notify.NotificationClient;
@@ -83,8 +81,8 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
@@ -2305,27 +2303,41 @@ class NotificationServiceIT {
 
     @Test
     void sendEmailForGORSuccessfulPayment() throws NotificationClientException {
-        CaseData caseData = CaseData.builder()
-                .applicationType(SOLICITOR).languagePreferenceWelsh("No").build();
-        List<ReturnedCaseDetails> cases = List.of(new ReturnedCaseDetails(caseData, null, ID));
+
+        Map<String, Object> caseData = new HashMap<>();
+        caseData.put("deceasedForenames", "Jack");
+        caseData.put("deceasedSurname", "Michelson");
+
+        List<uk.gov.hmcts.reform.ccd.client.model.CaseDetails> cases =
+                List.of(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build());
         String fromDate = "2022-01-01";
         String toDate = "2022-01-31";
 
-        notificationService.sendEmailForGORSuccessfulPayment(cases, fromDate, toDate);
+        notificationService.sendEmailForDraftSuccessfulPayment(cases, fromDate, toDate, false);
 
         verify(notificationClient).sendEmail(any(), any(), any(), any());
     }
 
     @Test
     void sendEmailForCaveatSuccessfulPayment() throws NotificationClientException {
-        CaveatData caseData = CaveatData.builder()
-                .applicationType(SOLICITOR).languagePreferenceWelsh("No").build();
-        List<ReturnedCaveatDetails> cases =
-                List.of(new ReturnedCaveatDetails(caseData, null, CaseState.CAVEAT_RAISED, ID));
+        Map<String, Object> caseData = new HashMap<>();
+        caseData.put("deceasedForenames", "Jack");
+        caseData.put("deceasedSurname", "Michelson");
+
+        List<uk.gov.hmcts.reform.ccd.client.model.CaseDetails> cases =
+                List.of(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build());
         String fromDate = "2022-01-01";
         String toDate = "2022-01-31";
 
-        notificationService.sendEmailForCaveatSuccessfulPayment(cases, fromDate, toDate);
+        notificationService.sendEmailForDraftSuccessfulPayment(cases, fromDate, toDate, true);
 
         verify(notificationClient).sendEmail(any(), any(), any(), any());
     }

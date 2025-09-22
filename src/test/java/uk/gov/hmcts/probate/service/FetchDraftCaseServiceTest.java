@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doThrow;
@@ -68,10 +69,10 @@ class FetchDraftCaseServiceTest {
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(paymentsResponse);
 
-        assertDoesNotThrow(() -> fetchDraftCaseService.fetchGORCases("2023-01-01", "2023-01-31"));
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchDraftCases("2023-01-01", "2023-01-31",false));
 
-        verify(notificationService, times(1)).sendEmailForGORSuccessfulPayment(anyList(),
-                anyString(), anyString());
+        verify(notificationService, times(1)).sendEmailForDraftSuccessfulPayment(anyList(),
+                anyString(), anyString(),anyBoolean());
     }
 
     @Test
@@ -85,10 +86,10 @@ class FetchDraftCaseServiceTest {
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(paymentsResponse);
 
-        assertDoesNotThrow(() -> fetchDraftCaseService.fetchCaveatCases("2023-01-01", "2023-01-31"));
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchDraftCases("2023-01-01", "2023-01-31", true));
 
-        verify(notificationService, times(1)).sendEmailForCaveatSuccessfulPayment(anyList(),
-                anyString(), anyString());
+        verify(notificationService, times(1)).sendEmailForDraftSuccessfulPayment(anyList(),
+                anyString(), anyString(),anyBoolean());
     }
 
     @Test
@@ -102,18 +103,20 @@ class FetchDraftCaseServiceTest {
         when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
                 .thenReturn(paymentsResponse);
 
-        assertDoesNotThrow(() -> fetchDraftCaseService.fetchGORCases("2023-01-01", "2023-01-31"));
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchDraftCases("2023-01-01", "2023-01-31", false));
 
-        verify(notificationService, never()).sendEmailForGORSuccessfulPayment(anyList(), anyString(), anyString());
+        verify(notificationService, never()).sendEmailForDraftSuccessfulPayment(anyList(), anyString(),
+                anyString(),anyBoolean());
     }
 
     @Test
     void fetchCasesWithNoDraftCases() throws NotificationClientException {
         when(caseQueryService.findDraftCases(anyString(), anyString())).thenReturn(Collections.emptyList());
 
-        assertDoesNotThrow(() -> fetchDraftCaseService.fetchGORCases("2023-01-01", "2023-01-31"));
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchDraftCases("2023-01-01", "2023-01-31", false));
 
-        verify(notificationService, never()).sendEmailForGORSuccessfulPayment(anyList(), anyString(), anyString());
+        verify(notificationService, never()).sendEmailForDraftSuccessfulPayment(anyList(), anyString(),
+                anyString(),anyBoolean());
     }
 
     @Test
@@ -128,11 +131,11 @@ class FetchDraftCaseServiceTest {
                 .thenReturn(paymentsResponse);
 
         doThrow(new NotificationClientException("Error")).when(notificationService)
-                .sendEmailForGORSuccessfulPayment(anyList(), anyString(), anyString());
+                .sendEmailForDraftSuccessfulPayment(anyList(), anyString(), anyString(),anyBoolean());
 
-        assertDoesNotThrow(() -> fetchDraftCaseService.fetchGORCases("2023-01-01", "2023-01-31"));
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchDraftCases("2023-01-01", "2023-01-31",false));
 
         verify(notificationService, times(1))
-                .sendEmailForGORSuccessfulPayment(anyList(), anyString(), anyString());
+                .sendEmailForDraftSuccessfulPayment(anyList(), anyString(), anyString(), anyBoolean());
     }
 }

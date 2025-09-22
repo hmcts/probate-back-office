@@ -3,17 +3,20 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.CaseType;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentsResponse;
+import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.payments.ServiceRequestClient;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.ccd.client.model.SearchResult;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 @Service
 @RequiredArgsConstructor
@@ -26,76 +29,87 @@ public class FetchDraftCaseService {
     private final ServiceRequestClient serviceRequestClient;
     private final NotificationService notificationService;
     private final CaveatQueryService caveatQueryService;
+    private final ElasticSearchRepository elasticSearchRepository;
+    private static final String DRAFT_CASES_QUERY = "templates/elasticsearch/caseMatching/"
+            + "draft_cases_date_range_query.json";
 
-    public void fetchGORCases(String startDate, String endDate) {
+    public void fetchDraftCases(String startDate, String endDate,boolean isCaveat) {
         try {
-            log.info("Fetch GOR cases upto date: {}", endDate);
-            List<ReturnedCaseDetails> cases = caseQueryService.findDraftCases(startDate, endDate);
-            log.info("Found {} cases with draft state", cases.size());
-
-            List<ReturnedCaseDetails> successfulPaymentCases = new ArrayList<>();
-
-            for (ReturnedCaseDetails returnedCaseDetails : cases) {
-                boolean isPaymentSuccessful = processPayment(returnedCaseDetails.getId().toString());
-
-                if (isPaymentSuccessful) {
-                    log.info("Payment status is Success for case id: {}", returnedCaseDetails.getId());
-                    successfulPaymentCases.add(returnedCaseDetails);
-                } else {
-                    log.info("Payment status is not Success for case id: {}", returnedCaseDetails.getId());
-                }
+            log.info("Fetch GOR cases upto date: from {} to {} isCaveat: {} ", startDate, endDate, isCaveat);
+            SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+            String caseTypeName = GRANT_OF_REPRESENTATION.getName();
+            if (isCaveat) {
+                caseTypeName = CAVEAT.getName();
             }
+            System.out.println("DRAFT_CASES_QUERY = " + DRAFT_CASES_QUERY);
+            SearchResult searchResult = elasticSearchRepository.fetchFirstPage(securityDTO.getAuthorisation(),
+                    caseTypeName, DRAFT_CASES_QUERY, startDate, endDate);
+            log.info("Found {} {} cases with draft state from {} to date: {}", searchResult.getTotal(),
+                    caseTypeName, startDate, endDate);
+            if (searchResult.getTotal() == 0) {
+                log.info("No {} cases found cases with draft state: from {} to date: {}", caseTypeName,
+                        startDate, endDate);
+                return;
+            }
+            List<CaseDetails> successfulPaymentCases = new ArrayList<>();
+            List<CaseDetails> searchResultCases = searchResult.getCases();
+
+            searchResultCases.forEach(caseDetails -> {
+                log.info("draft state case id: {}", caseDetails.getId());
+                boolean isPaymentSuccessful = processPayment(caseDetails.getId().toString());
+                if (isPaymentSuccessful) {
+                    log.info("Payment status is Success for case id: {}", caseDetails.getId());
+                    successfulPaymentCases.add(caseDetails);
+                } else {
+                    log.info("Payment status is not Success for case id: {}", caseDetails.getId());
+                }
+            });
+
+            String searchAfterValue = getLastId(searchResult);
+            log.info("Fetching draft state next page for searchAfterValue: {}", searchAfterValue);
+            boolean keepSearching;
+            do {
+                SearchResult nextSearchResult = elasticSearchRepository
+                        .fetchNextPage(securityDTO.getAuthorisation(), caseTypeName, searchAfterValue,
+                                DRAFT_CASES_QUERY, startDate, endDate);
+
+                log.info("Fetching draft state next page for searchAfterValue: {}", searchAfterValue);
+
+                keepSearching = nextSearchResult != null && !nextSearchResult.getCases().isEmpty();
+                if (keepSearching) {
+                    List<CaseDetails> subsequentSearchResultCases = nextSearchResult.getCases();
+                    subsequentSearchResultCases.forEach(caseDetails -> {
+                        log.info("draft state case id: {}", caseDetails.getId());
+                        boolean isPaymentSuccessful = processPayment(caseDetails.getId().toString());
+                        if (isPaymentSuccessful) {
+                            log.info("Payment status is Success for case id: {}", caseDetails.getId());
+                            successfulPaymentCases.add(caseDetails);
+                        } else {
+                            log.info("Payment status is not Success for case id: {}", caseDetails.getId());
+                        }
+                    });
+                    searchAfterValue = getLastId(nextSearchResult);
+                }
+            } while (keepSearching);
 
             if (!successfulPaymentCases.isEmpty()) {
-                sendGORSuccessfulPaymentNotification(successfulPaymentCases, startDate, endDate);
+                sendDraftSuccessfulPaymentNotification(successfulPaymentCases, startDate, endDate, isCaveat);
             }
+
         } catch (Exception e) {
             log.error("FetchGORCases method error {}", e.getMessage(), e);
         }
     }
 
-    public void fetchCaveatCases(String startDate, String endDate) {
-        try {
-            log.info("Fetch Caveat cases upto date: {}", endDate);
-            List<ReturnedCaveatDetails> caveatCases = caveatQueryService.findCaveatDraftCases(startDate, endDate,
-                    CaseType.CAVEAT);
-            log.info("Found {} Caveat cases with draft state", caveatCases.size());
-
-            List<ReturnedCaveatDetails> successfulPaymentCases = new ArrayList<>();
-
-            for (ReturnedCaveatDetails returnedCaseDetails : caveatCases) {
-
-                boolean isPaymentSuccessful = processPayment(returnedCaseDetails.getId().toString());
-
-                if (isPaymentSuccessful) {
-                    log.info("Payment status is Success for Caveat case id: {}", returnedCaseDetails.getId());
-                    successfulPaymentCases.add(returnedCaseDetails);
-                } else {
-                    log.info("Payment status is not Success for Caveat case id: {}", returnedCaseDetails.getId());
-                }
-            }
-
-            if (!successfulPaymentCases.isEmpty()) {
-                sendCaveatSuccessfulPaymentNotification(successfulPaymentCases, startDate, endDate);
-            }
-        } catch (Exception e) {
-            log.error("fetchCaveatCases method error {}", e.getMessage(), e);
-        }
+    private String getLastId(SearchResult searchResult) {
+        return searchResult.getCases().getLast().getId().toString();
     }
 
-    private void sendCaveatSuccessfulPaymentNotification(List<ReturnedCaveatDetails> successfulPaymentCases,
-                                                         String startDate, String endDate) {
+    private void sendDraftSuccessfulPaymentNotification(List<CaseDetails> successfulPaymentCases,
+                                                      String startDate, String endDate, boolean isCaveat) {
         try {
-            notificationService.sendEmailForCaveatSuccessfulPayment(successfulPaymentCases, startDate, endDate);
-        } catch (NotificationClientException e) {
-            log.error("NotificationClientException for Caveat report: {}", e.getMessage());
-        }
-    }
-
-    private void sendGORSuccessfulPaymentNotification(List<ReturnedCaseDetails> successfulPaymentCases,
-                                                      String startDate, String endDate) {
-        try {
-            notificationService.sendEmailForGORSuccessfulPayment(successfulPaymentCases, startDate, endDate);
+            notificationService.sendEmailForDraftSuccessfulPayment(successfulPaymentCases,
+                    startDate, endDate, isCaveat);
         } catch (NotificationClientException e) {
             log.error("NotificationClientException for GOR report: {}", e.getMessage());
         }
