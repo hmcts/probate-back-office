@@ -326,8 +326,8 @@
             <p>{% if (multipleExecutors) %}Rydym i’n {% else %}Rydw i’n {% endif %} awdurdodi
                 {{ case_details.case_data.solsSolicitorFirmName }} i anfon ar
                 {% if (multipleExecutors) %}ein{% else %}fy {% endif %} rhan beth
-                {% if (multipleExecutors) %}rydym i’n {% else %}rydw i’n {% endif %} gredu i fod yn ewyllys a thestament gwir a gwreiddiol olaf{% if case_details.case_data.originalWillSignedDateFormatted != null %}, wedi’i llofnodi a’i dyddio {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notarïol/swyddogol{% endif %}
-                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentWelshCodicil == 1 %} gyda{% else %} a {% endif %} chodisil sydd wedi’i lofnodi a’i ddyddio {{ codicil.value }}{% set currentWelshCodicil = currentWelshCodicil + 1 %}{% endfor %} o
+                {% if (multipleExecutors) %}rydym i’n {% else %}rydw i’n {% endif %} gredu i fod yn ewyllys a thestament gwir a gwreiddiol olaf{% if case_extras.showWillDate == "Yes" %}, wedi’i llofnodi a’i dyddio {{ case_extras.originalWillSignedDateWelshFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, fel sydd wedi’i gynnwys mewn copi notarïol/swyddogol{% endif %}
+                {% if case_extras.showCodicilDate == "Yes" %}{% for codicil in case_extras.codicilSignedDateWelshFormatted %}{% if currentWelshCodicil == 1 %}, gyda{% else %} a {% endif %} chodisil sydd wedi’i lofnodi a’i ddyddio {{ codicil.value }}{% set currentWelshCodicil = currentWelshCodicil + 1 %}{% endfor %}{% endif %} o
                 {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
             </p>
             {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Y dystiolaeth bellach i gefnogi’r cais hwn yw:
@@ -684,7 +684,7 @@
                 {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf what
                 {% if (multipleExecutors) %}we{% else %}I{% endif %} believe to be the
                 true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, as contained in a notarial/official copy{% endif %}
-                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with{% else %} and {% endif %} codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
+                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %}, with{% else %} and {% endif %} codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
                 of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
             </p>
                 {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Further evidence in support of this application is:
@@ -1041,7 +1041,7 @@
                 {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf what
                 {% if (multipleExecutors) %}we{% else %}I{% endif %} believe to be the
                 true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, as contained in a notarial/official copy{% endif %}
-                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with{% else %}, and{% endif %} codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
+                {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %}, with{% else %} and{% endif %} codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
                 of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
             </p>
                 {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Further evidence in support of this application is:

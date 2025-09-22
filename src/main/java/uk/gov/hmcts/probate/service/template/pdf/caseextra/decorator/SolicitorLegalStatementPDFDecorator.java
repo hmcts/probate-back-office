@@ -36,7 +36,6 @@ public class SolicitorLegalStatementPDFDecorator {
                 .ihtEstateText(IHT_ESTATE_CONFIRM)
                 .build();
             decoration = caseExtraDecorator.decorate(ihtEstateConfirmCaseExtra);
-            log.info("IHT estate not completed decoration: {}", decoration);
         }
         if (null != caseData.getOriginalWillSignedDate()) {
             String welshWillFormattedDate = localDateToWelshStringConverter
@@ -47,7 +46,6 @@ public class SolicitorLegalStatementPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                     caseExtraDecorator.decorate(willDateCaseExtra));
-            log.info("Will signed date decoration: {}", decoration);
         }
 
         if (null != caseData.getCodicilAddedDateList()) {
@@ -57,14 +55,12 @@ public class SolicitorLegalStatementPDFDecorator {
                         .getDateCodicilAdded());
                 formattedCodicilDates.add(new CollectionMember<>(welshCodicilFormattedDate));
             });
-            log.info("codicil added date list: {}", formattedCodicilDates);
             CodicilDateCaseExtra codicilDateCaseExtra = CodicilDateCaseExtra.builder()
                 .showCodicilDate(YES)
                 .codicilSignedDateWelshFormatted(formattedCodicilDates)
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                     caseExtraDecorator.decorate(codicilDateCaseExtra));
-            log.info("Codicil signed date decoration: {}", decoration);
         }
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && null != caseData.getWhoSharesInCompanyProfits()) {
@@ -88,7 +84,6 @@ public class SolicitorLegalStatementPDFDecorator {
     }
 
     private String getWelshProfitSharingText(List<String> whoShares, boolean plural) {
-        log.info("who shares: {}", whoShares);
         if (whoShares == null || whoShares.isEmpty()) {
             return "";
         }
