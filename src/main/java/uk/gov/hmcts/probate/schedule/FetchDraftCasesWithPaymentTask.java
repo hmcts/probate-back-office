@@ -47,7 +47,6 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
         } catch (Exception e) {
             log.error("Error on FetchDraftCasesWithPaymentTask Scheduler {}", e.getMessage());
         }
-        System.exit(0);
     }
 
 }
