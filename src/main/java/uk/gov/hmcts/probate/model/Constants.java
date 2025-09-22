@@ -224,10 +224,10 @@ public final class Constants {
             DOC_TYPE_OTHER));
 
     public static final Map<String, String[]> EN_TO_WELSH = Map.of(
-            "partners", new String[]{"phartner", "partneriaid"},
-            "members", new String[]{"aelod", "aelodau"},
-            "stakeholders", new String[]{"rhanddeiliad", "rhanddeiliaid"},
-            "directors", new String[]{"cyfarwyddwr", "cyfarwyddwyr"}
+            "partner", new String[]{"phartner", "partneriaid"},
+            "member", new String[]{"aelod", "aelodau"},
+            "stakeholder", new String[]{"rhanddeiliad", "rhanddeiliaid"},
+            "director", new String[]{"cyfarwyddwr", "cyfarwyddwyr"}
     );
 
     private Constants() {
