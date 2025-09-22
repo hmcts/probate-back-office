@@ -88,6 +88,7 @@ public class SolicitorLegalStatementPDFDecorator {
     }
 
     private String getWelshProfitSharingText(List<String> whoShares, boolean plural) {
+        log.info("who shares: {}", whoShares);
         if (whoShares == null || whoShares.isEmpty()) {
             return "";
         }
