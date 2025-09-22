@@ -37,11 +37,8 @@ public class FetchDraftCaseService {
         try {
             log.info("Fetch GOR cases upto date: from {} to {} isCaveat: {} ", startDate, endDate, isCaveat);
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-            String caseTypeName = GRANT_OF_REPRESENTATION.getName();
-            if (isCaveat) {
-                caseTypeName = CAVEAT.getName();
-            }
-            System.out.println("DRAFT_CASES_QUERY = " + DRAFT_CASES_QUERY);
+            String caseTypeName = isCaveat ? CAVEAT.getName() : GRANT_OF_REPRESENTATION.getName();
+
             SearchResult searchResult = elasticSearchRepository.fetchFirstPage(securityDTO.getAuthorisation(),
                     caseTypeName, DRAFT_CASES_QUERY, startDate, endDate);
             log.info("Found {} {} cases with draft state from {} to date: {}", searchResult.getTotal(),
@@ -52,45 +49,22 @@ public class FetchDraftCaseService {
                 return;
             }
             List<CaseDetails> successfulPaymentCases = new ArrayList<>();
-            List<CaseDetails> searchResultCases = searchResult.getCases();
-
-            searchResultCases.forEach(caseDetails -> {
-                log.info("draft state case id: {}", caseDetails.getId());
-                boolean isPaymentSuccessful = processPayment(caseDetails.getId().toString());
-                if (isPaymentSuccessful) {
-                    log.info("Payment status is Success for case id: {}", caseDetails.getId());
-                    successfulPaymentCases.add(caseDetails);
-                } else {
-                    log.info("Payment status is not Success for case id: {}", caseDetails.getId());
-                }
-            });
+            processCases(searchResult.getCases(), successfulPaymentCases);
 
             String searchAfterValue = getLastId(searchResult);
-            log.info("Fetching draft state next page for searchAfterValue: {}", searchAfterValue);
-            boolean keepSearching;
-            do {
-                SearchResult nextSearchResult = elasticSearchRepository
-                        .fetchNextPage(securityDTO.getAuthorisation(), caseTypeName, searchAfterValue,
-                                DRAFT_CASES_QUERY, startDate, endDate);
+            log.info("Fetching draft state after first page for searchAfterValue: {}", searchAfterValue);
+            while (true) {
+                SearchResult nextResult = elasticSearchRepository.fetchNextPage(securityDTO.getAuthorisation(),
+                        caseTypeName, searchAfterValue, DRAFT_CASES_QUERY, startDate, endDate);
 
-                log.info("Fetching draft state next page for searchAfterValue: {}", searchAfterValue);
-
-                keepSearching = nextSearchResult != null && !nextSearchResult.getCases().isEmpty();
-                if (keepSearching) {
-                    List<CaseDetails> subsequentSearchResultCases = nextSearchResult.getCases();
-                    subsequentSearchResultCases.forEach(caseDetails -> {
-                        log.info("draft state case id: {}", caseDetails.getId());
-                        boolean isPaymentSuccessful = processPayment(caseDetails.getId().toString());
-                        if (isPaymentSuccessful) {
-                            log.info("Payment status is Success for case id: {}", caseDetails.getId());
-                            successfulPaymentCases.add(caseDetails);
-                        } else {
-                            log.info("Payment status is not Success for case id: {}", caseDetails.getId());
-                        }
-                    });
-                    searchAfterValue = getLastId(nextSearchResult);
+                if (nextResult == null || nextResult.getCases().isEmpty()) {
+                    break;
                 }
-            } while (keepSearching);
+
+                processCases(nextResult.getCases(), successfulPaymentCases);
+                searchAfterValue = getLastId(nextResult);
+                log.info("Fetching draft state next page for searchAfterValue: {}", searchAfterValue);
+            }
 
             if (!successfulPaymentCases.isEmpty()) {
                 sendDraftSuccessfulPaymentNotification(successfulPaymentCases, startDate, endDate, isCaveat);
@@ -98,6 +72,20 @@ public class FetchDraftCaseService {
 
         } catch (Exception e) {
             log.error("FetchGORCases method error {}", e.getMessage(), e);
+        }
+    }
+
+    private void processCases(List<CaseDetails> cases, List<CaseDetails> successfulPaymentCases) {
+        for (CaseDetails caseDetails : cases) {
+            log.info("Draft state case id: {}", caseDetails.getId());
+            boolean isPaymentSuccessful = processPayment(caseDetails.getId().toString());
+
+            if (isPaymentSuccessful) {
+                log.info("Payment status is Success for case id: {}", caseDetails.getId());
+                successfulPaymentCases.add(caseDetails);
+            } else {
+                log.info("Payment status is not Success for case id: {}", caseDetails.getId());
+            }
         }
     }
 

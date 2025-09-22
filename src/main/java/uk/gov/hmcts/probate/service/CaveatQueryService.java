@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,9 +26,7 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
-import jakarta.annotation.Nullable;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -93,37 +91,6 @@ public class CaveatQueryService {
         return foundCaveats.getCaveats().getFirst().getData();
     }
 
-
-    private List<ReturnedCaveatDetails> runQueryWithPagination(String queryName, String jsonQuery,
-                                                             String queryDateStart, String queryDateEnd,
-                                                               CaseType caseType) {
-
-        List<ReturnedCaveatDetails> allResults = new ArrayList<>();
-        List<ReturnedCaveatDetails> pagedResults;
-        int index = 0;
-        int pageStart = 0;
-        int total = 10000000;
-        String paginatedQry = jsonQuery;
-        while (index < total) {
-            log.info("Querying for {} from date:{} to date:{}, from index:{} to index:{}", queryName, queryDateStart,
-                    queryDateEnd, pageStart, (pageStart + dataExtractPaginationSize));
-            ReturnedCaveats cases = runQuery(caseType, paginatedQry);
-            total = cases.getTotal();
-            pagedResults = cases.getCaveats();
-            if (!CollectionUtils.isEmpty(pagedResults)) {
-                log.info("index: {}, first|last case ref: {}|{}", index, pagedResults.get(0).getId(),
-                        pagedResults.get(pagedResults.size() - 1).getId());
-            } else {
-                log.info("index: {}, first|last case ref: {}|{}", index, "Not found", "Not found");
-            }
-            allResults.addAll(pagedResults);
-            index = index + pagedResults.size();
-            pageStart = pageStart + dataExtractPaginationSize;
-            paginatedQry = updatePageStartOnQry(paginatedQry, pageStart);
-        }
-
-        return allResults;
-    }
 
     private ReturnedCaveats runQuery(CaseType caseType, String jsonQuery) {
         log.debug("CaveatQueryService runQuery: " + jsonQuery);
