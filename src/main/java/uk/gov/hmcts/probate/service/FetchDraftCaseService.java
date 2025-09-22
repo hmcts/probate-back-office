@@ -35,44 +35,54 @@ public class FetchDraftCaseService {
 
     public void fetchDraftCases(String startDate, String endDate,boolean isCaveat) {
         try {
-            log.info("Fetch GOR cases upto date: from {} to {} isCaveat: {} ", startDate, endDate, isCaveat);
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
             String caseTypeName = isCaveat ? CAVEAT.getName() : GRANT_OF_REPRESENTATION.getName();
-
-            SearchResult searchResult = elasticSearchRepository.fetchFirstPage(securityDTO.getAuthorisation(),
-                    caseTypeName, DRAFT_CASES_QUERY, startDate, endDate);
-            log.info("Found {} {} cases with draft state from {} to date: {}", searchResult.getTotal(),
+            log.info("Fetch {} cases from date {} to {}", caseTypeName, startDate, endDate);
+            List<CaseDetails> successfulPaymentDraftCases = fetchAndProcessDraftCases(securityDTO,
                     caseTypeName, startDate, endDate);
-            if (searchResult.getTotal() == 0) {
-                log.info("No {} cases found cases with draft state: from {} to date: {}", caseTypeName,
-                        startDate, endDate);
-                return;
-            }
-            List<CaseDetails> successfulPaymentCases = new ArrayList<>();
-            processCases(searchResult.getCases(), successfulPaymentCases);
 
-            String searchAfterValue = getLastId(searchResult);
-            log.info("Fetching draft state after first page for searchAfterValue: {}", searchAfterValue);
-            while (true) {
-                SearchResult nextResult = elasticSearchRepository.fetchNextPage(securityDTO.getAuthorisation(),
-                        caseTypeName, searchAfterValue, DRAFT_CASES_QUERY, startDate, endDate);
-
-                if (nextResult == null || nextResult.getCases().isEmpty()) {
-                    break;
-                }
-
-                processCases(nextResult.getCases(), successfulPaymentCases);
-                searchAfterValue = getLastId(nextResult);
-                log.info("Fetching draft state next page for searchAfterValue: {}", searchAfterValue);
-            }
-
-            if (!successfulPaymentCases.isEmpty()) {
-                sendDraftSuccessfulPaymentNotification(successfulPaymentCases, startDate, endDate, isCaveat);
+            if (!successfulPaymentDraftCases.isEmpty()) {
+                sendDraftSuccessfulPaymentNotification(successfulPaymentDraftCases, startDate, endDate, isCaveat);
             }
 
         } catch (Exception e) {
-            log.error("FetchGORCases method error {}", e.getMessage(), e);
+            log.error("fetchDraftCases method error {}", e.getMessage(), e);
         }
+    }
+
+    private List<CaseDetails> fetchAndProcessDraftCases(SecurityDTO securityDTO,
+                                                        String caseTypeName,
+                                                        String startDate,
+                                                        String endDate) {
+        List<CaseDetails> successfulPaymentCases = new ArrayList<>();
+
+        SearchResult searchResult = elasticSearchRepository.fetchFirstPage(securityDTO.getAuthorisation(),
+                caseTypeName, DRAFT_CASES_QUERY, startDate, endDate);
+
+        log.info("Found {} {} cases with draft state from {} to {}",
+                searchResult.getTotal(), caseTypeName, startDate, endDate);
+
+        if (searchResult.getTotal() == 0) {
+            log.info("No {} draft cases found between {} and {}", caseTypeName, startDate, endDate);
+            return successfulPaymentCases;
+        }
+
+        processCases(searchResult.getCases(), successfulPaymentCases);
+
+        String searchAfterValue = getLastId(searchResult);
+        while (true) {
+            SearchResult nextResult = elasticSearchRepository.fetchNextPage(securityDTO.getAuthorisation(),
+                    caseTypeName, searchAfterValue, DRAFT_CASES_QUERY, startDate, endDate);
+
+            if (nextResult == null || nextResult.getCases().isEmpty()) {
+                break;
+            }
+
+            processCases(nextResult.getCases(), successfulPaymentCases);
+            searchAfterValue = getLastId(nextResult);
+        }
+
+        return successfulPaymentCases;
     }
 
     private void processCases(List<CaseDetails> cases, List<CaseDetails> successfulPaymentCases) {
