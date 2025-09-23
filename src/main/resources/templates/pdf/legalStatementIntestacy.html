@@ -132,7 +132,7 @@
                 {% else %}
                 Nid oeddent wedi cael ymwahaniad cyfreithiol
                 {% endif %}
-                ac roedd eu domisil {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %} yn/yng {{ case_details.case_data.domicilityCountry }}.{% else %} yng Nghymru a Lloegr.{% endif %}
+                ac roedd eu domisil {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %} yn: {{ case_details.case_data.domicilityCountry }}.{% else %} yng Nghymru a Lloegr.{% endif %}
             </p>
             <p>Nid oes gan unrhyw blant dan 18 oed hawl i'r ystad.</p>
         </td>

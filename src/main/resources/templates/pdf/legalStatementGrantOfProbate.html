@@ -140,7 +140,7 @@
                 case_details.case_data.deceasedAddress.Country != "" %}{% if case_details.case_data.deceasedAddress.Country == "United Kingdom"%}Y Deyrnas Unedig
                 {% else %}{{ case_details.case_data.deceasedAddress.Country }}{% endif %}{% endif %}
                 ar {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
-                a bu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, domisil {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}yn/yng {{ case_details.case_data.domicilityCountry }}.{% else %} yng Nghymru a Lloegr.{% endif %}
+                a bu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, domisil {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}yn: {{ case_details.case_data.domicilityCountry }}.{% else %} yng Nghymru a Lloegr.{% endif %}
                 {% if case_details.case_data.appointExec == "Yes" %}
                 Mae’r ewyllys yn penodi ysgutor.{% endif %}
                 {% if case_details.case_data.appointExecNo == "Yes" %}
