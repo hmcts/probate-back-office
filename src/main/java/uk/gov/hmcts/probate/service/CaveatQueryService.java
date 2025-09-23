@@ -125,9 +125,6 @@ public class CaveatQueryService {
         return returnedCaveats;
     }
 
-    private String updatePageStartOnQry(String paginatedQry, int pageStart) {
-        return paginatedQry.replaceFirst("\"from\": *\\d*,", "\"from\":" + pageStart + ",");
-    }
 
     public List<ReturnedCaveatDetails> findCaveatExpiredCases(String expiryDate) {
         BoolQueryBuilder query = boolQuery()
