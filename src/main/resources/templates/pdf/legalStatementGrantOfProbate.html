@@ -188,7 +188,7 @@
                 {% else %}
                 {{ case_extras.welshSingularProfitSharingText }} arall
                 {% endif %} sy’n rhannu elw
-                yn y {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}cwmni sy’n olynu. {% endif %} cwmni.
+                yn y {% if case_details.case_data.titleAndClearingType == "TCTPartSuccPowerRes" %}cwmni sy’n olynu.{% else %} cwmni. {% endif %}
             </p>
             {% endif %}
 
