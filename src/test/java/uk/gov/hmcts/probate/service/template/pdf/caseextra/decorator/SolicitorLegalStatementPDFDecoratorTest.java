@@ -88,8 +88,8 @@ class SolicitorLegalStatementPDFDecoratorTest {
                         .of("Partner","Member")).build();
         when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
         String caseExtraJson
-                = "{\"welshSingularProfitSharingText\" : \"phartner ac aelod\",\"welshPluralProfitSharingText\" : "
-                + "\"phartneriaid ac aelodau\"}";
+                = "{\"welshSingularProfitSharingText\" : \"partner ac aelod\",\"welshPluralProfitSharingText\" : "
+                + "\"partneriaid ac aelodau\"}";
         when(caseExtraDecorator.decorate(any(ProfitSharingCaseExtra.class))).thenReturn(caseExtraJson);
         when(caseExtraDecorator.combineDecorations("", caseExtraJson)).thenReturn(caseExtraJson);
         String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);

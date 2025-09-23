@@ -83,6 +83,15 @@ public class SolicitorLegalStatementPDFDecorator {
         return "aeiowy".indexOf(first) >= 0 ? "ac" : "a";
     }
 
+    private static String mutateAfterConjunction(String word) {
+        if (word.startsWith("p")) {
+            return "ph" + word.substring(1);
+        } else if (word.startsWith("c")) {
+            return "ch" + word.substring(1);
+        }
+        return word;
+    }
+
     private String getWelshProfitSharingText(List<String> whoShares, boolean plural) {
         if (whoShares == null || whoShares.isEmpty()) {
             return "";
@@ -101,6 +110,7 @@ public class SolicitorLegalStatementPDFDecorator {
                 profitText.append(" ");
                 profitText.append(getWelshConjunction(welsh));
                 profitText.append(" ");
+                profitText.append(mutateAfterConjunction(welsh));
             }
             profitText.append(welsh);
         }
