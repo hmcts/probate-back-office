@@ -160,7 +160,7 @@ public class NotificationService {
         }
 
         updatePersonalisationForSolicitor(caseData, personalisation);
-        updatePersonalisationForSolicitorGrantIssuedEmails(state, caseData, personalisation);
+        personalisation = updatePersonalisationForSolicitorGrantIssuedEmails(state, caseData, caseDetails.getId(), personalisation);
 
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
@@ -219,7 +219,7 @@ public class NotificationService {
         }
     }
 
-    Map<String, Object> updatePersonalisationForSolicitorGrantIssuedEmails(State state, CaseData caseData,
+    Map<String, Object> updatePersonalisationForSolicitorGrantIssuedEmails(State state, CaseData caseData, Long caseId,
                                                             Map<String, Object> personalisation) {
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)
                 && (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY
@@ -227,7 +227,7 @@ public class NotificationService {
 
             String caseType = caseData.getCaseType();
             if (caseType.isBlank()) {
-                log.error("Personalisation validation failed for blank caseType");
+                log.error("Personalisation validation failed for blank caseType on case {}", caseId);
                 throw new RequestInformationParameterException();
             }
 
@@ -237,7 +237,7 @@ public class NotificationService {
                 case ADMON_WILL_CASE_TYPE -> "letters of administration with will annexed";
                 case AD_COLLIGENDA_BONA_CASE_TYPE -> "Ad Colligenda Bona grant";
                 default -> {
-                    log.error("Personalisation validation failed due to unknown caseType: {}", caseType);
+                    log.error("Personalisation validation failed due to unknown caseType: {} on case: {}", caseType, caseId);
                     throw new RequestInformationParameterException();
                 }
             });
@@ -249,7 +249,7 @@ public class NotificationService {
                     case ADMON_WILL_CASE_TYPE -> "llythyrau gweinyddu pan fydd yna ewyllys";
                     case AD_COLLIGENDA_BONA_CASE_TYPE -> "grant Ad Colligenda Bona";
                     default -> {
-                        log.error("Personalisation validation failed due to unknown caseType: {}", caseType);
+                        log.error("Welsh Personalisation validation failed due to unknown caseType: {} on case: {}", caseType, caseId);
                         throw new RequestInformationParameterException();
                     }
                 });
