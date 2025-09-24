@@ -307,12 +307,12 @@
                     a wnaeth olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}
                     ar ddyddiad marwolaeth yr unigolyn a fu farw wedi ymwrthod â’r hawl i gael profiant.</p>
                 {% elseif case_details.case_data.titleAndClearingType == "TCTPartOthersRenouncing" %}
-                    <p>Mae’r {{ case_extras.welshPluralProfitSharingText }} sy’n weddill sy’n rhannu elw yn y cwmni
+                    <p>Mae’r {{ case_extras.welshPluralProfitSharingText }} sy’n weddill ac sy’n rhannu elw yn y cwmni
                         {{ case_details.case_data.nameOfFirmNamedInWill }} yn ymwrthod â’u hawl i brofiant.</p>
                 {% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccOthersRenouncing" %}
                     <p>Mae’r {{ case_extras.welshPluralProfitSharingText }}
-                        sy’n weddill sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }} a wnaeth olynu a pharhau â phractis y cwmni
-                        {{ case_details.case_data.nameOfFirmNamedInWill }} yn ymwrthod â’u hawl i brofiant.</p>
+                        sy’n weddill ac sy’n rhannu elw yn y cwmni {{ case_details.case_data.nameOfSucceededFirm }}, a wnaeth olynu a pharhau â gwaith y cwmni
+                        {{ case_details.case_data.nameOfFirmNamedInWill }}, yn ymwrthod â’u hawl i brofiant.</p>
                 {% elseif case_details.case_data.titleAndClearingType == "TCTFirmCeasedTradingNoSucc" %}
                     <p>Mae {{ case_details.case_data.nameOfFirmNamedInWill }} wedi rhoi’r gorau i fasnachu ar ddyddiad marwolaeth yr ymadawedig ac nid oes cwmni i olynu.</p>
                 {% else %}
