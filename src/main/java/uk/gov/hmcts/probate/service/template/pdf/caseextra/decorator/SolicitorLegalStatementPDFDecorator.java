@@ -111,8 +111,9 @@ public class SolicitorLegalStatementPDFDecorator {
                 profitText.append(getWelshConjunction(welsh));
                 profitText.append(" ");
                 profitText.append(mutateAfterConjunction(welsh));
+            } else {
+                profitText.append(welsh);
             }
-            profitText.append(welsh);
         }
         log.info("Profit sharing decoration: {}", profitText);
         return profitText.toString();
