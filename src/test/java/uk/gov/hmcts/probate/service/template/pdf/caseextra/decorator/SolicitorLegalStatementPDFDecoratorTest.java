@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.CodicilDateCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseDateCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstateConfirmCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.ProfitSharingCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.WillDateCaseExtra;
@@ -82,10 +83,26 @@ class SolicitorLegalStatementPDFDecoratorTest {
     }
 
     @Test
+    void shouldDecorateForDispenseDate() {
+        caseDataMock = CaseData.builder().originalWillSignedDate(null)
+                .dispenseWithNoticeLeaveGivenDate(LocalDate.of(2024, 12, 23)).build();
+        when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        when(localDateToWelshStringConverter.convert(caseDataMock.getDispenseWithNoticeLeaveGivenDate()))
+                .thenReturn("23 Rhagfyr 2024");
+        String caseExtraJson
+                = "{\"showDispenseDate\" : \"Yes\",\"dispenseDateWelshFormatted\" : \"23 Rhagfyr 2024\"}";
+        when(caseExtraDecorator.decorate(any(DispenseDateCaseExtra.class))).thenReturn(caseExtraJson);
+        when(caseExtraDecorator.combineDecorations("", caseExtraJson)).thenReturn(caseExtraJson);
+        String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
+        assertEquals(caseExtraJson, actual);
+    }
+
+    @Test
     void shouldDecorateForProfitSharingText() {
         caseDataMock = CaseData.builder().originalWillSignedDate(null)
                 .codicilAddedDateList(null).solsWillType(GRANT_TYPE_PROBATE).whoSharesInCompanyProfits(List
-                        .of("Partner","Member")).build();
+                        .of("partner","member")).build();
         when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
         String caseExtraJson
                 = "{\"welshSingularProfitSharingText\" : \"partner ac aelod\",\"welshPluralProfitSharingText\" : "

@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.CodicilDateCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseDateCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstateConfirmCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.ProfitSharingCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.WillDateCaseExtra;
@@ -63,6 +64,16 @@ public class SolicitorLegalStatementPDFDecorator {
                     caseExtraDecorator.decorate(codicilDateCaseExtra));
         }
 
+        if (null != caseData.getDispenseWithNoticeLeaveGivenDate()) {
+            String welshDispenseFormattedDate = localDateToWelshStringConverter
+                    .convert(caseData.getDispenseWithNoticeLeaveGivenDate());
+            DispenseDateCaseExtra dispenseDateCaseExtra = DispenseDateCaseExtra.builder().showDispenseDate(YES)
+                    .dispenseDateWelshFormatted(welshDispenseFormattedDate)
+                    .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                        caseExtraDecorator.decorate(dispenseDateCaseExtra));
+        }
+
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && null != caseData.getWhoSharesInCompanyProfits()) {
             ProfitSharingCaseExtra profitSharingCaseExtra = ProfitSharingCaseExtra.builder()
                 .welshSingularProfitSharingText(getWelshProfitSharingText(
@@ -72,8 +83,8 @@ public class SolicitorLegalStatementPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                     caseExtraDecorator.decorate(profitSharingCaseExtra));
-            log.info("Welsh Profit sharing decoration: {}", decoration);
         }
+        log.info("Welsh Profit sharing decoration: {}", decoration);
         return decoration;
     }
 

@@ -262,7 +262,7 @@
                 {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
                     {% if executor.value.notApplyingExecutorDispenseWithNotice == "Yes" %}
                         {% if executor.value.notApplyingExecutorDispenseWithNoticeLeaveGiven == "Yes" %}
-                        <p><span>Mae rhybudd y cais hwn ar {{ case_details.case_data.dispenseWithNoticeLeaveGivenDateFormatted }}
+                        <p><span>Mae rhybudd y cais hwn ar {% if case_extras.showDispenseDate == "Yes" %}{{ case_extras.dispenseDateWelshFormatted }}{% endif %}
                             wedi’i hepgor o dan Reol 27(3) Rheolau Profiant Diwrthwynebiad 1987 i
                             {{ executor.value.notApplyingExecutorName }} y mae hawl yn cael ei gadw ar ei gyfer.
                         </span></p>
