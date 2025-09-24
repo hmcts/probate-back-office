@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioList;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
@@ -581,6 +582,7 @@ public class CaseData extends CaseDataParent {
     private final String willDamageDate;
     private String ihtFormEstateValuesCompleted;
     private String ihtFormEstate;
+    private DynamicRadioList ihtFormsReported;
     private BigDecimal ihtEstateGrossValue;
     private final String ihtEstateGrossValueField;
     private BigDecimal ihtEstateNetValue;

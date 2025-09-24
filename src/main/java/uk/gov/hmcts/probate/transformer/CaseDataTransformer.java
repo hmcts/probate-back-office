@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioList;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -214,5 +215,15 @@ public class CaseDataTransformer {
     public void transformCaseDataForPaperForm(CallbackRequest callbackRequest) {
         final var caseData = callbackRequest.getCaseDetails().getData();
         caseData.setChannelChoice(PAPERFORM);
+        DynamicRadioList ihtFormsReported = caseData.getIhtFormsReported();
+        if (ihtFormsReported != null && ihtFormsReported.getValue() != null && ihtFormsReported
+                .getValue().getCode() != null) {
+            String code = ihtFormsReported.getValue().getCode();
+            if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
+                caseData.setIhtFormEstate(code);
+            } else {
+                caseData.setIhtFormId(code);
+            }
+        }
     }
 }

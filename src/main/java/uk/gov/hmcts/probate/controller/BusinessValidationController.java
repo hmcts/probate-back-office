@@ -584,6 +584,7 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+
         CallbackResponse response = callbackResponseTransformer.defaultDateOfDeathType(callbackRequest);
 
         return ResponseEntity.ok(response);

@@ -19,6 +19,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioListElement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -182,7 +184,58 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse defaultDateOfDeathType(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE);
+        DynamicRadioList ihtFormEstate = getAppropriateIhtFormEstateRadioList(callbackRequest
+                .getCaseDetails().getData());
+        builder.ihtFormsReported(ihtFormEstate);
         return transformResponse(builder.build());
+    }
+
+    private DynamicRadioList getAppropriateIhtFormEstateRadioList(CaseData caseData) {
+        List<DynamicRadioListElement> listItems = new ArrayList<>();
+        String ihtFormEstate = caseData.getIhtFormEstate();
+        String ihtFormId = caseData.getIhtFormId();
+        DynamicRadioList ihtFormsReported = caseData.getIhtFormsReported();
+
+        if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
+            listItems.add(buildRadioListItem("IHT400", "IHT400"));
+            listItems.add(buildRadioListItem("IHT207", "IHT207"));
+        } else {
+            listItems.add(buildRadioListItem("IHT400", "IHT400"));
+            listItems.add(buildRadioListItem("IHT207", "IHT207"));
+            listItems.add(buildRadioListItem("IHT205", "IHT205"));
+        }
+
+        DynamicRadioListElement selectedValue = null;
+        if (ihtFormsReported != null && ihtFormsReported.getValue() != null && ihtFormsReported
+                .getValue().getCode() != null) {
+            String code = ihtFormsReported.getValue().getCode();
+            selectedValue = listItems.stream()
+                    .filter(item -> code.equals(item.getCode()))
+                    .findFirst()
+                    .orElse(null);
+        } else if (ihtFormEstate != null) {
+            selectedValue = listItems.stream()
+                    .filter(item -> ihtFormEstate.equals(item.getCode()))
+                    .findFirst()
+                    .orElse(null);
+        } else if (ihtFormId != null) {
+            selectedValue = listItems.stream()
+                    .filter(item -> ihtFormId.equals(item.getCode()))
+                    .findFirst()
+                    .orElse(null);
+        }
+
+        return DynamicRadioList.builder()
+                .listItems(listItems)
+                .value(selectedValue)
+                .build();
+    }
+
+    private DynamicRadioListElement buildRadioListItem(String code, String label) {
+        return DynamicRadioListElement.builder()
+                .code(code)
+                .label(label)
+                .build();
     }
 
     public CallbackResponse setupOriginalDocumentsForRemoval(CallbackRequest callbackRequest) {
@@ -203,6 +256,10 @@ public class CallbackResponseTransformer {
                 callbackRequest.getEventId(), Optional.empty(),true);
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(callbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder);
+        DynamicRadioList ihtFormEstate = getAppropriateIhtFormEstateRadioList(callbackRequest
+                .getCaseDetails().getData());
+        responseCaseDataBuilder.ihtFormsReported(ihtFormEstate);
+
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1422,7 +1479,8 @@ public class CallbackResponseTransformer {
             .executorsNamed(caseData.getExecutorsNamed())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
-            .evidenceHandledDate(caseData.getEvidenceHandledDate());
+            .evidenceHandledDate(caseData.getEvidenceHandledDate())
+            .ihtFormsReported(caseData.getIhtFormsReported());
 
         handleDeceasedAliases(
                 builder,
