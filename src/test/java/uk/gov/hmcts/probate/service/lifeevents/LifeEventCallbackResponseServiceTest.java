@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.lifeevents;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ class LifeEventCallbackResponseServiceTest {
     private List<CollectionMember<DeathRecord>> deathRecords;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         response = CallbackResponse.builder().data(ResponseCaseData.builder().build()).build();
         when(callbackResponseTransformer.updateTaskList(any(CallbackRequest.class), any())).thenReturn(response);
         deathRecords = mock(List.class);
@@ -56,7 +56,7 @@ class LifeEventCallbackResponseServiceTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         final CallbackResponse callbackResponse =
             lifeEventCallbackResponseService.setNumberOfDeathRecords(callbackRequest);
-        assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
+        assertEquals(5, callbackResponse.getData().getNumberOfDeathRecords());
     }
 
     @Test
@@ -67,7 +67,7 @@ class LifeEventCallbackResponseServiceTest {
 
         final CallbackResponse callbackResponse =
             lifeEventCallbackResponseService.getDeathRecordsByNamesAndDate(callbackRequest);
-        assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
+        assertEquals(5, callbackResponse.getData().getNumberOfDeathRecords());
         assertEquals(callbackResponse.getData().getDeathRecords(), deathRecords);
     }
 }
