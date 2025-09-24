@@ -412,8 +412,8 @@ class NotificationServiceTest {
 
         Map<String, Object> personalisation = new HashMap<>();
 
-        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
-                12345L, personalisation);
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
 
         assertEquals("grant of probate", personalisation.get("case_type_text"));
     }
@@ -427,8 +427,8 @@ class NotificationServiceTest {
 
         Map<String, Object> personalisation = new HashMap<>();
 
-        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
-                12345L, personalisation);
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
 
         assertEquals("grant of probate", personalisation.get("case_type_text"));
         assertEquals("grant profiant", personalisation.get("welsh_case_type_text"));
@@ -443,8 +443,8 @@ class NotificationServiceTest {
 
         Map<String, Object> personalisation = new HashMap<>();
 
-        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
-                12345L, personalisation);
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
 
         assertEquals("letters of administration", personalisation.get("case_type_text"));
     }
@@ -458,8 +458,8 @@ class NotificationServiceTest {
 
         Map<String, Object> personalisation = new HashMap<>();
 
-        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
-                12345L,personalisation);
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L,personalisation);
 
         assertEquals("letters of administration", personalisation.get("case_type_text"));
         assertEquals("llythyrau gweinyddu", personalisation.get("welsh_case_type_text"));
@@ -474,8 +474,8 @@ class NotificationServiceTest {
 
         Map<String, Object> personalisation = new HashMap<>();
 
-        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
-                12345L, personalisation);
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
 
         assertEquals("letters of administration with will annexed", personalisation.get("case_type_text"));
     }
@@ -489,8 +489,8 @@ class NotificationServiceTest {
 
         Map<String, Object> personalisation = new HashMap<>();
 
-        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
-                12345L, personalisation);
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
 
         assertEquals("letters of administration with will annexed", personalisation.get("case_type_text"));
         assertEquals("llythyrau gweinyddu pan fydd yna ewyllys", personalisation.get("welsh_case_type_text"));
@@ -505,8 +505,8 @@ class NotificationServiceTest {
 
         Map<String, Object> personalisation = new HashMap<>();
 
-        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
-                12345L, personalisation);
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
 
         assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
     }
@@ -520,8 +520,8 @@ class NotificationServiceTest {
 
         Map<String, Object> personalisation = new HashMap<>();
 
-        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
-                12345L, personalisation);
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
 
         assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
         assertEquals("grant Ad Colligenda Bona", personalisation.get("welsh_case_type_text"));
@@ -536,8 +536,8 @@ class NotificationServiceTest {
 
         Map<String, Object> personalisation = new HashMap<>();
 
-        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_REISSUED, caseData,
-                12345L, personalisation);
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_REISSUED,
+                caseData, 12345L, personalisation);
 
         assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
         assertEquals("grant Ad Colligenda Bona", personalisation.get("welsh_case_type_text"));
