@@ -10,6 +10,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -341,7 +342,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
                         .build());
         Map<String, Object> response =
                 grantOfRepresentationPersonalisationService.getDraftCaseWithPaymentPersonalisation(cases,
-                        "01/01/2025", "01/05/2025", false);
+                        "01/01/2025", "01/05/2025", CcdCaseType.GRANT_OF_REPRESENTATION);
 
         assertEquals("Draft cases with payment success extract from 01/01/2025 to 01/05/2025",
                 response.get(PERSONALISATION_DRAFT_NAME));
@@ -365,7 +366,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
                         .build());
         Map<String, Object> response =
                 grantOfRepresentationPersonalisationService.getDraftCaseWithPaymentPersonalisation(cases,
-                        "01/01/2025", "01/05/2025", true);
+                        "01/01/2025", "01/05/2025", CcdCaseType.CAVEAT);
 
         assertEquals("Draft cases with payment success extract from 01/01/2025 to 01/05/2025",
                 response.get(PERSONALISATION_DRAFT_NAME));

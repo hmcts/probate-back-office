@@ -99,6 +99,8 @@ import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 import static uk.gov.hmcts.probate.model.State.NOC;
 import static uk.gov.hmcts.probate.model.State.REDECLARATION_SOT;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PAYMENT_FAILED;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -2317,7 +2319,7 @@ class NotificationServiceIT {
         String fromDate = "2022-01-01";
         String toDate = "2022-01-31";
 
-        notificationService.sendEmailForDraftSuccessfulPayment(cases, fromDate, toDate, false);
+        notificationService.sendEmailForDraftSuccessfulPayment(cases, fromDate, toDate, GRANT_OF_REPRESENTATION);
 
         verify(notificationClient).sendEmail(any(), any(), any(), any());
     }
@@ -2337,7 +2339,7 @@ class NotificationServiceIT {
         String fromDate = "2022-01-01";
         String toDate = "2022-01-31";
 
-        notificationService.sendEmailForDraftSuccessfulPayment(cases, fromDate, toDate, true);
+        notificationService.sendEmailForDraftSuccessfulPayment(cases, fromDate, toDate, CAVEAT);
 
         verify(notificationClient).sendEmail(any(), any(), any(), any());
     }

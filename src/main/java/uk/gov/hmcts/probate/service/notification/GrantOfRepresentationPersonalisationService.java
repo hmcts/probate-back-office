@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -102,13 +103,14 @@ public class GrantOfRepresentationPersonalisationService {
 
     public Map<String, Object> getDraftCaseWithPaymentPersonalisation(
             List<uk.gov.hmcts.reform.ccd.client.model.CaseDetails> cases,
-            String fromDate, String toDate, boolean isCaveat) {
+            String fromDate, String toDate, CcdCaseType ccdCaseType) {
         HashMap<String, Object> personalisation = new HashMap<>();
 
         StringBuilder data = getDraftCasesBuiltData(cases);
 
         personalisation.put(PERSONALISATION_DRAFT_NAME, getSubject(fromDate, toDate));
-        personalisation.put(PERSONALISATION_CASE_TYPE, isCaveat ? "Caveat" : "Grant of Representation");
+        personalisation.put(PERSONALISATION_CASE_TYPE, ccdCaseType.getName().equals(CcdCaseType.CAVEAT.getName())
+                ? "Caveat" : "Grant of Representation");
         personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
 
         return personalisation;

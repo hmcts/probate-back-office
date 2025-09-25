@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -288,13 +289,13 @@ public class NotificationService {
     }
 
     public void sendEmailForDraftSuccessfulPayment(List<uk.gov.hmcts.reform.ccd.client.model.CaseDetails> cases,
-                                                   String fromDate, String toDate, boolean isCaveat)
+                                                   String fromDate, String toDate, CcdCaseType ccdCaseType)
             throws NotificationClientException {
         log.info("Sending email for Draft cases with payment status as Success");
 
         String templateId = getTemplateId();
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService
-                .getDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate,isCaveat);
+                .getDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate,ccdCaseType);
         sendEmailForDraftCases(templateId, personalisation);
     }
 

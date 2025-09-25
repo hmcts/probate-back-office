@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.payments.PaymentsResponse;
 import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -33,16 +34,17 @@ public class FetchDraftCaseService {
     private static final String DRAFT_CASES_QUERY = "templates/elasticsearch/caseMatching/"
             + "draft_cases_date_range_query.json";
 
-    public void fetchDraftCases(String startDate, String endDate,boolean isCaveat) {
+    public void fetchDraftCases(String startDate, String endDate, CcdCaseType ccdCaseType) {
         try {
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-            String caseTypeName = isCaveat ? CAVEAT.getName() : GRANT_OF_REPRESENTATION.getName();
+            String caseTypeName = ccdCaseType.getName().equals(CAVEAT.getName())
+                    ? CAVEAT.getName() : GRANT_OF_REPRESENTATION.getName();
             log.info("Fetch {} draft cases from date {} to {}", caseTypeName, startDate, endDate);
             List<CaseDetails> successfulPaymentDraftCases = fetchAndProcessDraftCases(securityDTO,
                     caseTypeName, startDate, endDate);
 
             if (!successfulPaymentDraftCases.isEmpty()) {
-                sendDraftSuccessfulPaymentNotification(successfulPaymentDraftCases, startDate, endDate, isCaveat);
+                sendDraftSuccessfulPaymentNotification(successfulPaymentDraftCases, startDate, endDate, ccdCaseType);
             }
 
         } catch (Exception e) {
@@ -104,10 +106,10 @@ public class FetchDraftCaseService {
     }
 
     private void sendDraftSuccessfulPaymentNotification(List<CaseDetails> successfulPaymentCases,
-                                                      String startDate, String endDate, boolean isCaveat) {
+                                                      String startDate, String endDate, CcdCaseType ccdCaseType) {
         try {
             notificationService.sendEmailForDraftSuccessfulPayment(successfulPaymentCases,
-                    startDate, endDate, isCaveat);
+                    startDate, endDate, ccdCaseType);
         } catch (NotificationClientException e) {
             log.error("NotificationClientException for GOR report: {}", e.getMessage());
         }
