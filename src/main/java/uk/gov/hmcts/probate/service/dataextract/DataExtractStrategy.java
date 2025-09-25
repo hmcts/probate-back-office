@@ -16,4 +16,6 @@ public interface DataExtractStrategy {
     void uploadToBlobStorage(File file) throws IOException;
 
     DataExtractType getType();
+
+    String getQueryPath();
 }

@@ -47,6 +47,12 @@ class SmeeAndFordExtractStrategyTest {
     }
 
     @Test
+    void getQueryPath() {
+        assertEquals("templates/elasticsearch/caseMatching/grants_issued_date_range_query_smeeford.json",
+                strategy.getQueryPath());
+    }
+
+    @Test
     void uploadToBlobStorageShouldUploadAndDeleteFile() throws Exception {
         File tempFile = Files.createFile(tempDir.resolve("test-upload.txt")).toFile();
 

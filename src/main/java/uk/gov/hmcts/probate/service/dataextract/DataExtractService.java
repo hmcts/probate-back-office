@@ -39,7 +39,7 @@ public class DataExtractService {
         try {
             log.info("Fetch and process data extract for type: {} date: {}", type, date);
             List<ReturnedCaseDetails> cases =
-                    caseQueryService.findAllCasesWithGrantIssuedDate(String.valueOf(type), date);
+                    caseQueryService.findCaseWithQueryPathAndDate(String.valueOf(type), strategy.getQueryPath(), date);
             log.info("ES query executed for date: {}, cases found: {}", date, cases.size());
             File zipFile = strategy.generateZipFile(cases, date);
             log.info("Zip file generated for type: {} date: {} filename: {}", type, date, zipFile.getName());

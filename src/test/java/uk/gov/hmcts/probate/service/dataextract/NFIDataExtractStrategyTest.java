@@ -57,6 +57,12 @@ class NFIDataExtractStrategyTest {
     }
 
     @Test
+    void getQueryPath() {
+        assertEquals("templates/elasticsearch/caseMatching/grants_issued_date_range_query_nfi.json",
+                strategy.getQueryPath());
+    }
+
+    @Test
     void generateZipFileDelegatesAndReturnsFile() throws Exception {
         String date = "2025-08-20";
         List<ReturnedCaseDetails> cases = Collections.emptyList();

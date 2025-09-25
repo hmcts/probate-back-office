@@ -23,6 +23,9 @@ public class SmeeAndFordDataExtractStrategy implements  DataExtractStrategy {
 
     private static final String SMEE_AND_FORD_CONTAINER_NAME = "smee-and-ford-document-feed";
 
+    private static final String GRANT_RANGE_QUERY_SMEEFORD = "templates/elasticsearch/caseMatching/"
+            + "grants_issued_date_range_query_smeeford.json";
+
     public SmeeAndFordDataExtractStrategy(
             BlobUpload blobUpload,
             @Value("${blobstorage.connection.smeeandford}") String smeeAndFordStorageConnectionString) {
@@ -51,5 +54,10 @@ public class SmeeAndFordDataExtractStrategy implements  DataExtractStrategy {
     @Override
     public DataExtractType getType() {
         return SMEE_AND_FORD;
+    }
+
+    @Override
+    public String getQueryPath() {
+        return GRANT_RANGE_QUERY_SMEEFORD;
     }
 }
