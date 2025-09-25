@@ -45,12 +45,13 @@ class DataExtractServiceTest {
     @BeforeEach
     void setUp() {
         when(nfiStrategy.matchesType(NATIONAL_FRAUD_INITIATIVE)).thenReturn(true);
+        when(nfiStrategy.getQueryPath()).thenReturn("some-query-path");
         when(otherStrategy.matchesType(any())).thenReturn(false);
         underTest = new DataExtractService(caseQueryService, List.of(otherStrategy, nfiStrategy));
     }
 
     @Test
-    void performsExtractForEachDayInRange_happyPath() throws IOException {
+    void performsExtractForEachDayInRangeHappyPath() throws IOException {
         String d1 = "2025-08-01";
         String d2 = "2025-08-02";
         String d3 = "2025-08-03";
@@ -59,12 +60,12 @@ class DataExtractServiceTest {
         List<ReturnedCaseDetails> day2Cases = Collections.emptyList();
         List<ReturnedCaseDetails> day3Cases = Collections.emptyList();
 
-        when(caseQueryService.findAllCasesWithGrantIssuedDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE), d1))
-                .thenReturn(day1Cases);
-        when(caseQueryService.findAllCasesWithGrantIssuedDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE), d2))
-                .thenReturn(day2Cases);
-        when(caseQueryService.findAllCasesWithGrantIssuedDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE), d3))
-                .thenReturn(day3Cases);
+        when(caseQueryService.findCaseWithQueryPathAndDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE),
+                nfiStrategy.getQueryPath(), d1)).thenReturn(day1Cases);
+        when(caseQueryService.findCaseWithQueryPathAndDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE),
+                nfiStrategy.getQueryPath(), d2)).thenReturn(day2Cases);
+        when(caseQueryService.findCaseWithQueryPathAndDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE),
+                nfiStrategy.getQueryPath(), d3)).thenReturn(day3Cases);
 
         File f1 = new File("nfi-2025-08-01.zip");
         File f2 = new File("nfi-2025-08-02.zip");
@@ -77,9 +78,12 @@ class DataExtractServiceTest {
         assertDoesNotThrow(() ->
                 underTest.performExtractForDateRange(d1, d3, NATIONAL_FRAUD_INITIATIVE));
 
-        verify(caseQueryService).findAllCasesWithGrantIssuedDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE), d1);
-        verify(caseQueryService).findAllCasesWithGrantIssuedDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE), d2);
-        verify(caseQueryService).findAllCasesWithGrantIssuedDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE), d3);
+        verify(caseQueryService).findCaseWithQueryPathAndDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE),
+                nfiStrategy.getQueryPath(), d1);
+        verify(caseQueryService).findCaseWithQueryPathAndDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE),
+                nfiStrategy.getQueryPath(), d2);
+        verify(caseQueryService).findCaseWithQueryPathAndDate(String.valueOf(NATIONAL_FRAUD_INITIATIVE),
+                nfiStrategy.getQueryPath(), d3);
 
         InOrder inOrder = inOrder(nfiStrategy);
         inOrder.verify(nfiStrategy).matchesType(NATIONAL_FRAUD_INITIATIVE);
@@ -96,16 +100,16 @@ class DataExtractServiceTest {
     }
 
     @Test
-    void perDayFailureInGenerateZipFile_isCaughtAndSubsequentDaysProceed() throws IOException {
+    void perDayFailureInGenerateZipFileIsCaughtAndSubsequentDaysProceed() throws IOException {
         String d1 = "2025-08-01";
         String d2 = "2025-08-02";
         String d3 = "2025-08-03";
 
-        when(caseQueryService.findAllCasesWithGrantIssuedDate(anyString(), eq(d1)))
+        when(caseQueryService.findCaseWithQueryPathAndDate(anyString(), anyString(), eq(d1)))
                 .thenReturn(Collections.emptyList());
-        when(caseQueryService.findAllCasesWithGrantIssuedDate(anyString(), eq(d2)))
+        when(caseQueryService.findCaseWithQueryPathAndDate(anyString(), anyString(), eq(d2)))
                 .thenReturn(Collections.emptyList());
-        when(caseQueryService.findAllCasesWithGrantIssuedDate(anyString(), eq(d3)))
+        when(caseQueryService.findCaseWithQueryPathAndDate(anyString(), anyString(), eq(d3)))
                 .thenReturn(Collections.emptyList());
 
         when(nfiStrategy.generateZipFile(anyList(), eq(d1))).thenReturn(new File("ok1.zip"));
@@ -124,13 +128,13 @@ class DataExtractServiceTest {
     }
 
     @Test
-    void failureInCaseQueryService_isCaughtAndNoStrategyCallsForThatDay() throws IOException {
+    void failureInCaseQueryServiceIsCaughtAndNoStrategyCallsForThatDay() throws IOException {
         String d1 = "2025-08-01";
         String d2 = "2025-08-02";
 
-        when(caseQueryService.findAllCasesWithGrantIssuedDate(anyString(), eq(d1)))
+        when(caseQueryService.findCaseWithQueryPathAndDate(anyString(),anyString(),  eq(d1)))
                 .thenThrow(new RuntimeException("ES down"));
-        when(caseQueryService.findAllCasesWithGrantIssuedDate(anyString(), eq(d2)))
+        when(caseQueryService.findCaseWithQueryPathAndDate(anyString(), anyString(), eq(d2)))
                 .thenReturn(Collections.emptyList());
         when(nfiStrategy.generateZipFile(anyList(), eq(d2))).thenReturn(new File("ok.zip"));
 
