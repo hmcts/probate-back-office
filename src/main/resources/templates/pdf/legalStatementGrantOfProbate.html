@@ -242,7 +242,7 @@
                 {{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }},{% endif %}
                 {% for executor in case_details.case_data.otherPartnersApplyingAsExecutors %}{{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}, {% endfor %}
                 {% if multipleOtherPartners > 1%}yn rhannu elw yn y cwmni {% else %}yw’r unig {% endif %}
-                {% if multipleOtherPartners > 1%}{{ case_extras.welshPluralProfitSharingText }}{% else %}{{ case_extras.welshSingularProfitSharingText }} sy’n rhannu elw yn y cwmni {% endif %}
+                {% if multipleOtherPartners > 1%}{{ case_extras.welshPluralProfitSharingText }} sy’n rhannu elw yn y cwmni {% else %}{{ case_extras.welshSingularProfitSharingText }} sy’n rhannu elw yn y cwmni {% endif %}
                 {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" %}{{ case_details.case_data.nameOfSucceededFirm }}
                 oedd wedi olynu a pharhau â gwaith y cwmni {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
                 ar ddyddiad marwolaeth yr ymadawedig.
