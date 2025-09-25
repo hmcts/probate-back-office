@@ -24,6 +24,9 @@ public class NFIDataExtractStrategy implements DataExtractStrategy {
 
     private static final String NFI_CONTAINER_NAME = "nfi-document-feed";
 
+    private static final String GRANT_RANGE_QUERY_NFI = "templates/elasticsearch/caseMatching/"
+            + "grants_issued_date_range_query_nfi.json";
+
     public NFIDataExtractStrategy(ZipFileService zipFileService,
                                   BlobUpload blobUpload,
                                   @Value("${blobstorage.connection.nfi}") String nfiStorageConnectionString) {
@@ -54,5 +57,10 @@ public class NFIDataExtractStrategy implements DataExtractStrategy {
     @Override
     public DataExtractType getType() {
         return NATIONAL_FRAUD_INITIATIVE;
+    }
+
+    @Override
+    public String getQueryPath() {
+        return GRANT_RANGE_QUERY_NFI;
     }
 }
