@@ -20,13 +20,22 @@ import java.time.LocalDate;
 public class DefaultTaskListRenderer extends BaseTaskListRenderer {
     private final TaskStateRenderer taskStateRenderer;
     private final NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
-    private static final String SEND_DOCS = "<gridRow><gridCol-two-thirds>"
-            + "<p>Send documents<br/><sendDocsLink/>Anfon dogfennau<br/><sendDocsLinkWelsh/></p>"
-            + "</gridCol-two-thirds><gridCol-one-third>"
-            + "<status-sendDocuments/>"
-            + "<status-sendDocumentsWelsh/>"
-            + "</gridCol-one-third></gridRow>\n"
-            + "<gridRowSeparator/>\n";
+    private static final String SEND_DOCS =
+            "<gridRow>"
+                + "<gridCol-two-thirds><p>Send documents<p></gridCol-two-thirds>"
+                + "<gridCol-one-third><status-sendDocuments/></gridCol-one-third>"
+            + "</gridRow>"
+            + "<gridRow>"
+                + "<gridCol-two-thirds><sendDocsLink/></gridCol-two-thirds>"
+            + "</gridRow>"
+            + "<gridRow>"
+                + "<gridCol-two-thirds><p>Anfon dogfennau<p></gridCol-two-thirds>"
+                + "<gridCol-one-third><status-sendDocumentsWelsh/></gridCol-one-third>"
+            + "</gridRow>"
+            + "<gridRow>"
+                + "<gridCol-two-thirds><sendDocsLinkWelsh/></gridCol-two-thirds>"
+            + "</gridRow>"
+            + "<gridRowSeparator/>";
 
     public String renderHtml(CaseDetails details) {
         final String paymentTaken = details.getData().getPaymentTaken();
