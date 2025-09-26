@@ -16,9 +16,6 @@ import uk.gov.service.notify.NotificationClientException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
-import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -37,11 +34,9 @@ public class FetchDraftCaseService {
     public void fetchDraftCases(String startDate, String endDate, CcdCaseType ccdCaseType) {
         try {
             SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-            String caseTypeName = ccdCaseType.getName().equals(CAVEAT.getName())
-                    ? CAVEAT.getName() : GRANT_OF_REPRESENTATION.getName();
-            log.info("Fetch {} draft cases from date {} to {}", caseTypeName, startDate, endDate);
+            log.info("Fetch {} draft cases from date {} to {}", ccdCaseType.getName(), startDate, endDate);
             List<CaseDetails> successfulPaymentDraftCases = fetchAndProcessDraftCases(securityDTO,
-                    caseTypeName, startDate, endDate);
+                    ccdCaseType.getName(), startDate, endDate);
 
             if (!successfulPaymentDraftCases.isEmpty()) {
                 sendDraftSuccessfulPaymentNotification(successfulPaymentDraftCases, startDate, endDate, ccdCaseType);
