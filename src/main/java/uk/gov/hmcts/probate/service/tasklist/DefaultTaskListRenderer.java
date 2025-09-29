@@ -22,14 +22,14 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
     private final NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
     private static final String SEND_DOCS =
             "<gridRow>"
-                + "<gridCol-two-thirds><p>Send documents<p></gridCol-two-thirds>"
+                + "<gridCol-two-thirds><p>Send documents</p></gridCol-two-thirds>"
                 + "<gridCol-one-third><status-sendDocuments/></gridCol-one-third>"
             + "</gridRow>"
             + "<gridRow>"
                 + "<gridCol-two-thirds><sendDocsLink/></gridCol-two-thirds>"
             + "</gridRow>"
             + "<gridRow>"
-                + "<gridCol-two-thirds><p>Anfon dogfennau<p></gridCol-two-thirds>"
+                + "<gridCol-two-thirds><p>Anfon dogfennau</p></gridCol-two-thirds>"
                 + "<gridCol-one-third><status-sendDocumentsWelsh/></gridCol-one-third>"
             + "</gridRow>"
             + "<gridRow>"
