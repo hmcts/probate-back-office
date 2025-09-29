@@ -176,6 +176,8 @@ notifications:
           declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant"
           declarationNotSignedExecutors: "pa-declaration-not-signed-executors"
           postGrantIssuedNotification: "post-grant-issued-notification-pa"
+          registrarEscalationNotification: "pa-registrar-escalation"
+          registrarEscalationNotificationFailed: "pa-registrar-escalation-failed"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -206,6 +208,8 @@ notifications:
           dormantWarning: "sol-dormant-warning"
           unsubmittedApplication: "sol-unsubmitted-application"
           postGrantIssuedNotification: "post-grant-issued-notification-pp"
+          registrarEscalationNotification: "pp-registrar-escalation"
+          registrarEscalationNotificationFailed: "pp-registrar-escalation-failed"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -241,6 +245,8 @@ notifications:
           declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant-welsh"
           declarationNotSignedExecutors: "pa-declaration-not-signed-executors-welsh"
           postGrantIssuedNotification: "post-grant-issued-notification-pa-welsh"
+          registrarEscalationNotification: "pa-registrar-escalation-welsh"
+          registrarEscalationNotificationFailed: "pa-registrar-escalation-failed-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -270,6 +276,8 @@ notifications:
           dormantWarning: "sol-dormant-warning-welsh"
           unsubmittedApplication: "sol-unsubmitted-application-welsh"
           postGrantIssuedNotification: "post-grant-issued-notification-pp-welsh"
+          registrarEscalationNotification: "pp-registrar-escalation-welsh"
+          registrarEscalationNotificationFailed: "pp-registrar-escalation-failed-welsh"
 
 documents:
   templates:

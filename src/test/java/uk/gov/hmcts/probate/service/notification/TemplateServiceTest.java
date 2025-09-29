@@ -150,4 +150,34 @@ class TemplateServiceTest {
 
         assertThat(actual, sameInstance(expected));
     }
+  
+    @Test
+    void returnsRegistrarEscWhenPersonalAndEnglish() {
+        final String expected = "personal-registrar-esc-english";
+        when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL))
+                .thenReturn(emailTemplates);
+        when(emailTemplates.getRegistrarEscalationNotification())
+                .thenReturn(expected);
+
+        final String actual = underTest.getRegistrarEscalationNotification(
+                ApplicationType.PERSONAL,
+                LanguagePreference.ENGLISH);
+
+        assertThat(actual, sameInstance(expected));
+    }
+
+    @Test
+    void returnsRegistrarEscFailedWhenPersonalAndEnglish() {
+        final String expected = "personal-registrar-esc-failed-english";
+        when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL))
+                .thenReturn(emailTemplates);
+        when(emailTemplates.getRegistrarEscalationNotificationFailed())
+                .thenReturn(expected);
+
+        final String actual = underTest.getRegistrarEscalationNotificationFailed(
+                ApplicationType.PERSONAL,
+                LanguagePreference.ENGLISH);
+
+        assertThat(actual, sameInstance(expected));
+    }
 }

@@ -5,7 +5,6 @@ module.exports = async function (caseProgressConfig) {
     const I = this;
     await I.waitForText(caseProgressConfig.IHT205Label);
     await I.waitForText(caseProgressConfig.IHT400Label);
-    await I.waitForText(caseProgressConfig.IHT400421Label);
     await I.click({css: `#ihtFormId-${caseProgressConfig.IHT400Option}`});
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

@@ -243,6 +243,8 @@ notifications:
           declarationNotSignedPrimaryApplicant: "c04e65be-51f4-46b1-bce4-8795c1113ae7"
           declarationNotSignedExecutors: "38f8f966-1a7b-4d2b-ae2c-a67f41e4d788"
           postGrantIssuedNotification: "b2ec97b0-0b0f-4e9d-9f1a-9638294cda2a"
+          registrarEscalationNotification: "2abb444d-472e-40ed-aed9-a7075af5458c"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
@@ -275,6 +277,8 @@ notifications:
           dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
           unsubmittedApplication: "ab5d7b24-6b40-403b-8a8f-4a21bc48ed6f"
           postGrantIssuedNotification: "b2ec97b0-0b0f-4e9d-9f1a-9638294cda2a"
+          registrarEscalationNotification: "2abb444d-472e-40ed-aed9-a7075af5458c"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
@@ -309,6 +313,8 @@ notifications:
           declarationNotSignedPrimaryApplicant: "08c35f45-453d-45bc-99d1-a7752fde98a1"
           declarationNotSignedExecutors: "2bbd7b4d-2308-4b92-ae13-3a5f8608c94b"
           postGrantIssuedNotification: "6fadebcf-4769-42c0-9e60-74dbb75ef99c"
+          registrarEscalationNotification: "5d67e88e-1b7a-415e-b2b1-697cd85d13f2"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
@@ -340,6 +346,8 @@ notifications:
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
           unsubmittedApplication: "7440ee74-4cde-4cd4-ab76-038d70674424"
           postGrantIssuedNotification: "6fadebcf-4769-42c0-9e60-74dbb75ef99c"
+          registrarEscalationNotification: "5d67e88e-1b7a-415e-b2b1-697cd85d13f2"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
 
 documents:
   templates:
