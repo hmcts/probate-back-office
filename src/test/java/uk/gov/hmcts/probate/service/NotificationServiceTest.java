@@ -124,8 +124,6 @@ class NotificationServiceTest {
     @Mock
     private BusinessValidationMessageService businessValidationMessageServiceMock;
     @Mock
-    private UserInfoService userInfoServiceMock;
-    @Mock
     private ObjectMapper objectMapperMock;
     @Mock
     private EmailValidationService emailValidationServiceMock;
