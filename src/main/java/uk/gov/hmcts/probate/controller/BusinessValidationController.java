@@ -53,6 +53,7 @@ import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
+import uk.gov.hmcts.probate.validator.IHTFormIDValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
@@ -122,6 +123,7 @@ public class BusinessValidationController {
     private final UniqueCodeValidationRule uniqueCodeValidationRule;
     private final StopReasonValidationRule stopReasonValidationRule;
     private final NaValidationRule naValidationRule;
+    private final IHTFormIDValidationRule ihtFormIDValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
@@ -145,6 +147,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
         caseDataTransformer.transformFormCaseData(request);
         naValidationRule.validate(request.getCaseDetails());
+        ihtFormIDValidationRule.validate(request.getCaseDetails());
         ihtEstateValidationRule.validate(request.getCaseDetails());
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
