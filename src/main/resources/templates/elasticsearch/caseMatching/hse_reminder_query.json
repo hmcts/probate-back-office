@@ -18,7 +18,7 @@
       ],
       "must_not": [
         {
-          "term": {
+          "terms": {
             "state.keyword": [
               "BOGrantIssued",
               "BOCaseClosed"
