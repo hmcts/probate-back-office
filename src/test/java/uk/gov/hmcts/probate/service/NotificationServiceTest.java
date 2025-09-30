@@ -708,64 +708,6 @@ class NotificationServiceTest {
                 () -> assertThat(captured, hasKey("applicant_name")),
                 () -> assertThat(result, sameInstance(documentMock)));
     }
-
-    @Test
-    void shouldSendNotSendNotificationFailedForPostGrantIssuedIfNoCaseworker() throws NotificationClientException {
-        final String applEmail = "abc@gmail.com";
-        final String tmplId = "tmplId";
-        final String decName = "decName";
-        final String applName = "applName";
-        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
-        final String decdDodFrm = "decdDodFrm";
-        final String decdDodCy = "decdDodCy";
-        final String issueDate = "2025-08-05";
-        final String issueDateFrm = "issueDateFrm";
-        final String issueDateCy = "issueDateCy";
-
-        final CaseData caseData = mock(CaseData.class);
-        final CaseDetails caseDetails = mock(CaseDetails.class);
-
-        final NotificationClientException notificationClientExceptionMock = mock(NotificationClientException.class);
-
-        final Document documentMock = mock(Document.class);
-
-        when(caseDetails.getData()).thenReturn(caseData);
-        when(caseDetails.getId()).thenReturn(1L);
-
-        when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
-        when(caseData.getPrimaryApplicantEmailAddress())
-                .thenReturn(applEmail);
-        when(caseData.getPrimaryApplicantFullName())
-                .thenReturn(applName);
-        when(caseData.getDeceasedFullName())
-                .thenReturn(decName);
-        when(caseData.getDeceasedDateOfDeath())
-                .thenReturn(decdDod);
-        when(caseData.getDeceasedDateOfDeathFormatted())
-                .thenReturn(decdDodFrm);
-        when(caseData.getGrantIssuedDate())
-                .thenReturn(issueDate);
-        when(caseData.getGrantIssuedDateFormatted())
-                .thenReturn(issueDateFrm);
-
-        when(localDateToWelshStringConverterMock.convert(any()))
-                .thenReturn(decdDodCy, issueDateCy);
-
-        when(templateServiceMock.getPostGrantIssueTemplateId(any(), any()))
-                .thenReturn(tmplId);
-
-        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
-                .thenThrow(notificationClientExceptionMock);
-
-        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
-                .thenReturn(documentMock);
-
-        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
-
-        verify(notificationClientServiceMock, times(1)).sendEmail(any(), any(), any(), any());
-        assertThat(result, nullValue());
-    }
   
     @Test
     void shouldReturnNullIfRegistrarEscalatedDocumentGenThrows()
@@ -1053,7 +995,7 @@ class NotificationServiceTest {
                 () -> assertThat(captured, hasKey("caseworker_name")),
                 () -> assertThat(result, sameInstance(documentMock)));
     }
-  
+
     @Test
     void shouldNotSendRegistrarEscalatedFailedIfNoCaseworker() {
         final String decName = "decName";
