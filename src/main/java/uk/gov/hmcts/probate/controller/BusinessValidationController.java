@@ -747,7 +747,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, Optional.empty()));
     }
 
-
     @PostMapping(path = "/setLastModifiedDate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> setLastModifiedDateForDormant(
             @RequestBody CallbackRequest callbackRequest) {
@@ -789,6 +788,29 @@ public class BusinessValidationController {
                 .build();
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    @PostMapping(
+            path = "/moveToPostGrantIssued",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> moveToPostGrantIssue(
+            @RequestBody final CallbackRequest callbackRequest,
+            final HttpServletRequest httpRequest) {
+        logRequest(httpRequest.getRequestURI(), callbackRequest);
+
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+
+        final Document sentNotification = notificationService.sendPostGrantIssuedNotification(caseDetails);
+        if (sentNotification != null) {
+            final List<CollectionMember<Document>> notifications = caseDetails
+                    .getData()
+                    .getProbateNotificationsGenerated();
+            notifications.add(new CollectionMember<>(null, sentNotification));
+        }
+
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {

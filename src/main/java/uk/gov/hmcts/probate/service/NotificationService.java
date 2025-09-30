@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -56,12 +57,15 @@ import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.time.format.DateTimeParseException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -81,7 +85,8 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 @RequiredArgsConstructor
 @Component
 public class NotificationService {
-
+    private static final DateTimeFormatter CASE_DATA_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            .withLocale(Locale.UK);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
@@ -1165,5 +1170,73 @@ public class NotificationService {
             .filter(Objects::nonNull)
             .map(ExecutorApplying::getApplyingExecutorName)
             .toList();
+    }
+
+    public Document sendPostGrantIssuedNotification(final CaseDetails caseDetails) {
+
+        final CaseData caseData = caseDetails.getData();
+        final String templateId = templateService.getPostGrantIssueTemplateId(
+                caseData.getLanguagePreference(),
+                caseData.getApplicationType());
+
+        final String recipientEmail = getEmail(caseData);
+        final String caseRef = caseDetails.getId().toString();
+        final String deceasedName = caseData.getDeceasedFullName();
+        final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
+        final String deceasedDiedOn = caseData.getDeceasedDateOfDeathFormatted();
+        final String deceasedDiedOnCy = localDateToWelshStringConverter.convert(deceasedDeathDate);
+
+        final String grantIssuedCase = caseData.getGrantIssuedDate();
+        final LocalDate grantIssuedDate;
+        try {
+            grantIssuedDate = LocalDate.parse(grantIssuedCase, CASE_DATA_DATE_FORMAT);
+        } catch (DateTimeParseException e) {
+            // this would be simpler if we stored this date in the case data as a date rather than a String but...
+            log.error("Failed to parse grant issued date: {} from case: {}", grantIssuedCase, caseRef, e);
+            final String message = MessageFormat.format(
+                    "Unable to parse grant issued date: [{0}] (expecting yyyy-mm-dd format)",
+                    grantIssuedCase);
+            throw new BusinessValidationException(message, e.getMessage());
+        }
+        final String grantIssuedOn = caseData.getGrantIssuedDateFormatted();
+        final String grantIssuedOnCy = localDateToWelshStringConverter.convert(grantIssuedDate);
+
+        final String addresseeName = switch (caseData.getApplicationType()) {
+            case PERSONAL -> caseData.getPrimaryApplicantFullName();
+            case SOLICITOR -> caseData.getSolsSOTName();
+        };
+
+        final Map<String, Object> personalisation = Map.of(
+                "ccd_reference", caseRef,
+                "deceased_name", deceasedName,
+                "deceased_dod", deceasedDiedOn,
+                "deceased_dod_cy", deceasedDiedOnCy,
+                PERSONALISATION_APPLICANT_NAME, addresseeName,
+                "grant_issued_date", grantIssuedOn,
+                "grant_issued_date_cy", grantIssuedOnCy);
+
+        final SendEmailResponse response;
+        try {
+            response = notificationClientService.sendEmail(
+                    templateId,
+                    recipientEmail,
+                    personalisation,
+                    caseRef);
+            log.info("Sent notification for move to Post Grant Issued for case: {}", caseRef);
+        } catch (NotificationClientException e) {
+            log.info("Failed to send Post Grant Issued notification for case {}, message: {}", caseRef, e.getMessage());
+            return null;
+        }
+        try {
+            final Document sentEmail = getGeneratedSentEmailDocument(
+                    response,
+                    recipientEmail,
+                    SENT_EMAIL);
+            log.info("Got PDF of Post Grant Issued notification for case: {}", caseRef);
+            return sentEmail;
+        } catch (RuntimeException e) {
+            log.warn("Failed to generate or upload notification pdf for case {}", caseRef, e);
+            return null;
+        }
     }
 }

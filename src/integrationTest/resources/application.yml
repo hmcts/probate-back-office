@@ -175,6 +175,7 @@ notifications:
           unsubmittedApplication: "pa-unsubmitted-application"
           declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant"
           declarationNotSignedExecutors: "pa-declaration-not-signed-executors"
+          postGrantIssuedNotification: "post-grant-issued-notification-pa"
           registrarEscalationNotification: "pa-registrar-escalation"
           registrarEscalationNotificationFailed: "pa-registrar-escalation-failed"
         solicitor:
@@ -206,6 +207,7 @@ notifications:
           hseReminder: "sol-hse-reminder"
           dormantWarning: "sol-dormant-warning"
           unsubmittedApplication: "sol-unsubmitted-application"
+          postGrantIssuedNotification: "post-grant-issued-notification-pp"
           registrarEscalationNotification: "pp-registrar-escalation"
           registrarEscalationNotificationFailed: "pp-registrar-escalation-failed"
       welsh:
@@ -242,6 +244,7 @@ notifications:
           unsubmittedApplication: "pa-unsubmitted-application-welsh"
           declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant-welsh"
           declarationNotSignedExecutors: "pa-declaration-not-signed-executors-welsh"
+          postGrantIssuedNotification: "post-grant-issued-notification-pa-welsh"
           registrarEscalationNotification: "pa-registrar-escalation-welsh"
           registrarEscalationNotificationFailed: "pa-registrar-escalation-failed-welsh"
         solicitor:
@@ -272,6 +275,7 @@ notifications:
           hseReminder: "sol-hse-reminder-welsh"
           dormantWarning: "sol-dormant-warning-welsh"
           unsubmittedApplication: "sol-unsubmitted-application-welsh"
+          postGrantIssuedNotification: "post-grant-issued-notification-pp-welsh"
           registrarEscalationNotification: "pp-registrar-escalation-welsh"
           registrarEscalationNotificationFailed: "pp-registrar-escalation-failed-welsh"
 
