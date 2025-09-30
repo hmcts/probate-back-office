@@ -1203,6 +1203,32 @@ class BusinessValidationUnitTest {
     }
 
     @Test
+    void shouldAttemptToEmailWhenEnterPostGrantIssued() {
+
+        final List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
+
+        when(notificationService.sendPostGrantIssuedNotification(any()))
+                .thenReturn(documentMock);
+
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData())
+                .thenReturn(caseDataMock);
+        when(caseDataMock.getProbateNotificationsGenerated())
+                .thenReturn(notificationsGenerated);
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .moveToPostGrantIssue(callbackRequestMock, httpServletRequest);
+
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+
+        assertAll(
+                () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
+                () -> assertThat(notificationsGenerated.size(), is(1)));
+    }
+
+    @Test
     void shouldAttemptToEmailWhenEscalateToRegistrar() throws RegistrarEscalationException {
 
         final List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
@@ -1232,6 +1258,32 @@ class BusinessValidationUnitTest {
                 () -> assertThat(notificationsGenerated.size(), is(1)));
     }
 
+    @Test
+    void shouldSucceedWhenDocGenFailsEnterPostGrantIssued() {
+
+        final List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
+
+        when(notificationService.sendPostGrantIssuedNotification(any()))
+                .thenReturn(null);
+
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData())
+                .thenReturn(caseDataMock);
+        when(caseDataMock.getProbateNotificationsGenerated())
+                .thenReturn(notificationsGenerated);
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .moveToPostGrantIssue(callbackRequestMock, httpServletRequest);
+
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCase(callbackRequestMock, CASEWORKER_USERINFO);
+
+        assertAll(
+                () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
+                () -> assertThat(notificationsGenerated, empty()));
+    }
+  
     @Test
     void shouldAttemptToEmailCaseworkerWhenEscalateToRegistrarFails() throws RegistrarEscalationException {
 

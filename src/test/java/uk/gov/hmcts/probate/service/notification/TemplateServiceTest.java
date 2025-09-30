@@ -138,6 +138,21 @@ class TemplateServiceTest {
 
     @Test
     void returnsPostGrantIssuedWhenPersonalAndEnglish() {
+        final String expected = "personal-pgi-english";
+        when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL))
+                .thenReturn(emailTemplates);
+        when(emailTemplates.getPostGrantIssuedNotification())
+                .thenReturn(expected);
+
+        final String actual = underTest.getPostGrantIssueTemplateId(
+                LanguagePreference.ENGLISH,
+                ApplicationType.PERSONAL);
+
+        assertThat(actual, sameInstance(expected));
+    }
+  
+    @Test
+    void returnsRegistrarEscWhenPersonalAndEnglish() {
         final String expected = "personal-registrar-esc-english";
         when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL))
                 .thenReturn(emailTemplates);
@@ -152,7 +167,7 @@ class TemplateServiceTest {
     }
 
     @Test
-    void returnsPostGrantIssuedFailedWhenPersonalAndEnglish() {
+    void returnsRegistrarEscFailedWhenPersonalAndEnglish() {
         final String expected = "personal-registrar-esc-failed-english";
         when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL))
                 .thenReturn(emailTemplates);

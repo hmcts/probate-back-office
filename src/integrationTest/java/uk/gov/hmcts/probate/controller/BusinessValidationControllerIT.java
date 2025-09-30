@@ -184,6 +184,7 @@ class BusinessValidationControllerIT {
     private static final String ASSEMBLE_LETTER_EVENT = "/case/use-assemble-letter-event";
     private static final String SUPER_USER_MAKE_DORMANT = "/case/superUserMakeDormantCase";
     private static final String VALIDATE_STOP_REASON = "/case/validate-stop-reason";
+    private static final String MOVE_TO_POST_GRANT_ISSUED = "/case/moveToPostGrantIssued";
     private static final String ESCALATE_TO_REGISTRAR = "/case/case-escalated";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
@@ -1417,7 +1418,7 @@ class BusinessValidationControllerIT {
     }
 
     @Test
-    void shouldSendEmailWhenRegistarEscalation() throws Exception {
+    void shouldSendEmailWhenMoveToPostGrantIssued() throws Exception {
         final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         final CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -1427,6 +1428,29 @@ class BusinessValidationControllerIT {
 
         final String requestJson = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
+        when(notificationService.sendPostGrantIssuedNotification(any()))
+                .thenReturn(document);
+
+        mockMvc.perform(post(MOVE_TO_POST_GRANT_ISSUED)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // validate that the generated notification has been added as the last entry in the list of notifs
+                .andExpect(jsonPath("$.data.probateNotificationsGenerated[-1].value.DocumentFileName")
+                        .value(document.getDocumentFileName()));
+    }
+  
+    @Test
+    void shouldSendEmailWhenRegistarEscalation() throws Exception {
+        final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        final CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        final Document document = new Document();
+        final String docName = UUID.randomUUID().toString();
+        document.setDocumentFileName(docName);
+
+        final String requestJson = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         when(notificationService.sendRegistrarEscalationNotification(any()))
                 .thenReturn(document);
 

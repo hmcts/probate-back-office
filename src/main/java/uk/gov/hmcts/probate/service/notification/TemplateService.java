@@ -163,6 +163,16 @@ public class TemplateService {
         }
     }
 
+    public String getPostGrantIssueTemplateId(
+            final LanguagePreference languagePreference,
+            final ApplicationType applicationType) {
+        final EmailTemplates emailTemplates = notificationTemplates.getEmail()
+                .get(languagePreference)
+                .get(applicationType);
+
+        return emailTemplates.getPostGrantIssuedNotification();
+    }
+
     public String getRegistrarEscalationNotification(
             final ApplicationType applicationType,
             final LanguagePreference languagePreference) {

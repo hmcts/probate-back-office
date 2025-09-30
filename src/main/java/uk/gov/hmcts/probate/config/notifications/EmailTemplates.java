@@ -45,6 +45,7 @@ public class EmailTemplates {
     private String unsubmittedApplication;
     private String declarationNotSignedPrimaryApplicant;
     private String declarationNotSignedExecutors;
+    private String postGrantIssuedNotification;
     private String registrarEscalationNotification;
     private String registrarEscalationNotificationFailed;
 }
