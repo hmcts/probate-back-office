@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -40,6 +41,7 @@ import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalis
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
+import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
@@ -48,18 +50,22 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.time.format.DateTimeParseException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -79,7 +85,8 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 @RequiredArgsConstructor
 @Component
 public class NotificationService {
-
+    private static final DateTimeFormatter CASE_DATA_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            .withLocale(Locale.UK);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
@@ -117,6 +124,7 @@ public class NotificationService {
     private final UserInfoService userInfoService;
     private final ObjectMapper objectMapper;
     private final EmailValidationService emailValidationService;
+    private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -1013,6 +1021,126 @@ public class NotificationService {
         }
     }
 
+    /**
+     * Attempts to send a notification that the case has been escalated to the registrar. Uses either the applicant
+     * email or the solicitor email based on the applicationType. If the email cannot be sent throws a
+     * RegistrarEscalationException to signal that the failed notification is needed. If the email is sent but the pdf
+     * cannot be generated returns null.
+     * @param caseDetails the case details to send a notification for
+     * @return The Document representing the generated pdf (or null if the generation process had some issue).
+     * @throws RegistrarEscalationException If the notification could not be sent for whatever reason.
+     */
+    public Document sendRegistrarEscalationNotification(
+            final CaseDetails caseDetails) throws RegistrarEscalationException {
+        final CaseData caseData = caseDetails.getData();
+        final String templateId = templateService.getRegistrarEscalationNotification(
+                caseData.getApplicationType(),
+                caseData.getLanguagePreference());
+
+        final String recipientEmail = getEmail(caseData);
+        final String caseRef = caseDetails.getId().toString();
+        final String deceasedName = caseData.getDeceasedFullName();
+        final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
+        final String deceasedDiedOn = caseData.getDeceasedDateOfDeathFormatted();
+        final String deceasedDiedOnCy = localDateToWelshStringConverter.convert(deceasedDeathDate);
+
+        final String addresseeName = switch (caseData.getApplicationType()) {
+            case PERSONAL -> caseData.getPrimaryApplicantFullName();
+            case SOLICITOR -> caseData.getSolsSOTName();
+        };
+
+        final Map<String, Object> personalisation = Map.of(
+                "ccd_reference", caseRef,
+                "deceased_name", deceasedName,
+                "deceased_dod", deceasedDiedOn,
+                "deceased_dod_cy", deceasedDiedOnCy,
+                PERSONALISATION_APPLICANT_NAME, addresseeName);
+
+        final SendEmailResponse response;
+        try {
+            response = notificationClientService.sendEmail(
+                    templateId,
+                    recipientEmail,
+                    personalisation,
+                    caseRef);
+            log.info("Sent notification for escalation to registrar for case: {}", caseRef);
+        } catch (NotificationClientException e) {
+            log.info("Failed to send escalation to registrar notification for case {}, message: {}",
+                    caseRef,
+                    e.getMessage());
+            throw new RegistrarEscalationException(e);
+        }
+        try {
+            final Document sentEmail = getGeneratedSentEmailDocument(
+                    response,
+                    recipientEmail,
+                    SENT_EMAIL);
+            log.info("Got PDF of escalation to registrar notification for case: {}", caseRef);
+            return sentEmail;
+        } catch (RuntimeException e) {
+            log.warn("Failed to generate or upload notification pdf for case {}", caseRef, e);
+            return null;
+        }
+    }
+
+    public static final class RegistrarEscalationException extends Exception {
+        public RegistrarEscalationException(Throwable cause) {
+            super(cause);
+        }
+    }
+
+    public Document sendRegistrarEscalationNotificationFailed(
+            final CaseDetails caseDetails,
+            final Optional<UserInfo> caseworkerInfo) {
+        final CaseData caseData = caseDetails.getData();
+        final String caseRef = caseDetails.getId().toString();
+        final String deceasedName = caseData.getDeceasedFullName();
+
+        if (caseworkerInfo.isEmpty()) {
+            log.warn("No caseworker info to send registrar escalation notification failed for case: {}", caseRef);
+            return null;
+        }
+
+        final UserInfo caseworker = caseworkerInfo.get();
+        final String failedTemplateId = templateService.getRegistrarEscalationNotificationFailed(
+                caseData.getApplicationType(),
+                caseData.getLanguagePreference());
+
+        final String caseworkerEmail = caseworker.getSub();
+        final String caseworkerName = caseworker.getName();
+
+        final Map<String, Object> personalisation = Map.of(
+                "ccd_reference", caseRef,
+                "deceased_name", deceasedName,
+                "caseworker_name", caseworkerName);
+
+        final SendEmailResponse response;
+        try {
+            response = notificationClientService.sendEmail(
+                    failedTemplateId,
+                    caseworkerEmail,
+                    personalisation,
+                    caseRef);
+            log.info("Sent notification failed for escalation to registrar for case: {}", caseRef);
+        } catch (NotificationClientException e) {
+            log.info("Failed to send escalation to registrar notification for case {}, message: {}",
+                    caseRef,
+                    e.getMessage());
+            return null;
+        }
+        try {
+            final Document sentEmail = getGeneratedSentEmailDocument(
+                    response,
+                    caseworkerEmail,
+                    SENT_EMAIL);
+            log.info("Got PDF of notification failed for escalation to registrar for case: {}", caseRef);
+            return sentEmail;
+        } catch (RuntimeException e) {
+            log.warn("Failed to generate or upload notification failed pdf for case {}", caseRef, e);
+            return null;
+        }
+    }
+
     private List<CollectionMember<ExecutorApplying>> getExecutorsApplyingList(Map<String, Object> data) {
         Object raw = data.get(EXECUTORS_APPLYING);
         if (raw == null) {
@@ -1042,5 +1170,73 @@ public class NotificationService {
             .filter(Objects::nonNull)
             .map(ExecutorApplying::getApplyingExecutorName)
             .toList();
+    }
+
+    public Document sendPostGrantIssuedNotification(final CaseDetails caseDetails) {
+
+        final CaseData caseData = caseDetails.getData();
+        final String templateId = templateService.getPostGrantIssueTemplateId(
+                caseData.getLanguagePreference(),
+                caseData.getApplicationType());
+
+        final String recipientEmail = getEmail(caseData);
+        final String caseRef = caseDetails.getId().toString();
+        final String deceasedName = caseData.getDeceasedFullName();
+        final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
+        final String deceasedDiedOn = caseData.getDeceasedDateOfDeathFormatted();
+        final String deceasedDiedOnCy = localDateToWelshStringConverter.convert(deceasedDeathDate);
+
+        final String grantIssuedCase = caseData.getGrantIssuedDate();
+        final LocalDate grantIssuedDate;
+        try {
+            grantIssuedDate = LocalDate.parse(grantIssuedCase, CASE_DATA_DATE_FORMAT);
+        } catch (DateTimeParseException e) {
+            // this would be simpler if we stored this date in the case data as a date rather than a String but...
+            log.error("Failed to parse grant issued date: {} from case: {}", grantIssuedCase, caseRef, e);
+            final String message = MessageFormat.format(
+                    "Unable to parse grant issued date: [{0}] (expecting yyyy-mm-dd format)",
+                    grantIssuedCase);
+            throw new BusinessValidationException(message, e.getMessage());
+        }
+        final String grantIssuedOn = caseData.getGrantIssuedDateFormatted();
+        final String grantIssuedOnCy = localDateToWelshStringConverter.convert(grantIssuedDate);
+
+        final String addresseeName = switch (caseData.getApplicationType()) {
+            case PERSONAL -> caseData.getPrimaryApplicantFullName();
+            case SOLICITOR -> caseData.getSolsSOTName();
+        };
+
+        final Map<String, Object> personalisation = Map.of(
+                "ccd_reference", caseRef,
+                "deceased_name", deceasedName,
+                "deceased_dod", deceasedDiedOn,
+                "deceased_dod_cy", deceasedDiedOnCy,
+                PERSONALISATION_APPLICANT_NAME, addresseeName,
+                "grant_issued_date", grantIssuedOn,
+                "grant_issued_date_cy", grantIssuedOnCy);
+
+        final SendEmailResponse response;
+        try {
+            response = notificationClientService.sendEmail(
+                    templateId,
+                    recipientEmail,
+                    personalisation,
+                    caseRef);
+            log.info("Sent notification for move to Post Grant Issued for case: {}", caseRef);
+        } catch (NotificationClientException e) {
+            log.info("Failed to send Post Grant Issued notification for case {}, message: {}", caseRef, e.getMessage());
+            return null;
+        }
+        try {
+            final Document sentEmail = getGeneratedSentEmailDocument(
+                    response,
+                    recipientEmail,
+                    SENT_EMAIL);
+            log.info("Got PDF of Post Grant Issued notification for case: {}", caseRef);
+            return sentEmail;
+        } catch (RuntimeException e) {
+            log.warn("Failed to generate or upload notification pdf for case {}", caseRef, e);
+            return null;
+        }
     }
 }
