@@ -34,6 +34,8 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -204,6 +206,7 @@ class NotificationServiceIT {
     private CaseDetails personalCaseDataCtscBilingual;
     private CaseDetails solsCaseDataCtsc;
     private CaseDetails personalCaseDataCtscRequestInformation;
+    private CaseDetails personalCaseDataCtscRequestInformation1;
     private CaseDetails personalCaseDataBristol;
     private CaseDetails solsCaseDataCtscRequestInformation;
     private CaseDetails solicitorCaseDataManchester;
@@ -372,6 +375,23 @@ class NotificationServiceIT {
             .primaryApplicantEmailAddress("primary@probate-test.com")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .build(), LAST_MODIFIED, ID);
+
+        personalCaseDataCtscRequestInformation1 = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedDateOfDeath(LocalDate.now())
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
+                .primaryApplicantForenames("Fred Smith")
+                .registryLocation("ctsc")
+                .cwDocumentsUpload(List.of(
+                        new CollectionMember<>(UploadDocument.builder()
+                                .documentLink(DocumentLink.builder()
+                                        .documentBinaryUrl("http://example.com/test.pdf")
+                                        .build())
+                                .build())
+                ))
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
 
         solsCaseDataCtscRequestInformation = new CaseDetails(CaseData.builder()
             .applicationType(SOLICITOR)
@@ -1555,6 +1575,7 @@ class NotificationServiceIT {
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
 
+
         notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, personalCaseDataCtscRequestInformation);
         verify(notificationClient).sendEmail(
             eq("pa-request-information"),
@@ -1565,6 +1586,52 @@ class NotificationServiceIT {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), any()))
             .thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
+    }
+
+    @Test
+    void shouldSendEmailForRequestInformationPostPACtsc()
+            throws NotificationClientException, BadRequestException, IOException {
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_APPLICANT_NAME,
+                personalCaseDataCtscRequestInformation.getData().getPrimaryApplicantFullName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME,
+                personalCaseDataCtscRequestInformation.getData().getDeceasedFullName());
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_NAME, personalCaseDataCtscRequestInformation.getData().getSolsSOTName());
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, null);
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, null);
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
+                personalCaseDataCtscRequestInformation.getData().getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
+                personalCaseDataCtscRequestInformation.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS,
+                personalCaseDataCtscRequestInformation.getData().getBoStopDetails());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID,
+                personalCaseDataCtscRequestInformation.getData().getBoCaseStopCaveatId());
+        personalisation.put(PERSONALISATION_DECEASED_DOD,
+                personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtscRequestInformation.getId().toString());
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter
+                .convert(personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeath()));
+
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
+        when(documentManagementService.getDocumentByBinaryUrl("http://example.com/test.pdf"))
+                .thenReturn(new byte[] {1, 2, 3});
+
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, personalCaseDataCtscRequestInformation1);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-request-information-by-post"),
+                eq("primary@probate-test.com"),
+                any(),
+                eq(null));
+        verify(pdfManagementService).generateDocmosisDocumentAndUpload(any(Map.class), any());
     }
 
     @Test
@@ -2178,7 +2245,7 @@ class NotificationServiceIT {
     }
 
     @Test
-    void verifyEmailPreview() throws NotificationClientException {
+    void verifyEmailPreview() throws NotificationClientException, IOException {
         String expectedHtml = "<html><body>Test</body></html>";
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
@@ -2190,8 +2257,17 @@ class NotificationServiceIT {
                 .deceasedDateOfDeath(LocalDate.of(2022, 12, 12))
                 .boStopDetails("stopDetails")
                 .boStopDetailsDeclarationParagraph("No")
+                .cwDocumentsUpload(List.of(
+                        new CollectionMember<>(UploadDocument.builder()
+                                .documentLink(DocumentLink.builder()
+                                        .documentBinaryUrl("http://example.com/test.pdf")
+                                        .build())
+                                .build())
+                ))
                 .build(), LAST_MODIFIED, ID);
         when(templatePreviewResponse.getHtml()).thenReturn(Optional.of(expectedHtml));
+        when(documentManagementService.getDocumentByBinaryUrl("http://example.com/test.pdf"))
+                .thenReturn(new byte[] {1, 2, 3});
 
         notificationService.emailPreview(caseDetails);
         verify(pdfManagementService).rerenderAsXhtml(expectedHtml);
