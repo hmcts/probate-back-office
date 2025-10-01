@@ -274,4 +274,8 @@ public class CaseQueryService {
     public List<ReturnedCaseDetails> findDraftCases(String startDate, String endDate) {
         return findCaseStateWithinDateRange("Draft", DRAFT_CASES_QUERY, startDate, endDate);
     }
+
+    public List<ReturnedCaseDetails> findCaseWithQueryPathAndDate(String invokeFrom, String queryPath, String date) {
+        return findCaseStateWithinDateRange(invokeFrom, queryPath, date, date);
+    }
 }
