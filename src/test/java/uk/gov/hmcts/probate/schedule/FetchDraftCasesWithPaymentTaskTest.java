@@ -14,12 +14,14 @@ import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 @ExtendWith(SpringExtension.class)
@@ -41,8 +43,7 @@ class FetchDraftCasesWithPaymentTaskTest {
 
     @BeforeEach
     void setUp() {
-        clock = Clock.systemDefaultZone();
-
+        clock = Clock.system(ZoneId.of("Europe/London"));
         fetchDraftCasesWithPaymentTask = new FetchDraftCasesWithPaymentTask(
                 dataExtractDateValidator,
                 fetchDraftCaseService,
@@ -82,6 +83,39 @@ class FetchDraftCasesWithPaymentTaskTest {
         assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
         verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,GRANT_OF_REPRESENTATION);
+    }
+
+    @Test
+    void shouldPerformDraftCaveatCasesExtractDateRange() {
+        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
+                .body("Perform hmrc data extract from date finished");
+        fetchDraftCasesWithPaymentTask.run();
+        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
+        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
+        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
+        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,CAVEAT);
+    }
+
+    @Test
+    void shouldPerformGORDraftCaveatCasesExtractForAdhocDate() {
+        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
+                .body("Perform hmrc data extract from date finished");
+        fetchDraftCasesWithPaymentTask.run();
+        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
+        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
+        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
+        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,CAVEAT);
+    }
+
+    @Test
+    void shouldPerformDraftCasesCaveatExtractForAdhocDateRange() {
+        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
+                .body("Perform hmrc data extract from date finished");
+        fetchDraftCasesWithPaymentTask.run();
+        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
+        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
+        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
+        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,CAVEAT);
     }
 
     @Test

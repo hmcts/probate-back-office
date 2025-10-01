@@ -2305,7 +2305,6 @@ class NotificationServiceIT {
 
     @Test
     void sendEmailForGORSuccessfulPayment() throws NotificationClientException {
-
         Map<String, Object> caseData = new HashMap<>();
         caseData.put("deceasedForenames", "Jack");
         caseData.put("deceasedSurname", "Michelson");
@@ -2321,7 +2320,9 @@ class NotificationServiceIT {
 
         notificationService.sendEmailForDraftSuccessfulPayment(cases, fromDate, toDate, GRANT_OF_REPRESENTATION);
 
-        verify(notificationClient).sendEmail(any(), any(), any(), any());
+        verify(notificationClient).sendEmail(eq("pa-draft-case-payment-success"),
+                eq("draftCases@probate-test.com"), any(), anyString());
+
     }
 
     @Test
@@ -2341,7 +2342,8 @@ class NotificationServiceIT {
 
         notificationService.sendEmailForDraftSuccessfulPayment(cases, fromDate, toDate, CAVEAT);
 
-        verify(notificationClient).sendEmail(any(), any(), any(), any());
+        verify(notificationClient).sendEmail(eq("pa-draft-case-payment-success"),
+                eq("draftCases@probate-test.com"), any(), anyString());
     }
 
     @Test

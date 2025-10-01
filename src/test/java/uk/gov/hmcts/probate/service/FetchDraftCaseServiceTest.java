@@ -125,6 +125,41 @@ class FetchDraftCaseServiceTest {
     }
 
     @Test
+    void fetchDraftCasesProcessesNextPageWithSuccessfulPayment() throws NotificationClientException {
+        CaseDetails firstCase = mock(CaseDetails.class);
+        when(firstCase.getId()).thenReturn(1L);
+        CaseDetails nextCase = mock(CaseDetails.class);
+        when(nextCase.getId()).thenReturn(2L);
+
+        when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder()
+                        .total(1)
+                        .cases(List.of(firstCase))
+                        .build());
+
+        when(elasticSearchRepository.fetchNextPage(any(), any(), any(), any(), any(), any()))
+                .thenReturn(SearchResult.builder()
+                        .total(1)
+                        .cases(List.of(nextCase))
+                        .build())
+                .thenReturn(SearchResult.builder()
+                        .total(0)
+                        .cases(Collections.emptyList())
+                        .build());
+
+        PaymentsResponse paymentsResponse = mock(PaymentsResponse.class);
+        when(paymentsResponse.getPayments()).thenReturn(List.of(PaymentDto.builder().status("success").build()));
+        when(serviceRequestClient.retrievePayments(anyString(), anyString(), anyString(), anyString()))
+                .thenReturn(paymentsResponse);
+
+        assertDoesNotThrow(() -> fetchDraftCaseService.fetchDraftCases("2023-01-01",
+                "2023-01-31", GRANT_OF_REPRESENTATION));
+
+        verify(notificationService, times(1))
+                .sendEmailForDraftSuccessfulPayment(anyList(), anyString(), anyString(), any());
+    }
+
+    @Test
     void fetchCasesWithNoDraftCases() throws NotificationClientException {
         when(elasticSearchRepository.fetchFirstPage(any(), any(), any(), any(), any()))
                 .thenReturn(SearchResult.builder()
