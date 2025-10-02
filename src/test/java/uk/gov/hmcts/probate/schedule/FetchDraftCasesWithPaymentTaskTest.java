@@ -44,6 +44,7 @@ class FetchDraftCasesWithPaymentTaskTest {
     @BeforeEach
     void setUp() {
         clock = Clock.system(ZoneId.of("Europe/London"));
+
         fetchDraftCasesWithPaymentTask = new FetchDraftCasesWithPaymentTask(
                 dataExtractDateValidator,
                 fetchDraftCaseService,
@@ -53,29 +54,7 @@ class FetchDraftCasesWithPaymentTaskTest {
     }
 
     @Test
-    void shouldPerformDraftCasesExtractDateRange() {
-        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
-                .body("Perform hmrc data extract from date finished");
-        fetchDraftCasesWithPaymentTask.run();
-        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
-        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,GRANT_OF_REPRESENTATION);
-    }
-
-    @Test
-    void shouldPerformGORDraftCasesExtractForAdhocDate() {
-        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
-                .body("Perform hmrc data extract from date finished");
-        fetchDraftCasesWithPaymentTask.run();
-        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
-        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,GRANT_OF_REPRESENTATION);
-    }
-
-    @Test
-    void shouldPerformDraftCasesExtractForAdhocDateRange() {
+    void shouldPerformDraftGopCasesExtractDateRange() {
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform hmrc data extract from date finished");
         fetchDraftCasesWithPaymentTask.run();
@@ -96,27 +75,6 @@ class FetchDraftCasesWithPaymentTaskTest {
         verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,CAVEAT);
     }
 
-    @Test
-    void shouldPerformGORDraftCaveatCasesExtractForAdhocDate() {
-        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
-                .body("Perform hmrc data extract from date finished");
-        fetchDraftCasesWithPaymentTask.run();
-        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
-        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,CAVEAT);
-    }
-
-    @Test
-    void shouldPerformDraftCasesCaveatExtractForAdhocDateRange() {
-        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
-                .body("Perform hmrc data extract from date finished");
-        fetchDraftCasesWithPaymentTask.run();
-        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
-        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,CAVEAT);
-    }
 
     @Test
     void shouldThrowClientExceptionWithBadRequestForDraftCasesExtractWithIncorrectDateFormat() {

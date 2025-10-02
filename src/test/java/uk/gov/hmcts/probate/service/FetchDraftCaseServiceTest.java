@@ -154,7 +154,10 @@ class FetchDraftCaseServiceTest {
 
         assertDoesNotThrow(() -> fetchDraftCaseService.fetchDraftCases("2023-01-01",
                 "2023-01-31", GRANT_OF_REPRESENTATION));
-
+        verify(elasticSearchRepository, times(1))
+                .fetchFirstPage(any(), any(), any(), any(), any());
+        verify(elasticSearchRepository, times(2))
+                .fetchNextPage(any(), any(), any(), any(), any(), any());
         verify(notificationService, times(1))
                 .sendEmailForDraftSuccessfulPayment(anyList(), anyString(), anyString(), any());
     }
