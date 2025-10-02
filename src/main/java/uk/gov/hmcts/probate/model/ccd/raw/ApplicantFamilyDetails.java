@@ -1,4 +1,5 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
+
 import lombok.Builder;
 import lombok.Data;
 
