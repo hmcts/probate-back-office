@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.ApplicantFamilyDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
@@ -509,6 +510,7 @@ public class CaseData extends CaseDataParent {
     private final String deceasedOtherChildren;
     private final String allDeceasedChildrenOverEighteen;
     private final String anyDeceasedChildrenDieBeforeDeceased;
+    private final String childrenDiedBeforeDeceased;
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
@@ -636,6 +638,7 @@ public class CaseData extends CaseDataParent {
     private final String executorsNamed;
     private LocalDate firstStopReminderSentDate;
     private final String evidenceHandledDate;
+    private final ApplicantFamilyDetails applicantFamilyDetails;
 
     private TTL ttl;
 
