@@ -60,6 +60,8 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.format.DateTimeParseException;
@@ -549,7 +551,7 @@ public class NotificationService {
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress,
                                                    DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
-            .sentOn(LocalDateTime.now().format(formatter))
+            .sentOn(ZonedDateTime.now(ZoneId.of("Europe/London")).format(formatter))
             .from(response.getFromEmail().orElse(""))
             .to(emailAddress)
             .subject(response.getSubject())
@@ -563,7 +565,7 @@ public class NotificationService {
                                           DocumentType docType) {
         final String previewXhtml = pdfManagementService.rerenderAsXhtml(response.getHtml().orElseThrow());
         SentEmail sentEmail = SentEmail.builder()
-                .sentOn(LocalDateTime.now().format(formatter))
+                .sentOn(ZonedDateTime.now(ZoneId.of("Europe/London")).format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
                 .body(previewXhtml)
@@ -618,7 +620,7 @@ public class NotificationService {
     private Document getGeneratedSentEmailDocmosisDocument(SendEmailResponse response,
                                                            String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
-            .sentOn(LocalDateTime.now().format(formatter))
+            .sentOn(ZonedDateTime.now(ZoneId.of("Europe/London")).format(formatter))
             .from(response.getFromEmail().orElse(""))
             .to(emailAddress)
             .subject(response.getSubject())
