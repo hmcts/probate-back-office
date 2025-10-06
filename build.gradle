@@ -157,7 +157,7 @@ gitProperties {
 }
 
 def versions = [
-        applicationInsightsVersion      : '3.7.4',
+        applicationInsightsVersion      : '3.7.5',
         authCheckerLib                  : '3.1.1',
         ccdClient                       : '5.2.0',
         commonsIO                       : '2.20.0',
@@ -181,7 +181,7 @@ def versions = [
         springBootVersion               : '3.5.6',
         springCloud                     : '4.1.5',
         springDocOpenUi                 : '2.8.13',
-        swaggerAnnotations              : '2.2.37',
+        swaggerAnnotations              : '2.2.38',
         springSecurityVersion           : '6.5.5',
         tomcat                          : '10.1.46'
 ]
@@ -267,7 +267,7 @@ dependencies {
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.5.1'
 
-  implementation group: 'org.pitest', name: 'pitest', version: '1.20.3'
+  implementation group: 'org.pitest', name: 'pitest', version: '1.20.5'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.26.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
