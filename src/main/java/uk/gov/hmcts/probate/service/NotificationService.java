@@ -87,6 +87,8 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 @RequiredArgsConstructor
 @Component
 public class NotificationService {
+    private static final String LONDON_TIMEZONE = "Europe/London";
+    private static final ZoneId LONDON_ZONE_ID = ZoneId.of(LONDON_TIMEZONE);
     private static final DateTimeFormatter CASE_DATA_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             .withLocale(Locale.UK);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
@@ -551,7 +553,7 @@ public class NotificationService {
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress,
                                                    DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
-            .sentOn(ZonedDateTime.now(ZoneId.of("Europe/London")).format(formatter))
+            .sentOn(ZonedDateTime.now(LONDON_ZONE_ID).format(formatter))
             .from(response.getFromEmail().orElse(""))
             .to(emailAddress)
             .subject(response.getSubject())
@@ -565,7 +567,7 @@ public class NotificationService {
                                           DocumentType docType) {
         final String previewXhtml = pdfManagementService.rerenderAsXhtml(response.getHtml().orElseThrow());
         SentEmail sentEmail = SentEmail.builder()
-                .sentOn(ZonedDateTime.now(ZoneId.of("Europe/London")).format(formatter))
+                .sentOn(ZonedDateTime.now(LONDON_ZONE_ID).format(formatter))
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
                 .body(previewXhtml)
@@ -620,7 +622,7 @@ public class NotificationService {
     private Document getGeneratedSentEmailDocmosisDocument(SendEmailResponse response,
                                                            String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
-            .sentOn(ZonedDateTime.now(ZoneId.of("Europe/London")).format(formatter))
+            .sentOn(ZonedDateTime.now(LONDON_ZONE_ID).format(formatter))
             .from(response.getFromEmail().orElse(""))
             .to(emailAddress)
             .subject(response.getSubject())
