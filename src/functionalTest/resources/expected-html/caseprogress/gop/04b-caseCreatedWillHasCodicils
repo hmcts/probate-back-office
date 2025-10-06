@@ -128,6 +128,7 @@ Anfon dogfennau<br/>
 </div>
 <div class="govuk-grid-column-one-third">
 <p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/in-progress.png" alt="IN PROGRESS" title="IN PROGRESS" /></p>
+<p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/in-progress-welsh.png" alt="YN MYND RHAGDDO" title="YN MYND RHAGDDO" /></p>
 </div>
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
