@@ -287,7 +287,7 @@ dependencies {
   testAnnotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   testImplementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBootVersion
-  testImplementation group: 'com.h2database', name: 'h2', version: '2.3.232'
+  testImplementation group: 'com.h2database', name: 'h2', version: '2.4.240'
   testImplementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.30'
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
