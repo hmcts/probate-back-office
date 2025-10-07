@@ -43,6 +43,10 @@ import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -1126,5 +1130,45 @@ class NotificationServiceTest {
 
         verify(pdfManagementServiceMock, times(1))
                 .generateAndUpload(any(SentEmail.class), any());
+    }
+
+    @Test
+    void sentOnShouldBeInLondonTimezone() throws NotificationClientException {
+        final String cwEmail = "caseworker@example.com";
+        final String cwName = "Caseworker Name";
+        final String decName = "Deceased Name";
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+        final UserInfo userInfoMock = mock(UserInfo.class);
+        final Optional<UserInfo> caseworkerInfo = Optional.of(userInfoMock);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getDeceasedFullName()).thenReturn(decName);
+        when(userInfoMock.getSub()).thenReturn(cwEmail);
+        when(userInfoMock.getName()).thenReturn(cwName);
+        when(caseData.getSolsSolicitorEmail()).thenReturn(cwEmail);
+        when(caseData.getSolsSOTName()).thenReturn(cwName);
+
+        DocumentType docType = DocumentType.SENT_EMAIL;
+        final SendEmailResponse sendEmailResponse = mock(SendEmailResponse.class);
+        when(sendEmailResponse.getFromEmail()).thenReturn(Optional.empty());
+        when(notificationClientServiceMock.sendEmail(any(),any(),any(),any())).thenReturn(sendEmailResponse);
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), eq(docType)))
+            .thenReturn(Document.builder().documentFileName("test.pdf").build());
+
+        notificationService.sendRegistrarEscalationNotificationFailed(caseDetails, caseworkerInfo);
+
+        ArgumentCaptor<SentEmail> sentEmailCaptor = ArgumentCaptor.forClass(SentEmail.class);
+        verify(pdfManagementServiceMock).generateAndUpload(sentEmailCaptor.capture(), eq(docType));
+        String sentOn = sentEmailCaptor.getValue().getSentOn();
+
+        assertNotNull(sentOn, "sentOn should not be null");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM uuuu HH:mm");
+        LocalDateTime localDateTime = LocalDateTime.parse(sentOn, formatter);
+        ZonedDateTime parsed = localDateTime.atZone(ZoneId.of("Europe/London"));
+        assertEquals(ZoneId.of("Europe/London"), parsed.getZone(), "Timezone should be Europe/London");
     }
 }
