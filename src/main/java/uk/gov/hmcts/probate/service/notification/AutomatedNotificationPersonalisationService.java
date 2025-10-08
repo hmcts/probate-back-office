@@ -138,12 +138,18 @@ public class AutomatedNotificationPersonalisationService {
                 .toList();
 
         if (!docRequiredReasons.isEmpty()) {
-            stopReasons.append(stopReasonService.getStopReasonDescription(languagePreference,
-                    "DocumentsRequired")).append("\n");
-            docRequiredReasons.forEach(sr ->
-                    stopReasons.append("&nbsp;&nbsp;&nbsp;&nbsp;").append(stopReasonService
-                            .getStopReasonDescription(languagePreference,sr.getValue()
-                                    .getCaseStopSubReasonDocRequired())).append("\n"));
+            String documentsRequiredDesc = stopReasonService.getStopReasonDescription(languagePreference, "DocumentsRequired");
+            if (documentsRequiredDesc != null) {
+                stopReasons.append(documentsRequiredDesc).append("\n");
+            }
+            docRequiredReasons.forEach(sr -> {
+                String subReason = sr.getValue().getCaseStopSubReasonDocRequired();
+                if (subReason != null) {
+                    stopReasons.append("&nbsp;&nbsp;&nbsp;&nbsp;")
+                        .append(stopReasonService.getStopReasonDescription(languagePreference, subReason))
+                        .append("\n");
+                }
+            });
         }
 
         return stopReasons.toString();
