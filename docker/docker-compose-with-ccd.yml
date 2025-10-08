@@ -406,7 +406,7 @@ services:
         condition: service_started
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.1.5
     container_name: elasticsearch
     environment:
       ES_JAVA_OPTS: "-Xms256m -Xmx256m"
