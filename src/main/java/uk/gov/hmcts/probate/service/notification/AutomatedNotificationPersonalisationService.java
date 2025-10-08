@@ -138,7 +138,8 @@ public class AutomatedNotificationPersonalisationService {
                 .toList();
 
         if (!docRequiredReasons.isEmpty()) {
-            String documentsRequiredDesc = stopReasonService.getStopReasonDescription(languagePreference, "DocumentsRequired");
+            String documentsRequiredDesc = stopReasonService
+                    .getStopReasonDescription(languagePreference, "DocumentsRequired");
             if (documentsRequiredDesc != null) {
                 stopReasons.append(documentsRequiredDesc).append("\n");
             }
