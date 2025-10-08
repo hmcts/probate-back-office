@@ -58,6 +58,7 @@ import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -129,6 +130,7 @@ public class NotificationService {
     private final ObjectMapper objectMapper;
     private final EmailValidationService emailValidationService;
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
+    private final Clock clock;
 
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -553,7 +555,7 @@ public class NotificationService {
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress,
                                                    DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
-            .sentOn(ZonedDateTime.now(LONDON_ZONE_ID).format(formatter))
+            .sentOn(getLondonDateTime())
             .from(response.getFromEmail().orElse(""))
             .to(emailAddress)
             .subject(response.getSubject())
@@ -567,7 +569,7 @@ public class NotificationService {
                                           DocumentType docType) {
         final String previewXhtml = pdfManagementService.rerenderAsXhtml(response.getHtml().orElseThrow());
         SentEmail sentEmail = SentEmail.builder()
-                .sentOn(ZonedDateTime.now(LONDON_ZONE_ID).format(formatter))
+                .sentOn(getLondonDateTime())
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
                 .body(previewXhtml)
@@ -622,7 +624,7 @@ public class NotificationService {
     private Document getGeneratedSentEmailDocmosisDocument(SendEmailResponse response,
                                                            String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
-            .sentOn(ZonedDateTime.now(LONDON_ZONE_ID).format(formatter))
+            .sentOn(getLondonDateTime())
             .from(response.getFromEmail().orElse(""))
             .to(emailAddress)
             .subject(response.getSubject())
@@ -1242,5 +1244,11 @@ public class NotificationService {
             log.warn("Failed to generate or upload notification pdf for case {}", caseRef, e);
             return null;
         }
+    }
+
+    String getLondonDateTime() {
+        return ZonedDateTime.now(clock)
+                .withZoneSameInstant(LONDON_ZONE_ID)
+                .format(formatter);
     }
 }
