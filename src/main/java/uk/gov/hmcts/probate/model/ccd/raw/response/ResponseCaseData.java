@@ -314,6 +314,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String latestGrantReissueDate;
 
     private final String deceasedDivorcedInEnglandOrWales;
+    private final String deceasedDivorcedDateKnown;
     private final String primaryApplicantAdoptionInEnglandOrWales;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
