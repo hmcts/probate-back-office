@@ -529,5 +529,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "firstStopReminderSentDate", "Label": "First stop reminder sent date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedDivorcedDateKnown", "Label": "Do you know the date the deceased was divorced?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantFamilyDetails", "Label": "family adoption details", "FieldType":"ApplicantFamilyDetails", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "childrenDiedBeforeDeceased", "Label": "Did any of these children die before deceased?", "FieldType": "FixedList", "FieldTypeParameter": "predeceasedFixedList", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "childrenDiedBeforeDeceased", "Label": "Did any of these children die before deceased?", "FieldType": "FixedList", "FieldTypeParameter": "predeceasedFixedList", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "hasCoApplicant", "Label": "Has any co-applicants?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]
