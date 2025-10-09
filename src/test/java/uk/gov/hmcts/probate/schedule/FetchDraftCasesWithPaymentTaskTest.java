@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.service.FetchDraftCaseService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
@@ -16,7 +15,6 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -56,11 +54,7 @@ class FetchDraftCasesWithPaymentTaskTest {
 
     @Test
     void shouldPerformDraftCasesExtractDateRange() {
-        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
-                .body("Perform hmrc data extract from date finished");
         fetchDraftCasesWithPaymentTask.run();
-        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
         verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,GRANT_OF_REPRESENTATION);
         verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,CAVEAT);

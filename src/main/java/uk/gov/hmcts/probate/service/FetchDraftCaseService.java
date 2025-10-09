@@ -90,8 +90,6 @@ public class FetchDraftCaseService {
             if (isPaymentSuccessful) {
                 log.info("Payment status is Success for case id: {}", caseDetails.getId());
                 successfulPaymentCases.add(caseDetails);
-            } else {
-                log.info("Payment status is not Success for case id: {}", caseDetails.getId());
             }
         }
     }
