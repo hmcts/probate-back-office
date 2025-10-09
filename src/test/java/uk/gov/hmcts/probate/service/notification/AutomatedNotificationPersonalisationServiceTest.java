@@ -14,7 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -152,5 +153,40 @@ class AutomatedNotificationPersonalisationServiceTest {
                         urlPrefixToPersonalCase + "/get-case/999?probateType=INTESTACY",
                         p.get("link_to_case"))
         );
+    }
+
+    @Test
+    void getStopReasonShouldhandleNulls() {
+        when(stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH, "R1"))
+            .thenReturn("Reason One");
+        when(stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH, "DocumentsRequired"))
+            .thenReturn("Doc XYZ");
+        when(stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH, "SUB_NULL"))
+            .thenReturn(null); // sub-reason returns null
+
+        StopReason r1 = StopReason.builder()
+            .caseStopReason("R1")
+            .build();
+        StopReason r2 = StopReason.builder()
+            .caseStopReason("DocumentsRequired")
+            .caseStopSubReasonDocRequired("SUB_NULL")
+            .build();
+        StopReason r3 = StopReason.builder()
+            .caseStopReason("DocumentsRequired")
+            .caseStopSubReasonDocRequired(null)
+            .build();
+        CollectionMember<StopReason> cm1 =
+                new CollectionMember<>(null, r1);
+        CollectionMember<StopReason> cm2 =
+                new CollectionMember<>(null, r2);
+        CollectionMember<StopReason> cm3 =
+                new CollectionMember<>(null, r3);
+        List<CollectionMember<StopReason>>
+                domainList = List.of(cm1, cm2, cm3);
+
+        assertDoesNotThrow(() -> {
+            String result = underTest.getStopReason(domainList, false);
+            assertEquals("Reason One\nDoc XYZ\n", result);
+        });
     }
 }

@@ -119,7 +119,7 @@ public class AutomatedNotificationPersonalisationService {
         return personalisation;
     }
 
-    private String getStopReason(List<CollectionMember<StopReason>> stopReasonList, boolean isWelsh) {
+    String getStopReason(List<CollectionMember<StopReason>> stopReasonList, boolean isWelsh) {
         if (stopReasonList.isEmpty()) {
             return StringUtils.EMPTY;
         }
@@ -146,9 +146,12 @@ public class AutomatedNotificationPersonalisationService {
             docRequiredReasons.forEach(sr -> {
                 String subReason = sr.getValue().getCaseStopSubReasonDocRequired();
                 if (subReason != null) {
-                    stopReasons.append("&nbsp;&nbsp;&nbsp;&nbsp;")
-                        .append(stopReasonService.getStopReasonDescription(languagePreference, subReason))
-                        .append("\n");
+                    String subReasonDesc = stopReasonService.getStopReasonDescription(languagePreference, subReason);
+                    if (subReasonDesc != null) {
+                        stopReasons.append("&nbsp;&nbsp;&nbsp;&nbsp;")
+                            .append(subReasonDesc)
+                            .append("\n");
+                    }
                 }
             });
         }
