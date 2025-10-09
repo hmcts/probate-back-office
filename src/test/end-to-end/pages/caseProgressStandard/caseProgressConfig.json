@@ -25,10 +25,9 @@
     "deceasedAddrCounty": "Wilts",
     "deceasedAddrCountry": "UK",
     "deceasedAddrPostcode": "CN12JU",
-    "IHT205Label": "IHT205 - there was no Inheritance Tax to pay",
-    "IHT207Label": "IHT207 - the person who died lived abroad and there was no Inheritance Tax to pay",
-    "IHT400Label": "IHT400 - the probate application was submitted after",
-    "IHT400421Label": "IHT400 and IHT421",
+    "IHT205Label": "IHT205",
+    "IHT207Label": "IHT207",
+    "IHT400Label": "IHT400",
     "IHTDNULabel": "Not applicable - DO NOT USE",
     "IHTOption": "IHT205",
     "IHT400Option": "IHT400",
@@ -48,4 +47,3 @@
     "filename": "digitalGrant.pdf",
     "filenameBilingual": "welshDigitalGrant.pdf"
 }
-

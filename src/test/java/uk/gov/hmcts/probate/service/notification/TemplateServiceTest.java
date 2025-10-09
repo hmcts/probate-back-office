@@ -12,6 +12,8 @@ import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.sameInstance;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 
@@ -132,5 +134,50 @@ class TemplateServiceTest {
                 CHANNEL_CHOICE_PAPERFORM, YES);
 
         assertEquals("pa-hse-reminder-welsh", result);
+    }
+
+    @Test
+    void returnsPostGrantIssuedWhenPersonalAndEnglish() {
+        final String expected = "personal-pgi-english";
+        when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL))
+                .thenReturn(emailTemplates);
+        when(emailTemplates.getPostGrantIssuedNotification())
+                .thenReturn(expected);
+
+        final String actual = underTest.getPostGrantIssueTemplateId(
+                LanguagePreference.ENGLISH,
+                ApplicationType.PERSONAL);
+
+        assertThat(actual, sameInstance(expected));
+    }
+  
+    @Test
+    void returnsRegistrarEscWhenPersonalAndEnglish() {
+        final String expected = "personal-registrar-esc-english";
+        when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL))
+                .thenReturn(emailTemplates);
+        when(emailTemplates.getRegistrarEscalationNotification())
+                .thenReturn(expected);
+
+        final String actual = underTest.getRegistrarEscalationNotification(
+                ApplicationType.PERSONAL,
+                LanguagePreference.ENGLISH);
+
+        assertThat(actual, sameInstance(expected));
+    }
+
+    @Test
+    void returnsRegistrarEscFailedWhenPersonalAndEnglish() {
+        final String expected = "personal-registrar-esc-failed-english";
+        when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL))
+                .thenReturn(emailTemplates);
+        when(emailTemplates.getRegistrarEscalationNotificationFailed())
+                .thenReturn(expected);
+
+        final String actual = underTest.getRegistrarEscalationNotificationFailed(
+                ApplicationType.PERSONAL,
+                LanguagePreference.ENGLISH);
+
+        assertThat(actual, sameInstance(expected));
     }
 }
