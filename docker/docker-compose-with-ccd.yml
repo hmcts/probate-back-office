@@ -142,7 +142,7 @@ services:
         condition: service_healthy
 
   shared-database:
-    image: postgres:9.6-alpine
+    image: postgres:18.0-alpine
     container_name: shared-database
     ports:
       - 5342:5432
