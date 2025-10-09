@@ -74,7 +74,7 @@
     <tr>
         <td colspan="2">
             <p>Creda’r ceisydd fod yr holl wybodaeth sydd yn y datganiad cyfreithiol yn wir. {% if case_details.case_data.solsSolicitorFirmName!= null and case_details.case_data.solsSolicitorFirmName!= "" %}Maent wedi awdurdodi {{case_details.case_data.solsSolicitorFirmName}} i lofnodi datganiad gwirionedd ar eu rhan.{% endif %}</p>
-            <p>Mae’r datganiad hwn wedi’i seilio ar yr wybodaeth rydych wedi’i rhoi yn eich cais. Bydd yn cael ei storio fel cofnod cyhoeddus.</p>
+            <p>Mae’r datganiad hwn wedi’i seilio ar yr wybodaeth a roddwyd yn eich cais. Bydd yn cael ei storio fel cofnod cyhoeddus.</p>
             <p>Rwyf i, {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} o
                 {% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null and case_details.case_data.primaryApplicantAddress.AddressLine2 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine2 }},{% endif %}
@@ -82,7 +82,8 @@
                 {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{ case_details.case_data.primaryApplicantAddress.PostTown }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{% if case_details.case_data.primaryApplicantAddress.Country == "United Kingdom"%}Y Deyrnas Unedig
+                {% else %}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}{% endif %}
                 yn gwneud y datganiad canlynol:</p>
         </td>
     </tr>
@@ -93,7 +94,7 @@
     <tr>
         <td colspan="2">
             <p>
-                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}{% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} a elwir hefyd yn
+                Ganwyd {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}{% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} a elwir hefyd yn
                 {% for alias in case_details.case_data.solsDeceasedAliasNamesList %}
                 {{ alias.value.SolsAliasname }}{% if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} ac{% endif %}{% endfor %}{% endif %}, o
                 {% if case_details.case_data.deceasedAddress.AddressLine1 != null and
@@ -115,26 +116,25 @@
                 case_details.case_data.deceasedAddress.PostCode != "" %}{{
                 case_details.case_data.deceasedAddress.PostCode }},{% endif %}
                 {% if case_details.case_data.deceasedAddress.Country != null and
-                case_details.case_data.deceasedAddress.Country != "" %}{{
-                case_details.case_data.deceasedAddress.Country }}{% endif %}
-                a anwyd ar {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
-                ac a fu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }} heb ewyllys.
+                case_details.case_data.deceasedAddress.Country != "" %}{% if case_details.case_data.deceasedAddress.Country == "United Kingdom"%}Y Deyrnas Unedig
+                {% else %}{{ case_details.case_data.deceasedAddress.Country }}{% endif %}{% endif %}
+                ar {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
+                a bu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }} heb ewyllys.
             </p>
-            <p>Nid oeddent
-                {% if case_details.case_data.deceasedMaritalStatus == "neverMarried" %}
-                erioed wedi priodi
+            <p>{% if case_details.case_data.deceasedMaritalStatus == "neverMarried" %}
+                Nid oeddent erioed yn briod
                 {% elseif case_details.case_data.deceasedMaritalStatus == "widowed" %}
-                yn weddw
+                Roeddent yn weddw
                 {% elseif case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
-                wedi priodi neu mewn partneriaeth sifil,
+                Nid oeddent yn briod neu mewn partneriaeth sifil,
                 {% elseif case_details.case_data.deceasedMaritalStatus == "divorcedCivilPartnership" %}
-                wedi ysgaru neu roedd eu partneriaeth sifil wedi’i diddymu,
+                Nid oeddent wedi ysgaru neu roedd eu partneriaeth sifil wedi’i diddymu,
                 {% else %}
-                wedi cael ymwahaniad cyfreithiol
+                Nid oeddent wedi cael ymwahaniad cyfreithiol
                 {% endif %}
-                ac roedd eu domisil yn {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}Nghymru a Lloegr.{% endif %}
+                ac roedd eu domisil {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %} yn: {{ case_details.case_data.domicilityCountry }}.{% else %} yng Nghymru a Lloegr.{% endif %}
             </p>
-            <p>Nid oes gan blant dan 18 oed hawl i'r ystad.</p>
+            <p>Nid oes gan unrhyw blant dan 18 oed hawl i'r ystad.</p>
         </td>
     </tr>
 
@@ -143,8 +143,8 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>Mae gwerth gros yr ystad {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}yn y Deyrnas Unedig {% else %}yng Nghymru a Lloegr{% endif %} yn cyfateb i {% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn cyfateb i &#163;{{ case_extras.netValue }}.</p>
-            {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
+            <p>Mae gwerth gros yr ystad {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}yn y Deyrnas Unedig {% else %}yng Nghymru a Lloegr{% endif %} yn {% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn &#163;{{ case_extras.netValue }}.</p>
+            {% if case_extras.showIhtEstate == "Yes" %}<p>Rwy’n cadarnhau bod yr ystad yn ystad eithriedig</p>{% endif %}
             {% endif %}
             <p>Hyd eithaf fy ngwybodaeth a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn marwolaeth {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
         </td>
@@ -165,18 +165,18 @@
             </p>
             <p>
                 {% if case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}Rwy’n gyn-briod neu’n bartner sifil i {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a’r unig unigolyn sydd nawr â hawl i’r ystad.
-                {% else %}Nid yw gŵr/gwraig neu bartner sifil {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} eisiau gwneud cais am lythyrau gweinyddu nawr neu yn y dyfodol. Fi yw
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} plentyn {% endif %} a fabwysiadwyd {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac
-                {% if case_details.case_data.ihtNetValue/100 > 250000 %} yn un o’r bobl sydd â hawl i’r ystad.
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}Fi yw priod neu bartner sifil {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a‘r unig unigolyn sydd nawr â hawl i’r ystad.
+                {% else %}Nid yw priod neu bartner sifil {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} eisiau gwneud cais am lythyrau gweinyddu nawr neu yn y dyfodol. Fi yw plentyn
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} mabwysiedig {% endif %}{{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac
+                {% if case_details.case_data.ihtNetValue/100 > 250000 %} un o’r bobl sydd â hawl i’r ystad.
                 {% else %} yr unig unigolyn a allai fod â hawl i’r ystad.
                 {% endif %}
                 {% endif %}
-                {% else %}Fi yw’r
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} plentyn {% endif %} a fabwysiadwyd {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a’r unig unigolyn sydd nawr â hawl i’r ystad
+                {% else %}Fi yw plentyn
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} mabwysiedig {% endif %}{{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a’r unig unigolyn sydd nawr â hawl i’r ystad.
                 {% endif %}
             </p>
-            <p>Rwy’n gwneud cais am lythyrau gweinyddu. Rwyf wedi darparu'r hyn a gredaf i fod yn wybodaeth gywir a gwir am {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
+            <p>Rwy’n gwneud cais am lythyrau gweinyddu. Rwyf wedi darparu’r hyn a gredaf i fod yn wybodaeth gywir a gwir am {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
         </td>
     </tr>
 
@@ -188,11 +188,11 @@
             <p>Rwy’n cadarnhau y byddaf yn delio ag ystad {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, yn unol â’r gyfraith. Byddaf yn:</p>
             <ul>
                 <li>casglu’r ystad i gyd</li>
-                <li>cadw manylion llawn (rhestr) o’r ystad</li>
+                <li>cadw manylion llawn (rhestr) yr ystad</li>
                 <li>cadw cofnod llawn o’r ffordd y mae’r ystad wedi cael ei rhannu</li>
             </ul>
 
-            <p>Os bydd y gofrestrfa brofiant (y llys) yn gofyn i mi, byddaf yn:</p>
+            <p>Os bydd y gofrestrfa profiant (y llys) yn gofyn i mi, byddaf yn:</p>
             <ul>
                 <li>darparu manylion llawn yr ystad a’r ffordd y cafodd ei rhannu</li>
                 <li>dychwelyd y llythyrau gweinyddu i'r llys</li>
