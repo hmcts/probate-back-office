@@ -188,9 +188,9 @@ class AutomatedNotificationPersonalisationServiceTest {
         assertDoesNotThrow(() -> {
             String result = underTest.getStopReason(domainList, false);
             assertEquals(
-                "Reason One\nDoc XYZ\n" +
-                "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason A\n" +
-                "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason B\n",
+                "Reason One\nDoc XYZ\n"
+                        + "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason A\n"
+                        + "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason B\n",
                 result
             );
         });
