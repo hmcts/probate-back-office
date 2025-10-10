@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -157,40 +158,36 @@ class AutomatedNotificationPersonalisationServiceTest {
 
     @Test
     void getStopReasonShouldhandleNulls() {
-        when(stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH, "R1"))
-            .thenReturn("Reason One");
-        when(stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH, "DocumentsRequired"))
-            .thenReturn("Doc XYZ");
-        when(stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH, "SUB_NULL"))
-            .thenReturn(null); // sub-reason returns null
-        when(stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH, "SUB_A"))
-            .thenReturn("Sub Reason A");
-        when(stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH, "SUB_B"))
-            .thenReturn("Sub Reason B");
+        final Map<String, String> reasons = new HashMap<>();
+        reasons.put("R1", "Reason One");
+        reasons.put("DocumentsRequired", "Doc XYZ");
+        reasons.put("SUB_NULL", null);
+        reasons.put("SUB_A", "Sub Reason A");
+        reasons.put("SUB_B", "Sub Reason B");
+        when(stopReasonService.getStopReasonDescription(any(), any()))
+            .thenAnswer(i -> reasons.get(i.getArgument(1, String.class)));
 
-        StopReason r1 = StopReason.builder().caseStopReason("R1").build();
-        StopReason r2 = StopReason.builder().caseStopReason("DocumentsRequired")
-                .caseStopSubReasonDocRequired("SUB_NULL")
-                .build();
-        StopReason r3 = StopReason.builder().caseStopReason("DocumentsRequired").caseStopSubReasonDocRequired(null)
-                .build();
-        StopReason r4 = StopReason.builder().caseStopReason("DocumentsRequired").caseStopSubReasonDocRequired("SUB_A")
-                .build();
-        StopReason r5 = StopReason.builder().caseStopReason("DocumentsRequired").caseStopSubReasonDocRequired("SUB_B")
-                .build();
-        CollectionMember<StopReason> cm1 = new CollectionMember<>(r1);
-        CollectionMember<StopReason> cm2 = new CollectionMember<>(r2);
-        CollectionMember<StopReason> cm3 = new CollectionMember<>(r3);
-        CollectionMember<StopReason> cm4 = new CollectionMember<>(r4);
-        CollectionMember<StopReason> cm5 = new CollectionMember<>(r5);
-        List<CollectionMember<StopReason>> domainList = List.of(cm1, cm2, cm3, cm4, cm5);
+        BiFunction<String, String, CollectionMember<StopReason>> build = (r, s) -> {
+            final StopReason sr = StopReason.builder()
+                    .caseStopReason(r)
+                    .caseStopSubReasonDocRequired(s)
+                    .build();
+            return new CollectionMember<>(sr);
+        };
+        List<CollectionMember<StopReason>> domainList = List.of(
+            build.apply("R1", null),
+            build.apply("DocumentsRequired", "SUB_A"),
+            build.apply("DocumentsRequired", "SUB_NULL"),
+            build.apply("DocumentsRequired", null),
+            build.apply("DocumentsRequired", "SUB_B")
+        );
 
         assertDoesNotThrow(() -> {
             String result = underTest.getStopReason(domainList, false);
             assertEquals(
                 "Reason One\nDoc XYZ\n"
-                        + "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason A\n"
-                        + "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason B\n",
+                + "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason A\n"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason B\n",
                 result
             );
         });
