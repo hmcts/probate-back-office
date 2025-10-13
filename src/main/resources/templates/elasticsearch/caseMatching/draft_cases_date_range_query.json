@@ -22,7 +22,7 @@
       ]
     }
   },
-  "size": %s,
+  "size": 10,
   "_source": ["reference" , "data.deceasedForenames", "data.deceasedSurname"],
   "sort": [
     {

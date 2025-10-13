@@ -22,11 +22,9 @@ import java.util.List;
 public class FetchDraftCaseService {
 
     public static final String SERVICE_NAME = "Probate";
-    private final CaseQueryService caseQueryService;
     private final SecurityUtils securityUtils;
     private final ServiceRequestClient serviceRequestClient;
     private final NotificationService notificationService;
-    private final CaveatQueryService caveatQueryService;
     private final ElasticSearchRepository elasticSearchRepository;
     private static final String DRAFT_CASES_QUERY = "templates/elasticsearch/caseMatching/"
             + "draft_cases_date_range_query.json";
@@ -70,7 +68,8 @@ public class FetchDraftCaseService {
         while (true) {
             SearchResult nextResult = elasticSearchRepository.fetchNextPage(securityDTO.getAuthorisation(),
                     caseTypeName, searchAfterValue, DRAFT_CASES_QUERY, startDate, endDate);
-
+            log.info("Looping Found {} {} cases with draft state from {} to {} after id {}",
+                    searchResult.getTotal(), caseTypeName, startDate, endDate, searchAfterValue);
             if (nextResult == null || nextResult.getCases().isEmpty()) {
                 break;
             }
