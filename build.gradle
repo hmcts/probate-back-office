@@ -183,7 +183,7 @@ def versions = [
         springDocOpenUi                 : '2.8.13',
         swaggerAnnotations              : '2.2.39',
         springSecurityVersion           : '6.5.5',
-        tomcat                          : '10.1.48'
+        tomcat                          : '11.0.13'
 ]
 
 jacocoTestReport {
