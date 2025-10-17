@@ -4,13 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
@@ -26,17 +27,22 @@ import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalis
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
+import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.NotificationService.RegistrarEscalationException;
+import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule.PersonalisationValidationResult;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -47,14 +53,23 @@ import java.util.UUID;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+
 
 class NotificationServiceTest {
 
@@ -101,17 +116,20 @@ class NotificationServiceTest {
     @Mock
     private PersonalisationValidationRule personalisationValidationRuleMock;
     @Mock
-    private BusinessValidationMessageService businessValidationMessageService;
-    @Mock
     private SendEmailResponse sendEmailResponseMock;
-
     @Mock
-    private ObjectMapper objectMapperMock;
-
+    private UserInfoService userInfoServiceMock;
     @Mock
     private DocumentGeneratorService documentGeneratorServiceMock;
+    @Mock
+    private BusinessValidationMessageService businessValidationMessageServiceMock;
+    @Mock
+    private ObjectMapper objectMapperMock;
+    @Mock
+    private EmailValidationService emailValidationServiceMock;
+    @Mock
+    private LocalDateToWelshStringConverter localDateToWelshStringConverterMock;
 
-    @InjectMocks
     private NotificationService notificationService;
 
     private AutoCloseable closeableMocks;
@@ -120,6 +138,33 @@ class NotificationServiceTest {
     @BeforeEach
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
+
+        notificationService = new NotificationService(
+                emailAddressesMock,
+                notificationTemplatesMock,
+                registriesPropertiesMock,
+                notificationClientMock,
+                markdownTransformationServiceMock,
+                pdfManagementServiceMock,
+                eventValidationServiceMock,
+                documentGeneratorServiceMock,
+                bulkPrintServiceMock,
+                emailAddressNotifyValidationRulesMock,
+                grantOfRepresentationPersonalisationServiceMock,
+                smeeAndFordPersonalisationServiceMock,
+                caveatPersonalisationServiceMock,
+                sentEmailPersonalisationServiceMock,
+                templateServiceMock,
+                serviceAuthTokenGeneratorMock,
+                notificationClientServiceMock,
+                documentManagementServiceMock,
+                personalisationValidationRuleMock,
+                businessValidationMessageServiceMock,
+                automatedNotificationPersonalisationServiceMock,
+                userInfoServiceMock,
+                objectMapperMock,
+                emailValidationServiceMock,
+                localDateToWelshStringConverterMock);
     }
 
     @AfterEach
@@ -400,5 +445,686 @@ class NotificationServiceTest {
 
         assertEquals("Email address not found for StopResponseReceivedEmail case ID: 12345",
                 exception.getMessage());
+    }
+
+    @Test
+    void shouldSendPostGrantIssuedForPP() throws NotificationClientException {
+        final String applEmail = "abc@gmail.com";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+        final String issueDate = "2025-08-05";
+        final String issueDateFrm = "issueDateFrm";
+        final String issueDateCy = "issueDateCy";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
+
+        final Document documentMock = mock(Document.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getSolsSolicitorEmail())
+                .thenReturn(applEmail);
+        when(caseData.getSolsSOTName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+        when(caseData.getGrantIssuedDate())
+                .thenReturn(issueDate);
+        when(caseData.getGrantIssuedDateFormatted())
+                .thenReturn(issueDateFrm);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy, issueDateCy);
+
+        when(templateServiceMock.getPostGrantIssueTemplateId(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
+                .thenReturn(sendEmailResponseMock);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenReturn(documentMock);
+
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(applEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(7)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("deceased_dod")),
+                () -> assertThat(captured, hasKey("deceased_dod_cy")),
+                () -> assertThat(captured, hasKey("applicant_name")),
+                () -> assertThat(captured, hasKey("grant_issued_date")),
+                () -> assertThat(captured, hasKey("grant_issued_date_cy")),
+                () -> assertThat(result, sameInstance(documentMock)));
+    }
+  
+    @Test
+    void shouldSendRegistrarEscalatedForPP() throws NotificationClientException, RegistrarEscalationException {
+        final String applEmail = "abc@gmail.com";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
+
+        final Document documentMock = mock(Document.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getSolsSolicitorEmail())
+                .thenReturn(applEmail);
+        when(caseData.getSolsSOTName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy);
+
+        when(templateServiceMock.getRegistrarEscalationNotification(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
+                .thenReturn(sendEmailResponseMock);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenReturn(documentMock);
+
+        final Document result = notificationService.sendRegistrarEscalationNotification(caseDetails);
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(applEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(5)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("deceased_dod")),
+                () -> assertThat(captured, hasKey("deceased_dod_cy")),
+                () -> assertThat(captured, hasKey("applicant_name")),
+                () -> assertThat(result, sameInstance(documentMock)));
+    }
+
+    @Test
+    void shouldSendPostGrantIssuedForPA() throws NotificationClientException {
+        final String applEmail = "abc@gmail.com";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+        final String issueDate = "2025-08-05";
+        final String issueDateFrm = "issueDateFrm";
+        final String issueDateCy = "issueDateCy";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
+
+        final Document documentMock = mock(Document.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+        when(caseData.getPrimaryApplicantFullName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+        when(caseData.getGrantIssuedDate())
+                .thenReturn(issueDate);
+        when(caseData.getGrantIssuedDateFormatted())
+                .thenReturn(issueDateFrm);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy, issueDateCy);
+
+        when(templateServiceMock.getPostGrantIssueTemplateId(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
+                .thenReturn(sendEmailResponseMock);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenReturn(documentMock);
+
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(applEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(7)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("deceased_dod")),
+                () -> assertThat(captured, hasKey("deceased_dod_cy")),
+                () -> assertThat(captured, hasKey("applicant_name")),
+                () -> assertThat(captured, hasKey("grant_issued_date")),
+                () -> assertThat(captured, hasKey("grant_issued_date_cy")),
+                () -> assertThat(result, sameInstance(documentMock)));
+    }
+
+    @Test
+    void shouldSendRegistrarEscalatedForPA() throws NotificationClientException, RegistrarEscalationException {
+        final String applEmail = "abc@gmail.com";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
+
+        final Document documentMock = mock(Document.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+        when(caseData.getPrimaryApplicantFullName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy);
+
+        when(templateServiceMock.getRegistrarEscalationNotification(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
+                .thenReturn(sendEmailResponseMock);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenReturn(documentMock);
+
+        final Document result = notificationService.sendRegistrarEscalationNotification(caseDetails);
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(applEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(5)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("deceased_dod")),
+                () -> assertThat(captured, hasKey("deceased_dod_cy")),
+                () -> assertThat(captured, hasKey("applicant_name")),
+                () -> assertThat(result, sameInstance(documentMock)));
+    }
+  
+    @Test
+    void shouldReturnNullIfRegistrarEscalatedDocumentGenThrows()
+            throws NotificationClientException, RegistrarEscalationException {
+        final String applEmail = "abc@gmail.com";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+        when(caseData.getPrimaryApplicantFullName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy);
+
+        when(templateServiceMock.getRegistrarEscalationNotification(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
+                .thenReturn(sendEmailResponseMock);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenThrow(mock(RuntimeException.class));
+
+        final Document result = notificationService.sendRegistrarEscalationNotification(caseDetails);
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(applEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(5)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("deceased_dod")),
+                () -> assertThat(captured, hasKey("deceased_dod_cy")),
+                () -> assertThat(captured, hasKey("applicant_name")),
+                () -> assertThat(result, nullValue()));
+    }
+
+    @Test
+    void shouldThrowWhenIssuedDateUnparsableForPostGrantIssued() {
+        final String applEmail = "abc@gmail.com";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+        final String issueDate = "2025-13-05";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+        when(caseData.getPrimaryApplicantFullName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+        when(caseData.getGrantIssuedDate())
+                .thenReturn(issueDate);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy);
+
+        when(templateServiceMock.getPostGrantIssueTemplateId(any(), any()))
+                .thenReturn(tmplId);
+
+        assertThrows(
+                BusinessValidationException.class,
+                () -> notificationService.sendPostGrantIssuedNotification(caseDetails));
+    }
+
+    @Test
+    void shouldThrowIfSendRegistrarEscalatedFailed() throws NotificationClientException {
+        final String applEmail = "abc@gmail.com";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final NotificationClientException notificationClientExceptionMock = mock(NotificationClientException.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getSolsSolicitorEmail())
+                .thenReturn(applEmail);
+        when(caseData.getSolsSOTName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy);
+
+        when(templateServiceMock.getRegistrarEscalationNotification(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
+                .thenThrow(notificationClientExceptionMock);
+
+        final RegistrarEscalationException registrarEscalationException = assertThrows(
+                RegistrarEscalationException.class,
+                () -> notificationService.sendRegistrarEscalationNotification(caseDetails));
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(applEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(5)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("deceased_dod")),
+                () -> assertThat(captured, hasKey("deceased_dod_cy")),
+                () -> assertThat(captured, hasKey("applicant_name")),
+                () -> assertThat(
+                        registrarEscalationException.getCause(),
+                        sameInstance(notificationClientExceptionMock)));
+
+        verify(pdfManagementServiceMock, never()).generateAndUpload(any(SentEmail.class), any());
+    }
+  
+    @Test
+    void shouldReturnNullWhenPostGrantIssuedPdfUploadFails() throws NotificationClientException {
+        final String applEmail = "abc@gmail.com";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+        final String issueDate = "2025-08-05";
+        final String issueDateFrm = "issueDateFrm";
+        final String issueDateCy = "issueDateCy";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+        when(caseData.getPrimaryApplicantFullName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+        when(caseData.getGrantIssuedDate())
+                .thenReturn(issueDate);
+        when(caseData.getGrantIssuedDateFormatted())
+                .thenReturn(issueDateFrm);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy, issueDateCy);
+
+        when(templateServiceMock.getPostGrantIssueTemplateId(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(applEmail), any(), any()))
+                .thenReturn(sendEmailResponseMock);
+
+        final RuntimeException rteMock = mock(RuntimeException.class);
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenThrow(rteMock);
+
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(applEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(7)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("deceased_dod")),
+                () -> assertThat(captured, hasKey("deceased_dod_cy")),
+                () -> assertThat(captured, hasKey("applicant_name")),
+                () -> assertThat(captured, hasKey("grant_issued_date")),
+                () -> assertThat(captured, hasKey("grant_issued_date_cy")),
+                () -> assertThat(result, nullValue()));
+    }
+
+    @Test
+    void shouldSendRegistrarEscalatedFailed() throws NotificationClientException {
+        final String cwEmail = "abc@gmail.com";
+        final String cwName = "cwName";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
+
+        final Document documentMock = mock(Document.class);
+
+        final UserInfo userInfoMock = mock(UserInfo.class);
+        when(userInfoMock.getSub())
+                .thenReturn(cwEmail);
+        when(userInfoMock.getName())
+                .thenReturn(cwName);
+        final Optional<UserInfo> caseworkerInfo = Optional.of(userInfoMock);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+
+        when(templateServiceMock.getRegistrarEscalationNotificationFailed(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(cwEmail), any(), any()))
+                .thenReturn(sendEmailResponseMock);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenReturn(documentMock);
+
+        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(
+                caseDetails,
+                caseworkerInfo);
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(cwEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(3)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("caseworker_name")),
+                () -> assertThat(result, sameInstance(documentMock)));
+    }
+
+    @Test
+    void shouldNotSendRegistrarEscalatedFailedIfNoCaseworker() {
+        final String decName = "decName";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final Optional<UserInfo> caseworkerInfo = Optional.empty();
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+
+        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(
+                caseDetails,
+                caseworkerInfo);
+
+        verify(templateServiceMock, never()).getRegistrarEscalationNotificationFailed(any(), any());
+        assertThat(result, nullValue());
+    }
+
+    @Test
+    void shouldReturnNullIfSendRegistrarEscalatedFailedFails() throws NotificationClientException {
+        final String cwEmail = "abc@gmail.com";
+        final String cwName = "cwName";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final NotificationClientException notificationClientExceptionMock = mock(NotificationClientException.class);
+
+        final UserInfo userInfoMock = mock(UserInfo.class);
+        when(userInfoMock.getSub())
+                .thenReturn(cwEmail);
+        when(userInfoMock.getName())
+                .thenReturn(cwName);
+        final Optional<UserInfo> caseworkerInfo = Optional.of(userInfoMock);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+
+        when(templateServiceMock.getRegistrarEscalationNotificationFailed(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(cwEmail), any(), any()))
+                .thenThrow(notificationClientExceptionMock);
+
+        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(
+                caseDetails,
+                caseworkerInfo);
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(cwEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(3)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("caseworker_name")),
+                () -> assertThat(result, nullValue()));
+
+        verify(pdfManagementServiceMock, never())
+                .generateAndUpload(any(SentEmail.class), any());
+    }
+
+    @Test
+    void shouldReturnNullIfSendRegistrarEscalatedDocGenFails() throws NotificationClientException {
+        final String cwEmail = "abc@gmail.com";
+        final String cwName = "cwName";
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final SendEmailResponse sendEmailResponse = mock(SendEmailResponse.class);
+
+        final RuntimeException runtimeExceptionMock = mock(RuntimeException.class);
+
+        final UserInfo userInfoMock = mock(UserInfo.class);
+        when(userInfoMock.getSub())
+                .thenReturn(cwEmail);
+        when(userInfoMock.getName())
+                .thenReturn(cwName);
+        final Optional<UserInfo> caseworkerInfo = Optional.of(userInfoMock);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+
+        when(templateServiceMock.getRegistrarEscalationNotificationFailed(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), eq(cwEmail), any(), any()))
+                .thenReturn(sendEmailResponse);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenThrow(runtimeExceptionMock);
+
+        final Document result = notificationService.sendRegistrarEscalationNotificationFailed(
+                caseDetails,
+                caseworkerInfo);
+
+        @SuppressWarnings("unchecked")
+        final ArgumentCaptor<Map<String, Object>> captor = ArgumentCaptor.forClass(Map.class);
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), eq(cwEmail), captor.capture(), any());
+        final Map<String, Object> captured = captor.getValue();
+        assertAll(
+                () -> assertThat(captured.size(), greaterThanOrEqualTo(3)),
+                () -> assertThat(captured, hasKey("ccd_reference")),
+                () -> assertThat(captured, hasKey("deceased_name")),
+                () -> assertThat(captured, hasKey("caseworker_name")),
+                () -> assertThat(result, nullValue()));
+
+        verify(pdfManagementServiceMock, times(1))
+                .generateAndUpload(any(SentEmail.class), any());
     }
 }

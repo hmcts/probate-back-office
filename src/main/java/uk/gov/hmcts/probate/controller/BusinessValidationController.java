@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -53,6 +54,7 @@ import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
+import uk.gov.hmcts.probate.validator.IHTFormIDValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
@@ -122,6 +124,7 @@ public class BusinessValidationController {
     private final UniqueCodeValidationRule uniqueCodeValidationRule;
     private final StopReasonValidationRule stopReasonValidationRule;
     private final NaValidationRule naValidationRule;
+    private final IHTFormIDValidationRule ihtFormIDValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
@@ -145,6 +148,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
         caseDataTransformer.transformFormCaseData(request);
         naValidationRule.validate(request.getCaseDetails());
+        ihtFormIDValidationRule.validate(request.getCaseDetails());
         ihtEstateValidationRule.validate(request.getCaseDetails());
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
@@ -411,6 +415,24 @@ public class BusinessValidationController {
 
         caseEscalatedService.caseEscalated(callbackRequest.getCaseDetails());
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        Document sentNotification;
+        try {
+            sentNotification = notificationService.sendRegistrarEscalationNotification(caseDetails);
+        } catch (NotificationService.RegistrarEscalationException e) {
+            log.info("Sending registrar escalation notification failed for case: {}", caseDetails.getId());
+            sentNotification = notificationService.sendRegistrarEscalationNotificationFailed(
+                    caseDetails,
+                    caseworkerInfo);
+        }
+        if (sentNotification != null) {
+            final List<CollectionMember<Document>> notifications = caseDetails
+                    .getData()
+                    .getProbateNotificationsGenerated();
+            notifications.add(new CollectionMember<>(null, sentNotification));
+        }
+
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
@@ -725,7 +747,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, Optional.empty()));
     }
 
-
     @PostMapping(path = "/setLastModifiedDate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> setLastModifiedDateForDormant(
             @RequestBody CallbackRequest callbackRequest) {
@@ -767,6 +788,29 @@ public class BusinessValidationController {
                 .build();
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    @PostMapping(
+            path = "/moveToPostGrantIssued",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> moveToPostGrantIssue(
+            @RequestBody final CallbackRequest callbackRequest,
+            final HttpServletRequest httpRequest) {
+        logRequest(httpRequest.getRequestURI(), callbackRequest);
+
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+
+        final Document sentNotification = notificationService.sendPostGrantIssuedNotification(caseDetails);
+        if (sentNotification != null) {
+            final List<CollectionMember<Document>> notifications = caseDetails
+                    .getData()
+                    .getProbateNotificationsGenerated();
+            notifications.add(new CollectionMember<>(null, sentNotification));
+        }
+
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
