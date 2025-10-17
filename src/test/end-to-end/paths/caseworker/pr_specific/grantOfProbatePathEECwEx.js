@@ -121,7 +121,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Resolve stop';
-    const resolveStop = 'Case Matching (Issue grant)';
+    const resolveStop = 'Ready to issue';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.resolveStop);
     await I.chooseResolveStop(resolveStop);
@@ -132,6 +132,15 @@ Scenario(scenarioName, async function ({I}) {
     nextStepName = 'Find matches (cases)';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.findMatch);
+    await I.selectCaseMatchesForGrantOfProbate(caseRef, nextStepName);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Find matches (Issue grant)';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+
+    nextStepName = 'Find matches (Issue grant)';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepConfig.findMatchesIssueGrant);
     await I.selectCaseMatchesForGrantOfProbate(caseRef, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Issue grant)';
