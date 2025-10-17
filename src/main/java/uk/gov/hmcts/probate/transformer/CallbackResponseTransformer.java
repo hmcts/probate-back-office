@@ -1291,6 +1291,7 @@ public class CallbackResponseTransformer {
             .deceasedOtherChildren(caseData.getDeceasedOtherChildren())
             .allDeceasedChildrenOverEighteen(caseData.getAllDeceasedChildrenOverEighteen())
             .anyDeceasedChildrenDieBeforeDeceased(caseData.getAnyDeceasedChildrenDieBeforeDeceased())
+            .childrenDiedBeforeDeceased(caseData.getChildrenDiedBeforeDeceased())
             .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
             .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
             .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
@@ -1423,7 +1424,8 @@ public class CallbackResponseTransformer {
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
-            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown());
+            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
+            .applicantFamilyDetails(caseData.getApplicantFamilyDetails());
 
         handleDeceasedAliases(
                 builder,

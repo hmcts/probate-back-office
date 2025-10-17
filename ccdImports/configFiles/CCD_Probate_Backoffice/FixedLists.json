@@ -477,5 +477,8 @@
   {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseQA", "ListElement": "Case selected for QA"},
   {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseStopped", "ListElement": "Case Stopped"},
   {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BORegistrarEscalation", "ListElement": "Registrar Escalation"},
-  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseWorkerEscalation", "ListElement": "SME Referral"}
+  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseWorkerEscalation", "ListElement": "SME Referral"},
+  {"LiveFrom": "06/01/2017", "ID": "predeceasedFixedList", "ListElementCode": "YesSome", "ListElement": "Yes, some of them"},
+  {"LiveFrom": "06/01/2017", "ID": "predeceasedFixedList", "ListElementCode": "YesAll", "ListElement": "Yes, all of them"},
+  {"LiveFrom": "06/01/2017", "ID": "predeceasedFixedList", "ListElementCode": "No", "ListElement": "No"}
 ]
