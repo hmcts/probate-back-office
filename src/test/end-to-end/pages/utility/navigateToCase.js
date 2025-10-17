@@ -90,9 +90,9 @@ module.exports = async function (caseRef, useWaitInUrl = true) {
 
     const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
     if (useWaitInUrl) {
-        I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+        I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
     } else {
-        I.amOnPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+        I.amOnPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
     }
 
     await I.wait(testConfig.ManualDelayMedium);
