@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 
@@ -221,6 +222,13 @@ public final class Constants {
             DOC_TYPE_PPS_LEGAL_STATEMENT,
             DOC_TYPE_CHERISHED,
             DOC_TYPE_OTHER));
+
+    public static final Map<String, String[]> EN_TO_WELSH = Map.of(
+            "partner", new String[]{"partner", "partneriaid"},
+            "member", new String[]{"aelod", "aelodau"},
+            "stakeholder", new String[]{"rhanddeiliad", "rhanddeiliaid"},
+            "director", new String[]{"cyfarwyddwr", "cyfarwyddwyr"}
+    );
 
     private Constants() {
     }
