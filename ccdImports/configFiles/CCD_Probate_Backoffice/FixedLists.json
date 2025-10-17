@@ -198,6 +198,7 @@
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "parent", "ListElement": "Parent"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "other", "ListElement": "Other"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "adoptedChild", "ListElement": "Adopted child"},
+  {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "grandchild", "ListElement": "Grandchild"},
   {"LiveFrom": "06/01/2017", "ID": "martialStatusFixedList", "ListElementCode": "marriedCivilPartnership", "ListElement": "Married or in a civil partnership", "DisplayOrder": 1},
   {"LiveFrom": "06/01/2017", "ID": "martialStatusFixedList", "ListElementCode": "divorcedCivilPartnership", "ListElement": "Divorced or civil partnership has dissolved", "DisplayOrder": 2},
   {"LiveFrom": "06/01/2017", "ID": "martialStatusFixedList", "ListElementCode": "widowed", "ListElement": "Widowed, their spouse or civil partner died before them", "DisplayOrder": 3},
