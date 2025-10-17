@@ -2,7 +2,7 @@
 const testConfig = require('src/test/config.js');
 
 // Case worker - nav back to case
-module.exports = async function (caseRef, useWaitInUrl = true) {
+module.exports = async function (caseRef, useWaitInUrl = true, caseType) {
     const I = this;
 
     const scenarioName = 'Find cases';
@@ -89,10 +89,18 @@ module.exports = async function (caseRef, useWaitInUrl = true) {
     // await I.wait(testConfig.CaseworkerCaseNavigateDelay);
 
     const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
-    if (useWaitInUrl) {
-        I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
+    if (caseType === 'Caveat'){
+        if (useWaitInUrl) {
+            I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/Caveat/${caseRefNoDashes}`);
+        } else {
+            I.amOnPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/Caveat/${caseRefNoDashes}`);
+        }
     } else {
-        I.amOnPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
+        if (useWaitInUrl) {
+            I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
+        } else {
+            I.amOnPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
+        }
     }
 
     await I.wait(testConfig.ManualDelayMedium);
