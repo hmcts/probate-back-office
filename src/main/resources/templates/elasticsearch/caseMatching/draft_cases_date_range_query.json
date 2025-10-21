@@ -1,14 +1,12 @@
 {
-  "size": :size,
-  "from": :from,
   "query": {
     "bool": {
       "filter": [
         {
           "range": {
             "last_modified": {
-              "gte": ":fromDate",
-              "lte": ":toDate"
+              "gte": "%s",
+              "lte": "%s"
             }
           }
         },
@@ -24,11 +22,10 @@
       ]
     }
   },
+  "size": %s,
+  "_source": ["reference" , "data.deceasedForenames", "data.deceasedSurname"],
   "sort": [
     {
-      "id": {
-        "order": "asc"
-      }
+      "reference.keyword": "asc"
     }
   ]
-}

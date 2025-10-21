@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.lifeevents;
 
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
@@ -8,11 +8,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 
 import jakarta.validation.constraints.NotNull;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Objects.nonNull;
@@ -20,6 +20,7 @@ import static java.util.Objects.nonNull;
 @Component
 @RequiredArgsConstructor
 public class DeathRecordCCDService {
+    private final AliasMapper aliasMapper;
 
     public List<CollectionMember<DeathRecord>> mapDeathRecords(List<V1Death> deathRecords) {
         return Optional.ofNullable(deathRecords)
@@ -28,7 +29,7 @@ public class DeathRecordCCDService {
             .filter(Objects::nonNull)
             .map(this::mapCollectionMember)
             .flatMap(Optional::stream)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     private Optional<CollectionMember<DeathRecord>> mapCollectionMember(@NotNull V1Death v1Death) {
@@ -50,7 +51,8 @@ public class DeathRecordCCDService {
                 .dateOfBirth(deceased.getDateOfBirth())
                 .sex(null == deceased.getSex() ? null : deceased.getSex().getValue())
                 .address(deceased.getAddress())
-                .dateOfDeath(deceased.getDateOfDeath());
+                .dateOfDeath(deceased.getDateOfDeath())
+                .aliases(aliasMapper.map(deceased));
         }
 
         return builder.build();

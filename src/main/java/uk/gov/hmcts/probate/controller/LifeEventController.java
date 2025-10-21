@@ -15,8 +15,8 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
-import uk.gov.hmcts.probate.service.LifeEventCCDService;
-import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
+import uk.gov.hmcts.probate.service.lifeevents.LifeEventCCDService;
+import uk.gov.hmcts.probate.service.lifeevents.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
@@ -58,6 +58,7 @@ public class LifeEventController {
 
     @PostMapping(path = "/manualUpdateAboutToStart", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> manualUpdateAboutToStart(@RequestBody CallbackRequest request) {
+        log.info("manualUpdateAboutToStart id {}:", request.getCaseDetails().getId());
         return ResponseEntity.ok(lifeEventCallBackResponseService.getDeathRecordsByNamesAndDate(request));
     }
 
