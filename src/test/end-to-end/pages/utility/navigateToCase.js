@@ -89,18 +89,13 @@ module.exports = async function (caseRef, useWaitInUrl = true, caseType) {
     // await I.wait(testConfig.CaseworkerCaseNavigateDelay);
 
     const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
-    if (caseType === 'Caveat'){
-        if (useWaitInUrl) {
-            I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/Caveat/${caseRefNoDashes}`);
-        } else {
-            I.amOnPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/Caveat/${caseRefNoDashes}`);
-        }
+    const caveatUrl = `${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/Caveat/${caseRefNoDashes}`;
+    const gorUrl = `${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`;
+    const url = caseType === 'Caveat' ? caveatUrl : gorUrl;
+    if (useWaitInUrl) {
+        I.amOnLoadedPage(url);
     } else {
-        if (useWaitInUrl) {
-            I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
-        } else {
-            I.amOnPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
-        }
+        I.amOnPage(url);
     }
 
     await I.wait(testConfig.ManualDelayMedium);
