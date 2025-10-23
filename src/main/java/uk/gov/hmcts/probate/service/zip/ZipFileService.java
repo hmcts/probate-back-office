@@ -239,13 +239,12 @@ public class ZipFileService {
     }
 
     public File createTempZipFile(String zipName) throws IOException {
-        File file = null;
         if (secureDir == null) {
             secureDir = Paths.get("").toAbsolutePath();
-            file = ResourceUtils.getFile(secureDir + "/" + zipName + ".zip");
-            if (file.exists()) {
-                Files.delete(file.toPath());
-            }
+        }
+        File file = ResourceUtils.getFile(secureDir + "/" + zipName + ".zip");
+        if (file.exists()) {
+            Files.delete(file.toPath());
         }
 
         Path tempFilePath = Files.createTempFile(secureDir, zipName, ".zip");
