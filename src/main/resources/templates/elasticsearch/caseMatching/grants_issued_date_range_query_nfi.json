@@ -1,0 +1,56 @@
+{
+  "size": :size,
+  "from": :from,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "data.grantIssuedDate": {
+              "gte": ":fromDate",
+              "lte": ":toDate"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_source": [
+    "id",
+    "reference",
+    "last_modified",
+    "data.scannedDocuments",
+    "data.probateDocumentsGenerated",
+    "data.boDocumentsUploaded",
+    "data.applicationType",
+    "data.caseType",
+    "data.registryLocation",
+    "data.grantIssuedDate",
+    "data.deceasedForenames",
+    "data.deceasedSurname",
+    "data.boDeceasedHonours",
+    "data.deceasedAliasNameList",
+    "data.solsDeceasedAliasNamesList",
+    "data.deceasedDateOfDeath",
+    "data.deceasedAddress",
+    "data.executorsApplying",
+    "data.primaryApplicantForenames",
+    "data.primaryApplicantSurname",
+    "data.primaryApplicantAlias",
+    "data.primaryApplicantAddress",
+    "data.ihtGrossValue",
+    "data.ihtNetValue",
+    "data.solsSolicitorFirmName",
+    "data.solsSolicitorAppReference",
+    "data.solsSolicitorAddress",
+    "data.deceasedDateOfBirth",
+    "data.willHasCodicils"
+  ],
+  "sort": [
+    {
+      "id": {
+        "order": "asc"
+      }
+    }
+  ]
+}
