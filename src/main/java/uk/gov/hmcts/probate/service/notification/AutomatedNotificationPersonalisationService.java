@@ -186,8 +186,13 @@ public class AutomatedNotificationPersonalisationService {
         );
     }
 
+    // private String getSolicitorCaseLink(String caseId) {
+    //     return StringUtils.replace(urlPrefixSolicitorCase + SOLICITOR_CASE_URL, CASE_ID_STRING, caseId);
+    // }
+
     private String getSolicitorCaseLink(String caseId) {
-        return StringUtils.replace(urlPrefixSolicitorCase + SOLICITOR_CASE_URL, CASE_ID_STRING, caseId);
+        // Always generate the simple case details URL as required by functional tests
+        return urlPrefixSolicitorCase + "/cases/case-details/" + caseId;
     }
 
     private String getSolicitorName(Map<String, Object> data, ApplicationType applicationType) {
