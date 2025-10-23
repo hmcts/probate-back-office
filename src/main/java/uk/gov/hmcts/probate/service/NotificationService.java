@@ -23,10 +23,9 @@ import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
-import uk.gov.hmcts.reform.probate.model.cases.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -47,6 +46,7 @@ import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.probate.model.cases.BulkPrint;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -302,25 +302,14 @@ public class NotificationService {
         return getSentEmailDocument(state, emailAddress, response);
     }
 
-    public void sendEmailForGORSuccessfulPayment(List<ReturnedCaseDetails> cases, String fromDate, String toDate)
+    public void sendEmailForDraftSuccessfulPayment(List<uk.gov.hmcts.reform.ccd.client.model.CaseDetails> cases,
+                                                   String fromDate, String toDate, CcdCaseType ccdCaseType)
             throws NotificationClientException {
         log.info("Sending email for Draft cases with payment status as Success");
 
         String templateId = getTemplateId();
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService
-                .getGORDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate);
-
-        sendEmailForDraftCases(templateId, personalisation);
-    }
-
-    public void sendEmailForCaveatSuccessfulPayment(List<ReturnedCaveatDetails> cases, String fromDate, String toDate)
-            throws NotificationClientException {
-        log.info("Sending email for Draft Caveat cases with payment status as Success");
-
-        String templateId = getTemplateId();
-        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService
-                .getCaveatDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate);
-
+                .getDraftCaseWithPaymentPersonalisation(cases, fromDate, toDate,ccdCaseType);
         sendEmailForDraftCases(templateId, personalisation);
     }
 
