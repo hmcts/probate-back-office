@@ -171,6 +171,9 @@ class NotificationServiceTest {
                 emailValidationServiceMock,
                 localDateToWelshStringConverterMock,
                 clockMock);
+
+        when(clockMock.instant()).thenReturn(Instant.now());
+        when(clockMock.getZone()).thenReturn(ZoneId.of("Europe/London"));
     }
 
     @AfterEach
