@@ -271,4 +271,7 @@ public class CaseQueryService {
         return paginatedQry.replaceFirst("\"from\": *\\d*,", "\"from\":" + pageStart + ",");
     }
 
+    public List<ReturnedCaseDetails> findCaseWithQueryPathAndDate(String invokeFrom, String queryPath, String date) {
+        return findCaseStateWithinDateRange(invokeFrom, queryPath, date, date);
+    }
 }
