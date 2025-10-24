@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_FIRM_CEASED_TRADING_NO_SUCCESSOR;
 import static uk.gov.hmcts.probate.model.Constants.getNonTrustPtnrTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.Constants.getSuccessorTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
@@ -25,5 +26,10 @@ public class TitleAndClearingTypeService {
     public boolean successorFirmTitleAndClearingOptionSelected(CaseData caseData) {
         String titleAndClearing = caseData.getTitleAndClearingType();
         return titleAndClearing != null && getSuccessorTitleClearingTypes().contains(titleAndClearing);
+    }
+
+    public boolean firmCeasedTradingNoSuccTitleAndClearingOptionSelected(CaseData caseData) {
+        String titleAndClearing = caseData.getTitleAndClearingType();
+        return TITLE_AND_CLEARING_FIRM_CEASED_TRADING_NO_SUCCESSOR.equalsIgnoreCase(titleAndClearing);
     }
 }

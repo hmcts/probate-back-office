@@ -7,6 +7,7 @@ public class EmailTemplates {
     private String applicationReceived;
     private String applicationReceivedNoDocs;
     private String applicationReceivedPaperFormCaseworker;
+    private String stopResponseReceived;
     private String documentReceived;
     private String caseStopped;
     private String caseStoppedCaveat;
@@ -44,4 +45,7 @@ public class EmailTemplates {
     private String unsubmittedApplication;
     private String declarationNotSignedPrimaryApplicant;
     private String declarationNotSignedExecutors;
+    private String postGrantIssuedNotification;
+    private String registrarEscalationNotification;
+    private String registrarEscalationNotificationFailed;
 }

@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,6 +42,8 @@ class HseReminderNotificationTest {
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
         underTest = new HseReminderNotification(notificationService);
+
+        when(caseDetails.getState()).thenReturn("CasePrinted");
     }
 
     @AfterEach
@@ -58,14 +62,14 @@ class HseReminderNotificationTest {
     void matchesTypeShouldReturnTrueWhenTypeIsHseReminder() {
         boolean result = underTest.matchesType(HSE_REMINDER);
 
-        assertEquals(true, result);
+        assertTrue(result);
     }
 
     @Test
     void shouldHseReminderEmail() throws NotificationClientException {
         when(notificationService.sendHseReminderEmail(caseDetails)).thenReturn(mockDocument);
 
-        Document result = underTest.sendEmail(caseDetails);
+        Document result = underTest.sendNotification(caseDetails);
 
         verify(notificationService, times(1)).sendHseReminderEmail(caseDetails);
         assertEquals(mockDocument, result);
@@ -119,7 +123,7 @@ class HseReminderNotificationTest {
 
         boolean result = underTest.accepts().test(caseDetails);
 
-        assertEquals(false, result);
+        assertFalse(result);
     }
 
     @Test
@@ -128,7 +132,7 @@ class HseReminderNotificationTest {
 
         boolean result = underTest.accepts().test(caseDetails);
 
-        assertEquals(false, result);
+        assertFalse(result);
     }
 
     @Test
@@ -138,7 +142,7 @@ class HseReminderNotificationTest {
 
         boolean result = underTest.accepts().test(caseDetails);
 
-        assertEquals(false, result);
+        assertFalse(result);
     }
 
     @Test
@@ -148,7 +152,7 @@ class HseReminderNotificationTest {
 
         boolean result = underTest.accepts().test(caseDetails);
 
-        assertEquals(true, result);
+        assertTrue(result);
     }
 
     @Test
@@ -159,7 +163,18 @@ class HseReminderNotificationTest {
 
         boolean result = underTest.accepts().test(caseDetails);
 
-        assertEquals(false, result);
+        assertFalse(result);
+    }
+
+    @Test
+    void returnsFalseWhenStateIsCaseClosed() {
+        underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
+        when(caseDetails.getData()).thenReturn(Map.of("evidenceHandled", "Yes", "evidenceHandledDate", "2023-10-01"));
+        when(caseDetails.getState()).thenReturn("BOCaseClosed");
+
+        boolean result = underTest.accepts().test(caseDetails);
+
+        assertFalse(result);
     }
 
     @Test
@@ -170,6 +185,6 @@ class HseReminderNotificationTest {
 
         boolean result = underTest.accepts().test(caseDetails);
 
-        assertEquals(true, result);
+        assertTrue(result);
     }
 }

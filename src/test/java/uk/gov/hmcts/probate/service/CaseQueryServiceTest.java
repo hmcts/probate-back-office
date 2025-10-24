@@ -370,4 +370,21 @@ class CaseQueryServiceTest {
             caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");
         });
     }
+
+    @Test
+    void findCaseWithQueryPathAndDateReturnsCaseList() {
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        ReturnedCases returnedCases1 = getReturnedCases(1, 0, 3);
+        ReturnedCases returnedCases2 = getReturnedCases(1, 1, 3);
+        ReturnedCases returnedCases3 = getReturnedCases(1, 2, 3);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
+                returnedCases3);
+
+        List<ReturnedCaseDetails> cases = caseQueryService
+                .findCaseWithQueryPathAndDate("NFI", "queryPath", "2019-02-05");
+
+        assertEquals(3, cases.size());
+        assertEquals(0, cases.get(0).getId().intValue());
+        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
+    }
 }
