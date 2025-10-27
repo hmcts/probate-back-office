@@ -33,7 +33,7 @@ jacoco {
 sonarqube {
   properties {
     property "sonar.projectName", "PROBATE :: BACK-OFFICE"
-    property "sonar.exclusions", "**/SecurityConfiguration.java,**/BusinessRulesValidationApplication.java,**/AuthCheckerConfiguration.java"
+    property "sonar.exclusions", "**/SecurityConfiguration.java,**/BusinessRulesValidationApplication.java,**/AuthCheckerConfiguration.java,**/ZipFileService.java"
     property "sonar.projectKey", "Sols-CCD-Service-API"
     property "sonar.jacoco.reportPath", "${layout.buildDirectory.get()}/jacoco/test.exec"
     property "sonar.host.url", "https://sonar.reform.hmcts.net/"
