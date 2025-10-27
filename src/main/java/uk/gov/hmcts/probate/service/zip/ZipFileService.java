@@ -1,5 +1,8 @@
 package uk.gov.hmcts.probate.service.zip;
 
+import feign.FeignException;
+import feign.Request;
+import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -26,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -221,13 +225,15 @@ public class ZipFileService {
                 .errorDescription(errorDescription).build();
 
         try {
-            ByteArrayResource byteArrayResource =
+            throw new FeignException.GatewayTimeout("mimic 504 exception",
+                createFeignRequest(), null, new HashMap<>());
+            /*ByteArrayResource byteArrayResource =
                     new ByteArrayResource(documentManagementService.getDocumentByBinaryUrl(binaryUrl));
             if (byteArrayResource != null) {
                 zipMultipleDocs(zos, byteArrayResource, zippedManifestData.getDocumentName());
                 log.info("file added: {} for case id {}", zippedManifestData.getDocumentName(),
                         caseDetails.getId().toString());
-            }
+            }*/
         } catch (Exception e) {
             errorDescription = "Exception adding file from case id: " + caseDetails.getId().toString()
                     + " document id: " + documentId;
@@ -315,5 +321,10 @@ public class ZipFileService {
                 .errorDescription("").build();
         ByteArrayResource byteArrayResource = new ByteArrayResource(data.toString().getBytes(StandardCharsets.UTF_8));
         zipMultipleDocs(zos, byteArrayResource, zippedManifestData.getDocumentName());
+    }
+
+    private Request createFeignRequest() {
+        return Request.create(Request.HttpMethod.GET, "url",
+                new HashMap<>(), null, new RequestTemplate());
     }
 }
