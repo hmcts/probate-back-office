@@ -146,7 +146,7 @@ export class BasePage {
             ).toBeVisible();
           }
           await expect(
-            this.page.getByText(tabConfigFile.fields[i], { exact: true })
+            this.page.getByText(tabConfigFile.fields[i], { exact: true }).first()
           ).toBeVisible();
         } else if (tabConfigFile.tabName === "Event History") {
           await expect(
@@ -208,7 +208,7 @@ export class BasePage {
           await expect(
             this.page.getByText(dataConfigFile[tabConfigFile.dataKeys[i]], {
               exact: true,
-            })
+            }).first()
           ).toBeVisible();
         } else {
           await expect(

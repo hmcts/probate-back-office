@@ -133,7 +133,7 @@ test.describe("Solicitor - Apply Caveat", () => {
     // When emailing the caveator, the Date added for the email document is set to today
     completeApplicationConfig.notification_date = dateFns.format(
       new Date(),
-      testConfig.dateFormat
+      testConfig.solDateFormat
     );
 
     //await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, completeApplicationConfig);
