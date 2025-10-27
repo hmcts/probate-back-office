@@ -523,7 +523,7 @@ export class CreateCasePage extends BasePage {
         await this.page.locator('#field-trigger-description').fill(eventSummaryPrefix + eventSummaryConfig.comment);
 
         await this.page.waitForTimeout(testConfig.CreateCaseDelay);
-        if (submitButtonName) await this.waitForSubmitNavigationToComplete(submitButtonName);
+        await this.waitForSubmitNavigationToComplete(submitButtonName);
     }
 
     async enterIhtDetails(caseProgressConfig: CaseProgressConfig, optionValue: string) {

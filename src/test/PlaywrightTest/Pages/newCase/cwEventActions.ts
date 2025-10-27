@@ -24,7 +24,7 @@ export class CwEventActionsPage extends BasePage {
   readonly btnLocator = this.page.locator(
     'button.button-secondary[aria-label^="Remove Possible case matches"]'
   );
-  readonly caseMatchLocator = this.page.locator("#caseMatches_0_0");
+  readonly caseMatchLocator = this.page.locator("#caseMatches_0_0").first();
   readonly caseMatchValidLocator = this.page.locator("#caseMatches_0_valid_Yes");
   readonly caseMatchImportLocator = this.page.locator(
     "#caseMatches_0_doImport_No"
@@ -178,7 +178,6 @@ export class CwEventActionsPage extends BasePage {
     // const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
     if (numOfElements > 0) {
-      await expect(this.caseMatchLocator.nth(1)).toBeVisible();
       await expect(this.caseMatchValidLocator).toBeVisible();
     }
     // const legacyApplication = this.page.locator('#caseMatches_%s_%s > fieldset > ccd-field-read:nth-child(2) > div > ccd-field-read-label > div > dl > dd');

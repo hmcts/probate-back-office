@@ -234,7 +234,7 @@ export class SolCreateCasePage extends BasePage {
   async completeCaveatApplicationPage2(caseRef: string) {
     completeApplicationConfig.page2_notification_date = dateFns.format(
       new Date(),
-      testConfig.dateFormat
+      testConfig.solDateFormat
     );
     await expect(
       this.page.getByText(completeApplicationConfig.page2_waitForText)
