@@ -64,6 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -1294,5 +1295,102 @@ class NotificationServiceTest {
 
         verify(pdfManagementServiceMock, times(1))
                 .generateAndUpload(any(SentEmail.class), any());
+    }
+
+    @Test
+    void shouldThrowForRegistrarEscalatedWhenApplEmailNull() throws NotificationClientException {
+        final String applEmail = null;
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        final Document documentMock = mock(Document.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+        when(caseData.getPrimaryApplicantFullName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy);
+
+        when(templateServiceMock.getRegistrarEscalationNotification(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), isNull(), any(), any()))
+                .thenThrow(new NotificationClientException("Email address is mandatory"));
+
+        assertThrows(RegistrarEscalationException.class,
+                () -> notificationService.sendRegistrarEscalationNotification(caseDetails));
+
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), isNull(), any(), any());
+    }
+
+    @Test
+    void shouldReturnNullWhenPostGrantApplicantEmailIsNull() throws NotificationClientException {
+        final String applEmail = null;
+        final String tmplId = "tmplId";
+        final String decName = "decName";
+        final String applName = "applName";
+        final LocalDate decdDod = LocalDate.of(2024, 8, 5);
+        final String decdDodFrm = "decdDodFrm";
+        final String decdDodCy = "decdDodCy";
+        final String issueDate = "2025-08-05";
+        final String issueDateFrm = "issueDateFrm";
+        final String issueDateCy = "issueDateCy";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+        when(caseData.getPrimaryApplicantFullName())
+                .thenReturn(applName);
+        when(caseData.getDeceasedFullName())
+                .thenReturn(decName);
+        when(caseData.getDeceasedDateOfDeath())
+                .thenReturn(decdDod);
+        when(caseData.getDeceasedDateOfDeathFormatted())
+                .thenReturn(decdDodFrm);
+        when(caseData.getGrantIssuedDate())
+                .thenReturn(issueDate);
+        when(caseData.getGrantIssuedDateFormatted())
+                .thenReturn(issueDateFrm);
+
+        when(localDateToWelshStringConverterMock.convert(any()))
+                .thenReturn(decdDodCy, issueDateCy);
+
+        when(templateServiceMock.getPostGrantIssueTemplateId(any(), any()))
+                .thenReturn(tmplId);
+
+        when(notificationClientServiceMock.sendEmail(eq(tmplId), isNull(), any(), any()))
+                .thenThrow(new NotificationClientException("Email address is mandatory"));
+
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
+
+        verify(notificationClientServiceMock).sendEmail(eq(tmplId), isNull(), any(), any());
+        assertThat(result, nullValue());
     }
 }
