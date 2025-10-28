@@ -35,7 +35,7 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
             + "<gridRow>"
                 + "<gridCol-two-thirds><sendDocsLinkWelsh/></gridCol-two-thirds>"
             + "</gridRow>"
-            + "<gridRowSeparator/>";
+            + "<gridRowSeparator/>\n";
 
     public String renderHtml(CaseDetails details) {
         final String paymentTaken = details.getData().getPaymentTaken();
