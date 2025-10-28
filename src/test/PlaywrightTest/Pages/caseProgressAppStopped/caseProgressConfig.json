@@ -25,10 +25,9 @@
     "deceasedAddrCounty": "Wilts",
     "deceasedAddrCountry": "UK",
     "deceasedAddrPostcode": "CN12JU",
-    "IHT205Label": "IHT205 - there was no inheritance tax to pay",
-    "IHT207Label": "IHT207 - the person who died lived abroad and there was no inheritance tax to pay",
-    "IHT400Label": "IHT400 - only select this option if you applied after",
-    "IHT400421Label": "IHT400 and IHT421",
+    "IHT205Label": "IHT205",
+    "IHT207Label": "IHT207",
+    "IHT400Label": "IHT400",
     "IHTDNULabel": "Not applicable - DO NOT USE",
     "IHTOption": "IHT205",
     "IHT400Option": "IHT400",
@@ -49,4 +48,3 @@
     "AppStoppedTabTitle": "Paper application needed",
     "AppStoppedTabCheckText": "This application has been stopped. Based on the information you have entered, our online service cannot yet handle this type of application."
 }
-
