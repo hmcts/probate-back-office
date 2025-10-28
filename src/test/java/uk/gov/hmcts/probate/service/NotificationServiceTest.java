@@ -61,10 +61,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -617,6 +614,8 @@ class NotificationServiceTest {
         assertThrows(RequestInformationParameterException.class, () ->
                 notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
                         12345L, personalisation));
+    }
+
     void shouldSendPostGrantIssuedForPP() throws NotificationClientException {
         final String applEmail = "abc@gmail.com";
         final String tmplId = "tmplId";
