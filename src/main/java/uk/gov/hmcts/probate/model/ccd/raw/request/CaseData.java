@@ -513,6 +513,8 @@ public class CaseData extends CaseDataParent {
     private final String childrenDiedBeforeDeceased;
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
+    private final String deceasedAnyLivingDescendants;
+    private final String deceasedAnyOtherParentAlive;
     private final String deceasedHasAssetsOutsideUK;
     private final String boEmailRequestInfoNotificationRequested;
     @Builder.Default
