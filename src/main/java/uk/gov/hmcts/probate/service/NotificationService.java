@@ -1072,11 +1072,18 @@ public class NotificationService {
     public Document sendRegistrarEscalationNotification(
             final CaseDetails caseDetails) throws RegistrarEscalationException {
         final CaseData caseData = caseDetails.getData();
+        final String recipientEmail = getEmail(caseData);
+        if (recipientEmail == null) {
+            // short circuit - we cannot email if no email present
+            log.info("Not sending registrar escalation notification for case {} as recipient email is null",
+                    caseDetails.getId());
+            return null;
+        }
+
         final String templateId = templateService.getRegistrarEscalationNotification(
                 caseData.getApplicationType(),
                 caseData.getLanguagePreference());
 
-        final String recipientEmail = getEmail(caseData);
         final String caseRef = caseDetails.getId().toString();
         final String deceasedName = caseData.getDeceasedFullName();
         final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
@@ -1214,11 +1221,18 @@ public class NotificationService {
     public Document sendPostGrantIssuedNotification(final CaseDetails caseDetails) {
 
         final CaseData caseData = caseDetails.getData();
+        final String recipientEmail = getEmail(caseData);
+        if (recipientEmail == null) {
+            // short circuit - we cannot email if no email present
+            log.info("Not sending post grant issued notification for case {} as recipient email is null",
+                    caseDetails.getId());
+            return null;
+        }
+
         final String templateId = templateService.getPostGrantIssueTemplateId(
                 caseData.getLanguagePreference(),
                 caseData.getApplicationType());
 
-        final String recipientEmail = getEmail(caseData);
         final String caseRef = caseDetails.getId().toString();
         final String deceasedName = caseData.getDeceasedFullName();
         final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
