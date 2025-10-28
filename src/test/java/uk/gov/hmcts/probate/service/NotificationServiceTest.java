@@ -74,7 +74,6 @@ import static org.mockito.Mockito.when;
 
 
 class NotificationServiceTest {
-
     @Mock
     private EmailAddresses emailAddressesMock;
     @Mock
@@ -84,15 +83,11 @@ class NotificationServiceTest {
     @Mock
     private NotificationClient notificationClientMock;
     @Mock
-    private TemplatePreview templatePreviewMock;
-    @Mock
     private MarkdownTransformationService markdownTransformationServiceMock;
     @Mock
     private PDFManagementService pdfManagementServiceMock;
-
     @Mock
     private AutomatedNotificationPersonalisationService automatedNotificationPersonalisationServiceMock;
-
     @Mock
     private BulkPrintService bulkPrintServiceMock;
     @Mock
@@ -117,8 +112,6 @@ class NotificationServiceTest {
     private DocumentManagementService documentManagementServiceMock;
     @Mock
     private PersonalisationValidationRule personalisationValidationRuleMock;
-    @Mock
-    private SendEmailResponse sendEmailResponseMock;
     @Mock
     private UserInfoService userInfoServiceMock;
     @Mock
@@ -248,6 +241,8 @@ class NotificationServiceTest {
 
         when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
                 .thenReturn(mockResult);
+
+        TemplatePreview templatePreviewMock = mock(TemplatePreview.class);
         when(notificationClientServiceMock.emailPreview(any(), any(), any())).thenReturn(templatePreviewMock);
         when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -393,6 +388,8 @@ class NotificationServiceTest {
         when(grantOfRepresentationPersonalisationServiceMock.getStopResponseReceivedPersonalisation(
                 12345L, "Solicitor Name"))
                 .thenReturn(Map.of("key", "value"));
+
+        SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
         when(notificationClientServiceMock.sendEmail("template-id",
                 "test@example.com", Map.of("key", "value"), "12345"))
                 .thenReturn(sendEmailResponseMock);
