@@ -1316,8 +1316,52 @@ class NotificationServiceTest {
     }
 
     @Test
+    void shouldReturnNullForRegistrarEscalatedWhenApplEmailIsBlank()
+            throws NotificationClientException, RegistrarEscalationException {
+        final String applEmail = " ";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+
+        final Document result = notificationService.sendRegistrarEscalationNotification(caseDetails);
+
+        verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
+        assertThat(result, nullValue());
+    }
+
+    @Test
     void shouldReturnNullWhenPostGrantApplicantEmailIsNull() throws NotificationClientException {
         final String applEmail = null;
+
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
+
+        verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
+        assertThat(result, nullValue());
+    }
+
+    @Test
+    void shouldReturnNullWhenPostGrantApplicantEmailIsBlankString() throws NotificationClientException {
+        final String applEmail = " ";
 
 
         final CaseData caseData = mock(CaseData.class);

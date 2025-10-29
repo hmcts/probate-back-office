@@ -1073,7 +1073,7 @@ public class NotificationService {
             final CaseDetails caseDetails) throws RegistrarEscalationException {
         final CaseData caseData = caseDetails.getData();
         final String recipientEmail = getEmail(caseData);
-        if (recipientEmail == null) {
+        if (StringUtils.isBlank(recipientEmail)) {
             // short circuit - we cannot email if no email present
             log.info("Not sending registrar escalation notification for case {} as recipient email is null",
                     caseDetails.getId());
@@ -1222,7 +1222,7 @@ public class NotificationService {
 
         final CaseData caseData = caseDetails.getData();
         final String recipientEmail = getEmail(caseData);
-        if (recipientEmail == null) {
+        if (StringUtils.isBlank(recipientEmail)) {
             // short circuit - we cannot email if no email present
             log.info("Not sending post grant issued notification for case {} as recipient email is null",
                     caseDetails.getId());
