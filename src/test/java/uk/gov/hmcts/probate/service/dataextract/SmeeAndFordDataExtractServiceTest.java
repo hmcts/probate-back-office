@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -32,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -136,15 +137,8 @@ class SmeeAndFordDataExtractServiceTest {
         assertThrows(ClientException.class, () -> {
             File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
             smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
-            when(zipFileService.createTempZipFile(anyString())).thenReturn(zipFile);
-            doNothing().when(blobUpload).uploadFile(any(),anyString(),anyString());
+            doThrow(new IOException("some error")).when(zipFileService).createTempZipFile(anyString());
             smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
-
-            verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
-            verify(zipFileService, times(1)).createTempZipFile(anyString());
-            verify(zipFileService, times(1))
-                    .generateAndUploadZipFile(returnedCases, zipFile, "2000-12-30", smeeAndFOrdDataExtractStrategy);
-            verify(blobUpload, times(1)).uploadFile(zipFile, anyString(), anyString());
         });
     }
 }
