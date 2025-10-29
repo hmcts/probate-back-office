@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.probate.blob.component.BlobUpload;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -15,13 +14,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
-import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.io.File;
-import java.time.LocalDate;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -32,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -45,8 +42,6 @@ class SmeeAndFordDataExtractServiceTest {
     private CaseQueryService caseQueryService;
     @Mock
     private NotificationService notificationService;
-    @Mock
-    private FileTransferService fileTransferService;
     @Mock
     private ZipFileService zipFileService;
     @Mock
@@ -91,7 +86,6 @@ class SmeeAndFordDataExtractServiceTest {
 
         when(caseQueryService.findAllCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
         when(caseQueryService.findCaseStateWithinDateRangeSmeeAndFord(any(), any())).thenReturn(returnedCases);
-        when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.CREATED.value());
     }
 
     @Test
@@ -122,7 +116,7 @@ class SmeeAndFordDataExtractServiceTest {
     }
 
     @Test
-    void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
+    void shouldThrowClientExceptionForDateRange() {
         assertThrows(ClientException.class, () -> {
             when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
                     .thenThrow(NotificationClientException.class);
@@ -132,19 +126,17 @@ class SmeeAndFordDataExtractServiceTest {
     }
 
     @Test
-    void shouldExtractDataForDateRangeAndGenerateZipFileThenOnUploadThrowException() {
+    void shouldExtractDataForDateRangeAndGenerateZipFileThenOnUploadThrowException()
+            throws NotificationClientException, IOException {
         assertThrows(ClientException.class, () -> {
-            File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
             smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
-            when(zipFileService.createTempZipFile(anyString())).thenReturn(zipFile);
-            doNothing().when(blobUpload).uploadFile(any(),anyString(),anyString());
+            doThrow(new IOException("some error")).when(zipFileService).createTempZipFile(anyString());
             smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
-
-            verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
-            verify(zipFileService, times(1)).createTempZipFile(anyString());
-            verify(zipFileService, times(1))
-                    .generateAndUploadZipFile(returnedCases, zipFile, "2000-12-30", smeeAndFOrdDataExtractStrategy);
-            verify(blobUpload, times(1)).uploadFile(zipFile, anyString(), anyString());
         });
+        verify(zipFileService, times(1)).createTempZipFile(anyString());
+        verify(zipFileService, times(0))
+                .generateAndUploadZipFile(any(), any(), any(), any());
+        verify(blobUpload, times(0)).uploadFile(any(), anyString(), anyString());
+        verify(notificationService, times(0)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
     }
 }

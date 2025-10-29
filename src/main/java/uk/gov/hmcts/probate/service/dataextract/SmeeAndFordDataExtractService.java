@@ -60,7 +60,7 @@ public class SmeeAndFordDataExtractService {
                     File tempFile = zipFileService.createTempZipFile("Probate_Docs_" + fromDate);
                     zipFileService.generateAndUploadZipFile(cases, tempFile, fromDate, smeeAndFOrdDataExtractStrategy);
                     log.info("Zip file uploaded on blob store");
-                    Files.delete(tempFile.toPath());
+                    Files.deleteIfExists(tempFile.toPath());
                 }
                 notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
             } catch (NotificationClientException e) {
