@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -45,7 +46,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
         assertEquals(200, response.getStatusCode());
     }
 
-
+    @Disabled //temporarily disabled due to LEV preprod env being unavailable
     @Test
     public void shouldAddDeathRecordWhenManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStart.json");
@@ -66,6 +67,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
         assertEquals(1, caseData.getDeathRecords().size());
     }
 
+    @Disabled //temporarily disabled due to LEV preprod env being unavailable
     @Test
     public void shouldReturnErrorManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStartNonExistent.json");
