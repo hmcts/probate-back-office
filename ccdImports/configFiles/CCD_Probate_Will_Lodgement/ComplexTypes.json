@@ -4,7 +4,7 @@
   {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorForenames", "FieldType": "Text", "ElementLabel": "Forename(s)", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorSurname", "FieldType": "Text", "ElementLabel": "Surname(s)", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorAddress", "FieldType": "AddressUK", "ElementLabel": "Address", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorEmailAddress", "FieldType": "Text", "ElementLabel": "Email", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorEmailAddress", "FieldType": "Email", "ElementLabel": "Email", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "wlDocument", "ListElementCode": "DocumentType", "FieldType": "FixedList", "FieldTypeParameter": "wlDocumentTypeEnum", "ElementLabel": "Type", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "wlDocument", "ListElementCode": "DocumentLink", "FieldType": "Document", "ElementLabel": "Document Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "wlDocument", "ListElementCode": "DocumentDateAdded", "FieldType": "Date", "ElementLabel": "Date added", "SecurityClassification": "Public"},
