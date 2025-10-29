@@ -20,9 +20,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -133,12 +131,17 @@ class SmeeAndFordDataExtractServiceTest {
     }
 
     @Test
-    void shouldExtractDataForDateRangeAndGenerateZipFileThenOnUploadThrowException() {
+    void shouldExtractDataForDateRangeAndGenerateZipFileThenOnUploadThrowException()
+            throws NotificationClientException, IOException {
         assertThrows(ClientException.class, () -> {
-            File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
             smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
             doThrow(new IOException("some error")).when(zipFileService).createTempZipFile(anyString());
             smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
         });
+        verify(zipFileService, times(1)).createTempZipFile(anyString());
+        verify(zipFileService, times(0))
+                .generateAndUploadZipFile(any(), any(), any(), any());
+        verify(blobUpload, times(0)).uploadFile(any(), anyString(), anyString());
+        verify(notificationService, times(0)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
     }
 }
