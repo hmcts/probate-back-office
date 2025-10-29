@@ -77,7 +77,7 @@ docmosis:
     health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis.aat.platform.hmcts.net}
   templates:
     caveatRaised:
-      templateName: FL-PRB-GNO-ENG-00011.doc
+      templateName: FL-PRB-GNO-ENG-00011-v2.doc
     grantRaised:
       templateName: FL-PRB-GNO-ENG-00235.doc
     caveatCoversheet:
