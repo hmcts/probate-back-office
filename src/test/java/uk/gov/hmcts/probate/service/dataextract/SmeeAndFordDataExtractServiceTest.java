@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.probate.blob.component.BlobUpload;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -15,7 +14,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
-import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
@@ -44,8 +42,6 @@ class SmeeAndFordDataExtractServiceTest {
     private CaseQueryService caseQueryService;
     @Mock
     private NotificationService notificationService;
-    @Mock
-    private FileTransferService fileTransferService;
     @Mock
     private ZipFileService zipFileService;
     @Mock
@@ -90,7 +86,6 @@ class SmeeAndFordDataExtractServiceTest {
 
         when(caseQueryService.findAllCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
         when(caseQueryService.findCaseStateWithinDateRangeSmeeAndFord(any(), any())).thenReturn(returnedCases);
-        when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.CREATED.value());
     }
 
     @Test
@@ -121,7 +116,7 @@ class SmeeAndFordDataExtractServiceTest {
     }
 
     @Test
-    void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
+    void shouldThrowClientExceptionForDateRange() {
         assertThrows(ClientException.class, () -> {
             when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
                     .thenThrow(NotificationClientException.class);
