@@ -324,6 +324,8 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String childrenDiedBeforeDeceased;
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
+    private final String grandchildParentOtherChildren;
+    private final String grandchildParentChildrenOverEighteen;
     private final String deceasedHasAssetsOutsideUK;
 
     private final String boStopDetailsDeclarationParagraph;
@@ -422,6 +424,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<String>> autoCaseWarnings;
     private final TTL ttl;
     private final String executorsNamed;
+    private final String hasCoApplicant;
     private final LocalDate firstStopReminderSentDate;
     private final ApplicantFamilyDetails applicantFamilyDetails;
 }

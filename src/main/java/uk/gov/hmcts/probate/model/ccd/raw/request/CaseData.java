@@ -513,6 +513,8 @@ public class CaseData extends CaseDataParent {
     private final String childrenDiedBeforeDeceased;
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
+    private final String grandchildParentOtherChildren;
+    private final String grandchildParentChildrenOverEighteen;
     private final String deceasedHasAssetsOutsideUK;
     private final String boEmailRequestInfoNotificationRequested;
     @Builder.Default
@@ -636,6 +638,7 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
     private final String executorsNamed;
+    private final String hasCoApplicant;
     private LocalDate firstStopReminderSentDate;
     private final String evidenceHandledDate;
     private final ApplicantFamilyDetails applicantFamilyDetails;
