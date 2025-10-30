@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -457,6 +458,173 @@ class NotificationServiceTest {
     }
 
     @Test
+    void updatePersonalisationText_ForGrantIssuedCaseTypeGop() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("gop");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
+
+        assertEquals("grant of probate", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ForGrantIssuedCaseTypeGopWelsh() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("gop");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
+
+        assertEquals("grant of probate", personalisation.get("case_type_text"));
+        assertEquals("grant profiant", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ForGrantIssuedCaseTypeIntestacy() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("intestacy");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
+
+        assertEquals("letters of administration", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ForGrantIssuedCaseTypeIntestacyWelsh() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("intestacy");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L,personalisation);
+
+        assertEquals("letters of administration", personalisation.get("case_type_text"));
+        assertEquals("llythyrau gweinyddu", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ForGrantIssuedCaseTypeAdmonWill() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("admonWill");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
+
+        assertEquals("letters of administration with will annexed", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ForGrantIssuedCaseTypeAdmonWillWelsh() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("admonWill");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
+
+        assertEquals("letters of administration with will annexed", personalisation.get("case_type_text"));
+        assertEquals("llythyrau gweinyddu pan fydd yna ewyllys", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ForGrantIssuedCaseTypeAdColligendaBona() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("adColligendaBona");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
+
+        assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ForGrantIssuedCaseTypeAdColligendaBonaWelsh() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("adColligendaBona");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED,
+                caseData, 12345L, personalisation);
+
+        assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
+        assertEquals("grant Ad Colligenda Bona", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ForGrantReissuedCaseTypeAdColligendaBonaWelsh() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("adColligendaBona");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.WELSH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        personalisation = notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_REISSUED,
+                caseData, 12345L, personalisation);
+
+        assertEquals("Ad Colligenda Bona grant", personalisation.get("case_type_text"));
+        assertEquals("grant Ad Colligenda Bona", personalisation.get("welsh_case_type_text"));
+    }
+
+    @Test
+    void updatePersonalisationText_ThrowsException_ForEmptyCaseType() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        assertThrows(RequestInformationParameterException.class, () ->
+                notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
+                        12345L, personalisation));
+    }
+
+    @Test
+    void updatePersonalisationText_ThrowsException_ForUnknownCaseType() {
+        CaseData caseData = mock(CaseData.class);
+        when(caseData.getCaseType()).thenReturn("foo");
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
+
+        Map<String, Object> personalisation = new HashMap<>();
+
+        assertThrows(RequestInformationParameterException.class, () ->
+                notificationService.updatePersonalisationForSolicitorGrantIssuedEmails(State.GRANT_ISSUED, caseData,
+                        12345L, personalisation));
+    }
+
     void shouldSendPostGrantIssuedForPP() throws NotificationClientException {
         final String applEmail = "abc@gmail.com";
         final String tmplId = "tmplId";
