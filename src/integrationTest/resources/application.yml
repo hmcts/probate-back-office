@@ -65,7 +65,7 @@ docmosis:
   assembler.uri: http://localhost:4631
   templates:
     caveatRaised:
-      templateName: FL-PRB-GNO-ENG-00011-v2.docx
+      templateName: FL-PRB-GNO-ENG-caveat-confirmation-letter-v00001.doc
     caveatCoversheet:
       templateName: FL-PRB-GNO-ENG-00018.docx
     caveatStopped:
