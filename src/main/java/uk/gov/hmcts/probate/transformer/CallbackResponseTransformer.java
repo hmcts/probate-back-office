@@ -1426,7 +1426,9 @@ public class CallbackResponseTransformer {
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
             .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
-            .applicantFamilyDetails(caseData.getApplicantFamilyDetails());
+            .applicantFamilyDetails(caseData.getApplicantFamilyDetails())
+            .grandchildParentOtherChildren(caseData.getGrandchildParentOtherChildren())
+            .grandchildParentChildrenOverEighteen(caseData.getGrandchildParentChildrenOverEighteen());
 
         handleDeceasedAliases(
                 builder,
