@@ -5,15 +5,13 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AdditionalExecutor {
+public class OtherExecutor {
 
     private final String additionalExecForenames;
     private final String additionalExecLastname;
     private final String additionalExecNameOnWill;
     private final String additionalExecAliasNameOnWill;
-    private final ApplicantFamilyDetails applicantFamilyDetails;
     private final String additionalApplying;
     private final SolsAddress additionalExecAddress;
-    private final String additionalExecReasonNotApplying;
 
 }

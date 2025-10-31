@@ -12,17 +12,7 @@ import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
-import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
-import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
-import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -2233,5 +2223,60 @@ public class CallbackResponseTransformer {
         } else {
             responseCaseDataBuilder.informationNeededByPostSwitch(NO);
         }
+    }
+
+    public CallbackResponse setupDynamicList(CallbackRequest callbackRequest) {
+        final var caseDetails = callbackRequest.getCaseDetails();
+        final var caseData = caseDetails.getData();
+
+        DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData);
+
+        List<CollectionMember<OtherExecutor>> solsExecutorList = caseData.getSolsExecutorList();
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorList = new ArrayList<>();
+        if (solsExecutorList != null && !solsExecutorList.isEmpty()) {
+            for (CollectionMember<OtherExecutor> member : solsExecutorList) {
+                OtherExecutor exec = member.getValue();
+                AdditionalExecutor additionalExecutor = AdditionalExecutor.builder()
+                        .additionalExecForenames(exec.getAdditionalExecForenames())
+                        .additionalExecLastname(exec.getAdditionalExecLastname())
+                        .additionalExecNameOnWill(exec.getAdditionalExecNameOnWill())
+                        .additionalExecAliasNameOnWill(exec.getAdditionalExecAliasNameOnWill())
+                        .additionalApplying(exec.getAdditionalApplying())
+                        .additionalExecAddress(exec.getAdditionalExecAddress())
+                        .applicantFamilyDetails(ApplicantFamilyDetails.builder()
+                                .relationship(relationshipList)
+                                .build()
+                        )
+                        .build();
+
+                additionalExecutorList.add(new CollectionMember<>(additionalExecutor));
+            }
+            caseData.setSolsAdditionalExecutorList(additionalExecutorList);
+        }
+        return null;
+    }
+
+    private DynamicRadioList getAppropriateRelationshipRadioList(CaseData caseData) {
+        List<DynamicRadioListElement> listItems = new ArrayList<>();
+        String relationship = caseData.getSolsApplicantRelationshipToDeceased();
+
+        if ("child".equalsIgnoreCase(relationship)) {
+            listItems.add(buildRadioListItem("child", "Child"));
+            listItems.add(buildRadioListItem("grandchild", "Grandchild"));
+        } else if ("parent".equalsIgnoreCase(relationship)) {
+            listItems.add(buildRadioListItem("parent", "Parent"));
+        }
+
+        return DynamicRadioList.builder()
+                .listItems(listItems)
+                .value(null)
+                .build();
+    }
+
+    private DynamicRadioListElement buildRadioListItem(String code, String label) {
+        return DynamicRadioListElement.builder()
+                .code(code)
+                .label(label)
+                .build();
     }
 }
