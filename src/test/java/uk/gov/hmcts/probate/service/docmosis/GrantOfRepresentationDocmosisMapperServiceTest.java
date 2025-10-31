@@ -140,14 +140,14 @@ class GrantOfRepresentationDocmosisMapperServiceTest {
         assertEquals(registries.get(
             caseDetails.getData().getRegistryLocation().toLowerCase()),
             placeholders.get(PERSONALISATION_REGISTRY));
-        assertEquals("https://www.gov.uk/government/publications/apply-to-extend-a-caveat-on-a-grant-of-" +
-                        "representation-pa8b|https://www.gov.uk/government/publications/apply-to-extend-a-caveat" +
-                        "-on-a-grant-of-representation-pa8b",
+        assertEquals("https://www.gov.uk/government/publications/apply-to-extend-a-caveat-on-a-grant-of-"
+                        + "representation-pa8b|https://www.gov.uk/government/publications/apply-to-extend-a-caveat"
+                        + "-on-a-grant-of-representation-pa8b",
             placeholders.get(PERSONALISATION_PA8BEXTENDURL));
         assertEquals("https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/",
             placeholders.get(PERSONALISATION_PA8ACITADURL));
-        assertEquals("https://www.gov.uk/wills-probate-inheritance/stopping-a-grant-of-representation|" +
-                        "https://www.gov.uk/wills-probate-inheritance/stopping-a-grant-of-representation",
+        assertEquals("https://www.gov.uk/wills-probate-inheritance/stopping-a-grant-of-representation|"
+                        + "https://www.gov.uk/wills-probate-inheritance/stopping-a-grant-of-representation",
             placeholders.get(PERSONALISATION_PA8BSTOPURL));
         assertEquals("fred jones", placeholders.get(PERSONALISATION_CAVEATOR_NAME));
         assertEquals("caveatorAddress",
