@@ -2226,6 +2226,11 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse setupDynamicList(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(),
+                        callbackRequest.getEventId(),
+                        Optional.empty(),
+                        false);
         final var caseDetails = callbackRequest.getCaseDetails();
         final var caseData = caseDetails.getData();
 
@@ -2251,9 +2256,9 @@ public class CallbackResponseTransformer {
 
                 additionalExecutorList.add(new CollectionMember<>(additionalExecutor));
             }
-            caseData.setSolsAdditionalExecutorList(additionalExecutorList);
+            responseCaseDataBuilder.solsAdditionalExecutorList(additionalExecutorList);
         }
-        return null;
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     private DynamicRadioList getAppropriateRelationshipRadioList(CaseData caseData) {
