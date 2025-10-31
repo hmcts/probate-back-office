@@ -336,9 +336,9 @@ dependencies {
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.12.2")
-  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.12.2')
-  contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.12.2'
+  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.1")
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:6.0.1')
+  contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '6.0.1'
   contractTestImplementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
 
   contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
