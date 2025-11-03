@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class ApplicantFamilyDetails {
-    private final String relationshipToDeceased;
     private final DynamicRadioList relationship;
     private final String childAdoptedIn;
     private final String childAdoptionInEnglandOrWales;
