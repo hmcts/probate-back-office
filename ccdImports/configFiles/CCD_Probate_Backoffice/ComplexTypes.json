@@ -14,7 +14,6 @@
   {"LiveFrom": "01/01/2017", "ID": "Person", "ListElementCode": "Forenames", "FieldType": "Text", "ElementLabel": "First Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Person", "ListElementCode": "LastName", "FieldType": "Text", "ElementLabel": "Last Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Person", "ListElementCode": "DateOfBirth", "FieldType": "Date", "ElementLabel": "Date Of Birth", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ApplicantFamilyDetails", "ListElementCode": "relationshipToDeceased", "FieldType": "FixedList", "FieldTypeParameter": "relationshipToDeceasedFixedList", "ElementLabel": "Relationship to the deceased", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ApplicantFamilyDetails", "ListElementCode": "relationship", "FieldType": "DynamicRadioList", "ElementLabel": "Relationship to the deceased", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ApplicantFamilyDetails", "ListElementCode": "childAdoptedIn", "FieldType": "YesOrNo", "ElementLabel": "Was the applicant adopted in?", "FieldShowCondition": "relationshipToDeceased=\"child\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ApplicantFamilyDetails", "ListElementCode": "childAdoptionInEnglandOrWales", "FieldType": "YesOrNo", "ElementLabel": "Was the applicant adopted in England or Wales?", "FieldShowCondition": "relationshipToDeceased=\"child\"", "SecurityClassification": "Public"},
