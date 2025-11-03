@@ -533,5 +533,9 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "hasCoApplicant", "Label": "Has any co-applicants?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "childAlive", "Label": "Is deceased‘s child alive?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grandchildParentOtherChildren", "Label": "Did the grandchild parent have any children?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grandchildParentChildrenOverEighteen", "Label": "Did the grandchild parent children are over 18?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
+
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "intestacyCoapplicantParent", "Label": "intestacyCoapplicantParent?", "FieldType": "IntestacyCoapplicantParent", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "intestacyCoapplicantsChildGrandchild", "Label": "intestacyCoapplicantsChildGrandchild", "FieldType": "IntestacyCoapplicantsChildGrandchild", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "intestacyCoapplicantsSibling", "Label": "intestacyCoapplicantsSibling?", "FieldType": "IntestacyCoapplicantsSibling", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grandchildParentChildrenOverEighteen", "Label": "grandchildParentChildrenOverEighteen?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]

@@ -14,6 +14,8 @@
   {"LiveFrom": "01/01/2017", "ID": "Person", "ListElementCode": "Forenames", "FieldType": "Text", "ElementLabel": "First Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Person", "ListElementCode": "LastName", "FieldType": "Text", "ElementLabel": "Last Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Person", "ListElementCode": "DateOfBirth", "FieldType": "Date", "ElementLabel": "Date Of Birth", "SecurityClassification": "Public"},
+
+  {"LiveFrom": "01/01/2017", "ID": "ApplicantFamilyDetails", "ListElementCode": "relationshipToDeceased", "FieldType": "FixedList", "FieldTypeParameter": "relationshipToDeceasedFixedList", "ElementLabel": "Relationship to the deceased", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ApplicantFamilyDetails", "ListElementCode": "childAdoptedIn", "FieldType": "YesOrNo", "ElementLabel": "Was the applicant adopted in?", "FieldShowCondition": "relationshipToDeceased=\"child\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ApplicantFamilyDetails", "ListElementCode": "childAdoptionInEnglandOrWales", "FieldType": "YesOrNo", "ElementLabel": "Was the applicant adopted in England or Wales?", "FieldShowCondition": "relationshipToDeceased=\"child\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ApplicantFamilyDetails", "ListElementCode": "childAdoptedOut", "FieldType": "YesOrNo", "ElementLabel": "Was the applicant adopted?", "FieldShowCondition": "relationshipToDeceased=\"child\"", "SecurityClassification": "Public"},
@@ -229,5 +231,33 @@
   {"LiveFrom": "01/01/2017", "ID": "citizenHubResponse", "ListElementCode": "citizenResponse", "FieldType": "TextArea", "ElementLabel": "Citizen's response", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "citizenHubResponse", "ListElementCode": "submittedDate", "FieldType": "DateTime", "ElementLabel": "Submitted Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "fieldName", "FieldType": "Text", "ElementLabel": "OCR Field", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "originalValue", "FieldType": "Text", "ElementLabel": "Original Value", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "originalValue", "FieldType": "Text", "ElementLabel": "Original Value", "SecurityClassification": "Public"},
+
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantParent", "ListElementCode": "coapplicantFirstName", "FieldType": "Text", "ElementLabel": "First name(s) of other parent applying", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantParent", "ListElementCode": "coapplicantLastName", "FieldType": "Text", "ElementLabel": "Last name(s) of other parent applying", "SecurityClassification": "Public"},
+
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantChildGrandchild", "ListElementCode": "coapplicantFirstName", "FieldType": "Text", "ElementLabel": "First name(s) of coapplicant", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantChildGrandchild", "ListElementCode": "coapplicantLastName", "FieldType": "Text", "ElementLabel": "Last name(s) of coapplicant", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantChildGrandchild", "ListElementCode": "coapplicantRelationship", "FieldType": "FixedList", "FieldTypeParameter": "IntestacyCoapplicantChildGrandchildRelationship", "ElementLabel": "Coapplicant relationship to deceased", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantChildGrandchild", "ListElementCode": "coapplicantParentDeceasedChildOfDeceased", "FieldType": "YesOrNo", "ElementLabel": "Is one of the coapplicant's parents a deceased child of the deceased?", "FieldShowCondition": "coapplicantRelationship=\"grandchild\"", "SecurityClassification": "Public"},
+
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantSibling", "ListElementCode": "coapplicantFirstName", "FieldType": "Text", "ElementLabel": "First name(s) of other parent applying", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantSibling", "ListElementCode": "coapplicantLastName", "FieldType": "Text", "ElementLabel": "Last name(s) of other parent applying", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantSibling", "ListElementCode": "coapplicantRelationship", "FieldType": "FixedList", "FieldTypeParameter": "IntestacyCoapplicantSiblingRelationship", "ElementLabel": "Coapplicant relationship to deceased", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantSibling", "ListElementCode": "coapplicantParentDeceasedChildOfDeceased", "FieldType": "YesOrNo", "ElementLabel": "Is one of the coapplicant's parents a deceased sibling of the deceased?", "FieldShowCondition": "coapplicantRelationship=\"nieceOrNephew\"", "SecurityClassification": "Public"},
+
+
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsChildGrandchild", "ListElementCode": "firstCoapplicant", "FieldType": "YesOrNo", "ElementLabel": "Are there coapplicants?", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsChildGrandchild", "ListElementCode": "coapplicant_1", "FieldType": "IntestacyCoapplicantChildGrandchild", "ElementLabel": "First coapplicant", "FieldShowCondition": "firstCoapplicant=\"Yes\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsChildGrandchild", "ListElementCode": "secondCoapplicant", "FieldType": "YesOrNo", "ElementLabel": "Is there a second coapplicant?", "FieldShowCondition": "firstCoapplicant=\"Yes\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsChildGrandchild", "ListElementCode": "coapplicant_2", "FieldType": "IntestacyCoapplicantChildGrandchild", "ElementLabel": "Second coapplicant", "FieldShowCondition": "secondCoapplicant=\"Yes\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsChildGrandchild", "ListElementCode": "thirdCoapplicant", "FieldType": "YesOrNo", "ElementLabel": "Is there a third coapplicant?", "FieldShowCondition": "secondCoapplicant=\"Yes\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsChildGrandchild", "ListElementCode": "coapplicant_3", "FieldType": "IntestacyCoapplicantChildGrandchild", "ElementLabel": "Third coapplicant", "FieldShowCondition": "thirdCoapplicant=\"Yes\"", "SecurityClassification": "Public"},
+
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsSibling", "ListElementCode": "firstCoapplicant", "FieldType": "YesOrNo", "ElementLabel": "Are there coapplicants?", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsSibling", "ListElementCode": "coapplicant_1", "FieldType": "IntestacyCoapplicantSibling", "ElementLabel": "First coapplicant", "FieldShowCondition": "firstCoapplicant=\"Yes\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsSibling", "ListElementCode": "secondCoapplicant", "FieldType": "YesOrNo", "ElementLabel": "Is there a second coapplicant?", "FieldShowCondition": "firstCoapplicant=\"Yes\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsSibling", "ListElementCode": "coapplicant_2", "FieldType": "IntestacyCoapplicantSibling", "ElementLabel": "Second coapplicant", "FieldShowCondition": "secondCoapplicant=\"Yes\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsSibling", "ListElementCode": "thirdCoapplicant", "FieldType": "YesOrNo", "ElementLabel": "Is there a third coapplicant?", "FieldShowCondition": "secondCoapplicant=\"Yes\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "IntestacyCoapplicantsSibling", "ListElementCode": "coapplicant_3", "FieldType": "IntestacyCoapplicantSibling", "ElementLabel": "Third coapplicant", "FieldShowCondition": "thirdCoapplicant=\"Yes\"", "SecurityClassification": "Public"}
 ]
