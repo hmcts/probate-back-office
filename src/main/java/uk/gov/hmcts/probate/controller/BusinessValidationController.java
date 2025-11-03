@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,11 +47,32 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
-import uk.gov.hmcts.probate.validator.*;
+import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
+import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
+import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
+import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
+import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
+import uk.gov.hmcts.probate.validator.IHTFormIDValidationRule;
+import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
+import uk.gov.hmcts.probate.validator.IHTValidationRule;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.NaValidationRule;
+import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
+import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
+import uk.gov.hmcts.probate.validator.Pre1900DOBValidationRule;
+import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.RelationshipToDeceasedValidationRule;
+import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
+import uk.gov.hmcts.probate.validator.StopReasonValidationRule;
+import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
+import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
+import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.ZeroApplyingExecutorsValidationRule;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +91,6 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Gran
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/case")
 public class BusinessValidationController {
 
@@ -118,6 +138,87 @@ public class BusinessValidationController {
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
     private final DocumentTransformer documentTransformer;
+
+    public BusinessValidationController(
+            final EventValidationService eventValidationService,
+            final NotificationService notificationService,
+            final ObjectMapper objectMapper,
+            final List<ValidationRule> allValidationRules,
+            final List<CaseworkerAmendAndCreateValidationRule> allCaseworkerAmendAndCreateValidationRules,
+            final CallbackResponseTransformer callbackResponseTransformer,
+            final CaseDataTransformer caseDataTransformer,
+            final ConfirmationResponseService confirmationResponseService,
+            final StateChangeService stateChangeService,
+            final PDFManagementService pdfManagementService,
+            final RedeclarationSoTValidationRule redeclarationSoTValidationRule,
+            final NumberOfApplyingExecutorsValidationRule numberOfApplyingExecutorsValidationRule,
+            final CodicilDateValidationRule codicilDateValidationRule,
+            final OriginalWillSignedDateValidationRule originalWillSignedDateValidationRule,
+            final List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules,
+            final CaseStoppedService caseStoppedService,
+            final CaseEscalatedService caseEscalatedService,
+            final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule,
+            final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule,
+            final IhtEstateValidationRule ihtEstateValidationRule,
+            final IHTValidationRule ihtValidationRule,
+            final UniqueCodeValidationRule uniqueCodeValidationRule,
+            final StopReasonValidationRule stopReasonValidationRule,
+            final NaValidationRule naValidationRule,
+            final RelationshipToDeceasedValidationRule relationshipToDeceasedValidationRule,
+            final IHTFormIDValidationRule ihtFormIDValidationRule,
+            final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule,
+            final CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule,
+            final AssignCaseAccessService assignCaseAccessService,
+            final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule,
+            final ChangeToSameStateValidationRule changeToSameStateValidationRule,
+            final HandOffLegacyTransformer handOffLegacyTransformer,
+            final RegistrarDirectionService registrarDirectionService,
+            final Pre1900DOBValidationRule pre1900DOBValidationRule,
+            final AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule,
+            final ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule,
+            final BusinessValidationMessageService businessValidationMessageService,
+            final UserInfoService userInfoService,
+            final DocumentTransformer documentTransformer) {
+        this.eventValidationService = eventValidationService;
+        this.notificationService = notificationService;
+        this.objectMapper = objectMapper;
+        this.allValidationRules = allValidationRules;
+        this.allCaseworkerAmendAndCreateValidationRules = allCaseworkerAmendAndCreateValidationRules;
+        this.callbackResponseTransformer = callbackResponseTransformer;
+        this.caseDataTransformer = caseDataTransformer;
+        this.confirmationResponseService = confirmationResponseService;
+        this.stateChangeService = stateChangeService;
+        this.pdfManagementService = pdfManagementService;
+        this.redeclarationSoTValidationRule = redeclarationSoTValidationRule;
+        this.numberOfApplyingExecutorsValidationRule = numberOfApplyingExecutorsValidationRule;
+        this.codicilDateValidationRule = codicilDateValidationRule;
+        this.originalWillSignedDateValidationRule = originalWillSignedDateValidationRule;
+        this.allTitleAndClearingValidationRules = allTitleAndClearingValidationRules;
+        this.caseStoppedService = caseStoppedService;
+        this.caseEscalatedService = caseEscalatedService;
+        this.emailAddressNotifyApplicantValidationRule = emailAddressNotifyApplicantValidationRule;
+        this.ihtFourHundredDateValidationRule = ihtFourHundredDateValidationRule;
+        this.ihtEstateValidationRule = ihtEstateValidationRule;
+        this.ihtValidationRule = ihtValidationRule;
+        this.uniqueCodeValidationRule = uniqueCodeValidationRule;
+        this.stopReasonValidationRule = stopReasonValidationRule;
+        this.naValidationRule = naValidationRule;
+        this.relationshipToDeceasedValidationRule = relationshipToDeceasedValidationRule;
+        this.ihtFormIDValidationRule = ihtFormIDValidationRule;
+        this.solicitorPostcodeValidationRule = solicitorPostcodeValidationRule;
+        this.caseworkersSolicitorPostcodeValidationRule = caseworkersSolicitorPostcodeValidationRule;
+        this.assignCaseAccessService = assignCaseAccessService;
+        this.furtherEvidenceForApplicationValidationRule = furtherEvidenceForApplicationValidationRule;
+        this.changeToSameStateValidationRule = changeToSameStateValidationRule;
+        this.handOffLegacyTransformer = handOffLegacyTransformer;
+        this.registrarDirectionService = registrarDirectionService;
+        this.pre1900DOBValidationRule = pre1900DOBValidationRule;
+        this.adColligendaBonaCaseTypeValidationRule = adColligendaBonaCaseTypeValidationRule;
+        this.zeroApplyingExecutorsValidationRule = zeroApplyingExecutorsValidationRule;
+        this.businessValidationMessageService = businessValidationMessageService;
+        this.userInfoService = userInfoService;
+        this.documentTransformer = documentTransformer;
+    }
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
