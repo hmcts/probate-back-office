@@ -205,7 +205,6 @@ public class CaseData extends CaseDataParent {
     private final String otherExecutorExists;
 
     private List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
-    private final List<CollectionMember<OtherExecutor>> solsExecutorList;
 
     private final String solsAdditionalInfo;
 

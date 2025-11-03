@@ -2235,19 +2235,12 @@ public class CallbackResponseTransformer {
         final var caseData = caseDetails.getData();
 
         DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData);
+        Long executorNumber = caseData.getNumberOfExecutors();
 
-        List<CollectionMember<OtherExecutor>> solsExecutorList = caseData.getSolsExecutorList();
         List<CollectionMember<AdditionalExecutor>> additionalExecutorList = new ArrayList<>();
-        if (solsExecutorList != null && !solsExecutorList.isEmpty()) {
-            for (CollectionMember<OtherExecutor> member : solsExecutorList) {
-                OtherExecutor exec = member.getValue();
+        if (executorNumber != null) {
+            for (long i = 0; i < executorNumber; i++) {
                 AdditionalExecutor additionalExecutor = AdditionalExecutor.builder()
-                        .additionalExecForenames(exec.getAdditionalExecForenames())
-                        .additionalExecLastname(exec.getAdditionalExecLastname())
-                        .additionalExecNameOnWill(exec.getAdditionalExecNameOnWill())
-                        .additionalExecAliasNameOnWill(exec.getAdditionalExecAliasNameOnWill())
-                        .additionalApplying(exec.getAdditionalApplying())
-                        .additionalExecAddress(exec.getAdditionalExecAddress())
                         .applicantFamilyDetails(ApplicantFamilyDetails.builder()
                                 .relationship(relationshipList)
                                 .build()
