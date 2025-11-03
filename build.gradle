@@ -1,7 +1,7 @@
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.springframework.boot' version '3.5.6'
+  id 'org.springframework.boot' version '3.5.7'
   id 'uk.gov.hmcts.java' version '0.12.67'
   id 'com.github.ben-manes.versions' version '0.53.0'
   id 'com.gorylenko.gradle-git-properties' version '2.5.3'
@@ -178,7 +178,7 @@ def versions = [
         sendLetterClientVersion         : '5.1.1',
         serenity                        : '4.2.34',
         serviceAuthVersion              : '5.3.3',
-        springBootVersion               : '3.5.6',
+        springBootVersion               : '3.5.7',
         springCloud                     : '4.1.5',
         springDocOpenUi                 : '2.8.13',
         swaggerAnnotations              : '2.2.39',
@@ -240,7 +240,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: versions.sendLetterClientVersion
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: versions.lifeEventsClientVersion
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.4'
-  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.31.3'
+  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.32.0'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: versions.applicationInsightsVersion
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-runtime-attach', version: versions.applicationInsightsVersion
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.1'
@@ -281,7 +281,7 @@ dependencies {
 
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.2.1-RELEASE'
-  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.2'
+  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.3'
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
   testAnnotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
