@@ -3205,6 +3205,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyCoapplicantParent", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyCoapplicantsChildGchild", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyCoapplicantsSibling", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyCoapplicantsHalfSibling", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
 
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyAnyCoapplicants", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
 
