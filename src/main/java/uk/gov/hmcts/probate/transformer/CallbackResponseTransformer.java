@@ -2233,24 +2233,29 @@ public class CallbackResponseTransformer {
                         false);
         final var caseDetails = callbackRequest.getCaseDetails();
         final var caseData = caseDetails.getData();
+        String hasExecutor = caseData.getHasExecutorListFlag();
 
         DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData);
-        //String  otherExecutorExists = caseData.getOtherExecutorExists();
+        String  otherExecutorExists = caseData.getOtherExecutorExists();
 
-        List<CollectionMember<AdditionalExecutor>> additionalExecutorList = new ArrayList<>();
-        //if (executorNumber != null) {
-            //for (long i = 0; i < executorNumber; i++) {
+        List<CollectionMember<AdditionalExecutor>> existingExecutorList = caseData.getSolsAdditionalExecutorList();
+        if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
+            responseCaseDataBuilder.solsAdditionalExecutorList(existingExecutorList);
+        } else {
+            if (YES.equalsIgnoreCase(otherExecutorExists) && !YES.equalsIgnoreCase(hasExecutor)) {
+                List<CollectionMember<AdditionalExecutor>> additionalExecutorList = new ArrayList<>();
                 AdditionalExecutor additionalExecutor = AdditionalExecutor.builder()
-                        .applicantFamilyDetails(ApplicantFamilyDetails.builder()
+                        .solsApplicantFamilyDetails(SolsApplicantFamilyDetails.builder()
                                 .relationship(relationshipList)
                                 .build()
                         )
                         .build();
 
                 additionalExecutorList.add(new CollectionMember<>(additionalExecutor));
-            //}
-            responseCaseDataBuilder.solsAdditionalExecutorList(additionalExecutorList);
-        //}
+                responseCaseDataBuilder.solsAdditionalExecutorList(additionalExecutorList);
+                responseCaseDataBuilder.hasExecutorListFlag(YES);
+            }
+        }
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -2265,9 +2270,30 @@ public class CallbackResponseTransformer {
             listItems.add(buildRadioListItem("parent", "Parent"));
         }
 
+        DynamicRadioListElement selectedValue = null;
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorList = caseData.getSolsAdditionalExecutorList();
+        if (additionalExecutorList != null && !additionalExecutorList.isEmpty()) {
+            for (CollectionMember<AdditionalExecutor> additionalExecutor : additionalExecutorList) {
+                if (additionalExecutor.getValue().getSolsApplicantFamilyDetails() != null &&
+                        additionalExecutor.getValue().getSolsApplicantFamilyDetails().getRelationship() != null) {
+                    DynamicRadioList relationshipRadioList =
+                            additionalExecutor.getValue().getSolsApplicantFamilyDetails().getRelationship();
+                    if (relationshipRadioList.getValue() != null &&
+                            relationshipRadioList.getValue().getCode() != null) {
+                        String code = relationshipRadioList.getValue().getCode();
+                        selectedValue = listItems.stream()
+                                .filter(item -> code.equals(item.getCode()))
+                                .findFirst()
+                                .orElse(null);
+                    }
+                    break;
+                }
+            }
+        }
+
         return DynamicRadioList.builder()
                 .listItems(listItems)
-                .value(null)
+                .value(selectedValue)
                 .build();
     }
 

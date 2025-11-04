@@ -399,4 +399,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String hasCoApplicant;
     private final LocalDate firstStopReminderSentDate;
     private final ApplicantFamilyDetails applicantFamilyDetails;
+    private final String hasExecutorListFlag;
 }

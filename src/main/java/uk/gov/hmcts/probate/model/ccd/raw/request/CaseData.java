@@ -617,6 +617,7 @@ public class CaseData extends CaseDataParent {
 
     private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
     private final List<CollectionMember<String>> autoCaseWarnings;
+    private final String hasExecutorListFlag;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

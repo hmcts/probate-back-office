@@ -2,9 +2,7 @@ package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.time.LocalDate;
@@ -188,6 +186,21 @@ public class ExecutorListMapperService {
                             exec.getValue().getAdditionalExecLastname(),
                             "additional executor last name");
                     final String applExecName = applExecFNames + " " + applExecLName;
+                    final SolsApplicantFamilyDetails solsApplicantFamilyDetails =
+                            exec.getValue().getSolsApplicantFamilyDetails();
+                    final String selectedRelationship = solsApplicantFamilyDetails.getRelationship().getValue().getCode();
+                    ApplicantFamilyDetails applicantFamilyDetails = ApplicantFamilyDetails.builder()
+                            .relationshipToDeceased(selectedRelationship)
+                            .childAdoptedIn(solsApplicantFamilyDetails.getChildAdoptedIn())
+                            .childAdoptionInEnglandOrWales(solsApplicantFamilyDetails.getChildAdoptionInEnglandOrWales())
+                            .childAdoptedOut(solsApplicantFamilyDetails.getChildAdoptedOut())
+                            .grandchildParentAdoptedIn(solsApplicantFamilyDetails.getGrandchildParentAdoptedIn())
+                            .grandchildParentAdoptionInEnglandOrWales(solsApplicantFamilyDetails.getGrandchildParentAdoptionInEnglandOrWales())
+                            .grandchildParentAdoptedOut(solsApplicantFamilyDetails.getGrandchildParentAdoptedOut())
+                            .grandchildAdoptedIn(solsApplicantFamilyDetails.getGrandchildAdoptedIn())
+                            .grandchildAdoptionInEnglandOrWales(solsApplicantFamilyDetails.getGrandchildAdoptionInEnglandOrWales())
+                            .grandchildAdoptedOut(solsApplicantFamilyDetails.getGrandchildAdoptedOut())
+                            .build();
                     return new CollectionMember<>(
                             exec.getId(),
                             AdditionalExecutorApplying.builder()
@@ -195,6 +208,7 @@ public class ExecutorListMapperService {
                                     .applyingExecutorFirstName(applExecFNames)
                                     .applyingExecutorLastName(applExecLName)
                                     .applyingExecutorName(applExecName)
+                                    .applicantFamilyDetails(applicantFamilyDetails)
                                     .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                                     .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
                                     .build());
