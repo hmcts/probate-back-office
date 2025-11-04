@@ -1418,7 +1418,8 @@ public class CallbackResponseTransformer {
             .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
             .applicantFamilyDetails(caseData.getApplicantFamilyDetails())
             .grandchildParentOtherChildren(caseData.getGrandchildParentOtherChildren())
-            .grandchildParentChildrenOverEighteen(caseData.getGrandchildParentChildrenOverEighteen());
+            .grandchildParentChildrenOverEighteen(caseData.getGrandchildParentChildrenOverEighteen())
+            .hasExecutorListFlag(caseData.getHasExecutorListFlag());
 
         handleDeceasedAliases(
                 builder,
