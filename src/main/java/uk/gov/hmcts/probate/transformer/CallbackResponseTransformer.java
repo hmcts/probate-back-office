@@ -2235,11 +2235,11 @@ public class CallbackResponseTransformer {
         final var caseData = caseDetails.getData();
 
         DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData);
-        Long executorNumber = caseData.getNumberOfExecutors();
+        //String  otherExecutorExists = caseData.getOtherExecutorExists();
 
         List<CollectionMember<AdditionalExecutor>> additionalExecutorList = new ArrayList<>();
-        if (executorNumber != null) {
-            for (long i = 0; i < executorNumber; i++) {
+        //if (executorNumber != null) {
+            //for (long i = 0; i < executorNumber; i++) {
                 AdditionalExecutor additionalExecutor = AdditionalExecutor.builder()
                         .applicantFamilyDetails(ApplicantFamilyDetails.builder()
                                 .relationship(relationshipList)
@@ -2248,9 +2248,9 @@ public class CallbackResponseTransformer {
                         .build();
 
                 additionalExecutorList.add(new CollectionMember<>(additionalExecutor));
-            }
+            //}
             responseCaseDataBuilder.solsAdditionalExecutorList(additionalExecutorList);
-        }
+        //}
         return transformResponse(responseCaseDataBuilder.build());
     }
 
