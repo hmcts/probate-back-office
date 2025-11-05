@@ -1430,6 +1430,20 @@ public class CallbackResponseTransformer {
             .grandchildParentOtherChildren(caseData.getGrandchildParentOtherChildren())
             .grandchildParentChildrenOverEighteen(caseData.getGrandchildParentChildrenOverEighteen());
 
+        builder
+                .intestacyScreenParent(caseData.getIntestacyScreenParent())
+                .intestacyScreenChild(caseData.getIntestacyScreenChild())
+                .intestacyScreenGrandchild(caseData.getIntestacyScreenGrandchild())
+                .intestacyScreenSibling(caseData.getIntestacyScreenSibling())
+
+                .intestacyAnyCoapplicants(caseData.getIntestacyAnyCoapplicants())
+
+                .intestacyCoapplicantParent(caseData.getIntestacyCoapplicantParent())
+                .intestacyCoapplicantsChildGchild(caseData.getIntestacyCoapplicantsChildGchild())
+                .intestacyCoapplicantsSibling(caseData.getIntestacyCoapplicantsSibling())
+                .intestacyCoapplicantsHalfSibling(caseData.getIntestacyCoapplicantsHalfSibling())
+        ;
+
         handleDeceasedAliases(
                 builder,
                 caseData,

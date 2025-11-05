@@ -485,10 +485,6 @@
   {"LiveFrom": "06/01/2017", "ID": "predeceasedFixedList", "ListElementCode": "YesAll", "ListElement": "Yes, all of them"},
   {"LiveFrom": "06/01/2017", "ID": "predeceasedFixedList", "ListElementCode": "No", "ListElement": "No"},
 
-  {"LiveFrom": "06/01/2017", "ID": "CoapplicantCount", "ListElementCode": "one", "ListElement": "One"},
-  {"LiveFrom": "06/01/2017", "ID": "CoapplicantCount", "ListElementCode": "one_two", "ListElement": "Two"},
-  {"LiveFrom": "06/01/2017", "ID": "CoapplicantCount", "ListElementCode": "one_two_three", "ListElement": "Three"},
-
   {"LiveFrom": "06/01/2017", "ID": "IntestacyCoapplicantChildGrandchildRelationship", "ListElementCode":  "child", "ListElement":  "They are the deceased's child"},
   {"LiveFrom": "06/01/2017", "ID": "IntestacyCoapplicantChildGrandchildRelationship", "ListElementCode":  "grandchild", "ListElement":  "They are the deceased's grandchild"},
 

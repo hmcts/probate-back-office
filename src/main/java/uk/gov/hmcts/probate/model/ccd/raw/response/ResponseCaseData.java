@@ -29,6 +29,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyCoapplicantChildGchild;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyCoapplicantHalfSibling;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyCoapplicantParent;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyCoapplicantSibling;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyScreenChild;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyScreenGrandchild;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyScreenParent;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyScreenSibling;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -427,4 +435,15 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String hasCoApplicant;
     private final LocalDate firstStopReminderSentDate;
     private final ApplicantFamilyDetails applicantFamilyDetails;
+
+    private final IntestacyScreenParent intestacyScreenParent;
+    private final IntestacyScreenChild intestacyScreenChild;
+    private final IntestacyScreenGrandchild intestacyScreenGrandchild;
+    private final IntestacyScreenSibling intestacyScreenSibling;
+
+    private final String intestacyAnyCoapplicants;
+    private final IntestacyCoapplicantParent intestacyCoapplicantParent;
+    private final List<CollectionMember<IntestacyCoapplicantChildGchild>> intestacyCoapplicantsChildGchild;
+    private final List<CollectionMember<IntestacyCoapplicantSibling>> intestacyCoapplicantsSibling;
+    private final List<CollectionMember<IntestacyCoapplicantHalfSibling>> intestacyCoapplicantsHalfSibling;
 }
