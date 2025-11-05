@@ -1419,7 +1419,8 @@ public class CallbackResponseTransformer {
             .applicantFamilyDetails(caseData.getApplicantFamilyDetails())
             .grandchildParentOtherChildren(caseData.getGrandchildParentOtherChildren())
             .grandchildParentChildrenOverEighteen(caseData.getGrandchildParentChildrenOverEighteen())
-            .hasExecutorListFlag(caseData.getHasExecutorListFlag());
+            .hasExecutorListFlag(caseData.getHasExecutorListFlag())
+            .isWholeBloodSibling(caseData.getIsWholeBloodSibling());
 
         handleDeceasedAliases(
                 builder,
@@ -2264,11 +2265,19 @@ public class CallbackResponseTransformer {
         List<DynamicRadioListElement> listItems = new ArrayList<>();
         String relationship = caseData.getSolsApplicantRelationshipToDeceased();
 
-        if ("child".equalsIgnoreCase(relationship)) {
-            listItems.add(buildRadioListItem("child", "Child"));
-            listItems.add(buildRadioListItem("grandchild", "Grandchild"));
+        if ("child".equalsIgnoreCase(relationship) || "grandchild".equalsIgnoreCase(relationship)) {
+            listItems.add(buildRadioListItem("child", "They are the deceased’s child"));
+            listItems.add(buildRadioListItem("grandchild", "They are the deceased’s grandchild"));
         } else if ("parent".equalsIgnoreCase(relationship)) {
-            listItems.add(buildRadioListItem("parent", "Parent"));
+            listItems.add(buildRadioListItem("parent", "They are the deceased’s parent"));
+        } else if ("sibling".equalsIgnoreCase(relationship)) {
+            if (YES.equalsIgnoreCase(caseData.getIsWholeBloodSibling())) {
+                listItems.add(buildRadioListItem("wholeBloodSibling", "They are the deceased’s whole blood sibling"));
+                listItems.add(buildRadioListItem("wholeBloodNieceOrNephew", "They are the deceased’s whole blood niece or nephew"));
+            } else {
+                listItems.add(buildRadioListItem("halfBloodSibling", "They are the deceased’s half blood sibling"));
+                listItems.add(buildRadioListItem("halfBloodNieceOrNephew", "They are the deceased’s half blood niece or nephew"));
+            }
         }
 
         DynamicRadioListElement selectedValue = null;

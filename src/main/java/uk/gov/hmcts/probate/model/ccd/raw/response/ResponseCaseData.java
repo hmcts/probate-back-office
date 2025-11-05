@@ -400,4 +400,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final LocalDate firstStopReminderSentDate;
     private final ApplicantFamilyDetails applicantFamilyDetails;
     private final String hasExecutorListFlag;
+    private final String isWholeBloodSibling;
 }
