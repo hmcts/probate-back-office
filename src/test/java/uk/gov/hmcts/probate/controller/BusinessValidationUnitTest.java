@@ -59,6 +59,7 @@ import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.Pre1900DOBValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.RelationshipToDeceasedValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.StopReasonValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
@@ -214,6 +215,8 @@ class BusinessValidationUnitTest {
     private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     @Mock
     private DocumentTransformer documentTransformerMock;
+    @Mock
+    RelationshipToDeceasedValidationRule relationshipToDeceasedValidationRuleMock;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -223,44 +226,46 @@ class BusinessValidationUnitTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         businessValidationErrorMock = FieldErrorResponse.builder().build();
-        underTest = new BusinessValidationController(eventValidationServiceMock,
-            notificationService,
-            objectMapper,
-            validationRules,
-            caseworkerAmendAndCreateValidationRules,
-            callbackResponseTransformerMock,
-            caseDataTransformerMock,
-            confirmationResponseServiceMock,
-            stateChangeServiceMock,
-            pdfManagementServiceMock,
-            redeclarationSoTValidationRuleMock,
-            numberOfApplyingExecutorsValidationRuleMock,
-            codicilDateValidationRuleMock,
-            originalWillSignedDateValidationRuleMock,
-            allTitleAndClearingValidationRules,
-            caseStoppedServiceMock,
-            caseEscalatedServiceMock,
-            emailAddressNotifyApplicantValidationRule,
-            ihtFourHundredDateValidationRule,
-            ihtEstateValidationRule,
-            ihtValidationRule,
-            uniqueCodeValidationRule,
-            stopReasonValidationRule,
-            naValidationRule,
-            ihtFormIDValidationRule,
-            solicitorPostcodeValidationRule,
-            caseworkersSolicitorPostcodeValidationRule,
-            assignCaseAccessService,
-            furtherEvidenceForApplicationValidationRule,
-            changeToSameStateValidationRule,
-            handOffLegacyTransformer,
-            registrarDirectionServiceMock,
-            pre1900DOBValidationRuleMock,
-            adColligendaBonaCaseTypeValidationRule,
-            zeroApplyingExecutorsValidationRule,
-            businessValidationMessageServiceMock,
-            userInfoServiceMock,
-            documentTransformerMock);
+        underTest = new BusinessValidationController(
+                eventValidationServiceMock,
+                notificationService,
+                objectMapper,
+                validationRules,
+                caseworkerAmendAndCreateValidationRules,
+                callbackResponseTransformerMock,
+                caseDataTransformerMock,
+                confirmationResponseServiceMock,
+                stateChangeServiceMock,
+                pdfManagementServiceMock,
+                redeclarationSoTValidationRuleMock,
+                numberOfApplyingExecutorsValidationRuleMock,
+                codicilDateValidationRuleMock,
+                originalWillSignedDateValidationRuleMock,
+                allTitleAndClearingValidationRules,
+                caseStoppedServiceMock,
+                caseEscalatedServiceMock,
+                emailAddressNotifyApplicantValidationRule,
+                ihtFourHundredDateValidationRule,
+                ihtEstateValidationRule,
+                ihtValidationRule,
+                uniqueCodeValidationRule,
+                stopReasonValidationRule,
+                naValidationRule,
+                relationshipToDeceasedValidationRuleMock,
+                ihtFormIDValidationRule,
+                solicitorPostcodeValidationRule,
+                caseworkersSolicitorPostcodeValidationRule,
+                assignCaseAccessService,
+                furtherEvidenceForApplicationValidationRule,
+                changeToSameStateValidationRule,
+                handOffLegacyTransformer,
+                registrarDirectionServiceMock,
+                pre1900DOBValidationRuleMock,
+                adColligendaBonaCaseTypeValidationRule,
+                zeroApplyingExecutorsValidationRule,
+                businessValidationMessageServiceMock,
+                userInfoServiceMock,
+                documentTransformerMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();

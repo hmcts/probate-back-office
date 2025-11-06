@@ -12,10 +12,6 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.util.List;
 import java.util.Locale;
 
-import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.NOT_APPLICABLE_VALUE;
-
-
 @Component
 @RequiredArgsConstructor
 public class RelationshipToDeceasedValidationRule {
@@ -31,8 +27,8 @@ public class RelationshipToDeceasedValidationRule {
                 AdditionalExecutor executor = member.getValue();
                 String coApplicantRelationship = executor.getApplicantFamilyDetails().getRelationshipToDeceased();
                 if ("child".equalsIgnoreCase(mainApplicantRelationship)) {
-                    if (!"child".equalsIgnoreCase(coApplicantRelationship) &&
-                            !"grandchild".equalsIgnoreCase(coApplicantRelationship)) {
+                    if (!"child".equalsIgnoreCase(coApplicantRelationship)
+                            && !"grandchild".equalsIgnoreCase(coApplicantRelationship)) {
                         String userMessage = businessValidationMessageRetriever
                                 .getMessage("allowedChildOrGrandchild", null, Locale.UK);
                         String userMessageWelsh = businessValidationMessageRetriever

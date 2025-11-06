@@ -3196,6 +3196,19 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "resolveCaveatStopState", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "languagePreferenceWelsh", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "firstStopReminderSentDate", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyScreenParent", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyScreenChild", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyScreenGrandchild", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyScreenSibling", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyCoapplicantParent", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyCoapplicantsChildGchild", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyCoapplicantsSibling", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyCoapplicantsHalfSibling", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "intestacyAnyCoapplicants", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "schemaVersion", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "citizen", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "citizen", "CRUD": "CRU"},

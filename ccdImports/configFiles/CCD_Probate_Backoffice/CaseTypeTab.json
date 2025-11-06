@@ -240,6 +240,17 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "executorsApplying", "TabFieldDisplayOrder": 35},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "executorsNotApplying", "TabFieldDisplayOrder": 36},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "applicantFamilyDetails", "TabFieldDisplayOrder": 37},
+
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "intestacyScreenParent", "TabFieldDisplayOrder": 38},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "intestacyScreenChild", "TabFieldDisplayOrder": 39},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "intestacyScreenGrandchild", "TabFieldDisplayOrder": 40},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "intestacyScreenSibling", "TabFieldDisplayOrder": 41},
+
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "intestacyCoapplicantParent", "TabFieldDisplayOrder": 42},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "intestacyCoapplicantsChildGchild", "TabFieldDisplayOrder": 43},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "intestacyCoapplicantsSibling", "TabFieldDisplayOrder": 44},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "intestacyCoapplicantsHalfSibling", "TabFieldDisplayOrder": 45},
+
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "examinationCheckListTab", "TabLabel": "Examination checklist", "TabDisplayOrder": 9, "CaseFieldID": "boExaminationChecklistQ1", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "examinationCheckListTab", "TabLabel": "Examination checklist", "TabDisplayOrder": 9, "CaseFieldID": "boExaminationChecklistQ2", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "examinationCheckListTab", "TabLabel": "Examination checklist", "TabDisplayOrder": 9, "CaseFieldID": "boExaminationChecklistRequestQA", "TabFieldDisplayOrder": 3},

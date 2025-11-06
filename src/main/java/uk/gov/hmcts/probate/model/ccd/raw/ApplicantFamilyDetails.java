@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ApplicantFamilyDetails {
+    private final String relationshipToDeceased;
     private final String childAdoptedIn;
     private final String childAdoptionInEnglandOrWales;
     private final String childAdoptedOut;

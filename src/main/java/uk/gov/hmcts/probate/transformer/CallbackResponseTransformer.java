@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyScreenSibling;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -1429,6 +1430,45 @@ public class CallbackResponseTransformer {
             .applicantFamilyDetails(caseData.getApplicantFamilyDetails())
             .grandchildParentOtherChildren(caseData.getGrandchildParentOtherChildren())
             .grandchildParentChildrenOverEighteen(caseData.getGrandchildParentChildrenOverEighteen());
+
+        final String solsApplicantRelationshipToDeceased = caseData.getSolsApplicantRelationshipToDeceased();
+
+        builder = builder.intestacyAnyCoapplicants(caseData.getIntestacyAnyCoapplicants());
+        switch (solsApplicantRelationshipToDeceased) {
+            case "SpouseOrCivil" -> {
+                // nothing to do for new intestacy (no coapplicants etc.)
+            }
+            case "Child", "ChildAdopted" -> {
+                builder = builder
+                        .intestacyScreenChild(caseData.getIntestacyScreenChild())
+                        .intestacyCoapplicantsChildGchild(caseData.getIntestacyCoapplicantsChildGchild());
+            }
+            case "parent" -> {
+                builder = builder
+                        .intestacyScreenParent(caseData.getIntestacyScreenParent())
+                        .intestacyCoapplicantParent(caseData.getIntestacyCoapplicantParent());
+            }
+            case "Sibling" -> {
+                final IntestacyScreenSibling siblingScreen = caseData.getIntestacyScreenSibling();
+
+                builder = builder.intestacyScreenSibling(siblingScreen);
+                if ("yes".equalsIgnoreCase(siblingScreen.getWholeBloodSibling())) {
+                    builder = builder.intestacyCoapplicantsSibling(caseData.getIntestacyCoapplicantsSibling());
+                } else if ("no".equalsIgnoreCase(siblingScreen.getWholeBloodSibling())) {
+                    builder = builder.intestacyCoapplicantsHalfSibling(caseData.getIntestacyCoapplicantsHalfSibling());
+                }
+            }
+            case "Grandchild" -> {
+                builder = builder
+                        .intestacyScreenGrandchild(caseData.getIntestacyScreenGrandchild())
+                        .intestacyCoapplicantsChildGchild(caseData.getIntestacyCoapplicantsChildGchild());
+            }
+            case null -> {}
+            default -> {
+                log.info("No handling for solsRelationship value {}", solsApplicantRelationshipToDeceased);
+                throw new RuntimeException();
+            }
+        };
 
         handleDeceasedAliases(
                 builder,
