@@ -1,7 +1,7 @@
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.springframework.boot' version '3.5.6'
+  id 'org.springframework.boot' version '3.5.7'
   id 'uk.gov.hmcts.java' version '0.12.67'
   id 'com.github.ben-manes.versions' version '0.53.0'
   id 'com.gorylenko.gradle-git-properties' version '2.5.3'
@@ -9,9 +9,9 @@ plugins {
   id 'jacoco'
   id 'project-report'
   id 'au.com.dius.pact' version '4.6.17'
-  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.34'
-  id 'org.sonarqube' version '7.0.0.6105'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.1894'
+  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.3.2'
+  id 'org.sonarqube' version '7.0.1.6134'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.1910'
 }
 
 application {
@@ -157,7 +157,7 @@ gitProperties {
 }
 
 def versions = [
-        applicationInsightsVersion      : '3.7.5',
+        applicationInsightsVersion      : '3.7.6',
         authCheckerLib                  : '3.1.1',
         ccdClient                       : '5.2.0',
         commonsIO                       : '2.20.0',
@@ -178,10 +178,10 @@ def versions = [
         sendLetterClientVersion         : '5.1.1',
         serenity                        : '4.2.34',
         serviceAuthVersion              : '5.3.3',
-        springBootVersion               : '3.5.6',
+        springBootVersion               : '3.5.7',
         springCloud                     : '4.1.5',
-        springDocOpenUi                 : '2.8.13',
-        swaggerAnnotations              : '2.2.39',
+        springDocOpenUi                 : '2.8.14',
+        swaggerAnnotations              : '2.2.40',
         springSecurityVersion           : '6.5.6',
         tomcat                          : '10.1.48'
 ]
@@ -240,10 +240,10 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: versions.sendLetterClientVersion
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: versions.lifeEventsClientVersion
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.4'
-  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.31.3'
+  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.32.0'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: versions.applicationInsightsVersion
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-runtime-attach', version: versions.applicationInsightsVersion
-  implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.1'
+  implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '9.0'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
@@ -267,7 +267,7 @@ dependencies {
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.5.1'
 
-  implementation group: 'org.pitest', name: 'pitest', version: '1.21.0'
+  implementation group: 'org.pitest', name: 'pitest', version: '1.21.1'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.27.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
@@ -281,7 +281,7 @@ dependencies {
 
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.2.1-RELEASE'
-  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.2'
+  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.3'
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
   testAnnotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
