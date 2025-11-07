@@ -498,7 +498,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   /*async deceasedDetailsPage2(applicationType, iHTFormsCompleted, whichIHTFormsCompleted) {
-    await this.runAccessibilityTest();
+    // await this.runAccessibilityTest();
     /!*readonly caseProgressTabLocator = this.page.getByRole("tab", {
       name: makePaymentConfig.caseProgressTab,
       exact: true,
