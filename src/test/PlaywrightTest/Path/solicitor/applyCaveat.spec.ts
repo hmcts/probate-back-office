@@ -34,8 +34,6 @@ test.describe("Solicitor - Apply Caveat", () => {
 
     let nextStepName = "Application details";
     let endState = "Caveat created";
-    await basePage.logInfo(scenarioName, nextStepName, null);
-    await createCasePage.selectNewCase();
     await createCasePage.selectCaseTypeOptions(
       createCaseConfig.list2_text_caveat,
       createCaseConfig.list4_text_caveat

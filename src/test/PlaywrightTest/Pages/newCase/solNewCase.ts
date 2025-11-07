@@ -7,6 +7,7 @@ import commonConfig from "../common/commonConfig.json" with { type: "json" };
 import createCaveatConfig from "../createCaveat/createCaveatConfig.json" with { type: "json" };
 import applicationDetailsConfig from "../solicitorApplyCaveat/applicationDetails/applicationDetails.json" with { type: "json" };
 import applyCaveatConfig from "../solicitorApplyCaveat/applyCaveat/applyCaveat.json" with { type: "json" };
+import deceasedDetailsConfig from "../solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
 import completeApplicationConfig from "../solicitorApplyCaveat/completeApplication/completeApplication.json" with { type: "json" };
 import applyProbateConfig from "../solicitorApplyProbate/applyProbate/applyProbateConfig.json" with { type: "json" };
 import makePaymentConfig from "../solicitorApplyProbate/makePayment/makePaymentConfig.json" with { type: "json" };
@@ -15,15 +16,27 @@ import { BasePage } from "../utility/basePage.ts";
 type ServiceRequestTabConfig = typeof serviceRequestTabConfig;
 
 export class SolCreateCasePage extends BasePage {
-    readonly completeApplicationSubmitButton = this.page.getByRole("button", {
-      name: "Close and return to case details",
-    });
-    readonly serviceRequestTabLocator = this.page.getByRole("tab", {
-      name: makePaymentConfig.paymentTab,
-    });
-    readonly reviewLinkLocator = this.page.getByText(
-      makePaymentConfig.reviewLinkText
-    );
+  readonly deceasedForenameLocator = this.page.locator("#deceasedForenames");
+  readonly deceasedSurnameLocator = this.page.locator("#deceasedSurname");
+  readonly deceasedDobDayLocator = this.page.locator("#deceasedDateOfBirth-day");
+  readonly deceasedDobMonthLocator = this.page.locator("#deceasedDateOfBirth-month");
+  readonly deceasedDobYearLocator = this.page.locator("#deceasedDateOfBirth-year");
+  readonly deceasedDomicileLocator = this.page.locator(`#deceasedDomicileInEngWales_${deceasedDetailsConfig.optionYes}`);
+  readonly deceasedDateOfDeathDayLocator = this.page.locator("#deceasedDateOfDeath-day");
+  readonly deceasedDateOfDeathMonthLocator = this.page.locator("#deceasedDateOfDeath-month");
+  readonly deceasedDateOfDeathYearLocator = this.page.locator("#deceasedDateOfDeath-year");
+  readonly deceasedAliasNamesLocator = this.page.locator(`#deceasedAnyOtherNames_${applicationDetailsConfig.page2_hasAliasYes}`);
+  readonly deceasedNoAliasNamesLocator = this.page.locator(`#deceasedAnyOtherNames_${deceasedDetailsConfig.optionNo}`);
+  readonly deceasedAddressLine1Locator = this.page.locator("##deceasedAddress__detailAddressLine1");
+  readonly deceasedAddressLine2Locator = this.page.locator("##deceasedAddress__detailAddressLine2");
+  readonly deceasedAddressLine3Locator = this.page.locator("##deceasedAddress__detailAddressLine3");
+  readonly deceasedAddressTownLocator = this.page.locator("##deceasedAddress__detailPostTown");
+  readonly deceasedAddressCountyLocator = this.page.locator("##deceasedAddress__detailCounty");
+  readonly deceasedAddressPostCodeLocator = this.page.locator("##deceasedAddress__detailPostCode");
+  readonly deceasedAddressCountryLocator = this.page.locator("##deceasedAddress__detailCountry");
+  readonly completeApplicationSubmitButton = this.page.getByRole("button", {name: "Close and return to case details",});
+    readonly serviceRequestTabLocator = this.page.getByRole("tab", {name: makePaymentConfig.paymentTab,});
+    readonly reviewLinkLocator = this.page.getByText(makePaymentConfig.reviewLinkText);
     readonly backToServiceRequestLocator = this.page.getByRole("link", {
       name: makePaymentConfig.backToPaymentLinkText,
       exact: true,
@@ -34,26 +47,44 @@ export class SolCreateCasePage extends BasePage {
     });
     readonly pbaOptionLocator = this.page.locator("#pbaAccount");
     readonly pbaAccountNumberLocator = this.page.locator("#pbaAccountNumber");
-    readonly confirmPaymentButton = this.page.getByRole("button", {
-      name: "Confirm payment",
-    });
+    readonly confirmPaymentButton = this.page.getByRole("button", {name: "Confirm payment",});
     readonly serviceRequestLinkLocator = this.page.getByRole("link", {
       name: makePaymentConfig.serviceRequestLink,
       exact: true,
     });
-    readonly eventHistoryTab = this.page.getByRole("tab", {
-      name: makePaymentConfig.eventHistoryTab,
-    });
+    readonly eventHistoryTab = this.page.getByRole("tab", {name: makePaymentConfig.eventHistoryTab,});
     readonly caseProgressTabLocator = this.page.getByRole("tab", {
       name: makePaymentConfig.caseProgressTab,
       exact: true,
     });
-    readonly postcodeLinkLocator = this.page.getByText(
-      createCaveatConfig.UKpostcodeLink
-    );
-    readonly solSignSot = this.page.locator(
-      `#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`
-    );
+    readonly postcodeLinkLocator = this.page.getByText(createCaveatConfig.UKpostcodeLink);
+    readonly solSignSot = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
+    readonly solsStartPageLocator = this.page.locator('#solsStartPage');
+    readonly solsApplyPageLocator = this.page.locator('#solsApplyPage');
+    readonly solsPageSubHeading = this.page.getByText(applyProbateConfig.page2_subheading);
+    readonly solsHelp = this.page.getByText(applyProbateConfig.page2_probatePractionerHelp);
+  readonly solForenameLocator = this.page.locator('#solsForenames');
+  readonly solSurnameLocator = this.page.locator('#solsSurname');
+  readonly solSotForenameLocator = this.page.locator('#solsSOTForenames');
+  readonly solSotSurnameLocator = this.page.locator('#solsSOTSurname');
+  readonly solsIsExecLocator = this.page.locator('#solsSolicitorIsExec_Yes');
+  readonly applyForProbateHintLocator = this.page.locator('#applyForProbatePageHint1');
+  readonly solsApplyingLocator = this.page.locator('#solsSolicitorIsApplying_Yes');
+  readonly solsNotApplyingLocator = this.page.locator('#solsSolicitorIsApplying_No');
+  readonly solsNotApplyReasonLocator = this.page.locator('#solsSolicitorNotApplyingReason-PowerReserved');
+  readonly solsIsNotExecLocator = this.page.locator('#solsSolicitorIsExec_No');
+  readonly applyForProbateHint2Locator = this.page.locator('#applyForProbatePageHint2');
+  readonly solsFirmNameLocator = this.page.locator('#solsSolicitorFirmName');
+  readonly solsAddressLine1Locator = this.page.locator('#solsSolicitorAddress__detailAddressLine1');
+  readonly solsAddressLine2Locator = this.page.locator('#solsSolicitorAddress__detailAddressLine2');
+  readonly solsAddressLine3Locator = this.page.locator('#solsSolicitorAddress__detailAddressLine3');
+  readonly solsPostTownLocator = this.page.locator('#solsSolicitorAddress__detailPostTown');
+  readonly solsCountyLocator = this.page.locator('#solsSolicitorAddress__detailCounty');
+  readonly solsPostcodeLocator = this.page.locator('#solsSolicitorAddress__detailPostCode');
+  readonly solsCountryLocator = this.page.locator('#solsSolicitorAddress__detailCountry');
+  readonly solsEmailLocator = this.page.locator('#solsSolicitorEmail');
+  readonly solsPhoneLocator = this.page.locator('#solsSolicitorPhoneNumber');
+  readonly solsAppReferenceLocator = this.page.locator('#solsSolicitorAppReference');
 
   constructor(public readonly page: Page) {
     super(page);
@@ -131,38 +162,16 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async caveatApplicationDetailsPage2() {
-    await expect(this.page.locator("#deceasedForenames")).toBeVisible();
+    await expect(this.deceasedForenameLocator).toBeVisible();
     await this.runAccessibilityTest();
-    await this.page
-      .locator("#deceasedForenames")
-      .fill(applicationDetailsConfig.page2_deceased_forename);
-    await this.page
-      .locator("#deceasedSurname")
-      .fill(applicationDetailsConfig.page2_deceased_surname);
-    await this.page
-      .locator("#deceasedDateOfDeath-day")
-      .fill(applicationDetailsConfig.page2_dateOfDeath_day);
-    await this.page
-      .locator("#deceasedDateOfDeath-month")
-      .fill(applicationDetailsConfig.page2_dateOfDeath_month);
-    await this.page
-      .locator("#deceasedDateOfDeath-year")
-      .fill(applicationDetailsConfig.page2_dateOfDeath_year);
-    await this.page
-      .locator(
-        `#deceasedAnyOtherNames_${applicationDetailsConfig.page2_hasAliasYes}`
-      )
-      .focus();
-    await this.page
-      .locator(
-        `#deceasedAnyOtherNames_${applicationDetailsConfig.page2_hasAliasYes}`
-      )
-      .click();
-    await this.page
-      .locator(
-        `#deceasedAnyOtherNames_${applicationDetailsConfig.page2_hasAliasYes}`
-      )
-      .click();
+    await this.deceasedForenameLocator.fill(applicationDetailsConfig.page2_deceased_forename);
+    await this.deceasedSurnameLocator.fill(applicationDetailsConfig.page2_deceased_surname)
+    await this.deceasedDateOfDeathDayLocator.fill(applicationDetailsConfig.page2_dateOfDeath_day);
+    await this.deceasedDateOfDeathMonthLocator.fill(applicationDetailsConfig.page2_dateOfDeath_month);
+    await this.deceasedDateOfDeathYearLocator.fill(applicationDetailsConfig.page2_dateOfDeath_year);
+    await this.deceasedAliasNamesLocator.focus();
+    await this.deceasedAliasNamesLocator.click();
+    await this.deceasedAliasNamesLocator.click();
     if (!testConfig.TestAutoDelayEnabled) {
       // only valid for local dev where we need it to run as fast as poss to minimise
       // lost dev time
@@ -196,27 +205,13 @@ export class SolCreateCasePage extends BasePage {
     }
 
     await this.postcodeLinkLocator.click();
-    await this.page
-      .locator("#deceasedAddress__detailAddressLine1")
-      .fill(applicationDetailsConfig.address_line1);
-    await this.page
-      .locator("#deceasedAddress__detailAddressLine2")
-      .fill(applicationDetailsConfig.address_line2);
-    await this.page
-      .locator("#deceasedAddress__detailAddressLine3")
-      .fill(applicationDetailsConfig.address_line3);
-    await this.page
-      .locator("#deceasedAddress__detailPostTown")
-      .fill(applicationDetailsConfig.address_town);
-    await this.page
-      .locator("#deceasedAddress__detailCounty")
-      .fill(applicationDetailsConfig.address_county);
-    await this.page
-      .locator("#deceasedAddress__detailPostCode")
-      .fill(applicationDetailsConfig.address_postcode);
-    await this.page
-      .locator("#deceasedAddress__detailCountry")
-      .fill(applicationDetailsConfig.address_country);
+    await this.deceasedAddressLine1Locator.fill(applicationDetailsConfig.address_line1);
+    await this.deceasedAddressLine2Locator.fill(applicationDetailsConfig.address_line2);
+    await this.deceasedAddressLine3Locator.fill(applicationDetailsConfig.address_line3);
+    await this.deceasedAddressTownLocator.fill(applicationDetailsConfig.address_town);
+    await this.deceasedAddressCountyLocator.fill(applicationDetailsConfig.address_county);
+    await this.deceasedAddressPostCodeLocator.fill(applicationDetailsConfig.address_postcode);
+    await this.deceasedAddressCountryLocator.fill(applicationDetailsConfig.address_country);
     await this.waitForNavigationToComplete();
   }
 
@@ -387,11 +382,175 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async applyForProbatePage1() {
-    await expect(this.page.locator("#solsStartPage")).toBeVisible();
+    await expect(this.solsStartPageLocator).toBeVisible();
     await this.runAccessibilityTest();
-    await this.waitForSubmitNavigationToComplete(commonConfig.submitButton);
-    // await I.waitForElement('#solsStartPage');
-    // await I.runAccessibilityTest();
-    // await I.waitForNavigationToComplete(commonConfig.submitButton, true);
+    await this.waitForSubmitNavigationToComplete("Save and continue");
   }
+
+  async applyForProbatePage2(isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
+    await expect(this.solsApplyPageLocator).toBeVisible();
+    await this.runAccessibilityTest();
+    await expect(this.solsPageSubHeading).toBeVisible();
+    await expect(this.solsHelp).toBeVisible();
+
+    await expect(this.solSignSot).toBeVisible();
+    await this.solSignSot.click();
+    await this.solForenameLocator.fill(applyProbateConfig.page2_sol_forename);
+    await this.solSurnameLocator.fill(applyProbateConfig.page2_sol_surname);
+    await this.solSotForenameLocator.fill(applyProbateConfig.page2_sol_forename);
+    await this.solSotSurnameLocator.fill(applyProbateConfig.page2_sol_surname);
+
+    if (isSolicitorNamedExecutor) {
+      await this.solsIsExecLocator.click();
+      await expect(this.applyForProbateHintLocator).toBeVisible();
+
+      if (isSolicitorApplyingExecutor) {
+        await this.solsApplyingLocator.click();
+        await expect(this.applyForProbateHintLocator).toBeVisible();
+      } else {
+        await this.solsNotApplyingLocator.click();
+        await expect(this.solsNotApplyReasonLocator).toBeVisible();
+        await this.solsNotApplyReasonLocator.click();
+      }
+    } else {
+      await this.solsIsNotExecLocator.click();
+      await this.page.locator(`#solsSolicitorIsApplying_${isSolicitorApplyingExecutor ? 'Yes' : 'No'}`).click();
+      if (isSolicitorApplyingExecutor) {
+        await expect(this.applyForProbateHint2Locator).toBeVisible();
+      }
+    }
+
+    await this.solsFirmNameLocator.fill(applyProbateConfig.page2_firm_name);
+    await this.postcodeLinkLocator.click();
+    await this.solsAddressLine1Locator.fill(applyProbateConfig.address_line1);
+    await this.solsAddressLine2Locator.fill(applyProbateConfig.address_line2);
+    await this.solsAddressLine3Locator.fill(applyProbateConfig.address_line3);
+    await this.solsPostTownLocator.fill(applyProbateConfig.address_town);
+    await this.solsCountyLocator.fill(applyProbateConfig.address_county);
+    await this.solsPostcodeLocator.fill(applyProbateConfig.address_postcode);
+    await this.solsCountryLocator.fill(applyProbateConfig.address_country);
+
+    await this.solsEmailLocator.fill(applyProbateConfig.page2_sol_email);
+    await this.solsPhoneLocator.fill(applyProbateConfig.page2_phone_num);
+    await this.solsAppReferenceLocator.fill(applyProbateConfig.page2_app_ref);
+
+    await this.waitForNavigationToComplete();
+  }
+
+  async deceasedDetailsPage1(deathTypeDate) {
+    await expect(this.deceasedForenameLocator).toBeVisible();
+    await this.runAccessibilityTest();
+    await this.deceasedForenameLocator.fill(deceasedDetailsConfig.page1_forenames);
+    await this.deceasedSurnameLocator.fill(deceasedDetailsConfig.page1_surname);
+    await this.deceasedDobDayLocator.fill(deceasedDetailsConfig.page1_dateOfBirth_day);
+    await this.deceasedDobMonthLocator.fill(deceasedDetailsConfig.page1_dateOfBirth_month);
+    await this.deceasedDobYearLocator.fill(deceasedDetailsConfig.page1_dateOfBirth_year);
+    // await I.waitForElement('#deceasedForenames');
+    // await I.runAccessibilityTest();
+    // await I.fillField('#deceasedForenames', deceasedDetailsConfig.page1_forenames);
+    // await I.fillField('#deceasedSurname', deceasedDetailsConfig.page1_surname);
+
+    // await I.fillField('#deceasedDateOfBirth-day', deceasedDetailsConfig.page1_dateOfBirth_day);
+    // await I.fillField('#deceasedDateOfBirth-month', deceasedDetailsConfig.page1_dateOfBirth_month);
+    // await I.fillField('#deceasedDateOfBirth-year', deceasedDetailsConfig.page1_dateOfBirth_year);
+
+    if (deathTypeDate === 'EE') {
+      await this.deceasedDateOfDeathDayLocator.fill(deceasedDetailsConfig.page1_dateOfDeath_dayEE);
+      await this.deceasedDateOfDeathMonthLocator.fill(deceasedDetailsConfig.page1_dateOfDeath_monthEE);
+      await this.deceasedDateOfDeathYearLocator.fill(deceasedDetailsConfig.page1_dateOfDeath_yearEE);
+      // await I.fillField('#deceasedDateOfDeath-day', deceasedDetailsConfig.page1_dateOfDeath_dayEE);
+      // await I.fillField('#deceasedDateOfDeath-month', deceasedDetailsConfig.page1_dateOfDeath_monthEE);
+      // await I.fillField('#deceasedDateOfDeath-year', deceasedDetailsConfig.page1_dateOfDeath_yearEE);
+    } else {
+      await this.deceasedDateOfDeathDayLocator.fill(deceasedDetailsConfig.page1_dateOfDeath_day);
+      await this.deceasedDateOfDeathMonthLocator.fill(deceasedDetailsConfig.page1_dateOfDeath_month);
+      await this.deceasedDateOfDeathYearLocator.fill(deceasedDetailsConfig.page1_dateOfDeath_year);
+      // await I.fillField('#deceasedDateOfDeath-day', deceasedDetailsConfig.page1_dateOfDeath_day);
+      // await I.fillField('#deceasedDateOfDeath-month', deceasedDetailsConfig.page1_dateOfDeath_month);
+      // await I.fillField('#deceasedDateOfDeath-year', deceasedDetailsConfig.page1_dateOfDeath_year);
+    }
+
+    await this.deceasedDomicileLocator.click();
+    await this.postcodeLinkLocator.click();
+    await this.deceasedAddressLine1Locator.fill(deceasedDetailsConfig.address_line1);
+    await this.deceasedAddressLine2Locator.fill(deceasedDetailsConfig.address_line2);
+    await this.deceasedAddressLine3Locator.fill(deceasedDetailsConfig.address_line3);
+    await this.deceasedAddressTownLocator.fill(deceasedDetailsConfig.address_town);
+    await this.deceasedAddressCountyLocator.fill(deceasedDetailsConfig.address_county);
+    await this.deceasedAddressPostCodeLocator.fill(deceasedDetailsConfig.address_postcode);
+    await this.deceasedAddressCountryLocator.fill(deceasedDetailsConfig.address_country);
+    await this.deceasedNoAliasNamesLocator.click();
+    // await I.click(`#deceasedDomicileInEngWales_${deceasedDetailsConfig.optionYes}`);
+
+    // await I.click(deceasedDetailsConfig.UKpostcodeLink);
+
+    // await I.fillField('#deceasedAddress__detailAddressLine1', deceasedDetailsConfig.address_line1);
+    // await I.fillField('#deceasedAddress__detailAddressLine2', deceasedDetailsConfig.address_line2);
+    // await I.fillField('#deceasedAddress__detailAddressLine3', deceasedDetailsConfig.address_line3);
+    // await I.fillField('#deceasedAddress__detailPostTown', deceasedDetailsConfig.address_town);
+    // await I.fillField('#deceasedAddress__detailCounty', deceasedDetailsConfig.address_county);
+    // await I.fillField('#deceasedAddress__detailPostCode', deceasedDetailsConfig.address_postcode);
+    // await I.fillField('#deceasedAddress__detailCountry', deceasedDetailsConfig.address_country);
+
+    // await I.click(`#deceasedAnyOtherNames_${deceasedDetailsConfig.optionNo}`);
+
+    await this.waitForNavigationToComplete();
+  }
+
+  /*async deceasedDetailsPage2(applicationType, iHTFormsCompleted, whichIHTFormsCompleted) {
+    await this.runAccessibilityTest();
+    /!*readonly caseProgressTabLocator = this.page.getByRole("tab", {
+      name: makePaymentConfig.caseProgressTab,
+      exact: true,
+    });*!/
+    // readonly postcodeLinkLocator = this.page.getByText(createCaveatConfig.UKpostcodeLink);
+    // readonly solSignSot = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
+    readonly ihtFormEstateValueCompleted = this.page.locator(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionYes}`);
+    readonly ihtFormsLabelLocator = this.page.getByText(deceasedDetailsConfig.page2_whichIHTFormsLabel);
+    readonly iht207Locator = this.page.getByText(deceasedDetailsConfig.page2_IHT207Label);
+    readonly iht400Locator = this.page.getByText(deceasedDetailsConfig.page2_IHT400Label);
+
+    if (applicationType === 'EE') {
+      if (iHTFormsCompleted === 'Yes') {
+        await this.ihtFormEstateValueCompleted.click();
+        await expect(this.ihtFormsLabelLocator).toBeVisible();
+        await expect(this.iht207Locator).toBeVisible();
+        await expect(this.iht400Locator).toBeVisible();
+        // await I.waitForText(deceasedDetailsConfig.page2_whichIHTFormsLabel);
+        // await I.waitForText(deceasedDetailsConfig.page2_IHT207Label);
+        // await I.waitForText(deceasedDetailsConfig.page2_IHT400421Label);
+        // await I.waitForText(deceasedDetailsConfig.page2_IHT400Label);
+
+        if (whichIHTFormsCompleted === 'IHT207') {
+          await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE207}`});
+        } else if (whichIHTFormsCompleted === 'IHT400') {
+          await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400}`});
+        } else {
+          await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400421}`});
+        }
+
+      } else {
+        await I.click(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionNo}`);
+        await I.waitForText(deceasedDetailsConfig.page2_grossValueIHTEstateLabel);
+        await I.waitForText(deceasedDetailsConfig.page2_netValueIHTEstateLabel);
+        await I.waitForText(deceasedDetailsConfig.page2_netQualifyingValueIHTEstateLabel);
+
+        await I.fillField('#ihtEstateGrossValue', deceasedDetailsConfig.page2_grossValueIHTEstate);
+        await I.fillField('#ihtEstateNetValue', deceasedDetailsConfig.page2_netValueIHTEstate);
+        await I.fillField('#ihtEstateNetQualifyingValue', deceasedDetailsConfig.page2_netQualifyingValueIHTEstate);
+        await I.waitForNavigationToComplete(commonConfig.continueButton, true);
+
+        await I.click(`#deceasedHadLateSpouseOrCivilPartner_${deceasedDetailsConfig.optionYes}`);
+        await I.click(`#ihtUnusedAllowanceClaimed_${deceasedDetailsConfig.optionYes}`);
+      }
+    } else if (applicationType === 'MultiExec') {
+      await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOptionMulti}`});
+      await I.waitForText(deceasedDetailsConfig.page2_NilRateBandLabel);
+      await I.click({css: `#iht217_${deceasedDetailsConfig.optionYes}`});
+    } else {
+      await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOption}`});
+    }
+
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
+  }*/
 };
