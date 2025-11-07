@@ -258,4 +258,33 @@ class HandOffLegacyTransformerTest {
 
         assertNull(callbackRequestMock.getCaseDetails().getData().getBoHandoffReasonList());
     }
+
+    @Test
+    void resetHandOffToLegacySiteShouldSetCaseHandedOffToLegacySiteAndBoHandoffReasonListToNull() {
+        caseDataBuilder
+                .caseHandedOffToLegacySite(YES)
+                .boHandoffReasonList(List.of(new uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<>(null,
+                        HandoffReason.builder().caseHandoffReason(HandoffReasonId.TRUST_CORPORATION).build())));
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        handOffLegacyTransformer.resetHandOffToLegacySite(callbackRequestMock);
+
+        assertNull(callbackRequestMock.getCaseDetails().getData().getBoHandoffReasonList());
+        assertNull(callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
+    }
+
+    @Test
+    void resetHandOffToLegacySiteShouldHandleAlreadyNullValues() {
+        caseDataBuilder
+                .caseHandedOffToLegacySite(null)
+                .boHandoffReasonList(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        handOffLegacyTransformer.resetHandOffToLegacySite(callbackRequestMock);
+
+        assertNull(callbackRequestMock.getCaseDetails().getData().getBoHandoffReasonList());
+        assertNull(callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
+    }
 }
