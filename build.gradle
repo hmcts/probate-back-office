@@ -179,7 +179,7 @@ def versions = [
         serenity                        : '4.2.34',
         serviceAuthVersion              : '5.3.3',
         springBootVersion               : '3.5.7',
-        springCloud                     : '4.1.5',
+        springCloud                     : '4.3.0',
         springDocOpenUi                 : '2.8.14',
         swaggerAnnotations              : '2.2.40',
         springSecurityVersion           : '6.5.6',
