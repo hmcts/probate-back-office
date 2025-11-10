@@ -160,7 +160,7 @@ def versions = [
         applicationInsightsVersion      : '3.7.6',
         authCheckerLib                  : '3.1.1',
         ccdClient                       : '5.2.0',
-        commonsIO                       : '2.20.0',
+        commonsIO                       : '2.21.0',
         commonsValidator                : '1.10.0',
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '7.17.29',
