@@ -186,4 +186,35 @@ class FirstStopReminderNotificationTest {
         data.put(STOP_REASON_LIST_KEY, stopList);
         return data;
     }
+
+    @Test
+    void testGetsNewIfUseNew() {
+        final String expected = "templates/elasticsearch/caseMatching/first_stop_reminder_query_new.json";
+        underTest.useES();
+
+        final String actual = underTest.getQueryTemplate();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetsOldIfUseOld() {
+        final String expected = "templates/elasticsearch/caseMatching/first_stop_reminder_query.json";
+        underTest.useOld();
+
+        final String actual = underTest.getQueryTemplate();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testEdgeCaseIfUseOld() {
+
+
+        underTest.useOld();
+
+        final boolean actual = underTest.isEdgeCase(caseDetails);
+
+        assertFalse(actual);
+    }
 }

@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.notification;
 
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -22,6 +23,7 @@ import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED_REISSUE;
 
 @Service
+@Slf4j
 public class FirstStopReminderNotification implements NotificationStrategy {
     private static final String FIRST_STOP_REMINDER_EVENT_DESCRIPTION = "Send First Stop Reminder";
     private static final String FIRST_STOP_REMINDER_EVENT_SUMMARY = "Send First Stop Reminder";
@@ -37,12 +39,41 @@ public class FirstStopReminderNotification implements NotificationStrategy {
     @Setter
     private LocalDate referenceDate;
 
+    public enum Behaviour {
+        USE_OLD,
+        USE_ES,
+        USE_PRED;
+    }
+
+    private Behaviour behaviour;
+
     public FirstStopReminderNotification(NotificationService notificationService) {
         this.notificationService = notificationService;
+        behaviour = Behaviour.USE_OLD;
+    }
+
+    public void useES() {
+        log.info("setting use ES for first stop");
+        behaviour = Behaviour.USE_ES;
+    }
+
+    public void usePred() {
+        log.info("setting use Pred for first stop");
+        behaviour = Behaviour.USE_PRED;
+    }
+
+    public void useOld() {
+        log.info("setting use old template for first stop");
+        behaviour = Behaviour.USE_OLD;
     }
 
     @Override
     public String getQueryTemplate() {
+        if (behaviour == Behaviour.USE_ES) {
+            log.info("using new template for first stop");
+            return "templates/elasticsearch/caseMatching/first_stop_reminder_query_new.json";
+        }
+        log.info("using old template for first stop");
         return "templates/elasticsearch/caseMatching/first_stop_reminder_query.json";
     }
 
@@ -93,7 +124,8 @@ public class FirstStopReminderNotification implements NotificationStrategy {
             && referenceDate != null
             && (STATE_BO_CASE_STOPPED.equals(cd.getState()) || STATE_BO_CASE_STOPPED_REISSUE.equals(cd.getState()))
             && isValidLastModifiedDate(cd)
-            && !isCaveatStop(cd);
+            && !isCaveatStop(cd)
+            && !isEdgeCase(cd);
     }
 
     private boolean isValidLastModifiedDate(CaseDetails caseDetails) {
@@ -114,6 +146,17 @@ public class FirstStopReminderNotification implements NotificationStrategy {
                 .map(this::extractCaseStopReason)
                 .anyMatch(reason -> reason != null && CAVEAT_STOP_REASONS.contains(reason));
 
+    }
+
+    boolean isEdgeCase(CaseDetails caseDetails) {
+        final Long caseId = caseDetails.getId();
+        final String caseType = caseDetails.getData().getOrDefault("caseType", "DEFAULTED").toString();
+        if (behaviour == Behaviour.USE_PRED) {
+            log.info("use pred {} isEdgeCase: [{}]", caseId, caseType);
+            return "edgeCase".equals(caseType);
+        }
+        log.info("not use pred {} isEdgeCase: [{}]", caseId, caseType);
+        return false;
     }
 
     private String extractCaseStopReason(Object item) {
