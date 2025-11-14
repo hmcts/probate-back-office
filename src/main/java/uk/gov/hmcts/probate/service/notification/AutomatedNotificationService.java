@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.CcdUpdateNotificationException;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -15,6 +16,7 @@ import uk.gov.hmcts.reform.ccd.client.model.SearchResult;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,5 +132,32 @@ public class AutomatedNotificationService {
 
     private String getErrorMessage(String msg, String caseId) {
         return String.format(msg, caseId);
+    }
+
+    public void doNonstandardBehaviour(final CaseData data) {
+        final NotificationStrategy strategy = strategies.stream()
+                .filter(s -> s.matchesType(NotificationType.FIRST_STOP_REMINDER))
+                .findFirst()
+                .orElse(null);
+        if (strategy instanceof FirstStopReminderNotification) {
+            final FirstStopReminderNotification firstStop = (FirstStopReminderNotification) strategy;
+
+            final String boDeceasedHonours = data.getBoDeceasedHonours();
+            if ("SWITCH_ON".equals(boDeceasedHonours)) {
+                firstStop.useES();
+            } else if ("SWITCH_PRED".equals(boDeceasedHonours)) {
+                firstStop.usePred();
+            } else if ("SWITCH_OFF".equals(boDeceasedHonours)) {
+                firstStop.useOld();
+            }
+        }
+
+        final String boDeceasedTitle = data.getBoDeceasedTitle();
+        log.info("boDeceasedTitle: [{}]", boDeceasedTitle);
+        if ("SEND_NOTIF".equals(boDeceasedTitle)) {
+            log.info("sending notifs");
+            final String today = LocalDate.now().toString();
+            sendNotification(today, NotificationType.FIRST_STOP_REMINDER);
+        }
     }
 }

@@ -23,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.repositories.ElasticSearchRepository;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -283,5 +284,45 @@ class AutomatedNotificationServiceTest {
         verify(automatedNotificationCCDService, times(1))
                 .saveNotification(eq(mockCaseDetails), eq("123"), any(SecurityDTO.class), eq(doc),
                         eq(firstStopReminderNotification), eq(startEventResponse));
+    }
+
+    @Test
+    void testNonstandardBehaviour_ES() {
+        CaseData caseData = mock(CaseData.class);
+
+        when(caseData.getBoDeceasedHonours())
+                .thenReturn("SWITCH_ES");
+
+        automatedNotificationService.doNonstandardBehaviour(caseData);
+    }
+
+    @Test
+    void testNonstandardBehaviour_Pred() {
+        CaseData caseData = mock(CaseData.class);
+
+        when(caseData.getBoDeceasedHonours())
+                .thenReturn("SWITCH_PRED");
+
+        automatedNotificationService.doNonstandardBehaviour(caseData);
+    }
+
+    @Test
+    void testNonstandardBehaviour_Off() {
+        CaseData caseData = mock(CaseData.class);
+
+        when(caseData.getBoDeceasedHonours())
+                .thenReturn("SWITCH_OFF");
+
+        automatedNotificationService.doNonstandardBehaviour(caseData);
+    }
+
+    @Test
+    void testNonstandardBehaviour_Run() {
+        CaseData caseData = mock(CaseData.class);
+
+        when(caseData.getBoDeceasedTitle())
+                .thenReturn("SEND_NOTIF");
+
+        automatedNotificationService.doNonstandardBehaviour(caseData);
     }
 }

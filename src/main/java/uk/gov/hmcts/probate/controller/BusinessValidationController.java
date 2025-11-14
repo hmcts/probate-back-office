@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
+import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -73,6 +74,7 @@ import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -138,6 +140,7 @@ public class BusinessValidationController {
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
     private final DocumentTransformer documentTransformer;
+    private final AutomatedNotificationService automatedNotificationService;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
@@ -750,6 +753,9 @@ public class BusinessValidationController {
     @PostMapping(path = "/setLastModifiedDate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> setLastModifiedDateForDormant(
             @RequestBody CallbackRequest callbackRequest) {
+
+        automatedNotificationService.doNonstandardBehaviour(callbackRequest.getCaseDetails().getData());
+
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }

@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.service.NotificationService.RegistrarEscalationExcep
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
+import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -214,6 +215,8 @@ class BusinessValidationUnitTest {
     private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     @Mock
     private DocumentTransformer documentTransformerMock;
+    @Mock
+    private AutomatedNotificationService automatedNotificationServiceMock;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -260,7 +263,8 @@ class BusinessValidationUnitTest {
             zeroApplyingExecutorsValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
-            documentTransformerMock);
+            documentTransformerMock,
+                automatedNotificationServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
