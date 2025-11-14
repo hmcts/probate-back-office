@@ -237,12 +237,12 @@ withPipeline("java", product, component) {
 
   afterSuccess('functionalTest:preview') {
     if (checkForEnableNightlyLabel(env.BRANCH_NAME)) {
-      env.TEST_E2E_URL = "https://manage-case.demo.platform.hmcts.net"
+      env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
       sh 'yarn install'
       sh 'yarn test:fullfunctional-pr'
     }
     if (checkForEnableCWNightlyLabel(env.BRANCH_NAME)) {
-      env.TEST_E2E_URL = "https://manage-case.demo.platform.hmcts.net"
+      env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
       sh 'yarn install'
       sh 'yarn test:fullfunctional-cw'
     }
