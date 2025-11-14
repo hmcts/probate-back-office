@@ -14,15 +14,17 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -152,5 +154,42 @@ class AutomatedNotificationPersonalisationServiceTest {
                         urlPrefixToPersonalCase + "/get-case/999?probateType=INTESTACY",
                         p.get("link_to_case"))
         );
+    }
+
+    @Test
+    void getStopReasonShouldhandleNulls() {
+        final Map<String, String> reasons = new HashMap<>();
+        reasons.put("R1", "Reason One");
+        reasons.put("DocumentsRequired", "Doc XYZ");
+        reasons.put("SUB_NULL", null);
+        reasons.put("SUB_A", "Sub Reason A");
+        reasons.put("SUB_B", "Sub Reason B");
+        when(stopReasonService.getStopReasonDescription(any(), any()))
+            .thenAnswer(i -> reasons.get(i.getArgument(1, String.class)));
+
+        BiFunction<String, String, CollectionMember<StopReason>> build = (r, s) -> {
+            final StopReason sr = StopReason.builder()
+                    .caseStopReason(r)
+                    .caseStopSubReasonDocRequired(s)
+                    .build();
+            return new CollectionMember<>(sr);
+        };
+        List<CollectionMember<StopReason>> domainList = List.of(
+            build.apply("R1", null),
+            build.apply("DocumentsRequired", "SUB_A"),
+            build.apply("DocumentsRequired", "SUB_NULL"),
+            build.apply("DocumentsRequired", null),
+            build.apply("DocumentsRequired", "SUB_B")
+        );
+
+        assertDoesNotThrow(() -> {
+            String result = underTest.getStopReason(domainList, false);
+            assertEquals(
+                "Reason One\nDoc XYZ\n"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason A\n"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason B\n",
+                result
+            );
+        });
     }
 }

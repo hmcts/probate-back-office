@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.blob.component.BlobUpload;
 import uk.gov.hmcts.probate.exception.ZipFileException;
+import uk.gov.hmcts.probate.model.DataExtractType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
@@ -14,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.zip.ZippedManifestData;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.dataextract.DataExtractStrategy;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 
@@ -72,8 +74,26 @@ public class ZipFileService {
         ADMON_WILL_GRANT_REISSUE, AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE,
         WELSH_INTESTACY_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE};
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/ManifestFileHeaderRow.csv";
+    private static final String ERROR_MASSAGE = "Exception occurred while generating zip file ";
 
-    public void generateZipFile(List<ReturnedCaseDetails> cases, File tempFile, String fromDate) {
+    public File generateZipFile(List<ReturnedCaseDetails> cases, File tempFile, String date, DataExtractType type) {
+        log.info("{} generateZipFile for {} cases", type, cases.size());
+
+        try (final FileOutputStream fos = new FileOutputStream(tempFile);
+             final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
+            getSmeeAndFordCaseData(zipOut, cases, date);
+            zipOut.closeEntry();
+            return tempFile;
+        } catch (Exception e) {
+            log.error(ERROR_MASSAGE, e);
+            throw new ZipFileException(e.getMessage());
+        }
+    }
+
+    public void generateAndUploadZipFile(List<ReturnedCaseDetails> cases,
+                                         File tempFile,
+                                         String fromDate,
+                                         DataExtractStrategy strategy) {
         log.info("Smee And Ford generateZipFile for {} cases", cases.size());
 
         List<ZippedManifestData> manifestDataList = new ArrayList<>();
@@ -90,12 +110,9 @@ public class ZipFileService {
             zipOut.closeEntry();
             zipOut.close();
             fos.close();
-            blobUpload.uploadFile(tempFile);
-        } catch (IOException e) {
-            log.error("Exception occurred while generating zip file ", e);
-            throw new ZipFileException(e.getMessage());
+            strategy.uploadToBlobStorage(tempFile);
         } catch (Exception e) {
-            log.error("Exception occurred while generating zip file ", e);
+            log.error(ERROR_MASSAGE, e);
             throw new ZipFileException(e.getMessage());
         }
     }
@@ -222,13 +239,12 @@ public class ZipFileService {
     }
 
     public File createTempZipFile(String zipName) throws IOException {
-        File file = null;
         if (secureDir == null) {
             secureDir = Paths.get("").toAbsolutePath();
-            file = ResourceUtils.getFile(secureDir + "/" + zipName + ".zip");
-            if (file.exists()) {
-                Files.delete(file.toPath());
-            }
+        }
+        File file = ResourceUtils.getFile(secureDir + "/" + zipName + ".zip");
+        if (file.exists()) {
+            Files.delete(file.toPath());
         }
 
         Path tempFilePath = Files.createTempFile(secureDir, zipName, ".zip");
@@ -236,7 +252,7 @@ public class ZipFileService {
         if (file != null && isRenamed) {
             boolean isReadable = file.setReadable(true, true);
             boolean isWritable = file.setWritable(true, true);
-            log.info("Smee And Ford file: {} and file is isReadable {} and isWritable {}",
+            log.info("File: {} and file is isReadable {} and isWritable {}",
                     file.getPath(), isReadable, isWritable);
             Files.deleteIfExists(tempFilePath);
             return file;
@@ -300,5 +316,4 @@ public class ZipFileService {
         ByteArrayResource byteArrayResource = new ByteArrayResource(data.toString().getBytes(StandardCharsets.UTF_8));
         zipMultipleDocs(zos, byteArrayResource, zippedManifestData.getDocumentName());
     }
-
 }

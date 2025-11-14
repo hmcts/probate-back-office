@@ -123,3 +123,5 @@ java:
           alias: SCHEDULER_CASEWORKER_PASSWORD
         - name: probate-storage-account-primary-connection-string
           alias: PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING
+        - name: probate-storage-account-nfi-primary-connection-string
+          alias: PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING

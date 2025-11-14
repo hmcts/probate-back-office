@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           path: build/branch
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: branch
           path: build/branch/ccdImports/configFiles/*
@@ -25,7 +25,7 @@ jobs:
         with:
           ref: master
           path: build/master
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: master
           path: build/master/ccdImports/configFiles/*
@@ -37,11 +37,11 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: branch
           path: build/branch
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v6
         with:
           name: master
           path: build/master
