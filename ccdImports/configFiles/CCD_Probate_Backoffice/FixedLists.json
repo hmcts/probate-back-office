@@ -195,6 +195,7 @@
   {"LiveFrom": "06/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "other", "ListElement": "Other"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "partner", "ListElement": "Spouse"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "child", "ListElement": "Child"},
+  {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "grandchild", "ListElement": "Grandchild"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "sibling", "ListElement": "Sibling"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "parent", "ListElement": "Parent"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "other", "ListElement": "Other"},
@@ -477,5 +478,8 @@
   {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseQA", "ListElement": "Case selected for QA"},
   {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseStopped", "ListElement": "Case Stopped"},
   {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BORegistrarEscalation", "ListElement": "Registrar Escalation"},
-  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseWorkerEscalation", "ListElement": "SME Referral"}
+  {"LiveFrom": "06/01/2017", "ID": "resolveCaveatStopStateFixedList", "ListElementCode": "BOCaseWorkerEscalation", "ListElement": "SME Referral"},
+  {"LiveFrom": "06/01/2017", "ID": "predeceasedFixedList", "ListElementCode": "YesSome", "ListElement": "Yes, some of them"},
+  {"LiveFrom": "06/01/2017", "ID": "predeceasedFixedList", "ListElementCode": "YesAll", "ListElement": "Yes, all of them"},
+  {"LiveFrom": "06/01/2017", "ID": "predeceasedFixedList", "ListElementCode": "No", "ListElement": "No"}
 ]

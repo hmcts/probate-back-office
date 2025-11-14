@@ -1291,8 +1291,11 @@ public class CallbackResponseTransformer {
             .deceasedOtherChildren(caseData.getDeceasedOtherChildren())
             .allDeceasedChildrenOverEighteen(caseData.getAllDeceasedChildrenOverEighteen())
             .anyDeceasedChildrenDieBeforeDeceased(caseData.getAnyDeceasedChildrenDieBeforeDeceased())
+            .childrenDiedBeforeDeceased(caseData.getChildrenDiedBeforeDeceased())
             .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
             .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
+            .deceasedAnyLivingDescendants(caseData.getDeceasedAnyLivingDescendants())
+            .deceasedAnyOtherParentAlive(caseData.getDeceasedAnyOtherParentAlive())
             .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
             .statementOfTruthDocument(caseData.getStatementOfTruthDocument())
             .amendedLegalStatement(caseData.getAmendedLegalStatement())
@@ -1420,9 +1423,14 @@ public class CallbackResponseTransformer {
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
             .isSaveAndClose(caseData.getIsSaveAndClose())
             .executorsNamed(caseData.getExecutorsNamed())
+            .hasCoApplicant(caseData.getHasCoApplicant())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
-            .evidenceHandledDate(caseData.getEvidenceHandledDate());
+            .evidenceHandledDate(caseData.getEvidenceHandledDate())
+            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
+            .applicantFamilyDetails(caseData.getApplicantFamilyDetails())
+            .grandchildParentOtherChildren(caseData.getGrandchildParentOtherChildren())
+            .grandchildParentChildrenOverEighteen(caseData.getGrandchildParentChildrenOverEighteen());
 
         handleDeceasedAliases(
                 builder,

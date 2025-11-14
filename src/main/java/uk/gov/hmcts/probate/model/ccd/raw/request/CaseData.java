@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.ApplicantFamilyDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
@@ -503,13 +504,19 @@ public class CaseData extends CaseDataParent {
     private final String boGrantReissueSendToBulkPrint = YES;
     private final String boGrantReissueSendToBulkPrintRequested;
     private final String deceasedDivorcedInEnglandOrWales;
+    private final String deceasedDivorcedDateKnown;
     private final String primaryApplicantAdoptionInEnglandOrWales;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
     private final String allDeceasedChildrenOverEighteen;
     private final String anyDeceasedChildrenDieBeforeDeceased;
+    private final String childrenDiedBeforeDeceased;
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
+    private final String grandchildParentOtherChildren;
+    private final String grandchildParentChildrenOverEighteen;
+    private final String deceasedAnyLivingDescendants;
+    private final String deceasedAnyOtherParentAlive;
     private final String deceasedHasAssetsOutsideUK;
     private final String boEmailRequestInfoNotificationRequested;
     @Builder.Default
@@ -633,8 +640,10 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
     private final String executorsNamed;
+    private final String hasCoApplicant;
     private LocalDate firstStopReminderSentDate;
     private final String evidenceHandledDate;
+    private final ApplicantFamilyDetails applicantFamilyDetails;
 
     private TTL ttl;
 
