@@ -17,9 +17,9 @@
 
   "page8_waitForText":"This probate application has now been submitted",
   "page8_applicationFee": "Application fee £300.00",
-  "page8_additionalCopiesFee": "Fee for additional UK copies £1.50",
-  "page8_feeForCertifiedCopies": "Fee for certified copies £3.00",
-  "page8_totalFeeAmount": "Fee amount £304.50",
+  "page8_additionalCopiesFee": "Fee for additional UK copies £16",
+  "page8_feeForCertifiedCopies": "Fee for certified copies £32",
+  "page8_totalFeeAmount": "Fee amount £348",
   "page8_paymentMethod": "Payment method fee account",
   "page8_pBAAccount": "Selected PBA account PBA0082126",
   "page8_customerReference": "Customer application reference E2E PBA Payment Reference",
