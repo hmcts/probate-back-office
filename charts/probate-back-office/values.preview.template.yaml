@@ -81,6 +81,7 @@ ccd:
     java:
       imagePullPolicy: Always
       devcpuRequests: 1
+      image: hmctspublic.azurecr.io/ccd/data-store-api:pr-2677
       autoscaling:
         maxReplicas: 2
       devmemoryRequests: 2Gi
