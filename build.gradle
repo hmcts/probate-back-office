@@ -293,7 +293,7 @@ dependencies {
   testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   testImplementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
-  testImplementation group: 'org.wiremock', name: 'wiremock-standalone', version: '3.13.1'
+  testImplementation group: 'org.wiremock', name: 'wiremock-standalone', version: '3.13.2'
   testImplementation group: 'org.awaitility', name: 'awaitility', version: '4.3.0'
   testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: versions.fortifyClientVersion, classifier: 'all'
   testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
