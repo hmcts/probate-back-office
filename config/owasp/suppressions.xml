@@ -16,4 +16,11 @@
         -->
         <cve>CVE-2025-48924</cve>
     </suppress>
+    <suppress until = "2026-01-13">
+        <!--
+            In Jakarta Mail 2.0.2 it is possible to preform a SMTP Injection by utilizing
+            the \r and \n UTF-8 characters to separate different messages.
+        -->
+        <cve>CVE-2025-7962</cve>
+    </suppress>
 </suppressions>
