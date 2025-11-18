@@ -17,19 +17,15 @@
               "BOCaseStoppedReissue"
             ]
           }
-        },
-        {
-          "bool": {
-            "must_not": {
-              "terms": {
-                "data.caseType.keyword": [
-                  "edgeCase"
-                ]
-              }
-            }
-          }
         }
-      ]
+      ],
+      "must_not": {
+        "terms": {
+          "data.caseType.keyword": [
+            "edgeCase"
+          ]
+        }
+      }
     }
   },
   "size": %s,
