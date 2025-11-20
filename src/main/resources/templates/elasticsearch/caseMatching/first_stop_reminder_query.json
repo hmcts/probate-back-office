@@ -18,6 +18,22 @@
             ]
           }
         }
+      ],
+      "must_not": [
+        {
+          "terms": {
+            "data.caseType.keyword": [
+              "edgeCase"
+            ]
+          }
+        },
+        {
+          "terms": {
+            "data.evidenceHandled": [
+              "No"
+            ]
+          }
+        }
       ]
     }
   },
