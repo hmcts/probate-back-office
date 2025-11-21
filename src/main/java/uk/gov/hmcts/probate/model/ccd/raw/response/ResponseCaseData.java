@@ -239,6 +239,8 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String parentsExistSurvived;
     private final String parentsExistOverEighteenSurvived;
     private final String parentsExistUnderEighteenSurvived;
+    private final String deceasedAnyLivingParents;
+    private final String applicantSameParentsAsDeceased;
     private final String wholeBloodNeicesAndNephews;
     private final String wholeBloodNeicesAndNephewsOverEighteen;
     private final String wholeBloodNeicesAndNephewsUnderEighteen;
@@ -316,7 +318,15 @@ public class ResponseCaseData extends ResponseCaseDataParent {
 
     private final String deceasedDivorcedInEnglandOrWales;
     private final String deceasedDivorcedDateKnown;
+    private final String primaryApplicantAdoptedIn;
     private final String primaryApplicantAdoptionInEnglandOrWales;
+    private final String primaryApplicantAdoptedOut;
+    private final String primaryApplicantParentAdoptedIn;
+    private final String primaryApplicantParentAdoptionInEnglandOrWales;
+    private final String primaryApplicantParentAdoptedOut;
+    private final String deceasedAdoptedIn;
+    private final String deceasedAdoptionInEnglandOrWales;
+    private final String deceasedAdoptedOut;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
     private final String allDeceasedChildrenOverEighteen;
@@ -428,5 +438,9 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String executorsNamed;
     private final String hasCoApplicant;
     private final LocalDate firstStopReminderSentDate;
-    private final ApplicantFamilyDetails applicantFamilyDetails;
+    private final String otherHalfBloodSiblings;
+    private final String halfBloodSiblingsDiedBeforeDeceased;
+    private final String halfBloodNiecesAndNephewsSurvived;
+    private final String halfBloodSiblingsOverEighteen;
+    private final String halfBloodNiecesAndNephewsOverEighteen;
 }
