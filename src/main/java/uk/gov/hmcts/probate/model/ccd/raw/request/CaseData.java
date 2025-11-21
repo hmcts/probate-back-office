@@ -428,8 +428,8 @@ public class CaseData extends CaseDataParent {
     private final String parentsExistSurvived;
     private final String parentsExistOverEighteenSurvived;
     private final String parentsExistUnderEighteenSurvived;
-    private final String anyLivingParents;
-    private final String sameParentsAsDeceased;
+    private final String deceasedAnyLivingParents;
+    private final String applicantSameParentsAsDeceased;
     private final String wholeBloodSiblingsSurvived;
     private final String wholeBloodSiblingsSurvivedOverEighteen;
     private final String wholeBloodSiblingsSurvivedUnderEighteen;

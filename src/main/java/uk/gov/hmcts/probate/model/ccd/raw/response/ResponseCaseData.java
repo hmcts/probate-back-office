@@ -239,8 +239,8 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String parentsExistSurvived;
     private final String parentsExistOverEighteenSurvived;
     private final String parentsExistUnderEighteenSurvived;
-    private final String anyLivingParents;
-    private final String sameParentsAsDeceased;
+    private final String deceasedAnyLivingParents;
+    private final String applicantSameParentsAsDeceased;
     private final String wholeBloodNeicesAndNephews;
     private final String wholeBloodNeicesAndNephewsOverEighteen;
     private final String wholeBloodNeicesAndNephewsUnderEighteen;
