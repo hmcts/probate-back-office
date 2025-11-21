@@ -101,6 +101,8 @@ public class NotificationService {
     private static final String INTESTACY_CASE_TYPE = "intestacy";
     private static final String ADMON_WILL_CASE_TYPE = "admonWill";
     private static final String AD_COLLIGENDA_BONA_CASE_TYPE = "adColligendaBona";
+    private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
+    private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
 
@@ -1070,11 +1072,18 @@ public class NotificationService {
     public Document sendRegistrarEscalationNotification(
             final CaseDetails caseDetails) throws RegistrarEscalationException {
         final CaseData caseData = caseDetails.getData();
+        final String recipientEmail = getEmail(caseData);
+        if (StringUtils.isBlank(recipientEmail)) {
+            // short circuit - we cannot email if no email present
+            log.info("Not sending registrar escalation notification for case {} as recipient email is null",
+                    caseDetails.getId());
+            return null;
+        }
+
         final String templateId = templateService.getRegistrarEscalationNotification(
                 caseData.getApplicationType(),
                 caseData.getLanguagePreference());
 
-        final String recipientEmail = getEmail(caseData);
         final String caseRef = caseDetails.getId().toString();
         final String deceasedName = caseData.getDeceasedFullName();
         final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
@@ -1087,8 +1096,8 @@ public class NotificationService {
         };
 
         final Map<String, Object> personalisation = Map.of(
-                "ccd_reference", caseRef,
-                "deceased_name", deceasedName,
+                PERSONALISATION_CCD_REFERENCE, caseRef,
+                PERSONALISATION_DECEASED_NAME, deceasedName,
                 "deceased_dod", deceasedDiedOn,
                 "deceased_dod_cy", deceasedDiedOnCy,
                 PERSONALISATION_APPLICANT_NAME, addresseeName);
@@ -1147,8 +1156,8 @@ public class NotificationService {
         final String caseworkerName = caseworker.getName();
 
         final Map<String, Object> personalisation = Map.of(
-                "ccd_reference", caseRef,
-                "deceased_name", deceasedName,
+                PERSONALISATION_CCD_REFERENCE, caseRef,
+                PERSONALISATION_DECEASED_NAME, deceasedName,
                 "caseworker_name", caseworkerName);
 
         final SendEmailResponse response;
@@ -1212,11 +1221,18 @@ public class NotificationService {
     public Document sendPostGrantIssuedNotification(final CaseDetails caseDetails) {
 
         final CaseData caseData = caseDetails.getData();
+        final String recipientEmail = getEmail(caseData);
+        if (StringUtils.isBlank(recipientEmail)) {
+            // short circuit - we cannot email if no email present
+            log.info("Not sending post grant issued notification for case {} as recipient email is null",
+                    caseDetails.getId());
+            return null;
+        }
+
         final String templateId = templateService.getPostGrantIssueTemplateId(
                 caseData.getLanguagePreference(),
                 caseData.getApplicationType());
 
-        final String recipientEmail = getEmail(caseData);
         final String caseRef = caseDetails.getId().toString();
         final String deceasedName = caseData.getDeceasedFullName();
         final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
@@ -1244,8 +1260,8 @@ public class NotificationService {
         };
 
         final Map<String, Object> personalisation = Map.of(
-                "ccd_reference", caseRef,
-                "deceased_name", deceasedName,
+                PERSONALISATION_CCD_REFERENCE, caseRef,
+                PERSONALISATION_DECEASED_NAME, deceasedName,
                 "deceased_dod", deceasedDiedOn,
                 "deceased_dod_cy", deceasedDiedOnCy,
                 PERSONALISATION_APPLICANT_NAME, addresseeName,
