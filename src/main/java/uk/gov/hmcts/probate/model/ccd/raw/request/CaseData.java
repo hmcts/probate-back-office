@@ -505,13 +505,26 @@ public class CaseData extends CaseDataParent {
     private final String boGrantReissueSendToBulkPrintRequested;
     private final String deceasedDivorcedInEnglandOrWales;
     private final String deceasedDivorcedDateKnown;
+    private final String primaryApplicantAdoptedIn;
     private final String primaryApplicantAdoptionInEnglandOrWales;
+    private final String primaryApplicantAdoptedOut;
+    private final String primaryApplicantParentAdoptedIn;
+    private final String primaryApplicantParentAdoptionInEnglandOrWales;
+    private final String primaryApplicantParentAdoptedOut;
+    private final String deceasedAdoptedIn;
+    private final String deceasedAdoptionInEnglandOrWales;
+    private final String deceasedAdoptedOut;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
     private final String allDeceasedChildrenOverEighteen;
     private final String anyDeceasedChildrenDieBeforeDeceased;
     private final String childrenDiedBeforeDeceased;
     private final String anyDeceasedGrandChildrenUnderEighteen;
+    private final String otherHalfBloodSiblings;
+    private final String halfBloodSiblingsDiedBeforeDeceased;
+    private final String halfBloodNiecesAndNephewsSurvived;
+    private final String halfBloodSiblingsOverEighteen;
+    private final String halfBloodNiecesAndNephewsOverEighteen;
     private final String deceasedAnyChildren;
     private final String grandchildParentOtherChildren;
     private final String grandchildParentChildrenOverEighteen;
@@ -643,7 +656,7 @@ public class CaseData extends CaseDataParent {
     private final String hasCoApplicant;
     private LocalDate firstStopReminderSentDate;
     private final String evidenceHandledDate;
-    private final ApplicantFamilyDetails applicantFamilyDetails;
+
 
     private TTL ttl;
 
