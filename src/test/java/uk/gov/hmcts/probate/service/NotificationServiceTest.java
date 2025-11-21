@@ -54,9 +54,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasKey;
@@ -64,7 +61,10 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -76,7 +76,6 @@ import static org.mockito.Mockito.when;
 
 
 class NotificationServiceTest {
-
     @Mock
     private EmailAddresses emailAddressesMock;
     @Mock
@@ -86,15 +85,11 @@ class NotificationServiceTest {
     @Mock
     private NotificationClient notificationClientMock;
     @Mock
-    private TemplatePreview templatePreviewMock;
-    @Mock
     private MarkdownTransformationService markdownTransformationServiceMock;
     @Mock
     private PDFManagementService pdfManagementServiceMock;
-
     @Mock
     private AutomatedNotificationPersonalisationService automatedNotificationPersonalisationServiceMock;
-
     @Mock
     private BulkPrintService bulkPrintServiceMock;
     @Mock
@@ -119,8 +114,6 @@ class NotificationServiceTest {
     private DocumentManagementService documentManagementServiceMock;
     @Mock
     private PersonalisationValidationRule personalisationValidationRuleMock;
-    @Mock
-    private SendEmailResponse sendEmailResponseMock;
     @Mock
     private UserInfoService userInfoServiceMock;
     @Mock
@@ -256,6 +249,8 @@ class NotificationServiceTest {
 
         when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
                 .thenReturn(mockResult);
+
+        TemplatePreview templatePreviewMock = mock(TemplatePreview.class);
         when(notificationClientServiceMock.emailPreview(any(), any(), any())).thenReturn(templatePreviewMock);
         when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -401,6 +396,8 @@ class NotificationServiceTest {
         when(grantOfRepresentationPersonalisationServiceMock.getStopResponseReceivedPersonalisation(
                 12345L, "Solicitor Name"))
                 .thenReturn(Map.of("key", "value"));
+
+        SendEmailResponse sendEmailResponseMock = mock(SendEmailResponse.class);
         when(notificationClientServiceMock.sendEmail("template-id",
                 "test@example.com", Map.of("key", "value"), "12345"))
                 .thenReturn(sendEmailResponseMock);
@@ -1411,5 +1408,93 @@ class NotificationServiceTest {
         final String actual = notificationService.getLondonDateTime();
 
         assertEquals(expected, actual, "when instant is 0130 UTC but not in BST, time should be 01:30");
+    }
+  
+    @Test
+    void shouldReturnNullForRegistrarEscalatedWhenApplEmailNull()
+            throws NotificationClientException, RegistrarEscalationException {
+        final String applEmail = null;
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+
+        final Document result = notificationService.sendRegistrarEscalationNotification(caseDetails);
+
+        verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
+        assertThat(result, nullValue());
+    }
+
+    @Test
+    void shouldReturnNullForRegistrarEscalatedWhenApplEmailIsBlank()
+            throws NotificationClientException, RegistrarEscalationException {
+        final String applEmail = " ";
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+
+        final Document result = notificationService.sendRegistrarEscalationNotification(caseDetails);
+
+        verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
+        assertThat(result, nullValue());
+    }
+
+    @Test
+    void shouldReturnNullWhenPostGrantApplicantEmailIsNull() throws NotificationClientException {
+        final String applEmail = null;
+
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
+
+        verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
+        assertThat(result, nullValue());
+    }
+
+    @Test
+    void shouldReturnNullWhenPostGrantApplicantEmailIsBlankString() throws NotificationClientException {
+        final String applEmail = " ";
+
+
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+
+        when(caseData.getApplicationType())
+                .thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getPrimaryApplicantEmailAddress())
+                .thenReturn(applEmail);
+
+        final Document result = notificationService.sendPostGrantIssuedNotification(caseDetails);
+
+        verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
+        assertThat(result, nullValue());
     }
 }
