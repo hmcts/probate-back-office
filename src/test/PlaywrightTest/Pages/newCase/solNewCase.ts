@@ -909,6 +909,7 @@ export class SolCreateCasePage extends BasePage {
       await this.solsAddExecutorFindAddressLocator.click();
       await expect(this.solsAddExecutorAddressListLocator).toBeEnabled();
       await expect(this.solsAddExecutorAddressOptionLocator).toBeEnabled();
+      await expect(this.solsAddExecutorAddressOptionLocator).toBeEnabled();
       // await I.click(`#otherExecutorExists_${grantOfProbateConfig.page4_otherExecutorExists}`);
 
       // await I.waitForText(grantOfProbateConfig.page2_waitForAdditionalExecutor, testConfig.WaitForTextTimeout);
