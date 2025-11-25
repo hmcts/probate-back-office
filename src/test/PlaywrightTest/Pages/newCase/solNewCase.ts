@@ -12,6 +12,7 @@ import completeApplicationConfig from "../solicitorApplyCaveat/completeApplicati
 import applyProbateConfig from "../solicitorApplyProbate/applyProbate/applyProbateConfig.json" with { type: "json" };
 import makePaymentConfig from "../solicitorApplyProbate/makePayment/makePaymentConfig.json" with { type: "json" };
 import grantOfProbateConfig from "../solicitorApplyProbate/grantOfProbate/grantOfProbate.json" with { type: "json" };
+import completeProbateApplicationConfig from "../solicitorApplyProbate/completeApplication/completeApplication.json" with { type: "json" };
 import { BasePage } from "../utility/basePage.ts";
 
 type ServiceRequestTabConfig = typeof serviceRequestTabConfig;
@@ -55,8 +56,7 @@ export class SolCreateCasePage extends BasePage {
     });
     readonly eventHistoryTab = this.page.getByRole("tab", {name: makePaymentConfig.eventHistoryTab,});
     readonly caseProgressTabLocator = this.page.getByRole("tab", {
-      name: makePaymentConfig.caseProgressTab,
-      exact: true,
+      name: makePaymentConfig.caseProgressTab
     });
     readonly postcodeLinkLocator = this.page.getByText(createCaveatConfig.UKpostcodeLink);
     readonly solSignSot = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
@@ -173,6 +173,33 @@ export class SolCreateCasePage extends BasePage {
   readonly solsAddExecutorFindAddressLocator = this.page.locator('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress > div  > div > button');
   readonly solsAddExecutorAddressListLocator = this.page.locator('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList');
   readonly solsAddExecutorAddressOptionLocator = this.page.locator('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList > option:first-child');
+  readonly addExecAddressLocator = this.page.locator(grantOfProbateConfig.page4_postcodeLink)
+  readonly addExecutorAddressLine1Locator = this.page.locator('#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine1');
+  readonly addExecutorAddressLine2Locator = this.page.locator('#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine2');
+  readonly addExecutorAddressLine3Locator = this.page.locator('#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine3');
+  readonly addExecutorPostTownLocator = this.page.locator('#solsAdditionalExecutorList_0_additionalExecAddress__detailPostTown');
+  readonly addExecutorPostCodeLocator = this.page.locator('#solsAdditionalExecutorList_0_additionalExecAddress__detailPostCode');
+  readonly addExecutorCountryLocator = this.page.locator('#solsAdditionalExecutorList_0_additionalExecAddress__detailCountry');
+  readonly otherExecutorNotExistsLocator = this.page.locator(`#otherExecutorExists_${grantOfProbateConfig.optionNo}`);
+  readonly furtherEvidenceLocator = this.page.locator('#furtherEvidenceForApplication');
+  readonly additionalInfoLocator = this.page.locator('#solsAdditionalInfo');
+  readonly sotUpdateRequiredLocator = this.page.locator('#solsSOTNeedToUpdate');
+  readonly sotUpdateNotRequiredLocator = this.page.locator(`#solsSOTNeedToUpdate_${completeProbateApplicationConfig.optionNo}`);
+  readonly reviewLegalStatement1Locator = this.page.locator('#solsReviewLegalStatement1');
+  readonly reviewLegalStatement2Locator = this.page.locator('#solsReviewLegalStatement2');
+  readonly reviewLegalStatement3Locator = this.page.locator('#solsReviewLegalStatement3');
+  readonly reviewLegalStatement4Locator = this.page.locator('#solsReviewLegalStatement4');
+  readonly admonWillLegalStatementLink = this.page.getByText(completeProbateApplicationConfig.page1_AdmonWilllegalStmtLink);
+  readonly intestacyLegalStatementLink = this.page.getByText(completeProbateApplicationConfig.page1_NoWilllegalStmtLink);
+  readonly legalStatementLink = this.page.getByText(completeProbateApplicationConfig.page1_legalStmtLink);
+  readonly completeApplicationWaitForText = this.page.getByRole('heading', { name: completeProbateApplicationConfig.page3_waitForText, exact: true });
+  readonly sotConfirmCheck1Locator = this.page.locator('#solsReviewSOTConfirmCheckbox1-BelieveTrue');
+  readonly sotConfirmCheck2Locator = this.page.locator('#solsReviewSOTConfirmCheckbox2-BelieveTrue');
+  readonly extrCopiesLocator = this.page.locator('#extraCopiesOfGrant');
+  readonly extraCopiesOutsideUKLocator = this.page.locator('#outsideUKGrantCopies');
+  readonly solsPbaPaymentRefLocator = this.page.locator('#solsPBAPaymentReference');
+  readonly serviceRequestTab = this.page.getByRole("tab", { name: makePaymentConfig.paymentTab });
+  readonly reviewLocator = this.page.getByText(makePaymentConfig.reviewLinkText);
 
   constructor(public readonly page: Page) {
     super(page);
@@ -439,7 +466,7 @@ export class SolCreateCasePage extends BasePage {
       // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     }
     if (appType !== "Caveat") {
-      await expect(this.caseProgressTabLocator).toBeEnabled();
+      await expect(this.caseProgressTabLocator).toBeVisible();
       await expect(this.page.getByText(caseRef).first()).toBeVisible();
       await this.caseProgressTabLocator.focus();
       await this.caseProgressTabLocator.click();
@@ -607,24 +634,15 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.ihtGrossValueLocator).toBeVisible();
     await this.ihtGrossValueLocator.fill(ihtGrossValue);
 
-    // await I.waitForElement({css: '#ihtGrossValue'});
-    // await I.fillField({css: '#ihtGrossValue'}, ihtGrossValue);
     if (whichIHTFormsCompleted === 'IHT400') {
       await expect(this.ihtFormNetValueLocator).toBeVisible();
       await this.ihtFormNetValueLocator.fill(ihtNetValue);
-
-      // await I.waitForElement({css: '#ihtFormNetValue'});
-      // await I.fillField({css: '#ihtFormNetValue'}, ihtNetValue);
     } else {
       await expect(this.ihtNetValueLocator).toBeVisible();
       await this.ihtNetValueLocator.fill(ihtNetValue);
-
-      // await I.waitForElement({css: '#ihtNetValue'});
-      // await I.fillField({css: '#ihtNetValue'}, ihtNetValue);
     }
 
     await this.waitForNavigationToComplete();
-    // await I.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async deceasedDetailsPage3(willType = 'WillLeft') {
@@ -632,12 +650,6 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     await this.page.locator(`#solsWillType-${willType}`).click();
     await this.waitForNavigationToComplete();
-
-    // await I.waitForElement('#solsWillType');
-    // await I.runAccessibilityTest();
-    // await I.click(`#solsWillType-${willType}`);
-    //
-    // await I.waitForNavigationToComplete(commonConfig.continueButton, true);
   }
 
   async deceasedDetailsPage4() {
@@ -647,15 +659,6 @@ export class SolCreateCasePage extends BasePage {
     await this.englishWillLocator.click();
     await this.appointExecLocator.click();
     await this.waitForNavigationToComplete();
-
-    // await I.waitForElement('#willDispose');
-    // await I.runAccessibilityTest();
-    //
-    // await I.click(`#willDispose_${deceasedDetailsConfig.optionYes}`);
-    // await I.click(`#englishWill_${deceasedDetailsConfig.optionYes}`);
-    // await I.click(`#appointExec_${deceasedDetailsConfig.optionYes}`);
-    //
-    // await I.waitForNavigationToComplete(commonConfig.continueButton, true);
   }
 
   async grantOfProbatePage1() {
@@ -680,72 +683,24 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.languagePreferenceLabelLocator).toBeVisible();
     await this.languagePreferenceWelshLocator.click();
     await this.waitForNavigationToComplete();
-
-    // await I.waitForElement(`#willHasCodicils_${grantOfProbateConfig.optionYes}`);
-    // await I.runAccessibilityTest();
-
-    // await I.click({css: '#willAccessOriginal_No'});
-    // await I.waitForText(grantOfProbateConfig.page1_noAccessOriginalWillLabel);
-
-    // await I.click({css: `#willAccessOriginal_${grantOfProbateConfig.optionYes}`});
-
-    // await I.fillField({css: '#originalWillSignedDate-day'}, grantOfProbateConfig.page1_originalWillSignedDate_day);
-    // await I.fillField({css: '#originalWillSignedDate-month'}, grantOfProbateConfig.page1_originalWillSignedDate_month);
-    // await I.fillField({css: '#originalWillSignedDate-year'}, grantOfProbateConfig.page1_originalWillSignedDate_year);
-
-    // await I.click({css: `#willHasCodicils_${grantOfProbateConfig.optionYes}`});
-    // const addBtn = {css: '#codicilAddedDateList button'};
-    // await I.waitForVisible(addBtn);
-    // await I.scrollTo(addBtn);
-    // await I.waitForClickable(addBtn);
-    // await I.click(addBtn);
-    /*if (!testConfig.TestAutoDelayEnabled) {
-      await I.wait(testConfig.ManualDelayShort);
-    }*/
-
-
-    // await I.fillField({css: '#dateCodicilAdded-day'}, grantOfProbateConfig.page1_codicilDate_day);
-    // await I.fillField({css: '#dateCodicilAdded-month'}, grantOfProbateConfig.page1_codicilDate_month);
-    // await I.fillField({css: '#dateCodicilAdded-year'}, grantOfProbateConfig.page1_codicilDate_year);
-    // await I.waitForText(grantOfProbateConfig.page1_languagePreferenceLabel);
-    // await I.click({css: `#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`});
-
-    // await I.waitForNavigationToComplete(commonConfig.continueButton, true);
   }
 
   async grantOfProbatePage2(verifyTrustCorpOpts, isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
     await this.runAccessibilityTest();
 
-    // const dispNoticeLocator = {css: `#dispenseWithNotice_${grantOfProbateConfig.page2_dispenseWithNotice}`};
-    /*if (!testConfig.TestAutoDelayEnabled) {
-      await I.wait(testConfig.ManualDelayMedium);
-    }*/
-
     if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {
       await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).toBeVisible();
       await expect(this.page.getByText(grantOfProbateConfig.page2_sol_name)).toBeVisible();
-      // await I.waitForText(grantOfProbateConfig.page2_prev_identified_execs_text);
-      // await I.waitForText(grantOfProbateConfig.page2_sol_name);
     } else {
       await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).not.toBeVisible();
-      // await I.dontSee(grantOfProbateConfig.page2_prev_identified_execs_text);
     }
     await this.dispNoticeLocator.scrollIntoViewIfNeeded();
     await expect(this.dispNoticeLocator).toBeVisible();
     await this.dispNoticeLocator.click();
     await expect(this.tctTypeLocator).toBeVisible();
-    // await I.scrollTo(dispNoticeLocator);
-    // await I.waitForClickable(dispNoticeLocator);
-    // await I.click(dispNoticeLocator);
-    // await I.waitForElement('#titleAndClearingType-TCTNoT', 40);
     if (verifyTrustCorpOpts) {
       await this.verifyTitleAndClearingTypeOptionsPage();
     }
-    // else {
-    //   // await I.wait(2);
-    //   await this.tctTypeLocator.scrollIntoViewIfNeeded();
-    //   // await I.scrollTo({css: '#titleAndClearingType-TCTNoT'});
-    // }
 
     await this.tctTypeLocator.focus();
     await this.tctTypeLocator.click();
@@ -753,7 +708,6 @@ export class SolCreateCasePage extends BasePage {
     await this.tctTrustCorpLocator.click();
     await expect(this.othersRenouncingLocator).toBeVisible();
     await this.othersRenouncingLocator.click();
-    // await this.additionalApplyingPartnersLocator.scrollIntoViewIfNeeded();
     await this.additionalApplyingPartnersLocator.focus();
     await this.additionalApplyingPartnersLocator.click();
     await expect(this.additionalExecutorsLocator).toBeVisible();
@@ -782,50 +736,6 @@ export class SolCreateCasePage extends BasePage {
     await this.addExecutorTcPositionLocator.fill(grantOfProbateConfig.page2_positionInTrustCorp)
     await this.probatePractitionerPositionLocator.fill(grantOfProbateConfig.page2_positionInTrust);
     await this.waitForNavigationToComplete();
-    // await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
-    // await I.click({css: '#titleAndClearingType-TCTNoT'});
-
-    // await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
-    // await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
-
-    // await I.click({css: '#titleAndClearingType-TCTPartOthersRenouncing'});
-
-    // await I.scrollTo({css: '#anyOtherApplyingPartners_Yes'});
-    // await I.click({css: '#anyOtherApplyingPartners_Yes'});
-    // await I.waitForVisible({css: '#otherPartnersApplyingAsExecutors'});
-    // await I.click({css: '#anyOtherApplyingPartners_No'});
-    // await I.waitForInvisible({css: '#otherPartnersApplyingAsExecutors'});
-
-    // await I.scrollTo({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
-    // await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
-
-    // await I.waitForElement('#trustCorpName');
-    // await I.fillField('#trustCorpName', grantOfProbateConfig.page2_nameOfTrustCorp);
-    // await I.click(grantOfProbateConfig.page2_trustCorpPostcodeLink);
-
-    // await I.fillField('#trustCorpAddress__detailAddressLine1', grantOfProbateConfig.address_line1);
-    // await I.fillField('#trustCorpAddress__detailAddressLine2', grantOfProbateConfig.address_line2);
-    // await I.fillField('#trustCorpAddress__detailAddressLine3', grantOfProbateConfig.address_line3);
-    // await I.fillField('#trustCorpAddress__detailPostTown', grantOfProbateConfig.address_town);
-    // await I.fillField('#trustCorpAddress__detailCounty', grantOfProbateConfig.address_county);
-    // await I.fillField('#trustCorpAddress__detailPostCode', grantOfProbateConfig.address_postcode);
-    // await I.fillField('#trustCorpAddress__detailCountry', grantOfProbateConfig.address_country);
-
-    // await I.waitForText(grantOfProbateConfig.page2_waitForAnyOtherTcPartners);
-    // await I.click({css: '#anyOtherApplyingPartnersTrustCorp_Yes'});
-
-    // await I.waitForText(grantOfProbateConfig.page2_waitForAdditionPerson, testConfig.WaitForTextTimeout);
-    // await I.click('#additionalExecutorsTrustCorpList > div > button');
-    // await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecForenames', grantOfProbateConfig.page2_executorFirstName);
-    // if (!testConfig.TestAutoDelayEnabled) {
-    //   await I.wait(testConfig.ManualDelayMedium);
-    // }
-
-    // await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
-    // await I.fillField('#additionalExecutorsTrustCorpList_0_additionalExecutorTrustCorpPosition', grantOfProbateConfig.page2_positionInTrustCorp);
-
-    // await I.fillField('#probatePractitionersPositionInTrust', grantOfProbateConfig.page2_positionInTrust);
-    // await I.waitForNavigationToComplete(commonConfig.continueButton, true);
   }
 
   async verifyTitleAndClearingTypeOptionsPage() {
@@ -841,13 +751,7 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.locator(`#titleAndClearingType-${optName}`)).toBeEnabled();
     await this.page.locator(`#titleAndClearingType-${optName}`).scrollIntoViewIfNeeded();
     await this.page.locator(`#titleAndClearingType-${optName}`).click();
-    // const optLocator = {css: `#titleAndClearingType-${optName}`};
-    // await I.waitForElement(optLocator);
-    // await I.scrollTo(optLocator);
-    // await I.click(optLocator);
-    // if (!testConfig.TestAutoDelayEnabled) {
-    //   await I.wait(testConfig.ManualDelayLong);
-    // }
+
     const isNa = optName === 'TCTNoT';
     const isTrustOption = optName.startsWith('TCTTrustCorp');
     const allRenouncing = optName.endsWith('AllRenouncing');
@@ -856,8 +760,6 @@ export class SolCreateCasePage extends BasePage {
     if (!isNa && !allRenouncing && !isTrustOption && isSuccessorFirm) {
       await expect(this.firmNameWillTextLocator).toBeVisible();
       await this.firmNameInWillLocator.scrollIntoViewIfNeeded();
-      // await I.waitForText('Name of firm named in will');
-      // await I.scrollTo('#nameOfFirmNamedInWill');
     }
   }
 
@@ -870,27 +772,11 @@ export class SolCreateCasePage extends BasePage {
     await this.dispenseWithNoticeOtherExecsListLocator.click();
     await this.dispenseWithNoticeExecutorNotApplyingName.fill(grantOfProbateConfig.page3_dispenseWithNoticeName);
     await this.waitForNavigationToComplete();
-    // await I.waitForEnabled({css: `#dispenseWithNoticeLeaveGiven_${grantOfProbateConfig.page3_dispenseWithNoticeLeaveGiven}`});
-    // await I.runAccessibilityTest();
-    // await I.click(`#dispenseWithNoticeLeaveGiven_${grantOfProbateConfig.page3_dispenseWithNoticeLeaveGiven}`);
-
-    // await I.fillField('#dispenseWithNoticeOverview', grantOfProbateConfig.page3_dispenseWithNoticeOverview);
-    // await I.fillField('#dispenseWithNoticeSupportingDocs', grantOfProbateConfig.page3_dispenseWithNoticeSupportingDocs);
-
-    // await I.click('#dispenseWithNoticeOtherExecsList > div > button');
-    // await I.fillField('#dispenseWithNoticeOtherExecsList_0_notApplyingExecutorName', grantOfProbateConfig.page3_dispenseWithNoticeName);
-
-    // await I.waitForNavigationToComplete(commonConfig.continueButton, true);
   }
 
   async grantOfProbatePage4(isSolicitorApplying = false) {
-    // readonly postcodeLinkLocator = this.page.getByText(createCaveatConfig.UKpostcodeLink);
-    // readonly solSignSot = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
-
     await expect(this.otherExecutorExistsLocator).toBeEnabled();
     await this.runAccessibilityTest();
-    // await I.waitForElement('#otherExecutorExists');
-    // await I.runAccessibilityTest();
 
     if (isSolicitorApplying) {
       await this.otherExecutorExistsValueLocator.click();
@@ -909,61 +795,127 @@ export class SolCreateCasePage extends BasePage {
       await this.solsAddExecutorFindAddressLocator.click();
       await expect(this.solsAddExecutorAddressListLocator).toBeEnabled();
       await expect(this.solsAddExecutorAddressOptionLocator).toBeEnabled();
-      await expect(this.solsAddExecutorAddressOptionLocator).toBeEnabled();
-      // await I.click(`#otherExecutorExists_${grantOfProbateConfig.page4_otherExecutorExists}`);
 
-      // await I.waitForText(grantOfProbateConfig.page2_waitForAdditionalExecutor, testConfig.WaitForTextTimeout);
-
-      // await I.waitForText(grantOfProbateConfig.page4_previouslyIdentifiedApplyingExecutors, testConfig.WaitForTextTimeout);
-      // await I.waitForText(grantOfProbateConfig.page4_previouslyIdentifiedNotApplyingExecutors, testConfig.WaitForTextTimeout);
-
-      // await I.click('#solsAdditionalExecutorList > div > button');
-
-      // await I.fillField('#solsAdditionalExecutorList_0_additionalExecForenames', grantOfProbateConfig.page2_executorFirstName);
-
-      // if (!testConfig.TestAutoDelayEnabled) {
-      //   // only valid for local dev where we need it to run as fast as poss to minimise
-      //   // lost dev time
-      //   await I.wait(testConfig.ManualDelayMedium);
-      // }
-
-      // await I.fillField('#solsAdditionalExecutorList_0_additionalExecLastname', grantOfProbateConfig.page2_executorSurname);
-      // await I.click(`#solsAdditionalExecutorList_0_additionalExecNameOnWill_${grantOfProbateConfig.optionYes}`);
-      // await I.waitForVisible('#solsAdditionalExecutorList_0_additionalExecAliasNameOnWill', testConfig.WaitForTextTimeout);
-      // await I.fillField('#solsAdditionalExecutorList_0_additionalExecAliasNameOnWill', grantOfProbateConfig.page2_executorAliasName);
-
-      // await I.click({css: '#solsAdditionalExecutorList_0_additionalApplying_Yes'});
-
-      // await I.waitForElement('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_postcodeInput', testConfig.WaitForTextTimeout);
-      // await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_postcodeInput', grantOfProbateConfig.page2_executorPostcode);
-      // await I.click('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress > div  > div > button');
-
-      // await I.waitForElement('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList', testConfig.WaitForTextTimeout);
-      // const optLocator = {css: '#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList > option:first-child'};
-      // await I.waitForElement(optLocator, testConfig.WaitForTextTimeout);
-      const optText = await I.grabTextFrom(optLocator);
-      if (optText.indexOf(grantOfProbateConfig.noAddressFound) >= 0) {
-        const addExecAddrLocator = {css: grantOfProbateConfig.page4_postcodeLink};
-        await I.waitForElement(addExecAddrLocator);
-        await I.waitForClickable(addExecAddrLocator);
-        await I.click(addExecAddrLocator);
-        await I.waitForVisible({css: '#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine1'});
-        await I.fillField({css: '#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine1'}, grantOfProbateConfig.page2_executorAddress_line1);
-        await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine2', grantOfProbateConfig.page2_executorAddress_line2);
-        await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress__detailAddressLine3', grantOfProbateConfig.page2_executorAddress_line3);
-        await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress__detailPostTown', grantOfProbateConfig.page2_executorAddress_town);
-        await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress__detailPostCode', grantOfProbateConfig.page2_executorPostcode);
-        await I.fillField('#solsAdditionalExecutorList_0_additionalExecAddress__detailCountry', grantOfProbateConfig.page2_executorAddress_country);
+      const optText = await this.solsAddExecutorAddressOptionLocator.textContent();
+      if (optText && optText.indexOf(grantOfProbateConfig.noAddressFound) >= 0) {
+        await expect(this.addExecAddressLocator).toBeVisible();
+        await this.addExecAddressLocator.focus();
+        await this.addExecAddressLocator.click();
+        await expect(this.addExecutorAddressLine1Locator).toBeVisible();
+        await this.addExecutorAddressLine1Locator.fill(grantOfProbateConfig.page2_executorAddress_line1);
+        await this.addExecutorAddressLine2Locator.fill(grantOfProbateConfig.page2_executorAddress_line2);
+        await this.addExecutorAddressLine3Locator.fill(grantOfProbateConfig.page2_executorAddress_line3);
+        await this.addExecutorPostTownLocator.fill(grantOfProbateConfig.page2_executorAddress_town);
+        await this.addExecutorPostCodeLocator.fill(grantOfProbateConfig.page2_executorPostcode);
+        await this.addExecutorCountryLocator.fill(grantOfProbateConfig.page2_executorAddress_country);
       } else {
-        await I.retry(10).selectOption('#solsAdditionalExecutorList_0_additionalExecAddress_additionalExecAddress_addressList', grantOfProbateConfig.page2_executorAddress);
+        await this.solsAddExecutorAddressListLocator.click();
       }
 
     } else {
+      await this.otherExecutorNotExistsLocator.click();
+    }
+    await this.waitForNavigationToComplete();
+  }
 
-      await I.click(`#otherExecutorExists_${grantOfProbateConfig.optionNo}`);
+  async grantOfProbatePage5() {
+    await expect(this.furtherEvidenceLocator).toBeVisible();
+    await this.runAccessibilityTest();
+    await this.furtherEvidenceLocator.fill(grantOfProbateConfig.page5_applicationNotes);
+    await this.waitForNavigationToComplete();
+  }
 
+  async grantOfProbatePage6() {
+    await expect(this.additionalInfoLocator).toBeVisible();
+    await this.runAccessibilityTest();
+    await this.additionalInfoLocator.fill(grantOfProbateConfig.page5_applicationNotes);
+    await this.waitForNavigationToComplete();
+  }
+
+  async completeApplicationPage1(willType = 'WillLeft') {
+    await expect(this.sotUpdateRequiredLocator).toBeVisible();
+    await expect(this.reviewLegalStatement1Locator).toBeVisible();
+    await expect(this.reviewLegalStatement2Locator).toBeVisible();
+    await expect(this.reviewLegalStatement3Locator).toBeVisible();
+    await expect(this.reviewLegalStatement4Locator).toBeVisible();
+    await this.runAccessibilityTest();
+    if (willType === 'WillLeftAnnexed') {
+      await expect(this.admonWillLegalStatementLink).toBeVisible();
+    } else if (willType === 'NoWill') {
+      await expect(this.intestacyLegalStatementLink).toBeVisible();
+    } else {
+      await expect(this.legalStatementLink).toBeVisible();
     }
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
+    await this.sotUpdateNotRequiredLocator.click();
+    await this.waitForSubmitNavigationToComplete(commonConfig.submitButton);
   }
+
+  async completeApplicationPage3() {
+    await expect(this.completeApplicationWaitForText).toBeVisible();
+    await this.runAccessibilityTest();
+    await this.waitForNavigationToComplete();
+  }
+
+  async completeApplicationPage4() {
+    await this.runAccessibilityTest();
+    await this.sotConfirmCheck1Locator.scrollIntoViewIfNeeded();
+    await this.sotConfirmCheck1Locator.click();
+    await this.sotConfirmCheck2Locator.click();
+    await this.runAccessibilityTest();
+    await this.waitForNavigationToComplete();
+  }
+
+  async completeApplicationPage5() {
+    await expect(this.extrCopiesLocator).toBeVisible();
+
+    /*****Need to uncomment this accessibility test after fixing the bug in exui ******/
+    // await this.runAccessibilityTest();
+    await this.extrCopiesLocator.fill(completeProbateApplicationConfig.page5_extraCopiesUK);
+    await this.extraCopiesOutsideUKLocator.fill(completeProbateApplicationConfig.page5_outsideUKGrantCopies);
+    await this.waitForNavigationToComplete();
+  }
+
+  async completeApplicationPage6() {
+    await expect(this.solsPbaPaymentRefLocator).toBeVisible();
+    await this.runAccessibilityTest();
+    await this.solsPbaPaymentRefLocator.fill(completeProbateApplicationConfig.page6_paymentReference);
+    await this.waitForSubmitNavigationToComplete(commonConfig.submitButton);
+  }
+
+  async completeApplicationPage7() {
+    await expect(this.page.getByText(completeProbateApplicationConfig.page7_waitForText)).toBeVisible();
+    await this.runAccessibilityTest();
+    await this.waitForSubmitNavigationToComplete("Save or Submit Application");
+  }
+
+  async completeApplicationPage8() {
+    await expect(this.page.getByText(completeProbateApplicationConfig.page8_waitForText)).toBeVisible();
+    await this.runAccessibilityTest();
+    await expect(this.page.getByText(completeProbateApplicationConfig.page8_applicationFee)).toBeVisible();
+    await expect(this.page.getByText(completeProbateApplicationConfig.page8_additionalCopiesFee)).toBeVisible();
+    await expect(this.page.getByText(completeProbateApplicationConfig.page8_feeForCertifiedCopies)).toBeVisible();
+    await expect(this.page.getByText(completeProbateApplicationConfig.page8_totalFeeAmount)).toBeVisible();
+    await expect(this.page.getByText(completeProbateApplicationConfig.page8_customerReference)).toBeVisible();
+    await this.waitForSubmitNavigationToComplete("Close and return to case details");
+  }
+
+  async makePaymentPage1(caseRef, serviceRequestTabConfig) {
+    await expect(this.page.getByRole('heading', { name: caseRef })).toBeVisible();
+    await expect(this.page.getByRole('link', { name: makePaymentConfig.paymentLinkText })).toBeVisible();
+    await this.page.getByRole('link', { name: makePaymentConfig.paymentLinkText }).click();
+    await expect(this.serviceRequestTab).toBeEnabled();
+    await this.serviceRequestTab.focus();
+    await this.serviceRequestTab.click();
+    await this.runAccessibilityTest();
+    for (let i = 0; i < serviceRequestTabConfig.fields.length; i++) {
+      if (serviceRequestTabConfig.fields[i] && serviceRequestTabConfig.fields[i] !== '') {
+        await expect(this.page.getByText(serviceRequestTabConfig.fields[i])).toBeVisible(); // eslint-disable-line no-await-in-loop
+      }
+    }
+
+    await expect(this.reviewLocator).toBeVisible();
+    await this.reviewLocator.click();
+  }
+
 };
