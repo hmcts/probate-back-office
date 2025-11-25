@@ -51,9 +51,12 @@ test.describe("Solicitor - Apply Grant of probate", () => {
   nextStepName = 'Deceased details';
   endState = 'Grant of probate created';
   await cwEventActionsPage.chooseNextStep(nextStepName);
-  await solCreateCasePage.deceasedDetailsPage1();
-  await solCreateCasePage.deceasedDetailsPage2('MultiExec');
-  await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
+  // @ts-ignore
+      await solCreateCasePage.deceasedDetailsPage1();
+  // @ts-ignore
+      await solCreateCasePage.deceasedDetailsPage2('MultiExec');
+  // @ts-ignore
+      await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
   await solCreateCasePage.deceasedDetailsPage3();
   await solCreateCasePage.deceasedDetailsPage4();
   await solCreateCasePage.cyaPage();
@@ -82,7 +85,7 @@ test.describe("Solicitor - Apply Grant of probate", () => {
   const gopDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...gopConfig};
   await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabDeceasedDtlsConfig, gopDtlsAndDcsdDtls);
   await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabGopConfig, gopDtlsAndDcsdDtls);
-  await basePage.seeUpdatesOnCase(testInfo, caseRef, caseDetailsTabUpdatesConfig, willType, gopDtlsAndDcsdDtls, true);
+  await basePage.seeUpdatesOnCase(testInfo, caseRef, caseDetailsTabUpdatesConfig, willType, gopDtlsAndDcsdDtls, "true");
   await basePage.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
 
   await basePage.seeUpdatesOnCase(testInfo, caseRef, applicantDetailsTabConfig, 'ApplicantAndAdditionalExecutorInfo', gopConfig);
@@ -104,7 +107,8 @@ test.describe("Solicitor - Apply Grant of probate", () => {
   await solCreateCasePage.makePaymentPage1(caseRef, serviceRequestTabConfig);
   await solCreateCasePage.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
   await solCreateCasePage.makePaymentPage2(caseRef);
-  await solCreateCasePage.viewPaymentStatus(testInfo, caseRef);
+  // @ts-ignore
+      await solCreateCasePage.viewPaymentStatus(testInfo, caseRef);
 
   await solCreateCasePage.seeEndState(endState);
   await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
