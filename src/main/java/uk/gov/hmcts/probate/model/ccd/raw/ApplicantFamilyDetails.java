@@ -17,6 +17,13 @@ public class ApplicantFamilyDetails {
     private final String grandchildAdoptedIn;
     private final String grandchildAdoptionInEnglandOrWales;
     private final String grandchildAdoptedOut;
+    private final String wholeBloodSiblingAdoptedIn;
+    private final String wholeBloodSiblingAdoptionInEnglandOrWales;
+    private final String wholeBloodSiblingAdoptedOut;
+    private final String wholeBloodSiblingDiedBeforeDeceased;
+    private final String wholeBloodNieceOrNephewAdoptedIn;
+    private final String wholeBloodNieceOrNephewAdoptionInEnglandOrWales;
+    private final String wholeBloodNieceOrNephewAdoptedOut;
     private final String halfBloodSiblingAdoptedIn;
     private final String halfBloodSiblingAdoptionInEnglandOrWales;
     private final String halfBloodSiblingAdoptedOut;
