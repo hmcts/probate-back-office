@@ -181,7 +181,7 @@ def versions = [
         springBootVersion               : '3.5.7',
         springCloud                     : '4.3.0',
         springDocOpenUi                 : '2.8.14',
-        swaggerAnnotations              : '2.2.40',
+        swaggerAnnotations              : '2.2.41',
         springSecurityVersion           : '6.5.7',
         tomcat                          : '10.1.49'
 ]
