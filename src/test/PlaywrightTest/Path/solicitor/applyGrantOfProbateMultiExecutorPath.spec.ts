@@ -1,7 +1,5 @@
-import dateFns from "date-fns";
 import { test } from "../../Fixtures/fixtures.ts";
 
-import { testConfig } from "../../Configs/config.ts";
 import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 
 import applyProbateConfig from "../../Pages/solicitorApplyProbate/applyProbate/applyProbateConfig.json" with { type: "json" };
@@ -74,8 +72,8 @@ test.describe("Solicitor - Apply Grant of probate", () => {
   await solCreateCasePage.grantOfProbatePage2(false, true, true);
   await solCreateCasePage.grantOfProbatePage3();
   await solCreateCasePage.grantOfProbatePage4();
-  await I.grantOfProbatePage5();
-  await I.grantOfProbatePage6();
+  await solCreateCasePage.grantOfProbatePage5();
+  await solCreateCasePage.grantOfProbatePage6();
   await solCreateCasePage.cyaPage();
 
   await solCreateCasePage.seeEndState(endState);
@@ -92,26 +90,26 @@ test.describe("Solicitor - Apply Grant of probate", () => {
 
   nextStepName = 'Complete application';
   endState = 'Awaiting documentation';
-  await I.logInfo(scenarioName, nextStepName, caseRef);
-  await I.chooseNextStep(nextStepName);
-  await I.completeApplicationPage1();
-  await I.completeApplicationPage3();
-  await I.completeApplicationPage4();
-  await I.completeApplicationPage5();
-  await I.completeApplicationPage6();
-  await I.completeApplicationPage7();
-  await I.completeApplicationPage8();
+  await basePage.logInfo(scenarioName, nextStepName, caseRef);
+  await cwEventActionsPage.chooseNextStep(nextStepName);
+  await solCreateCasePage.completeApplicationPage1();
+  await solCreateCasePage.completeApplicationPage3();
+  await solCreateCasePage.completeApplicationPage4();
+  await solCreateCasePage.completeApplicationPage5();
+  await solCreateCasePage.completeApplicationPage6();
+  await solCreateCasePage.completeApplicationPage7();
+  await solCreateCasePage.completeApplicationPage8();
 
-  await I.logInfo(scenarioName, 'Payment');
-  await I.makePaymentPage1(caseRef, serviceRequestTabConfig);
-  await I.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
-  await I.makePaymentPage2(caseRef);
-  await I.viewPaymentStatus(caseRef);
+  await basePage.logInfo(scenarioName, 'Payment', caseRef);
+  await solCreateCasePage.makePaymentPage1(caseRef, serviceRequestTabConfig);
+  await solCreateCasePage.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
+  await solCreateCasePage.makePaymentPage2(caseRef);
+  await solCreateCasePage.viewPaymentStatus(testInfo, caseRef);
 
-  await I.seeEndState(endState);
-  await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
-  await I.seeCaseDetails(caseRef, copiesTabConfig, completeApplicationConfig);
-  await I.seeCaseDetails(caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
+  await solCreateCasePage.seeEndState(endState);
+  await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
+  await basePage.seeCaseDetails(testInfo, caseRef, copiesTabConfig, completeApplicationConfig);
+  await basePage.seeCaseDetails(testInfo, caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
 
   });
 });

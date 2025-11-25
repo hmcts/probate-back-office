@@ -12,6 +12,12 @@ export class BasePage {
   readonly saveAndContinueButtonLocator = this.page.getByRole("button", {
     name: "Save and continue",
   });
+  readonly saveOrSubmitButtonLocator = this.page.getByRole("button", {
+    name: "Save or Submit application",
+  });
+  readonly closeAndReturnToCaseButtonLocator = this.page.getByRole("button", {
+    name: "Close and Return to case details",
+  });
   readonly submitButtonLocator = this.page.getByRole("button", {
     name: "Submit",
   });
@@ -78,6 +84,14 @@ export class BasePage {
       await expect(this.saveAndContinueButtonLocator).toBeVisible();
       await expect(this.saveAndContinueButtonLocator).toBeEnabled();
       await this.saveAndContinueButtonLocator.click();
+    } else if (buttonName === "Save or Submit Application") {
+      await expect(this.saveOrSubmitButtonLocator).toBeVisible();
+      await expect(this.saveOrSubmitButtonLocator).toBeEnabled();
+      await this.saveOrSubmitButtonLocator.click();
+    } else if (buttonName === "Close and return to case details") {
+      await expect(this.closeAndReturnToCaseButtonLocator).toBeVisible();
+      await expect(this.closeAndReturnToCaseButtonLocator).toBeEnabled();
+      await this.closeAndReturnToCaseButtonLocator.click();
     } else {
       await expect(this.submitButtonLocator).toBeVisible();
       await expect(this.submitButtonLocator).toBeEnabled();
@@ -169,7 +183,8 @@ export class BasePage {
       } else if (
         endState === "Caveat created" ||
         nextStep === "Apply for probate" ||
-        endState === "Grant of probate created"
+        endState === "Grant of probate created" ||
+        nextStep === "Grant of probate details"
       ) {
         await expect(
           this.page.getByRole("cell", { name: endState, exact: true })
