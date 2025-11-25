@@ -34,8 +34,8 @@ test.describe("Solicitor - Apply Grant of probate", () => {
       await basePage.logInfo(scenarioName, 'Login as Solicitor', null);
       await signInPage.authenticateWithIdamIfAvailable(true);
 
-  let nextStepName = 'Deceased details';
-  let endState = 'Application created';
+  let nextStepName = 'Apply for probate';
+  let endState = 'Application created (deceased details)';
   await createCasePage.selectNewCase();
   await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
   await solCreateCasePage.applyForProbatePage1();
@@ -50,44 +50,45 @@ test.describe("Solicitor - Apply Grant of probate", () => {
   await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
   await basePage.seeCaseDetails(testInfo, caseRef, applicantDetailsTabConfig, applyProbateConfig);
 
+  nextStepName = 'Deceased details';
   endState = 'Grant of probate created';
   await cwEventActionsPage.chooseNextStep(nextStepName);
   await solCreateCasePage.deceasedDetailsPage1();
   await solCreateCasePage.deceasedDetailsPage2('MultiExec');
-  await I.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
-  await I.deceasedDetailsPage3();
-  await I.deceasedDetailsPage4();
+  await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
+  await solCreateCasePage.deceasedDetailsPage3();
+  await solCreateCasePage.deceasedDetailsPage4();
   await solCreateCasePage.cyaPage();
 
-  await I.seeEndState(endState);
-  await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
-  await I.seeCaseDetails(caseRef, deceasedTabConfig, deceasedDetailsConfig);
-  await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
-  await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
+  await solCreateCasePage.seeEndState(endState);
+  await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
+  await basePage.seeCaseDetails(testInfo, caseRef, deceasedTabConfig, deceasedDetailsConfig);
+  await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
+  await basePage.seeUpdatesOnCase(testInfo, caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
 
   nextStepName = 'Grant of probate details';
   endState = 'Application updated';
-  await I.logInfo(scenarioName, nextStepName, caseRef);
-  await I.chooseNextStep(nextStepName);
-  await I.grantOfProbatePage1();
-  await I.grantOfProbatePage2(false, true, true);
-  await I.grantOfProbatePage3();
-  await I.grantOfProbatePage4();
+  await basePage.logInfo(scenarioName, nextStepName, caseRef);
+  await cwEventActionsPage.chooseNextStep(nextStepName);
+  await solCreateCasePage.grantOfProbatePage1();
+  await solCreateCasePage.grantOfProbatePage2(false, true, true);
+  await solCreateCasePage.grantOfProbatePage3();
+  await solCreateCasePage.grantOfProbatePage4();
   await I.grantOfProbatePage5();
   await I.grantOfProbatePage6();
-  await I.cyaPage();
+  await solCreateCasePage.cyaPage();
 
-  await I.seeEndState(endState);
-  await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
+  await solCreateCasePage.seeEndState(endState);
+  await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
 
   const gopDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...gopConfig};
-  await I.seeCaseDetails(caseRef, caseDetailsTabDeceasedDtlsConfig, gopDtlsAndDcsdDtls);
-  await I.seeCaseDetails(caseRef, caseDetailsTabGopConfig, gopDtlsAndDcsdDtls);
-  await I.seeUpdatesOnCase(caseRef, caseDetailsTabUpdatesConfig, willType, gopDtlsAndDcsdDtls, true);
-  await I.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
+  await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabDeceasedDtlsConfig, gopDtlsAndDcsdDtls);
+  await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabGopConfig, gopDtlsAndDcsdDtls);
+  await basePage.seeUpdatesOnCase(testInfo, caseRef, caseDetailsTabUpdatesConfig, willType, gopDtlsAndDcsdDtls, true);
+  await basePage.dontSeeCaseDetails(caseDetailsTabDeceasedDtlsConfig.fieldsNotPresent);
 
-  await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'ApplicantAndAdditionalExecutorInfo', gopConfig);
-  await I.seeCaseDetails(caseRef, sotTabConfig, completeApplicationConfig);
+  await basePage.seeUpdatesOnCase(testInfo, caseRef, applicantDetailsTabConfig, 'ApplicantAndAdditionalExecutorInfo', gopConfig);
+  await basePage.seeCaseDetails(testInfo, caseRef, sotTabConfig, completeApplicationConfig);
 
   nextStepName = 'Complete application';
   endState = 'Awaiting documentation';
