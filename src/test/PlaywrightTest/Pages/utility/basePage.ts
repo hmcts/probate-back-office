@@ -150,7 +150,9 @@ export class BasePage {
         endState === "Caveat created" ||
         nextStep === "Apply for probate" ||
         endState === "Grant of probate created" ||
-        nextStep === "Grant of probate details"
+        nextStep === "Grant of probate details" ||
+        nextStep === "Deceased details" ||
+        nextStep === "Intestacy details"
       ) {
         await expect(
           this.page.getByRole("cell", { name: endState, exact: true })
