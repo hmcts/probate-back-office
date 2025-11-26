@@ -102,7 +102,7 @@ export class SolCreateCasePage extends BasePage {
   readonly ihtEstateNetValueLocator = this.page.locator('#ihtEstateNetValue');
   readonly ihtEstateNetQualifyingValueLocator = this.page.locator('#ihtEstateNetQualifyingValue');
   readonly deceasedLateSpouseLocator = this.page.locator(`#deceasedHadLateSpouseOrCivilPartner_${deceasedDetailsConfig.optionYes}`);
-  readonly ihtUnusedAllowanceLocator = this.page.locator(`#unusedAllowanceQuestion_${deceasedDetailsConfig.optionYes}`);
+  readonly ihtUnusedAllowanceLocator = this.page.locator(`#ihtUnusedAllowanceClaimed_${deceasedDetailsConfig.optionYes}`);
   readonly formIdMultiLocator = this.page.locator(`#ihtFormId-${deceasedDetailsConfig.page2_IHTOptionMulti}`);
   readonly nilBandRateLocator = this.page.getByText(deceasedDetailsConfig.page2_NilRateBandLabel);
   readonly iht217OptionLocator = this.page.locator(`#iht217_${deceasedDetailsConfig.optionYes}`);
@@ -201,6 +201,18 @@ export class SolCreateCasePage extends BasePage {
   readonly solsPbaPaymentRefLocator = this.page.locator('#solsPBAPaymentReference');
   readonly serviceRequestTab = this.page.getByRole("tab", { name: makePaymentConfig.paymentTab });
   readonly reviewLocator = this.page.getByText(makePaymentConfig.reviewLinkText);
+  readonly primaryApplicantForenameLocator = this.page.locator('#primaryApplicantForenames');
+  readonly primaryApplicantSurnameLocator = this.page.locator('#primaryApplicantSurname');
+  readonly primaryApplicantAddressLine1 = this.page.locator('#primaryApplicantAddress__detailAddressLine1');
+  readonly primaryApplicantAddressLine2 = this.page.locator('#primaryApplicantAddress__detailAddressLine2');
+  readonly primaryApplicantAddressLine3 = this.page.locator('#primaryApplicantAddress__detailAddressLine3');
+  readonly primaryApplicantPostTown = this.page.locator('#primaryApplicantAddress__detailPostTown');
+  readonly primaryApplicantCounty = this.page.locator('#primaryApplicantAddress__detailCounty');
+  readonly primaryApplicantPostcode = this.page.locator('#primaryApplicantAddress__detailPostCode');
+  readonly primaryApplicantCountry = this.page.locator('#primaryApplicantAddress__detailCountry');
+  readonly primaryApplicantPhoneNumber = this.page.locator('#primaryApplicantPhoneNumber');
+  readonly primaryApplicantEmail = this.page.locator('#primaryApplicantEmailAddress');
+  readonly languageLocator = this.page.locator(`#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`);
 
   constructor(public readonly page: Page) {
     super(page);
@@ -617,6 +629,8 @@ export class SolCreateCasePage extends BasePage {
         await this.waitForNavigationToComplete(commonConfig.continueButton);
 
         await this.deceasedLateSpouseLocator.click();
+        await expect(this.ihtUnusedAllowanceLocator).toBeVisible();
+        await this.ihtUnusedAllowanceLocator.focus();
         await this.ihtUnusedAllowanceLocator.click();
       }
     } else if (applicationType === 'MultiExec') {
@@ -920,26 +934,47 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async intestacyDetailsPage1() {
-    await I.waitForElement('#primaryApplicantForenames');
-    await I.runAccessibilityTest();
+    await expect(this.primaryApplicantForenameLocator).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.primaryApplicantForenameLocator.fill(intestacyDetailsConfig.applicant_firstname);
+    await this.primaryApplicantSurnameLocator.fill(intestacyDetailsConfig.applicant_lastname);
+    await this.page.locator(intestacyDetailsConfig.UKpostcodeLink).click();
+    await this.primaryApplicantAddressLine1.fill(intestacyDetailsConfig.address_line1);
+    await this.primaryApplicantAddressLine2.fill(intestacyDetailsConfig.address_line2);
+    await this.primaryApplicantAddressLine3.fill(intestacyDetailsConfig.address_line3);
+    await this.primaryApplicantPostTown.fill(intestacyDetailsConfig.address_town);
+    await this.primaryApplicantCounty.fill(intestacyDetailsConfig.address_county);
+    await this.primaryApplicantPostcode.fill(intestacyDetailsConfig.address_postcode);
+    await this.primaryApplicantCountry.fill(intestacyDetailsConfig.address_country);
+    await this.primaryApplicantPhoneNumber.fill(intestacyDetailsConfig.applicant_phone);
+    await this.primaryApplicantEmail.fill(intestacyDetailsConfig.applicant_email);
+    await this.languageLocator.focus();
+    await this.languageLocator.click();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
 
-    await I.fillField('#primaryApplicantForenames', intestacyDetailsConfig.applicant_firstname);
-    await I.fillField('#primaryApplicantSurname', intestacyDetailsConfig.applicant_lastname);
-    await I.click(intestacyDetailsConfig.UKpostcodeLink);
+  async intestacyDetailsPage2() {
+    await expect(this.page.locator('#solsMinorityInterest')).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.page.locator(`#solsApplicantRelationshipToDeceased-${intestacyDetailsConfig.page2_child}`).click();
+    await this.page.locator(`#solsApplicantSiblings_${intestacyDetailsConfig.optionNo}`).click();
+    await this.page.locator(`#deceasedMaritalStatus-${intestacyDetailsConfig.page2_maritalstatus}`).click();
+    await this.page.locator(`#solsMinorityInterest_${intestacyDetailsConfig.optionNo}`).click();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
 
-    await I.fillField('#primaryApplicantAddress__detailAddressLine1', intestacyDetailsConfig.address_line1);
-    await I.fillField('#primaryApplicantAddress__detailAddressLine2', intestacyDetailsConfig.address_line2);
-    await I.fillField('#primaryApplicantAddress__detailAddressLine3', intestacyDetailsConfig.address_line3);
-    await I.fillField('#primaryApplicantAddress__detailPostTown', intestacyDetailsConfig.address_town);
-    await I.fillField('#primaryApplicantAddress__detailCounty', intestacyDetailsConfig.address_county);
-    await I.fillField('#primaryApplicantAddress__detailPostCode', intestacyDetailsConfig.address_postcode);
-    await I.fillField('#primaryApplicantAddress__detailCountry', intestacyDetailsConfig.address_country);
+  async intestacyDetailsPage3() {
+    await expect(this.page.locator('#furtherEvidenceForApplication')).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.page.locator('#furtherEvidenceForApplication').fill(intestacyDetailsConfig.page3_applicationNotes);
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
 
-    await I.fillField('#primaryApplicantPhoneNumber', intestacyDetailsConfig.applicant_phone);
-    await I.fillField('#primaryApplicantEmailAddress', intestacyDetailsConfig.applicant_email);
-    await I.click({css: `#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`});
-
-    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
+  async intestacyDetailsPage4() {
+    await expect(this.page.locator('#solsAdditionalInfo')).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.page.locator('#solsAdditionalInfo').fill(intestacyDetailsConfig.page3_applicationNotes);
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
 };
