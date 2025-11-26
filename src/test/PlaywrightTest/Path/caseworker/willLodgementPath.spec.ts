@@ -60,7 +60,7 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
       unique_deceased_user
     );
     await createCasePage.enterWillLodgementPage3("create");
-    await createCasePage.checkMyAnswers(nextStepName, "Save and continue");
+    await createCasePage.checkMyAnswers(nextStepName);
 
     // SECOND case - the main test case
 
@@ -76,7 +76,7 @@ test.describe("Caseworker Will Lodgement - Withdraw will", () => {
       unique_deceased_user
     );
     await createCasePage.enterWillLodgementPage3("create");
-    await createCasePage.checkMyAnswers(nextStepName, "Save and continue");
+    await createCasePage.checkMyAnswers(nextStepName);
     let endState = "Will lodgement created";
 
     const caseRef = await basePage.getCaseRefFromUrl();
