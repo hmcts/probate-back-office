@@ -6,18 +6,6 @@ export class BasePage {
   readonly rejectLocator = this.page.getByRole("button", {
     name: "Reject analytics cookies",
   });
-  readonly continueButtonLocator = this.page.getByRole("button", {
-    name: "Continue",
-  });
-  readonly saveAndContinueButtonLocator = this.page.getByRole("button", {
-    name: "Save and continue",
-  });
-  readonly saveOrSubmitButtonLocator = this.page.getByRole("button", {
-    name: "Save or Submit application",
-  });
-  readonly closeAndReturnToCaseButtonLocator = this.page.getByRole("button", {
-    name: "Close and Return to case details",
-  });
   readonly submitButtonLocator = this.page.getByRole("button", {
     name: "Submit",
   });
@@ -70,33 +58,11 @@ export class BasePage {
       .join("-");
   }
 
-  async waitForNavigationToComplete() {
+  async waitForNavigationToComplete(buttonLocator) {
     const navigationPromise = this.page.waitForNavigation();
-    await expect(this.continueButtonLocator).toBeVisible();
-    await expect(this.continueButtonLocator).toBeEnabled();
-    await this.continueButtonLocator.click();
-    await navigationPromise;
-  }
-
-  async waitForSubmitNavigationToComplete(buttonName: string) {
-    const navigationPromise = this.page.waitForNavigation();
-    if (buttonName === "Save and continue") {
-      await expect(this.saveAndContinueButtonLocator).toBeVisible();
-      await expect(this.saveAndContinueButtonLocator).toBeEnabled();
-      await this.saveAndContinueButtonLocator.click();
-    } else if (buttonName === "Save or Submit Application") {
-      await expect(this.saveOrSubmitButtonLocator).toBeVisible();
-      await expect(this.saveOrSubmitButtonLocator).toBeEnabled();
-      await this.saveOrSubmitButtonLocator.click();
-    } else if (buttonName === "Close and return to case details") {
-      await expect(this.closeAndReturnToCaseButtonLocator).toBeVisible();
-      await expect(this.closeAndReturnToCaseButtonLocator).toBeEnabled();
-      await this.closeAndReturnToCaseButtonLocator.click();
-    } else {
-      await expect(this.submitButtonLocator).toBeVisible();
-      await expect(this.submitButtonLocator).toBeEnabled();
-      await this.submitButtonLocator.click();
-    }
+    await expect(this.page.locator(buttonLocator)).toBeVisible();
+    await expect(this.page.locator(buttonLocator)).toBeEnabled();
+    await this.page.locator(buttonLocator).click();
     await navigationPromise;
   }
 
