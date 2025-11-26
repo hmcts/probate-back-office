@@ -151,9 +151,11 @@ export class CwEventActionsPage extends BasePage {
       }
     });
     if (nextStepName === "Match application") {
-      await this.waitForNavigationToComplete();
+      await this.waitForNavigationToComplete(commonConfig.continueButton);
     } else {
-      await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+      await expect(this.submitButtonLocator).toBeVisible();
+      await expect(this.submitButtonLocator).toBeEnabled();
+      await this.submitButtonLocator.click();
     }
 
     if (skipMatchingInfo) {
@@ -161,7 +163,7 @@ export class CwEventActionsPage extends BasePage {
       if (!testConfig.TestAutoDelayEnabled) {
         await this.page.waitForTimeout(testConfig.ManualDelayShort);
       }
-      await this.waitForNavigationToComplete();
+      await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
     await this.page.waitForTimeout(testConfig.CaseMatchesCompletionDelay);
   }
@@ -217,7 +219,9 @@ export class CwEventActionsPage extends BasePage {
         break;
       }
     }
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await expect(this.submitButtonLocator).toBeVisible();
+    await expect(this.submitButtonLocator).toBeEnabled();
+    await this.submitButtonLocator.click();
     await this.page.waitForTimeout(testConfig.CaseMatchesCompletionDelay);
   }
 
@@ -271,7 +275,7 @@ export class CwEventActionsPage extends BasePage {
     await this.descriptionLocator.fill(
       eventSummaryPrefix + eventSummaryConfig.comment
     );
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async uploadDocument(caseRef: string, documentUploadConfig: DocumentUploadConfig) {
@@ -360,7 +364,7 @@ export class CwEventActionsPage extends BasePage {
     ).toHaveValue(documentUploadConfig.comment);
     // small delay to allow hidden vars to be set
     await this.page.waitForTimeout(testConfig.DocumentUploadDelay);
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async uploadLegalStatement(caseRef: string, documentUploadConfig: LegalDocumentUploadConfig) {
@@ -390,7 +394,7 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.emailLocator).toBeEnabled();
     await this.emailLocator.fill(emailCaveatorConfig.email_message_content);
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async reopenCaveat(caseRef: string) {
@@ -400,7 +404,7 @@ export class CwEventActionsPage extends BasePage {
     await this.caveatReopenReasonLocator.fill(
       reopenCaveatConfig.reopen_caveat_reason
     );
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async withdrawCaveatPage1() {
@@ -411,7 +415,7 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.bulkPrintTextLocator).toBeVisible();
     await this.bulkPrintOptionLocator.focus();
     await this.bulkPrintOptionLocator.check();
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async registrarsDecision(caseRef: string) {
@@ -426,7 +430,7 @@ export class CwEventActionsPage extends BasePage {
       registrarsDecisionConfig.furtherInformation
     );
 
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async handleEvidence(caseRef: string, handled: string = "No") {
@@ -441,7 +445,7 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.handleEvideChkBoxLocator).toBeEnabled();
     await handleEvidenceChkBoxOptionLocator.isChecked();
     await this.handleEvideChkBoxLocator.click();
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async caseProgressStopEscalateIssueAddCaseStoppedReason() {
@@ -452,14 +456,14 @@ export class CwEventActionsPage extends BasePage {
     await this.caseStopReasonLocator.selectOption({
       label: `${createCaseConfig.stopReason}`,
     });
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async chooseResolveStop(resolveStop: string) {
     await expect(this.resolveStopLocator).toBeEnabled();
     await this.resolveStopLocator.selectOption({ label: `${resolveStop}` });
     await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async issueGrant(caseRef: string) {
@@ -470,7 +474,7 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.emailGrantIssueNotificationLocator).toBeEnabled();
     await this.emailGrantIssueNotificationLocator.click();
     await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async enterNewDob(updatedDoB: string) {
@@ -480,7 +484,7 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.newDobLocator).toBeEnabled();
     await this.newDobLocator.fill(updatedDoB);
     await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async chooseNewState(newState: string) {
@@ -490,7 +494,7 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.newStateLocator).toBeEnabled();
     await this.newStateLocator.selectOption({ label: `${newState}` });
     await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async selectWithdrawalReason(caseRef: string, withdrawalConfig: WithdrawalConfig) {
@@ -501,13 +505,6 @@ export class CwEventActionsPage extends BasePage {
     await this.willWithdrawReasonLocator.selectOption({
       label: `${withdrawalConfig.list1_text}`,
     });
-    await this.waitForNavigationToComplete();
-    // await I.waitForText(withdrawalConfig.waitForText, testConfig.WaitForTextTimeout);
-
-    // await I.see(caseRef);
-
-    // await I.selectOption('#withdrawalReason', withdrawalConfig.list1_text);
-
-    // await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 }

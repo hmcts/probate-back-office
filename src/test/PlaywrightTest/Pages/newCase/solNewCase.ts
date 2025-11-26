@@ -13,6 +13,7 @@ import applyProbateConfig from "../solicitorApplyProbate/applyProbate/applyProba
 import makePaymentConfig from "../solicitorApplyProbate/makePayment/makePaymentConfig.json" with { type: "json" };
 import grantOfProbateConfig from "../solicitorApplyProbate/grantOfProbate/grantOfProbate.json" with { type: "json" };
 import completeProbateApplicationConfig from "../solicitorApplyProbate/completeApplication/completeApplication.json" with { type: "json" };
+import intestacyDetailsConfig from "../solicitorApplyProbate/intestacyDetails/intestacyDetails.json" with { type: "json" };
 import { BasePage } from "../utility/basePage.ts";
 
 type ServiceRequestTabConfig = typeof serviceRequestTabConfig;
@@ -37,33 +38,33 @@ export class SolCreateCasePage extends BasePage {
   readonly deceasedAddressPostCodeLocator = this.page.locator("#deceasedAddress__detailPostCode");
   readonly deceasedAddressCountryLocator = this.page.locator("#deceasedAddress__detailCountry");
   readonly completeApplicationSubmitButton = this.page.getByRole("button", {name: "Close and return to case details",});
-    readonly serviceRequestTabLocator = this.page.getByRole("tab", {name: makePaymentConfig.paymentTab,});
-    readonly reviewLinkLocator = this.page.getByText(makePaymentConfig.reviewLinkText);
-    readonly backToServiceRequestLocator = this.page.getByRole("link", {
-      name: makePaymentConfig.backToPaymentLinkText,
-      exact: true,
-    });
-    readonly payNowLinkLocator = this.page.getByRole("link", {
-      name: makePaymentConfig.payNowLinkText,
-      exact: true,
-    });
-    readonly pbaOptionLocator = this.page.locator("#pbaAccount");
-    readonly pbaAccountNumberLocator = this.page.locator("#pbaAccountNumber");
-    readonly confirmPaymentButton = this.page.getByRole("button", {name: "Confirm payment",});
-    readonly serviceRequestLinkLocator = this.page.getByRole("link", {
-      name: makePaymentConfig.serviceRequestLink,
-      exact: true,
-    });
-    readonly eventHistoryTab = this.page.getByRole("tab", {name: makePaymentConfig.eventHistoryTab,});
-    readonly caseProgressTabLocator = this.page.getByRole("tab", {
-      name: makePaymentConfig.caseProgressTab
-    });
-    readonly postcodeLinkLocator = this.page.getByText(createCaveatConfig.UKpostcodeLink);
-    readonly solSignSot = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
-    readonly solsStartPageLocator = this.page.locator('#solsStartPage');
-    readonly solsApplyPageLocator = this.page.locator('#solsApplyPage');
-    readonly solsPageSubHeading = this.page.getByText(applyProbateConfig.page2_subheading);
-    readonly solsHelp = this.page.getByText(applyProbateConfig.page2_probatePractionerHelp);
+  readonly serviceRequestTabLocator = this.page.getByRole("tab", {name: makePaymentConfig.paymentTab,});
+  readonly reviewLinkLocator = this.page.getByText(makePaymentConfig.reviewLinkText);
+  readonly backToServiceRequestLocator = this.page.getByRole("link", {
+    name: makePaymentConfig.backToPaymentLinkText,
+    exact: true,
+  });
+  readonly payNowLinkLocator = this.page.getByRole("link", {
+    name: makePaymentConfig.payNowLinkText,
+    exact: true,
+  });
+  readonly pbaOptionLocator = this.page.locator("#pbaAccount");
+  readonly pbaAccountNumberLocator = this.page.locator("#pbaAccountNumber");
+  readonly confirmPaymentButton = this.page.getByRole("button", {name: "Confirm payment",});
+  readonly serviceRequestLinkLocator = this.page.getByRole("link", {
+    name: makePaymentConfig.serviceRequestLink,
+    exact: true,
+  });
+  readonly eventHistoryTab = this.page.getByRole("tab", {name: makePaymentConfig.eventHistoryTab,});
+  readonly caseProgressTabLocator = this.page.getByRole("tab", {
+    name: makePaymentConfig.caseProgressTab
+  });
+  readonly postcodeLinkLocator = this.page.getByText(createCaveatConfig.UKpostcodeLink);
+  readonly solSignSot = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
+  readonly solsStartPageLocator = this.page.locator('#solsStartPage');
+  readonly solsApplyPageLocator = this.page.locator('#solsApplyPage');
+  readonly solsPageSubHeading = this.page.getByText(applyProbateConfig.page2_subheading);
+  readonly solsHelp = this.page.getByText(applyProbateConfig.page2_probatePractionerHelp);
   readonly solForenameLocator = this.page.locator('#solsForenames');
   readonly solSurnameLocator = this.page.locator('#solsSurname');
   readonly solSotForenameLocator = this.page.locator('#solsSOTForenames');
@@ -208,7 +209,7 @@ export class SolCreateCasePage extends BasePage {
   async applyCaveatPage1() {
     await expect(this.page.locator("#solsCaveatEligibility")).toBeVisible();
     await this.runAccessibilityTest();
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async applyCaveatPage2() {
@@ -248,13 +249,13 @@ export class SolCreateCasePage extends BasePage {
     await this.page
       .locator("#solsSolicitorPhoneNumber")
       .fill(applyCaveatConfig.page2_phone_num);
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async cyaPage() {
     await expect(this.page.getByText("Check your answers")).toBeVisible();
     await this.runAccessibilityTest();
-    await this.waitForSubmitNavigationToComplete("Save and continue");
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async seeEndState(endState: string) {
@@ -273,7 +274,7 @@ export class SolCreateCasePage extends BasePage {
     await this.page
       .locator("#caveatorSurname")
       .fill(applicationDetailsConfig.page1_caveator_surname);
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async caveatApplicationDetailsPage2() {
@@ -327,7 +328,7 @@ export class SolCreateCasePage extends BasePage {
     await this.deceasedAddressCountyLocator.fill(applicationDetailsConfig.address_county);
     await this.deceasedAddressPostCodeLocator.fill(applicationDetailsConfig.address_postcode);
     await this.deceasedAddressCountryLocator.fill(applicationDetailsConfig.address_country);
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async completeCaveatApplicationPage1() {
@@ -338,7 +339,7 @@ export class SolCreateCasePage extends BasePage {
     await this.page
       .locator("input#paymentConfirmCheckbox-paymentAcknowledgement")
       .click();
-    await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async completeCaveatApplicationPage2(caseRef: string) {
@@ -499,7 +500,7 @@ export class SolCreateCasePage extends BasePage {
   async applyForProbatePage1() {
     await expect(this.solsStartPageLocator).toBeVisible();
     await this.runAccessibilityTest();
-    await this.waitForSubmitNavigationToComplete("Save and continue");
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async applyForProbatePage2(isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
@@ -549,7 +550,7 @@ export class SolCreateCasePage extends BasePage {
     await this.solsPhoneLocator.fill(applyProbateConfig.page2_phone_num);
     await this.solsAppReferenceLocator.fill(applyProbateConfig.page2_app_ref);
 
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async deceasedDetailsPage1(deathTypeDate) {
@@ -584,7 +585,7 @@ export class SolCreateCasePage extends BasePage {
     await this.deceasedAddressPostCodeLocator.fill(deceasedDetailsConfig.address_postcode);
     await this.deceasedAddressCountryLocator.fill(deceasedDetailsConfig.address_country);
     await this.deceasedNoAliasNamesLocator.click();
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async deceasedDetailsPage2(applicationType, iHTFormsCompleted, whichIHTFormsCompleted) {
@@ -613,7 +614,7 @@ export class SolCreateCasePage extends BasePage {
         await this.ihtEstateGrossValueLocator.fill(deceasedDetailsConfig.page2_grossValueIHTEstate);
         await this.ihtEstateNetValueLocator.fill(deceasedDetailsConfig.page2_netValueIHTEstate);
         await this.ihtEstateNetQualifyingValueLocator.fill(deceasedDetailsConfig.page2_netQualifyingValueIHTEstate);
-        await this.waitForNavigationToComplete();
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
 
         await this.deceasedLateSpouseLocator.click();
         await this.ihtUnusedAllowanceLocator.click();
@@ -626,7 +627,7 @@ export class SolCreateCasePage extends BasePage {
       await this.formIdLocator.click();
     }
 
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async provideIhtValues(ihtGrossValue, ihtNetValue, whichIHTFormsCompleted) {
@@ -642,14 +643,14 @@ export class SolCreateCasePage extends BasePage {
       await this.ihtNetValueLocator.fill(ihtNetValue);
     }
 
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async deceasedDetailsPage3(willType = 'WillLeft') {
     await expect(this.solsWillTypeLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator(`#solsWillType-${willType}`).click();
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async deceasedDetailsPage4() {
@@ -658,7 +659,7 @@ export class SolCreateCasePage extends BasePage {
     await this.willDisposeOptionLocator.click();
     await this.englishWillLocator.click();
     await this.appointExecLocator.click();
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async grantOfProbatePage1() {
@@ -682,7 +683,7 @@ export class SolCreateCasePage extends BasePage {
     await this.codiilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
     await expect(this.languagePreferenceLabelLocator).toBeVisible();
     await this.languagePreferenceWelshLocator.click();
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async grantOfProbatePage2(verifyTrustCorpOpts, isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
@@ -735,7 +736,7 @@ export class SolCreateCasePage extends BasePage {
     await this.addExecutorLastnameLocator.fill(grantOfProbateConfig.page2_executorSurname);
     await this.addExecutorTcPositionLocator.fill(grantOfProbateConfig.page2_positionInTrustCorp)
     await this.probatePractitionerPositionLocator.fill(grantOfProbateConfig.page2_positionInTrust);
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async verifyTitleAndClearingTypeOptionsPage() {
@@ -771,7 +772,7 @@ export class SolCreateCasePage extends BasePage {
     await this.dispenseWithNoticeSupportingDocsLocator.fill(grantOfProbateConfig.page3_dispenseWithNoticeSupportingDocs);
     await this.dispenseWithNoticeOtherExecsListLocator.click();
     await this.dispenseWithNoticeExecutorNotApplyingName.fill(grantOfProbateConfig.page3_dispenseWithNoticeName);
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async grantOfProbatePage4(isSolicitorApplying = false) {
@@ -815,21 +816,21 @@ export class SolCreateCasePage extends BasePage {
     } else {
       await this.otherExecutorNotExistsLocator.click();
     }
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async grantOfProbatePage5() {
     await expect(this.furtherEvidenceLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.furtherEvidenceLocator.fill(grantOfProbateConfig.page5_applicationNotes);
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async grantOfProbatePage6() {
     await expect(this.additionalInfoLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.additionalInfoLocator.fill(grantOfProbateConfig.page5_applicationNotes);
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async completeApplicationPage1(willType = 'WillLeft') {
@@ -848,13 +849,13 @@ export class SolCreateCasePage extends BasePage {
     }
 
     await this.sotUpdateNotRequiredLocator.click();
-    await this.waitForSubmitNavigationToComplete(commonConfig.submitButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async completeApplicationPage3() {
     await expect(this.completeApplicationWaitForText).toBeVisible();
     await this.runAccessibilityTest();
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async completeApplicationPage4() {
@@ -863,7 +864,7 @@ export class SolCreateCasePage extends BasePage {
     await this.sotConfirmCheck1Locator.click();
     await this.sotConfirmCheck2Locator.click();
     await this.runAccessibilityTest();
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async completeApplicationPage5() {
@@ -873,20 +874,20 @@ export class SolCreateCasePage extends BasePage {
     // await this.runAccessibilityTest();
     await this.extrCopiesLocator.fill(completeProbateApplicationConfig.page5_extraCopiesUK);
     await this.extraCopiesOutsideUKLocator.fill(completeProbateApplicationConfig.page5_outsideUKGrantCopies);
-    await this.waitForNavigationToComplete();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async completeApplicationPage6() {
     await expect(this.solsPbaPaymentRefLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.solsPbaPaymentRefLocator.fill(completeProbateApplicationConfig.page6_paymentReference);
-    await this.waitForSubmitNavigationToComplete(commonConfig.submitButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async completeApplicationPage7() {
     await expect(this.page.getByText(completeProbateApplicationConfig.page7_waitForText)).toBeVisible();
     await this.runAccessibilityTest();
-    await this.waitForSubmitNavigationToComplete("Save or Submit Application");
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async completeApplicationPage8() {
@@ -897,7 +898,7 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.getByText(completeProbateApplicationConfig.page8_feeForCertifiedCopies)).toBeVisible();
     await expect(this.page.getByText(completeProbateApplicationConfig.page8_totalFeeAmount)).toBeVisible();
     await expect(this.page.getByText(completeProbateApplicationConfig.page8_customerReference)).toBeVisible();
-    await this.waitForSubmitNavigationToComplete("Close and return to case details");
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async makePaymentPage1(caseRef, serviceRequestTabConfig) {
@@ -916,6 +917,29 @@ export class SolCreateCasePage extends BasePage {
 
     await expect(this.reviewLocator).toBeVisible();
     await this.reviewLocator.click();
+  }
+
+  async intestacyDetailsPage1() {
+    await I.waitForElement('#primaryApplicantForenames');
+    await I.runAccessibilityTest();
+
+    await I.fillField('#primaryApplicantForenames', intestacyDetailsConfig.applicant_firstname);
+    await I.fillField('#primaryApplicantSurname', intestacyDetailsConfig.applicant_lastname);
+    await I.click(intestacyDetailsConfig.UKpostcodeLink);
+
+    await I.fillField('#primaryApplicantAddress__detailAddressLine1', intestacyDetailsConfig.address_line1);
+    await I.fillField('#primaryApplicantAddress__detailAddressLine2', intestacyDetailsConfig.address_line2);
+    await I.fillField('#primaryApplicantAddress__detailAddressLine3', intestacyDetailsConfig.address_line3);
+    await I.fillField('#primaryApplicantAddress__detailPostTown', intestacyDetailsConfig.address_town);
+    await I.fillField('#primaryApplicantAddress__detailCounty', intestacyDetailsConfig.address_county);
+    await I.fillField('#primaryApplicantAddress__detailPostCode', intestacyDetailsConfig.address_postcode);
+    await I.fillField('#primaryApplicantAddress__detailCountry', intestacyDetailsConfig.address_country);
+
+    await I.fillField('#primaryApplicantPhoneNumber', intestacyDetailsConfig.applicant_phone);
+    await I.fillField('#primaryApplicantEmailAddress', intestacyDetailsConfig.applicant_email);
+    await I.click({css: `#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`});
+
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
   }
 
 };
