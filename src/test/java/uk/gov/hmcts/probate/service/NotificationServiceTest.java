@@ -43,7 +43,10 @@ import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -123,6 +126,8 @@ class NotificationServiceTest {
     private EmailValidationService emailValidationServiceMock;
     @Mock
     private LocalDateToWelshStringConverter localDateToWelshStringConverterMock;
+    @Mock
+    private Clock clockMock;
 
     private NotificationService notificationService;
 
@@ -158,7 +163,11 @@ class NotificationServiceTest {
                 userInfoServiceMock,
                 objectMapperMock,
                 emailValidationServiceMock,
-                localDateToWelshStringConverterMock);
+                localDateToWelshStringConverterMock,
+                clockMock);
+
+        when(clockMock.instant()).thenReturn(Instant.now());
+        when(clockMock.getZone()).thenReturn(ZoneId.of("Europe/London"));
     }
 
     @AfterEach
@@ -1293,6 +1302,114 @@ class NotificationServiceTest {
                 .generateAndUpload(any(SentEmail.class), any());
     }
 
+    @Test
+    void sentOnShouldBeInLondonTimezone() throws NotificationClientException {
+        final String cwEmail = "caseworker@example.com";
+        final String cwName = "Caseworker Name";
+        final String decName = "Deceased Name";
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = mock(CaseDetails.class);
+        final UserInfo userInfoMock = mock(UserInfo.class);
+        final Optional<UserInfo> caseworkerInfo = Optional.of(userInfoMock);
+
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetails.getId()).thenReturn(1L);
+        when(caseData.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(caseData.getDeceasedFullName()).thenReturn(decName);
+        when(userInfoMock.getSub()).thenReturn(cwEmail);
+        when(userInfoMock.getName()).thenReturn(cwName);
+        when(caseData.getSolsSolicitorEmail()).thenReturn(cwEmail);
+        when(caseData.getSolsSOTName()).thenReturn(cwName);
+
+        final Clock fixedClock = Clock.fixed(
+                Instant.parse("2025-10-26T00:30:00Z"),
+                ZoneId.of("UTC"));
+        when(clockMock.instant()).thenReturn(fixedClock.instant());
+        when(clockMock.getZone()).thenReturn(fixedClock.getZone());
+
+        DocumentType docType = DocumentType.SENT_EMAIL;
+        final SendEmailResponse sendEmailResponse = mock(SendEmailResponse.class);
+        when(sendEmailResponse.getFromEmail()).thenReturn(Optional.empty());
+        when(notificationClientServiceMock.sendEmail(any(),any(),any(),any())).thenReturn(sendEmailResponse);
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), eq(docType)))
+                .thenReturn(Document.builder().documentFileName("test.pdf").build());
+
+        notificationService.sendRegistrarEscalationNotificationFailed(caseDetails, caseworkerInfo);
+
+        // this is acting as a proxy for being able to verify that we call getLondonDateTime()
+        // we could in theory pull that out into its own service, but we have so many tiny services
+        // none of which get any reuse
+        verify(clockMock).instant();
+        verify(clockMock).getZone();
+
+        ArgumentCaptor<SentEmail> sentEmailCaptor = ArgumentCaptor.forClass(SentEmail.class);
+        verify(pdfManagementServiceMock).generateAndUpload(sentEmailCaptor.capture(), eq(docType));
+        String sentOn = sentEmailCaptor.getValue().getSentOn();
+
+        assertNotNull(sentOn, "sentOn should not be null");
+        assertEquals("26 Oct 2025 01:30", sentOn, "when instant is 0030 UTC but in BST, time should be 01:30");
+    }
+
+    @Test
+    void sentOnShouldBeInGMTTimezoneWhenGMTAppliesStart() throws NotificationClientException {
+        final Clock fixedClock = Clock.fixed(
+                Instant.parse("2025-03-30T00:30:00Z"),
+                ZoneId.of("UTC"));
+        when(clockMock.instant()).thenReturn(fixedClock.instant());
+        when(clockMock.getZone()).thenReturn(fixedClock.getZone());
+
+        final String expected = "30 Mar 2025 00:30"; // GMT
+
+        final String actual = notificationService.getLondonDateTime();
+
+        assertEquals(expected, actual, "when instant is 0030 UTC but not in BST, time should be 00:30");
+    }
+
+    @Test
+    void sentOnShouldBeInBSTTimezoneWhenBSTAppliesStart() throws NotificationClientException {
+        final Clock fixedClock = Clock.fixed(
+                Instant.parse("2025-03-30T01:30:00Z"),
+                ZoneId.of("UTC"));
+        when(clockMock.instant()).thenReturn(fixedClock.instant());
+        when(clockMock.getZone()).thenReturn(fixedClock.getZone());
+
+        final String expected = "30 Mar 2025 02:30"; // BST
+
+        final String actual = notificationService.getLondonDateTime();
+
+        assertEquals(expected, actual, "when instant is 0130 UTC but in BST, time should be 02:30");
+    }
+
+    @Test
+    void sentOnShouldBeInBSTTimezoneWhenBSTAppliesEnd() throws NotificationClientException {
+        final Clock fixedClock = Clock.fixed(
+                Instant.parse("2025-10-26T00:30:00Z"),
+                ZoneId.of("UTC"));
+        when(clockMock.instant()).thenReturn(fixedClock.instant());
+        when(clockMock.getZone()).thenReturn(fixedClock.getZone());
+
+        final String expected = "26 Oct 2025 01:30"; // BST
+
+        final String actual = notificationService.getLondonDateTime();
+
+        assertEquals(expected, actual, "when instant is 0030 UTC but in BST, time should be 01:30");
+    }
+
+    @Test
+    void sentOnShouldBeInGMTTimezoneWhenGMTAppliesEnd() throws NotificationClientException {
+        final Clock fixedClock = Clock.fixed(
+                Instant.parse("2025-10-26T01:30:00Z"),
+                ZoneId.of("UTC"));
+        when(clockMock.instant()).thenReturn(fixedClock.instant());
+        when(clockMock.getZone()).thenReturn(fixedClock.getZone());
+
+        final String expected = "26 Oct 2025 01:30"; // UTC
+
+        final String actual = notificationService.getLondonDateTime();
+
+        assertEquals(expected, actual, "when instant is 0130 UTC but not in BST, time should be 01:30");
+    }
+  
     @Test
     void shouldReturnNullForRegistrarEscalatedWhenApplEmailNull()
             throws NotificationClientException, RegistrarEscalationException {
