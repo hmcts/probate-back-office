@@ -89,8 +89,8 @@ export class SolCreateCasePage extends BasePage {
   readonly solsAppReferenceLocator = this.page.locator('#solsSolicitorAppReference');
   readonly ihtFormEstateValueCompleted = this.page.locator(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionYes}`);
   readonly ihtFormsLabelLocator = this.page.getByText(deceasedDetailsConfig.page2_whichIHTFormsLabel);
-  readonly iht207Locator = this.page.getByText(deceasedDetailsConfig.page2_IHT207Label);
-  readonly iht400Locator = this.page.getByText(deceasedDetailsConfig.page2_IHT400Label);
+  readonly iht207Locator = this.page.locator('#ihtFormEstate').getByText(deceasedDetailsConfig.page2_IHT207Label);
+  readonly iht400Locator = this.page.locator('#ihtFormEstate').getByText(deceasedDetailsConfig.page2_IHT400Label, { exact: true });
   readonly iht207OptionLocator = this.page.locator(`#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE207}`);
   readonly iht400OptionLocator = this.page.locator(`#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400}`);
   readonly iht400421OptionLocator = this.page.locator(`#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400421}`);
@@ -161,9 +161,9 @@ export class SolCreateCasePage extends BasePage {
   readonly dispenseWithNoticeExecutorNotApplyingName = this.page.locator('#dispenseWithNoticeOtherExecsList_0_notApplyingExecutorName');
   readonly otherExecutorExistsLocator = this.page.locator('#otherExecutorExists');
   readonly otherExecutorExistsValueLocator = this.page.locator(`#otherExecutorExists_${grantOfProbateConfig.page4_otherExecutorExists}`);
-  readonly additionalExecutorTextLocator = this.page.getByText(grantOfProbateConfig.page2_waitForAdditionalExecutor);
+  readonly additionalExecutorTextLocator = this.page.getByRole('heading', { name: grantOfProbateConfig.page2_waitForAdditionalExecutor, exact: true });
   readonly prevIdentifiedApplyingExecutors = this.page.getByText(grantOfProbateConfig.page4_previouslyIdentifiedApplyingExecutors);
-  readonly prevIdentifiedNotApplyingEexecutors = this.page.getByText(grantOfProbateConfig.page4_previouslyIdentifiedNotApplyingExecutors);
+  readonly prevIdentifiedNotApplyingEexecutors = this.page.getByText(grantOfProbateConfig.page4_previouslyIdentifiedNotApplyingExecutors).first();
   readonly solsAddExecutorsList = this.page.locator('#solsAdditionalExecutorList > div > button');
   readonly solsAddExectorsForenameLocator  = this.page.locator('#solsAdditionalExecutorList_0_additionalExecForenames');
   readonly solsAddExecutorLastnameLocator = this.page.locator('#solsAdditionalExecutorList_0_additionalExecLastname');
@@ -975,6 +975,20 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     await this.page.locator('#solsAdditionalInfo').fill(intestacyDetailsConfig.page3_applicationNotes);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async enterIhtDetails(caseProgressConfig, optionValue) {
+    await expect(this.page.locator(`${caseProgressConfig.ihtHmrcLetter}_${optionValue}`)).toBeEnabled();
+    await this.page.locator(`${caseProgressConfig.ihtHmrcLetter}_${optionValue}`).click();
+    // await I.click({css: `${caseProgressConfig.ihtHmrcLetter}_${optionValue}`});
+    if (optionValue === 'Yes') {
+      await expect(this.page.locator(`${caseProgressConfig.hmrcCodeTextBox}`)).toBeEnabled();
+      await this.page.locator(`${caseProgressConfig.hmrcCodeTextBox}`).fill(caseProgressConfig.uniqueHmrcCode);
+      // await I.waitForElement({css: `${caseProgressConfig.hmrcCodeTextBox}`});
+      // await I.fillField({css: `${caseProgressConfig.hmrcCodeTextBox}`}, caseProgressConfig.uniqueHmrcCode);
+    }
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+    // await I.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
 };
