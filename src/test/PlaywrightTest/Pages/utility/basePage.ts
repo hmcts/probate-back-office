@@ -208,7 +208,7 @@ export class BasePage {
     tabConfigFile, // TODO: type?
     tabUpdates, // TODO: type?
     tabUpdatesConfigFile, // TODO: type?
-    forUpdateApplication?: string
+    forUpdateApplication?: boolean
   ) {
     await expect(
       this.page.getByRole("heading", { name: caseRef })
