@@ -10,7 +10,7 @@ jobs:
   buildBranch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: build/branch
       - uses: actions/upload-artifact@v5
@@ -21,7 +21,7 @@ jobs:
   buildMaster:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: master
           path: build/master
@@ -36,7 +36,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
       - uses: actions/download-artifact@v6
         with:
           name: branch

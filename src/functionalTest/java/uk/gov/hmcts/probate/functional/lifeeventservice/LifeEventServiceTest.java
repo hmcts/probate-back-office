@@ -46,7 +46,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
         assertEquals(200, response.getStatusCode());
     }
 
-    @Disabled //temporarily disabled due to LEV preprod env being unavailable
+    @Disabled // this test is checking for a record which appears to no longer exist
     @Test
     public void shouldAddDeathRecordWhenManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStart.json");
@@ -67,7 +67,6 @@ public class LifeEventServiceTest extends IntegrationTestBase {
         assertEquals(1, caseData.getDeathRecords().size());
     }
 
-    @Disabled //temporarily disabled due to LEV preprod env being unavailable
     @Test
     public void shouldReturnErrorManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStartNonExistent.json");
