@@ -14,6 +14,7 @@ import makePaymentConfig from "../solicitorApplyProbate/makePayment/makePaymentC
 import grantOfProbateConfig from "../solicitorApplyProbate/grantOfProbate/grantOfProbate.json" with { type: "json" };
 import completeProbateApplicationConfig from "../solicitorApplyProbate/completeApplication/completeApplication.json" with { type: "json" };
 import intestacyDetailsConfig from "../solicitorApplyProbate/intestacyDetails/intestacyDetails.json" with { type: "json" };
+import admonWillDetailsConfig from "../solicitorApplyProbate/admonWillDetails/admonWillDetails.json" with { type: "json" };
 import { BasePage } from "../utility/basePage.ts";
 
 type ServiceRequestTabConfig = typeof serviceRequestTabConfig;
@@ -125,7 +126,7 @@ export class SolCreateCasePage extends BasePage {
   readonly codicilAddButtonLocator = this.page.locator('#codicilAddedDateList button');
   readonly codicilAddedDayLocator = this.page.locator('#dateCodicilAdded-day');
   readonly codicilAddedMonthLocator = this.page.locator('#dateCodicilAdded-month');
-  readonly codiilAddedYearLocator = this.page.locator('#dateCodicilAdded-year');
+  readonly codicilAddedYearLocator = this.page.locator('#dateCodicilAdded-year');
   readonly languagePreferenceWelshLocator = this.page.locator('#languagePreferenceWelsh_Yes');
   readonly languagePreferenceLabelLocator = this.page.getByText(grantOfProbateConfig.page1_languagePreferenceLabel);
   readonly dispNoticeLocator = this.page.locator(`#dispenseWithNotice_${grantOfProbateConfig.page2_dispenseWithNotice}`);
@@ -213,6 +214,9 @@ export class SolCreateCasePage extends BasePage {
   readonly primaryApplicantPhoneNumber = this.page.locator('#primaryApplicantPhoneNumber');
   readonly primaryApplicantEmail = this.page.locator('#primaryApplicantEmailAddress');
   readonly languageLocator = this.page.locator(`#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`);
+  readonly solsEntitledMinority = this.page.locator(`#solsEntitledMinority_${admonWillDetailsConfig.optionNo}`);
+  readonly solsDiedLocator = this.page.locator(`#solsDiedOrNotApplying_${admonWillDetailsConfig.optionYes}`);
+  readonly solsResiduary = this.page.locator(`#solsResiduary_${admonWillDetailsConfig.optionYes}`);
 
   constructor(public readonly page: Page) {
     super(page);
@@ -694,7 +698,7 @@ export class SolCreateCasePage extends BasePage {
     // exui bug - generating multiple elements with same id
     await this.codicilAddedDayLocator.fill(grantOfProbateConfig.page1_codicilDate_day);
     await this.codicilAddedMonthLocator.fill(grantOfProbateConfig.page1_codicilDate_month);
-    await this.codiilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
+    await this.codicilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
     await expect(this.languagePreferenceLabelLocator).toBeVisible();
     await this.languagePreferenceWelshLocator.click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
@@ -988,6 +992,122 @@ export class SolCreateCasePage extends BasePage {
       // await I.fillField({css: `${caseProgressConfig.hmrcCodeTextBox}`}, caseProgressConfig.uniqueHmrcCode);
     }
     await this.waitForNavigationToComplete(commonConfig.continueButton);
+    // await I.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async admonWillDetailsPage1() {
+    await expect(this.willAccessOriginalOptionNoLocator).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.willAccessOriginalOptionNoLocator.click();
+    await expect(this.noWillAccessOriginalLabelLocator).toBeVisible();
+    await this.willAccessOriginalOptionYesLocator.click();
+    await this.originalWillSignedDayLocator.fill(admonWillDetailsConfig.page1_originalWillSignedDate_day);
+    await this.originalWillSignedMonthLocator.fill(admonWillDetailsConfig.page1_originalWillSignedDate_month);
+    await this.originalWillSignedYearLocator.fill(admonWillDetailsConfig.page1_originalWillSignedDate_year);
+    await this.willAccessOriginalOptionYesLocator.click();
+    await this.willHasCodicilsLocator.click();
+    await expect(this.codicilAddButtonLocator).toBeVisible();
+    await expect(this.codicilAddButtonLocator).toBeEnabled();
+    await this.codicilAddButtonLocator.click();
+    await this.codicilAddedDayLocator.fill(admonWillDetailsConfig.page1_codicilDate_day);
+    await this.codicilAddedMonthLocator.fill(admonWillDetailsConfig.page1_codicilDate_month);
+    await this.codicilAddedYearLocator.fill(admonWillDetailsConfig.page1_codicilDate_year);
+    await this.languageLocator.click();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+    // await I.waitForElement('#willAccessOriginal');
+    // await I.runAccessibilityTest();
+    // await I.click({css: '#willAccessOriginal_No'});
+    // await I.waitForText(admonWillDetailsConfig.page1_noAccessOriginalWillLabel);
+
+    // await I.click({css: `#willAccessOriginal_${admonWillDetailsConfig.optionYes}`});
+
+    // await I.fillField({css: '#originalWillSignedDate-day'}, admonWillDetailsConfig.page1_originalWillSignedDate_day);
+    // await I.fillField({css: '#originalWillSignedDate-month'}, admonWillDetailsConfig.page1_originalWillSignedDate_month);
+    // await I.fillField({css: '#originalWillSignedDate-year'}, admonWillDetailsConfig.page1_originalWillSignedDate_year);
+    // await I.click(`#willAccessOriginal_${admonWillDetailsConfig.optionYes}`);
+
+    // await I.click({css: `#willHasCodicils_${admonWillDetailsConfig.optionYes}`});
+    // const addBtn = {css: '#codicilAddedDateList button'};
+    // await I.waitForVisible(addBtn);
+    // await I.scrollTo(addBtn);
+    // await I.waitForClickable(addBtn);
+    // await I.click(addBtn);
+    // if (!testConfig.TestAutoDelayEnabled) {
+    //   await I.wait(testConfig.ManualDelayShort);
+    // }
+
+    // exui bug - generating multiple elements with same id
+    // await I.fillField({css: '#dateCodicilAdded-day'}, admonWillDetailsConfig.page1_codicilDate_day);
+    // await I.fillField({css: '#dateCodicilAdded-month'}, admonWillDetailsConfig.page1_codicilDate_month);
+    // await I.fillField({css: '#dateCodicilAdded-year'}, admonWillDetailsConfig.page1_codicilDate_year);
+    // await I.click({css: `#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`});
+    //
+    // await I.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async admonWillDetailsPage2(updateAddressManually) {
+    await expect(this.primaryApplicantForenameLocator).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.primaryApplicantForenameLocator.fill(admonWillDetailsConfig.applicant_firstname);
+    await this.primaryApplicantSurnameLocator.fill(admonWillDetailsConfig.applicant_lastname);
+    // await I.waitForElement('#primaryApplicantForenames');
+    // await I.waitForText('First name(s)');
+    // await I.runAccessibilityTest();
+    //
+    // await I.fillField('#primaryApplicantForenames', admonWillDetailsConfig.applicant_firstname);
+    // await I.fillField('#primaryApplicantSurname', admonWillDetailsConfig.applicant_lastname);
+    //
+    // if (!testConfig.TestAutoDelayEnabled) {
+    //   await I.wait(testConfig.ManualDelayShort);
+    // }
+
+    if (updateAddressManually) {
+      await this.page.locator(admonWillDetailsConfig.UKpostcodeLink).click();
+      // await I.click(admonWillDetailsConfig.UKpostcodeLink);
+    }
+
+    await this.primaryApplicantAddressLine1.fill(admonWillDetailsConfig.address_line1);
+    await this.primaryApplicantAddressLine2.fill(admonWillDetailsConfig.address_line2);
+    await this.primaryApplicantAddressLine3.fill(admonWillDetailsConfig.address_line3);
+    await this.primaryApplicantPostTown.fill(admonWillDetailsConfig.address_town);
+    await this.primaryApplicantCounty.fill(admonWillDetailsConfig.address_county);
+    await this.primaryApplicantPostcode.fill(admonWillDetailsConfig.address_postcode);
+    await this.primaryApplicantCountry.fill(admonWillDetailsConfig.address_country);
+    await this.primaryApplicantPhoneNumber.fill(admonWillDetailsConfig.applicant_phone);
+    await this.primaryApplicantEmail.fill(admonWillDetailsConfig.applicant_email);
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async admonWillDetailsPage3() {
+    await expect(this.solsEntitledMinority).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.solsEntitledMinority.click();
+    await this.solsDiedLocator.click();
+    await this.solsResiduary.click();
+    await this.page.selectOption('#solsResiduaryType', admonWillDetailsConfig.page3_legateeAndDevisee);
+    await this.page.locator(`#solsLifeInterest_${admonWillDetailsConfig.optionNo}`).click();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async admonWillDetailsPage4() {
+    await expect(this.page.locator('#furtherEvidenceForApplication')).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.page.locator('#furtherEvidenceForApplication').fill(admonWillDetailsConfig.page4_applicationNotes);
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+    // await I.runAccessibilityTest();
+    // await I.fillField('#furtherEvidenceForApplication', admonWillDetailsConfig.page4_applicationNotes);
+    // await I.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async admonWillDetailsPage5() {
+    await expect(this.page.locator('#solsAdditionalInfo')).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.page.locator('#solsAdditionalInfo').fill(admonWillDetailsConfig.page5_applicationNotes);
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+    // await I.waitForElement('#solsAdditionalInfo');
+    // await I.waitForText('Notes for this application (Optional)');
+    // await I.runAccessibilityTest();
+    // await I.fillField('#solsAdditionalInfo', admonWillDetailsConfig.page5_applicationNotes);
     // await I.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
