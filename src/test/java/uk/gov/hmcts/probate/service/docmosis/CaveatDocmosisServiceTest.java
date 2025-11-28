@@ -74,7 +74,11 @@ class CaveatDocmosisServiceTest {
         assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
         assertEquals(placeholders.get("registry"), registries.get(
             caveatData.getRegistryLocation().toLowerCase()));
-        assertEquals(placeholders.get("PA8AURL"), "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        assertEquals(placeholders.get("PA8ACITADURL"), "https://www.citizensadvice.org.uk/");
+        assertEquals(placeholders.get("PA8BEXTENDURL"), "https://www.gov.uk/government/publications/apply-to-"
+                + "extend-a-caveat-on-a-grant-of-representation-pa8b");
+        assertEquals(placeholders.get("PA8BSTOPURL"), "https://www.gov.uk/wills-probate-inheritance/stopping-"
+                + "a-grant-of-representation");
         assertEquals(placeholders.get("caseReference"),
             ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"));
         assertEquals(placeholders.get("caveatExpiryDate"), CAV_EXPIRY_DATE);
