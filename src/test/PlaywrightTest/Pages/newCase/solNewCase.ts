@@ -1094,9 +1094,6 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     await this.page.locator('#furtherEvidenceForApplication').fill(admonWillDetailsConfig.page4_applicationNotes);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
-    // await I.runAccessibilityTest();
-    // await I.fillField('#furtherEvidenceForApplication', admonWillDetailsConfig.page4_applicationNotes);
-    // await I.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async admonWillDetailsPage5() {
@@ -1104,11 +1101,12 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     await this.page.locator('#solsAdditionalInfo').fill(admonWillDetailsConfig.page5_applicationNotes);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
-    // await I.waitForElement('#solsAdditionalInfo');
-    // await I.waitForText('Notes for this application (Optional)');
-    // await I.runAccessibilityTest();
-    // await I.fillField('#solsAdditionalInfo', admonWillDetailsConfig.page5_applicationNotes);
-    // await I.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async admonWillDetailsPage6() {
+    await expect(this.page.locator('#confirmation-body')).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
 };
