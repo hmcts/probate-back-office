@@ -51,9 +51,8 @@ class GrantOfRepresentationDocmosisMapperServiceTest {
     private static final String PERSONALISATION_CASE_REFERENCE = "caseReference";
     private static final String PERSONALISATION_GENERATED_DATE = "generatedDate";
     private static final String PERSONALISATION_REGISTRY = "registry";
-    private static final String PERSONALISATION_PA8ACITADURL = "PA8ACITADURL";
-    private static final String PERSONALISATION_PA8BEXTENDURL = "PA8BEXTENDURL";
-    private static final String PERSONALISATION_PA8BSTOPURL = "PA8BSTOPURL";
+    private static final String PERSONALISATION_PA8AURL = "PA8AURL";
+    private static final String PERSONALISATION_PA8BURL = "PA8BURL";
     private static final String PERSONALISATION_CAVEAT_REFERENCE = "caveatReference";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     Registry registry = new Registry();
@@ -140,15 +139,12 @@ class GrantOfRepresentationDocmosisMapperServiceTest {
         assertEquals(registries.get(
             caseDetails.getData().getRegistryLocation().toLowerCase()),
             placeholders.get(PERSONALISATION_REGISTRY));
-        assertEquals("https://www.gov.uk/government/publications/apply-to-extend-a-caveat-on-a-grant-of-"
-                        + "representation-pa8b|https://www.gov.uk/government/publications/apply-to-extend-a-caveat"
-                        + "-on-a-grant-of-representation-pa8b",
-            placeholders.get(PERSONALISATION_PA8BEXTENDURL));
+        assertEquals(
+            "https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov"
+                + ".uk/inherits-someone-dies-without-will",
+            placeholders.get(PERSONALISATION_PA8AURL));
         assertEquals("https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/",
-            placeholders.get(PERSONALISATION_PA8ACITADURL));
-        assertEquals("https://www.gov.uk/wills-probate-inheritance/stopping-a-grant-of-representation|"
-                        + "https://www.gov.uk/wills-probate-inheritance/stopping-a-grant-of-representation",
-            placeholders.get(PERSONALISATION_PA8BSTOPURL));
+            placeholders.get(PERSONALISATION_PA8BURL));
         assertEquals("fred jones", placeholders.get(PERSONALISATION_CAVEATOR_NAME));
         assertEquals("caveatorAddress",
             placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));

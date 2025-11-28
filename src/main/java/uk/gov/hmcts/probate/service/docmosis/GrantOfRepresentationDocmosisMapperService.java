@@ -28,9 +28,8 @@ public class GrantOfRepresentationDocmosisMapperService {
     private static final String PERSONALISATION_CASE_REFERENCE = "caseReference";
     private static final String PERSONALISATION_GENERATED_DATE = "generatedDate";
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveatExpiryDate";
-    private static final String PERSONALISATION_PA8ACITADURL = "PA8ACITADURL";
-    private static final String PERSONALISATION_PA8BEXTENDURL = "PA8BEXTENDURL";
-    private static final String PERSONALISATION_PA8BSTOPURL = "PA8BSTOPURL";
+    private static final String PERSONALISATION_PA8AURL = "PA8AURL";
+    private static final String PERSONALISATION_PA8BURL = "PA8BURL";
     private static final String PERSONALISATION_APPLICATION_TYPE = "applicationType";
     private final CcdReferenceFormatterService ccdReferenceFormatterService;
     private final CaveatQueryService caveatQueryService;
@@ -50,15 +49,11 @@ public class GrantOfRepresentationDocmosisMapperService {
         placeholders.put(PERSONALISATION_CASE_REFERENCE,
             ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getId().toString()));
         placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
-        placeholders.put(PERSONALISATION_PA8BEXTENDURL,
-            "https://www.gov.uk/government/publications/apply-to-extend-a-caveat-on-a-grant-of-representation-pa8b|"
-                + "https://www.gov.uk/government/publications/apply-to-extend-a-caveat-on-a-grant-of-representation-pa8b");
-        placeholders.put(
-                PERSONALISATION_PA8ACITADURL, "https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-        placeholders.put(
-                PERSONALISATION_PA8BSTOPURL,"https://www.gov.uk/wills-probate-inheritance/stopping-a-grant-of-"
-                + "representation|https://www.gov.uk/wills-probate-inheritance/stopping-a-grant-of-representation");
-
+        placeholders.put(PERSONALISATION_PA8AURL,
+            "https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov"
+                + ".uk/inherits-someone-dies-without-will");
+        placeholders
+            .put(PERSONALISATION_PA8BURL, "https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         placeholders.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
         placeholders.put(PERSONALISATION_CAVEATOR_ADDRESS,
             addressFormatterService.formatAddress(caveatData.getCaveatorAddress()));
