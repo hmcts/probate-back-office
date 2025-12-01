@@ -30,8 +30,8 @@ test.describe("Solicitor - Apply Grant of probate Admon Will (Will left annexed)
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
     await signInPage.authenticateWithIdamIfAvailable(true);
 
-    let nextStepName = 'Deceased details';
-    let endState = 'Application created';
+    let nextStepName = 'Apply for probate';
+    let endState = 'Application created (deceased details)';
     // @ts-ignore
     await basePage.logInfo(scenarioName, 'New case');
     await createCasePage.selectNewCase();
@@ -47,6 +47,7 @@ test.describe("Solicitor - Apply Grant of probate Admon Will (Will left annexed)
     await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
     await basePage.seeCaseDetails(testInfo, caseRef, applicantDetailsTabConfig, applyProbateConfig);
 
+    nextStepName = 'Deceased details';
     endState = 'Admon will grant created';
 
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
