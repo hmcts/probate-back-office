@@ -26,7 +26,7 @@ import postNocCaveatorConfig from "../../Pages/noticeOfChange/postNocCaveatorDet
 import postNocCaveatorConfigDemo from "../../Pages/noticeOfChange/postNocCaveatorDetailsConfigDemo.json" with { type: "json" };
 import changeOfRepresentativesCaveatorDetailsConfigAAT from "../../Pages/noticeOfChange/changeOfRepresentativesCaveatConfigAAT.json" with { type: "json" };
 
-test.describe("Solicitor - Apply Caveat", () => {
+test.describe("Solicitor - Apply NOC Caveat", () => {
   test("Solicitor - Apply Caveat", async ({
                                             basePage,
                                             signInPage,
@@ -34,7 +34,7 @@ test.describe("Solicitor - Apply Caveat", () => {
                                             solCreateCasePage,
                                             cwEventActionsPage,
                                           }, testInfo) => {
-    const scenarioName = "Solicitor - Apply Caveat";
+    const scenarioName = "Solicitor - Apply NOC Caveat";
 
     await basePage.logInfo(scenarioName, "Login as Solicitor", null);
     await signInPage.authenticateWithIdamIfAvailable(true);
