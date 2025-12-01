@@ -91,7 +91,8 @@ export class BasePage {
     dataConfigFile, // TODO: type?
     nextStep?: string,
     endState?: string,
-    delay: number = testConfig.CaseDetailsDelayDefault
+    delay: number = testConfig.CaseDetailsDelayDefault,
+    nocEvent?: boolean
   ) {
     if (tabConfigFile.tabName && tabConfigFile.tabName !== "Documents") {
       await expect(
@@ -125,9 +126,16 @@ export class BasePage {
               this.page.getByText(tabConfigFile.fields[i]).nth(2)
             ).toBeVisible();
           }
-          await expect(
-            this.page.getByText(tabConfigFile.fields[i], { exact: true }).first()
-          ).toBeVisible();
+          if (nocEvent) {
+            await expect(
+              this.page.getByText(tabConfigFile.fields[i]).first()
+            ).toBeVisible();
+          } else {
+            await expect(
+              this.page.getByText(tabConfigFile.fields[i], { exact: true }).first()
+            ).toBeVisible();
+          }
+
         } else if (tabConfigFile.tabName === "Event History") {
           await expect(
             this.page.getByRole("table", { name: "Details" })
@@ -153,7 +161,8 @@ export class BasePage {
         nextStep === "Grant of probate details" ||
         nextStep === "Deceased details" ||
         nextStep === "Intestacy details" ||
-        nextStep === "Admon will details"
+        nextStep === "Admon will details" ||
+        nextStep === "Apply NoC Decision"
       ) {
         await expect(
           this.page.getByRole("cell", { name: endState, exact: true })

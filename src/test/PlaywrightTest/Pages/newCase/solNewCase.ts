@@ -1,4 +1,5 @@
 import { expect, Page, TestInfo } from "@playwright/test";
+// @ts-ignore
 import dateFns from "date-fns";
 import { testConfig } from "../../Configs/config.ts";
 import postPaymentReviewTabConfig from "../caseDetails/solicitorApplyProbate/postPaymentReviewTabConfig.json" with { type: "json" };
@@ -16,6 +17,7 @@ import completeProbateApplicationConfig from "../solicitorApplyProbate/completeA
 import intestacyDetailsConfig from "../solicitorApplyProbate/intestacyDetails/intestacyDetails.json" with { type: "json" };
 import admonWillDetailsConfig from "../solicitorApplyProbate/admonWillDetails/admonWillDetails.json" with { type: "json" };
 import { BasePage } from "../utility/basePage.ts";
+import nocConfig from "../noticeOfChange/noticeOfChangeConfig.json" with { type: "json" };
 
 type ServiceRequestTabConfig = typeof serviceRequestTabConfig;
 
@@ -988,11 +990,8 @@ export class SolCreateCasePage extends BasePage {
     if (optionValue === 'Yes') {
       await expect(this.page.locator(`${caseProgressConfig.hmrcCodeTextBox}`)).toBeEnabled();
       await this.page.locator(`${caseProgressConfig.hmrcCodeTextBox}`).fill(caseProgressConfig.uniqueHmrcCode);
-      // await I.waitForElement({css: `${caseProgressConfig.hmrcCodeTextBox}`});
-      // await I.fillField({css: `${caseProgressConfig.hmrcCodeTextBox}`}, caseProgressConfig.uniqueHmrcCode);
     }
     await this.waitForNavigationToComplete(commonConfig.continueButton);
-    // await I.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async admonWillDetailsPage1() {
@@ -1014,35 +1013,6 @@ export class SolCreateCasePage extends BasePage {
     await this.codicilAddedYearLocator.fill(admonWillDetailsConfig.page1_codicilDate_year);
     await this.languageLocator.click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
-    // await I.waitForElement('#willAccessOriginal');
-    // await I.runAccessibilityTest();
-    // await I.click({css: '#willAccessOriginal_No'});
-    // await I.waitForText(admonWillDetailsConfig.page1_noAccessOriginalWillLabel);
-
-    // await I.click({css: `#willAccessOriginal_${admonWillDetailsConfig.optionYes}`});
-
-    // await I.fillField({css: '#originalWillSignedDate-day'}, admonWillDetailsConfig.page1_originalWillSignedDate_day);
-    // await I.fillField({css: '#originalWillSignedDate-month'}, admonWillDetailsConfig.page1_originalWillSignedDate_month);
-    // await I.fillField({css: '#originalWillSignedDate-year'}, admonWillDetailsConfig.page1_originalWillSignedDate_year);
-    // await I.click(`#willAccessOriginal_${admonWillDetailsConfig.optionYes}`);
-
-    // await I.click({css: `#willHasCodicils_${admonWillDetailsConfig.optionYes}`});
-    // const addBtn = {css: '#codicilAddedDateList button'};
-    // await I.waitForVisible(addBtn);
-    // await I.scrollTo(addBtn);
-    // await I.waitForClickable(addBtn);
-    // await I.click(addBtn);
-    // if (!testConfig.TestAutoDelayEnabled) {
-    //   await I.wait(testConfig.ManualDelayShort);
-    // }
-
-    // exui bug - generating multiple elements with same id
-    // await I.fillField({css: '#dateCodicilAdded-day'}, admonWillDetailsConfig.page1_codicilDate_day);
-    // await I.fillField({css: '#dateCodicilAdded-month'}, admonWillDetailsConfig.page1_codicilDate_month);
-    // await I.fillField({css: '#dateCodicilAdded-year'}, admonWillDetailsConfig.page1_codicilDate_year);
-    // await I.click({css: `#languagePreferenceWelsh_${grantOfProbateConfig.optionYes}`});
-    //
-    // await I.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async admonWillDetailsPage2(updateAddressManually) {
@@ -1050,20 +1020,9 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     await this.primaryApplicantForenameLocator.fill(admonWillDetailsConfig.applicant_firstname);
     await this.primaryApplicantSurnameLocator.fill(admonWillDetailsConfig.applicant_lastname);
-    // await I.waitForElement('#primaryApplicantForenames');
-    // await I.waitForText('First name(s)');
-    // await I.runAccessibilityTest();
-    //
-    // await I.fillField('#primaryApplicantForenames', admonWillDetailsConfig.applicant_firstname);
-    // await I.fillField('#primaryApplicantSurname', admonWillDetailsConfig.applicant_lastname);
-    //
-    // if (!testConfig.TestAutoDelayEnabled) {
-    //   await I.wait(testConfig.ManualDelayShort);
-    // }
 
     if (updateAddressManually) {
       await this.page.locator(admonWillDetailsConfig.UKpostcodeLink).click();
-      // await I.click(admonWillDetailsConfig.UKpostcodeLink);
     }
 
     await this.primaryApplicantAddressLine1.fill(admonWillDetailsConfig.address_line1);
@@ -1107,6 +1066,117 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.locator('#confirmation-body')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.waitForNavigationToComplete(commonConfig.submitButton);
+  }
+
+  async verifyNoc(caseRef) {
+    await expect(this.page.getByText('Your cases')).toBeVisible();
+    // await I.waitForText('Your cases', 20);
+    // await I.wait(5);
+    await this.navigateToCase(caseRef, false, 'Caveat');
+    await expect(this.page.getByRole('heading', { name: nocConfig.nocWaitForText })).toBeVisible();
+    await expect(this.page.getByText(caseRef)).not.toBeVisible();
+    //await I.waitForText(nocConfig.nocWaitForText, testConfig.WaitForTextTimeout);
+    // await I.see(nocConfig.nocWaitForText);
+    // await I.dontSee(caseRef);
+  }
+
+  async navigateToCase(caseRef, useWaitInUrl = true, caseType) {
+    const scenarioName = 'Find cases';
+    // @ts-ignore
+    await this.logInfo(scenarioName, 'Navigating to case');
+    const caseRefNoDashes = caseRef.replaceAll('-', '');
+    const caveatUrl = `${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/Caveat/${caseRefNoDashes}`;
+    const gorUrl = `${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`;
+    const url = caseType === 'Caveat' ? caveatUrl : gorUrl;
+    await this.page.goto(url);
+    // if (useWaitInUrl) {
+    //   I.amOnLoadedPage(url);
+    // } else {
+    //   I.amOnPage(url);
+    // }
+    await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+    // await I.wait(testConfig.ManualDelayMedium);
+    await this.rejectCookies();
+  }
+
+  async nocNavigation() {
+    await expect(this.page.getByRole('heading', { name: nocConfig.nocWaitForText })).toBeVisible();
+    await this.rejectCookies();
+    await expect(this.page.locator(nocConfig.xuiNocLocator)).toBeEnabled();
+    await this.waitForNavigationToComplete(nocConfig.xuiNocLocator)
+    // await I.wait(testConfig.CreateCaseDelay);
+    // await I.waitForText(noticeOfChangeConfig.nocWaitForText, testConfig.WaitForTextTimeout);
+    // await I.rejectCookies();
+
+    // const locator = noticeOfChangeConfig.xuiNocLocator;
+    // await I.waitForEnabled({css: locator});
+    // await I.wait(testConfig.CreateCaseDelay);
+    // await I.waitForNavigationToComplete(locator);
+  }
+
+  async nocPage1(caseRef) {
+    await expect(this.page.getByRole('heading', { name: nocConfig.page1WaitForText })).toBeVisible();
+    await expect(this.page.locator(nocConfig.caseRefLocator)).toBeEnabled();
+    await this.page.locator(nocConfig.caseRefLocator).fill(caseRef);
+    await this.page.locator(nocConfig.continueButtonLocator).click();
+    // await I.wait(testConfig.CreateCaseDelay);
+    // await I.waitForText(noticeOfChangeConfig.page1WaitForText, testConfig.WaitForTextTimeout);
+    //
+    // const locator = noticeOfChangeConfig.caseRefLocator;
+    // await I.waitForEnabled({css: locator});
+    // await I.fillField({css: locator}, caseRef);
+    // await I.wait(testConfig.CreateCaseDelay);
+    // await I.click(noticeOfChangeConfig.continueButtonLocator);
+  }
+
+  async nocPage2(deceasedSurname) {
+    await expect(this.page.getByText(nocConfig.page2WaitForText)).toBeVisible();
+    await expect(this.page.locator(nocConfig.deceasedSurnameLocator)).toBeEnabled();
+    await this.page.locator(nocConfig.deceasedSurnameLocator).fill(deceasedSurname);
+    await this.page.locator(nocConfig.continueButtonLocator).click();
+    // await I.waitForText(noticeOfChangeConfig.page2WaitForText, testConfig.WaitForTextTimeout);
+    //
+    // const locator = noticeOfChangeConfig.deceasedSurnameLocator;
+    // await I.waitForEnabled({css: locator});
+    // await I.fillField({css: locator}, deceasedSurname);
+    // await I.wait(testConfig.CreateCaseDelay);
+    // await I.click(noticeOfChangeConfig.continueButtonLocator);
+  }
+
+  async nocPage3(caseRef, deceasedSurname) {
+    await expect(this.page.getByText(nocConfig.page3WaitForText)).toBeVisible();
+    // await I.waitForText(noticeOfChangeConfig.page3WaitForText, testConfig.WaitForTextTimeout);
+
+    const caseRefNoDashes = await caseRef.replaceAll('-', '');
+    await expect(this.page.getByText(caseRefNoDashes)).toBeVisible();
+    await expect(this.page.getByText(deceasedSurname)).toBeVisible();
+    await expect(this.page.locator(nocConfig.affirmationLocator)).toBeEnabled();
+    await this.page.locator('#affirmation').click();
+    await expect(this.page.locator(nocConfig.notifyCheckboxLocator)).toBeEnabled();
+    await this.page.locator('#notifyEveryParty').click();
+    await this.page.locator(nocConfig.continueButtonLocator).click();
+    // await I.see(caseRefNoDashes);
+    // await I.see(deceasedSurname);
+    // const checkAffirmationLocator = nocConfig.affirmationLocator;
+    // const checkNotifyLocator = nocConfig.notifyCheckboxLocator;
+    // await I.waitForEnabled({css: checkAffirmationLocator});
+    // await I.click('#affirmation');
+    // await I.waitForEnabled({css: checkNotifyLocator});
+    // await I.click('#notifyEveryParty');
+    // await I.wait(testConfig.CreateCaseDelay);
+    // await I.click(noticeOfChangeConfig.continueButtonLocator);
+  }
+
+  async nocConfirmationPage(caseRef) {
+    await expect(this.page.getByText(nocConfig.confirmationPageWaitForText)).toBeVisible();
+    await expect(this.page.getByText(caseRef)).toBeVisible();
+    await expect(this.page.locator(nocConfig.viewCaseLinkLocator)).toBeEnabled();
+    await this.waitForNavigationToComplete(nocConfig.viewCaseLinkLocator);
+    // await I.waitForText(noticeOfChangeConfig.confirmationPageWaitForText, testConfig.WaitForTextTimeout);
+    //
+    // await I.see(caseRef);
+    // await I.waitForEnabled({css: noticeOfChangeConfig.viewCaseLinkLocator});
+    // await I.click('#content > div > exui-noc-navigation > div > div > exui-noc-submit-success > div > div > div > div > p:nth-child(8) > a');
   }
 
 };
