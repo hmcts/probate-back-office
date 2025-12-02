@@ -740,6 +740,13 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseWithRegistrarDirection(callbackRequest));
     }
 
+    @PostMapping(path = "/clearRelationships",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> clearRelationships(
+            @RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(callbackResponseTransformer.clearRelationships(callbackRequest));
+    }
+
     @PostMapping(path = "/registrars-decision", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> registrarsDecision(@RequestBody CallbackRequest callbackRequest) {
