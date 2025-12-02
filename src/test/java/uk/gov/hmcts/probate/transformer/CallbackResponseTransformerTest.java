@@ -119,14 +119,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.ApplicationState.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -519,6 +512,9 @@ class CallbackResponseTransformerTest {
     private CaseDetails caseDetailsMock;
 
     @Mock
+    private CaseDetails caseDetailsBeforeMock;
+
+    @Mock
     private CaseData caseDataMock;
 
     @Mock
@@ -537,6 +533,8 @@ class CallbackResponseTransformerTest {
     private AssembleLetterTransformer assembleLetterTransformer;
 
     private CaseData.CaseDataBuilder caseDataBuilder;
+
+    private CaseData.CaseDataBuilder caseDataBuilderBefore;
 
     private GrantOfRepresentationData bulkScanGrantOfRepresentationData;
 
@@ -746,6 +744,8 @@ class CallbackResponseTransformerTest {
             .codicilsDamageDate(DAMAGE_DATE)
             .deceasedWrittenWishes(YES)
             .documentsReceivedNotificationSent(YES);
+
+        caseDataBuilderBefore = CaseData.builder().caseType(CASE_TYPE_INTESTACY);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
             .deceasedForenames(DECEASED_FIRSTNAME)
@@ -4918,6 +4918,81 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
         assertEquals(NO, callbackResponse.getData().getInformationNeededByPostSwitch());
+    }
+
+    @Test
+    void shouldClearRelationshipsWhenRelationshipChanges() {
+        caseDataBuilder.primaryApplicantRelationshipToDeceased("grandchild");
+
+        caseDataBuilderBefore.primaryApplicantRelationshipToDeceased("child")
+                .primaryApplicantAdoptedIn("Yes")
+                .primaryApplicantAdoptedOut("No")
+                .primaryApplicantAdoptionInEnglandOrWales("Yes")
+                .primaryApplicantParentAdoptedIn("Yes")
+                .primaryApplicantParentAdoptedOut("No")
+                .primaryApplicantParentAdoptionInEnglandOrWales("Yes")
+                .deceasedAdoptedIn("Yes")
+                .deceasedAdoptionInEnglandOrWales("Yes")
+                .deceasedAdoptedOut("No");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse callbackResponse = underTest.clearRelationships(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedOut());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+        assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedIn());
+        assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedOut());
+        assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptionInEnglandOrWales());
+        assertNull(callbackResponse.getData().getDeceasedAdoptedIn());
+        assertNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
+        assertNull(callbackResponse.getData().getDeceasedAdoptedOut());
+    }
+
+    @Test
+    void shouldNotClearRelationshipsWhenRelationshipUnchanged() {
+        caseDataBuilder.primaryApplicantRelationshipToDeceased("child")
+                .primaryApplicantAdoptedIn("Yes")
+                .primaryApplicantAdoptedOut("No")
+                .primaryApplicantAdoptionInEnglandOrWales("Yes")
+                .primaryApplicantParentAdoptedIn("Yes")
+                .primaryApplicantParentAdoptedOut("No")
+                .primaryApplicantParentAdoptionInEnglandOrWales("Yes")
+                .deceasedAdoptedIn("Yes")
+                .deceasedAdoptionInEnglandOrWales("Yes")
+                .deceasedAdoptedOut("No");
+
+        caseDataBuilderBefore.primaryApplicantRelationshipToDeceased("child")
+                .primaryApplicantAdoptedIn("Yes")
+                .primaryApplicantAdoptedOut("No")
+                .primaryApplicantAdoptionInEnglandOrWales("Yes")
+                .primaryApplicantParentAdoptedIn("Yes")
+                .primaryApplicantParentAdoptedOut("No")
+                .primaryApplicantParentAdoptionInEnglandOrWales("Yes")
+                .deceasedAdoptedIn("Yes")
+                .deceasedAdoptionInEnglandOrWales("Yes")
+                .deceasedAdoptedOut("No");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse callbackResponse = underTest.clearRelationships(callbackRequestMock);
+
+        assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
+        assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptedOut());
+        assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+        assertNotNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedIn());
+        assertNotNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedOut());
+        assertNotNull(callbackResponse.getData().getPrimaryApplicantParentAdoptionInEnglandOrWales());
+        assertNotNull(callbackResponse.getData().getDeceasedAdoptedIn());
+        assertNotNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
+        assertNotNull(callbackResponse.getData().getDeceasedAdoptedOut());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
