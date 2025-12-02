@@ -3562,6 +3562,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "informationNeeded", "UserRole": "citizen", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "informationNeededByPost", "UserRole": "citizen", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "isSaveAndClose", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "hasDataChanged", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "otherWholeBloodSiblings", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "wholeBloodSiblingsDiedBeforeDeceased", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "wholeBloodNiecesAndNephewsSurvived", "UserRole": "citizen", "CRUD": "CRUD"},
