@@ -58,6 +58,10 @@ export class BasePage {
       .join("-");
   }
 
+  async getSacCaseRef() {
+    await this.page.locator('//div[@class="column-one-half"]//ccd-case-header').textContent();
+  }
+
   async waitForNavigationToComplete(buttonLocator) {
     const navigationPromise = this.page.waitForNavigation();
     await expect(this.page.locator(buttonLocator)).toBeVisible();

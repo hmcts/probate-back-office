@@ -1,0 +1,13 @@
+{
+  "caseList_sortCase": "Sort Case reference",
+  "case_Jurisdiction": "Manage probate application",
+  "caseType": "Grant of representation",
+  "shareCase_comboBoxLocator": "input[role='combobox']",
+  "secondProbatePractitioner_value": "ProbateSolicitor TestUser - probate.practitioner.aat.test@gmail.com",
+  "secondProbatePractitioner_email": "probate.practitioner.aat.test@gmail.com",
+  "caseAdded_Text": "TO BE ADDED",
+  "caseRemoved_Text": "TO BE REMOVED",
+  "continueButton": "Continue",
+  "confirmButton": "Confirm",
+  "caseAdded_validationText": "Your cases have been updated"
+}

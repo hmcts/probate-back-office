@@ -83,12 +83,34 @@ export class SignInPage extends BasePage {
     await expect(this.usernameLocator).toBeHidden();
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
+  }
+
+  async authenticateUserShareCase (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
+    await this.page.goto(`${testConfig.TestBackOfficeUrl}/`);
+    await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+    await expect(
+      this.page.getByRole("heading", {
+        name: "Sign in",
+        exact: true,
+      })
+    ).toBeVisible();
+    await expect(this.usernameLocator).toBeVisible();
+    await expect(this.passwordLocator).toBeVisible();
+    await this.page.locator('#username').fill(useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvProfUserSAC);
+    await this.page.locator('#password').fill(useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvProfPasswordSAC);
+    await expect(this.submitButtonLocator).toBeEnabled();
+    await this.submitButtonLocator.click();
+
+    await expect(this.usernameLocator).toBeHidden();
+    await this.rejectCookies();
+    await this.page.waitForTimeout(signInDelay);
+    // I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
     // await I.wait(testConfig.ManualDelayMedium);
     // await I.waitForText('Sign in', 600);
     // await I.waitForText('Email address');
     // await I.waitForText('Password');
-    // await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvProfUserNoc);
-    // await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvProfPasswordNoc);
+    // await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvProfUserSAC);
+    // await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvProfPasswordSAC);
     // await I.waitForNavigationToComplete('input[type="submit"]', signInDelay);
     // await I.dontSee({css: '#username'});
     // await I.rejectCookies();
