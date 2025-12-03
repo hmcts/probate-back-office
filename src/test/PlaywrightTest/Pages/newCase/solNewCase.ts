@@ -16,6 +16,7 @@ import grantOfProbateConfig from "../solicitorApplyProbate/grantOfProbate/grantO
 import completeProbateApplicationConfig from "../solicitorApplyProbate/completeApplication/completeApplication.json" with { type: "json" };
 import intestacyDetailsConfig from "../solicitorApplyProbate/intestacyDetails/intestacyDetails.json" with { type: "json" };
 import admonWillDetailsConfig from "../solicitorApplyProbate/admonWillDetails/admonWillDetails.json" with { type: "json" };
+import shareCaseConfig from "../shareCase/shareCaseConfig.json" with { type: "json" };
 import { BasePage } from "../utility/basePage.ts";
 import nocConfig from "../noticeOfChange/noticeOfChangeConfig.json" with { type: "json" };
 
@@ -219,6 +220,11 @@ export class SolCreateCasePage extends BasePage {
   readonly solsEntitledMinority = this.page.locator(`#solsEntitledMinority_${admonWillDetailsConfig.optionNo}`);
   readonly solsDiedLocator = this.page.locator(`#solsDiedOrNotApplying_${admonWillDetailsConfig.optionYes}`);
   readonly solsResiduary = this.page.locator(`#solsResiduary_${admonWillDetailsConfig.optionYes}`);
+  readonly caseListLocator = this.page.locator('//a[normalize-space()="Case list"]');
+  readonly caseViewTextLocator = this.page.getByText('Your cases');
+  readonly caseReferenceLocator = this.page.locator('//button[normalize-space()="Apply"]');
+  readonly shareCaseButtonLocator = this.page.locator('#btn-share-button');
+  readonly showAllTextLocator = this.page.locator('#accordion-with-summary-sections > div > button > span.govuk-accordion__show-all-text');
 
   constructor(public readonly page: Page) {
     super(page);
@@ -1070,14 +1076,9 @@ export class SolCreateCasePage extends BasePage {
 
   async verifyNoc(caseRef) {
     await expect(this.page.getByText('Your cases')).toBeVisible();
-    // await I.waitForText('Your cases', 20);
-    // await I.wait(5);
     await this.navigateToCase(caseRef, false, 'Caveat');
     await expect(this.page.getByRole('heading', { name: nocConfig.nocWaitForText })).toBeVisible();
     await expect(this.page.getByText(caseRef)).not.toBeVisible();
-    //await I.waitForText(nocConfig.nocWaitForText, testConfig.WaitForTextTimeout);
-    // await I.see(nocConfig.nocWaitForText);
-    // await I.dontSee(caseRef);
   }
 
   async navigateToCase(caseRef, useWaitInUrl = true, caseType) {
@@ -1089,13 +1090,7 @@ export class SolCreateCasePage extends BasePage {
     const gorUrl = `${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`;
     const url = caseType === 'Caveat' ? caveatUrl : gorUrl;
     await this.page.goto(url);
-    // if (useWaitInUrl) {
-    //   I.amOnLoadedPage(url);
-    // } else {
-    //   I.amOnPage(url);
-    // }
     await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-    // await I.wait(testConfig.ManualDelayMedium);
     await this.rejectCookies();
   }
 
@@ -1104,14 +1099,6 @@ export class SolCreateCasePage extends BasePage {
     await this.rejectCookies();
     await expect(this.page.locator(nocConfig.xuiNocLocator)).toBeEnabled();
     await this.waitForNavigationToComplete(nocConfig.xuiNocLocator)
-    // await I.wait(testConfig.CreateCaseDelay);
-    // await I.waitForText(noticeOfChangeConfig.nocWaitForText, testConfig.WaitForTextTimeout);
-    // await I.rejectCookies();
-
-    // const locator = noticeOfChangeConfig.xuiNocLocator;
-    // await I.waitForEnabled({css: locator});
-    // await I.wait(testConfig.CreateCaseDelay);
-    // await I.waitForNavigationToComplete(locator);
   }
 
   async nocPage1(caseRef) {
@@ -1119,14 +1106,6 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.locator(nocConfig.caseRefLocator)).toBeEnabled();
     await this.page.locator(nocConfig.caseRefLocator).fill(caseRef);
     await this.page.locator(nocConfig.continueButtonLocator).click();
-    // await I.wait(testConfig.CreateCaseDelay);
-    // await I.waitForText(noticeOfChangeConfig.page1WaitForText, testConfig.WaitForTextTimeout);
-    //
-    // const locator = noticeOfChangeConfig.caseRefLocator;
-    // await I.waitForEnabled({css: locator});
-    // await I.fillField({css: locator}, caseRef);
-    // await I.wait(testConfig.CreateCaseDelay);
-    // await I.click(noticeOfChangeConfig.continueButtonLocator);
   }
 
   async nocPage2(deceasedSurname) {
@@ -1134,18 +1113,10 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.locator(nocConfig.deceasedSurnameLocator)).toBeEnabled();
     await this.page.locator(nocConfig.deceasedSurnameLocator).fill(deceasedSurname);
     await this.page.locator(nocConfig.continueButtonLocator).click();
-    // await I.waitForText(noticeOfChangeConfig.page2WaitForText, testConfig.WaitForTextTimeout);
-    //
-    // const locator = noticeOfChangeConfig.deceasedSurnameLocator;
-    // await I.waitForEnabled({css: locator});
-    // await I.fillField({css: locator}, deceasedSurname);
-    // await I.wait(testConfig.CreateCaseDelay);
-    // await I.click(noticeOfChangeConfig.continueButtonLocator);
   }
 
   async nocPage3(caseRef, deceasedSurname) {
     await expect(this.page.getByText(nocConfig.page3WaitForText)).toBeVisible();
-    // await I.waitForText(noticeOfChangeConfig.page3WaitForText, testConfig.WaitForTextTimeout);
 
     const caseRefNoDashes = await caseRef.replaceAll('-', '');
     await expect(this.page.getByText(caseRefNoDashes)).toBeVisible();
@@ -1155,16 +1126,6 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.locator(nocConfig.notifyCheckboxLocator)).toBeEnabled();
     await this.page.locator('#notifyEveryParty').click();
     await this.page.locator(nocConfig.continueButtonLocator).click();
-    // await I.see(caseRefNoDashes);
-    // await I.see(deceasedSurname);
-    // const checkAffirmationLocator = nocConfig.affirmationLocator;
-    // const checkNotifyLocator = nocConfig.notifyCheckboxLocator;
-    // await I.waitForEnabled({css: checkAffirmationLocator});
-    // await I.click('#affirmation');
-    // await I.waitForEnabled({css: checkNotifyLocator});
-    // await I.click('#notifyEveryParty');
-    // await I.wait(testConfig.CreateCaseDelay);
-    // await I.click(noticeOfChangeConfig.continueButtonLocator);
   }
 
   async nocConfirmationPage(caseRef) {
@@ -1172,11 +1133,72 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.page.locator(nocConfig.viewCaseLinkLocator)).toBeEnabled();
     await this.waitForNavigationToComplete(nocConfig.viewCaseLinkLocator);
-    // await I.waitForText(noticeOfChangeConfig.confirmationPageWaitForText, testConfig.WaitForTextTimeout);
-    //
-    // await I.see(caseRef);
-    // await I.waitForEnabled({css: noticeOfChangeConfig.viewCaseLinkLocator});
-    // await I.click('#content > div > exui-noc-navigation > div > div > exui-noc-submit-success > div > div > div > div > p:nth-child(8) > a');
+  }
+
+  async shareCaseSelection(sacCaseRefNumber) {
+    await expect(this.caseListLocator).toBeVisible();
+    await this.caseListLocator.click();
+    await expect(this.caseViewTextLocator).toBeVisible();
+    await this.page.locator('#wb-jurisdiction').selectOption(shareCaseConfig.case_Jurisdiction);
+    await this.page.locator('#wb-case-type').selectOption(shareCaseConfig.caseType);
+    await this.page.locator('//button[normalize-space()="Apply"]').click();
+    await this.caseReferenceLocator.click();
+    await this.page.getByLabel(shareCaseConfig.caseList_sortCase).click();
+    await expect(this.page.locator('//input[@id="select-' + sacCaseRefNumber + '"]')).toBeEnabled();
+    await this.page.locator('//input[@id="select-' + sacCaseRefNumber + '"]').click();
+    await this.shareCaseButtonLocator.click();
+    await this.page.waitForLoadState();
+    await this.page.waitForTimeout(10);
+    await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).focus();
+    await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).click();
+    await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).focus();
+    await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).fill('a');
+    await this.showAllTextLocator.click();
+    await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).click();
+    await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).fill('Te');
+    await this.page.getByRole('option', { name: shareCaseConfig.secondProbatePractitioner_value }).click();
+    await expect(this.page.locator('#btn-add-user')).toBeEnabled();
+    await this.page.locator('#btn-add-user').click();
+    await expect(this.page.getByText(shareCaseConfig.secondProbatePractitioner_email)).toBeVisible();
+    await expect(this.page.getByText(shareCaseConfig.caseAdded_Text)).toBeVisible();
+    await this.page.getByRole('button', { name: 'Continue' }).click();
+    await this.page.getByRole('button', { name: 'Confirm' }).click();
+    await expect(this.page.getByText('Your cases have been updated')).toBeVisible();
+  }
+
+  async verifyShareCase(sacCaseRefNumber) {
+    await expect(this.caseViewTextLocator).toBeVisible();
+    await this.caseReferenceLocator.click();
+    await this.page.getByLabel(shareCaseConfig.caseList_sortCase).click();
+    await expect(this.page.locator('//input[@id="select-' + sacCaseRefNumber + '"]')).toBeEnabled();
+    await this.page.locator('//input[@id="select-' + sacCaseRefNumber + '"]').click();
+    await this.waitForNavigationToComplete('#btn-share-button');
+    await this.showAllTextLocator.click();
+    await this.page.locator(`//tr[contains(.,"${testConfig.TestEnvProfUser}")]`).getByText('Remove').click();
+    await expect(this.page.getByText(shareCaseConfig.caseRemoved_Text)).toBeVisible();
+    await this.page.getByRole('button', { name: shareCaseConfig.continueButton }).click();
+    await this.page.getByRole('button', { name: shareCaseConfig.confirmButton }).click();
+    await expect(this.page.getByText(shareCaseConfig.caseAdded_validationText)).toBeVisible();
+  }
+
+  async shareCaseVerifyUserRemove(sacCaseRefNumber) {
+    await expect(this.caseViewTextLocator).toBeVisible();
+    await this.caseReferenceLocator.click();
+    await this.page.getByLabel(shareCaseConfig.caseList_sortCase).click();
+    await expect(this.page.locator('//input[@id="select-' + sacCaseRefNumber + '"]')).not.toBeVisible();
+  }
+
+  async shareCaseDelete(caseIdShareCase, caseRef) {
+    await expect(this.caseViewTextLocator).toBeVisible();
+    const caseRefNoDashes = caseRef.replaceAll('-', '');
+    await this.page.goto(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
+    await this.page.locator('//select[@id="next-step"]').selectOption('Delete');
+    await this.waitForGoNavigationToComplete();
+    await expect(this.page.getByText('#'+caseIdShareCase)).toBeVisible();
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
+    await expect(this.page.getByText('#'+caseIdShareCase)).toBeVisible();
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
+    await expect(this.page.getByText('Case #' + caseIdShareCase + ' has been updated with event: Delete')).toBeVisible();
   }
 
 };
