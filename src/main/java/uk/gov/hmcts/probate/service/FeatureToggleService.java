@@ -23,6 +23,9 @@ public class FeatureToggleService {
     private static final String DECLARATION_NOT_SIGNED_TOGGLE = "probate-cron-declaration-not-signed";
     private static final String NFI_DATA_EXTRACT_TOGGLE = "probate-nfi-data-extract";
 
+    @Value("${probate.wa.enabled}")
+    public boolean probateWAEnabled;
+
     @Autowired
     public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,
                                 @Value("${ld.user.firstName}") String ldUserFirstName,
@@ -61,6 +64,10 @@ public class FeatureToggleService {
     public boolean isPoundValueFeatureToggleOn() {
         return this.isFeatureToggleOn(
                 SMEE_AND_FORD_POUND_VALUE_TOGGLE, false);
+    }
+
+    public boolean isProbateWAEnabledToggleOn() {
+        return probateWAEnabled;
     }
 
     public boolean isIronMountainInBackOffice() {
