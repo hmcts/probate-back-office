@@ -1,0 +1,27 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "data.lastModifiedDateForDormant": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "match": {
+            "state": "Dormant"
+          }
+        }
+      ]
+    }
+  },
+  "size": %s,
+  "_source": ["reference"],
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]

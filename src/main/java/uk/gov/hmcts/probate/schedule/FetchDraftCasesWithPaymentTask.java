@@ -11,6 +11,8 @@ import java.time.Clock;
 import java.time.LocalDate;
 
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 @Component
 @Slf4j
@@ -38,9 +40,9 @@ public class FetchDraftCasesWithPaymentTask implements Runnable {
         try {
             dataExtractDateValidator.dateValidator(startDate, endDate);
             log.info("Perform send email for GOR draft cases wth payment  from date started");
-            fetchDraftCaseService.fetchGORCases(startDate, endDate);
+            fetchDraftCaseService.fetchDraftCases(startDate, endDate, GRANT_OF_REPRESENTATION);
             log.info("Perform send email for Caveat draft cases wth payment  from date started");
-            fetchDraftCaseService.fetchCaveatCases(startDate, endDate);
+            fetchDraftCaseService.fetchDraftCases(startDate, endDate, CAVEAT);
             log.info("Perform fetch draft cases with payment from date finished");
         } catch (ApiClientException e) {
             log.error(e.getMessage());

@@ -84,7 +84,7 @@ public class AutomatedNotificationService {
                               SecurityDTO securityDTO, List<Long> failedCases) {
         for (CaseDetails caseDetails : cases) {
             StartEventResponse startEventResponse = null;
-            Document sentEmail = null;
+            Document sentDocument = null;
             boolean emailSucceeded = false;
             String caseId = caseDetails.getId().toString();
             try {
@@ -95,7 +95,7 @@ public class AutomatedNotificationService {
                     failedCases.add(caseDetails.getId());
                     continue;
                 }
-                sentEmail = strategy.sendEmail(startEventResponse.getCaseDetails());
+                sentDocument = strategy.sendNotification(startEventResponse.getCaseDetails());
                 emailSucceeded = true;
             } catch (CcdUpdateNotificationException e) {
                 log.error(getErrorMessage("StartEvent failed for case: %s", caseId), e);
@@ -106,10 +106,10 @@ public class AutomatedNotificationService {
             }
 
             try {
-                if (emailSucceeded && (sentEmail != null || strategy.skipSaveNotification())) {
+                if (emailSucceeded && (sentDocument != null || strategy.skipSaveNotification())) {
                     automatedNotificationCCDService.saveNotification(
                             startEventResponse.getCaseDetails(), caseDetails.getId().toString(),
-                            securityDTO, sentEmail, strategy, startEventResponse
+                            securityDTO, sentDocument, strategy, startEventResponse
                     );
                 } else {
                     automatedNotificationCCDService.saveFailedNotification(

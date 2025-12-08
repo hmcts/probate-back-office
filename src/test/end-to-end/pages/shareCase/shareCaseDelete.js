@@ -7,7 +7,7 @@ module.exports = async function (caseIdShareCase, caseRef) {
     const I = this;
     await I.waitForText('Your cases', 20);
     const caseRefNoDashes = await I.replaceAll(caseIdShareCase, '-', '');
-    I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+    I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
     await I.wait(testConfig.ManualDelayMedium);
     await I.selectOption('//select[@id="next-step"]', 'Delete');
     await I.waitForNavigationToComplete('button[type="submit"]');

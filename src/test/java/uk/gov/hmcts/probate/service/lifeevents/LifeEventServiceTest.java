@@ -1,5 +1,6 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.service.lifeevents;
 
+import com.github.hmcts.lifeevents.client.model.Alias;
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import com.github.hmcts.lifeevents.client.service.DeathService;
@@ -27,7 +28,6 @@ import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,6 +38,11 @@ class LifeEventServiceTest {
     final Long caseId = 1234L;
     final String firstName = "Wibble";
     final String lastName = "Wobble";
+    final String aliasFirstName = "Webble";
+    final String aliasLastName = "Wubble";
+    final String aliasPrefix = "Mr";
+    final String aliasSuffix = "Jr";
+    final String aliasType = "Otherwise known as";
     @Autowired
     LifeEventService lifeEventService;
     @MockitoBean
@@ -57,13 +62,20 @@ class LifeEventServiceTest {
     V1Death v1Death;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         localDate = LocalDate.of(1900, 1, 1);
-
+        final Alias alias = new Alias();
+        alias.setPrefix(aliasPrefix);
+        alias.setForenames(aliasFirstName);
+        alias.setSurname(aliasLastName);
+        alias.setSuffix(aliasSuffix);
+        alias.setType(aliasType);
         final Deceased deceased = new Deceased();
         deceased.setForenames(firstName);
         deceased.setSurname(lastName);
         deceased.setSex(Deceased.SexEnum.INDETERMINATE);
+        deceased.setAliases(List.of(alias));
+        deceased.setDateOfBirth(localDate);
         v1Death = new V1Death();
         v1Death.setDeceased(deceased);
         deathRecords = new ArrayList<>();
@@ -74,7 +86,7 @@ class LifeEventServiceTest {
         when(caseData.getDeceasedSurname()).thenReturn(lastName);
         when(caseData.getDeceasedDateOfDeath()).thenReturn(localDate);
         when(caseDetails.getId()).thenReturn(caseId);
-        when(deathService.searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate)))
+        when(deathService.searchForDeathRecordsByNamesAndDate(firstName, lastName, localDate))
             .thenReturn(deathRecords);
     }
 
@@ -99,11 +111,10 @@ class LifeEventServiceTest {
         assertEquals("No death records found", exception.getMessage());
     }
 
-
     @Test
     void shouldSearchByNameAndDate() {
         lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
-        verify(deathService).searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate));
-        verify(deathRecordCCDService).mapDeathRecords(eq(deathRecords));
+        verify(deathService).searchForDeathRecordsByNamesAndDate(firstName, lastName, localDate);
+        verify(deathRecordCCDService).mapDeathRecords(deathRecords);
     }
 }

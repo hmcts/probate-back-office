@@ -25,8 +25,10 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.cases.BulkPrint;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.Constants.GRANT_OF_REPRESENTATION_NAME;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
@@ -245,6 +248,61 @@ class AutomatedNotificationCCDServiceTest {
         assertEquals("existingEmail.pdf", notifications.get(0).getValue().getDocumentFileName());
         assertEquals("newEmail.pdf", notifications.get(1).getValue().getDocumentFileName());
     }
+
+
+    @Test
+    void savesNotificationSuccessfullyWithDormantReminder() {
+        Map<String, Object> data = new HashMap<>();
+        CaseDetails caseDetails = mock(CaseDetails.class);
+        when(caseDetails.getData()).thenReturn(data);
+        NotificationStrategy notificationStrategy = mock(NotificationStrategy.class);
+        StartEventResponse startEventResponse = mock(StartEventResponse.class);
+        when(notificationStrategy.skipSaveNotification()).thenReturn(false);
+        when(notificationStrategy.getType()).thenReturn(NotificationType.DORMANT_REMINDER);
+        when(notificationStrategy.getEventSummary()).thenReturn("Event Summary");
+        when(notificationStrategy.getEventDescription()).thenReturn("Event Description");
+        when(notificationStrategy.getCaseTypeName()).thenReturn(GRANT_OF_REPRESENTATION_NAME);
+        when(startEventResponse.getEventId()).thenReturn("eventId");
+        when(startEventResponse.getToken()).thenReturn("eventToken");
+
+        underTest.saveNotification(caseDetails, "12345", securityDTO,
+                createMockDocument("dormantReminder.pdf"), notificationStrategy, startEventResponse);
+
+        verify(coreCaseDataApi).submitEventForCaseWorker(
+                eq(securityDTO.getAuthorisation()),
+                eq(securityDTO.getServiceAuthorisation()),
+                eq(securityDTO.getUserId()),
+                eq(PROBATE.name()),
+                eq(GRANT_OF_REPRESENTATION_NAME),
+                eq("12345"),
+                eq(true),
+                any(CaseDataContent.class)
+        );
+    }
+
+    @Test
+    void buildsCaseDataWithDormantReminder() throws Exception {
+        Map<String, Object> data = new HashMap<>();
+        BulkPrint bulkprint = BulkPrint.builder()
+                .sendLetterId("12345")
+                .build();
+        data.put("bulkPrint", bulkprint);
+        Document sentEmail = createMockDocument("email.pdf");
+        NotificationType notificationType = NotificationType.DORMANT_REMINDER;
+
+        Method method = AutomatedNotificationCCDService.class
+                .getDeclaredMethod("buildCaseData", Map.class, Document.class, NotificationType.class);
+        method.setAccessible(true);
+
+        GrantOfRepresentationData result = (GrantOfRepresentationData) method.invoke(underTest,
+                data, sentEmail, notificationType);
+
+        assertNotNull(result);
+        assertNotNull(result.getProbateNotificationsGenerated());
+        assertEquals(1, result.getProbateNotificationsGenerated().size());
+        assertEquals("12345", result.getBulkPrintId().get(0).getValue().getSendLetterId());
+    }
+
 
     @Test
     void shouldSaveFailedNotification() {

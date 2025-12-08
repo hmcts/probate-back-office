@@ -73,7 +73,7 @@ class CaveatQueryServiceTest {
         List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
                 new ReturnedCaveatDetails(caveatData, LAST_MODIFIED, DRAFT, 1L))
                 .build();
-        ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
+        ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList, 1);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
     }
@@ -90,7 +90,7 @@ class CaveatQueryServiceTest {
         assertThrows(BusinessValidationException.class, () -> {
             List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>()
                     .build();
-            ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
+            ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList, 1);
 
             when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
 
@@ -121,4 +121,5 @@ class CaveatQueryServiceTest {
         List<ReturnedCaveatDetails> result = caveatQueryService.findCaveatExpiredCases("2023-10-01");
         assertEquals("Smith", result.getFirst().getData().getDeceasedSurname());
     }
+
 }

@@ -112,6 +112,8 @@ docmosis:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
       templateName: FL-PRB-SOT-ENG-00092.doc
+    dormantReminder:
+      templateName: FL-PRB-GNO-ENG-postal-dormant-reminder-v001.docx
     welshStatementOfTruth:
       templateName: FL-PRB-SOT-WEL-00236.doc
     assembledLetter:
@@ -150,6 +152,8 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdColligendaBonaGrantReissue:
       templateName: FL-PRB-GRP-WEL-00237.doc
+    welshDormantReminder:
+      templateName: FL-PRB-GNO-WEL-postal-dormant-reminder-v001.docx
 
 fee.api:
   url: http://localhost:4411
@@ -263,6 +267,7 @@ notifications:
         iht421Awaiting: "IHT 421 awaiting"
         ihtFiguresIncorrect: "IHT figures incorrect"
         ihtIssue: "IHT forms not received"
+        intestacyMinorityInterest: "Intestacy Minority Interest"
         lostWill: "Lost Will"
         matchingApplication: "Matching application – (informing Sol or citizen that there is a matching application so their case cannot proceed)"
         noMinorityLife: "No minority or life interest – we ask solicitors to certify this if missing on the Legal Statement"
@@ -314,6 +319,7 @@ notifications:
         iht421Awaiting: "Aros am IHT 421"
         ihtFiguresIncorrect: "Mae’r ffigurau IHT yn anghywir"
         ihtIssue: "Ffurflenni IHT heb ddod i law"
+        intestacyMinorityInterest: "Budd i blentyn pan nad oes ewyllys"
         lostWill: "Mae’r ewyllys ar goll"
         matchingApplication: "Cais cyfatebol – (hysbysu'r cyfreithiwr neu'r dinesydd bod cais cyfatebol fel na all eu hachos fynd yn ei flaen)"
         noMinorityLife: "Dim budd i blentyn na budd am oes – gofynnwn i gyfreithwyr ardystio hyn os yw ar goll ar y Datganiad Cyfreithiol"
@@ -354,6 +360,7 @@ notifications:
           applicationReceived: "8d478d0f-a871-418b-ba7a-682bfa540676"
           applicationReceivedNoDocs: "2d4cf042-88e5-4bc4-afbe-e640522a172c"
           applicationReceivedPaperFormCaseworker: "7210fd5a-1a1a-4682-9fbd-4b641e464c45"
+          stopResponseReceived: "18802a17-fe7e-41fc-b4e2-c8ac12139618"
           documentReceived: "60036c70-5022-4625-89c9-a37c91554bea"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "d5084257-f475-415a-b7d0-2427b5c580b1"
@@ -387,15 +394,19 @@ notifications:
           unsubmittedApplication: "3f3965ca-1c8a-4b44-be66-75b929513e65"
           declarationNotSignedPrimaryApplicant: "c04e65be-51f4-46b1-bce4-8795c1113ae7"
           declarationNotSignedExecutors: "38f8f966-1a7b-4d2b-ae2c-a67f41e4d788"
+          postGrantIssuedNotification: "b2ec97b0-0b0f-4e9d-9f1a-9638294cda2a"
+          registrarEscalationNotification: "2abb444d-472e-40ed-aed9-a7075af5458c"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
           applicationReceivedPaperFormCaseworker: "7210fd5a-1a1a-4682-9fbd-4b641e464c45"
+          stopResponseReceived: "18802a17-fe7e-41fc-b4e2-c8ac12139618"
           documentReceived: "215a1300-bd83-4e4d-884e-fdce9bd7b9d4"
           caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
           caseStoppedCaveat: "d5084257-f475-415a-b7d0-2427b5c580b1"
-          grantIssued: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
-          grantReissued: "9b0e4091-8c94-41bc-8e6c-de4bc211f68f"
+          grantIssued: "8b24d6a3-d7bc-4d25-8e76-900d5a7ca0de"
+          grantReissued: "c74f9243-f4d0-48d3-8ff0-c1a8fe3cd5d9"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
@@ -406,7 +417,7 @@ notifications:
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
           requestInformation: "b20619ef-2eaa-45ab-9b0e-a53b6c220cac"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
-          grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
+          grantIssuedIntestacy: "8b24d6a3-d7bc-4d25-8e76-900d5a7ca0de"
           caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
@@ -420,11 +431,15 @@ notifications:
           hseReminder: "70d352c7-42e1-4f24-b7b4-8cc99f766862"
           dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
           unsubmittedApplication: "ab5d7b24-6b40-403b-8a8f-4a21bc48ed6f"
+          postGrantIssuedNotification: "b2ec97b0-0b0f-4e9d-9f1a-9638294cda2a"
+          registrarEscalationNotification: "2abb444d-472e-40ed-aed9-a7075af5458c"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
           applicationReceivedNoDocs: "37ca2e1e-b7fb-4f4f-9691-7dab45dcd751"
           applicationReceivedPaperFormCaseworker: "f066040c-e986-44a7-8a63-0e4800850c36"
+          stopResponseReceived: "65887613-45e7-4da4-9ff8-0e59618c21b1"
           documentReceived: "a6117239-5e16-49f9-a384-70c03b0e3470"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
           caseStoppedCaveat: "4aec6fa3-7e76-406a-9953-2f12d5d29f81"
@@ -456,15 +471,19 @@ notifications:
           unsubmittedApplication: "ac18f977-de08-407b-9c35-1e62d9cd80ff"
           declarationNotSignedPrimaryApplicant: "08c35f45-453d-45bc-99d1-a7752fde98a1"
           declarationNotSignedExecutors: "2bbd7b4d-2308-4b92-ae13-3a5f8608c94b"
+          postGrantIssuedNotification: "6fadebcf-4769-42c0-9e60-74dbb75ef99c"
+          registrarEscalationNotification: "5d67e88e-1b7a-415e-b2b1-697cd85d13f2"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
           applicationReceivedPaperFormCaseworker: "f066040c-e986-44a7-8a63-0e4800850c36"
+          stopResponseReceived: "65887613-45e7-4da4-9ff8-0e59618c21b1"
           documentReceived: "5f1996a6-5510-4b32-9da8-604be2b9b6b7"
           caseStopped: "a767a0bd-4acc-413e-b510-5a71d24daf85"
           caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
-          grantIssued: "9863cfe5-240b-42ed-912b-188a5f7e1e76"
-          grantReissued: "1855a622-4979-45a9-baa9-fdac6530804c"
+          grantIssued: "3f2f66f5-1675-42f0-bec8-97a8afb00115"
+          grantReissued: "dc97e373-1487-4a42-a39f-4a4d603b1501"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
@@ -475,7 +494,7 @@ notifications:
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
           requestInformation: "0f761ecd-0665-44d9-a877-eb9333598fdc"
           redeclarationSot: "c34256d7-c8f5-451c-b7a6-1a9580622f1c"
-          grantIssuedIntestacy: "9863cfe5-240b-42ed-912b-188a5f7e1e76"
+          grantIssuedIntestacy: "3f2f66f5-1675-42f0-bec8-97a8afb00115"
           caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
@@ -488,6 +507,9 @@ notifications:
           hseReminder: "0146b124-a67c-4753-b38e-85bcb37d8562"
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
           unsubmittedApplication: "7440ee74-4cde-4cd4-ab76-038d70674424"
+          postGrantIssuedNotification: "6fadebcf-4769-42c0-9e60-74dbb75ef99c"
+          registrarEscalationNotification: "5d67e88e-1b7a-415e-b2b1-697cd85d13f2"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
 
 documents:
   templates:
@@ -699,7 +721,9 @@ iht-estate:
   switch-date: ${EXCEPTED_ESTATE_DATE_OF_DEATH:2022-01-01}
 
 blobstorage:
-  connection: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+  connection:
+    smeeandford: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+    nfi: ${PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING:dummy}
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
@@ -784,5 +808,6 @@ automated_notification:
   hse_reminder:
     awaiting_documentation_days: 30
   dormant_warning_days: 150
+  dormant_reminder_days: 365
   unsubmitted_application_days: 28
   declaration_not_signed_days: 3

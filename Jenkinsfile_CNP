@@ -36,6 +36,10 @@ def secrets = [
                 secret('solicitorUserPass', 'SOL_USER_PASSWORD'),
                 secret('solicitor2UserEmail', 'SOL2_USER_EMAIL'),
                 secret('solicitor2UserPass', 'SOL2_USER_PASSWORD'),
+                secret('prof-user-sac-username', 'PROF_USER_SAC'),
+                secret('prof-user-sac-password', 'PROF_USER_PASSWORD_SAC'),
+                secret('prof-user-noc-username', 'PROF_USER_NOC'),
+                secret('prof-user-noc-password', 'PROF_USER_PASSWORD_NOC'),
                 secret('authTokenEmail', 'AUTH_TOKEN_EMAIL'),
                 secret('authTokenPassword', 'AUTH_TOKEN_PASSWORD'),
                 secret('excelaEmail', 'EXCELA_EMAIL'),
@@ -64,7 +68,8 @@ def secrets = [
                 secret('levDeathUrl', 'LEV_DEATH_URL'),
                 secret('definition-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
                 secret('definition-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
-                secret('probate-storage-account-primary-connection-string','PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING')
+                secret('probate-storage-account-primary-connection-string','PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING'),
+                secret('probate-storage-account-nfi-primary-connection-string','PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -105,8 +110,8 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
 // Configure branches to sync with master branch
-// diable sync branch to demo only
-def branchesToSync = ['ithc','perftest']
+// diable sync branch to demo and ithc
+def branchesToSync = ['perftest']
 
 def checkForEnableNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
@@ -250,6 +255,18 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
+  }
+
+  afterAlways('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+    publishHTML([
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: "./functional-output/reports",
+            reportFiles: 'functional_report.html',
+            reportName: 'Functional Test Report'
+    ])
   }
 
   afterSuccess('functionalTest:aat') {
