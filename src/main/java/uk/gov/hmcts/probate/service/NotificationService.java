@@ -58,8 +58,11 @@ import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.format.DateTimeParseException;
@@ -85,6 +88,8 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 @RequiredArgsConstructor
 @Component
 public class NotificationService {
+    private static final String LONDON_TIMEZONE = "Europe/London";
+    private static final ZoneId LONDON_ZONE_ID = ZoneId.of(LONDON_TIMEZONE);
     private static final DateTimeFormatter CASE_DATA_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             .withLocale(Locale.UK);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
@@ -97,6 +102,12 @@ public class NotificationService {
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
     private static final String PERSONALISATION_EXECUTOR_NAME = "executor_name";
     private static final String PERSONALISATION_EXECUTOR_NAMES_LIST = "executor_names_list";
+    private static final String GOP_CASE_TYPE = "gop";
+    private static final String INTESTACY_CASE_TYPE = "intestacy";
+    private static final String ADMON_WILL_CASE_TYPE = "admonWill";
+    private static final String AD_COLLIGENDA_BONA_CASE_TYPE = "adColligendaBona";
+    private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
+    private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
 
@@ -125,6 +136,7 @@ public class NotificationService {
     private final ObjectMapper objectMapper;
     private final EmailValidationService emailValidationService;
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
+    private final Clock clock;
 
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -164,6 +176,8 @@ public class NotificationService {
         }
 
         updatePersonalisationForSolicitor(caseData, personalisation);
+        personalisation = updatePersonalisationForSolicitorGrantIssuedEmails(state, caseData, caseDetails.getId(),
+                personalisation);
 
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
@@ -171,7 +185,8 @@ public class NotificationService {
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
-        log.info("Personlisation complete now get the email repsonse");
+        log.info("Personalisation is complete. Fetching the email response");
+
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
                 caseDetails.getId());
@@ -221,6 +236,47 @@ public class NotificationService {
         }
     }
 
+    Map<String, Object> updatePersonalisationForSolicitorGrantIssuedEmails(State state, CaseData caseData, Long caseId,
+                                                            Map<String, Object> personalisation) {
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)
+                && (state == State.GRANT_ISSUED || state == State.GRANT_ISSUED_INTESTACY
+                || state == State.GRANT_REISSUED)) {
+
+            String caseType = caseData.getCaseType();
+            if (caseType.isBlank()) {
+                log.error("Personalisation validation failed for blank caseType on case {}", caseId);
+                throw new RequestInformationParameterException();
+            }
+
+            personalisation.put("case_type_text", switch (caseType) {
+                case GOP_CASE_TYPE -> "grant of probate";
+                case INTESTACY_CASE_TYPE -> "letters of administration";
+                case ADMON_WILL_CASE_TYPE -> "letters of administration with will annexed";
+                case AD_COLLIGENDA_BONA_CASE_TYPE -> "Ad Colligenda Bona grant";
+                default -> {
+                    log.error("Personalisation validation failed due to unknown caseType: {} on case: {}",
+                            caseType, caseId);
+                    throw new RequestInformationParameterException();
+                }
+            });
+
+            if (caseData.getLanguagePreference() == LanguagePreference.WELSH) {
+                personalisation.put("welsh_case_type_text", switch (caseType) {
+                    case GOP_CASE_TYPE -> "grant profiant";
+                    case INTESTACY_CASE_TYPE -> "llythyrau gweinyddu";
+                    case ADMON_WILL_CASE_TYPE -> "llythyrau gweinyddu pan fydd yna ewyllys";
+                    case AD_COLLIGENDA_BONA_CASE_TYPE -> "grant Ad Colligenda Bona";
+                    default -> {
+                        log.error("Welsh Personalisation validation failed due to unknown caseType: {} on case: {}",
+                                caseType, caseId);
+                        throw new RequestInformationParameterException();
+                    }
+                });
+            }
+        }
+        return personalisation;
+    }
+
     public Document sendSealedAndCertifiedEmail(CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         String reference = caseDetails.getId().toString();
@@ -260,7 +316,7 @@ public class NotificationService {
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
-        log.info("Personlisation complete now get the email response");
+        log.info("Personalisation is complete. Fetching the email response");
 
         SendEmailResponse response =
                 getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
@@ -287,7 +343,7 @@ public class NotificationService {
 
         doCommonNotificationServiceHandling(personalisation, caveatDetails.getId());
 
-        log.info("Personlisation complete now get the email response");
+        log.info("Personalisation is complete. Fetching the email response");
 
         SendEmailResponse response =
                 getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
@@ -538,7 +594,7 @@ public class NotificationService {
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress,
                                                    DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
-            .sentOn(LocalDateTime.now().format(formatter))
+            .sentOn(getLondonDateTime())
             .from(response.getFromEmail().orElse(""))
             .to(emailAddress)
             .subject(response.getSubject())
@@ -552,7 +608,7 @@ public class NotificationService {
                                           DocumentType docType) {
         final String previewXhtml = pdfManagementService.rerenderAsXhtml(response.getHtml().orElseThrow());
         SentEmail sentEmail = SentEmail.builder()
-                .sentOn(LocalDateTime.now().format(formatter))
+                .sentOn(getLondonDateTime())
                 .to(emailAddress)
                 .subject(response.getSubject().orElse(""))
                 .body(previewXhtml)
@@ -607,7 +663,7 @@ public class NotificationService {
     private Document getGeneratedSentEmailDocmosisDocument(SendEmailResponse response,
                                                            String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
-            .sentOn(LocalDateTime.now().format(formatter))
+            .sentOn(getLondonDateTime())
             .from(response.getFromEmail().orElse(""))
             .to(emailAddress)
             .subject(response.getSubject())
@@ -1022,11 +1078,18 @@ public class NotificationService {
     public Document sendRegistrarEscalationNotification(
             final CaseDetails caseDetails) throws RegistrarEscalationException {
         final CaseData caseData = caseDetails.getData();
+        final String recipientEmail = getEmail(caseData);
+        if (StringUtils.isBlank(recipientEmail)) {
+            // short circuit - we cannot email if no email present
+            log.info("Not sending registrar escalation notification for case {} as recipient email is null",
+                    caseDetails.getId());
+            return null;
+        }
+
         final String templateId = templateService.getRegistrarEscalationNotification(
                 caseData.getApplicationType(),
                 caseData.getLanguagePreference());
 
-        final String recipientEmail = getEmail(caseData);
         final String caseRef = caseDetails.getId().toString();
         final String deceasedName = caseData.getDeceasedFullName();
         final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
@@ -1039,8 +1102,8 @@ public class NotificationService {
         };
 
         final Map<String, Object> personalisation = Map.of(
-                "ccd_reference", caseRef,
-                "deceased_name", deceasedName,
+                PERSONALISATION_CCD_REFERENCE, caseRef,
+                PERSONALISATION_DECEASED_NAME, deceasedName,
                 "deceased_dod", deceasedDiedOn,
                 "deceased_dod_cy", deceasedDiedOnCy,
                 PERSONALISATION_APPLICANT_NAME, addresseeName);
@@ -1099,8 +1162,8 @@ public class NotificationService {
         final String caseworkerName = caseworker.getName();
 
         final Map<String, Object> personalisation = Map.of(
-                "ccd_reference", caseRef,
-                "deceased_name", deceasedName,
+                PERSONALISATION_CCD_REFERENCE, caseRef,
+                PERSONALISATION_DECEASED_NAME, deceasedName,
                 "caseworker_name", caseworkerName);
 
         final SendEmailResponse response;
@@ -1164,11 +1227,18 @@ public class NotificationService {
     public Document sendPostGrantIssuedNotification(final CaseDetails caseDetails) {
 
         final CaseData caseData = caseDetails.getData();
+        final String recipientEmail = getEmail(caseData);
+        if (StringUtils.isBlank(recipientEmail)) {
+            // short circuit - we cannot email if no email present
+            log.info("Not sending post grant issued notification for case {} as recipient email is null",
+                    caseDetails.getId());
+            return null;
+        }
+
         final String templateId = templateService.getPostGrantIssueTemplateId(
                 caseData.getLanguagePreference(),
                 caseData.getApplicationType());
 
-        final String recipientEmail = getEmail(caseData);
         final String caseRef = caseDetails.getId().toString();
         final String deceasedName = caseData.getDeceasedFullName();
         final LocalDate deceasedDeathDate = caseData.getDeceasedDateOfDeath();
@@ -1196,8 +1266,8 @@ public class NotificationService {
         };
 
         final Map<String, Object> personalisation = Map.of(
-                "ccd_reference", caseRef,
-                "deceased_name", deceasedName,
+                PERSONALISATION_CCD_REFERENCE, caseRef,
+                PERSONALISATION_DECEASED_NAME, deceasedName,
                 "deceased_dod", deceasedDiedOn,
                 "deceased_dod_cy", deceasedDiedOnCy,
                 PERSONALISATION_APPLICANT_NAME, addresseeName,
@@ -1227,5 +1297,11 @@ public class NotificationService {
             log.warn("Failed to generate or upload notification pdf for case {}", caseRef, e);
             return null;
         }
+    }
+
+    String getLondonDateTime() {
+        return ZonedDateTime.now(clock)
+                .withZoneSameInstant(LONDON_ZONE_ID)
+                .format(formatter);
     }
 }
