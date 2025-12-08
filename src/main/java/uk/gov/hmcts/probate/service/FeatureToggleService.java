@@ -24,7 +24,7 @@ public class FeatureToggleService {
     private static final String NFI_DATA_EXTRACT_TOGGLE = "probate-nfi-data-extract";
 
     @Value("${probate.wa.enabled}")
-    public boolean probateWAEnabled;
+    private boolean probateWAEnabled;
 
     @Autowired
     public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,
