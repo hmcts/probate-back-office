@@ -27,7 +27,7 @@
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "legacySearchResultRows", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "doNotSaveCase", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "resendDate", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "LegacySearch", "CaseFieldID": "resendDateText", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "resendDateText", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-legacysearch", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "createDummyCaseText", "UserRole": "caseworker-probate-legacysearch", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "recordId", "UserRole": "caseworker-probate-legacysearch", "CRUD": "CRUD"},
