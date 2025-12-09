@@ -151,6 +151,7 @@ public class CallbackResponseTransformer {
     private final OrganisationsRetrievalService organisationsRetrievalService;
     private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
+    private final GrantIssueTooEarlyTransformer grantIssueTooEarlyTransformer;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final AuditEventService auditEventService;
@@ -567,6 +568,7 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.matches("No matches found");
         }
 
+        grantIssueTooEarlyTransformer.validate(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
