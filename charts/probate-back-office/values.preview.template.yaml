@@ -53,6 +53,13 @@ ccd:
         - name: "pr-${CHANGE_ID}-user-profile"
         - name: "pr-${CHANGE_ID}-role-assignment"
         - name: "pr-${CHANGE_ID}-probatemandb"
+        - name: "pr-${CHANGE_ID}-emstitch"
+        - name: "pr-${CHANGE_ID}-camunda"
+        - name: "pr-${CHANGE_ID}-cft_task_db"
+        - name: "pr-${CHANGE_ID}-wa_workflow_api"
+        - name: "pr-${CHANGE_ID}-wa-case-event-handler"
+        - name: "pr-${CHANGE_ID}-org-role-mapping"
+
   ccd-case-print-service:
     enabled: true
     nodejs:
