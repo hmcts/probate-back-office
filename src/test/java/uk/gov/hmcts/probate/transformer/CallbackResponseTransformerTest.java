@@ -570,6 +570,9 @@ class CallbackResponseTransformerTest {
     @Mock
     private ExecutorsTransformer solicitorExecutorTransformerMock;
 
+    @Spy
+    private GrantIssueTooEarlyTransformer grantIssueTooEarlyTransformer;
+
     @Mock
     private CaseDataTransformer caseDataTransformerMock;
     @Mock
