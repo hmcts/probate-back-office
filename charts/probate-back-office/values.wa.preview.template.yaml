@@ -33,10 +33,6 @@ postgresql:
   flexibleserver: probate-preview
   setup:
     databases:
-      - name: "pr-${CHANGE_ID}-data-store"
-      - name: "pr-${CHANGE_ID}-definition-store"
-      - name: "pr-${CHANGE_ID}-user-profile"
-      - name: "pr-${CHANGE_ID}-role-assignment"
       - name: "pr-${CHANGE_ID}-probatemandb"
       - name: "pr-${CHANGE_ID}-emstitch"
       - name: "pr-${CHANGE_ID}-camunda"
