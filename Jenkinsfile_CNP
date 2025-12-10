@@ -246,6 +246,18 @@ withPipeline("java", product, component) {
       sh 'yarn install'
       sh 'yarn test:fullfunctional-cw'
     }
+
+    onPR {
+      for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa") ) {
+        env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+        println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
+        sh 'chmod -R +x ./bin'
+        uploadDmnDiagrams()
+        uploadBpmnDiagram()
+        setupRoleAssignments()
+      }
+    }
+
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
             allowMissing         : true,
@@ -355,4 +367,42 @@ withPipeline("java", product, component) {
     env.SERVICES_CORECASEDATA_BASEURL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
   }
 }
+
+afterSuccess('akschartsinstall') {
+  onPR {
+    for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa") ) {
+      env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+      println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
+      sh 'chmod -R +x ./bin'
+      uploadDmnDiagrams()
+      uploadBpmnDiagram()
+      setupRoleAssignments()
+    }
+  }
+}
+
+def uploadDmnDiagrams() {
+  dir("${WORKSPACE}/bin") {
+    tenantId = "st_cic"
+    product = "st_cic"
+    sh "./wa/import-dmn-diagram.sh ${WORKSPACE} ${env} ${tenantId} ${product}"
+  }
+}
+
+def uploadBpmnDiagram() {
+  dir("${WORKSPACE}/bin") {
+    bpmnBranch = "master"
+    sh """
+      ./wa/pull-latest-camunda-wa-files.sh ${bpmnBranch}
+      ./wa/import-wa-bpmn-diagram.sh .
+    """
+  }
+}
+
+def setupRoleAssignments() {
+  dir("${WORKSPACE}/bin") {
+    sh "./wa/setup-role-assignments.sh"
+  }
+}
+
 
