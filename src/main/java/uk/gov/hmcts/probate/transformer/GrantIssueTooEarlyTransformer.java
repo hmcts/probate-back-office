@@ -27,8 +27,7 @@ public class GrantIssueTooEarlyTransformer {
 
         if (dod != null && minDays > 0 && !now.isAfter(dod.plusDays(minDays))) {
             responseCaseDataBuilder.issueEarlySwitch(YES);
-        }
-        else {
+        } else {
             responseCaseDataBuilder.issueEarlySwitch(NO);
         }
     }
