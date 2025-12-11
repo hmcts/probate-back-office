@@ -869,6 +869,29 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse clearRelationships(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
+                        Optional.empty(),false);
+
+        String relationshipBefore = callbackRequest.getCaseDetailsBefore().getData()
+                .getPrimaryApplicantRelationshipToDeceased();
+        String relationshipAfter = callbackRequest.getCaseDetails().getData()
+                .getPrimaryApplicantRelationshipToDeceased();
+        if (relationshipBefore != null && !relationshipBefore.equals(relationshipAfter)) {
+            responseCaseDataBuilder.primaryApplicantAdoptedIn(null);
+            responseCaseDataBuilder.primaryApplicantAdoptedOut(null);
+            responseCaseDataBuilder.primaryApplicantAdoptionInEnglandOrWales(null);
+            responseCaseDataBuilder.primaryApplicantParentAdoptedIn(null);
+            responseCaseDataBuilder.primaryApplicantParentAdoptedOut(null);
+            responseCaseDataBuilder.primaryApplicantParentAdoptionInEnglandOrWales(null);
+            responseCaseDataBuilder.deceasedAdoptedIn(null);
+            responseCaseDataBuilder.deceasedAdoptionInEnglandOrWales(null);
+            responseCaseDataBuilder.deceasedAdoptedOut(null);
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformCaseForAttachScannedDocs(CallbackRequest callbackRequest, Document document,
                                                               Optional<UserInfo> caseworkerInfo) {
         boolean transform = doTransform(callbackRequest);
@@ -1286,13 +1309,15 @@ public class CallbackResponseTransformer {
             .bulkPrintId(caseData.getBulkPrintId())
 
             .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
-            .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
             .deceasedSpouseNotApplyingReason(caseData.getDeceasedSpouseNotApplyingReason())
             .deceasedOtherChildren(caseData.getDeceasedOtherChildren())
             .allDeceasedChildrenOverEighteen(caseData.getAllDeceasedChildrenOverEighteen())
             .anyDeceasedChildrenDieBeforeDeceased(caseData.getAnyDeceasedChildrenDieBeforeDeceased())
+            .childrenDiedBeforeDeceased(caseData.getChildrenDiedBeforeDeceased())
             .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
             .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
+            .deceasedAnyLivingDescendants(caseData.getDeceasedAnyLivingDescendants())
+            .deceasedAnyOtherParentAlive(caseData.getDeceasedAnyOtherParentAlive())
             .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
             .statementOfTruthDocument(caseData.getStatementOfTruthDocument())
             .amendedLegalStatement(caseData.getAmendedLegalStatement())
@@ -1420,9 +1445,35 @@ public class CallbackResponseTransformer {
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
             .isSaveAndClose(caseData.getIsSaveAndClose())
             .executorsNamed(caseData.getExecutorsNamed())
+            .hasCoApplicant(caseData.getHasCoApplicant())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
-            .evidenceHandledDate(caseData.getEvidenceHandledDate());
+            .evidenceHandledDate(caseData.getEvidenceHandledDate())
+            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
+            .grandchildParentOtherChildren(caseData.getGrandchildParentOtherChildren())
+            .grandchildParentChildrenOverEighteen(caseData.getGrandchildParentChildrenOverEighteen())
+            .otherWholeBloodSiblings(caseData.getOtherWholeBloodSiblings())
+            .wholeBloodSiblingsDiedBeforeDeceased(caseData.getWholeBloodSiblingsDiedBeforeDeceased())
+            .wholeBloodNiecesAndNephewsSurvived(caseData.getWholeBloodNiecesAndNephewsSurvived())
+            .wholeBloodSiblingsOverEighteen(caseData.getWholeBloodSiblingsOverEighteen())
+            .wholeBloodNiecesAndNephewsOverEighteen(caseData.getWholeBloodNiecesAndNephewsOverEighteen())
+            .otherHalfBloodSiblings(caseData.getOtherHalfBloodSiblings())
+            .halfBloodSiblingsDiedBeforeDeceased(caseData.getHalfBloodSiblingsDiedBeforeDeceased())
+            .halfBloodNiecesAndNephewsSurvived(caseData.getHalfBloodNiecesAndNephewsSurvived())
+            .halfBloodSiblingsOverEighteen(caseData.getHalfBloodSiblingsOverEighteen())
+            .halfBloodNiecesAndNephewsOverEighteen(caseData.getHalfBloodNiecesAndNephewsOverEighteen())
+            .primaryApplicantAdoptedIn(caseData.getPrimaryApplicantAdoptedIn())
+            .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
+            .primaryApplicantAdoptedOut(caseData.getPrimaryApplicantAdoptedOut())
+            .primaryApplicantParentAdoptedIn(caseData.getPrimaryApplicantParentAdoptedIn())
+            .primaryApplicantParentAdoptionInEnglandOrWales(caseData
+                .getPrimaryApplicantParentAdoptionInEnglandOrWales())
+            .primaryApplicantParentAdoptedOut(caseData.getPrimaryApplicantParentAdoptedOut())
+            .deceasedAdoptedIn(caseData.getDeceasedAdoptedIn())
+            .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
+            .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
+            .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
+            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased());
 
         handleDeceasedAliases(
                 builder,
