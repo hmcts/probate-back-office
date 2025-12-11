@@ -16,6 +16,15 @@ elastic:
 postgresql:
   enabled: false
 
+wa:
+  enabled: false
+
+am-org-role-mapping-service:
+  enabled: false
+
+servicebus:
+  enabled: true
+
 java:
   applicationPort: 4104
   image: hmctspublic.azurecr.io/probate/back-office:latest
