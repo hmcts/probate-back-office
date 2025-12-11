@@ -214,6 +214,18 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse setCaseSubmissionDate(Document sentEmail, Document coversheet,
+                                                  CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), Optional.empty(),true)
+                .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
+                .applicationSubmittedDate(LocalDate.now().format(dateTimeFormatter));
+        if (sentEmail != null) {
+            documentTransformer.addDocument(callbackRequest, sentEmail, false);
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
                                                                 Optional<String> newState,
                                                                 Optional<UserInfo> caseworkerInfo) {
