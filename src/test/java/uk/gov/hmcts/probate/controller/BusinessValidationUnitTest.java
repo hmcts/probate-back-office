@@ -1388,8 +1388,8 @@ class BusinessValidationUnitTest {
                 .thenReturn(callbackResponseMock);
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, DocumentType.SOLICITOR_COVERSHEET))
                 .thenReturn(documentMock);
-        ResponseEntity<CallbackResponse> response = underTest.
-                setCaseSubmissionDateForSolicitorCases(callbackRequestMock);
+        ResponseEntity<CallbackResponse> response = underTest
+                .setCaseSubmissionDateForSolicitorCases(callbackRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(notificationService, times(1))
