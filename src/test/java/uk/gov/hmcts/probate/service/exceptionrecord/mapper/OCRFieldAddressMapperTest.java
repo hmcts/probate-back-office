@@ -2,17 +2,23 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.AttorneyNamesAndAddress;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_POSTCODE_VALUE;
 
 @Component
 class OCRFieldAddressMapperTest {
@@ -43,8 +49,16 @@ class OCRFieldAddressMapperTest {
 
     private ExceptionRecordOCRFields ocrFieldsPostcodeError;
 
+    @Mock
+    private BulkScanConfig bulkScanConfig;
+
     @BeforeEach
     public void setUpClass() throws Exception {
+        MockitoAnnotations.openMocks(this);
+        when(bulkScanConfig.getPostcode()).thenReturn(DEFAULT_POSTCODE_VALUE);
+        Field bulkScanConfigField = OCRFieldAddressMapper.class.getDeclaredField("bulkScanConfig");
+        bulkScanConfigField.setAccessible(true);
+        bulkScanConfigField.set(addressMapper, bulkScanConfig);
         ocrFields = ExceptionRecordOCRFields.builder()
             .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
             .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)
@@ -197,50 +211,34 @@ class OCRFieldAddressMapperTest {
     }
 
     @Test
-    void testPrimaryApplicantAddressPostcodeError() {
-        assertThrows(OCRMappingException.class, () -> {
-            Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
-        });
+    void testPrimaryApplicantAddressPostcodeErrorWithDefault() {
+        Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
+        assertEquals(DEFAULT_POSTCODE_VALUE,response.getPostCode());
     }
 
     @Test
-    void testCaveatAddressPostcodeError() {
-        assertThrows(OCRMappingException.class, () -> {
-            Address response = addressMapper.toCaveatorAddress(ocrFieldsPostcodeError);
-        });
+    void testCaveatAddressPostcodeErrorWithDefault() {
+        Address response = addressMapper.toCaveatorAddress(ocrFieldsPostcodeError);
+        assertEquals(DEFAULT_POSTCODE_VALUE,response.getPostCode());
     }
 
     @Test
-    void testDeceasedAddressPostcodeError() {
-        assertThrows(OCRMappingException.class, () -> {
-            Address response = addressMapper.toDeceasedAddress(ocrFieldsPostcodeError);
-        });
+    void testDeceasedAddressPostcodeErrorWithDefault() {
+        Address response = addressMapper.toDeceasedAddress(ocrFieldsPostcodeError);
+        assertEquals(DEFAULT_POSTCODE_VALUE,response.getPostCode());
     }
 
     @Test
-    void testSolicitorAddressPostcodeError() {
-        assertThrows(OCRMappingException.class, () -> {
-            Address response = addressMapper.toSolicitorAddress(ocrFieldsPostcodeError);
-        });
+    void testSolicitorAddressPostcodeErrorWithDefault() {
+        Address response = addressMapper.toSolicitorAddress(ocrFieldsPostcodeError);
+        assertEquals(DEFAULT_POSTCODE_VALUE,response.getPostCode());
     }
 
     @Test
-    void testAttorneyNamesAndAddressPostcodeError() {
-        assertThrows(OCRMappingException.class, () -> {
-            List<CollectionMember<AttorneyNamesAndAddress>> response =
-                    addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsPostcodeError);
-        });
-    }
-
-    @Test
-    void testPrimaryApplicantAddressPostcodeCorrectErrorMessage() {
-        String errorMessage = null;
-        try {
-            Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
-        } catch (OCRMappingException ocrme) {
-            errorMessage = ocrme.getMessage();
-        }
-        assertEquals(ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE, errorMessage);
+    void testAttorneyNamesAndAddressPostcodeErrorWithDefault() {
+        List<CollectionMember<AttorneyNamesAndAddress>> response =
+                addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsPostcodeError);
+        assertEquals(DEFAULT_POSTCODE_VALUE, response.get(0).getValue().getAddress().getPostCode());
     }
 
     @Test

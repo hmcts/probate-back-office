@@ -2,7 +2,9 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
@@ -21,6 +23,7 @@ import java.util.List;
 @Component
 public class OCRFieldAddressMapper {
 
+
     private static final String POSTCODE_REGEX_PATTERN = "^([A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}|GIR ?0A{2})$";
     private String addressLine1;
     private String addressLine2;
@@ -34,6 +37,9 @@ public class OCRFieldAddressMapper {
     private static final String SOLICITOR_ADDRESS_POSTCODE = "solsSolicitorAddressPostCode";
     private static final String DECEASED_ADDRESS_POSTCODE = "deceasedAddressPostCode";
     private static final String CAVEATOR_ADDRESS_POSTCODE = "caveatorAddressPostCode";
+
+    @Autowired
+    BulkScanConfig bulkScanConfig;
 
     @SuppressWarnings("squid:S1168")
     @ToPrimaryApplicantAddress
@@ -159,9 +165,12 @@ public class OCRFieldAddressMapper {
                 .build();
         if (StringUtils.isBlank(address.getPostCode())) {
             return null;
-        } else {
-            address.setPostCode(postCode.toUpperCase());
+        }
+        address.setPostCode(postCode.toUpperCase());
+        try {
             validatePostCode(address.getPostCode(), postCodeField);
+        } catch (OCRMappingException e) {
+            address.setPostCode(bulkScanConfig.getPostcode());
         }
         return address;
     }
