@@ -421,6 +421,4 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String executorsNamed;
     private final LocalDate firstStopReminderSentDate;
     private String issueEarlySwitch;
-    private final String issueEarlyGopORAdmonWill;
-    private final String issueEarlyIntestacyORAdColligendaBona;
 }

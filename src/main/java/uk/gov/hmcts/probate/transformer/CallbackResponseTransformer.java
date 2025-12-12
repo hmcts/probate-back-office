@@ -568,7 +568,8 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.matches("No matches found");
         }
 
-        grantIssueTooEarlyTransformer.validate(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+        grantIssueTooEarlyTransformer.defaultIssueTooEarlySwitch(
+                callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
