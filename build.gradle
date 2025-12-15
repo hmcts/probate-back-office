@@ -183,7 +183,7 @@ def versions = [
         springDocOpenUi                 : '2.8.14',
         swaggerAnnotations              : '2.2.41',
         springSecurityVersion           : '6.5.7',
-        tomcat                          : '10.1.49',
+        tomcat                          : '10.1.50'
         camunda                         : '7.23.0',
 ]
 
@@ -305,7 +305,7 @@ dependencies {
   testImplementation group: 'org.awaitility', name: 'awaitility', version: '4.3.0'
   testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: versions.fortifyClientVersion, classifier: 'all'
   testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
-  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.20.0'
+  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.21.0'
   testImplementation group: 'org.camunda.bpm.dmn', name: 'camunda-engine-dmn', version: versions.camunda
   testImplementation group: 'org.camunda.bpm', name: 'camunda-engine-plugin-spin', version: versions.camunda
   testImplementation group: 'org.camunda.bpm.assert', name: 'camunda-bpm-assert', version: '15.0.0'
