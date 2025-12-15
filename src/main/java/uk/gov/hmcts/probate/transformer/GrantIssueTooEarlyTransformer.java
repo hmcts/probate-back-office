@@ -20,7 +20,7 @@ public class GrantIssueTooEarlyTransformer {
         LocalDate dod = caseData.getDeceasedDateOfDeath();
         final LocalDate now = LocalDate.now(clock);
         int minDays = 0;
-        String caseType = caseData.getCaseType(); // adjust if field name differs
+        String caseType = caseData.getCaseType();
         if ("gop".equalsIgnoreCase(caseType) || "AdmonWill".equalsIgnoreCase(caseType)) {
             minDays = 7;
         } else if ("intestacy".equalsIgnoreCase(caseType) || "AdColligendaBona".equalsIgnoreCase(caseType)) {
