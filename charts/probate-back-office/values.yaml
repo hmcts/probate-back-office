@@ -23,7 +23,7 @@ am-org-role-mapping-service:
   enabled: false
 
 servicebus:
-  enabled: true
+  enabled: false
 
 java:
   applicationPort: 4104

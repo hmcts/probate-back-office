@@ -20,10 +20,6 @@ servicebus:
   sbNamespace: probate-servicebus-preview
   setup:
     topics:
-      - name: crd-topic
-        subscriptionNeeded: yes
-      - name: jrd-topic
-        subscriptionNeeded: yes
       - name: ccd-case-events
         subscriptionNeeded: yes
         requiresSession: true
@@ -150,4 +146,4 @@ xui-webapp:
       HEALTH_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api/health
       SERVICES_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api
       SERVICES_ROLE_ASSIGNMENT_MAPPING_API: http://{{ .Release.Name }}-am-org-role-mapping-service
-      WA_SUPPORTED_JURISDICTIONS: ST_CIC
+      WA_SUPPORTED_JURISDICTIONS: PROBATE
