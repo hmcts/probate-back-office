@@ -10,6 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_DORMANT;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -36,5 +38,17 @@ public class AuditEventService {
         return auditEventsResponse.getAuditEvents().stream()
                 .filter(auditEvent -> stateName.contains(auditEvent.getStateId()))
                 .max(Comparator.comparing(AuditEvent::getCreatedDate));
+    }
+
+    public Optional<AuditEvent> getLatestAuditEventExcludingDormantState(String caseId, List<String> stateNames,
+                                                                         String userToken, String authToken) {
+        log.info("Getting latest audit event for caseId: {}", caseId);
+        AuditEventsResponse auditEventsResponse
+                = caseDataApi.getAuditEvents(userToken, authToken, false, caseId);
+        log.info("auditEventsResponse AuditEvents().size(): {}", auditEventsResponse.getAuditEvents().size());
+        return auditEventsResponse.getAuditEvents().stream()
+                .filter(auditEvent -> !STATE_DORMANT.equalsIgnoreCase(auditEvent.getStateId()))
+                .max(Comparator.comparing(AuditEvent::getCreatedDate))
+                .filter(auditEvent -> stateNames.contains(auditEvent.getStateId()));
     }
 }
