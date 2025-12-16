@@ -121,37 +121,37 @@ docmosis:
     blankLetter:
       templateName: FL-PRB-GNO-ENG-01041.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshAdColligendaBonaGrant:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshAdColligendaBonaGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshDigitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshIntestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshAdmonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshAdColligendaBonaGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshDigitalGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshIntestacyGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshAdmonWillGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshAdColligendaBonaGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00237.doc
+      templateName: FL-PRB-GRP-WEL-grant-template-V0001.doc
     welshDormantReminder:
       templateName: FL-PRB-GNO-WEL-postal-dormant-reminder-v001.docx
 
