@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
@@ -38,8 +37,12 @@ public class OCRFieldAddressMapper {
     private static final String DECEASED_ADDRESS_POSTCODE = "deceasedAddressPostCode";
     private static final String CAVEATOR_ADDRESS_POSTCODE = "caveatorAddressPostCode";
 
-    @Autowired
-    BulkScanConfig bulkScanConfig;
+
+    private final BulkScanConfig bulkScanConfig;
+
+    public OCRFieldAddressMapper(BulkScanConfig bulkScanConfig) {
+        this.bulkScanConfig = bulkScanConfig;
+    }
 
     @SuppressWarnings("squid:S1168")
     @ToPrimaryApplicantAddress

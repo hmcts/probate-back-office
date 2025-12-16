@@ -41,7 +41,7 @@ class ExceptionRecordCaveatMapperAfterMappingTest {
     private OCRFieldProbateFeeNotIncludedReasonMapper ocrFieldProbateFeeNotIncludedReasonMapper;
 
     @Autowired
-    private BulkScanConfig bulkScanConfig;
+    private static BulkScanConfig bulkScanConfig;
     
     private static CaveatData caseData;
 
@@ -50,7 +50,7 @@ class ExceptionRecordCaveatMapperAfterMappingTest {
 
         @Bean
         public OCRFieldAddressMapper ocrFieldAddressMapper() {
-            return new OCRFieldAddressMapper();
+            return new OCRFieldAddressMapper(bulkScanConfig);
         }
 
         @Bean

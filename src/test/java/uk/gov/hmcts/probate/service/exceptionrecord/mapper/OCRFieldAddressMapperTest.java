@@ -12,7 +12,6 @@ import uk.gov.hmcts.reform.probate.model.AttorneyNamesAndAddress;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +38,9 @@ class OCRFieldAddressMapperTest {
     private static final String ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE =
         "primaryApplicantAddressPostCode: An invalid postcode has been found 'NW1', please provide a valid postcode";
 
-    private OCRFieldAddressMapper addressMapper = new OCRFieldAddressMapper();
+    @Mock
+    private static BulkScanConfig bulkScanConfig;
+    private static OCRFieldAddressMapper addressMapper;
 
     private ExceptionRecordOCRFields ocrFields;
     private ExceptionRecordOCRFields ocrFieldsSolicitorsAddress;
@@ -49,16 +50,12 @@ class OCRFieldAddressMapperTest {
 
     private ExceptionRecordOCRFields ocrFieldsPostcodeError;
 
-    @Mock
-    private BulkScanConfig bulkScanConfig;
 
     @BeforeEach
     public void setUpClass() throws Exception {
         MockitoAnnotations.openMocks(this);
         when(bulkScanConfig.getPostcode()).thenReturn(DEFAULT_POSTCODE_VALUE);
-        Field bulkScanConfigField = OCRFieldAddressMapper.class.getDeclaredField("bulkScanConfig");
-        bulkScanConfigField.setAccessible(true);
-        bulkScanConfigField.set(addressMapper, bulkScanConfig);
+        addressMapper = new OCRFieldAddressMapper(bulkScanConfig);
         ocrFields = ExceptionRecordOCRFields.builder()
             .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
             .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)

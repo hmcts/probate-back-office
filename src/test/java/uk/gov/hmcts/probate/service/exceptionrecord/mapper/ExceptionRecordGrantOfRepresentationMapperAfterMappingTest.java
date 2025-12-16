@@ -72,7 +72,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Autowired
     private OCRFieldIhtNetValueMapper ocrFieldIhtNetValueMapper;
     @Autowired
-    private BulkScanConfig bulkScanConfig;
+    private static BulkScanConfig bulkScanConfig;
 
     @Test
     void testSetSolsPaymentMethodIsSolicitorGrantOfProbate() {
@@ -582,7 +582,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
 
         @Bean
         public OCRFieldAddressMapper ocrFieldAddressMapper() {
-            return new OCRFieldAddressMapper();
+            return new OCRFieldAddressMapper(bulkScanConfig);
         }
 
         @Bean
