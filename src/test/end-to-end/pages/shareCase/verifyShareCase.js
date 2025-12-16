@@ -1,6 +1,6 @@
 'use strict';
 
-const testConfig = require('src/test/config.js');
+const testConfig = require('src/test/config.cjs');
 
 module.exports = async function (SacCaseRefNumber) {
     const I = this;

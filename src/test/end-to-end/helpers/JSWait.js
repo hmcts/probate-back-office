@@ -1,6 +1,6 @@
 const {getAccessibilityTestResult} = require('./accessibility/runner');
 const {generateAccessibilityReport} = require('../../reporter/customReporter');
-const testConfig = require('src/test/config.js');
+const testConfig = require('src/test/config.cjs');
 
 class JSWait extends codecept_helper {
 
