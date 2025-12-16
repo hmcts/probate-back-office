@@ -317,7 +317,11 @@ withPipeline("java", product, component) {
 
   onPR() {
       env.ENV='preview'
+      env.ENABLE_WA = false
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+      for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa") ) {
+        env.ENABLE_WA = true
+      }
   }
 
   onIthc() {
