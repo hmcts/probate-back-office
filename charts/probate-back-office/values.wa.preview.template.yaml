@@ -83,6 +83,7 @@ wa:
   wa-termination-batch:
     job:
       schedule: "*/1 * * * *"
+      releaseNameOverride: "{{ .Release.Name }}-termination-batch"
 
   #disable wa db as we are using the postgres flexible server
   wa:
