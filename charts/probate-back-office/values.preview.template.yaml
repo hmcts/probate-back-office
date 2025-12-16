@@ -311,6 +311,7 @@ java:
     PROBATE_POSTGRESQL_HOSTNAME_VAL: '{{ .Values.global.postgresHostname }}'
     MANAGE_CASE_URL: https://xui-${SERVICE_FQDN}.preview.platform.hmcts.net
     FRONTEND_URL: http://probate.aat.platform.hmcts.net
+    CCD_SERVICEBUS_DESTINATION: ${SERVICE_NAME}-asb-ccd-case-events
 
   keyVaults:
     probate:
