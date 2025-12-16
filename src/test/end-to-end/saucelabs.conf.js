@@ -1,6 +1,6 @@
 const supportedBrowsers = require('../crossbrowser/supportedBrowsers.js');
 
-const testConfig = require('../config.cjs');
+const testConfig = require('../config.js');
 
 const waitForTimeout = parseInt(process.env.WAIT_FOR_TIMEOUT) || 45000;
 const smartWait = parseInt(process.env.SMART_WAIT) || 30000;

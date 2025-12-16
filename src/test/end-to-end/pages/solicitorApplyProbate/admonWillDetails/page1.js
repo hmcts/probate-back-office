@@ -2,7 +2,7 @@
 
 const admonWillDetailsConfig = require('./admonWillDetails');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
-const testConfig = require('src/test/config.cjs');
+const testConfig = require('src/test/config.js');
 const grantOfProbateConfig = require('../grantOfProbate/grantOfProbate.json');
 
 module.exports = async function () {

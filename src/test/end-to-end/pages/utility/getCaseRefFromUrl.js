@@ -1,5 +1,5 @@
 'use strict';
-const testConfig = require('src/test/config.cjs');
+const testConfig = require('src/test/config.js');
 
 module.exports = async function () {
     const I = this;

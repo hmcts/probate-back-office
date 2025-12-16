@@ -2,7 +2,7 @@
 
 const completeApplicationConfig = require('./completeApplication');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
-const testConfig = require('src/test/config.cjs');
+const testConfig = require('src/test/config.js');
 
 module.exports = async function () {
     const I = this;

@@ -1,6 +1,6 @@
 'use strict';
 
-const testConfig = require('src/test/config.cjs');
+const testConfig = require('src/test/config.js');
 const makePaymentConfig = require('./makePaymentConfig');
 const postPaymentReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/postPaymentReviewTabConfig');
 

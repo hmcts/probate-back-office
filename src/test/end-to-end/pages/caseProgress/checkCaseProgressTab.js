@@ -1,7 +1,7 @@
 'use strict';
 const assert = require('assert');
 const moment = require('moment');
-const testConfig = require('src/test/config.cjs');
+const testConfig = require('src/test/config.js');
 
 // opts are numCompleted, numInProgress, numNotStarted, linkText, opts.linkUrl
 module.exports = async function (opts) {
