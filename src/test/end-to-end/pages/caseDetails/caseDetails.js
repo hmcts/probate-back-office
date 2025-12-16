@@ -1,6 +1,6 @@
 'use strict';
 
-const testConfig = require('src/test/config.cjs');
+const testConfig = require('src/test/config.js');
 
 module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault) {
     const I = this;

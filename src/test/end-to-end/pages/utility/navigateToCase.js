@@ -1,5 +1,5 @@
 'use strict';
-const testConfig = require('src/test/config.cjs');
+const testConfig = require('src/test/config.js');
 
 // Case worker - nav back to case
 module.exports = async function (caseRef, useWaitInUrl = true, caseType) {

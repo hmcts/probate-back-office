@@ -2,7 +2,7 @@
 
 const Helper = codecept_helper;
 const helperName = 'Playwright';
-const testConfig = require('src/test/config.cjs');
+const testConfig = require('src/test/config.js');
 
 const {runAccessibility} = require('./accessibility/runner');
 
