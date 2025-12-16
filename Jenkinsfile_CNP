@@ -391,8 +391,8 @@ afterSuccess('akschartsinstall') {
 
 def uploadDmnDiagrams() {
   dir("${WORKSPACE}/bin") {
-    tenantId = "st_cic"
-    product = "st_cic"
+    tenantId = "PROBATE"
+    product = "probate"
     sh "./wa/import-dmn-diagram.sh ${WORKSPACE} ${env} ${tenantId} ${product}"
   }
 }
