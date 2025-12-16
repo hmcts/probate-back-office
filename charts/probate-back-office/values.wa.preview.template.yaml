@@ -9,9 +9,10 @@ java:
       key: connectionString
   environment:
     SPRING_JMS_SERVICEBUS_ENABLED: true
-    SPTRIBS_SERVICEBUS_SCHEDULER_ENABLED: true
+    PROBATE_SERVICEBUS_SCHEDULER_ENABLED: true
     AZURE_SERVICE_BUS_TOPIC_NAME: ${SERVICE_NAME}-asb-ccd-case-events
     AZURE_SERVICE_BUS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
+    CCD_SERVICEBUS_DESTINATION: ${SERVICE_NAME}-asb-ccd-case-events
 
 servicebus:
   enabled: true
@@ -27,11 +28,11 @@ servicebus:
 global:
   postgresUsername: hmcts
   postgresSecret: postgres
-  postgresHost: probate-preview.postgres.database.azure.com
+  postgresHostname: "probate-preview.postgres.database.azure.com"
   databaseNamePrefix: "pr-${CHANGE_ID}-"
 
 wa:
-  enabled: true
+  enabled: ${ENABLE_WA}
 
   camunda-bpm:
     java:
@@ -79,6 +80,7 @@ wa:
   wa-termination-batch:
     job:
       schedule: "*/1 * * * *"
+      releaseNameOverride: "{{ .Release.Name }}-termination-batch"
 
   #disable wa db as we are using the postgres flexible server
   wa:

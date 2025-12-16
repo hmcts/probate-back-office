@@ -121,6 +121,10 @@ def checkForEnableCWNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "cw-nightly").contains("cw-nightly")
 }
 
+def checkForEnableWALabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa")
+}
+
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
@@ -248,7 +252,7 @@ withPipeline("java", product, component) {
     }
 
     onPR {
-      for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa") ) {
+      if (checkForEnableWALabel(env.BRANCH_NAME)) {
         env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
         println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
         sh 'chmod -R +x ./bin'
@@ -317,7 +321,11 @@ withPipeline("java", product, component) {
 
   onPR() {
       env.ENV='preview'
+      env.ENABLE_WA = false
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+    if (checkForEnableWALabel(env.BRANCH_NAME)) {
+        env.ENABLE_WA = true
+      }
   }
 
   onIthc() {
