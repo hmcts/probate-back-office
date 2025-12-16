@@ -1,6 +1,6 @@
 'use strict';
 
-const testConfig = require('src/test/config.js');
+const testConfig = require('src/test/config.cjs');
 const issueGrantConfig = require('./issueGrantConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 

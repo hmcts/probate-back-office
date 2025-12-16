@@ -1,5 +1,5 @@
 const fs = require('fs');
-const testConfig = require('src/test/config.js');
+const testConfig = require('src/test/config.cjs');
 
 function generateAccessibilityReport(reportJson) {
     //consoleReport(reportJson);

@@ -1,6 +1,6 @@
 'use strict';
 
-const testConfig = require('src/test/config.js');
+const testConfig = require('src/test/config.cjs');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const checkYourAnswersConfig = require('./checkYourAnswersConfig.json');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
