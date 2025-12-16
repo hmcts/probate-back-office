@@ -91,21 +91,21 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-grant-template-V0001.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-grant-template-V0001.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-grant-template-V0001.doc
     adColligendaBonaGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-grant-template-V0001.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-grant-template-V0001.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-grant-template-V0001.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-grant-template-V0001.doc
     adColligendaBonaGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01296.doc
+      templateName: FL-PRB-GRP-ENG-grant-template-V0001.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
