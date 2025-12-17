@@ -41,6 +41,8 @@ wa:
   camunda-bpm:
     java:
       image: hmctsprivate.azurecr.io/camunda/bpm:latest
+      environment:
+        CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
 
   wa-case-event-handler:
     java:
