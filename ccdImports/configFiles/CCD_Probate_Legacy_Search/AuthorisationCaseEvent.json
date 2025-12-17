@@ -5,5 +5,6 @@
   {"CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseEventID": "createDummy", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "LegacySearch", "CaseEventID": "dataExtractResendData", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
+  {"CaseTypeID": "LegacySearch", "CaseEventID": "dataExtractResendData", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "UserRole": "caseworker-probate-legacysearch", "CRUD": "CRUD"}
 ]
