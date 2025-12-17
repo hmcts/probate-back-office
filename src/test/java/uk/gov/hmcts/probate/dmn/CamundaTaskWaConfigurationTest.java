@@ -1205,17 +1205,17 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         DESCRIPTION,
                                         "[Document management: Upload](/cases/case-details/${[CASE_REFERENCE]}/trigger"
                                                 + "/caseworker-document-management)<br/>"
-                                                + "[Orders: Manage due date]" +
-                                                "(/cases/case-details/${[CASE_REFERENCE]}/trigger"
+                                                + "[Orders: Manage due date]"
+                                                + "(/cases/case-details/${[CASE_REFERENCE]}/trigger"
                                                 + "/caseworker-amend-due-date)<br/>"
-                                                + "[Refer case to judge](/cases/case-details/${[CASE_REFERENCE" +
-                                                "]}/trigger"
+                                                + "[Refer case to judge](/cases/case-details/${[CASE_REFERENCE"
+                                                + "]}/trigger"
                                                 + "/refer-to-judge)<br/>"
                                                 + "[Refer case to legal officer]" +
                                                 "(/cases/case-details/${[CASE_REFERENCE]}/trigger"
                                                 + "/refer-to-legal-officer)<br/>"
-                                                + "[Case: Contact parties](/cases/case-details/${[CASE_REFERENCE" +
-                                                "]}/trigger"
+                                                + "[Case: Contact parties](/cases/case-details/${[CASE_REFERENCE"
+                                                + "]}/trigger"
                                                 + "/contact-parties)",
                                         true
                                 )
@@ -1252,14 +1252,14 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                                 + "/caseworker-amend-document)<br/>"
                                                 + "[Case: Edit case](/cases/case-details/${[CASE_REFERENCE]}/trigger"
                                                 + "/edit-case)<br/>"
-                                                + "[Refer case to judge](/cases/case-details/${[CASE_REFERENCE" +
-                                                "]}/trigger"
+                                                + "[Refer case to judge](/cases/case-details/${[CASE_REFERENCE"
+                                                + "]}/trigger"
                                                 + "/refer-to-judge)<br/>"
-                                                + "[Refer case to legal officer]" +
-                                                "(/cases/case-details/${[CASE_REFERENCE]}/trigger"
+                                                + "[Refer case to legal officer]"
+                                                + "(/cases/case-details/${[CASE_REFERENCE]}/trigger"
                                                 + "/refer-to-legal-officer)<br/>"
-                                                + "[Case: Contact parties](/cases/case-details/${[CASE_REFERENCE" +
-                                                "]}/trigger"
+                                                + "[Case: Contact parties](/cases/case-details/${[CASE_REFERENCE"
+                                                + "]}/trigger"
                                                 + "/contact-parties)",
                                         true
                                 )
@@ -1298,7 +1298,8 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .expectedValue(DUE_DATE_INTERVAL_DAYS, "2", true)
                                 .expectedValue(
                                         DESCRIPTION,
-                                        "[Review Access Request](/role-access/" + taskId + "/assignment/" + roleAssignmentId + "/specific-access)",
+                                        "[Review Access Request](/role-access/" + taskId + "/assignment/"
+                                                + roleAssignmentId + "/specific-access)",
                                         true
                                 )
                                 .expectedValue(ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID, roleAssignmentId, false)
@@ -1315,7 +1316,8 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .expectedValue(DUE_DATE_INTERVAL_DAYS, "2", true)
                                 .expectedValue(
                                         DESCRIPTION,
-                                        "[Review Access Request](/role-access/" + taskId + "/assignment/" + roleAssignmentId + "/specific-access)",
+                                        "[Review Access Request](/role-access/" + taskId + "/assignment/"
+                                                + roleAssignmentId + "/specific-access)",
                                         true
                                 )
                                 .expectedValue(ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID, roleAssignmentId, false)
