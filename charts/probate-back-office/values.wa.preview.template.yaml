@@ -76,7 +76,7 @@ wa:
         OPEN_ID_IDAM_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net"
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
         MANDATORY_TASK_FIELD_CHECK_ENABLED: true
-        ALLOWED_CASE_TYPES: wacasetype,probate
+        ALLOWED_CASE_TYPES: wacasetype,GrantOfRepresentation
         ALLOWED_JURISDICTIONS: wa,probate
 
   wa-task-monitor:
