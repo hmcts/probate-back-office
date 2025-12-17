@@ -174,7 +174,7 @@ def versions = [
         pact_version                    : '4.1.34',
         pdfServiceClientVersion         : '8.0.2',
         probateCommonsVersion           : '2.2.17',
-        restAssured                     : '5.5.6',
+        restAssured                     : '6.0.0',
         sendLetterClientVersion         : '5.1.1',
         serenity                        : '4.3.4',
         serviceAuthVersion              : '5.3.3',
