@@ -69,6 +69,7 @@ wa:
     java:
       ingressHost: wa-task-management-api-${SERVICE_FQDN}
       environment:
+        POSTGRES_HOST: '{{ .Values.global.postgresHostname }}'
         CAMUNDA_URL: "http://{{ .Release.Name }}-camunda/engine-rest"
         IDAM_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net"
         S2S_URL: "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
