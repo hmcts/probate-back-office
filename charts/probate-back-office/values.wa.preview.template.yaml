@@ -43,6 +43,9 @@ wa:
       image: hmctsprivate.azurecr.io/camunda/bpm:latest
       environment:
         CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+        CAMUNDA_API_AUTH_ENABLED: false
+        CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
+        CAMUNDA_DB_NAME: camunda
 
   wa-case-event-handler:
     java:
