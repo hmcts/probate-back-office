@@ -149,7 +149,7 @@ class AuditEventServiceTest {
         List<AuditEvent> auditEventList = List.of(
                 buildAuditEvent(EVENT_NAME, STATE_CASE_PRINTED, LOCAL_DATE_TIME.minusMinutes(5)),
                 expectedAuditEvent,
-                buildAuditEvent(EVENT_NAME, STATE_DORMANT, LOCAL_DATE_TIME.minusMinutes(2))
+                buildAuditEvent(EVENT_NAME, STATE_BO_CASE_STOPPED_REISSUE, LOCAL_DATE_TIME.minusMinutes(2))
         );
 
         when(auditEventsResponse.getAuditEvents()).thenReturn(auditEventList);
