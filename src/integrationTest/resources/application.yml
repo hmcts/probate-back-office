@@ -116,8 +116,23 @@ spring:
     url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}
     username:  ${probate.postgresql.user}
     password:  ${probate.postgresql.password}
+  database:
+    driverClassName: org.postgresql.Driver
+  jms:
+    servicebus:
+      enabled: true
+      connection-string: ${AZURE_SERVICE_BUS_CONNECTION_STRING:${AZURE_SERVICE_BUS_PREVIEW_CONNECTION_STRING:dummy}}
+      pricing-tier: standard
+      pool:
+        enabled: true
+  cloud:
+    azure:
+      credential:
+        managed-identity-enabled: true
+        client-id: 34df67df-77f4-4c8d-9e89-d59a86ef9ffe
+  autoconfigure:
+    exclude: com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration
 
-  database.driverClassName: org.postgresql.Driver
 
 spring.jackson.serialization.write_dates_as_timestamps: false
 
