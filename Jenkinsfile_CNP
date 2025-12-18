@@ -121,6 +121,10 @@ def checkForEnableCWNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "cw-nightly").contains("cw-nightly")
 }
 
+def checkForEnableWALabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa")
+}
+
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
@@ -246,6 +250,18 @@ withPipeline("java", product, component) {
       sh 'yarn install'
       sh 'yarn test:fullfunctional-cw'
     }
+
+    onPR {
+      if (checkForEnableWALabel(env.BRANCH_NAME)) {
+        env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+        println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
+        sh 'chmod -R +x ./bin'
+        uploadDmnDiagrams()
+        uploadBpmnDiagram()
+        setupRoleAssignments()
+      }
+    }
+
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
             allowMissing         : true,
@@ -255,6 +271,19 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
+  }
+
+  afterSuccess('akschartsinstall') {
+    onPR {
+      for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa") ) {
+        env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+        println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
+        sh 'chmod -R +x ./bin'
+        uploadDmnDiagrams()
+        uploadBpmnDiagram()
+        setupRoleAssignments()
+      }
+    }
   }
 
   afterAlways('functionalTest:preview') {
@@ -305,7 +334,11 @@ withPipeline("java", product, component) {
 
   onPR() {
       env.ENV='preview'
+      env.ENABLE_WA = false
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+    if (checkForEnableWALabel(env.BRANCH_NAME)) {
+        env.ENABLE_WA = true
+      }
   }
 
   onIthc() {
@@ -355,4 +388,30 @@ withPipeline("java", product, component) {
     env.SERVICES_CORECASEDATA_BASEURL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
   }
 }
+
+
+def uploadDmnDiagrams() {
+  dir("${WORKSPACE}/bin") {
+    tenantId = "st_cic"
+    product = "st_cic"
+    sh "./wa/import-dmn-diagram.sh ${WORKSPACE} ${env} ${tenantId} ${product}"
+  }
+}
+
+def uploadBpmnDiagram() {
+  dir("${WORKSPACE}/bin") {
+    bpmnBranch = "master"
+    sh """
+      ./wa/pull-latest-camunda-wa-files.sh ${bpmnBranch}
+      ./wa/import-wa-bpmn-diagram.sh .
+    """
+  }
+}
+
+def setupRoleAssignments() {
+  dir("${WORKSPACE}/bin") {
+    sh "./wa/setup-role-assignments.sh"
+  }
+}
+
 

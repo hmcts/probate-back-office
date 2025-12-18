@@ -1,0 +1,12 @@
+{
+  "caseNameHmctsInternal": "Rio Read",
+  "dueDate": "2023-04-21",
+  "caseManagementCategory": {
+      "selectedLabel": "ST CIC"
+  },
+  "caseManagementLocation": {
+    "region": "123",
+    "baseLocation": "123456"
+  },
+  "managingOffice": "GTC"
+}

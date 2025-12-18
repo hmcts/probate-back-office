@@ -30,6 +30,18 @@ springdoc:
   packagesToScan: uk.gov.hmcts.probate.controller
   pathsToMatch: /**
 
+azure:
+  application-insights:
+    instrumentation-key: ${app-insights-instrumentation-key:00000000-0000-0000-0000-000000000000}
+
+ccd:
+  servicebus:
+    destination: ${CCD_SERVICEBUS_DESTINATION:${AZURE_SERVICE_BUS_TOPIC_NAME:ccd-case-events-aat}}
+    scheduler-enabled: ${PROBATE_SERVICEBUS_SCHEDULER_ENABLED:true}
+    batch-size: ${SPTRIBS_SERVICEBUS_BATCH_SIZE:50}
+    published-retention-days: ${SPTRIBS_SERVICEBUS_PUBLISHED_RETENTION_DAYS:7}
+    schedule: ${SPTRIBS_SERVICEBUS_SCHEDULE:*/10 * * * * *}
+
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator,payment_app
 auth.provider.service.client:
   key: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
