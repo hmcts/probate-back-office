@@ -79,6 +79,11 @@ wa:
         ALLOWED_CASE_TYPES: wacasetype,GrantOfRepresentation
         ALLOWED_JURISDICTIONS: wa,probate
         SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: "pr-${CHANGE_ID}-cft_task_db"
+        POSTGRES_NAME: "pr-${CHANGE_ID}-cft_task_db"
+        SPRING_FLYWAY_SCHEMAS: "pr-${CHANGE_ID}-cft_task_db"
+        SPRING_FLYWAY_DEFAULT_SCHEMA: "pr-${CHANGE_ID}-cft_task_db"
+        POSTGRES_REPLICA_NAME: "pr-${CHANGE_ID}-cft_task_db"
+        POSTGRES_REPLICA_HOST: '{{ .Values.global.postgresHostname }}'
 
   wa-task-monitor:
     java:
