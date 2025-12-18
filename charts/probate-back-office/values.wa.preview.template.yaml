@@ -16,7 +16,7 @@ global:
   databaseNamePrefix: "pr-${CHANGE_ID}-"
 
 wa:
-  enabled: ${ENABLE_WA}
+  enabled: true
   global:
     postgresUsername: hmcts
     postgresSecret: postgres
