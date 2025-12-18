@@ -65,6 +65,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
@@ -289,7 +290,7 @@ class CaveatCallbackResponseTransformerTest {
             .documentLink(documentLinkMock)
             .documentType(DocumentType.CAVEAT_RAISED)
             .build();
-        documents.add(0, document);
+        documents.addFirst(document);
         caveatDataBuilder.applicationType(SOLICITOR);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         String letterId = "123-456";
@@ -312,7 +313,7 @@ class CaveatCallbackResponseTransformerTest {
             .documentLink(documentLinkMock)
             .documentType(DocumentType.CAVEAT_RAISED)
             .build();
-        documents.add(0, document);
+        documents.addFirst(document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
@@ -331,7 +332,7 @@ class CaveatCallbackResponseTransformerTest {
             .documentLink(documentLinkMock)
             .documentType(DocumentType.CAVEAT_RAISED)
             .build();
-        documents.add(0, document);
+        documents.addFirst(document);
         caveatDataBuilder.applicationSubmittedDate(null);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         String letterId = null;
@@ -353,7 +354,7 @@ class CaveatCallbackResponseTransformerTest {
             .documentLink(documentLinkMock)
             .documentType(DocumentType.CAVEAT_RAISED)
             .build();
-        documents.add(0, document);
+        documents.addFirst(document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
@@ -361,7 +362,7 @@ class CaveatCallbackResponseTransformerTest {
         assertCommon(caveatCallbackResponse);
 
         assertEquals("123-456",
-            caveatCallbackResponse.getCaveatData().getBulkPrintId().get(0).getValue().getSendLetterId());
+            caveatCallbackResponse.getCaveatData().getBulkPrintId().getFirst().getValue().getSendLetterId());
     }
 
     @Test
@@ -375,13 +376,84 @@ class CaveatCallbackResponseTransformerTest {
                 .documentLink(documentLinkMock)
                 .documentType(DocumentType.CAVEAT_RAISED)
                 .build();
-        documents.add(0, document);
+        documents.addFirst(document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
                 underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertEquals(newSubmittedDate.toString(),
                 caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
+    }
+
+    @Test
+    void shouldSetEmptyOrgPolicyForSolsCaveatRaised() {
+        setupMocks();
+        LocalDate newSubmittedDate = LocalDate.now().minusDays(5);
+        caveatDataBuilder.applicationSubmittedDate(newSubmittedDate)
+                .applicationType(SOLICITOR);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.CAVEAT_RAISED)
+                .build();
+        documents.addFirst(document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+
+        assertEquals(buildEmptyOrgPolicy(),
+                caveatCallbackResponse.getCaveatData().getApplicantOrganisationPolicy());
+    }
+
+    @Test
+    void shouldNotSetEmptyOrgPolicyIfExistsCaveatRaised() {
+        setupMocks();
+        LocalDate newSubmittedDate = LocalDate.now().minusDays(5);
+        OrganisationPolicy orgPolicy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID("orgId")
+                        .organisationName("orgName")
+                        .build())
+                .orgPolicyReference("ref")
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
+        caveatDataBuilder.applicationSubmittedDate(newSubmittedDate)
+                .applicationType(SOLICITOR)
+                .applicantOrganisationPolicy(orgPolicy);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.CAVEAT_RAISED)
+                .build();
+        documents.addFirst(document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+
+        assertEquals(orgPolicy,
+                caveatCallbackResponse.getCaveatData().getApplicantOrganisationPolicy());
+    }
+
+    @Test
+    void shouldNotSetEmptyOrgPolicyForPACaveatRaised() {
+        setupMocks();
+        LocalDate newSubmittedDate = LocalDate.now().minusDays(5);
+        caveatDataBuilder.applicationSubmittedDate(newSubmittedDate)
+                .applicationType(ApplicationType.PERSONAL);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.CAVEAT_RAISED)
+                .build();
+        documents.addFirst(document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+
+        assertNull(caveatCallbackResponse.getCaveatData().getApplicantOrganisationPolicy());
     }
 
     @Test
@@ -417,7 +489,7 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldDefaultValuesBulkPrintlNotification() {
+    void shouldDefaultValuesBulkPrintNotification() {
         setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest.defaultCaveatValues(caveatCallbackRequestMock);
 
@@ -458,7 +530,7 @@ class CaveatCallbackResponseTransformerTest {
             .documentLink(documentLinkMock)
             .documentType(DocumentType.CAVEAT_EXTENDED)
             .build();
-        documents.add(0, document);
+        documents.addFirst(document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.caveatExtendExpiry(caveatCallbackRequestMock, documents, letterId);
@@ -479,7 +551,7 @@ class CaveatCallbackResponseTransformerTest {
                 .documentLink(documentLinkMock)
                 .documentType(DocumentType.SENT_EMAIL)
                 .build();
-        documents.add(0, document);
+        documents.addFirst(document);
         CaveatCallbackResponse caveatCallbackResponse =
                 underTest.addNocDocuments(caveatCallbackRequestMock, documents);
 
@@ -506,7 +578,7 @@ class CaveatCallbackResponseTransformerTest {
             .documentLink(documentLinkMock)
             .documentType(DocumentType.DIGITAL_GRANT)
             .build();
-        documents.add(0, document);
+        documents.addFirst(document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.caveatExtendExpiry(caveatCallbackRequestMock, documents, letterId);
@@ -524,7 +596,7 @@ class CaveatCallbackResponseTransformerTest {
             .documentLink(documentLinkMock)
             .documentType(DocumentType.CAVEAT_WITHDRAWN)
             .build();
-        documents.add(0, document);
+        documents.addFirst(document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.withdrawn(caveatCallbackRequestMock, documents, letterId);
@@ -534,7 +606,7 @@ class CaveatCallbackResponseTransformerTest {
         assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
         assertEquals(1, caveatCallbackResponse.getCaveatData().getBulkPrintId().size());
         assertEquals(letterId,
-            caveatCallbackResponse.getCaveatData().getBulkPrintId().get(0).getValue().getSendLetterId());
+            caveatCallbackResponse.getCaveatData().getBulkPrintId().getFirst().getValue().getSendLetterId());
     }
 
     @Test
@@ -557,7 +629,7 @@ class CaveatCallbackResponseTransformerTest {
             .documentLink(documentLinkMock)
             .documentType(DocumentType.DIGITAL_GRANT)
             .build();
-        documents.add(0, document);
+        documents.addFirst(document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.withdrawn(caveatCallbackRequestMock, documents, letterId);
@@ -667,7 +739,7 @@ class CaveatCallbackResponseTransformerTest {
         ResponseCaveatData responseCaveatData = callbackResponse.getCaveatData();
         assertEquals(2, responseCaveatData.getRegistrarDirections().size());
         assertEquals("2023-01-01T23:45:45.890Z", format(formatter, responseCaveatData, 0));
-        assertEquals("Decision 1", responseCaveatData.getRegistrarDirections().get(0).getValue().getDecision());
+        assertEquals("Decision 1", responseCaveatData.getRegistrarDirections().getFirst().getValue().getDecision());
         assertEquals("Further information 1", responseCaveatData.getRegistrarDirections().get(0).getValue()
                 .getFurtherInformation());
         assertEquals("2023-01-02T23:45:45.890Z", format(formatter, responseCaveatData, 1));
@@ -697,6 +769,31 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformResponseWithOrgPolicyForSols() {
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        setupMocks();
+        CaveatCallbackResponse caveatCallbackResponse = underTest
+                .transformResponseWithOrgPolicy(caveatCallbackRequestMock);
+
+        assertEquals(buildEmptyOrgPolicy(),
+                caveatCallbackResponse.getCaveatData().getApplicantOrganisationPolicy());
+    }
+
+    @Test
+    void shouldNotTransformResponseWithOrgPolicyForPA() {
+        caveatDataBuilder.applicationType(PERSONAL);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        setupMocks();
+        CaveatCallbackResponse caveatCallbackResponse = underTest
+                .transformResponseWithOrgPolicy(caveatCallbackRequestMock);
+
+        assertNull(caveatCallbackResponse.getCaveatData().getApplicantOrganisationPolicy());
+    }
+
+    @Test
     void shouldNotAddMatches() {
         caveatDataBuilder.applicationType(SOLICITOR);
         caveatDataBuilder.paperForm("No");
@@ -705,7 +802,7 @@ class CaveatCallbackResponseTransformerTest {
         CaveatCallbackResponse caveatCallbackResponse =
                 underTest.addMatches(caveatCallbackRequestMock, caseMatches);
 
-        assertEquals(caveatCallbackResponse.getCaveatData().getMatches(), "No matches found");
+        assertEquals("No matches found", caveatCallbackResponse.getCaveatData().getMatches());
     }
 
     @Test
@@ -725,7 +822,7 @@ class CaveatCallbackResponseTransformerTest {
         CaveatCallbackResponse caveatCallbackResponse =
                 underTest.addMatches(caveatCallbackRequestMock, caseMatches);
 
-        assertEquals(caveatCallbackResponse.getCaveatData().getMatches(), "Possible case matches");
+        assertEquals("Possible case matches", caveatCallbackResponse.getCaveatData().getMatches());
     }
 
     @Test
@@ -738,7 +835,7 @@ class CaveatCallbackResponseTransformerTest {
                 underTest.transformResponseWithServiceRequest(caveatCallbackRequestMock, "User-id");
 
         assertCommonSolsCaveats(caveatCallbackResponse);
-        assertEquals(caveatCallbackResponse.getCaveatData().getApplicationSubmittedBy(), "User-id");
+        assertEquals("User-id", caveatCallbackResponse.getCaveatData().getApplicationSubmittedBy());
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {
@@ -748,7 +845,7 @@ class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_EXCEPTION_RECORD_CASE_TYPE_ID, caveatCreationDetails.getCaseTypeId());
         assertEquals(BULK_SCAN_CAV_REGISTRY_LOCATION.name(), caveatData.getRegistryLocation().name());
         assertEquals(CAV_APPLICATION_TYPE.name(), caveatData.getApplicationType().getName().toUpperCase());
-        assertEquals(DATE_SUBMITTED.toString(), caveatData.getApplicationSubmittedDate().toString());
+        assertEquals(DATE_SUBMITTED, caveatData.getApplicationSubmittedDate().toString());
 
         assertEquals(true, caveatData.getPaperForm());
         assertEquals(CAV_DECEASED_FORENAMES, caveatData.getDeceasedForenames());
@@ -799,9 +896,9 @@ class CaveatCallbackResponseTransformerTest {
 
         CaveatCallbackResponse response = underTest.setupOriginalDocumentsForRemoval(caveatCallbackRequestMock);
         OriginalDocuments originalDocuments = response.getCaveatData().getOriginalDocuments();
-        assertEquals("1", originalDocuments.getOriginalDocsGenerated().get(0).getId());
-        assertEquals("2", originalDocuments.getOriginalDocsScanned().get(0).getId());
-        assertEquals("3", originalDocuments.getOriginalDocsUploaded().get(0).getId());
+        assertEquals("1", originalDocuments.getOriginalDocsGenerated().getFirst().getId());
+        assertEquals("2", originalDocuments.getOriginalDocsScanned().getFirst().getId());
+        assertEquals("3", originalDocuments.getOriginalDocsUploaded().getFirst().getId());
     }
 
     @Test
@@ -824,68 +921,109 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
-        assertCommonDetails(caveatCallbackResponse);
-        assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE);
-        assertPaperForm(caveatCallbackResponse, YES);
-        assertRegistryLocation(caveatCallbackResponse, CAV_REGISTRY_LOCATION);
+        assertAll(
+                () -> assertCommonDetails(caveatCallbackResponse),
+                () -> assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE),
+                () -> assertPaperForm(caveatCallbackResponse, YES),
+                () -> assertRegistryLocation(caveatCallbackResponse, CAV_REGISTRY_LOCATION)
+        );
     }
 
     private void assertCommonSolsCaveats(CaveatCallbackResponse caveatCallbackResponse) {
-        assertCommonDetails(caveatCallbackResponse);
-        assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
-        assertPaperForm(caveatCallbackResponse, NO);
-        assertRegistryLocation(caveatCallbackResponse, CAV_SOLS_REGISTRY_LOCATION);
+        assertAll(
+                () -> assertCommonDetails(caveatCallbackResponse),
+                () -> assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS),
+                () -> assertPaperForm(caveatCallbackResponse, NO),
+                () -> assertRegistryLocation(caveatCallbackResponse, CAV_SOLS_REGISTRY_LOCATION)
+        );
     }
 
     private void assertCommonDetails(CaveatCallbackResponse caveatCallbackResponse) {
 
-        assertEquals(CAV_DECEASED_FORENAMES, caveatCallbackResponse.getCaveatData().getDeceasedForenames());
-        assertEquals(CAV_DECEASED_SURNAME, caveatCallbackResponse.getCaveatData().getDeceasedSurname());
-        assertEquals("2017-12-31", caveatCallbackResponse.getCaveatData().getDeceasedDateOfDeath());
-        assertEquals("2016-12-31", caveatCallbackResponse.getCaveatData().getDeceasedDateOfBirth());
-        assertEquals(CAV_DECEASED_HAS_ALIAS, caveatCallbackResponse.getCaveatData().getDeceasedAnyOtherNames());
-        assertEquals(CAV_DECEASED_ADDRESS, caveatCallbackResponse.getCaveatData().getDeceasedAddress());
+        assertAll(
+                () -> assertAll("Deceased details",
+                        () -> assertEquals(CAV_DECEASED_FORENAMES,
+                                caveatCallbackResponse.getCaveatData().getDeceasedForenames()),
+                        () -> assertEquals(CAV_DECEASED_SURNAME,
+                                caveatCallbackResponse.getCaveatData().getDeceasedSurname()),
+                        () -> assertEquals("2017-12-31",
+                                caveatCallbackResponse.getCaveatData().getDeceasedDateOfDeath()),
+                        () -> assertEquals("2016-12-31",
+                                caveatCallbackResponse.getCaveatData().getDeceasedDateOfBirth()),
+                        () -> assertEquals(CAV_DECEASED_HAS_ALIAS,
+                                caveatCallbackResponse.getCaveatData().getDeceasedAnyOtherNames()),
+                        () -> assertEquals(CAV_DECEASED_ADDRESS,
+                                caveatCallbackResponse.getCaveatData().getDeceasedAddress())
+                ),
 
-        assertEquals(CAV_CAVEATOR_FORENAMES, caveatCallbackResponse.getCaveatData().getCaveatorForenames());
-        assertEquals(CAV_CAVEATOR_SURNAME, caveatCallbackResponse.getCaveatData().getCaveatorSurname());
-        assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorEmailAddress());
-        assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorAddress());
-        assertEquals(DATE_SUBMITTED.toString(), caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
+                () -> assertAll("Caveator details",
+                        () -> assertEquals(CAV_CAVEATOR_FORENAMES,
+                                caveatCallbackResponse.getCaveatData().getCaveatorForenames()),
+                        () -> assertEquals(CAV_CAVEATOR_SURNAME,
+                                caveatCallbackResponse.getCaveatData().getCaveatorSurname()),
+                        () -> assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS,
+                                caveatCallbackResponse.getCaveatData().getCaveatorEmailAddress()),
+                        () -> assertEquals(CAV_CAVEATOR_ADDRESS,
+                                caveatCallbackResponse.getCaveatData().getCaveatorAddress()),
+                        () -> assertEquals(DATE_SUBMITTED,
+                                caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate()),
+                        () -> assertEquals(CAV_CAVEATOR_PHONENUMBER,
+                                caveatCallbackResponse.getCaveatData().getCaveatorPhoneNumber())
+                ),
 
-        assertEquals(CAV_SOLICITOR_FIRMNAME, caveatCallbackResponse.getCaveatData().getSolsSolicitorFirmName());
-        assertEquals(CAV_SOLICITOR_PHONENUMBER, caveatCallbackResponse.getCaveatData().getSolsSolicitorPhoneNumber());
-        assertEquals(CAV_SOLICITOR_APP_REFERENCE,
-            caveatCallbackResponse.getCaveatData().getSolsSolicitorAppReference());
+                () -> assertAll("Solicitor details",
+                        () -> assertEquals(CAV_SOLICITOR_FIRMNAME,
+                                caveatCallbackResponse.getCaveatData().getSolsSolicitorFirmName()),
+                        () -> assertEquals(CAV_SOLICITOR_PHONENUMBER,
+                                caveatCallbackResponse.getCaveatData().getSolsSolicitorPhoneNumber()),
+                        () -> assertEquals(CAV_SOLICITOR_APP_REFERENCE,
+                                caveatCallbackResponse.getCaveatData().getSolsSolicitorAppReference())
+                ),
 
-        assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
-        assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
-        assertEquals(CAV_REOPEN_REASON, caveatCallbackResponse.getCaveatData().getCaveatReopenReason());
+                () -> assertAll("Caveat status and lifecycle",
+                        () -> assertEquals(CAV_FORMATTED_EXPIRY_DATE,
+                                caveatCallbackResponse.getCaveatData().getExpiryDate()),
+                        () -> assertEquals(CAV_MESSAGE_CONTENT,
+                                caveatCallbackResponse.getCaveatData().getMessageContent()),
+                        () -> assertEquals(CAV_REOPEN_REASON,
+                                caveatCallbackResponse.getCaveatData().getCaveatReopenReason()),
+                        () -> assertEquals(YES,
+                                caveatCallbackResponse.getCaveatData().getAutoClosedExpiry())
+                ),
 
-        assertEquals(CAV_RECORD_ID, caveatCallbackResponse.getCaveatData().getRecordId());
-        assertEquals(CAV_LEGACY_CASE_TYPE, caveatCallbackResponse.getCaveatData().getLegacyType());
-        assertEquals(CAV_LEGACY_CASE_URL, caveatCallbackResponse.getCaveatData().getLegacyCaseViewUrl());
+                () -> assertAll("Legacy and identifiers",
+                        () -> assertEquals(CAV_RECORD_ID,
+                                caveatCallbackResponse.getCaveatData().getRecordId()),
+                        () -> assertEquals(CAV_LEGACY_CASE_TYPE,
+                                caveatCallbackResponse.getCaveatData().getLegacyType()),
+                        () -> assertEquals(CAV_LEGACY_CASE_URL,
+                                caveatCallbackResponse.getCaveatData().getLegacyCaseViewUrl()),
+                        () -> assertEquals(CAV_SOLICITOR_APP_REFERENCE,
+                                caveatCallbackResponse.getCaveatData().getPcqId())
+                ),
 
-        assertEquals(SOLS_PAYMENT_METHOD, caveatCallbackResponse.getCaveatData().getSolsPaymentMethods());
-        assertEquals(SOLS_FEE_ACC, caveatCallbackResponse.getCaveatData().getSolsFeeAccountNumber());
-        assertEquals(SOLS_SELECTED_PBA, caveatCallbackResponse.getCaveatData().getSolsPBANumber().getValue().getCode());
-
-        assertEquals(YES, caveatCallbackResponse.getCaveatData().getAutoClosedExpiry());
-        assertEquals(CAV_SOLICITOR_APP_REFERENCE, caveatCallbackResponse.getCaveatData().getPcqId());
-        assertEquals(CAV_CAVEATOR_PHONENUMBER, caveatCallbackResponse.getCaveatData().getCaveatorPhoneNumber());
-        assertEquals(CAV_PROBATE_FEE, caveatCallbackResponse.getCaveatData().getProbateFee());
-        assertEquals(CAV_HELP_WITH_FEES_REFERENCE, caveatCallbackResponse.getCaveatData().getHelpWithFeesReference());
-        assertEquals(CAV_PROBATE_FEE_NOT_INCLUDED_REASON,
-            caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedReason());
-        assertEquals(CAV_NOT_INCLUDED_EXPLANATION,
-            caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedExplanation());
-        assertEquals(CAV_FEE_ACCOUNT_NUMBER, caveatCallbackResponse.getCaveatData().getProbateFeeAccountNumber());
-        assertEquals(CAV_FEE_ACCOUNT_REFERENCE, caveatCallbackResponse.getCaveatData().getProbateFeeAccountReference());
-    }
-
-    private void assertCaveatPayment(CaveatCallbackResponse caveatCallbackResponse) {
-        assertEquals("pba",
-            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
-
+                () -> assertAll("Payment and fee details",
+                        () -> assertEquals(SOLS_PAYMENT_METHOD,
+                                caveatCallbackResponse.getCaveatData().getSolsPaymentMethods()),
+                        () -> assertEquals(SOLS_FEE_ACC,
+                                caveatCallbackResponse.getCaveatData().getSolsFeeAccountNumber()),
+                        () -> assertEquals(SOLS_SELECTED_PBA,
+                                caveatCallbackResponse.getCaveatData()
+                                        .getSolsPBANumber().getValue().getCode()),
+                        () -> assertEquals(CAV_PROBATE_FEE,
+                                caveatCallbackResponse.getCaveatData().getProbateFee()),
+                        () -> assertEquals(CAV_HELP_WITH_FEES_REFERENCE,
+                                caveatCallbackResponse.getCaveatData().getHelpWithFeesReference()),
+                        () -> assertEquals(CAV_PROBATE_FEE_NOT_INCLUDED_REASON,
+                                caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedReason()),
+                        () -> assertEquals(CAV_NOT_INCLUDED_EXPLANATION,
+                                caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedExplanation()),
+                        () -> assertEquals(CAV_FEE_ACCOUNT_NUMBER,
+                                caveatCallbackResponse.getCaveatData().getProbateFeeAccountNumber()),
+                        () -> assertEquals(CAV_FEE_ACCOUNT_REFERENCE,
+                                caveatCallbackResponse.getCaveatData().getProbateFeeAccountReference())
+                )
+        );
     }
 
     private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse,
@@ -913,5 +1051,16 @@ class CaveatCallbackResponseTransformerTest {
             .documentLink(docLink)
             .documentType(DocumentType.CORRESPONDENCE).build();
         return new CollectionMember<>(id, doc);
+    }
+
+    private OrganisationPolicy buildEmptyOrgPolicy() {
+        return OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
     }
 }
