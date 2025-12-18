@@ -10,8 +10,6 @@ servicebus:
         subscriptionNeeded: yes
         requiresSession: true
 
-
-
 wa:
   enabled: ${ENABLE_WA}
   global:
