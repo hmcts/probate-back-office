@@ -64,5 +64,7 @@
   "ihtForm400": "IHT400",
   "EE_ihtEstateGrossValue" : "500",
   "EE_ihtEstateNetValue" : "400",
+  "EE_ihtEstateGrossValuePounds" : "£500.00",
+  "EE_ihtEstateNetValuePounds" : "£400.00",
   "ihtHmrcCode" : "CTS04052311043tpps8e9"
 }
