@@ -12,17 +12,11 @@ servicebus:
 global:
   postgresUsername: hmcts
   postgresSecret: postgres
-  postgresHostname: "probate-preview.postgres.database.azure.com"
+  postgresHostname: probate-preview.postgres.database.azure.com
   databaseNamePrefix: "pr-${CHANGE_ID}-"
 
 wa:
   enabled: true
-  global:
-    postgresUsername: hmcts
-    postgresSecret: postgres
-    postgresHostname: "probate-preview.postgres.database.azure.com"
-    databaseNamePrefix: "pr-${CHANGE_ID}-"
-
   camunda-bpm:
     java:
       image: hmctsprivate.azurecr.io/camunda/bpm:latest
