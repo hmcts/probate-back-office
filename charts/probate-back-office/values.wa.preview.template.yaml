@@ -78,6 +78,7 @@ wa:
         MANDATORY_TASK_FIELD_CHECK_ENABLED: true
         ALLOWED_CASE_TYPES: wacasetype,GrantOfRepresentation
         ALLOWED_JURISDICTIONS: wa,probate
+        SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: "pr-${CHANGE_ID}-cft_task_db"
 
   wa-task-monitor:
     java:
