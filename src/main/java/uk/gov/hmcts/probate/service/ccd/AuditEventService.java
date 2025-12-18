@@ -37,4 +37,15 @@ public class AuditEventService {
                 .filter(auditEvent -> stateName.contains(auditEvent.getStateId()))
                 .max(Comparator.comparing(AuditEvent::getCreatedDate));
     }
+
+    public Optional<AuditEvent> getLatestAuditEventExcludingDormantState(String caseId, List<String> stateNames,
+                                                                         String userToken, String authToken) {
+        log.info("Getting latest audit event for caseId: {}", caseId);
+        AuditEventsResponse auditEventsResponse
+                = caseDataApi.getAuditEvents(userToken, authToken, false, caseId);
+        log.info("auditEventsResponse AuditEvents().size(): {}", auditEventsResponse.getAuditEvents().size());
+        return auditEventsResponse.getAuditEvents().stream()
+                .filter(auditEvent -> stateNames.contains(auditEvent.getStateId()))
+                .max(Comparator.comparing(AuditEvent::getCreatedDate));
+    }
 }
