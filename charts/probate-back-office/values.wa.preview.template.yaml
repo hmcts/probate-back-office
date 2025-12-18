@@ -9,6 +9,11 @@ servicebus:
       - name: ccd-case-events
         subscriptionNeeded: yes
         requiresSession: true
+global:
+  postgresUsername: hmcts
+  postgresSecret: postgres
+  postgresHostname: "probate-preview.postgres.database.azure.com"
+  databaseNamePrefix: "pr-${CHANGE_ID}-"
 
 wa:
   enabled: ${ENABLE_WA}
