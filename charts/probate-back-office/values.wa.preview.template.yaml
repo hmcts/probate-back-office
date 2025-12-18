@@ -12,7 +12,7 @@ servicebus:
 global:
   postgresUsername: hmcts
   postgresSecret: postgres
-  postgresHostname: probate-preview.postgres.database.azure.com
+  postgresHost: probate-preview.postgres.database.azure.com
   databaseNamePrefix: "pr-${CHANGE_ID}-"
 
 wa:
@@ -182,7 +182,7 @@ ccd-message-publisher:
     devcpuLimits: 1
     devmemoryLimits: 4Gi
     environment:
-      DATA_STORE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
+      DATA_STORE_DB_HOST: '{{ tpl .Values.global.postgresHost $}}'
       DATA_STORE_DB_NAME: "pr-${CHANGE_ID}-data-store"
       DATA_STORE_DB_USERNAME: hmcts
       DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
