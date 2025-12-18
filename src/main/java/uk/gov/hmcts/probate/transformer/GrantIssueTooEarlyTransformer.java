@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 
@@ -20,10 +21,10 @@ public class GrantIssueTooEarlyTransformer {
         LocalDate dod = caseData.getDeceasedDateOfDeath();
         final LocalDate now = LocalDate.now(clock);
         int minDays = 0;
-        String caseType = caseData.getCaseType();
-        if ("gop".equalsIgnoreCase(caseType) || "AdmonWill".equalsIgnoreCase(caseType)) {
+        DocumentCaseType docCaseType = DocumentCaseType.getCaseType(caseData.getCaseType());
+        if (docCaseType == DocumentCaseType.GOP || docCaseType == DocumentCaseType.ADMON_WILL) {
             minDays = 7;
-        } else if ("intestacy".equalsIgnoreCase(caseType) || "AdColligendaBona".equalsIgnoreCase(caseType)) {
+        } else if (docCaseType == DocumentCaseType.INTESTACY || docCaseType == DocumentCaseType.AD_COLLIGENDA_BONA) {
             minDays = 14;
         }
 
