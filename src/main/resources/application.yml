@@ -225,7 +225,20 @@ spring:
     username:  ${probate.postgresql.user}
     password:  ${probate.postgresql.password}
     driverClassName: org.postgresql.Driver
-
+  jms:
+    servicebus:
+      enabled: true
+      connection-string: ${AZURE_SERVICE_BUS_CONNECTION_STRING:${AZURE_SERVICE_BUS_PREVIEW_CONNECTION_STRING:dummy}}
+      pricing-tier: standard
+      pool:
+        enabled: true
+  cloud:
+    azure:
+      credential:
+        managed-identity-enabled: true
+        client-id: 66d89331-c342-443c-af15-1feaa1bd3ccb
+  autoconfigure:
+    exclude: com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
