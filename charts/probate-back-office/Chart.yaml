@@ -44,3 +44,7 @@ dependencies:
     version: ~0.0.66
     repository: 'oci://hmctspublic.azurecr.io/helm'
     condition: am-org-role-mapping-service.enabled
+  - name: ccd-message-publisher
+    version: ~0.1.22
+    repository: 'oci://hmctspublic.azurecr.io/helm'
+    condition: ccd-message-publisher.enabled
