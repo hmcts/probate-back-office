@@ -65,7 +65,6 @@ wa:
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
         ALLOWED_JURISDICTIONS: wa,ia,sscs,civil,publiclaw,privatelaw,employment,st_cic
         ALLOWED_CASE_TYPES: asylum,wacasetype,sscs,civil,generalapplication,care_supervision_epo,prlapps,privatelaw_exceptionrecord,et_englandwales,et_scotland,benefit,criminalinjuriescompensation
-        MANDATORY_TASK_FIELD_CHECK_ENABLED: true
 
   wa-task-monitor:
     java:
