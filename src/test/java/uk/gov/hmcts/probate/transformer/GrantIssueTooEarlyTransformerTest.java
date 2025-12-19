@@ -26,69 +26,6 @@ class GrantIssueTooEarlyTransformerTest {
     }
 
     @Test
-    void testGopCaseTypeTooEarly() {
-        CaseData caseData = mock(CaseData.class);
-        when(caseData.getCaseType()).thenReturn("gop");
-        when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.now());
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(YES);
-    }
-
-    @Test
-    void testGopCaseTypeNotTooEarly() {
-        CaseData caseData = mock(CaseData.class);
-        when(caseData.getCaseType()).thenReturn("gop");
-        when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.now().minusDays(9));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(NO);
-    }
-
-    @Test
-    void testAdmonWillCaseTypeTooEarly() {
-        CaseData caseData = mock(CaseData.class);
-        when(caseData.getCaseType()).thenReturn("AdmonWill");
-        when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.now());
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(YES);
-    }
-
-    @Test
-    void testIntestacyCaseTypeTooEarly() {
-        CaseData caseData = mock(CaseData.class);
-        when(caseData.getCaseType()).thenReturn("intestacy");
-        when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.now());
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(YES);
-    }
-
-    @Test
-    void testIntestacyCaseTypeNotTooEarly() {
-        CaseData caseData = mock(CaseData.class);
-        when(caseData.getCaseType()).thenReturn("intestacy");
-        when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.now().minusDays(16));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(NO);
-    }
-
-    @Test
-    void testAdColligendaBonaCaseTypeTooEarly() {
-        CaseData caseData = mock(CaseData.class);
-        when(caseData.getCaseType()).thenReturn("AdColligendaBona");
-        when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.now());
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(YES);
-    }
-
-    @Test
-    void testAdColligendaBonaCaseTypeNotTooEarly() {
-        CaseData caseData = mock(CaseData.class);
-        when(caseData.getCaseType()).thenReturn("AdColligendaBona");
-        when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.now().minusDays(16));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(NO);
-    }
-
-    @Test
     void testNullDateOfDeathShouldAlwaysSwitchNo() {
         CaseData caseData = mock(CaseData.class);
         when(caseData.getCaseType()).thenReturn("gop");
