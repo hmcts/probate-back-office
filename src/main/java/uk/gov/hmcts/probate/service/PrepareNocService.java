@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.caseaccess.DecisionRequest.decisionRequest;
 
@@ -201,9 +203,10 @@ public class PrepareNocService {
         RemovedRepresentative removed;
         if (representatives.isEmpty() && (
                 (CaseType.GRANT_OF_REPRESENTATION.getCode().equals(caseTypeId)
-                        && CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase((String) caseData.get("channelChoice")))
+                        && (CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase((String) caseData.get("channelChoice"))
+                        || CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase((String) caseData.get("channelChoice"))))
                         || (CaseType.CAVEAT.getCode().equals(caseTypeId)
-                        && YES.equalsIgnoreCase((String) caseData.get("paperForm"))))) {
+                        && !NO.equalsIgnoreCase((String) caseData.get("paperForm"))))) {
             return null;
         } else if (CaseType.CAVEAT.getCode().equals(caseTypeId) && caseData.get("caveatorEmailAddress") != null) {
             removed = RemovedRepresentative.builder()
@@ -228,13 +231,13 @@ public class PrepareNocService {
                                                 Map<String, Object> caseData) {
         caseData.put("solsSolicitorFirmName", organisationResponse.getName());
         return objectMapper.convertValue(SolsAddress.builder()
-                .addressLine1(organisationResponse.getContactInformation().get(0).getAddressLine1())
-                .addressLine2(organisationResponse.getContactInformation().get(0).getAddressLine2())
-                .addressLine3(organisationResponse.getContactInformation().get(0).getAddressLine3())
-                .county(organisationResponse.getContactInformation().get(0).getCounty())
-                .country(organisationResponse.getContactInformation().get(0).getCountry())
-                .postTown(organisationResponse.getContactInformation().get(0).getTownCity())
-                .postCode(organisationResponse.getContactInformation().get(0).getPostCode())
+                .addressLine1(organisationResponse.getContactInformation().getFirst().getAddressLine1())
+                .addressLine2(organisationResponse.getContactInformation().getFirst().getAddressLine2())
+                .addressLine3(organisationResponse.getContactInformation().getFirst().getAddressLine3())
+                .county(organisationResponse.getContactInformation().getFirst().getCounty())
+                .country(organisationResponse.getContactInformation().getFirst().getCountry())
+                .postTown(organisationResponse.getContactInformation().getFirst().getTownCity())
+                .postCode(organisationResponse.getContactInformation().getFirst().getPostCode())
                 .build(), SolsAddress.class);
     }
 
