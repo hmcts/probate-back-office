@@ -8,9 +8,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import java.time.Clock;
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -18,20 +18,21 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 class GrantIssueTooEarlyTransformerTest {
     private GrantIssueTooEarlyTransformer transformer;
     private ResponseCaseDataBuilder responseBuilder;
+    private CaseData caseData;
 
     @BeforeEach
     void setUp() {
         transformer = new GrantIssueTooEarlyTransformer(Clock.systemUTC());
         responseBuilder = mock(ResponseCaseDataBuilder.class);
+        caseData = mock(CaseData.class);
     }
 
     @Test
     void testNullDateOfDeathShouldAlwaysSwitchNo() {
-        CaseData caseData = mock(CaseData.class);
         when(caseData.getCaseType()).thenReturn("gop");
         when(caseData.getDeceasedDateOfDeath()).thenReturn(null);
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(NO);
+        String result = transformer.defaultIssueTooEarlySwitch(caseData);
+        assertEquals(NO, result);
     }
 
     @Test
@@ -39,12 +40,10 @@ class GrantIssueTooEarlyTransformerTest {
         Clock fixedClock = Clock.fixed(LocalDate.of(2025, 12, 7).atStartOfDay(
                 Clock.systemUTC().getZone()).toInstant(), Clock.systemUTC().getZone());
         GrantIssueTooEarlyTransformer transformer = new GrantIssueTooEarlyTransformer(fixedClock);
-        ResponseCaseDataBuilder responseBuilder = mock(ResponseCaseDataBuilder.class);
-        CaseData caseData = mock(CaseData.class);
         when(caseData.getCaseType()).thenReturn("gop");
         when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2025, 12, 1));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(YES);
+        String result = transformer.defaultIssueTooEarlySwitch(caseData);
+        assertEquals(YES, result);
     }
 
     @Test
@@ -52,12 +51,10 @@ class GrantIssueTooEarlyTransformerTest {
         Clock fixedClock = Clock.fixed(LocalDate.of(2025, 12, 9).atStartOfDay(
                 Clock.systemUTC().getZone()).toInstant(), Clock.systemUTC().getZone());
         GrantIssueTooEarlyTransformer transformer = new GrantIssueTooEarlyTransformer(fixedClock);
-        ResponseCaseDataBuilder responseBuilder = mock(ResponseCaseDataBuilder.class);
-        CaseData caseData = mock(CaseData.class);
         when(caseData.getCaseType()).thenReturn("gop");
         when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2025, 12, 1));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(NO);
+        String result = transformer.defaultIssueTooEarlySwitch(caseData);
+        assertEquals(NO, result);
     }
 
     @Test
@@ -65,12 +62,10 @@ class GrantIssueTooEarlyTransformerTest {
         Clock fixedClock = Clock.fixed(LocalDate.of(2025, 12, 7).atStartOfDay(
                 Clock.systemUTC().getZone()).toInstant(), Clock.systemUTC().getZone());
         GrantIssueTooEarlyTransformer transformer = new GrantIssueTooEarlyTransformer(fixedClock);
-        ResponseCaseDataBuilder responseBuilder = mock(ResponseCaseDataBuilder.class);
-        CaseData caseData = mock(CaseData.class);
         when(caseData.getCaseType()).thenReturn("admonWill");
         when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2025, 12, 1));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(YES);
+        String result = transformer.defaultIssueTooEarlySwitch(caseData);
+        assertEquals(YES, result);
     }
 
     @Test
@@ -78,12 +73,10 @@ class GrantIssueTooEarlyTransformerTest {
         Clock fixedClock = Clock.fixed(LocalDate.of(2025, 12, 9).atStartOfDay(
                 Clock.systemUTC().getZone()).toInstant(), Clock.systemUTC().getZone());
         GrantIssueTooEarlyTransformer transformer = new GrantIssueTooEarlyTransformer(fixedClock);
-        ResponseCaseDataBuilder responseBuilder = mock(ResponseCaseDataBuilder.class);
-        CaseData caseData = mock(CaseData.class);
         when(caseData.getCaseType()).thenReturn("admonWill");
         when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2025, 12, 1));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(NO);
+        String result = transformer.defaultIssueTooEarlySwitch(caseData);
+        assertEquals(NO, result);
     }
 
     @Test
@@ -91,12 +84,10 @@ class GrantIssueTooEarlyTransformerTest {
         Clock fixedClock = Clock.fixed(LocalDate.of(2025, 12, 14).atStartOfDay(
                 Clock.systemUTC().getZone()).toInstant(), Clock.systemUTC().getZone());
         GrantIssueTooEarlyTransformer transformer = new GrantIssueTooEarlyTransformer(fixedClock);
-        ResponseCaseDataBuilder responseBuilder = mock(ResponseCaseDataBuilder.class);
-        CaseData caseData = mock(CaseData.class);
         when(caseData.getCaseType()).thenReturn("intestacy");
         when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2025, 12, 1));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(YES);
+        String result = transformer.defaultIssueTooEarlySwitch(caseData);
+        assertEquals(YES, result);
     }
 
     @Test
@@ -104,12 +95,10 @@ class GrantIssueTooEarlyTransformerTest {
         Clock fixedClock = Clock.fixed(LocalDate.of(2025, 12, 16).atStartOfDay(
                 Clock.systemUTC().getZone()).toInstant(), Clock.systemUTC().getZone());
         GrantIssueTooEarlyTransformer transformer = new GrantIssueTooEarlyTransformer(fixedClock);
-        ResponseCaseDataBuilder responseBuilder = mock(ResponseCaseDataBuilder.class);
-        CaseData caseData = mock(CaseData.class);
         when(caseData.getCaseType()).thenReturn("intestacy");
         when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2025, 12, 1));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(NO);
+        String result = transformer.defaultIssueTooEarlySwitch(caseData);
+        assertEquals(NO, result);
     }
 
     @Test
@@ -117,12 +106,10 @@ class GrantIssueTooEarlyTransformerTest {
         Clock fixedClock = Clock.fixed(LocalDate.of(2025, 12, 14).atStartOfDay(
                 Clock.systemUTC().getZone()).toInstant(), Clock.systemUTC().getZone());
         GrantIssueTooEarlyTransformer transformer = new GrantIssueTooEarlyTransformer(fixedClock);
-        ResponseCaseDataBuilder responseBuilder = mock(ResponseCaseDataBuilder.class);
-        CaseData caseData = mock(CaseData.class);
         when(caseData.getCaseType()).thenReturn("adColligendaBona");
         when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2025, 12, 1));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(YES);
+        String result = transformer.defaultIssueTooEarlySwitch(caseData);
+        assertEquals(YES, result);
     }
 
     @Test
@@ -130,11 +117,9 @@ class GrantIssueTooEarlyTransformerTest {
         Clock fixedClock = Clock.fixed(LocalDate.of(2025, 12, 16).atStartOfDay(
                 Clock.systemUTC().getZone()).toInstant(), Clock.systemUTC().getZone());
         GrantIssueTooEarlyTransformer transformer = new GrantIssueTooEarlyTransformer(fixedClock);
-        ResponseCaseDataBuilder responseBuilder = mock(ResponseCaseDataBuilder.class);
-        CaseData caseData = mock(CaseData.class);
         when(caseData.getCaseType()).thenReturn("adColligendaBona");
         when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2025, 12, 1));
-        transformer.defaultIssueTooEarlySwitch(caseData, responseBuilder);
-        verify(responseBuilder).issueEarlySwitch(NO);
+        String result = transformer.defaultIssueTooEarlySwitch(caseData);
+        assertEquals(NO, result);
     }
 }

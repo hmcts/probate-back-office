@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -17,7 +16,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 public class GrantIssueTooEarlyTransformer {
     private final Clock clock;
 
-    public void defaultIssueTooEarlySwitch(CaseData caseData, ResponseCaseDataBuilder responseCaseDataBuilder) {
+    public String defaultIssueTooEarlySwitch(CaseData caseData) {
         LocalDate dod = caseData.getDeceasedDateOfDeath();
         final LocalDate now = LocalDate.now(clock);
         int minDays = 0;
@@ -27,11 +26,10 @@ public class GrantIssueTooEarlyTransformer {
         } else if (docCaseType == DocumentCaseType.INTESTACY || docCaseType == DocumentCaseType.AD_COLLIGENDA_BONA) {
             minDays = 14;
         }
-
         if (dod != null && minDays > 0 && !now.isAfter(dod.plusDays(minDays))) {
-            responseCaseDataBuilder.issueEarlySwitch(YES);
+            return YES;
         } else {
-            responseCaseDataBuilder.issueEarlySwitch(NO);
+            return NO;
         }
     }
 }
