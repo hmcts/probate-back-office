@@ -12,7 +12,6 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCR
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -26,6 +25,7 @@ import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_1_ADDRESS_POST_CODE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_2_ADDRESS_POST_CODE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_ADDRESS_POST_CODE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_IS_APPLYING;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SPOUSE_OR_PARTNER;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.THREE;
@@ -65,36 +65,41 @@ public class OCRFieldModifierUtils {
     private void handlePostCodeValidation(ExceptionRecordOCRFields ocrFields,
                                           List<CollectionMember<ModifiedOCRField>> modifiedFields) {
         String defaultPostCode = bulkScanConfig.getPostcode();
-        Map<String, Supplier<String>> postCodeFields = Map.of(
-                PRIMARY_APPLICANT_ADDRESS_POST_CODE, ocrFields::getPrimaryApplicantAddressPostCode,
-                DECEASED_POST_CODE, ocrFields::getDeceasedAddressPostCode,
-                EXECUTORS_APPLYING_0_ADDRESS_POST_CODE, ocrFields::getExecutorsApplying0applyingExecutorAddressPostCode,
-                EXECUTORS_APPLYING_1_ADDRESS_POST_CODE, ocrFields::getExecutorsApplying1applyingExecutorAddressPostCode,
-                EXECUTORS_APPLYING_2_ADDRESS_POST_CODE, ocrFields::getExecutorsApplying2applyingExecutorAddressPostCode
+
+        // Define the mapping once: Name -> Getter -> Setter
+        List<PostCodeMapping> mappings = List.of(
+                new PostCodeMapping(PRIMARY_APPLICANT_ADDRESS_POST_CODE,
+                        ocrFields::getPrimaryApplicantAddressPostCode,
+                        ocrFields::setPrimaryApplicantAddressPostCode),
+                new PostCodeMapping(DECEASED_POST_CODE,
+                        ocrFields::getDeceasedAddressPostCode,
+                        ocrFields::setDeceasedAddressPostCode),
+                new PostCodeMapping(EXECUTORS_APPLYING_0_ADDRESS_POST_CODE,
+                        ocrFields::getExecutorsApplying0applyingExecutorAddressPostCode,
+                        ocrFields::setExecutorsApplying0applyingExecutorAddressPostCode),
+                new PostCodeMapping(EXECUTORS_APPLYING_1_ADDRESS_POST_CODE,
+                        ocrFields::getExecutorsApplying1applyingExecutorAddressPostCode,
+                        ocrFields::setExecutorsApplying1applyingExecutorAddressPostCode),
+                new PostCodeMapping(EXECUTORS_APPLYING_2_ADDRESS_POST_CODE,
+                        ocrFields::getExecutorsApplying2applyingExecutorAddressPostCode,
+                        ocrFields::setExecutorsApplying2applyingExecutorAddressPostCode),
+                new PostCodeMapping(SOLICITOR_ADDRESS_POST_CODE,
+                        ocrFields::getSolsSolicitorAddressPostCode,
+                        ocrFields::setSolsSolicitorAddressPostCode)
         );
 
-        postCodeFields.forEach((fieldName, getter) -> {
-            if (isNotBlank(getter.get()) && !validatePostCode(getter.get(), fieldName)) {
-                log.info("Setting invalid postcode {} to {}", fieldName, defaultPostCode);
-                setPostCodeField(ocrFields, fieldName, defaultPostCode);
-                addModifiedField(modifiedFields, fieldName, getter.get());
+        for (PostCodeMapping mapping : mappings) {
+            String currentVal = mapping.getter.get();
+            if (isNotBlank(currentVal) && !validatePostCode(currentVal, mapping.fieldName)) {
+                log.info("Setting invalid postcode {} to {}", mapping.fieldName, defaultPostCode);
+                mapping.setter.accept(defaultPostCode);
+                addModifiedField(modifiedFields, mapping.fieldName, currentVal);
             }
-        });
-    }
-
-    private void setPostCodeField(ExceptionRecordOCRFields ocrFields, String fieldName, String defaultPostCode) {
-        switch (fieldName) {
-            case PRIMARY_APPLICANT_ADDRESS_POST_CODE -> ocrFields.setPrimaryApplicantAddressPostCode(defaultPostCode);
-            case DECEASED_POST_CODE -> ocrFields.setDeceasedAddressPostCode(defaultPostCode);
-            case EXECUTORS_APPLYING_0_ADDRESS_POST_CODE ->
-                    ocrFields.setExecutorsApplying0applyingExecutorAddressPostCode(defaultPostCode);
-            case EXECUTORS_APPLYING_1_ADDRESS_POST_CODE ->
-                    ocrFields.setExecutorsApplying1applyingExecutorAddressPostCode(defaultPostCode);
-            case EXECUTORS_APPLYING_2_ADDRESS_POST_CODE ->
-                    ocrFields.setExecutorsApplying2applyingExecutorAddressPostCode(defaultPostCode);
-            default -> throw new IllegalArgumentException("Unknown postcode field: " + fieldName);
         }
     }
+
+    // Simple record to hold the functional references
+    private record PostCodeMapping(String fieldName, Supplier<String> getter, Consumer<String> setter) {}
 
     private boolean validatePostCode(final String postCode, String postCodeField) {
         if (!postCode.matches(POSTCODE_REGEX_PATTERN)) {

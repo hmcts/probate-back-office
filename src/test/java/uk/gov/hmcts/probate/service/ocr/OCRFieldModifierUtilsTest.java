@@ -407,4 +407,14 @@ class OCRFieldModifierUtilsTest {
         assertEquals(1, modifiedFields.size());
         assertEquals(bulkScanConfig.getPostcode(), ocrFields.getExecutorsApplying2applyingExecutorAddressPostCode());
     }
+
+    @Test
+    void shouldSetDefalutWithSolsSolicitorAddressInvalidPostcode() {
+        ocrFields.setSolsSolicitorAddressPostCode("INVALID");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(bulkScanConfig.getPostcode(), ocrFields.getSolsSolicitorAddressPostCode());
+    }
 }
