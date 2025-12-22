@@ -23,15 +23,9 @@
               "BOSotGenerated",
               "BORedecNotificationSent",
               "BOCaseStoppedAwaitRedec",
-              "BOCaseStoppedReissue",
-              "BOCaseMatchingReissue",
-              "BOExaminingReissue",
               "BOCaseImported",
               "BOCaveatPermenant",
-              "BOCaseWorkerEscalation",
-              "BOPostGrantIssued",
-              "BOGrantIssuedRegistrarEscalation",
-              "BOPostGrantIssuedRegistrarEscalation"
+              "BOCaseWorkerEscalation"
             ]
           }
         }
