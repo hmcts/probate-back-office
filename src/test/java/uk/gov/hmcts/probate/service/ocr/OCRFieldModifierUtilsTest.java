@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.ocr;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,55 +15,57 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCR
 import java.lang.reflect.Field;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.FALSE;
 import static uk.gov.hmcts.probate.model.Constants.TRUE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.BILINGUAL_GRANT;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_ADDRESS_POST_CODE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_IS_APPLYING;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SPOUSE_OR_PARTNER;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_IHT_FORM;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_VALUE;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_DECEASED_SURNAME_VALUE;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_POSTCODE_VALUE;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_DOB_VALUE;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_EMAIL_VALUE;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_PHONE_VALUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.THREE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.WILL_DATE;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_ALIAS_VALUE;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_DATE_OF_BIRTH;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_DECEASED_ANY_OTHER_NAMES_VALUE;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_DECEASED_DOMICILE_IN_ENG_WALES_VALUE;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_ALIAS_VALUE;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_PRIMARY_APPLICANT_FORENAMES;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_PRIMARY_APPLICANT_SURNAME;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_DECEASED_SURNAME_VALUE;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_DOB_VALUE;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_EMAIL_VALUE;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_IHT_FORM;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_PHONE_VALUE;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_POSTCODE_VALUE;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_VALUE;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ADDRESS_LINE_1;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ADDRESS_POSTCODE;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ANY_OTHER_NAMES;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DATE_OF_BIRTH;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DOMICILED_IN_ENG_WALES;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_FORENAMES;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_SURNAME;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_PRIMARY_APPLICANT_ADDRESS_LINE_1;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_PRIMARY_APPLICANT_ADDRESS_POSTCODE;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_PRIMARY_APPLICANT_ALIAS;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_PRIMARY_APPLICANT_FORENAMES;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_PRIMARY_APPLICANT_HAS_ALIAS;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_IS_APPLYING;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_FIRM_NAME;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_REPRESENTATIVE_NAME;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_APP_REFERENCE;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_PRIMARY_APPLICANT_SURNAME;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_ADDRESS_LINE_1;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_ADDRESS_LINE_2;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_ADDRESS_TOWN;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_ADDRESS_POSTCODE;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_ADDRESS_TOWN;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_APP_REFERENCE;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_EMAIL;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_FIRM_NAME;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_IS_APPLYING;
 import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_PHONE_NUMBER;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_FORENAMES;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_SURNAME;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ADDRESS_LINE_1;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ADDRESS_POSTCODE;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DATE_OF_BIRTH;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_ANY_OTHER_NAMES;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_DECEASED_DOMICILED_IN_ENG_WALES;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.WILL_DATE;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.THREE;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
+import static uk.gov.hmcts.probate.service.ocr.OcrConstants.VALID_SOLICITOR_REPRESENTATIVE_NAME;
 
 class OCRFieldModifierUtilsTest {
     @InjectMocks
@@ -416,5 +419,33 @@ class OCRFieldModifierUtilsTest {
 
         assertEquals(1, modifiedFields.size());
         assertEquals(bulkScanConfig.getPostcode(), ocrFields.getSolsSolicitorAddressPostCode());
+    }
+
+    @Test
+    @DisplayName("Should update invalid postcode and add to modified fields list")
+    void shouldUpdateInvalidPostCode() {
+        String validPostCode = "W1B 2BC";
+        ocrFields.setPrimaryApplicantAddressPostCode("INVALID");
+        ocrFields.setDeceasedAddressPostCode(validPostCode);
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(bulkScanConfig.getPostcode(), ocrFields.getPrimaryApplicantAddressPostCode());
+        assertEquals(PRIMARY_APPLICANT_ADDRESS_POST_CODE, modifiedFields.get(0).getValue().getFieldName());
+        assertEquals(validPostCode, ocrFields.getDeceasedAddressPostCode());
+    }
+
+    @Test
+    @DisplayName("Should do nothing when all postcodes are valid")
+    void shouldDoNothingWhenPostCodesAreValid() {
+
+        ocrFields.setPrimaryApplicantAddressPostCode("W1B 2BC");
+
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
+
+        assertTrue(modifiedFields.isEmpty());
     }
 }

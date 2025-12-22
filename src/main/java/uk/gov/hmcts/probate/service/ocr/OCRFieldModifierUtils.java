@@ -89,25 +89,16 @@ public class OCRFieldModifierUtils {
         );
 
         for (PostCodeMapping mapping : mappings) {
-            String currentVal = mapping.getter.get();
-            if (isNotBlank(currentVal) && !validatePostCode(currentVal, mapping.fieldName)) {
-                log.info("Setting invalid postcode {} to {}", mapping.fieldName, defaultPostCode);
+            String currentPostCode = mapping.getter.get();
+            if (isNotBlank(currentPostCode) && !currentPostCode.matches(POSTCODE_REGEX_PATTERN)) {
+                log.info("Set invalid postcode {} from {} to {}", mapping.fieldName, currentPostCode, defaultPostCode);
                 mapping.setter.accept(defaultPostCode);
-                addModifiedField(modifiedFields, mapping.fieldName, currentVal);
+                addModifiedField(modifiedFields, mapping.fieldName, currentPostCode);
             }
         }
     }
 
-    // Simple record to hold the functional references
     private record PostCodeMapping(String fieldName, Supplier<String> getter, Consumer<String> setter) {}
-
-    private boolean validatePostCode(final String postCode, String postCodeField) {
-        if (!postCode.matches(POSTCODE_REGEX_PATTERN)) {
-            log.info("{} : An invalid postcode has been found {} in OCRFieldModifierUtils", postCodeField, postCode);
-            return false;
-        }
-        return true;
-    }
 
     private void handleCommonFields(ExceptionRecordOCRFields ocrFields,
                                     List<CollectionMember<ModifiedOCRField>> modifiedFields, GrantType grantType) {
