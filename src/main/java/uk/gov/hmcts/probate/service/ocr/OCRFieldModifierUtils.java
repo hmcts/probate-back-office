@@ -12,6 +12,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCR
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -20,11 +21,16 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static uk.gov.hmcts.probate.model.Constants.TRUE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.BILINGUAL_GRANT;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_0_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_1_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_2_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_ADDRESS_POST_CODE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_IS_APPLYING;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SPOUSE_OR_PARTNER;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.WILL_DATE;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.THREE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.WILL_DATE;
 
 @Slf4j
 @Service
@@ -38,7 +44,7 @@ public class OCRFieldModifierUtils {
     private final ExecutorsNotApplyingHandler executorsNotApplyingHandler;
     private final IHTFieldHandler ihtFieldHandler;
     private final SolicitorFieldHandler solicitorFieldHandler;
-
+    private static final String POSTCODE_REGEX_PATTERN = "^([A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}|GIR ?0A{2})$";
 
     public List<CollectionMember<ModifiedOCRField>> setDefaultGorValues(ExceptionRecordOCRFields ocrFields,
                                                                         GrantType grantType) {
@@ -51,8 +57,51 @@ public class OCRFieldModifierUtils {
         executorsApplyingHandler.handleExecutorsApplyingFields(ocrFields, modifiedFields);
         executorsNotApplyingHandler.handleExecutorsNotApplyingFields(ocrFields, modifiedFields);
         handleCommonFields(ocrFields, modifiedFields, grantType);
+        handlePostCodeValidation(ocrFields, modifiedFields);
 
         return modifiedFields;
+    }
+
+    private void handlePostCodeValidation(ExceptionRecordOCRFields ocrFields,
+                                          List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        String defaultPostCode = bulkScanConfig.getPostcode();
+        Map<String, Supplier<String>> postCodeFields = Map.of(
+                PRIMARY_APPLICANT_ADDRESS_POST_CODE, ocrFields::getPrimaryApplicantAddressPostCode,
+                DECEASED_POST_CODE, ocrFields::getDeceasedAddressPostCode,
+                EXECUTORS_APPLYING_0_ADDRESS_POST_CODE, ocrFields::getExecutorsApplying0applyingExecutorAddressPostCode,
+                EXECUTORS_APPLYING_1_ADDRESS_POST_CODE, ocrFields::getExecutorsApplying1applyingExecutorAddressPostCode,
+                EXECUTORS_APPLYING_2_ADDRESS_POST_CODE, ocrFields::getExecutorsApplying2applyingExecutorAddressPostCode
+        );
+
+        postCodeFields.forEach((fieldName, getter) -> {
+            if (isNotBlank(getter.get()) && !validatePostCode(getter.get(), fieldName)) {
+                log.info("Setting invalid postcode {} to {}", fieldName, defaultPostCode);
+                setPostCodeField(ocrFields, fieldName, defaultPostCode);
+                addModifiedField(modifiedFields, fieldName, getter.get());
+            }
+        });
+    }
+
+    private void setPostCodeField(ExceptionRecordOCRFields ocrFields, String fieldName, String defaultPostCode) {
+        switch (fieldName) {
+            case PRIMARY_APPLICANT_ADDRESS_POST_CODE -> ocrFields.setPrimaryApplicantAddressPostCode(defaultPostCode);
+            case DECEASED_POST_CODE -> ocrFields.setDeceasedAddressPostCode(defaultPostCode);
+            case EXECUTORS_APPLYING_0_ADDRESS_POST_CODE ->
+                    ocrFields.setExecutorsApplying0applyingExecutorAddressPostCode(defaultPostCode);
+            case EXECUTORS_APPLYING_1_ADDRESS_POST_CODE ->
+                    ocrFields.setExecutorsApplying1applyingExecutorAddressPostCode(defaultPostCode);
+            case EXECUTORS_APPLYING_2_ADDRESS_POST_CODE ->
+                    ocrFields.setExecutorsApplying2applyingExecutorAddressPostCode(defaultPostCode);
+            default -> throw new IllegalArgumentException("Unknown postcode field: " + fieldName);
+        }
+    }
+
+    private boolean validatePostCode(final String postCode, String postCodeField) {
+        if (!postCode.matches(POSTCODE_REGEX_PATTERN)) {
+            log.info("{} : An invalid postcode has been found {} in OCRFieldModifierUtils", postCodeField, postCode);
+            return false;
+        }
+        return true;
     }
 
     private void handleCommonFields(ExceptionRecordOCRFields ocrFields,

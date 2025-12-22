@@ -357,4 +357,54 @@ class OCRFieldModifierUtilsTest {
         assertEquals(0, modifiedFields.size());
         assertEquals("", ocrFields.getWillDate());
     }
+
+    @Test
+    void shouldSetDefalutWithPrimaryApplicantAddressPostCodeInvalidPostcode() {
+        ocrFields.setPrimaryApplicantAddressPostCode("INVALID");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(bulkScanConfig.getPostcode(), ocrFields.getPrimaryApplicantAddressPostCode());
+    }
+
+    @Test
+    void shouldSetDefalutWithDeceasedAddressPostCodePostCodeInvalidPostcode() {
+        ocrFields.setDeceasedAddressPostCode("INVALID");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(bulkScanConfig.getPostcode(), ocrFields.getDeceasedAddressPostCode());
+    }
+
+    @Test
+    void shouldSetDefalutWithExecutorsApplying0applyingExecutorAddressInvalidPostcode() {
+        ocrFields.setExecutorsApplying0applyingExecutorAddressPostCode("INVALID");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(bulkScanConfig.getPostcode(), ocrFields.getExecutorsApplying0applyingExecutorAddressPostCode());
+    }
+
+    @Test
+    void shouldSetDefalutWithExecutorsApplying1applyingExecutorAddressInvalidPostcode() {
+        ocrFields.setExecutorsApplying1applyingExecutorAddressPostCode("INVALID");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(bulkScanConfig.getPostcode(), ocrFields.getExecutorsApplying1applyingExecutorAddressPostCode());
+    }
+
+    @Test
+    void shouldSetDefalutWithExecutorsApplying2applyingExecutorAddressInvalidPostcode() {
+        ocrFields.setExecutorsApplying2applyingExecutorAddressPostCode("INVALID");
+        List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils.setDefaultGorValues(ocrFields,
+                GrantType.GRANT_OF_PROBATE);
+
+        assertEquals(1, modifiedFields.size());
+        assertEquals(bulkScanConfig.getPostcode(), ocrFields.getExecutorsApplying2applyingExecutorAddressPostCode());
+    }
 }
