@@ -93,7 +93,7 @@ public class FirstStopReminderNotification implements NotificationStrategy {
             && referenceDate != null
             && (STATE_BO_CASE_STOPPED.equals(cd.getState()) || STATE_BO_CASE_STOPPED_REISSUE.equals(cd.getState()))
             && isValidLastModifiedDate(cd)
-            && !isCaveatStop(cd);
+            && !CaseStopReasonHelper.isCaveatStop(cd);
     }
 
     private boolean isValidLastModifiedDate(CaseDetails caseDetails) {
