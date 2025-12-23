@@ -5,15 +5,12 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -28,9 +25,6 @@ public class FirstStopReminderNotification implements NotificationStrategy {
     private static final String FIRST_STOP_REMINDER_FAILURE_EVENT_DESCRIPTION = "Failed to send first stop reminder";
     private static final String FIRST_STOP_REMINDER_FAILURE_EVENT_SUMMARY = "Failed to send first stop reminder";
     private static final String LAST_MODIFIED_DATE_FOR_DORMANT = "lastModifiedDateForDormant";
-    private static final String CASE_STOP_REASON_LIST = "boCaseStopReasonList";
-    private static final String STOP_REASON_FIELD_NAME = "caseStopReason";
-    private static final List<String> CAVEAT_STOP_REASONS = List.of("CaveatMatch", "Permanent Caveat");
 
     private final NotificationService notificationService;
 
@@ -102,27 +96,5 @@ public class FirstStopReminderNotification implements NotificationStrategy {
                 .map(LocalDateTime::parse)
                 .map(lastModifiedDate -> !lastModifiedDate.isAfter(referenceDate.plusDays(1).atStartOfDay()))
                 .orElse(false);
-    }
-
-    private boolean isCaveatStop(CaseDetails caseDetails) {
-        Object raw = caseDetails.getData().get(CASE_STOP_REASON_LIST);
-        if (!(raw instanceof List<?> reasons)) {
-            return false;
-        }
-
-        return reasons.stream()
-                .map(this::extractCaseStopReason)
-                .anyMatch(reason -> reason != null && CAVEAT_STOP_REASONS.contains(reason));
-
-    }
-
-    private String extractCaseStopReason(Object item) {
-        if (item instanceof StopReason stopReason) {
-            return stopReason.getCaseStopReason();
-        } else if (item instanceof Map<?, ?> map) {
-            Object reason = ((Map<?, ?>) map.get("value")).get(STOP_REASON_FIELD_NAME);
-            return reason != null ? reason.toString() : null;
-        }
-        return null;
     }
 }

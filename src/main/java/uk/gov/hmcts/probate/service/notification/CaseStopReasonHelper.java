@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.service.notification;
-import uk.gov.reform.ccd.client.model.CaseDetails;
+
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 
 import java.util.List;
 import java.util.Map;
