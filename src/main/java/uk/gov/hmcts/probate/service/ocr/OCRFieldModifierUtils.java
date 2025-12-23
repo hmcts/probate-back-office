@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static uk.gov.hmcts.probate.model.Constants.TRUE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.ATTORNEY_ADDRESS_POST_CODE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.BILINGUAL_GRANT;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_POST_CODE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_0_ADDRESS_POST_CODE;
@@ -85,7 +86,10 @@ public class OCRFieldModifierUtils {
                         ocrFields::setExecutorsApplying2applyingExecutorAddressPostCode),
                 new PostCodeMapping(SOLICITOR_ADDRESS_POST_CODE,
                         ocrFields::getSolsSolicitorAddressPostCode,
-                        ocrFields::setSolsSolicitorAddressPostCode)
+                        ocrFields::setSolsSolicitorAddressPostCode),
+                new PostCodeMapping(ATTORNEY_ADDRESS_POST_CODE,
+                        ocrFields::getAttorneyOnBehalfOfAddressPostCode,
+                        ocrFields::setAttorneyOnBehalfOfAddressPostCode)
         );
 
         for (PostCodeMapping mapping : mappings) {
