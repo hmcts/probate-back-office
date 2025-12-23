@@ -81,6 +81,7 @@ public final class DummyValuesConstants {
     public static final String EXECUTOR_NOT_APPLYING_0_REASON = "executorsNotApplying0notApplyingExecutorReason";
     public static final String EXECUTOR_NOT_APPLYING_1_REASON = "executorsNotApplying1notApplyingExecutorReason";
     public static final String EXECUTOR_NOT_APPLYING_2_REASON = "executorsNotApplying2notApplyingExecutorReason";
+    public static final String ATTORNEY_ADDRESS_POST_CODE = "attorneyOnBehalfOfAddressPostCode";
     public static final String SPOUSE_OR_PARTNER = "spouseOrPartner";
     public static final String BILINGUAL_GRANT = "bilingualGrantRequested";
     public static final String FORM_IHT205 = "IHT205";
