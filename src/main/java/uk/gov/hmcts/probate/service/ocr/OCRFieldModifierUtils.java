@@ -20,11 +20,17 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static uk.gov.hmcts.probate.model.Constants.TRUE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.BILINGUAL_GRANT;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.DECEASED_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_0_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_1_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.EXECUTORS_APPLYING_2_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.PRIMARY_APPLICANT_ADDRESS_POST_CODE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_ADDRESS_POST_CODE;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SOLICITOR_IS_APPLYING;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.SPOUSE_OR_PARTNER;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.WILL_DATE;
-import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
 import static uk.gov.hmcts.probate.model.DummyValuesConstants.THREE;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.TWO;
+import static uk.gov.hmcts.probate.model.DummyValuesConstants.WILL_DATE;
 
 @Slf4j
 @Service
@@ -38,7 +44,7 @@ public class OCRFieldModifierUtils {
     private final ExecutorsNotApplyingHandler executorsNotApplyingHandler;
     private final IHTFieldHandler ihtFieldHandler;
     private final SolicitorFieldHandler solicitorFieldHandler;
-
+    private static final String POSTCODE_REGEX_PATTERN = "^([A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}|GIR ?0A{2})$";
 
     public List<CollectionMember<ModifiedOCRField>> setDefaultGorValues(ExceptionRecordOCRFields ocrFields,
                                                                         GrantType grantType) {
@@ -51,9 +57,48 @@ public class OCRFieldModifierUtils {
         executorsApplyingHandler.handleExecutorsApplyingFields(ocrFields, modifiedFields);
         executorsNotApplyingHandler.handleExecutorsNotApplyingFields(ocrFields, modifiedFields);
         handleCommonFields(ocrFields, modifiedFields, grantType);
+        handlePostCodeValidation(ocrFields, modifiedFields);
 
         return modifiedFields;
     }
+
+    private void handlePostCodeValidation(ExceptionRecordOCRFields ocrFields,
+                                          List<CollectionMember<ModifiedOCRField>> modifiedFields) {
+        String defaultPostCode = bulkScanConfig.getPostcode();
+
+        // Define the mapping once: Name -> Getter -> Setter
+        List<PostCodeMapping> mappings = List.of(
+                new PostCodeMapping(PRIMARY_APPLICANT_ADDRESS_POST_CODE,
+                        ocrFields::getPrimaryApplicantAddressPostCode,
+                        ocrFields::setPrimaryApplicantAddressPostCode),
+                new PostCodeMapping(DECEASED_POST_CODE,
+                        ocrFields::getDeceasedAddressPostCode,
+                        ocrFields::setDeceasedAddressPostCode),
+                new PostCodeMapping(EXECUTORS_APPLYING_0_ADDRESS_POST_CODE,
+                        ocrFields::getExecutorsApplying0applyingExecutorAddressPostCode,
+                        ocrFields::setExecutorsApplying0applyingExecutorAddressPostCode),
+                new PostCodeMapping(EXECUTORS_APPLYING_1_ADDRESS_POST_CODE,
+                        ocrFields::getExecutorsApplying1applyingExecutorAddressPostCode,
+                        ocrFields::setExecutorsApplying1applyingExecutorAddressPostCode),
+                new PostCodeMapping(EXECUTORS_APPLYING_2_ADDRESS_POST_CODE,
+                        ocrFields::getExecutorsApplying2applyingExecutorAddressPostCode,
+                        ocrFields::setExecutorsApplying2applyingExecutorAddressPostCode),
+                new PostCodeMapping(SOLICITOR_ADDRESS_POST_CODE,
+                        ocrFields::getSolsSolicitorAddressPostCode,
+                        ocrFields::setSolsSolicitorAddressPostCode)
+        );
+
+        for (PostCodeMapping mapping : mappings) {
+            String currentPostCode = mapping.getter.get();
+            if (isNotBlank(currentPostCode) && !currentPostCode.matches(POSTCODE_REGEX_PATTERN)) {
+                log.info("Set invalid postcode {} from {} to {}", mapping.fieldName, currentPostCode, defaultPostCode);
+                mapping.setter.accept(defaultPostCode);
+                addModifiedField(modifiedFields, mapping.fieldName, currentPostCode);
+            }
+        }
+    }
+
+    private record PostCodeMapping(String fieldName, Supplier<String> getter, Consumer<String> setter) {}
 
     private void handleCommonFields(ExceptionRecordOCRFields ocrFields,
                                     List<CollectionMember<ModifiedOCRField>> modifiedFields, GrantType grantType) {
