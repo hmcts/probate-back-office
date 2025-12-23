@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
@@ -40,8 +39,6 @@ class ExceptionRecordCaveatMapperAfterMappingTest {
     @Autowired
     private OCRFieldProbateFeeNotIncludedReasonMapper ocrFieldProbateFeeNotIncludedReasonMapper;
 
-    @Autowired
-    private static BulkScanConfig bulkScanConfig;
     
     private static CaveatData caseData;
 
@@ -50,7 +47,7 @@ class ExceptionRecordCaveatMapperAfterMappingTest {
 
         @Bean
         public OCRFieldAddressMapper ocrFieldAddressMapper() {
-            return new OCRFieldAddressMapper(bulkScanConfig);
+            return new OCRFieldAddressMapper();
         }
 
         @Bean
@@ -83,10 +80,6 @@ class ExceptionRecordCaveatMapperAfterMappingTest {
             return Mappers.getMapper(ExceptionRecordCaveatMapper.class);
         }
 
-        @Bean
-        public BulkScanConfig bulkScanConfig() {
-            return new BulkScanConfig();
-        }
     }
 
     @Test

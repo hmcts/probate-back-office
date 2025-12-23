@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
@@ -71,56 +70,54 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     private OCRFieldIhtGrossValueMapper ocrFieldIhtGrossValueMapper;
     @Autowired
     private OCRFieldIhtNetValueMapper ocrFieldIhtNetValueMapper;
-    @Autowired
-    private static BulkScanConfig bulkScanConfig;
 
     @Test
     void testSetSolsPaymentMethodIsSolicitorGrantOfProbate() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .solsSolicitorIsApplying(TRUE)
-            .solsSolicitorFirmName("Firm Name")
-            .solsSolicitorRepresentativeName("Sonny Solicitor")
-            .build();
+                .solsSolicitorIsApplying(TRUE)
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName("Sonny Solicitor")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(ApplicationType.SOLICITORS, response.getApplicationType());
     }
 
     @Test
     void testSetSolsPaymentMethodIsSolicitorIntestacy() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .solsSolicitorIsApplying(TRUE)
-            .solsSolicitorFirmName("Firm Name")
-            .solsSolicitorRepresentativeName("Sonny Solicitor")
-            .build();
+                .solsSolicitorIsApplying(TRUE)
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName("Sonny Solicitor")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertEquals(ApplicationType.SOLICITORS, response.getApplicationType());
     }
 
     @Test
     void testSetSolsPaymentMethodIsPersonal() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .solsSolicitorIsApplying(null)
-            .primaryApplicantForenames("Joe")
-            .primaryApplicantSurname("Smith")
-            .solsSolicitorFirmName(null)
-            .solsSolicitorRepresentativeName("")
-            .build();
+                .solsSolicitorIsApplying(null)
+                .primaryApplicantForenames("Joe")
+                .primaryApplicantSurname("Smith")
+                .solsSolicitorFirmName(null)
+                .solsSolicitorRepresentativeName("")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(ApplicationType.PERSONAL, response.getApplicationType());
     }
 
     @Test
     void testSetSolsSolicitorRepresentativeSingleNameGrantOfProbate() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .solsSolicitorIsApplying(TRUE)
-            .solsSolicitorFirmName("Firm Name")
-            .solsSolicitorRepresentativeName("Jim")
-            .build();
+                .solsSolicitorIsApplying(TRUE)
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName("Jim")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals("", response.getSolsSOTSurname());
         assertEquals("Jim", response.getSolsSOTForenames());
     }
@@ -128,12 +125,12 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSetSolsSolicitorRepresentativeThreeNameIntestacy() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .solsSolicitorIsApplying(TRUE)
-            .solsSolicitorFirmName("Firm Name")
-            .solsSolicitorRepresentativeName("Jim Young")
-            .build();
+                .solsSolicitorIsApplying(TRUE)
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName("Jim Young")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertEquals("Young", response.getSolsSOTSurname());
         assertEquals("Jim", response.getSolsSOTForenames());
     }
@@ -141,12 +138,12 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSetSolsSolicitorRepresentativeNameTwoNamesGrantOfProbate() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .solsSolicitorIsApplying(TRUE)
-            .solsSolicitorFirmName("Firm Name")
-            .solsSolicitorRepresentativeName("Jim Martyn Young")
-            .build();
+                .solsSolicitorIsApplying(TRUE)
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName("Jim Martyn Young")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals("Young", response.getSolsSOTSurname());
         assertEquals("Jim Martyn", response.getSolsSOTForenames());
     }
@@ -154,12 +151,12 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSetSolsSolicitorRepresentativeNameNoNamesIntestacy() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .solsSolicitorIsApplying(TRUE)
-            .solsSolicitorFirmName("Firm Name")
-            .solsSolicitorRepresentativeName(null)
-            .build();
+                .solsSolicitorIsApplying(TRUE)
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName(null)
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertEquals(null, response.getSolsSOTSurname());
         assertEquals(null, response.getSolsSOTForenames());
     }
@@ -167,35 +164,35 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSetDomicilityIHTCertTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .domicilityEntrustingDocument(null)
-            .domicilitySuccessionIHTCert(TRUE)
-            .build();
+                .domicilityEntrustingDocument(null)
+                .domicilitySuccessionIHTCert(TRUE)
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertTrue(response.getDomicilityIHTCert());
     }
 
     @Test
     void testSetDomicilityIHTCertNullIfNotTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .domicilityEntrustingDocument(FALSE)
-            .domicilitySuccessionIHTCert(null)
-            .build();
+                .domicilityEntrustingDocument(FALSE)
+                .domicilitySuccessionIHTCert(null)
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getDomicilityIHTCert());
     }
 
     @Test
     void testIHTReferenceClearedIfNotOnline() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .ihtFormCompletedOnline(FALSE)
-            .ihtReferenceNumber("REF123456789")
-            .ihtFormId("IHT205")
-            .formVersion("1")
-            .build();
+                .ihtFormCompletedOnline(FALSE)
+                .ihtReferenceNumber("REF123456789")
+                .ihtFormId("IHT205")
+                .formVersion("1")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNotNull(response.getIhtFormId());
         assertNull(response.getIhtReferenceNumber());
     }
@@ -203,13 +200,13 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testIHTFormIdClearedIfOnline() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .ihtFormCompletedOnline(TRUE)
-            .ihtReferenceNumber("REF123456789")
-            .ihtFormId("IHT205")
-            .formVersion("1")
-            .build();
+                .ihtFormCompletedOnline(TRUE)
+                .ihtReferenceNumber("REF123456789")
+                .ihtFormId("IHT205")
+                .formVersion("1")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNotNull(response.getIhtReferenceNumber());
         assertNull(response.getIhtFormId());
     }
@@ -217,43 +214,43 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void setDerivedFamilyBooleansTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .childrenUnderEighteenSurvived("1")
-            .childrenOverEighteenSurvived(null)
-            .childrenDiedUnderEighteen("")
-            .childrenDiedUnderEighteen("3")
-            .grandChildrenSurvivedUnderEighteen("2")
-            .grandChildrenSurvivedOverEighteen("0")
-            .parentsExistUnderEighteenSurvived("2")
-            .parentsExistOverEighteenSurvived("0")
-            .wholeBloodSiblingsSurvivedUnderEighteen("1")
-            .wholeBloodSiblingsSurvivedOverEighteen("0")
-            .wholeBloodSiblingsDiedUnderEighteen("1")
-            .wholeBloodSiblingsDiedOverEighteen(null)
-            .wholeBloodNeicesAndNephewsUnderEighteen("1")
-            .wholeBloodNeicesAndNephewsOverEighteen("")
-            .halfBloodSiblingsSurvivedUnderEighteen("3")
-            .halfBloodSiblingsSurvivedOverEighteen(null)
-            .halfBloodSiblingsDiedUnderEighteen("1")
-            .halfBloodSiblingsDiedOverEighteen("0")
-            .halfBloodNeicesAndNephewsUnderEighteen("2")
-            .halfBloodNeicesAndNephewsOverEighteen(null)
-            .grandparentsDiedUnderEighteen("1")
-            .grandparentsDiedOverEighteen("")
-            .wholeBloodUnclesAndAuntsSurvivedUnderEighteen("1")
-            .wholeBloodUnclesAndAuntsSurvivedOverEighteen(null)
-            .wholeBloodUnclesAndAuntsDiedUnderEighteen("2")
-            .wholeBloodUnclesAndAuntsDiedOverEighteen("0")
-            .wholeBloodCousinsSurvivedUnderEighteen("1")
-            .wholeBloodCousinsSurvivedOverEighteen(null)
-            .halfBloodUnclesAndAuntsSurvivedUnderEighteen("1")
-            .halfBloodUnclesAndAuntsSurvivedOverEighteen("0")
-            .halfBloodUnclesAndAuntsDiedUnderEighteen("1")
-            .halfBloodUnclesAndAuntsDiedOverEighteen(null)
-            .halfBloodCousinsSurvivedUnderEighteen("2")
-            .halfBloodCousinsSurvivedOverEighteen("")
-            .build();
+                .childrenUnderEighteenSurvived("1")
+                .childrenOverEighteenSurvived(null)
+                .childrenDiedUnderEighteen("")
+                .childrenDiedUnderEighteen("3")
+                .grandChildrenSurvivedUnderEighteen("2")
+                .grandChildrenSurvivedOverEighteen("0")
+                .parentsExistUnderEighteenSurvived("2")
+                .parentsExistOverEighteenSurvived("0")
+                .wholeBloodSiblingsSurvivedUnderEighteen("1")
+                .wholeBloodSiblingsSurvivedOverEighteen("0")
+                .wholeBloodSiblingsDiedUnderEighteen("1")
+                .wholeBloodSiblingsDiedOverEighteen(null)
+                .wholeBloodNeicesAndNephewsUnderEighteen("1")
+                .wholeBloodNeicesAndNephewsOverEighteen("")
+                .halfBloodSiblingsSurvivedUnderEighteen("3")
+                .halfBloodSiblingsSurvivedOverEighteen(null)
+                .halfBloodSiblingsDiedUnderEighteen("1")
+                .halfBloodSiblingsDiedOverEighteen("0")
+                .halfBloodNeicesAndNephewsUnderEighteen("2")
+                .halfBloodNeicesAndNephewsOverEighteen(null)
+                .grandparentsDiedUnderEighteen("1")
+                .grandparentsDiedOverEighteen("")
+                .wholeBloodUnclesAndAuntsSurvivedUnderEighteen("1")
+                .wholeBloodUnclesAndAuntsSurvivedOverEighteen(null)
+                .wholeBloodUnclesAndAuntsDiedUnderEighteen("2")
+                .wholeBloodUnclesAndAuntsDiedOverEighteen("0")
+                .wholeBloodCousinsSurvivedUnderEighteen("1")
+                .wholeBloodCousinsSurvivedOverEighteen(null)
+                .halfBloodUnclesAndAuntsSurvivedUnderEighteen("1")
+                .halfBloodUnclesAndAuntsSurvivedOverEighteen("0")
+                .halfBloodUnclesAndAuntsDiedUnderEighteen("1")
+                .halfBloodUnclesAndAuntsDiedOverEighteen(null)
+                .halfBloodCousinsSurvivedUnderEighteen("2")
+                .halfBloodCousinsSurvivedOverEighteen("")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertTrue(response.getChildrenSurvived());
         assertTrue(response.getChildrenDied());
         assertTrue(response.getGrandChildrenSurvived());
@@ -276,43 +273,43 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void setDerivedFamilyIntestacyBooleansNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .childrenUnderEighteenSurvived("0")
-            .childrenOverEighteenSurvived(null)
-            .childrenDiedUnderEighteen("")
-            .childrenDiedUnderEighteen("0")
-            .grandChildrenSurvivedUnderEighteen("0")
-            .grandChildrenSurvivedOverEighteen("0")
-            .parentsExistUnderEighteenSurvived("0")
-            .parentsExistOverEighteenSurvived("0")
-            .wholeBloodSiblingsSurvivedUnderEighteen("0")
-            .wholeBloodSiblingsSurvivedOverEighteen("0")
-            .wholeBloodSiblingsDiedUnderEighteen("0")
-            .wholeBloodSiblingsDiedOverEighteen(null)
-            .wholeBloodNeicesAndNephewsUnderEighteen("0")
-            .wholeBloodNeicesAndNephewsOverEighteen("")
-            .halfBloodSiblingsSurvivedUnderEighteen("0")
-            .halfBloodSiblingsSurvivedOverEighteen(null)
-            .halfBloodSiblingsDiedUnderEighteen("0")
-            .halfBloodSiblingsDiedOverEighteen("0")
-            .halfBloodNeicesAndNephewsUnderEighteen("0")
-            .halfBloodNeicesAndNephewsOverEighteen(null)
-            .grandparentsDiedUnderEighteen("0")
-            .grandparentsDiedOverEighteen("")
-            .wholeBloodUnclesAndAuntsSurvivedUnderEighteen("0")
-            .wholeBloodUnclesAndAuntsSurvivedOverEighteen(null)
-            .wholeBloodUnclesAndAuntsDiedUnderEighteen("0")
-            .wholeBloodUnclesAndAuntsDiedOverEighteen("0")
-            .wholeBloodCousinsSurvivedUnderEighteen("0")
-            .wholeBloodCousinsSurvivedOverEighteen(null)
-            .halfBloodUnclesAndAuntsSurvivedUnderEighteen("0")
-            .halfBloodUnclesAndAuntsSurvivedOverEighteen("0")
-            .halfBloodUnclesAndAuntsDiedUnderEighteen("0")
-            .halfBloodUnclesAndAuntsDiedOverEighteen(null)
-            .halfBloodCousinsSurvivedUnderEighteen("0")
-            .halfBloodCousinsSurvivedOverEighteen("")
-            .build();
+                .childrenUnderEighteenSurvived("0")
+                .childrenOverEighteenSurvived(null)
+                .childrenDiedUnderEighteen("")
+                .childrenDiedUnderEighteen("0")
+                .grandChildrenSurvivedUnderEighteen("0")
+                .grandChildrenSurvivedOverEighteen("0")
+                .parentsExistUnderEighteenSurvived("0")
+                .parentsExistOverEighteenSurvived("0")
+                .wholeBloodSiblingsSurvivedUnderEighteen("0")
+                .wholeBloodSiblingsSurvivedOverEighteen("0")
+                .wholeBloodSiblingsDiedUnderEighteen("0")
+                .wholeBloodSiblingsDiedOverEighteen(null)
+                .wholeBloodNeicesAndNephewsUnderEighteen("0")
+                .wholeBloodNeicesAndNephewsOverEighteen("")
+                .halfBloodSiblingsSurvivedUnderEighteen("0")
+                .halfBloodSiblingsSurvivedOverEighteen(null)
+                .halfBloodSiblingsDiedUnderEighteen("0")
+                .halfBloodSiblingsDiedOverEighteen("0")
+                .halfBloodNeicesAndNephewsUnderEighteen("0")
+                .halfBloodNeicesAndNephewsOverEighteen(null)
+                .grandparentsDiedUnderEighteen("0")
+                .grandparentsDiedOverEighteen("")
+                .wholeBloodUnclesAndAuntsSurvivedUnderEighteen("0")
+                .wholeBloodUnclesAndAuntsSurvivedOverEighteen(null)
+                .wholeBloodUnclesAndAuntsDiedUnderEighteen("0")
+                .wholeBloodUnclesAndAuntsDiedOverEighteen("0")
+                .wholeBloodCousinsSurvivedUnderEighteen("0")
+                .wholeBloodCousinsSurvivedOverEighteen(null)
+                .halfBloodUnclesAndAuntsSurvivedUnderEighteen("0")
+                .halfBloodUnclesAndAuntsSurvivedOverEighteen("0")
+                .halfBloodUnclesAndAuntsDiedUnderEighteen("0")
+                .halfBloodUnclesAndAuntsDiedOverEighteen(null)
+                .halfBloodCousinsSurvivedUnderEighteen("0")
+                .halfBloodCousinsSurvivedOverEighteen("")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertNull(response.getChildrenSurvived());
         assertNull(response.getChildrenOverEighteenSurvivedText());
         assertNull(response.getChildrenUnderEighteenSurvivedText());
@@ -369,13 +366,13 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSetApplyingAsAnAttorneyBooleanTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .attorneyOnBehalfOfName("Fred and Sons")
-            .attorneyOnBehalfOfAddressLine1("12 Grren Park")
-            .attorneyOnBehalfOfAddressTown("London")
-            .attorneyOnBehalfOfAddressPostCode("W1A 0AX")
-            .build();
+                .attorneyOnBehalfOfName("Fred and Sons")
+                .attorneyOnBehalfOfAddressLine1("12 Grren Park")
+                .attorneyOnBehalfOfAddressTown("London")
+                .attorneyOnBehalfOfAddressPostCode("W1A 0AX")
+                .build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertTrue(response.getApplyingAsAnAttorney());
     }
 
@@ -383,7 +380,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     void testSetApplyingAsAnAttorneyBooleanFalse() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertFalse(response.getApplyingAsAnAttorney());
     }
 
@@ -391,16 +388,16 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     void testIhtFormEstateNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtFormEstate());
     }
 
     @Test
     void testIhtEstateGrossValue() {
         ExceptionRecordOCRFields ocrFields =
-            ExceptionRecordOCRFields.builder().ihtEstateGrossValue("1,000,000").build();
+                ExceptionRecordOCRFields.builder().ihtEstateGrossValue("1,000,000").build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(Long.valueOf(100000000), response.getIhtEstateGrossValue());
     }
 
@@ -408,7 +405,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     void testIhtEstateGrossValueNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtEstateGrossValue());
     }
 
@@ -416,7 +413,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     void testIhtEstateNetValue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtEstateNetValue("900,0000").build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(Long.valueOf(900000000), response.getIhtEstateNetValue());
     }
 
@@ -424,16 +421,16 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     void testIhtEstateNetValueNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtEstateNetValue());
     }
 
     @Test
     void testIhtEstateNetQualifyingValue() {
         ExceptionRecordOCRFields ocrFields =
-            ExceptionRecordOCRFields.builder().ihtEstateNetQualifyingValue("800,000").build();
+                ExceptionRecordOCRFields.builder().ihtEstateNetQualifyingValue("800,000").build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(Long.valueOf(80000000), response.getIhtEstateNetQualifyingValue());
     }
 
@@ -441,7 +438,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     void testIhtEstateNetQualifyingValueNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtEstateNetQualifyingValue());
     }
 
@@ -449,16 +446,16 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     void testIhtUnusedAllowanceClaimedTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtUnusedAllowanceClaimed(TRUE).build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertTrue(response.getIhtUnusedAllowanceClaimed());
     }
 
     @Test
     void testIhtUnusedAllowanceClaimedFalse() {
         ExceptionRecordOCRFields ocrFields =
-            ExceptionRecordOCRFields.builder().ihtUnusedAllowanceClaimed(FALSE).build();
+                ExceptionRecordOCRFields.builder().ihtUnusedAllowanceClaimed(FALSE).build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertFalse(response.getIhtUnusedAllowanceClaimed());
     }
 
@@ -466,18 +463,18 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     void testIhtUnusedAllowanceClaimedNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtUnusedAllowanceClaimed());
     }
 
     @Test
     void testSolicitorGetsHandedOffToLegacySiteSetYes() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .solsSolicitorIsApplying("True")
-            .build();
+                .solsSolicitorIsApplying("True")
+                .build();
 
         GrantOfRepresentationData response =
-            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertTrue(response.getCaseHandedOffToLegacySite());
     }
 
@@ -582,7 +579,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
 
         @Bean
         public OCRFieldAddressMapper ocrFieldAddressMapper() {
-            return new OCRFieldAddressMapper(bulkScanConfig);
+            return new OCRFieldAddressMapper();
         }
 
         @Bean
@@ -687,11 +684,6 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         @Bean
         public ExceptionRecordGrantOfRepresentationMapper mainMapper() {
             return Mappers.getMapper(ExceptionRecordGrantOfRepresentationMapper.class);
-        }
-
-        @Bean
-        public BulkScanConfig bulkScanConfig() {
-            return new BulkScanConfig();
         }
     }
 }

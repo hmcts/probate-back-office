@@ -2,10 +2,7 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.AttorneyNamesAndAddress;
@@ -16,8 +13,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.service.ocr.OcrConstants.DEFAULT_POSTCODE_VALUE;
 
 @Component
 class OCRFieldAddressMapperTest {
@@ -36,11 +31,10 @@ class OCRFieldAddressMapperTest {
     private static final String ADDRESS_POST_CODE_ERROR = "NW1";
 
     private static final String ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE =
-        "primaryApplicantAddressPostCode: An invalid postcode has been found 'NW1', please provide a valid postcode";
+            "primaryApplicantAddressPostCode: An invalid postcode has been found 'NW1', "
+                    + "please provide a valid postcode";
 
-    @Mock
-    private static BulkScanConfig bulkScanConfig;
-    private static OCRFieldAddressMapper addressMapper;
+    private OCRFieldAddressMapper addressMapper = new OCRFieldAddressMapper();
 
     private ExceptionRecordOCRFields ocrFields;
     private ExceptionRecordOCRFields ocrFieldsSolicitorsAddress;
@@ -50,100 +44,96 @@ class OCRFieldAddressMapperTest {
 
     private ExceptionRecordOCRFields ocrFieldsPostcodeError;
 
-
     @BeforeEach
     public void setUpClass() throws Exception {
-        MockitoAnnotations.openMocks(this);
-        when(bulkScanConfig.getPostcode()).thenReturn(DEFAULT_POSTCODE_VALUE);
-        addressMapper = new OCRFieldAddressMapper(bulkScanConfig);
         ocrFields = ExceptionRecordOCRFields.builder()
-            .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
-            .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)
-            .attorneyOnBehalfOfAddressLine2(ADDRESS_LINE2)
-            .attorneyOnBehalfOfAddressTown(ADDRESS_POST_TOWN)
-            .attorneyOnBehalfOfAddressCounty(ADDRESS_COUNTY)
-            .attorneyOnBehalfOfAddressPostCode(ADDRESS_POST_CODE)
+                .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
+                .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)
+                .attorneyOnBehalfOfAddressLine2(ADDRESS_LINE2)
+                .attorneyOnBehalfOfAddressTown(ADDRESS_POST_TOWN)
+                .attorneyOnBehalfOfAddressCounty(ADDRESS_COUNTY)
+                .attorneyOnBehalfOfAddressPostCode(ADDRESS_POST_CODE)
 
-            .primaryApplicantAddressLine1(PRIMARY_APPLICANT_ADDRESS_LINE1)
-            .primaryApplicantAddressLine2(ADDRESS_LINE2)
-            .primaryApplicantAddressTown(ADDRESS_POST_TOWN)
-            .primaryApplicantAddressCounty(ADDRESS_COUNTY)
-            .primaryApplicantAddressPostCode(ADDRESS_POST_CODE)
+                .primaryApplicantAddressLine1(PRIMARY_APPLICANT_ADDRESS_LINE1)
+                .primaryApplicantAddressLine2(ADDRESS_LINE2)
+                .primaryApplicantAddressTown(ADDRESS_POST_TOWN)
+                .primaryApplicantAddressCounty(ADDRESS_COUNTY)
+                .primaryApplicantAddressPostCode(ADDRESS_POST_CODE)
 
-            .solsSolicitorAddressLine1(SOLICITOR_ADDRESS_LINE1)
-            .solsSolicitorAddressLine2(ADDRESS_LINE2)
-            .solsSolicitorAddressTown(ADDRESS_POST_TOWN)
-            .solsSolicitorAddressCounty(ADDRESS_COUNTY)
-            .solsSolicitorAddressPostCode(ADDRESS_POST_CODE)
+                .solsSolicitorAddressLine1(SOLICITOR_ADDRESS_LINE1)
+                .solsSolicitorAddressLine2(ADDRESS_LINE2)
+                .solsSolicitorAddressTown(ADDRESS_POST_TOWN)
+                .solsSolicitorAddressCounty(ADDRESS_COUNTY)
+                .solsSolicitorAddressPostCode(ADDRESS_POST_CODE)
 
-            .deceasedAddressLine1(DECEASED_ADDRESS_LINE1)
-            .deceasedAddressLine2(ADDRESS_LINE2)
-            .deceasedAddressTown(ADDRESS_POST_TOWN)
-            .deceasedAddressCounty(ADDRESS_COUNTY)
-            .deceasedAddressPostCode(ADDRESS_POST_CODE)
-            .build();
+                .deceasedAddressLine1(DECEASED_ADDRESS_LINE1)
+                .deceasedAddressLine2(ADDRESS_LINE2)
+                .deceasedAddressTown(ADDRESS_POST_TOWN)
+                .deceasedAddressCounty(ADDRESS_COUNTY)
+                .deceasedAddressPostCode(ADDRESS_POST_CODE)
+                .build();
 
         ocrFieldsCaveatAddress = ExceptionRecordOCRFields.builder()
-            .caveatorAddressLine1(CAVEAT_ADDRESS_LINE1)
-            .caveatorAddressLine2(ADDRESS_LINE2)
-            .caveatorAddressTown(ADDRESS_POST_TOWN)
-            .caveatorAddressCounty(ADDRESS_COUNTY)
-            .caveatorAddressPostCode(ADDRESS_POST_CODE)
-            .build();
+                .caveatorAddressLine1(CAVEAT_ADDRESS_LINE1)
+                .caveatorAddressLine2(ADDRESS_LINE2)
+                .caveatorAddressTown(ADDRESS_POST_TOWN)
+                .caveatorAddressCounty(ADDRESS_COUNTY)
+                .caveatorAddressPostCode(ADDRESS_POST_CODE)
+                .build();
 
 
         ocrFieldsSolicitorsAddress = ExceptionRecordOCRFields.builder()
-            .solsSolicitorAddressLine1(SOLICITORS_ADDRESS_LINE1)
-            .solsSolicitorAddressLine2(ADDRESS_LINE2)
-            .solsSolicitorAddressTown(ADDRESS_POST_TOWN)
-            .solsSolicitorAddressCounty(ADDRESS_COUNTY)
-            .solsSolicitorAddressPostCode(ADDRESS_POST_CODE)
-            .build();
+                .solsSolicitorAddressLine1(SOLICITORS_ADDRESS_LINE1)
+                .solsSolicitorAddressLine2(ADDRESS_LINE2)
+                .solsSolicitorAddressTown(ADDRESS_POST_TOWN)
+                .solsSolicitorAddressCounty(ADDRESS_COUNTY)
+                .solsSolicitorAddressPostCode(ADDRESS_POST_CODE)
+                .build();
 
         ocrFieldsPostcodeError = ExceptionRecordOCRFields.builder()
-            .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
-            .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)
-            .attorneyOnBehalfOfAddressLine2(ADDRESS_LINE2)
-            .attorneyOnBehalfOfAddressTown(ADDRESS_POST_TOWN)
-            .attorneyOnBehalfOfAddressCounty(ADDRESS_COUNTY)
-            .attorneyOnBehalfOfAddressPostCode(ADDRESS_POST_CODE_ERROR)
+                .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
+                .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)
+                .attorneyOnBehalfOfAddressLine2(ADDRESS_LINE2)
+                .attorneyOnBehalfOfAddressTown(ADDRESS_POST_TOWN)
+                .attorneyOnBehalfOfAddressCounty(ADDRESS_COUNTY)
+                .attorneyOnBehalfOfAddressPostCode(ADDRESS_POST_CODE_ERROR)
 
-            .primaryApplicantAddressLine1(PRIMARY_APPLICANT_ADDRESS_LINE1)
-            .primaryApplicantAddressLine2(ADDRESS_LINE2)
-            .primaryApplicantAddressTown(ADDRESS_POST_TOWN)
-            .primaryApplicantAddressCounty(ADDRESS_COUNTY)
-            .primaryApplicantAddressPostCode(ADDRESS_POST_CODE_ERROR)
+                .primaryApplicantAddressLine1(PRIMARY_APPLICANT_ADDRESS_LINE1)
+                .primaryApplicantAddressLine2(ADDRESS_LINE2)
+                .primaryApplicantAddressTown(ADDRESS_POST_TOWN)
+                .primaryApplicantAddressCounty(ADDRESS_COUNTY)
+                .primaryApplicantAddressPostCode(ADDRESS_POST_CODE_ERROR)
 
-            .caveatorAddressLine1(CAVEAT_ADDRESS_LINE1)
-            .caveatorAddressLine2(ADDRESS_LINE2)
-            .caveatorAddressTown(ADDRESS_POST_TOWN)
-            .caveatorAddressCounty(ADDRESS_COUNTY)
-            .caveatorAddressPostCode(ADDRESS_POST_CODE_ERROR)
+                .caveatorAddressLine1(CAVEAT_ADDRESS_LINE1)
+                .caveatorAddressLine2(ADDRESS_LINE2)
+                .caveatorAddressTown(ADDRESS_POST_TOWN)
+                .caveatorAddressCounty(ADDRESS_COUNTY)
+                .caveatorAddressPostCode(ADDRESS_POST_CODE_ERROR)
 
-            .solsSolicitorAddressLine1(SOLICITOR_ADDRESS_LINE1)
-            .solsSolicitorAddressLine2(ADDRESS_LINE2)
-            .solsSolicitorAddressTown(ADDRESS_POST_TOWN)
-            .solsSolicitorAddressCounty(ADDRESS_COUNTY)
-            .solsSolicitorAddressPostCode(ADDRESS_POST_CODE_ERROR)
+                .solsSolicitorAddressLine1(SOLICITOR_ADDRESS_LINE1)
+                .solsSolicitorAddressLine2(ADDRESS_LINE2)
+                .solsSolicitorAddressTown(ADDRESS_POST_TOWN)
+                .solsSolicitorAddressCounty(ADDRESS_COUNTY)
+                .solsSolicitorAddressPostCode(ADDRESS_POST_CODE_ERROR)
 
-            .deceasedAddressLine1(DECEASED_ADDRESS_LINE1)
-            .deceasedAddressLine2(ADDRESS_LINE2)
-            .deceasedAddressTown(ADDRESS_POST_TOWN)
-            .deceasedAddressCounty(ADDRESS_COUNTY)
-            .deceasedAddressPostCode(ADDRESS_POST_CODE_ERROR)
-            .build();
+                .deceasedAddressLine1(DECEASED_ADDRESS_LINE1)
+                .deceasedAddressLine2(ADDRESS_LINE2)
+                .deceasedAddressTown(ADDRESS_POST_TOWN)
+                .deceasedAddressCounty(ADDRESS_COUNTY)
+                .deceasedAddressPostCode(ADDRESS_POST_CODE_ERROR)
+                .build();
 
         ocrFieldsAttorneyMissingAddress = ExceptionRecordOCRFields.builder()
-            .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
-            .build();
+                .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
+                .build();
 
         ocrFieldsAttorneyMissingName = ExceptionRecordOCRFields.builder()
-            .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)
-            .attorneyOnBehalfOfAddressLine2(ADDRESS_LINE2)
-            .attorneyOnBehalfOfAddressTown(ADDRESS_POST_TOWN)
-            .attorneyOnBehalfOfAddressCounty(ADDRESS_COUNTY)
-            .attorneyOnBehalfOfAddressPostCode(ADDRESS_POST_CODE)
-            .build();
+                .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)
+                .attorneyOnBehalfOfAddressLine2(ADDRESS_LINE2)
+                .attorneyOnBehalfOfAddressTown(ADDRESS_POST_TOWN)
+                .attorneyOnBehalfOfAddressCounty(ADDRESS_COUNTY)
+                .attorneyOnBehalfOfAddressPostCode(ADDRESS_POST_CODE)
+                .build();
     }
 
     @Test
@@ -208,34 +198,50 @@ class OCRFieldAddressMapperTest {
     }
 
     @Test
-    void testPrimaryApplicantAddressPostcodeErrorWithDefault() {
-        Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
-        assertEquals(DEFAULT_POSTCODE_VALUE,response.getPostCode());
+    void testPrimaryApplicantAddressPostcodeError() {
+        assertThrows(OCRMappingException.class, () -> {
+            Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
+        });
     }
 
     @Test
-    void testCaveatAddressPostcodeErrorWithDefault() {
-        Address response = addressMapper.toCaveatorAddress(ocrFieldsPostcodeError);
-        assertEquals(DEFAULT_POSTCODE_VALUE,response.getPostCode());
+    void testCaveatAddressPostcodeError() {
+        assertThrows(OCRMappingException.class, () -> {
+            Address response = addressMapper.toCaveatorAddress(ocrFieldsPostcodeError);
+        });
     }
 
     @Test
-    void testDeceasedAddressPostcodeErrorWithDefault() {
-        Address response = addressMapper.toDeceasedAddress(ocrFieldsPostcodeError);
-        assertEquals(DEFAULT_POSTCODE_VALUE,response.getPostCode());
+    void testDeceasedAddressPostcodeError() {
+        assertThrows(OCRMappingException.class, () -> {
+            Address response = addressMapper.toDeceasedAddress(ocrFieldsPostcodeError);
+        });
     }
 
     @Test
-    void testSolicitorAddressPostcodeErrorWithDefault() {
-        Address response = addressMapper.toSolicitorAddress(ocrFieldsPostcodeError);
-        assertEquals(DEFAULT_POSTCODE_VALUE,response.getPostCode());
+    void testSolicitorAddressPostcodeError() {
+        assertThrows(OCRMappingException.class, () -> {
+            Address response = addressMapper.toSolicitorAddress(ocrFieldsPostcodeError);
+        });
     }
 
     @Test
-    void testAttorneyNamesAndAddressPostcodeErrorWithDefault() {
-        List<CollectionMember<AttorneyNamesAndAddress>> response =
-                addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsPostcodeError);
-        assertEquals(DEFAULT_POSTCODE_VALUE, response.get(0).getValue().getAddress().getPostCode());
+    void testAttorneyNamesAndAddressPostcodeError() {
+        assertThrows(OCRMappingException.class, () -> {
+            List<CollectionMember<AttorneyNamesAndAddress>> response =
+                    addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsPostcodeError);
+        });
+    }
+
+    @Test
+    void testPrimaryApplicantAddressPostcodeCorrectErrorMessage() {
+        String errorMessage = null;
+        try {
+            Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
+        } catch (OCRMappingException ocrme) {
+            errorMessage = ocrme.getMessage();
+        }
+        assertEquals(ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE, errorMessage);
     }
 
     @Test
