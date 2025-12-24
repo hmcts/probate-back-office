@@ -1,7 +1,17 @@
 {
   "query": {
     "bool": {
-      "must_not": { "match": { "state": "Dormant" }},
+      "must_not": [
+        { "match": { "state": "Dormant" }},
+        {
+          "terms": {
+            "data.boCaseStopReasonList.value.caseStopReason.keyword": [
+              "CaveatMatch",
+              "Permanent Caveat"
+            ]
+          }
+        }
+      ],
       "filter": [
         {
           "range": {
