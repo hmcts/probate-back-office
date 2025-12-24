@@ -83,6 +83,7 @@ public class CaveatController {
     @PostMapping(path = "/setCaseSubmissionDate")
     public ResponseEntity<CaveatCallbackResponse> setCaseSubmissionDateForSolicitorCases(
             @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+        caveatNotificationService.setPaymentTaken(caveatCallbackRequest);
         CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService
                 .solsCaveatRaise(caveatCallbackRequest);
         return ResponseEntity.ok(caveatCallbackResponse);

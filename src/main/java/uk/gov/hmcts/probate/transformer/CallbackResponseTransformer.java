@@ -219,7 +219,8 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
                 callbackRequest.getEventId(), Optional.empty(),true)
                 .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
-                .applicationSubmittedDate(LocalDate.now().format(dateTimeFormatter));
+                .applicationSubmittedDate(LocalDate.now().format(dateTimeFormatter))
+                .paymentTaken(YES);
         if (sentEmail != null) {
             documentTransformer.addDocument(callbackRequest, sentEmail, false);
         }

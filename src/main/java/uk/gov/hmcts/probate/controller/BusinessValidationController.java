@@ -769,6 +769,7 @@ public class BusinessValidationController {
         }
         Document coversheet = pdfManagementService
                 .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+        caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.setCaseSubmissionDate(sentEmail, coversheet,
                 callbackRequest));
     }
