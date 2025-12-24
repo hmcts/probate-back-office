@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 public class CaseStopReasonHelper {
+    private CaseStopReasonHelper() {
+    }
+
     private static final String CASE_STOP_REASON_LIST = "boCaseStopReasonList";
     private static final String STOP_REASON_FIELD_NAME = "caseStopReason";
     private static final List<String> CAVEAT_STOP_REASONS = List.of("CaveatMatch", "Permanent Caveat");
