@@ -81,6 +81,10 @@ public class CaveatCallbackResponseTransformer {
         if (null == caveatData.getPaperForm()) {
             responseCaveatDataBuilder.paperForm(YES);
         }
+
+        if (null == caveatData.getApplicantOrganisationPolicy() && SOLICITOR.equals(caveatData.getApplicationType())) {
+            responseCaveatDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
+        }
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
@@ -219,9 +223,21 @@ public class CaveatCallbackResponseTransformer {
 
     public CaveatCallbackResponse transformResponseWithNoChanges(CaveatCallbackRequest caveatCallbackRequest) {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
-            getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+                getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CaveatCallbackResponse transformResponseWithOrgPolicy(CaveatCallbackRequest caveatCallbackRequest) {
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaveatDataBuilder =
+            getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+
+        final CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
+        if (null == caveatData.getApplicantOrganisationPolicy() && SOLICITOR.equals(caveatData.getApplicationType())) {
+            responseCaveatDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
+        }
+
+        return transformResponse(responseCaveatDataBuilder.build());
     }
 
     public CaveatCallbackResponse transformResponseWithServiceRequest(CaveatCallbackRequest caveatCallbackRequest,
@@ -442,5 +458,16 @@ public class CaveatCallbackResponseTransformer {
             return null;
         }
         return collectionMembers;
+    }
+
+    private OrganisationPolicy buildEmptySolicitorOrganisationPolicy() {
+        return OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
     }
 }
