@@ -393,11 +393,11 @@ class CaveatCallbackResponseTransformerTest {
                 .applicationType(SOLICITOR);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         List<Document> documents = new ArrayList<>();
-        Document document = Document.builder()
+        Document doc = Document.builder()
                 .documentLink(documentLinkMock)
                 .documentType(DocumentType.CAVEAT_RAISED)
                 .build();
-        documents.addFirst(document);
+        documents.addFirst(doc);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
                 underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
@@ -423,11 +423,11 @@ class CaveatCallbackResponseTransformerTest {
                 .applicantOrganisationPolicy(orgPolicy);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         List<Document> documents = new ArrayList<>();
-        Document document = Document.builder()
+        Document doc = Document.builder()
                 .documentLink(documentLinkMock)
                 .documentType(DocumentType.CAVEAT_RAISED)
                 .build();
-        documents.addFirst(document);
+        documents.addFirst(doc);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
                 underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
@@ -444,11 +444,11 @@ class CaveatCallbackResponseTransformerTest {
                 .applicationType(ApplicationType.PERSONAL);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         List<Document> documents = new ArrayList<>();
-        Document document = Document.builder()
+        Document doc = Document.builder()
                 .documentLink(documentLinkMock)
                 .documentType(DocumentType.CAVEAT_RAISED)
                 .build();
-        documents.addFirst(document);
+        documents.addFirst(doc);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
                 underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);

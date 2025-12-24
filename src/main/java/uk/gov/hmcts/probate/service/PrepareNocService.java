@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -47,6 +48,7 @@ public class PrepareNocService {
     private final SecurityUtils securityUtils;
     private final ObjectMapper objectMapper;
     private final OrganisationApi organisationApi;
+    private static final String CHANNEL_CHOICE = "channelChoice";
 
     public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -184,13 +186,13 @@ public class PrepareNocService {
     private String determineChannelChoice(Map<String, Object> caseData, String caseTypeId) {
         String channelChoice = null;
         if (CaseType.GRANT_OF_REPRESENTATION.getCode().equals(caseTypeId)) {
-            channelChoice = (String) caseData.get("channelChoice");
+            channelChoice = (String) caseData.get(CHANNEL_CHOICE);
         } else if (CaseType.CAVEAT.getCode().equals(caseTypeId)) {
             String paperForm = (String) caseData.get("paperForm");
             if (YES.equalsIgnoreCase(paperForm)) {
-                channelChoice = "BulkScan";
+                channelChoice = CHANNEL_CHOICE_BULKSCAN;
             } else {
-                channelChoice = "Digital";
+                channelChoice = CHANNEL_CHOICE_DIGITAL;
             }
         }
         return channelChoice;
@@ -203,8 +205,8 @@ public class PrepareNocService {
         RemovedRepresentative removed;
         if (representatives.isEmpty() && (
                 (CaseType.GRANT_OF_REPRESENTATION.getCode().equals(caseTypeId)
-                        && (CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase((String) caseData.get("channelChoice"))
-                        || CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase((String) caseData.get("channelChoice"))))
+                        && (CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase((String) caseData.get(CHANNEL_CHOICE))
+                        || CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase((String) caseData.get(CHANNEL_CHOICE))))
                         || (CaseType.CAVEAT.getCode().equals(caseTypeId)
                         && !NO.equalsIgnoreCase((String) caseData.get("paperForm"))))) {
             return null;
