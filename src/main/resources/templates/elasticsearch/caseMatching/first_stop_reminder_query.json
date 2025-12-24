@@ -33,6 +33,14 @@
               "No"
             ]
           }
+        },
+        {
+          "terms": {
+            "data.boCaseStopReasonList.value.caseStopReason.keyword": [
+              "CaveatMatch",
+              "Permanent Caveat"
+            ]
+          }
         }
       ]
     }

@@ -87,7 +87,8 @@ public class DormantReminderNotification implements NotificationStrategy {
                 && cd.getData() != null
                 && referenceDate != null
                 && STATE_DORMANT.equals(cd.getState())
-                && isValidLastMofifiedDateForDormant(cd);
+                && isValidLastMofifiedDateForDormant(cd)
+                && !CaseStopReasonHelper.isCaveatStop(cd);
 
     }
 
