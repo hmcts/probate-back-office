@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
@@ -266,7 +267,8 @@ public class TaskStateRenderer {
 
     private String renderPaymentLinkOrText(TaskState currTaskState, TaskListState currState, String caseId,
                                            String willType) {
-        String linkUrlTemplate = getLinkUrlTemplate(currState, willType);
+        String linkUrlTemplate = getLinkUrlTemplate(currState, willType)
+                .replaceFirst("<CASE_ID>", GRANT_OF_REPRESENTATION.getCode());
         return linkUrlTemplate != null
                 && (currState == TaskListState.TL_STATE_MAKE_PAYMENT
                     || currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED)
@@ -277,7 +279,8 @@ public class TaskStateRenderer {
 
     private String renderPaymentLinkOrTextWelsh(TaskState currTaskState, TaskListState currState, String caseId,
                                            String willType) {
-        String linkUrlTemplate = getLinkUrlTemplate(currState, willType);
+        String linkUrlTemplate = getLinkUrlTemplate(currState, willType)
+                .replaceFirst("<CASE_ID>", GRANT_OF_REPRESENTATION.getCode());
         return linkUrlTemplate != null
                 && (currState == TaskListState.TL_STATE_MAKE_PAYMENT
                 || currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED)
@@ -430,7 +433,8 @@ public class TaskStateRenderer {
                                     TaskState currTaskState, String linkText, String caseId,
                                     String willType, CaseDetails details) {
 
-        String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
+        String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType)
+                .replaceFirst("<CASE_ID>", GRANT_OF_REPRESENTATION.getCode());
         String coversheetUrl = details.getData().getSolsCoversheetDocument() == null ? "#" : details
             .getData().getSolsCoversheetDocument().getDocumentBinaryUrl();
 
