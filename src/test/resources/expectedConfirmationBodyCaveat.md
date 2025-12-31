@@ -16,7 +16,7 @@ We’ll then send you an email to confirm that we've received your application.
 Mae eich cais wedi'i gyflwyno ond ni ellir ei brosesu nes bydd taliad wedi'i wneud
 =================
 **Cyfeirnod y cais:** SOL_REF_X12345
-
+    
 **Cyflwynwyd ar:** 01/01/2018
 
 Sut i dalu
