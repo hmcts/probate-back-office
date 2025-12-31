@@ -99,7 +99,6 @@ class AutomatedNotificationPersonalisationServiceTest {
 
     @Test
     void getDisposalReminderPersonalisationShouldDefaultTextIfDeceasedNameOrDodIsNull() {
-        LocalDate dod = LocalDate.of(2025,5,1);
         Map<String, Object> data = Map.of(
                 "solsSOTName", "Solicitor Smith",
                 "caseType", "foo"
