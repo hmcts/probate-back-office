@@ -478,13 +478,13 @@ public class NotificationService {
         }
 
         log.info("templateId: {}", templateId);
-        Map<String, String> personalisation =
+        Map<String, Object> personalisation =
                 automatedNotificationPersonalisationService
                     .getDisposalReminderPersonalisation(caseDetails, applicationType);
         log.info("start sendEmail");
         SendEmailResponse response =
                 notificationClientService.sendEmail(templateId, emailAddress,
-                        personalisation, caseDetails.getId().toString());
+                        personalisation, String.valueOf(caseDetails.getId()));
         log.info("Disposal Reminder email reference response: {}", response.getReference());
     }
 

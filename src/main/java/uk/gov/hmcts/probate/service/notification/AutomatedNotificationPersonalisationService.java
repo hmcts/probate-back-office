@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,13 +31,16 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 public class AutomatedNotificationPersonalisationService {
 
     private static final String PERSONALISATION_DATE_CREATED = "date_created";
+    private static final String PERSONALISATION_DATE_CREATED_WELSH = "welsh_date_created";
     private static final String PERSONALISATION_CASE_ID = "case_ref";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
     private static final String PERSONALISATION_LINK_TO_CASE = "link_to_case";
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
+    private static final String PERSONALISATION_DECEASED_NAME_WELSH = "welsh_deceased_name";
     private static final String PERSONALISATION_RESPOND_DATE = "respond_date";
+    private static final String PERSONALISATION_RESPOND_DATE_WELSH = "welsh_respond_date";
     private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
     private static final String PERSONALISATION_CASE_STOP_REASONS = "stop-reasons";
     private static final String PERSONALISATION_CASE_STOP_REASONS_WELSH = "stop-reasons-welsh";
@@ -50,6 +54,12 @@ public class AutomatedNotificationPersonalisationService {
     private static final String CASE_TYPE_STRING = "<CASE_TYPE>";
     private static final String SOLICITOR_CASE_URL = "/cases/case-details/<CASE_ID>";
     private static final String PERSONAL_CASE_URL = "/get-case/<CASE_ID>?probateType=<CASE_TYPE>";
+    private static final String NAME_NOT_ENTERED = "Name not entered yet";
+    private static final String NAME_NOT_ENTERED_WELSH = "Enw heb ei nodi eto";
+    private static final String DOD_NOT_ENTERED = "Date not entered yet";
+    private static final String DOD_NOT_ENTERED_WELSH = "Dyddiad heb ei nodi eto";
+    private static final String DECEASED_DATE_OF_DEATH_FIELD = "deceasedDateOfDeath";
+    private static final int RESPOND_BY_DAYS = 14;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMMM yyyy");
     private static final DateTimeFormatter DOD_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
@@ -75,46 +85,49 @@ public class AutomatedNotificationPersonalisationService {
         this.urlPrefixSolicitorCase = urlPrefixSolicitorCase;
     }
 
-    public Map<String, String> getDisposalReminderPersonalisation(CaseDetails caseDetails,
+    public Map<String, Object> getDisposalReminderPersonalisation(CaseDetails caseDetails,
                                                                   ApplicationType applicationType) {
-        log.info("getDisposalReminderPersonalisation");
-        HashMap<String, String> personalisation = new HashMap<>();
+        log.info("Building DisposalReminder personalisation for caseId={}, applicationType={}",
+                caseDetails.getId(), applicationType);
+        HashMap<String, Object> personalisation = new HashMap<>();
         Map<String, Object> data = caseDetails.getData();
-        personalisation.put(PERSONALISATION_DATE_CREATED, DATE_FORMAT.format(caseDetails.getCreatedDate()));
-        personalisation.put(PERSONALISATION_CASE_ID, caseDetails.getId().toString());
+
+        addCreatedDates(personalisation, caseDetails.getCreatedDate());
+        addDeceasedDetails(personalisation, data);
+
+        personalisation.put(PERSONALISATION_CASE_ID, String.valueOf(caseDetails.getId()));
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(data, applicationType));
-        personalisation.put(PERSONALISATION_LINK_TO_CASE, getHyperLink(caseDetails.getId().toString(),
+        personalisation.put(PERSONALISATION_LINK_TO_CASE, getHyperLink(String.valueOf(caseDetails.getId()),
                 applicationType, getCaseType(data)));
         return personalisation;
     }
 
     public Map<String, Object> getPersonalisation(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
                                                   ApplicationType applicationType) {
-        log.info("AutomatedNotificationPersonalisationService getPersonalisation");
+        log.info("Building personalisation for caseId={}, applicationType={}", caseDetails.getId(), applicationType);
         Map<String, Object> caseData = caseDetails.getData();
         HashMap<String, Object> personalisation = new HashMap<>();
 
+        addCreatedDates(personalisation, caseDetails.getCreatedDate());
+        addDeceasedDetails(personalisation, caseData);
+
         personalisation.put(TODAY, LocalDate.now().format(DATE_FORMAT));
         personalisation.put(TODAY_WELSH, localDateToWelshStringConverter.convert(LocalDate.now()));
-        personalisation.put(PERSONALISATION_DATE_CREATED, DATE_FORMAT.format(caseDetails.getCreatedDate()));
-        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
-        personalisation.put(PERSONALISATION_RESPOND_DATE, DATE_FORMAT.format(LocalDate.now().plusDays(14)));
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, String.valueOf(caseDetails.getId()));
+        LocalDate respondBy = LocalDate.now().plusDays(RESPOND_BY_DAYS);
+        personalisation.put(PERSONALISATION_RESPOND_DATE, respondBy.format(DATE_FORMAT));
+        personalisation.put(PERSONALISATION_RESPOND_DATE_WELSH, localDateToWelshStringConverter.convert(respondBy));
         personalisation.put(PERSONALISATION_APPLICANT_NAME, getPrimaryApplicantName(caseData));
-        personalisation.put(PERSONALISATION_DECEASED_NAME, getDeceasedFullName(caseData));
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(caseData, applicationType));
         List<CollectionMember<StopReason>> stopReasonList = getStopReasonList(caseDetails.getData());
         personalisation.put(PERSONALISATION_CASE_STOP_REASONS, getStopReason(stopReasonList, false));
         personalisation.put(PERSONALISATION_CASE_STOP_REASONS_WELSH, getStopReason(stopReasonList, true));
         personalisation.put(PERSONALISATION_DISPLAY_SINGLE_STOP_REASON, stopReasonList.size() == 1 ? YES : NO);
         personalisation.put(PERSONALISATION_DISPLAY_MULTIPLE_STOP_REASONS, stopReasonList.size() > 1 ? YES : NO);
-        LocalDate dateOfDeath = getDateValue(caseData, "deceasedDateOfDeath");
-        personalisation.put(PERSONALISATION_DECEASED_DOD, dateFormatterService.formatDate(dateOfDeath));
-        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
-                localDateToWelshStringConverter.convert(dateOfDeath));
-        personalisation.put(PERSONALISATION_CASE_ID, caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_CASE_ID, String.valueOf(caseDetails.getId()));
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
                 getStringValue(caseData, PERSONALISATION_CASE_STOP_DETAILS_DEC));
-        personalisation.put(PERSONALISATION_LINK_TO_CASE, getHyperLink(caseDetails.getId().toString(),
+        personalisation.put(PERSONALISATION_LINK_TO_CASE, getHyperLink(String.valueOf(caseDetails.getId()),
                 applicationType, getCaseType(caseData)));
         return personalisation;
     }
@@ -257,5 +270,25 @@ public class AutomatedNotificationPersonalisationService {
             }
         }
         return s;
+    }
+
+    private void addDeceasedDetails(Map<String, Object> target, Map<String, Object> caseData) {
+        final String deceasedName = StringUtils.trimToEmpty(getDeceasedFullName(caseData));
+        target.put(PERSONALISATION_DECEASED_NAME,
+                deceasedName.isEmpty() ? NAME_NOT_ENTERED : deceasedName);
+        target.put(PERSONALISATION_DECEASED_NAME_WELSH,
+                deceasedName.isEmpty() ? NAME_NOT_ENTERED_WELSH : deceasedName);
+
+        final LocalDate dateOfDeath = getDateValue(caseData, DECEASED_DATE_OF_DEATH_FIELD);
+        target.put(PERSONALISATION_DECEASED_DOD,
+                dateOfDeath != null ? dateFormatterService.formatDate(dateOfDeath) : DOD_NOT_ENTERED);
+        target.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
+                dateOfDeath != null ? localDateToWelshStringConverter.convert(dateOfDeath) : DOD_NOT_ENTERED_WELSH);
+    }
+
+    private void addCreatedDates(Map<String, Object> target, LocalDateTime createdDate) {
+        target.put(PERSONALISATION_DATE_CREATED, DATE_FORMAT.format(createdDate));
+        target.put(PERSONALISATION_DATE_CREATED_WELSH,
+                localDateToWelshStringConverter.convert(createdDate.toLocalDate()));
     }
 }
