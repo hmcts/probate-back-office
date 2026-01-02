@@ -805,3 +805,16 @@ https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client
 7. monitor your definition store pod to ensure the upload has completed - eg. probate-back-office-pr-XXXX-ccd-definition-store-yyyyyyy - look for a line failing the TranslationService at the end... this means its passed upload!
 8. Check your XUI for any new gs XLSX usage - https://xui-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
 9. unset PROBATE_GS_ENABLED if needed or set to false
+
+# Build state diagram
+To generate the state diagram for different case types and roles, you can update the params (caseTypesToUse/filteredByRoleName) in BuildStateDiagram.java and run
+`./gradlew buildStateDiagram` . It will create a file named `CCD_Probate_<CaseType>_<RoleName>_state.txt`.
+
+The generated file can be visualized using [plantuml4idea](https://plugins.jetbrains.com/plugin/7017-plantuml4idea) by opening the file with the IntelliJ plugin.
+
+You may need to install graphviz on your machine for the first time.
+```bash
+brew install graphviz
+```
+
+Open settings in plantuml plugin and set the graphviz dot executable path to `/opt/homebrew/bin/dot`
