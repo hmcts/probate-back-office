@@ -85,8 +85,8 @@
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
-<p class="govuk-body-s"><a href="cases/PROBATE/GrantOfRepresentation/1528365719153338#Service%20Request" class="govuk-link">Make payment</a></p>
-<p class="govuk-body-s"><a href="cases/PROBATE/GrantOfRepresentation/1528365719153338#Service%20Request" class="govuk-link">Gwneud taliad</a></p>
+<p class="govuk-body-s"><a href="cases/case-details/1528365719153338#Service%20Request" class="govuk-link">Make payment</a></p>
+<p class="govuk-body-s"><a href="cases/case-details/1528365719153338#Service%20Request" class="govuk-link">Gwneud taliad</a></p>
 <p class="govuk-body-s">
 <font color="#505a5f">
 </p>
