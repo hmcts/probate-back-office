@@ -122,7 +122,7 @@ def checkForEnableCWNightlyLabel(branch_name) {
 }
 
 def checkForEnableWALabel(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa")
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa")
 }
 
 def archiveCoreCaseDataDefinitions(env) {
@@ -334,7 +334,7 @@ withPipeline("java", product, component) {
   }
 
   onPR() {
-      env.ENV='preview'
+      env.ENVIRONMENT="preview"
       env.ENABLE_WA = false
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
     if (checkForEnableWALabel(env.BRANCH_NAME)) {
