@@ -334,7 +334,7 @@ withPipeline("java", product, component) {
   }
 
   onPR() {
-      env.ENVIRONMENT="preview"
+      env.ENV="preview"
       env.ENABLE_WA = false
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
     if (checkForEnableWALabel(env.BRANCH_NAME)) {
