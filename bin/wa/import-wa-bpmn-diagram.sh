@@ -9,7 +9,7 @@ if [[ "${ENVIRONMENT}" == 'prod' ]]; then
   s2sSecret=${S2S_SECRET_PROD}
 fi
 
-serviceToken=$($(realpath $workspace)/utils/idam-lease-service-token.sh sptribs_case_api \
+serviceToken=$($(realpath $workspace)/utils/idam-lease-service-token.sh probate_backend \
   $(docker run --rm toolbelt/oathtool --totp -b ${s2sSecret}))
 
 filepath="$(realpath $workspace)/resources"
