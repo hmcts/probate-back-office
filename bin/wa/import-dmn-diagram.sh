@@ -8,7 +8,7 @@ product=${4}
 
 s2sSecret=${S2S_SECRET:-AABBCCDDEEFFGGHH}
 
-if [[ "${ENVIRONMENT}" == 'prod' ]]; then
+if [[ "${ENV}" == 'prod' ]]; then
   s2sSecret=${S2S_SECRET_PROD}
 fi
 
