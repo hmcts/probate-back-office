@@ -112,6 +112,7 @@ env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 // Configure branches to sync with master branch
 // diable sync branch to demo and ithc
 def branchesToSync = ['perftest']
+def githubApi = new GithubAPI(this) as Object
 
 def checkForEnableNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
