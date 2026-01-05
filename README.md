@@ -760,4 +760,3 @@ https://github.com/hmcts/probate-back-office/tree/DTSPB-1172-investigate-sol-cas
 https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client_id=ccd_admin&redirect_uri=https%3A%2F%2Fccd-admin-web.demo.platform.hmcts.net%2Foauth2redirect
 
 
-

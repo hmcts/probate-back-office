@@ -7,6 +7,7 @@ public class EmailTemplates {
     private String applicationReceived;
     private String applicationReceivedNoDocs;
     private String applicationReceivedPaperFormCaseworker;
+    private String stopResponseReceived;
     private String documentReceived;
     private String caseStopped;
     private String caseStoppedCaveat;
@@ -34,4 +35,17 @@ public class EmailTemplates {
     private String disposalReminder;
     private String caveatDisposalReminder;
     private String draftCasePaymentSuccess;
+    private String firstStopReminder;
+    private String firstStopReminderForHub;
+    private String secondStopReminder;
+    private String secondStopReminderForHub;
+    private String hseReminder;
+    private String hseReminderForHub;
+    private String dormantWarning;
+    private String unsubmittedApplication;
+    private String declarationNotSignedPrimaryApplicant;
+    private String declarationNotSignedExecutors;
+    private String postGrantIssuedNotification;
+    private String registrarEscalationNotification;
+    private String registrarEscalationNotificationFailed;
 }

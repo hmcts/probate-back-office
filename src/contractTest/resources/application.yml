@@ -52,7 +52,7 @@ docmosis:
     health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis.aat.platform.hmcts.net}
   templates:
     caveatRaised:
-      templateName: FL-PRB-GNO-ENG-00011.doc
+      templateName: FL-PRB-GNO-ENG-caveat-confirmation-letter-v00001.doc
     grantRaised:
       templateName: FL-PRB-GNO-ENG-00235.doc
     caveatCoversheet:
@@ -66,21 +66,21 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01295.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01295.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01295.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     adColligendaBonaGrantReissueDraft:
-        templateName: FL-PRB-GRP-ENG-01295.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01295.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01295.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01295.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     adColligendaBonaGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01295.doc
+      templateName: FL-PRB-GRP-ENG-01296.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
@@ -92,21 +92,21 @@ docmosis:
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00236.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00236.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00236.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdColligendaBonaGrant:
-      templateName: FL-PRB-GRP-WEL-00236.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00236.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00236.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00236.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
     welshAdColligendaBonaGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00236.doc
+      templateName: FL-PRB-GRP-WEL-00237.doc
 
 fee.api:
   url: http://localhost:4411
@@ -187,9 +187,6 @@ spring.jackson.serialization.write_dates_as_timestamps: false
 evidence.management.host: http://localhost:5006
 evidence.management.upload.file.url: /documents
 
-http.connect.timeout: 60000
-http.connect.request.timeout: 60000
-
 idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 logging:
@@ -215,6 +212,7 @@ notifications:
           applicationReceived: "8d478d0f-a871-418b-ba7a-682bfa540676"
           applicationReceivedNoDocs: "2d4cf042-88e5-4bc4-afbe-e640522a172c"
           applicationReceivedPaperFormCaseworker: "7210fd5a-1a1a-4682-9fbd-4b641e464c45"
+          stopResponseReceived: "18802a17-fe7e-41fc-b4e2-c8ac12139618"
           documentReceived: "60036c70-5022-4625-89c9-a37c91554bea"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "d5084257-f475-415a-b7d0-2427b5c580b1"
@@ -238,10 +236,20 @@ notifications:
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
           disposalReminder: "2e29cce0-66d9-458a-82a3-20aa0e4d5112"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "f3d0ab70-3fed-4590-ab53-108f6adbea9c"
+          firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
+          dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
+          unsubmittedApplication: "3f3965ca-1c8a-4b44-be66-75b929513e65"
+          declarationNotSignedPrimaryApplicant: "c04e65be-51f4-46b1-bce4-8795c1113ae7"
+          declarationNotSignedExecutors: "38f8f966-1a7b-4d2b-ae2c-a67f41e4d788"
+          postGrantIssuedNotification: "b2ec97b0-0b0f-4e9d-9f1a-9638294cda2a"
+          registrarEscalationNotification: "2abb444d-472e-40ed-aed9-a7075af5458c"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
           applicationReceivedNoDocs: "d09c814f-a7cd-4a4a-87b9-7c5cea2ca550"
           applicationReceivedPaperFormCaseworker: "7210fd5a-1a1a-4682-9fbd-4b641e464c45"
+          stopResponseReceived: "18802a17-fe7e-41fc-b4e2-c8ac12139618"
           documentReceived: "215a1300-bd83-4e4d-884e-fdce9bd7b9d4"
           caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
           caseStoppedCaveat: "d5084257-f475-415a-b7d0-2427b5c580b1"
@@ -265,11 +273,18 @@ notifications:
           sealedAndCertified: "16c9a4ce-162f-4ed1-8d70-be79616685ac"
           disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "eed3eae4-3f01-4d0b-a68f-5b0ab149e328"
+          dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
+          unsubmittedApplication: "ab5d7b24-6b40-403b-8a8f-4a21bc48ed6f"
+          postGrantIssuedNotification: "b2ec97b0-0b0f-4e9d-9f1a-9638294cda2a"
+          registrarEscalationNotification: "2abb444d-472e-40ed-aed9-a7075af5458c"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
       welsh:
         personal:
           applicationReceived: "af8ba9a0-8f74-4ddf-af4c-49b9b5174fb7"
           applicationReceivedNoDocs: "37ca2e1e-b7fb-4f4f-9691-7dab45dcd751"
           applicationReceivedPaperFormCaseworker: "f066040c-e986-44a7-8a63-0e4800850c36"
+          stopResponseReceived: "65887613-45e7-4da4-9ff8-0e59618c21b1"
           documentReceived: "a6117239-5e16-49f9-a384-70c03b0e3470"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
           caseStoppedCaveat: "4aec6fa3-7e76-406a-9953-2f12d5d29f81"
@@ -291,10 +306,20 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
           disposalReminder: "34fe5d9d-c57b-4bc2-9ceb-008e82cd5594"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "f3d0ab70-3fed-4590-ab53-108f6adbea9c"
+          firstStopReminderForHub: "4c552fc0-8164-41f7-a2df-5363cdf6ff18"
+          dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
+          unsubmittedApplication: "ac18f977-de08-407b-9c35-1e62d9cd80ff"
+          declarationNotSignedPrimaryApplicant: "08c35f45-453d-45bc-99d1-a7752fde98a1"
+          declarationNotSignedExecutors: "2bbd7b4d-2308-4b92-ae13-3a5f8608c94b"
+          postGrantIssuedNotification: "6fadebcf-4769-42c0-9e60-74dbb75ef99c"
+          registrarEscalationNotification: "5d67e88e-1b7a-415e-b2b1-697cd85d13f2"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
           applicationReceivedNoDocs: "826892e2-76e8-473e-bb39-edec5d19fed7"
           applicationReceivedPaperFormCaseworker: "f066040c-e986-44a7-8a63-0e4800850c36"
+          stopResponseReceived: "65887613-45e7-4da4-9ff8-0e59618c21b1"
           documentReceived: "5f1996a6-5510-4b32-9da8-604be2b9b6b7"
           caseStopped: "a767a0bd-4acc-413e-b510-5a71d24daf85"
           caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
@@ -317,6 +342,12 @@ notifications:
           noticeOfChangeReceived: "4f1f3c47-1d84-4584-b251-2a77d64510f2"
           disposalReminder: "98282437-05a3-4566-a46b-c1f465dbbc02"
           draftCasePaymentSuccess: "b881e8ea-76a5-412c-83d5-8e0f08791b16"
+          firstStopReminder: "eed3eae4-3f01-4d0b-a68f-5b0ab149e328"
+          dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
+          unsubmittedApplication: "7440ee74-4cde-4cd4-ab76-038d70674424"
+          postGrantIssuedNotification: "6fadebcf-4769-42c0-9e60-74dbb75ef99c"
+          registrarEscalationNotification: "5d67e88e-1b7a-415e-b2b1-697cd85d13f2"
+          registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
 
 documents:
   templates:
@@ -489,7 +520,7 @@ core_case_data:
   api:
     url: ${services.coreCaseData.baseUrl:http://localhost:4452}
   elasticsearch:
-    querySize: 500
+    querySize: 100
 
 excelaEmail: ${EXCELA_EMAIL:exela@probate-test.com}
 
@@ -517,7 +548,9 @@ welsh:
     12: "Rhagfyr"
 
 blobstorage:
-  connection: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+  connection:
+    smeeandford: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+    nfi: ${PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING:dummy}
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
@@ -554,6 +587,9 @@ dormancy:
   period_months: 6
   start_date: 1900-01-01
 
+draft_payment:
+  start_date: 1900-01-01
+
 make_dormant:
   add_time_minutes: 5
 
@@ -563,6 +599,21 @@ reactivate_dormant:
 grand_delay:
   number_of_weeks: 12
 
+bulkscan:
+  default-value:
+    name: MISSING
+    postcode: MI55 1NG
+    dob: 01011990
+    email: contactprobate@justice.gov.uk
+    phone: 1234
+    deceasedAnyOtherNames: FALSE
+    deceasedDomicileInEngWales: TRUE
+    legalRepresentative: TRUE
+    ihtForm: FALSE
+    grossNetValue: 1.11
+    solsSolicitorIsApplying: TRUE
+    solicitorNotApplying: FALSE
+
 disposal:
   adhocSchedulerJobDate: ${DISPOSAL_ADHOC_JOB_DATE:}
   inactivityNotificationPeriod: 90
@@ -571,3 +622,14 @@ disposal:
   startDate: 1900-01-01
   personalNotificationLink: http://localhost:3000
   solsNotificationLink: http://localhost:3001
+
+automated_notification:
+  stop_reminder:
+    first_notification_days: 56
+    second_notification_days: 28
+  hse_reminder:
+    awaiting_documentation_days: 30
+  dormant_warning_days: 150
+  dormant_reminder_days: 365
+  unsubmitted_application_days: 28
+  declaration_not_signed_days: 3

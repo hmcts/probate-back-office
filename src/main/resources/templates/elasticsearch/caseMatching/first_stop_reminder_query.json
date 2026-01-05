@@ -1,0 +1,46 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "BOCaseStopped",
+              "BOCaseStoppedReissue"
+            ]
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "terms": {
+            "data.caseType.keyword": [
+              "edgeCase"
+            ]
+          }
+        },
+        {
+          "terms": {
+            "data.evidenceHandled": [
+              "No"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "size": %s,
+  "_source": ["reference"],
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]

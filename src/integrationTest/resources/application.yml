@@ -65,7 +65,7 @@ docmosis:
   assembler.uri: http://localhost:4631
   templates:
     caveatRaised:
-      templateName: FL-PRB-GNO-ENG-00011.docx
+      templateName: FL-PRB-GNO-ENG-caveat-confirmation-letter-v00001.doc
     caveatCoversheet:
       templateName: FL-PRB-GNO-ENG-00018.docx
     caveatStopped:
@@ -146,6 +146,7 @@ notifications:
           applicationReceived: "pa-application-received"
           applicationReceivedNoDocs: "pa-application-received-no-docs"
           applicationReceivedPaperFormCaseworker: "pa-application-received-cw"
+          stopResponseReceived: "pa-stop-response-received"
           documentReceived: "pa-document-received"
           caseStopped: "pa-case-stopped"
           caseStoppedCaveat: "pa-case-stopped-caveat"
@@ -166,10 +167,22 @@ notifications:
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "pa-disposal-reminder"
           draftCasePaymentSuccess: "pa-draft-case-payment-success"
+          firstStopReminder: "pa-first-stop-reminder"
+          firstStopReminderForHub: "pa-first-stop-reminder-for-hub"
+          hseReminder: "pa-hse-reminder"
+          hseReminderForHub: "pa-hse-reminder-for-hub"
+          dormantWarning: "pa-dormant-warning"
+          unsubmittedApplication: "pa-unsubmitted-application"
+          declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant"
+          declarationNotSignedExecutors: "pa-declaration-not-signed-executors"
+          postGrantIssuedNotification: "post-grant-issued-notification-pa"
+          registrarEscalationNotification: "pa-registrar-escalation"
+          registrarEscalationNotificationFailed: "pa-registrar-escalation-failed"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
           applicationReceivedPaperFormCaseworker: "sol-application-received-cw"
+          stopResponseReceived: "sol-stop-response-received"
           documentReceived: "sol-document-received"
           caseStopped: "sol-case-stopped"
           caseStoppedCaveat: "sol-case-stopped-caveat"
@@ -190,11 +203,19 @@ notifications:
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "sol-disposal-reminder"
           draftCasePaymentSuccess: "sol-draft-case-payment-success"
+          firstStopReminder: "sol-first-stop-reminder"
+          hseReminder: "sol-hse-reminder"
+          dormantWarning: "sol-dormant-warning"
+          unsubmittedApplication: "sol-unsubmitted-application"
+          postGrantIssuedNotification: "post-grant-issued-notification-pp"
+          registrarEscalationNotification: "pp-registrar-escalation"
+          registrarEscalationNotificationFailed: "pp-registrar-escalation-failed"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
           applicationReceivedNoDocs: "pa-application-received-no-docs-welsh"
           applicationReceivedPaperFormCaseworker: "pa-application-received-cw-welsh"
+          stopResponseReceived: "pa-stop-response-received-welsh"
           documentReceived: "pa-document-received-welsh"
           caseStopped: "pa-case-stopped-welsh"
           caseStoppedCaveat: "pa-case-stopped-caveat-welsh"
@@ -215,10 +236,22 @@ notifications:
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "pa-disposal-reminder-welsh"
           draftCasePaymentSuccess: "pa-draft-case-payment-success-welsh"
+          firstStopReminder: "pa-first-stop-reminder-welsh"
+          firstStopReminderForHub: "pa-first-stop-reminder-for-hub-welsh"
+          hseReminder: "pa-hse-reminder-welsh"
+          hseReminderForHub: "pa-hse-reminder-for-hub-welsh"
+          dormantWarning: "pa-dormant-warning-welsh"
+          unsubmittedApplication: "pa-unsubmitted-application-welsh"
+          declarationNotSignedPrimaryApplicant: "pa-declaration-not-signed-primary-applicant-welsh"
+          declarationNotSignedExecutors: "pa-declaration-not-signed-executors-welsh"
+          postGrantIssuedNotification: "post-grant-issued-notification-pa-welsh"
+          registrarEscalationNotification: "pa-registrar-escalation-welsh"
+          registrarEscalationNotificationFailed: "pa-registrar-escalation-failed-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
           applicationReceivedPaperFormCaseworker: "sol-application-received-cw-welsh"
+          stopResponseReceived: "sol-stop-response-received-welsh"
           documentReceived: "sol-document-received-welsh"
           caseStopped: "sol-case-stopped-welsh"
           caseStoppedCaveat: "sol-case-stopped-caveat-welsh"
@@ -238,6 +271,13 @@ notifications:
           sealedAndCertified: "sealed-and-certified"
           disposalReminder: "sol-disposal-reminder-welsh"
           draftCasePaymentSuccess: "sol-draft-case-payment-success-welsh"
+          firstStopReminder: "sol-first-stop-reminder-welsh"
+          hseReminder: "sol-hse-reminder-welsh"
+          dormantWarning: "sol-dormant-warning-welsh"
+          unsubmittedApplication: "sol-unsubmitted-application-welsh"
+          postGrantIssuedNotification: "post-grant-issued-notification-pp-welsh"
+          registrarEscalationNotification: "pp-registrar-escalation-welsh"
+          registrarEscalationNotificationFailed: "pp-registrar-escalation-failed-welsh"
 
 documents:
   templates:
@@ -457,7 +497,9 @@ iht-estate:
   switch-date: "2022-01-01"
 
 blobstorage:
-  connection: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+  connection:
+    smeeandford: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+    nfi: ${PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING:dummy}
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
@@ -491,6 +533,9 @@ dormancy:
   period_months: 6
   start_date: 1900-01-01
 
+draft_payment:
+  start_date: 1900-01-01
+
 make_dormant:
   add_time_minutes: 5
 
@@ -498,6 +543,22 @@ reactivate_dormant:
   minus_days: 1
 
 grand_delay:
+  number_of_weeks: 16
+
+bulkscan:
+  default-value:
+    name: MISSING
+    postcode: MI55 1NG
+    dob: 01011990
+    email: contactprobate@justice.gov.uk
+    phone: 1234
+    deceasedAnyOtherNames: FALSE
+    deceasedDomicileInEngWales: TRUE
+    legalRepresentative: TRUE
+    ihtForm: FALSE
+    grossNetValue: 1.11
+    solsSolicitorIsApplying: TRUE
+
   number_of_weeks: 12
 
 disposal:
@@ -508,3 +569,14 @@ disposal:
   startDate: 1900-01-01
   personalNotificationLink: ${FRONTEND_URL:http://localhost:3000}
   solsNotificationLink: ${MANAGE_CASE_URL:http://localhost:3001}
+
+automated_notification:
+  stop_reminder:
+    first_notification_days: 56
+    second_notification_days: 28
+  hse_reminder:
+    awaiting_documentation_days: 30
+  dormant_warning_days: 150
+  dormant_reminder_days: 365
+  unsubmitted_application_days: 28
+  declaration_not_signed_days: 3

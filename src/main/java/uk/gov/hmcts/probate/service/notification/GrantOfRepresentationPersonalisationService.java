@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -74,6 +74,14 @@ public class GrantOfRepresentationPersonalisationService {
         return personalisation;
     }
 
+    public Map<String, String> getStopResponseReceivedPersonalisation(Long id, String addresseeName) {
+        HashMap<String, String> personalisation = new HashMap<>();
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, id.toString());
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, addresseeName);
+        return personalisation;
+
+    }
+
     public Map<String, Object> getSealedAndCertifiedPersonalisation(Long caseId, String deceasedName) {
         HashMap<String, Object> personalisation = new HashMap<>();
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseId.toString());
@@ -93,27 +101,16 @@ public class GrantOfRepresentationPersonalisationService {
         return personalisation;
     }
 
-    public Map<String, Object> getGORDraftCaseWithPaymentPersonalisation(List<ReturnedCaseDetails> cases,
-                                                                         String fromDate, String toDate) {
+    public Map<String, Object> getDraftCaseWithPaymentPersonalisation(
+            List<uk.gov.hmcts.reform.ccd.client.model.CaseDetails> cases,
+            String fromDate, String toDate, CcdCaseType ccdCaseType) {
         HashMap<String, Object> personalisation = new HashMap<>();
 
         StringBuilder data = getDraftCasesBuiltData(cases);
 
         personalisation.put(PERSONALISATION_DRAFT_NAME, getSubject(fromDate, toDate));
-        personalisation.put(PERSONALISATION_CASE_TYPE, "Grant of Representation");
-        personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
-
-        return personalisation;
-    }
-
-    public Map<String, Object> getCaveatDraftCaseWithPaymentPersonalisation(List<ReturnedCaveatDetails> cases,
-                                                                            String fromDate, String toDate) {
-        HashMap<String, Object> personalisation = new HashMap<>();
-
-        StringBuilder data = getCaveatDraftCasesBuiltData(cases);
-
-        personalisation.put(PERSONALISATION_DRAFT_NAME, getSubject(fromDate, toDate));
-        personalisation.put(PERSONALISATION_CASE_TYPE, "Caveat");
+        personalisation.put(PERSONALISATION_CASE_TYPE, ccdCaseType.getName().equals(CcdCaseType.CAVEAT.getName())
+                ? "Caveat" : "Grant of Representation");
         personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
 
         return personalisation;
@@ -179,22 +176,13 @@ public class GrantOfRepresentationPersonalisationService {
         return data;
     }
 
-    private StringBuilder getDraftCasesBuiltData(List<ReturnedCaseDetails> cases) {
+    private StringBuilder getDraftCasesBuiltData(List<uk.gov.hmcts.reform.ccd.client.model.CaseDetails> cases) {
         StringBuilder data = new StringBuilder();
 
-        for (ReturnedCaseDetails currentCase : cases) {
-            getCaseData(data, currentCase.getId(), currentCase.getData().getDeceasedForenames(),
-                    currentCase.getData().getDeceasedSurname());
-        }
-        return data;
-    }
-
-    private StringBuilder getCaveatDraftCasesBuiltData(List<ReturnedCaveatDetails> cases) {
-        StringBuilder data = new StringBuilder();
-
-        for (ReturnedCaveatDetails currentCase : cases) {
-            getCaseData(data, currentCase.getId(), currentCase.getData().getDeceasedForenames(),
-                    currentCase.getData().getDeceasedSurname());
+        for (uk.gov.hmcts.reform.ccd.client.model.CaseDetails currentCase : cases) {
+            getCaseData(data, currentCase.getId(),
+                    (String)currentCase.getData().getOrDefault("deceasedForenames",""),
+                    (String)currentCase.getData().getOrDefault("deceasedSurname",""));
         }
         return data;
     }

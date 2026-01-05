@@ -1,0 +1,37 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "data.evidenceHandledDate": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "match": {
+            "data.evidenceHandled": "Yes"
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "terms": {
+            "state.keyword": [
+              "BOGrantIssued",
+              "BOCaseClosed"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "size": %s,
+  "_source": ["reference"],
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]

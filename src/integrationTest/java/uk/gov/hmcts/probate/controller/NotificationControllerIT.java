@@ -6,8 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -109,50 +109,50 @@ class NotificationControllerIT {
     @Autowired
     private TestUtils testUtils;
 
-    @MockBean
+    @MockitoBean
     private NotificationService notificationService;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
 
-    @MockBean
+    @MockitoBean
     private BulkPrintService bulkPrintService;
 
     private EventValidationService eventValidationService;
 
-    @MockBean
+    @MockitoBean
     private CoreCaseDataApi coreCaseDataApi;
 
-    @MockBean
+    @MockitoBean
     private CallbackResponseTransformer callbackResponseTransformer;
 
-    @MockBean
+    @MockitoBean
     private DocumentGeneratorService documentGeneratorService;
 
-    @MockBean
+    @MockitoBean
     private InformationRequestService informationRequestService;
 
-    @MockBean
+    @MockitoBean
     private RedeclarationNotificationService redeclarationNotificationService;
 
-    @MockBean
+    @MockitoBean
     private GrantNotificationService grantNotificationService;
 
-    @MockBean
+    @MockitoBean
     private FeatureToggleService featureToggleService;
-    @MockBean
+    @MockitoBean
     CaseDataTransformer caseDataTransformer;
 
-    @MockBean
+    @MockitoBean
     private EvidenceUploadService evidenceUploadService;
 
-    @MockBean
+    @MockitoBean
     private UserInfoService userInfoService;
 
-    @SpyBean
+    @MockitoSpyBean
     private DocumentService documentService;
     private List<String> errors = new ArrayList<>();
     private CallbackResponse errorResponse;

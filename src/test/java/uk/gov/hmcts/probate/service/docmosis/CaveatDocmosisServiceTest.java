@@ -42,6 +42,8 @@ class CaveatDocmosisServiceTest {
     private DateFormatterService dateFormatterService;
     @Mock
     private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
+    @Mock
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setUp() {
@@ -60,6 +62,11 @@ class CaveatDocmosisServiceTest {
             .registryLocation("leeds")
             .expiryDate(LocalDate.of(2019, 12, 31))
             .build();
+        Map<String, Object> result = new HashMap<>();
+        result.put("registryLocation", "leeds");
+        result.put("expiryDate", LocalDate.of(2019, 12, 31));
+        when(objectMapper.convertValue(caveatData, Map.class))
+                .thenReturn(result);
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
         Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);
@@ -67,7 +74,11 @@ class CaveatDocmosisServiceTest {
         assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
         assertEquals(placeholders.get("registry"), registries.get(
             caveatData.getRegistryLocation().toLowerCase()));
-        assertEquals(placeholders.get("PA8AURL"), "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        assertEquals(placeholders.get("PA8ACITADURL"), "https://www.citizensadvice.org.uk/");
+        assertEquals(placeholders.get("PA8BEXTENDURL"), "https://www.gov.uk/government/publications/apply-to-"
+                + "extend-a-caveat-on-a-grant-of-representation-pa8b");
+        assertEquals(placeholders.get("PA8BSTOPURL"), "https://www.gov.uk/wills-probate-inheritance/stopping-"
+                + "a-grant-of-representation");
         assertEquals(placeholders.get("caseReference"),
             ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"));
         assertEquals(placeholders.get("caveatExpiryDate"), CAV_EXPIRY_DATE);
@@ -80,6 +91,10 @@ class CaveatDocmosisServiceTest {
             .build();
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
+        Map<String, Object> result = new HashMap<>();
+        result.put("registryLocation", "leeds");
+        when(objectMapper.convertValue(caveatData, Map.class))
+                .thenReturn(result);
         Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);
 
         assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));

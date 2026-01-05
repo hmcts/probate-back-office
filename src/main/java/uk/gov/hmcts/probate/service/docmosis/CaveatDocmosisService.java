@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,22 +23,24 @@ public class CaveatDocmosisService {
     private static final String PERSONALISATION_CASE_REFERENCE = "caseReference";
     private static final String PERSONALISATION_GENERATED_DATE = "generatedDate";
     private static final String PERSONALISATION_REGISTRY = "registry";
-    private static final String PERSONALISATION_PA8A_URL = "PA8AURL";
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveatExpiryDate";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveatorName";
     private static final String PERSONALISATION_DECEASED_NAME = "deceasedName";
+    private static final String PERSONALISATION_PA8ACITADURL = "PA8ACITADURL";
+    private static final String PERSONALISATION_PA8BEXTENDURL = "PA8BEXTENDURL";
+    private static final String PERSONALISATION_PA8BSTOPURL = "PA8BSTOPURL";
     private final RegistriesProperties registriesProperties;
     private final CcdReferenceFormatterService ccdReferenceFormatterService;
     private final DateFormatterService dateFormatterService;
+    private final ObjectMapper objectMapper;
 
     public Map<String, Object> caseDataAsPlaceholders(CaveatDetails caveatDetails) {
 
-        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        Map<String, Object> placeholders = mapper.convertValue(caveatDetails.getData(), Map.class);
+        Map<String, Object> placeholders = objectMapper.convertValue(caveatDetails.getData(), Map.class);
 
         Registry registry = registriesProperties.getRegistries().get(
             caveatDetails.getData().getRegistryLocation().toLowerCase());
-        Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
+        Map<String, Object> registryPlaceholders = objectMapper.convertValue(registry, Map.class);
 
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
@@ -47,7 +48,12 @@ public class CaveatDocmosisService {
             ccdReferenceFormatterService.getFormattedCaseReference(caveatDetails.getId().toString()));
         placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
-        placeholders.put(PERSONALISATION_PA8A_URL, "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        placeholders.put(PERSONALISATION_PA8BEXTENDURL, "https://www.gov.uk/government/publications/apply-to-extend-a-"
+                + "caveat-on-a-grant-of-representation-pa8b");
+        placeholders.put(PERSONALISATION_PA8ACITADURL, "https://www.citizensadvice.org.uk/");
+        placeholders.put(PERSONALISATION_PA8BSTOPURL, "https://www.gov.uk/wills-probate-inheritance/stopping-a-"
+                + "grant-of-representation");
+
         placeholders.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
             dateFormatterService.formatCaveatExpiryDate(caveatDetails.getData().getExpiryDate()));
         placeholders.put(PERSONALISATION_CAVEATOR_NAME, caveatDetails.getData().getCaveatorFullName());

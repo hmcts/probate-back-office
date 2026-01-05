@@ -6,12 +6,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -32,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
@@ -70,13 +71,13 @@ class GrantOfRepresentationPersonalisationServiceIT {
     Registry registry = new Registry();
     @InjectMocks
     private GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
-    @MockBean
+    @MockitoBean
     private CoreCaseDataApi coreCaseDataApi;
-    @MockBean
+    @MockitoBean
     private CaveatQueryService caveatQueryServiceMock;
-    @MockBean
+    @MockitoBean
     private SendEmailResponse sendEmailResponse;
     @Mock
     private RegistriesProperties registriesPropertiesMock;
@@ -329,14 +330,19 @@ class GrantOfRepresentationPersonalisationServiceIT {
 
     @Test
     void getGORDraftCasePersonalisationContentIsOk() {
-        List<ReturnedCaseDetails> cases = List.of(new ReturnedCaseDetails(CaseData.builder()
-                .applicationType(PERSONAL)
-                .deceasedForenames("Jack")
-                .deceasedSurname("Michelson")
-                .build(), LAST_DATE_MODIFIED, ID));
+        Map<String, Object> caseData = new HashMap<>();
+        caseData.put("deceasedForenames", "Jack");
+        caseData.put("deceasedSurname", "Michelson");
+
+        List<uk.gov.hmcts.reform.ccd.client.model.CaseDetails> cases =
+                List.of(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build());
         Map<String, Object> response =
-                grantOfRepresentationPersonalisationService.getGORDraftCaseWithPaymentPersonalisation(cases,
-                        "01/01/2025", "01/05/2025");
+                grantOfRepresentationPersonalisationService.getDraftCaseWithPaymentPersonalisation(cases,
+                        "01/01/2025", "01/05/2025", CcdCaseType.GRANT_OF_REPRESENTATION);
 
         assertEquals("Draft cases with payment success extract from 01/01/2025 to 01/05/2025",
                 response.get(PERSONALISATION_DRAFT_NAME));
@@ -348,14 +354,19 @@ class GrantOfRepresentationPersonalisationServiceIT {
 
     @Test
     void getCaveatDraftCasePersonalisationContentIsOk() {
-        List<ReturnedCaveatDetails> cases = List.of(new ReturnedCaveatDetails(CaveatData.builder()
-                .applicationType(PERSONAL)
-                .deceasedForenames("Jack")
-                .deceasedSurname("Michelson")
-                .build(), null, ID));
+        Map<String, Object> caseData = new HashMap<>();
+        caseData.put("deceasedForenames", "Jack");
+        caseData.put("deceasedSurname", "Michelson");
+
+        List<uk.gov.hmcts.reform.ccd.client.model.CaseDetails> cases =
+                List.of(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder()
+                        .data(caseData)
+                        .lastModified(LAST_DATE_MODIFIED)
+                        .id(ID)
+                        .build());
         Map<String, Object> response =
-                grantOfRepresentationPersonalisationService.getCaveatDraftCaseWithPaymentPersonalisation(cases,
-                        "01/01/2025", "01/05/2025");
+                grantOfRepresentationPersonalisationService.getDraftCaseWithPaymentPersonalisation(cases,
+                        "01/01/2025", "01/05/2025", CcdCaseType.CAVEAT);
 
         assertEquals("Draft cases with payment success extract from 01/01/2025 to 01/05/2025",
                 response.get(PERSONALISATION_DRAFT_NAME));
@@ -363,5 +374,30 @@ class GrantOfRepresentationPersonalisationServiceIT {
                 response.get(PERSONALISATION_CASE_DATA));
         assertEquals("Caveat",
                 response.get(PERSONALISATION_CASE_TYPE));
+    }
+
+    @Test
+    void returnsStopResponseReceivedPersonalisationWithValidIdAndSolicitorName() {
+        Long caseId = 12345L;
+        String solicitorName = "John Doe";
+
+        Map<String, String> result = grantOfRepresentationPersonalisationService
+                .getStopResponseReceivedPersonalisation(caseId, solicitorName);
+
+        assertNotNull(result);
+        assertEquals("12345", result.get("ccd_reference"));
+        assertEquals("John Doe", result.get("applicant_name"));
+    }
+
+    @Test
+    void returnsStopResponseReceivedPersonalisationWithNullSolicitorName() {
+        Long caseId = 12345L;
+
+        Map<String, String> result = grantOfRepresentationPersonalisationService
+                .getStopResponseReceivedPersonalisation(caseId, null);
+
+        assertNotNull(result);
+        assertEquals("12345", result.get("ccd_reference"));
+        assertNull(result.get("solicitor_name"));
     }
 }
