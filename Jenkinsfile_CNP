@@ -395,6 +395,7 @@ def uploadDmnDiagrams() {
   dir("${WORKSPACE}/bin") {
     tenantId = "probate"
     product = "probate"
+    env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     sh "./wa/import-dmn-diagram.sh ${WORKSPACE} ${env} ${tenantId} ${product}"
   }
 }
@@ -411,7 +412,9 @@ def uploadBpmnDiagram() {
 
 def setupRoleAssignments() {
   dir("${WORKSPACE}/bin") {
-    sh "./wa/setup-role-assignments.sh"
+    sh """
+          ./wa/add-role-assignments.sh
+    """
   }
 }
 
