@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -xe
 
 USERNAME=${1}
 PASSWORD=${2}
