@@ -24,10 +24,6 @@
         <cve>CVE-2025-7962</cve>
     </suppress>
     <suppress>
-        <notes><![CDATA[
-   file name: netty-buffer-4.1.127.Final.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/io\.netty/netty-buffer@.*$</packageUrl>
         <cve>CVE-2025-67735</cve>
     </suppress>
 </suppressions>
