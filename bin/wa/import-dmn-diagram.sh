@@ -8,11 +8,11 @@ product=${4}
 
 s2sSecret=${S2S_SECRET:-AABBCCDDEEFFGGHH}
 
-if [[ "${ENVIRONMENT}" == 'prod' ]]; then
+if [[ "${ENV}" == 'prod' ]]; then
   s2sSecret=${S2S_SECRET_PROD}
 fi
 
-serviceToken=$($(realpath $workspace)/bin/idam-lease-service-token.sh probate-back-office \
+serviceToken=$($(realpath $workspace)/bin/idam-lease-service-token.sh probate_backend \
   $(docker run --rm toolbelt/oathtool --totp -b ${s2sSecret}))
 
 dmnFilepath="$(realpath $workspace)/src/main/resources/dmn"

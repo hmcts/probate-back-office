@@ -64,6 +64,7 @@ java:
     MANAGE_CASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
     FRONTEND_URL: https://probate.{{ .Values.global.environment }}.platform.hmcts.net
     CCD_SERVICEBUS_DESTINATION: ccd-case-events-{{ .Values.global.environment }}
+    SERVICE_AUTH_PROVIDER_API_BASE_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
   keyVaults:
     probate:
       secrets:
