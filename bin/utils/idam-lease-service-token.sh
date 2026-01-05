@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-set -eu
+set -xeu
 
 microservice=${1}
 oneTimePassword=${2}
 
 s2sUrl=${S2S_URL_BASE:-http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}/testing-support/lease
 
-if [[ "${ENVIRONMENT}" == 'prod' ]]; then
+if [[ "${ENV}" == 'prod' ]]; then
   s2sUrl=${S2S_URL_BASE:-http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}/lease
 fi
 
