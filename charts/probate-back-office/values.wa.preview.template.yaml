@@ -13,6 +13,7 @@ java:
     AZURE_SERVICE_BUS_TOPIC_NAME: ${SERVICE_NAME}-asb-ccd-case-events
     AZURE_SERVICE_BUS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
     CCD_SERVICEBUS_DESTINATION: ${SERVICE_NAME}-asb-ccd-case-events
+    SERVICE_AUTH_PROVIDER_API_BASE_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
 servicebus:
   enabled: true
