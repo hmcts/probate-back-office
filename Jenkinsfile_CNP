@@ -275,6 +275,7 @@ withPipeline("java", product, component) {
 
   afterSuccess('akschartsinstall') {
     onPR {
+      def githubApi = new GithubAPI(this)
       for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa") ) {
         env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
         println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
