@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -xeu
 workspace=${1}
 
 s2sSecret=${S2S_SECRET:-AABBCCDDEEFFGGHH}
