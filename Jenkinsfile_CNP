@@ -339,6 +339,7 @@ withPipeline("java", product, component) {
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
     if (checkForEnableWALabel(env.BRANCH_NAME)) {
         env.ENABLE_WA = true
+        setCommonEnvVariables()
       }
   }
 
@@ -413,6 +414,14 @@ def setupRoleAssignments() {
   dir("${WORKSPACE}/bin") {
     sh "./wa/setup-role-assignments.sh"
   }
+}
+
+def setCommonEnvVariables() {
+  env.IDAM_API_URL_BASE = "https://idam-api.aat.platform.hmcts.net"
+  // need to check whether below variables are required
+  env.S2S_URL_BASE = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+  env.FEE_API_URL = "http://fees-register-api-aat.service.core-compute-aat.internal"
+  env.BEFTA_S2S_CLIENT_ID = "ccd_data"
 }
 
 
