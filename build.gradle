@@ -11,7 +11,7 @@ plugins {
   id 'au.com.dius.pact' version '4.6.19'
   id 'net.serenity-bdd.serenity-gradle-plugin' version '4.3.2'
   id 'org.sonarqube' version '7.2.2.6593'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.1956'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.1960'
 }
 
 application {
@@ -165,7 +165,7 @@ def versions = [
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '7.17.29',
         fortifyClientVersion            : '1.4.10',
-        hmctsJavaLogging                : '6.1.9',
+        hmctsJavaLogging                : '7.0.0',
         jacksonDatabind                 : '2.17.1',
         jsoup                           : '1.21.2',
         lifeEventsClientVersion         : '1.5.2',
@@ -180,7 +180,7 @@ def versions = [
         serviceAuthVersion              : '5.3.3',
         springBootVersion               : '3.5.9',
         springCloud                     : '4.3.0',
-        springDocOpenUi                 : '2.8.14',
+        springDocOpenUi                 : '2.8.15',
         swaggerAnnotations              : '2.2.41',
         springSecurityVersion           : '6.5.7',
         tomcat                          : '10.1.50',
@@ -215,7 +215,7 @@ dependencyManagement {
   }
 }
 
-ext['netty.version'] = '4.1.127.Final' // CVE-2025-58056, CVE-2025-58057
+ext['netty.version'] = '4.1.130.Final' // CVE-2025-67735
 
 dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
