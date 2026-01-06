@@ -183,7 +183,8 @@ def versions = [
         springDocOpenUi                 : '2.8.14',
         swaggerAnnotations              : '2.2.41',
         springSecurityVersion           : '6.5.7',
-        tomcat                          : '10.1.50'
+        tomcat                          : '10.1.50',
+        camunda                         : '7.24.0'
 ]
 
 jacocoTestReport {
@@ -207,6 +208,10 @@ repositories {
 dependencyManagement {
   imports {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.0.0"
+  }
+
+  dependencies {
+    dependency group: 'org.camunda.connect', name: 'camunda-connect-connectors-all', version: versions.camunda
   }
 }
 
@@ -284,6 +289,9 @@ dependencies {
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.2.3'
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
+  //Camunda WA
+  implementation group: 'org.camunda.bpm', name: 'camunda-external-task-client', version: versions.camunda
+
   testAnnotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   testImplementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBootVersion
@@ -298,6 +306,10 @@ dependencies {
   testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: versions.fortifyClientVersion, classifier: 'all'
   testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.21.0'
+  testImplementation group: 'org.camunda.bpm.dmn', name: 'camunda-engine-dmn', version: versions.camunda
+  testImplementation group: 'org.camunda.bpm', name: 'camunda-engine-plugin-spin', version: versions.camunda
+  testImplementation group: 'org.camunda.bpm.assert', name: 'camunda-bpm-assert', version: '15.0.0'
+  testImplementation group: 'org.camunda.bpm', name: 'camunda-engine', version: versions.camunda
 
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeImplementation sourceSets.main.runtimeClasspath
