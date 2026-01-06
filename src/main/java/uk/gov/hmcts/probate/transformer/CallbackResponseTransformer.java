@@ -62,6 +62,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -1444,6 +1445,20 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
+    private static final class AliasHandle {
+        private final AtomicInteger next = new AtomicInteger(0);
+        private static final String[] aliases = {
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+
+        public String getNext() {
+            final int current = next.getAndIncrement();
+            return aliases[current % aliases.length];
+        }
+    }
+
+    private final AliasHandle aliasHandle = new AliasHandle();
+
     void handleDeceasedAliases(
             final ResponseCaseDataBuilder<?,?> builder,
             final CaseData caseData,
@@ -1474,7 +1489,8 @@ public class CallbackResponseTransformer {
 
         final String decTitle = caseData.getBoDeceasedTitle();
         if ("ADD_FIRST".equals(decTitle)) {
-            final String beforeName = "BEFORE_" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            final String nextAlias = aliasHandle.getNext();
+            final String beforeName = "BEFORE_" + nextAlias;
             final AliasName beforeAlias = AliasName.builder()
                     .solsAliasname(beforeName)
                     .build();
@@ -1519,7 +1535,8 @@ public class CallbackResponseTransformer {
                     decAliasLNOnWill));
         }
         if ("ADD_LAST".equals(decTitle)) {
-            final String afterName = "AFTER_" + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            final String nextAlias = aliasHandle.getNext();
+            final String afterName = "AFTER_" + nextAlias;
             final AliasName afterAlias = AliasName.builder()
                     .solsAliasname(afterName)
                     .build();
