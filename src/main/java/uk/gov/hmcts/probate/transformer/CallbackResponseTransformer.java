@@ -1487,6 +1487,22 @@ public class CallbackResponseTransformer {
 
         List<CollectionMember<AliasName>> newSolsDecAliases = new ArrayList<>();
 
+        if (solsDecAliases != null) {
+            final StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            final String collected = solsDecAliases.stream()
+                    .map(v -> v.getValue().getSolsAliasname() + ", ")
+                    .collect(
+                            () -> sb,
+                            StringBuilder::append,
+                            StringBuilder::append)
+                    .append("]")
+                    .toString();
+            log.info("{}: Before collection: {}", caseRef, collected);
+        } else {
+            log.info("{}: Before collection: []", caseRef);
+        }
+
         final String decTitle = caseData.getBoDeceasedTitle();
         if ("ADD_FIRST".equals(decTitle)) {
             final String nextAlias = aliasHandle.getNext();
@@ -1508,17 +1524,6 @@ public class CallbackResponseTransformer {
         }
 
         if (solsDecAliases != null) {
-            final StringBuilder sb = new StringBuilder();
-            sb.append("[");
-            final String collected = solsDecAliases.stream()
-                    .map(v -> v.getValue().getSolsAliasname() + ", ")
-                    .collect(
-                            () -> sb,
-                            StringBuilder::append,
-                            StringBuilder::append)
-                    .append("]")
-                    .toString();
-            log.info("{}: Before collection: {}", caseRef, collected);
             newSolsDecAliases.addAll(solsDecAliases);
         }
 
@@ -1560,6 +1565,7 @@ public class CallbackResponseTransformer {
                 .filter(a -> seenAliasNames.add(a.getValue().getSolsAliasname()))
                 .toList();
         final StringBuilder sb = new StringBuilder();
+        sb.append("[");
         final String after = list.stream()
                 .map(v -> v.getValue().getSolsAliasname() + ", ")
                 .collect(
@@ -1568,7 +1574,7 @@ public class CallbackResponseTransformer {
                         StringBuilder::append)
                 .append("]")
                 .toString();
-        log.info("{}: Resulting list: {}", caseRef, after);
+        log.info("{}: After collection:  {}", caseRef, after);
 
         builder.solsDeceasedAliasNamesList(list);
 
