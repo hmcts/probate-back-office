@@ -15,7 +15,6 @@ import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,9 +91,19 @@ public class AutomatedNotificationPersonalisationService {
         HashMap<String, Object> personalisation = new HashMap<>();
         Map<String, Object> data = caseDetails.getData();
 
-        addCreatedDates(personalisation, caseDetails.getCreatedDate());
-        addDeceasedDetails(personalisation, data);
-
+        final String deceasedName = StringUtils.trimToEmpty(getDeceasedFullName(data));
+        personalisation.put(PERSONALISATION_DECEASED_NAME,
+                deceasedName.isEmpty() ? NAME_NOT_ENTERED : deceasedName);
+        personalisation.put(PERSONALISATION_DECEASED_NAME_WELSH,
+                deceasedName.isEmpty() ? NAME_NOT_ENTERED_WELSH : deceasedName);
+        final LocalDate dateOfDeath = getDateValue(data, DECEASED_DATE_OF_DEATH_FIELD);
+        personalisation.put(PERSONALISATION_DECEASED_DOD,
+                dateOfDeath != null ? dateFormatterService.formatDate(dateOfDeath) : DOD_NOT_ENTERED);
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
+                dateOfDeath != null ? localDateToWelshStringConverter.convert(dateOfDeath) : DOD_NOT_ENTERED_WELSH);
+        personalisation.put(PERSONALISATION_DATE_CREATED, DATE_FORMAT.format(caseDetails.getCreatedDate()));
+        personalisation.put(PERSONALISATION_DATE_CREATED_WELSH,
+                localDateToWelshStringConverter.convert(caseDetails.getCreatedDate().toLocalDate()));
         personalisation.put(PERSONALISATION_CASE_ID, String.valueOf(caseDetails.getId()));
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, getSolicitorName(data, applicationType));
         personalisation.put(PERSONALISATION_LINK_TO_CASE, getHyperLink(String.valueOf(caseDetails.getId()),
@@ -108,9 +117,19 @@ public class AutomatedNotificationPersonalisationService {
         Map<String, Object> caseData = caseDetails.getData();
         HashMap<String, Object> personalisation = new HashMap<>();
 
-        addCreatedDates(personalisation, caseDetails.getCreatedDate());
-        addDeceasedDetails(personalisation, caseData);
-
+        final String deceasedName = StringUtils.trimToEmpty(getDeceasedFullName(caseData));
+        personalisation.put(PERSONALISATION_DECEASED_NAME,
+                deceasedName.isEmpty() ? NAME_NOT_ENTERED : deceasedName);
+        personalisation.put(PERSONALISATION_DECEASED_NAME_WELSH,
+                deceasedName.isEmpty() ? NAME_NOT_ENTERED_WELSH : deceasedName);
+        final LocalDate dateOfDeath = getDateValue(caseData, DECEASED_DATE_OF_DEATH_FIELD);
+        personalisation.put(PERSONALISATION_DECEASED_DOD,
+                dateOfDeath != null ? dateFormatterService.formatDate(dateOfDeath) : DOD_NOT_ENTERED);
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
+                dateOfDeath != null ? localDateToWelshStringConverter.convert(dateOfDeath) : DOD_NOT_ENTERED_WELSH);
+        personalisation.put(PERSONALISATION_DATE_CREATED, DATE_FORMAT.format(caseDetails.getCreatedDate()));
+        personalisation.put(PERSONALISATION_DATE_CREATED_WELSH,
+                localDateToWelshStringConverter.convert(caseDetails.getCreatedDate().toLocalDate()));
         personalisation.put(TODAY, LocalDate.now().format(DATE_FORMAT));
         personalisation.put(TODAY_WELSH, localDateToWelshStringConverter.convert(LocalDate.now()));
         personalisation.put(PERSONALISATION_CCD_REFERENCE, String.valueOf(caseDetails.getId()));
@@ -270,25 +289,5 @@ public class AutomatedNotificationPersonalisationService {
             }
         }
         return s;
-    }
-
-    private void addDeceasedDetails(Map<String, Object> target, Map<String, Object> caseData) {
-        final String deceasedName = StringUtils.trimToEmpty(getDeceasedFullName(caseData));
-        target.put(PERSONALISATION_DECEASED_NAME,
-                deceasedName.isEmpty() ? NAME_NOT_ENTERED : deceasedName);
-        target.put(PERSONALISATION_DECEASED_NAME_WELSH,
-                deceasedName.isEmpty() ? NAME_NOT_ENTERED_WELSH : deceasedName);
-
-        final LocalDate dateOfDeath = getDateValue(caseData, DECEASED_DATE_OF_DEATH_FIELD);
-        target.put(PERSONALISATION_DECEASED_DOD,
-                dateOfDeath != null ? dateFormatterService.formatDate(dateOfDeath) : DOD_NOT_ENTERED);
-        target.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
-                dateOfDeath != null ? localDateToWelshStringConverter.convert(dateOfDeath) : DOD_NOT_ENTERED_WELSH);
-    }
-
-    private void addCreatedDates(Map<String, Object> target, LocalDateTime createdDate) {
-        target.put(PERSONALISATION_DATE_CREATED, DATE_FORMAT.format(createdDate));
-        target.put(PERSONALISATION_DATE_CREATED_WELSH,
-                localDateToWelshStringConverter.convert(createdDate.toLocalDate()));
     }
 }
