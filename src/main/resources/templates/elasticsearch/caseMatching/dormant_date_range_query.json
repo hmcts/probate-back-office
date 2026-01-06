@@ -40,15 +40,9 @@
               { "match": { "state": "BOSotGenerated" }},
               { "match": { "state": "BORedecNotificationSent" }},
               { "match": { "state": "BOCaseStoppedAwaitRedec" }},
-              { "match": { "state": "BOCaseStoppedReissue" }},
-              { "match": { "state": "BOCaseMatchingReissue" }},
-              { "match": { "state": "BOExaminingReissue" }},
               { "match": { "state": "BOCaseImported" }},
               { "match": { "state": "BOCaveatPermenant" }},
-              { "match": { "state": "BOCaseWorkerEscalation" }},
-              { "match": { "state": "BOPostGrantIssued" }},
-              { "match": { "state": "BOGrantIssuedRegistrarEscalation" }},
-              { "match": { "state": "BOPostGrantIssuedRegistrarEscalation" }}
+              { "match": { "state": "BOCaseWorkerEscalation" }}
             ]
           }
         }
