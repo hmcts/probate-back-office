@@ -6,9 +6,14 @@ servicebus:
   sbNamespace: probate-servicebus-preview
   setup:
     topics:
+      - name: crd-topic
+        subscriptionNeeded: yes
+      - name: jrd-topic
+        subscriptionNeeded: yes
       - name: ccd-case-events
         subscriptionNeeded: yes
         requiresSession: true
+
 global:
   postgresUsername: hmcts
   postgresSecret: postgres
