@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.34.0">
+  <decision id="wa-task-initiation-st_cic-criminalinjuriescompensation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
+    <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
+      <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0gxli97" label="Post event state" biodi:width="268" camunda:inputVariable="postEventState">
+        <inputExpression id="LiteralExpression_0dijl5x" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_03i3ghi" label="evidenceHandled" biodi:width="291" camunda:inputVariable="evidenceHandled">
+        <inputExpression id="LiteralExpression_0kx1xp4" typeRef="string">
+          <text>if(additionalData != null and additionalData.Data != null and additionalData.Data.evidenceHandled
+            != null) then
+            additionalData.Data.evidenceHandled
+            else
+            ""</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0imp90y">
+          <text>"Yes","No"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_0igjxpg" label="caseType" biodi:width="291" camunda:inputVariable="caseType">
+        <inputExpression id="LiteralExpression_176w5mt" typeRef="string">
+          <text>if(additionalData != null and additionalData.Data != null and additionalData.Data.evidenceHandled
+            != null) then
+            additionalData.Data.caseType
+            else
+            ""</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0s5s50h">
+          <text>"gop","admonWill","intestacy"</text>
+        </inputValues>
+      </input>
+      <output id="Output_1" label="Task Id" name="taskId" typeRef="string" biodi:width="320" />
+      <output id="OutputClause_0p5fhhd" label="Task Name" name="name" typeRef="string" biodi:width="362" />
+      <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" typeRef="integer" />
+      <output id="OutputClause_0i6c6c2" label="Working Days Allowed" name="workingDaysAllowed" typeRef="integer" />
+      <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
+      <output id="OutputClause_1wziqr5" label="Work Type" name="workType" typeRef="string" />
+      <output id="OutputClause_09b12hk" label="Role Category" name="roleCategory" typeRef="string" />
+      <rule id="DecisionRule_0in26ix">
+        <inputEntry id="UnaryTests_1mtpy0d">
+          <text>"handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0pzaled">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0izdcb4">
+          <text>"No"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dm0vju">
+          <text>"gop"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yp6gfj">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_11crul1">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0j4vwvw">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0h32jop">
+          <text>7</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p20qkn">
+          <text>"case progression"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0te3ddw">
+          <text>"routine_work"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19ua141">
+          <text>"CTSC"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0qpj4ul">
+        <inputEntry id="UnaryTests_0nzv4gr">
+          <text>"handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bpjx0n">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11p2mwh">
+          <text>"No"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fd6wo4">
+          <text>"admonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0w3g61g">
+          <text>"ExamineDigitalCaseAdmon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0y16c70">
+          <text>"Examine Digital Case - Admon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1acnnxj">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03yus2w">
+          <text>7</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1r5w3wg">
+          <text>"case progression"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0vx9kp1">
+          <text>"routine_work"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1l9h9th">
+          <text>"CTSC"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0p8qcwb">
+        <inputEntry id="UnaryTests_0r4ctab">
+          <text>"handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0sywdbi">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0g8530j">
+          <text>"No"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qkrz9q">
+          <text>"intestacy"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0z8vdkn">
+          <text>"ExamineDigitalCaseIntestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1olabo7">
+          <text>"Examine Digital Case - Intestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xsk40t">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02k8nc5">
+          <text>7</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hg6z8n">
+          <text>"case progression"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17gx2p0">
+          <text>"routine_work"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09u0200">
+          <text>"CTSC"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_0b2rkcb">
+      <dmndi:DMNShape id="DMNShape_0wc7glt" dmnElementRef="wa-task-initiation-st_cic-criminalinjuriescompensation">
+        <dc:Bounds height="80" width="180" x="150" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

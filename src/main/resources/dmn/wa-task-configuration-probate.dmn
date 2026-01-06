@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.34.0">
+  <decision id="wa-task-configuration-st_cic-criminalinjuriescompensation" name="Task configuration DMN" camunda:historyTimeToLive="P90D">
+    <decisionTable id="DecisionTable_14cx079" hitPolicy="RULE ORDER">
+      <input id="InputClause_1gxyo7f" label="CCD Case Data" camunda:inputVariable="caseData">
+        <inputExpression id="LiteralExpression_0mra7c4" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_00c59gm" label="Task type" biodi:width="405" camunda:inputVariable="taskType">
+        <inputExpression id="LiteralExpression_1ngi22k" typeRef="string">
+          <text>if(taskAttributes != null and taskAttributes.taskType != null) then
+            taskAttributes.taskType
+            else if(taskType != null) then
+            taskType
+            else
+            null</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Name" name="name" typeRef="string" biodi:width="349" />
+      <output id="OutputClause_021y3bb" label="Value" name="value" typeRef="string" biodi:width="932" />
+      <output id="OutputClause_0tefly7" label="Can Reconfigure?" name="canReconfigure" typeRef="boolean" biodi:width="551" />
+      <rule id="DecisionRule_06lzwv2">
+        <inputEntry id="UnaryTests_1mcz2gy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a3bnkb">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1whdf9l">
+          <text>"description"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0n1yxlg">
+          <text>"[Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cvv017">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0gmi4fj">
+        <inputEntry id="UnaryTests_1sevjwl">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1f4grcr">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0imj3eu">
+          <text>"description"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bi6f35">
+          <text>"[Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1s0f2ec">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0zibb9q">
+        <inputEntry id="UnaryTests_0g95gdk">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0do24dv">
+          <text>"ExamineDigitalCaseIntestacy"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0otn8nw">
+          <text>"description"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10sxm5i">
+          <text>"[Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pwcpzx">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_1ifewa3">
+      <dmndi:DMNShape id="DMNShape_0ijg0or" dmnElementRef="wa-task-configuration-st_cic-criminalinjuriescompensation">
+        <dc:Bounds height="80" width="180" x="150" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

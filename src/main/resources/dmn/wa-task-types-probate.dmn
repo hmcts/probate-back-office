@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_1kep5qz" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.34.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
+  <decision id="wa-task-types-st_cic-criminalinjuriescompensation" name="Task Types DMN" camunda:historyTimeToLive="P90D">
+    <decisionTable id="DecisionTable_17knzal" hitPolicy="COLLECT">
+      <input id="Input_1">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" name="taskTypeId" typeRef="string" biodi:width="359" />
+      <output id="OutputClause_0aeuwfu" name="taskTypeName" typeRef="string" biodi:width="489" />
+      <rule id="DecisionRule_1s0e55i">
+        <inputEntry id="UnaryTests_159d5fs">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yaqmpz">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06kvqyk">
+          <text>"Examin Digital Case - Probate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1gmuhtt">
+        <inputEntry id="UnaryTests_0vbok3e">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09b5y13">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02vdkhh">
+          <text>"Examin Digital Case - Admon"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1oeofpy">
+        <inputEntry id="UnaryTests_1pyk95b">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00v64l1">
+          <text>"ExamineDigitalCaseIntestacy"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ffftf3">
+          <text>"Examin Digital Case - Intestacy"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0n139s3">
+        <inputEntry id="UnaryTests_0jis367">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18ny0ws">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1s133fv">
+          <text></text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_0j0r28f">
+      <dmndi:DMNShape id="DMNShape_0524hsr" dmnElementRef="wa-task-types-st_cic-criminalinjuriescompensation">
+        <dc:Bounds height="80" width="180" x="150" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

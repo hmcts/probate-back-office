@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.34.0">
+  <decision id="wa-task-cancellation-st_cic-criminalinjuriescompensation" name="Task cancellation DMN" camunda:historyTimeToLive="P90D">
+    <decisionTable id="DecisionTable_0z3jx1g" hitPolicy="COLLECT">
+      <input id="Input_1" label="From State">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>fromState</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0ain215" label="Event">
+        <inputExpression id="LiteralExpression_0h2l2zj" typeRef="string">
+          <text>event</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0bomy63" label="To State">
+        <inputExpression id="LiteralExpression_1g5glfi" typeRef="string">
+          <text>state</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_18zgoaj" label="Action" name="action" typeRef="string" />
+      <output id="OutputClause_0tu8bqp" label="Warning Code" name="warningCode" typeRef="string" />
+      <output id="OutputClause_1kfc3jv" label="Warning Text" name="warningText" typeRef="string" />
+      <output id="OutputClause_0dqzted" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="277" />
+      <rule id="DecisionRule_1guzypv">
+        <description></description>
+        <inputEntry id="UnaryTests_1n3g5ie">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1g1cc7g">
+          <text>"boWithdrawApplicationForCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ah5t17">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1c4vo81">
+          <text>"Cancel"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mfk4dd">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xi8ame">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_038kekv">
+          <text></text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="wa-task-cancellation-st_cic-criminalinjuriescompensation">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

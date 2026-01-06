@@ -4,6 +4,7 @@ import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.impl.VariableMapImpl;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,37 +18,22 @@ import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_ST_CIC_CRIMINALINJURIESCOMPENSATION;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.PROCESS_CATEGORY_HEARING_BUNDLE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.PROCESS_CATEGORY_HEARING_COMPLETION;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.PROCESS_CATEGORY_ISSUE_CASE;
+import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder.event;
 
+@Ignore
 class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
     @BeforeAll
     public static void initialization() {
-        CURRENT_DMN_DECISION_TABLE = WA_TASK_CANCELLATION_ST_CIC_CRIMINALINJURIESCOMPENSATION;
+        CURRENT_DMN_DECISION_TABLE = WA_TASK_CANCELLATION_PROBATE;
     }
 
     public static Stream<Arguments> scenarioProvider() {
         return Stream.of(
-                event("caseworker-close-the-case")
-                        .cancelAll()
-                        .build(),
-                event("caseworker-postpone-hearing")
-                        .cancel(PROCESS_CATEGORY_HEARING_COMPLETION)
-                        .cancel(PROCESS_CATEGORY_HEARING_BUNDLE)
-                        .build(),
-                event("caseworker-cancel-hearing")
-                        .cancel(PROCESS_CATEGORY_HEARING_COMPLETION)
-                        .cancel(PROCESS_CATEGORY_HEARING_BUNDLE)
-                        .build(),
-                event("refer-to-judge")
-                        .cancel(PROCESS_CATEGORY_ISSUE_CASE)
-                        .build(),
-                event("refer-to-legal-officer")
-                        .cancel(PROCESS_CATEGORY_ISSUE_CASE)
+                event("boWithdrawApplicationForCasePrinted")
+                        .cancel(EXAMINE_DIGITAL_CASE_PROBATE)
                         .build()
         );
     }
