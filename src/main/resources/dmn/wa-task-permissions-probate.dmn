@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-permissions-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.34.0">
-  <decision id="wa-task-permissions-st_cic-criminalinjuriescompensation" name="Task Permissions DMN" camunda:historyTimeToLive="P90D">
+  <decision id="wa-task-permissions-probate" name="Task Permissions DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_1pr5oic" hitPolicy="RULE ORDER">
       <input id="InputClause_12crj6e" label="Task Type" biodi:width="299" camunda:inputVariable="taskType">
         <inputExpression id="LiteralExpression_11cu08d" typeRef="string" expressionLanguage="feel">
@@ -23,36 +23,6 @@
       <output id="OutputClause_16bocer" label="Authorisations" name="authorisations" typeRef="string" biodi:width="150" />
       <output id="OutputClause_1n914lw" label="Assignment Priority" name="assignmentPriority" typeRef="integer" biodi:width="150" />
       <output id="OutputClause_04cbxc1" label="Auto Assignable" name="autoAssignable" typeRef="boolean" biodi:width="150" />
-      <rule id="DecisionRule_17sqvb4">
-        <description>"Supervisor Task Permissions"</description>
-        <inputEntry id="UnaryTests_0kkhvpk">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1hbvv3u">
-          <text></text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1kkiynh">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0ab4flz">
-          <text>"task-supervisor"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0330rcb">
-          <text>"Read,Claim,Unclaim,Manage,Assign,Unassign,Complete,Cancel"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0k4avs1">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0ji9cew">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1dvpt1s">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_068a2c6">
-          <text>false</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_1qs3glb">
         <inputEntry id="UnaryTests_0l9ifw6">
           <text>"ExamineDigitalCaseProbate"</text>
@@ -140,40 +110,11 @@
           <text>false</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0s3msah">
-        <inputEntry id="UnaryTests_0uarb71">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1azou9o">
-          <text></text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_05qq5gt">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0jn9jz4">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1720slc">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_01jn2su">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1i7hcee">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1wc8qh5">
-          <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0jmecqk">
-          <text></text>
-        </outputEntry>
-      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram>
-      <dmndi:DMNShape dmnElementRef="wa-task-permissions-st_cic-criminalinjuriescompensation">
+      <dmndi:DMNShape dmnElementRef="wa-task-permissions-probate">
         <dc:Bounds height="80" width="180" x="160" y="100" />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>

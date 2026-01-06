@@ -5,7 +5,6 @@ import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.impl.VariableMapImpl;
 import org.hamcrest.MatcherAssert;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,7 +12,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -22,9 +20,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_COMPLETION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.AUTO_COMPLETE_MODE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 
-@Ignore
 class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
 
     @BeforeAll
@@ -36,13 +35,20 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
 
         Stream<Arguments> of = Stream.of(
                 Arguments.of(
-                        "handleEvidence",
+                        "boSelectForQA",
                         List.of(
                                 Map.of(
-                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE,
-                                        "completionMode", AUTO_COMPLETE_MODE
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
                                 ),
-                                Collections.emptyMap()
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
+                                )
                         )
                 )
         );
@@ -55,7 +61,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(65));
+        assertThat(logic.getRules().size(), is(3));
     }
 
     @ParameterizedTest(name = "event id: {0}")

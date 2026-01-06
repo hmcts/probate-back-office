@@ -4,7 +4,6 @@ import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.impl.VariableMapImpl;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,21 +26,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DEFAULT_MINOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DESCRIPTION;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_INTERVAL_DAYS;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_ORIGIN;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.MAJOR_PRIORITY;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.MINOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.PRIORITY_DATE_ORIGIN_REF;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_ADMIN;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROUTINE_WORK_TYPE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.URGENT_MAJOR_PRIORITY;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.WORK_TYPE;
 
-@Ignore
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
     private static final String REQUEST = "classpath:custom-case-data.json";
@@ -55,21 +46,34 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
     static Stream<Arguments> scenarioProvider() throws IOException {
         return Stream.of(
-
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultCase()
                                 .isUrgent()
                                 .build(),
                         ConfigurationExpectationBuilder.defaultExpectations()
-                                .expectedValue(MINOR_PRIORITY, DEFAULT_MINOR_PRIORITY, true)
-                                .expectedValue(MAJOR_PRIORITY, URGENT_MAJOR_PRIORITY, true)
-                                .expectedValue(WORK_TYPE, ROUTINE_WORK_TYPE, true)
-                                .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_ADMIN, true)
-                                .expectedValue(DUE_DATE_INTERVAL_DAYS, "7", true)
-                                .expectedValue(DESCRIPTION, "[Orders: Send order](/cases/case-details"
-                                        + "/${[CASE_REFERENCE]}/trigger/caseworker-send-order)", true)
-                                .expectedValue(DUE_DATE_ORIGIN, ZonedDateTime.now(), false)
+                                .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
+                                        + "/trigger/boSelectForQA)", true)
+                                .build()
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_ADMON,
+                        CaseDataBuilder.defaultCase()
+                                .isUrgent()
+                                .build(),
+                        ConfigurationExpectationBuilder.defaultExpectations()
+                                .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
+                                         + "/trigger/boSelectForQA)", true)
+                                .build()
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_INTESTACY,
+                        CaseDataBuilder.defaultCase()
+                                .isUrgent()
+                                .build(),
+                        ConfigurationExpectationBuilder.defaultExpectations()
+                                .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
+                                        + "/trigger/boSelectForQA)", true)
                                 .build()
                 )
         );
@@ -81,7 +85,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(43, logic.getRules().size());
+        assertEquals(3, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

@@ -47,6 +47,8 @@ public class CamundaTaskConstants {
     public static final String DEFAULT_DUE_DATE_WORKING_DAYS_OF_WEEK = "SATURDAY,SUNDAY";
 
     public static final String EXAMINE_DIGITAL_CASE_PROBATE = "ExamineDigitalCaseProbate";
+    public static final String EXAMINE_DIGITAL_CASE_ADMON = "ExamineDigitalCaseAdmonWill";
+    public static final String EXAMINE_DIGITAL_CASE_INTESTACY = "ExamineDigitalCaseIntestacy";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
