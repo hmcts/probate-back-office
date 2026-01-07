@@ -24,7 +24,7 @@ function send_curl_request() {
   fi
 
   local payload=$(cat "${json_file}")
-  local url="https://probate-back-office-am-org-role-mapping-service-pr-${CHANGE_ID}.preview.platform.hmcts.net/am/testing-support/createOrgMapping?userType=${user_type}"
+  local url="https://probate-back-office-pr-${CHANGE_ID}-am-org-role-mapping-service.preview.platform.hmcts.net/am/testing-support/createOrgMapping?userType=${user_type}"
 
   curl --silent --show-error --fail "${url}" \
   -H 'Content-Type: application/json' \
