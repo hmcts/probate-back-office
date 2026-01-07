@@ -9,7 +9,7 @@ plugins {
   id 'jacoco'
   id 'project-report'
   id 'au.com.dius.pact' version '4.6.19'
-  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.3.2'
+  id 'net.serenity-bdd.serenity-gradle-plugin' version '5.0.1-FINAL'
   id 'org.sonarqube' version '7.2.2.6593'
   id 'com.github.hmcts.rse-cft-lib' version '0.19.1960'
 }
@@ -165,9 +165,9 @@ def versions = [
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '7.17.29',
         fortifyClientVersion            : '1.4.10',
-        hmctsJavaLogging                : '6.1.9',
+        hmctsJavaLogging                : '7.0.0',
         jacksonDatabind                 : '2.17.1',
-        jsoup                           : '1.21.2',
+        jsoup                           : '1.22.1',
         lifeEventsClientVersion         : '1.5.2',
         lombok                          : '1.18.42',
         mapStruct                       : '1.2.0.Final',
@@ -176,7 +176,7 @@ def versions = [
         probateCommonsVersion           : '2.2.17',
         restAssured                     : '5.5.6',
         sendLetterClientVersion         : '5.1.1',
-        serenity                        : '4.3.4',
+        serenity                        : '5.0.2',
         serviceAuthVersion              : '5.3.3',
         springBootVersion               : '3.5.9',
         springCloud                     : '4.3.0',
