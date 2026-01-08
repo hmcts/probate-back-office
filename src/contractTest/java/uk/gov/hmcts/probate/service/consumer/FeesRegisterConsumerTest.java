@@ -19,14 +19,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.TestPropertySource;
-import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 
 import java.math.BigDecimal;
 import java.net.SocketTimeoutException;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(PactConsumerTestExt.class)
@@ -131,24 +129,19 @@ public class FeesRegisterConsumerTest {
     @PactTestFor(pactMethod = "createApplicationFeeFragmentSA")
     public void verifyApplicationFeeServicePact() throws JSONException, SocketTimeoutException {
 
-        FeeResponse result = feeService.getApplicationFeeResponse(new BigDecimal("250000.00"));
-        //assertTrue(new BigDecimal("200").equals(result.getFeeAmount()));
-
+        feeService.getApplicationFeeResponse(new BigDecimal("250000.00"));
     }
 
     @Test
     @PactTestFor(pactMethod = "createCopiesFeeFragment")
     public void verifyCopiesFeeServicePact() throws JSONException, SocketTimeoutException {
-        FeeResponse result = feeService.getCopiesFeeResponse(3L);
-        //assertTrue(new BigDecimal("3.5").equals(result.getFeeAmount()));
-
+        feeService.getCopiesFeeResponse(3L);
     }
 
     @Test
     @PactTestFor(pactMethod = "createCopiesNoFeeFragment")
     public void verifyCopiesNoFeeServicePact() throws JSONException, SocketTimeoutException {
-        FeeResponse result = feeService.getCopiesFeeResponse(0L);
-        //assertTrue(new BigDecimal("0").equals(result.getFeeAmount()));
+        feeService.getCopiesFeeResponse(0L);
     }
 
 }
