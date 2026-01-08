@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -48,7 +49,7 @@ public class AutomatedNotificationPersonalisationService {
     private static final String TODAY_WELSH = "today_welsh";
     private static final String CASE_ID_STRING = "<CASE_ID>";
     private static final String CASE_TYPE_STRING = "<CASE_TYPE>";
-    private static final String SOLICITOR_CASE_URL = "/cases/case-details/<CASE_ID>";
+    private static final String SOLICITOR_CASE_URL = "/cases/PROBATE/<CASE_TYPE>/<CASE_ID>";
     private static final String PERSONAL_CASE_URL = "/get-case/<CASE_ID>?probateType=<CASE_TYPE>";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMMM yyyy");
     private static final DateTimeFormatter DOD_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -197,7 +198,11 @@ public class AutomatedNotificationPersonalisationService {
     }
 
     private String getSolicitorCaseLink(String caseId) {
-        return StringUtils.replace(urlPrefixSolicitorCase + SOLICITOR_CASE_URL, CASE_ID_STRING, caseId);
+        return StringUtils.replaceEach(
+            urlPrefixSolicitorCase + SOLICITOR_CASE_URL,
+            new String[]{CASE_ID_STRING, CASE_TYPE_STRING},
+            new String[]{caseId, GRANT_OF_REPRESENTATION.getCode()}
+        );
     }
 
     private String getSolicitorName(Map<String, Object> data, ApplicationType applicationType) {
