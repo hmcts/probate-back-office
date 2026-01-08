@@ -34,4 +34,5 @@ function send_curl_request() {
 }
 
 send_curl_request "${BASEDIR}/aat-caseworker-user-ids.json" "CASEWORKER"
+#e11b2bd5-128c-4903-ab6c-d5682537e343	Vikas	Desai	crd_func_test_2.0_rdcc_3831_58@justice.gov.uk	9	CTSC Team Leader	2021-10-05 15:59:20.559712	2022-02-17 11:12:20.751523
 # send_curl_request "${BASEDIR}/aat-judicial-user-ids.json" "JUDICIAL"
