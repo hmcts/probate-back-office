@@ -19,7 +19,6 @@ global:
   postgresSecret: postgres
   postgresHost: probate-preview.postgres.database.azure.com
   databaseNamePrefix: "pr-${CHANGE_ID}-"
-  FEE_API_URL: http://fees-register-api-aat.service.core-compute-aat.internal
 
 wa:
   enabled: true
