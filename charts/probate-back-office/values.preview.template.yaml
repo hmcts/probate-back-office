@@ -53,6 +53,13 @@ ccd:
         - name: "pr-${CHANGE_ID}-user-profile"
         - name: "pr-${CHANGE_ID}-role-assignment"
         - name: "pr-${CHANGE_ID}-probatemandb"
+        - name: "pr-${CHANGE_ID}-camunda"
+        - name: "pr-${CHANGE_ID}-cft_task_db"
+        - name: "pr-${CHANGE_ID}-cft_task_db_replica"
+        - name: "pr-${CHANGE_ID}-wa_workflow_api"
+        - name: "pr-${CHANGE_ID}-wa-case-event-handler"
+        - name: "pr-${CHANGE_ID}-org-role-mapping"
+
   ccd-case-print-service:
     enabled: true
     nodejs:
@@ -305,6 +312,7 @@ java:
     PROBATE_POSTGRESQL_HOSTNAME_VAL: '{{ .Values.global.postgresHostname }}'
     MANAGE_CASE_URL: https://xui-${SERVICE_FQDN}.preview.platform.hmcts.net
     FRONTEND_URL: http://probate.aat.platform.hmcts.net
+    SPRING_JMS_SERVICEBUS_ENABLED: false
 
   keyVaults:
     probate:
