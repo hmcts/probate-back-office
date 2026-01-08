@@ -759,4 +759,15 @@ https://github.com/hmcts/probate-back-office/tree/DTSPB-1172-investigate-sol-cas
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-demo.service.core-compute-demo.internal aac-manage-case-assignment-demo.service.core-compute-demo.internal
 https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client_id=ccd_admin&redirect_uri=https%3A%2F%2Fccd-admin-web.demo.platform.hmcts.net%2Foauth2redirect
 
+# Build state diagram
+To generate the state diagram for different case types and roles, you can update the params (caseTypesToUse/filteredByRoleName) in BuildStateDiagram.java and run
+`./gradlew buildStateDiagram` . It will create a file named `CCD_Probate_<CaseType>_<RoleName>_state.txt`.
 
+The generated file can be visualized using [plantuml4idea](https://plugins.jetbrains.com/plugin/7017-plantuml4idea) by opening the file with the IntelliJ plugin.
+
+You may need to install graphviz on your machine for the first time.
+```bash
+brew install graphviz
+```
+
+Open settings in plantuml plugin and set the graphviz dot executable path to `/opt/homebrew/bin/dot`
