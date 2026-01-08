@@ -1177,6 +1177,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "citizenHubResponse", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "citizenHubResponseDraft", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "keepDraft", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "intestacyRelationshipDraft", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boRobotUploadDocuments", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boRedeclarationComplete", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
