@@ -110,7 +110,7 @@ Died on
 
 {% macro lastWillAndTestamentParagraph(cd, applyingExecCounter) %}
 <p>The Last Will and Testament <strong>
-    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}{% if cd.willHasCodicils == "Yes" %}{% if cd.codicilAddedDateList != null %}{{ codicils(cd.codicilAddedDateList|length) }}{% elseif cd.willNumberOfCodicils != null and cd.willNumberOfCodicils != "" %}{{ codicils(cd.willNumberOfCodicils) }}{% endif %}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
+    {% if cd.willHasCodicils == "Yes" %}{% if cd.codicilAddedDateList != null %}{{ codicils(cd.codicilAddedDateList|length) }}{% elseif cd.willNumberOfCodicils != null and cd.willNumberOfCodicils != "" %}{{ codicils(cd.willNumberOfCodicils) }}{% endif %}{% endif %}{% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
     The Administration of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong>'s estate is granted by this court to the following Executor{% if applyingExecCounter > 1 %}s{% endif %} </p>
 {% endmacro %}
 
