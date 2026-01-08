@@ -5,7 +5,7 @@ set -xe
 USERNAME=${1}
 PASSWORD=${2}
 
-echo "IDAM_API_URL_BASE": ${IDAM_API_URL_BASE}
+#echo "IDAM_API_URL_BASE": ${IDAM_API_URL_BASE}
 IDAM_URI=https://idam-api.aat.platform.hmcts.net
 REDIRECT_URI=http://localhost:3451/oauth2redirect
 CLIENT_ID="ccd_gateway"
