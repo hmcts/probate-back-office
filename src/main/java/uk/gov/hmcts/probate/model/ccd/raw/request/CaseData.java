@@ -536,6 +536,7 @@ public class CaseData extends CaseDataParent {
     private final String deceasedAnyLivingDescendants;
     private final String deceasedAnyOtherParentAlive;
     private final String deceasedHasAssetsOutsideUK;
+    private final String assetsOutsideNetValue;
     private final String boEmailRequestInfoNotificationRequested;
     @Builder.Default
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
