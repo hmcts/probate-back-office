@@ -733,6 +733,13 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
 
+    @PostMapping(path = "/transformRelationshipToDeceased",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> setupDynamicList(
+            @RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(callbackResponseTransformer.setupDynamicList(callbackRequest));
+    }
+
     @PostMapping(path = "/default-registrars-decision",
             consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> setupRegistrarsDecision(

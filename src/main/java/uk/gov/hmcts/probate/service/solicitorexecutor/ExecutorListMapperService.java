@@ -6,6 +6,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.ApplicantFamilyDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsApplicantFamilyDetails;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -170,6 +172,52 @@ public class ExecutorListMapperService {
                                     .notApplyingExecutorDispenseWithNotice(caseData.getDispenseWithNotice())
                                     .notApplyingExecutorDispenseWithNoticeLeaveGiven(dispWNoticeLeaveGiven)
                                     .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(dispWNoticeLeaveGivenDate)
+                                    .build());
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromSolsIntestacyExecutorListToApplyingExecutors(
+            CaseData caseData) {
+        return caseData.getSolsIntestacyExecutorList()
+                .stream()
+                .map(exec -> {
+                    final String applExecFNames = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecForenames(),
+                            "additional executor forenames");
+                    final String applExecLName = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecLastname(),
+                            "additional executor last name");
+                    final String applExecName = applExecFNames + " " + applExecLName;
+                    final SolsApplicantFamilyDetails solsApplicantFamilyDetails =
+                            exec.getValue().getSolsApplicantFamilyDetails();
+                    final String selectedRelationship = solsApplicantFamilyDetails.getRelationship().getValue()
+                            .getCode();
+                    ApplicantFamilyDetails applicantFamilyDetails = ApplicantFamilyDetails.builder()
+                            .relationshipToDeceased(selectedRelationship)
+                            .childAdoptedIn(solsApplicantFamilyDetails.getChildAdoptedIn())
+                            .childAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                    .getChildAdoptionInEnglandOrWales())
+                            .childAdoptedOut(solsApplicantFamilyDetails.getChildAdoptedOut())
+                            .childDieBeforeDeceased(solsApplicantFamilyDetails.getChildDieBeforeDeceased())
+                            .grandchildParentAdoptedIn(solsApplicantFamilyDetails.getGrandchildParentAdoptedIn())
+                            .grandchildParentAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                    .getGrandchildParentAdoptionInEnglandOrWales())
+                            .grandchildParentAdoptedOut(solsApplicantFamilyDetails.getGrandchildParentAdoptedOut())
+                            .grandchildAdoptedIn(solsApplicantFamilyDetails.getGrandchildAdoptedIn())
+                            .grandchildAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                    .getGrandchildAdoptionInEnglandOrWales())
+                            .grandchildAdoptedOut(solsApplicantFamilyDetails.getGrandchildAdoptedOut())
+                            .build();
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorApplying.builder()
+                                    .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
+                                    .applyingExecutorFirstName(applExecFNames)
+                                    .applyingExecutorLastName(applExecLName)
+                                    .applyingExecutorName(applExecName)
+                                    .applicantFamilyDetails(applicantFamilyDetails)
+                                    .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                                     .build());
                 })
                 .collect(Collectors.toList());
