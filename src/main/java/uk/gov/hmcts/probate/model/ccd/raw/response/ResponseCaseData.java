@@ -338,6 +338,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String deceasedAnyLivingDescendants;
     private final String deceasedAnyOtherParentAlive;
     private final String deceasedHasAssetsOutsideUK;
+    private final String assetsOutsideNetValue;
 
     private final String boStopDetailsDeclarationParagraph;
     private final String boEmailRequestInfoNotificationRequested;
