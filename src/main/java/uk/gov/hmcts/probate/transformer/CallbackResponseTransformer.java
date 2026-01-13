@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
@@ -2297,14 +2298,15 @@ public class CallbackResponseTransformer {
 
         DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData);
         String  otherExecutorExists = caseData.getOtherExecutorExists();
+        log.info("Other executor exists answer: {}", otherExecutorExists);
 
-        List<CollectionMember<AdditionalExecutor>> existingExecutorList = caseData.getSolsAdditionalExecutorList();
+        List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList = caseData.getSolsIntestacyExecutorList();
         if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
-            responseCaseDataBuilder.solsAdditionalExecutorList(existingExecutorList);
+            responseCaseDataBuilder.solsIntestacyExecutorList(existingExecutorList);
         } else {
             if (YES.equalsIgnoreCase(otherExecutorExists) && !YES.equalsIgnoreCase(hasExecutor)) {
-                List<CollectionMember<AdditionalExecutor>> additionalExecutorList = new ArrayList<>();
-                AdditionalExecutor additionalExecutor = AdditionalExecutor.builder()
+                List<CollectionMember<IntestacyAdditionalExecutor>> additionalExecutorList = new ArrayList<>();
+                IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
                         .solsApplicantFamilyDetails(SolsApplicantFamilyDetails.builder()
                                 .relationship(relationshipList)
                                 .build()
@@ -2312,7 +2314,7 @@ public class CallbackResponseTransformer {
                         .build();
 
                 additionalExecutorList.add(new CollectionMember<>(additionalExecutor));
-                responseCaseDataBuilder.solsAdditionalExecutorList(additionalExecutorList);
+                responseCaseDataBuilder.solsIntestacyExecutorList(additionalExecutorList);
                 responseCaseDataBuilder.hasExecutorListFlag(YES);
             }
         }
@@ -2322,6 +2324,7 @@ public class CallbackResponseTransformer {
     private DynamicRadioList getAppropriateRelationshipRadioList(CaseData caseData) {
         List<DynamicRadioListElement> listItems = new ArrayList<>();
         String relationship = caseData.getSolsApplicantRelationshipToDeceased();
+        log.info("Setting up relationship radio list for relationship: {}", relationship);
 
         if ("child".equalsIgnoreCase(relationship) || "grandchild".equalsIgnoreCase(relationship)) {
             listItems.add(buildRadioListItem("child", "They are the deceased’s child"));

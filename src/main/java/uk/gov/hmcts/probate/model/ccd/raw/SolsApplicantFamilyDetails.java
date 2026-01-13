@@ -10,6 +10,7 @@ public class SolsApplicantFamilyDetails {
     private final String childAdoptedIn;
     private final String childAdoptionInEnglandOrWales;
     private final String childAdoptedOut;
+    private final String childDieBeforeDeceased;
     private final String grandchildParentAdoptedIn;
     private final String grandchildParentAdoptionInEnglandOrWales;
     private final String grandchildParentAdoptedOut;
