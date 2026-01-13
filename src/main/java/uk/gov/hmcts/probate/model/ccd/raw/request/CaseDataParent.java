@@ -1,9 +1,12 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
@@ -24,6 +27,7 @@ import java.util.Locale;
 @Jacksonized
 @SuperBuilder
 @Data
+@Slf4j
 public class CaseDataParent {
 
     protected final String schemaVersion;
@@ -86,7 +90,14 @@ public class CaseDataParent {
     private final String solsPBAPaymentReference;
     private final String solsOrgHasPBAs;
     private final String solsNeedsPBAPayment;
-    private final OrganisationPolicy applicantOrganisationPolicy;
+
+    /// This has to be mutable to permit us to rollback DTSPB-5005. mutation is done by
+    /// clearApplicantOrganisationPolicy() which we should remove after that migration completes and make this
+    /// final again
+    @Getter
+    @Setter(AccessLevel.NONE)
+    private OrganisationPolicy applicantOrganisationPolicy;
+
     private String serviceRequestReference;
     private String paymentTaken;
     private String applicationSubmittedBy;
@@ -138,5 +149,10 @@ public class CaseDataParent {
             ex.getMessage();
             return null;
         }
+    }
+
+    public void clearApplicantOrganisationPolicy(final long caseReference) {
+        log.info("Clearing applicantOrganisationPolicy for case {}", caseReference);
+        this.applicantOrganisationPolicy = null;
     }
 }
