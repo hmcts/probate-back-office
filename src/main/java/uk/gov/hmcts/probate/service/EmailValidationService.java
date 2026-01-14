@@ -34,6 +34,9 @@ public class EmailValidationService {
     }
 
     public String getHashedEmail(final String emailAddress) {
+        if (emailAddress == null) {
+            return "NULL";
+        }
         final String digest = DigestUtils.sha256Hex(emailAddress);
         final StringBuilder builder = new StringBuilder();
 
