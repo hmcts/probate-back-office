@@ -45,10 +45,10 @@ class CheckIntestacyMaritalStatusRuleTest {
     }
 
     @Test
-    void shouldReturnErrorWhenSpouseApplicationWithOtherApplicant() {
+    void shouldReturnErrors_whenApplicantIsSpouseAndDeceasedDivorced() {
         CCDData ccdData = CCDData.builder()
                 .solsApplicantRelationshipToDeceased("SpouseOrCivil")
-                .deceasedMaritalStatus("marriedCivilPartnership")
+                .deceasedMaritalStatus("divorcedCivilPartnership")
                 .build();
         List<FieldErrorResponse> errors = underTest.validate(ccdData);
 
@@ -58,10 +58,10 @@ class CheckIntestacyMaritalStatusRuleTest {
     }
 
     @Test
-    void shouldNoErrorWhenSpouseApplicationWithoutOtherApplicant() {
+    void shouldReturnEmptyList_whenApplicantIsSpouseAndDeceasedMarried() {
         CCDData ccdData = CCDData.builder()
                 .solsApplicantRelationshipToDeceased("SpouseOrCivil")
-                .deceasedMaritalStatus("divorcedCivilPartnership")
+                .deceasedMaritalStatus("marriedCivilPartnership")
                 .build();
         List<FieldErrorResponse> errors = underTest.validate(ccdData);
 

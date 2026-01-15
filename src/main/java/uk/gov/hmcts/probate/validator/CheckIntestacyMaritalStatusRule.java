@@ -24,7 +24,7 @@ public class CheckIntestacyMaritalStatusRule implements ValidationRule {
     public List<FieldErrorResponse> validate(CCDData ccdData) {
 
         if (RELATIONSHIP_SPOUSE_CIVIL.equals(ccdData.getSolsApplicantRelationshipToDeceased())
-                && MARITAL_STATUS_MARRIED.equals(ccdData.getDeceasedMaritalStatus())) {
+                && !MARITAL_STATUS_MARRIED.equals(ccdData.getDeceasedMaritalStatus())) {
 
             return List.of(
                     businessValidationMessageService.generateError(
