@@ -143,13 +143,16 @@ export class CwEventActionsPage extends BasePage {
       await this.caseMatchImportLocator.click();
     }
 
-    await this.page.evaluate(async () => {
+    /*await this.page.evaluate(async () => {
       const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       for (let i = 0; i < document.body.scrollHeight; i += 1000) {
         window.scrollTo(0, i);
         await delay(100);
       }
-    });
+    });*/
+
+    await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
     if (nextStepName === "Match application") {
       await this.waitForNavigationToComplete(commonConfig.continueButton);
     } else {

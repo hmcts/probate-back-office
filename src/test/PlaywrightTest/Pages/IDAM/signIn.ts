@@ -17,7 +17,10 @@ export class SignInPage extends BasePage {
     useProfessionalUser,
     signInDelay = testConfig.SignInDelayDefault
   ) {
-    await this.page.goto(`${testConfig.TestBackOfficeUrl}/`);
+    await this.page.goto(`${testConfig.TestBackOfficeUrl}/`, {
+      waitUntil: 'domcontentloaded',
+      timeout: 60000
+    });
     await this.page.waitForTimeout(testConfig.ManualDelayMedium);
     await expect(
       this.page.getByRole("heading", {

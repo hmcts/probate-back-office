@@ -3,6 +3,7 @@ import { CwEventActionsPage } from "../Pages/newCase/cwEventActions.ts";
 import { CreateCasePage } from "../Pages/newCase/newCase.ts";
 import { SolCreateCasePage } from "../Pages/newCase/solNewCase.ts";
 import { BasePage } from "../Pages/utility/basePage.ts";
+import { CaseProgressPage } from "../Pages/caseProgressStandard/caseProgressCheck.ts";
 
 export interface PageFixtures {
   basePage: BasePage;
@@ -10,6 +11,7 @@ export interface PageFixtures {
   createCasePage: CreateCasePage;
   cwEventActionsPage: CwEventActionsPage;
   solCreateCasePage: SolCreateCasePage;
+  caseProgressPage: CaseProgressPage;
 }
 
 export const pageFixtures = {
@@ -31,5 +33,9 @@ export const pageFixtures = {
 
   solCreateCasePage: async ({ page }, use) => {
     await use(new SolCreateCasePage(page));
+  },
+
+  caseProgressPage: async ({ page }, use) => {
+    await use(new CaseProgressPage(page));
   },
 };

@@ -458,6 +458,7 @@ export class SolCreateCasePage extends BasePage {
       )
       .click();
     await this.confirmPaymentButton.click();
+    await this.page.waitForTimeout(testConfig.ManualDelayLong);
   }
 
   async viewPaymentStatus(testInfo: TestInfo, caseRef: string, appType: string) {
@@ -483,7 +484,7 @@ export class SolCreateCasePage extends BasePage {
         .getByText(makePaymentConfig.statusText)
         .isVisible()
         .catch(() => true);
-      await this.page.waitForTimeout(10);
+      await this.page.waitForTimeout(10000);
       if (result) {
         break;
       }
@@ -937,7 +938,7 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     for (let i = 0; i < serviceRequestTabConfig.fields.length; i++) {
       if (serviceRequestTabConfig.fields[i] && serviceRequestTabConfig.fields[i] !== '') {
-        await expect(this.page.getByText(serviceRequestTabConfig.fields[i])).toBeVisible(); // eslint-disable-line no-await-in-loop
+        await expect(this.page.getByText(serviceRequestTabConfig.fields[i]).first()).toBeVisible(); // eslint-disable-line no-await-in-loop
       }
     }
 
@@ -997,6 +998,11 @@ export class SolCreateCasePage extends BasePage {
       await expect(this.page.locator(`${caseProgressConfig.hmrcCodeTextBox}`)).toBeEnabled();
       await this.page.locator(`${caseProgressConfig.hmrcCodeTextBox}`).fill(caseProgressConfig.uniqueHmrcCode);
     }
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async caseProgressHmrcStopPage(caseProgressConfig) {
+    await expect(this.page.getByText(caseProgressConfig.ihtHmrcLetterNotReceived)).toBeVisible();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 

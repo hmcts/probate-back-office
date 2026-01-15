@@ -76,7 +76,7 @@ export class BasePage {
     await Promise.all([
       this.goButtonLocator.waitFor({ state: "visible" }),
       this.goButtonLocator.click(),
-      this.goButtonLocator.waitFor({ state: "detached" }),
+      this.goButtonLocator.waitFor({ state: "detached", timeout: 10000 }),
     ]);
   }
 
@@ -253,6 +253,44 @@ export class BasePage {
           await textLocator.first().isVisible();
         }
       }
+    }
+  }
+
+  async seeTabDetailsBilingual(caseRef, tabConfigFile, dataConfigFile) {
+    const delay = testConfig.CaseDetailsDelayDefault;
+
+    if (tabConfigFile.tabName) {
+      await expect(this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`)).toBeEnabled();
+      // const tabXPath = `//div[contains(text(),"${tabConfigFile.tabName}")]`;
+      // Tabs are hidden when there are more tabs
+      // await I.waitForElement(tabXPath, tabConfigFile.testTimeToWaitForTab || 60);
+    }
+    await expect(this.page.getByRole("heading", { name: caseRef })).toBeVisible();
+    await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
+    await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
+    await this.page.waitForTimeout(delay);
+    await this.runAccessibilityTest();
+    // await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
+    // await I.clickTab(tabConfigFile.tabName);
+    // await I.wait(delay);
+    // await I.runAccessibilityTest();
+
+    if (tabConfigFile.waitForText) {
+      await expect(this.page.getByLabel(tabConfigFile.waitForText)).toBeVisible();
+      // await I.waitForText(tabConfigFile.waitForText, testConfig.WaitForTextTimeout || 60);
+    }
+
+    /* eslint-disable no-await-in-loop */
+    for (let i = 0; i < tabConfigFile.fields.length; i++) {
+      if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
+        await expect(this.page.getByText(tabConfigFile.fields[i]).first()).toBeVisible();
+        // await I.see(tabConfigFile.fields[i]);
+      }
+    }
+
+    for (let i = 0; i < tabConfigFile.dataKeysBilingual.length; i++) {
+      await expect(this.page.getByText(dataConfigFile[tabConfigFile.dataKeysBilingual[i]])).toBeVisible();
+      // await I.waitForText(dataConfigFile[tabConfigFile.dataKeysBilingual[i]], testConfig.WaitForTextTimeout || 60);
     }
   }
 
