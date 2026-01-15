@@ -49,6 +49,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String REDECLARATION_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
     private static final String SOLS_VALIDATE_IHT_ESTATE = "/case/validate-iht-estate";
+    private static final String SOLS_UPDATE_INTESTACY_VALIDATE = "/case/sols-update-intestacy-validate";
     private static final String DEFAULT_SOLS_IHT_ESTATE = "/case/default-iht-estate";
     private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
     private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
@@ -699,6 +700,36 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         assertNull(powerReservedExecs);
         assertNull(trustCorpExecs);
+    }
+
+    @Test
+    void verifyRequestInTestacySuccessForUpdatePage2() throws IOException {
+        final ResponseBody body = validatePostSuccessForPayload(utils.getJsonFromFile(
+                "solicitorPDFPayloadIntestacy.json"), SOLS_UPDATE_INTESTACY_VALIDATE,
+                utils.getHeadersWithCaseworkerUser());
+
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String errors = jsonPath.get("data.errors");
+        assertNull(errors);
+    }
+
+    @Test
+    void verifyRequestInTestacyFailureForUpdatePage2() throws IOException {
+        String payload = utils.getJsonFromFile("solicitorPDFPayloadIntestacy.json");
+        payload = replaceAllInString(payload, "\"deceasedMaritalStatus\": \"marriedCivilPartnership\",",
+                "\"deceasedMaritalStatus\": \"divorcedCivilPartnership\",");
+        validatePostFailureWithPayload(payload, "error message, not possible",
+                200, SOLS_UPDATE_INTESTACY_VALIDATE);
+    }
+
+    @Test
+    void verifyRequestInTestacyFailureOtherExecutorExistsForUpdatePage2() throws IOException {
+        String payload = utils.getJsonFromFile("solicitorPDFPayloadIntestacy.json");
+        payload = replaceAllInString(payload, "\"deceasedMaritalStatus\": \"marriedCivilPartnership\",",
+                "\"marriedCivilPartnership\": \"marriedCivilPartnership\","
+                        + "\n\"otherExecutorExists\" : \"Yes\",");
+        validatePostFailureWithPayload(payload, "error message, cannot proceed",
+                200, SOLS_UPDATE_INTESTACY_VALIDATE);
     }
 
     @Test
