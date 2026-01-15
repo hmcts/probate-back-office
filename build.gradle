@@ -210,7 +210,11 @@ dependencyManagement {
   }
 }
 
-ext['netty.version'] = '4.1.130.Final' // CVE-2025-67735
+ext {
+  set("netty.version", libs.versions.netty.get()) // CVE-2025-67735
+  set("log4j2.version", libs.versions.log4j2.get()) // CVE-2025-68161
+  set("commons-lang3.version", libs.versions.commonsLang3.get()) // CVE-2025-48924
+}
 
 dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
