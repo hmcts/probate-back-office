@@ -47,7 +47,7 @@ run from root of probate-backoffice with the correct URL...
 
 #### For importing on preview env
 regernerate your xls locally for preview using
-```./ccdImports/conversionScripts/createAllXLS.sh http://probate-back-office-pr-3613.preview.platform.hmcts.net null```
+```./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-pr-3613.preview.platform.hmcts.net null```
 
 go to
 ```https://admin-web-probate-back-office-pr-3613.preview.platform.hmcts.net/```
