@@ -166,6 +166,7 @@ am-org-role-mapping-service:
 
 xui-webapp:
   nodejs:
+    image: hmctspublic.azurecr.io/xui/webapp:pr-4877-99754f1-20260119173709
     environment:
       SERVICES_WA_WORKFLOW_API_URL: http://{{ .Release.Name }}-wa-workflow-api
       HEALTH_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api/health
