@@ -44,3 +44,11 @@ run from root of probate-backoffice with the correct URL...
 
 #### To import all XLS files from the /jsonToXLS folder
 ```./ccdImports/conversionScripts/importAllXLS.sh```
+
+#### For importing on preview env
+regernerate your xls locally for preview using
+```./ccdImports/conversionScripts/createAllXLS.sh http://probate-back-office-pr-3613.preview.platform.hmcts.net null```
+
+go to
+```https://admin-web-probate-back-office-pr-3613.preview.platform.hmcts.net/```
+
