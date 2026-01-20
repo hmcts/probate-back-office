@@ -180,6 +180,7 @@ xui-webapp:
       SERVICES_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api
       SERVICES_ROLE_ASSIGNMENT_API: http://{{ .Release.Name }}-am-role-assignment-service
       SERVICES_ROLE_ASSIGNMENT_MAPPING_API: http://{{ .Release.Name }}-am-org-role-mapping-service
+      FEATURE_WORKALLOCATION_ENABLED: true
       WA_SUPPORTED_JURISDICTIONS: PROBATE
 
 ccd-message-publisher:
