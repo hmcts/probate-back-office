@@ -557,6 +557,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grandchildParentChildrenOverEighteen", "Label": "Did the grandchild parent children are over 18?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantSameParentsAsDeceased", "Label": "Did the applicant share both the same parents as the deceased?", "FieldType": "FixedList", "FieldTypeParameter": "sameParentFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAnyLivingParents", "Label": "Are there any living parents of the deceased?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsIntestacyExecutorList", "Label": "Co-applicant", "FieldType": "Collection", "FieldTypeParameter": "solIntestacyAdditionalExecutor", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "hasExecutorListFlag", "Label": "Did the grandchild parent children are over 18?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsIntestacyExecutorList", "Label": "Co-applicant", "FieldType": "Collection", "FieldTypeParameter": "solIntestacyAdditionalExecutor", "SecurityClassification": "Public"}
 ]

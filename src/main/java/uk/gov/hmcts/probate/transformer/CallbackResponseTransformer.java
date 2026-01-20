@@ -2293,8 +2293,11 @@ public class CallbackResponseTransformer {
                         Optional.empty(),
                         false);
         final var caseDetails = callbackRequest.getCaseDetails();
+        final var caseDetailsBefore = callbackRequest.getCaseDetailsBefore();
+        String relationshipAfter = caseDetails.getData().getSolsApplicantRelationshipToDeceased();
+        String relationshipBefore = caseDetailsBefore.getData().getSolsApplicantRelationshipToDeceased();
+        log.info("Relationship to deceased before: {}", relationshipBefore);
         final var caseData = caseDetails.getData();
-        String hasExecutor = caseData.getHasExecutorListFlag();
 
         DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData);
         String  otherExecutorExists = caseData.getOtherExecutorExists();
@@ -2303,20 +2306,14 @@ public class CallbackResponseTransformer {
         List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList = caseData.getSolsIntestacyExecutorList();
         if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
             responseCaseDataBuilder.solsIntestacyExecutorList(existingExecutorList);
-        } else {
-            if (YES.equalsIgnoreCase(otherExecutorExists) && !YES.equalsIgnoreCase(hasExecutor)) {
-                List<CollectionMember<IntestacyAdditionalExecutor>> additionalExecutorList = new ArrayList<>();
-                IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
-                        .solsApplicantFamilyDetails(SolsApplicantFamilyDetails.builder()
-                                .relationship(relationshipList)
-                                .build()
-                        )
-                        .build();
-
-                additionalExecutorList.add(new CollectionMember<>(additionalExecutor));
-                responseCaseDataBuilder.solsIntestacyExecutorList(additionalExecutorList);
-                responseCaseDataBuilder.hasExecutorListFlag(YES);
-            }
+        } else if (YES.equalsIgnoreCase(otherExecutorExists) && (!relationshipAfter.equals(relationshipBefore))) {
+            List<CollectionMember<IntestacyAdditionalExecutor>> additionalExecutorList = new ArrayList<>();
+            IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
+                    .solsApplicantFamilyDetails(SolsApplicantFamilyDetails.builder()
+                            .relationship(relationshipList).build())
+                    .build();
+            additionalExecutorList.add(new CollectionMember<>(additionalExecutor));
+            responseCaseDataBuilder.solsIntestacyExecutorList(additionalExecutorList);
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
