@@ -174,10 +174,11 @@ xui-webapp:
     devmemoryRequests: 512Mi
     devcpuLimits: 1
     devmemoryLimits: 1Gi
-  environment:
+    environment:
       SERVICES_WA_WORKFLOW_API_URL: http://{{ .Release.Name }}-wa-workflow-api
       HEALTH_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api/health
       SERVICES_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api
+      SERVICES_ROLE_ASSIGNMENT_API: XXX
       SERVICES_ROLE_ASSIGNMENT_MAPPING_API: http://{{ .Release.Name }}-am-org-role-mapping-service
       WA_SUPPORTED_JURISDICTIONS: PROBATE
 
