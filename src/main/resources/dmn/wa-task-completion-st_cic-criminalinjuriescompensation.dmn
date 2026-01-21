@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-completion-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.25.0">
+  <decision id="wa-task-completion-st_cic-criminalinjuriescompensation" name="Task completion DMN" camunda:historyTimeToLive="P90D">
+    <decisionTable id="DecisionTable_01re27m" hitPolicy="COLLECT">
+      <input id="eventId" label="Event ID" biodi:width="614">
+        <inputExpression id="LiteralExpression_1ngg489" typeRef="string">
+          <text>eventId</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Task Type" name="taskType" typeRef="string" biodi:width="342" />
+      <output id="OutputClause_1mldd9e" label="Completion Mode" name="completionMode" typeRef="string" />
+      <rule id="DecisionRule_0tn82oz">
+        <inputEntry id="UnaryTests_152sy88">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1buwwcz">
+          <text>"processCaseWithdrawalDirections"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_11jctvq">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0z9vwsc">
+        <inputEntry id="UnaryTests_0rp108l">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00dp9vz">
+          <text>"processCaseWithdrawalDirectionsListed"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0p64aco">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_03yedz5">
+        <inputEntry id="UnaryTests_1ltp2em">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0d6r5v5">
+          <text>"processRule27Decision"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ihjcd1">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_13xp7lx">
+        <inputEntry id="UnaryTests_0xl18ke">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0pm021w">
+          <text>"processRule27DecisionListed"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1k6rirk">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1g7g5cc">
+        <inputEntry id="UnaryTests_1wk222b">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0lign9b">
+          <text>"processListingDirections"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rkffta">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_02tmtmy">
+        <inputEntry id="UnaryTests_0r3w0gi">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0trwb1r">
+          <text>"processListingDirectionsListed"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fkfuhg">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0vw5fia">
+        <inputEntry id="UnaryTests_0ckg8ai">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06ucxu5">
+          <text>"processDirectionsReListedCase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ymor4t">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0cl3qf8">
+        <inputEntry id="UnaryTests_1c7t6l2">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0l0d667">
+          <text>"processDirectionsReListedCaseWithin5Days"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xgnisw">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0973p85">
+        <inputEntry id="UnaryTests_0z3mgav">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0abffh7">
+          <text>"processSetAsideDirections"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0cc5vxb">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05p7x18">
+        <inputEntry id="UnaryTests_030y68d">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0slkk2l">
+          <text>"processCorrections"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ejs16v">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ix4ld0">
+        <inputEntry id="UnaryTests_1vf9vbo">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0g4coes">
+          <text>"processDirectionsReturned"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1y2koxy">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_13bgzxc">
+        <inputEntry id="UnaryTests_06ppnma">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_08qozl0">
+          <text>"processPostponementDirections"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1miizqj">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0jr6r4h">
+        <inputEntry id="UnaryTests_0bpk9b3">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0qyc3r3">
+          <text>"processTimeExtensionDirectionsReturned"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p78f1c">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0dk27nr">
+        <inputEntry id="UnaryTests_0rlttr3">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_04y5glv">
+          <text>"processReinstatementDecisionNotice"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wikp7u">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_16g2reg">
+        <inputEntry id="UnaryTests_1yg8hc1">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0gnwb0g">
+          <text>"processOtherDirectionsReturned"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ur68r3">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_19oaxkn">
+        <inputEntry id="UnaryTests_19csgr0">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13xbfo4">
+          <text>"processWrittenReasons"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xj6ban">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_189b79w">
+        <inputEntry id="UnaryTests_10nveuf">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1rhy3ps">
+          <text>"processStrikeOutDirectionsReturned"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qq9h2g">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vb5cjj">
+        <inputEntry id="UnaryTests_0h969px">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_12nx2kp">
+          <text>"processStayDirections"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fv453i">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0rwpfgz">
+        <inputEntry id="UnaryTests_094467b">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0t4qnq9">
+          <text>"processStayDirectionsListed"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00qnf6f">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1volnhb">
+        <inputEntry id="UnaryTests_0vb9ofl">
+          <text>"caseworker-issue-final-decision","caseworker-issue-decision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0uljnd6">
+          <text>"issueDecisionNotice"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fyx2oq">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1qmnpbf">
+        <inputEntry id="UnaryTests_1w4pxn5">
+          <text>"create-hearing-summary"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vso95c">
+          <text>"completeHearingOutcome"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pqz5r1">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0i5j8rb">
+        <inputEntry id="UnaryTests_1saus9j">
+          <text>"caseworker-issue-case"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_11o6u3j">
+          <text>"issueCaseToRespondent"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1qsg79g">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0e39jsv">
+        <inputEntry id="UnaryTests_0o8v1oy">
+          <text>"caseworker-case-built"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zz0xi9">
+          <text>"vetNewCaseDocuments"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ihf9fg">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1tue2l3">
+        <inputEntry id="UnaryTests_1d8tblg">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ao1lll">
+          <text>"reviewNewCaseAndProvideDirectionsLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09hfb7l">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0bgbti6">
+        <inputEntry id="UnaryTests_14fkipv">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1322wio">
+          <text>"reviewTimeExtensionRequestLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1qwxeze">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0hqa39e">
+        <inputEntry id="UnaryTests_11tub6q">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1krf523">
+          <text>"reviewStrikeOutRequestLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tm2s2h">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1xgkcsd">
+        <inputEntry id="UnaryTests_0t5qnmd">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1wa8n6r">
+          <text>"reviewStayRequestLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18scphp">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1iwp79z">
+        <inputEntry id="UnaryTests_0pxgeu8">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1k31mhj">
+          <text>"reviewStayRequestCaseListedLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0naaily">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05yenh6">
+        <inputEntry id="UnaryTests_1mi6xri">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1695y1h">
+          <text>"reviewListingDirectionsLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ccpyxh">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ub9xv2">
+        <inputEntry id="UnaryTests_1el9hz4">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0riwf42">
+          <text>"reviewListingDirectionsCaseListedLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0slndpx">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1fc3kyh">
+        <inputEntry id="UnaryTests_16a6gof">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p5xtmo">
+          <text>"reviewWithdrawalRequestLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_12gihrw">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_16t4gp0">
+        <inputEntry id="UnaryTests_1dx8ph4">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05g8o4b">
+          <text>"reviewWithdrawalRequestCaseListedLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pi8vkf">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1k6kwf1">
+        <inputEntry id="UnaryTests_0xih7qr">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06wgg75">
+          <text>"reviewRule27RequestLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1j7h6vd">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0elthwo">
+        <inputEntry id="UnaryTests_1n71s5u">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18lpveg">
+          <text>"reviewRule27RequestCaseListedLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03fbtih">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1qy1a8t">
+        <inputEntry id="UnaryTests_1j5u1hh">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_12i2sjh">
+          <text>"reviewListCaseLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wu9ywt">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18vtgln">
+        <inputEntry id="UnaryTests_0c0vqoo">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0h58q7v">
+          <text>"reviewOtherRequestLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0w80kal">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07ir3qi">
+        <inputEntry id="UnaryTests_18fcl7i">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14x6ymg">
+          <text>"reviewListCaseWithin5DaysLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09oeh1s">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1a6c6ar">
+        <inputEntry id="UnaryTests_1gb0t2k">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0n3c6sx">
+          <text>"reviewPostponementRequestLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ts2t4s">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1wewn6c">
+        <inputEntry id="UnaryTests_0k11k2j">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00mgv69">
+          <text>"reviewReinstatementRequestLO"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0gr503e">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ciyt3w">
+        <inputEntry id="UnaryTests_0wpsjan">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0gjxh5x">
+          <text>"reviewListCaseWithin5DaysJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07df4si">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0475t9q">
+        <inputEntry id="UnaryTests_0p7haje">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10tto4j">
+          <text>"reviewPostponementRequestJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fu3o96">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_082k4tr">
+        <inputEntry id="UnaryTests_1oplox3">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1j2kzjp">
+          <text>"reviewCorrectionsRequest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1k39wae">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0rwip77">
+        <inputEntry id="UnaryTests_1v5gtcy">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1rd2v82">
+          <text>"reviewWrittenReasonsRequest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18hlepe">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17dycow">
+        <inputEntry id="UnaryTests_1y6zff0">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ijqlxe">
+          <text>"reviewReinstatementRequestJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06012gb">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1blb98n">
+        <inputEntry id="UnaryTests_1bfc9xe">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15wgwtb">
+          <text>"reviewSetAsideRequest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_140k87x">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_09owts0">
+        <inputEntry id="UnaryTests_1bxp0nx">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13znnin">
+          <text>"reviewStayRequestJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1uylxjr">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_03dikx7">
+        <inputEntry id="UnaryTests_1wqeonx">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zy7g8v">
+          <text>"reviewStayRequestCaseListedJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zhukzh">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15k3kyb">
+        <inputEntry id="UnaryTests_1pjbnt6">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ny9994">
+          <text>"reviewNewCaseAndProvideDirectionsJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0e0c735">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07j14rh">
+        <inputEntry id="UnaryTests_09961vh">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06jwzgm">
+          <text>"reviewOtherRequestJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hme6ln">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18wdvfy">
+        <inputEntry id="UnaryTests_18gcw4x">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1sf69pg">
+          <text>"reviewWithdrawalRequestJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sxi2i4">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_19pxvlc">
+        <inputEntry id="UnaryTests_1jyl7j3">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vwaqss">
+          <text>"reviewWithdrawalRequestCaseListedJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_11b5yr0">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0lt4hhb">
+        <inputEntry id="UnaryTests_0p7a9f9">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nf0q1z">
+          <text>"reviewRule27RequestJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18zc1w7">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_00yc2uo">
+        <inputEntry id="UnaryTests_0lu33zw">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mx3iiw">
+          <text>"reviewRule27RequestCaseListedJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_026ezee">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1gyzsoq">
+        <inputEntry id="UnaryTests_0egc1c1">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_129x0jm">
+          <text>"reviewListingDirectionsJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p2yiuz">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_04vxwx5">
+        <inputEntry id="UnaryTests_0xigilk">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0y0dxk0">
+          <text>"reviewListingDirectionsCaseListedJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_093tjnk">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0jwt2zi">
+        <inputEntry id="UnaryTests_1fxknw5">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1huddrg">
+          <text>"reviewListCaseJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00772uh">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ao2ywx">
+        <inputEntry id="UnaryTests_0e7598r">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1x9xf5r">
+          <text>"reviewStrikeOutRequestJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1grgoo1">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1bavd66">
+        <inputEntry id="UnaryTests_1br9oev">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ydw5tr">
+          <text>"reviewTimeExtensionRequestJudge"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nekn3w">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_151s4ne">
+        <inputEntry id="UnaryTests_1ausbgj">
+          <text>"caseworker-document-management","caseworker-amend-due-date","refer-to-judge","refer-to-legal-officer","contact-parties"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0b104v6">
+          <text>"followUpNoncomplianceOfDirections"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16wg8ds">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_00tt6xd">
+        <inputEntry id="UnaryTests_197mjmk">
+          <text>"edit-case"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zg6qx4">
+          <text>"registerNewCase"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gzcte1">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_16k6y3u">
+        <inputEntry id="UnaryTests_11urccq">
+          <text>"caseworker-amend-document","edit-case","refer-to-judge","refer-to-legal-officer","contact-parties"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1q0rehf">
+          <text>"processFurtherEvidence"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0at6wii">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_03sbg2k">
+        <inputEntry id="UnaryTests_0qeqimo">
+          <text>"createBundle"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1rtepd6">
+          <text>"stitchCollateHearingBundle"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ydpczi">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0v7qa4u">
+        <inputEntry id="UnaryTests_0pnpdaa">
+          <text>"create-draft-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_144ahjr">
+          <text>"createDueDate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_124diw2">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0hd8t0x">
+        <inputEntry id="UnaryTests_18s504e">
+          <text>"caseworker-send-order"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01dfyza">
+          <text>"issueDueDate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ifigzw">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_117z5bo">
+        <inputEntry id="UnaryTests_1krjzhf">
+          <text>"edit-case","caseworker-case-built","refer-to-judge","refer-to-legal-officer","caseworker-document-management","caseworker-amend-document","create-hearing-summary","contact-parties","createBundle","caseworker-amend-due-date","create-draft-order","caseworker-send-order","caseworker-issue-final-decision","caseworker-issue-decision"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ahaic3">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ukordp">
+          <text></text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="wa-task-completion-st_cic-criminalinjuriescompensation">
+        <dc:Bounds height="80" width="180" x="160" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

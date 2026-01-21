@@ -16,4 +16,7 @@
         -->
         <cve>CVE-2025-7962</cve>
     </suppress>
+    <suppress>
+        <cve>CVE-2025-67735</cve>
+    </suppress>
 </suppressions>
