@@ -718,8 +718,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String payload = utils.getJsonFromFile("solicitorPDFPayloadIntestacy.json");
         payload = replaceAllInString(payload, "\"deceasedMaritalStatus\": \"marriedCivilPartnership\",",
                 "\"deceasedMaritalStatus\": \"divorcedCivilPartnership\",");
-        validatePostFailureWithPayload(payload, "The selected marital status is not possible if the " +
-                        "applicant is the deceased's husband, wife or civil partner.",
+        validatePostFailureWithPayload(payload, "The selected marital status is not possible if the "
+                        + "applicant is the deceased's husband, wife or civil partner.",
                 200, SOLS_UPDATE_INTESTACY_VALIDATE);
     }
 
@@ -729,10 +729,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"deceasedMaritalStatus\": \"marriedCivilPartnership\",",
                 "\"marriedCivilPartnership\": \"marriedCivilPartnership\","
                         + "\n\"otherExecutorExists\" : \"Yes\",");
-        validatePostFailureWithPayload(payload, "A joint application is not possible if the main " +
-                        "applicant is the deceased's husband, wife or civil partner.\n" +
-                        "In some cases, the deceased's child can be a joint " +
-                        "applicant. Use Form PA1A to apply by post instead.",
+        validatePostFailureWithPayload(payload, "A joint application is not possible if the main "
+                        + "applicant is the deceased's husband, wife or civil partner.\n"
+                        + "In some cases, the deceased's child can be a joint "
+                        + "applicant. Use Form PA1A to apply by post instead.",
                 200, SOLS_UPDATE_INTESTACY_VALIDATE);
     }
 
