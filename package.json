@@ -41,7 +41,7 @@
     "test-e2e-willLodgement": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/willLodgementPath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-cw-willLodgement-Playwright-PoC": "npx playwright test Path/caseworker/willLodgementPath.spec.js --headed",
     "test-e2e-cw-grantOfProbateProbateManCaseMatch-Playwright-PoC": "npx playwright test Path/caseworker/grantOfProbateProbateManCaseMatchPath.spec.js --headed",
-    "test-e2e-cw-grantOfProbatePathEENormalCw_Playwight": "yarn playwright install chromium && npx playwright test Path/caseworker/grantOfProbatePathEENormalCw.spec.ts --headed",
+    "test-e2e-cw-grantOfProbatePathEENormalCw_Playwright": "yarn playwright install chromium && npx playwright test Path/caseworker/grantOfProbatePathEENormalCw.spec.ts --headed",
     "test-e2e-sol-applyCaveat": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/solicitor/pr_specific/applyCaveat.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-cw-applyCaveat-Playwright": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test && npx playwright test Path/caseworker/caveatPath3.spec.ts --project=chromium --project=webkit --project=firefox --retries=3 --debug",
     "test-e2e-sol-applyCaveat-Playwright": "npx playwright test Path/solicitor/applyCaveat.spec.ts --headed",
