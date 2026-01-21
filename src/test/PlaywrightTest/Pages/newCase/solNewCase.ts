@@ -710,6 +710,7 @@ export class SolCreateCasePage extends BasePage {
     await this.codicilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
     await expect(this.languagePreferenceLabelLocator).toBeVisible();
     await this.languagePreferenceWelshLocator.click();
+    await this.page.waitForTimeout(testConfig.ManualDelayLong);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
@@ -766,6 +767,16 @@ export class SolCreateCasePage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
+  async grantOfProbatePage2NoExecutors() {
+    await this.dispNoticeLocator.scrollIntoViewIfNeeded();
+    await expect(this.dispNoticeLocator).toBeVisible();
+    await this.dispNoticeLocator.click();
+    await expect(this.tctTypeLocator).toBeVisible();
+    await this.tctTypeLocator.focus();
+    await this.tctTypeLocator.click();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
   async verifyTitleAndClearingTypeOptionsPage() {
     const opts = ['TCTPartSuccPowerRes', 'TCTPartPowerRes', 'TCTSolePrinSucc', 'TCTSolePrin', 'TCTPartSuccAllRenouncing',
       'TCTPartAllRenouncing', 'TCTTrustCorpResWithSDJ', 'TCTTrustCorpResWithApp', 'TCTPartSuccOthersRenouncing', 'TCTPartOthersRenouncing', 'TCTNoT'];
@@ -799,6 +810,20 @@ export class SolCreateCasePage extends BasePage {
     await this.dispenseWithNoticeSupportingDocsLocator.fill(grantOfProbateConfig.page3_dispenseWithNoticeSupportingDocs);
     await this.dispenseWithNoticeOtherExecsListLocator.click();
     await this.dispenseWithNoticeExecutorNotApplyingName.fill(grantOfProbateConfig.page3_dispenseWithNoticeName);
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async grantOfProbatePage4ExecNotApplying() {
+    await expect(this.primaryApplicantForenameLocator).toBeEnabled();
+    await this.primaryApplicantForenameLocator.fill(grantOfProbateConfig.page2_sol_forename);
+    await expect(this.primaryApplicantSurnameLocator).toBeEnabled();
+    await this.primaryApplicantSurnameLocator.fill(grantOfProbateConfig.page2_sol_surname);
+    await expect(this.page.locator('#primaryApplicantIsApplying_No')).toBeEnabled();
+    await this.page.locator('#primaryApplicantIsApplying_No').click();
+    await expect(this.page.locator('#solsPrimaryExecutorNotApplyingReason-Renunciation')).toBeEnabled();
+    await this.page.locator('#solsPrimaryExecutorNotApplyingReason-Renunciation').click();
+    await expect(this.page.locator('#otherExecutorExists_No')).toBeEnabled();
+    await this.page.locator('#otherExecutorExists_No').click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 

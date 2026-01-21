@@ -1,6 +1,7 @@
 import { AxeUtils } from "@hmcts/playwright-common";
 import { expect, Page, TestInfo } from "@playwright/test";
 import { testConfig } from "../../Configs/config.ts";
+import commonConfig from "../common/commonConfig.json" with { type: "json" };
 
 export class BasePage {
   readonly rejectLocator = this.page.getByRole("button", {
@@ -66,8 +67,16 @@ export class BasePage {
     const navigationPromise = this.page.waitForNavigation();
     await expect(this.page.locator(buttonLocator)).toBeVisible();
     await expect(this.page.locator(buttonLocator)).toBeEnabled();
-    await this.page.locator(buttonLocator).click();
+    await this.page.locator(buttonLocator).click({ noWaitAfter: true });
+    await this.page.waitForTimeout(1000);
     await navigationPromise;
+  }
+
+  async waitForStopNavigationToComplete(buttonLocator) {
+    await expect(this.page.locator(buttonLocator)).toBeVisible();
+    await expect(this.page.locator(buttonLocator)).toBeEnabled();
+    await this.page.locator(buttonLocator).click({ noWaitAfter: true });
+    await this.page.waitForTimeout(1000);
   }
 
   async waitForGoNavigationToComplete() {
@@ -313,6 +322,15 @@ export class BasePage {
     const locs = await this.page.getByText("Cancel upload").all();
     for (let i = 0; i < locs.length; i++) {
       await expect(locs[i]).toBeDisabled();
+    }
+  }
+
+  async caseProgressContinueWithoutChangingAnything(numTimes = 1) {
+    for (let i=0; i < numTimes; i++) {
+      await expect(this.page.locator(commonConfig.continueButton)).toBeEnabled()
+      await this.waitForNavigationToComplete(commonConfig.continueButton);
+      // await I.waitForElement({css: commonConfig.continueButton});
+      // await I.waitForNavigationToComplete(commonConfig.continueButton,testConfig.CaseProgressContinueWithoutChangingDelay);
     }
   }
 }

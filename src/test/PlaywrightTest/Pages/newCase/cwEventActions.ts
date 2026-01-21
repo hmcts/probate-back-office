@@ -459,7 +459,9 @@ export class CwEventActionsPage extends BasePage {
     await this.caseStopReasonLocator.selectOption({
       label: `${createCaseConfig.stopReason}`,
     });
-    await this.waitForNavigationToComplete(commonConfig.submitButton);
+    await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
+    await this.waitForStopNavigationToComplete(commonConfig.submitButton);
+
   }
 
   async chooseResolveStop(resolveStop: string) {
@@ -509,5 +511,31 @@ export class CwEventActionsPage extends BasePage {
       label: `${withdrawalConfig.list1_text}`,
     });
     await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async caseProgressSelectEscalateReason() {
+    await expect(this.page.locator('#registrarEscalateReason')).toBeEnabled();
+    await this.page.locator('#registrarEscalateReason').selectOption('1: referrals');
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+
+    // await I.waitForElement({css: '#registrarEscalateReason'});
+    // await I.selectOption({css: '#registrarEscalateReason'}, '1: referrals');
+
+    // await I.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async caseProgressStopEscalateIssueCaseStopAgainReason() {
+    await expect(this.page.locator('#boCaseStopReasonList_0_caseStopReason')).toBeEnabled();
+    await this.page.locator('#boCaseStopReasonList_0_caseStopReason').selectOption('10: DocumentsRequired');
+    await expect(this.page.locator('#boCaseStopReasonList_0_caseStopSubReasonDocRequired')).toBeEnabled();
+    await this.page.locator('#boCaseStopReasonList_0_caseStopSubReasonDocRequired').selectOption('7: PA11');
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+
+    // await I.waitForElement({css: '#boCaseStopReasonList_0_caseStopReason'});
+    // await I.selectOption({css: '#boCaseStopReasonList_0_caseStopReason'}, '10: DocumentsRequired');
+    // await I.waitForElement({css: '#boCaseStopReasonList_0_caseStopSubReasonDocRequired'});
+    // await I.selectOption({css: '#boCaseStopReasonList_0_caseStopSubReasonDocRequired'}, '7: PA11');
+
+    // await I.waitForNavigationToComplete(commonConfig.continueButton);
   }
 }

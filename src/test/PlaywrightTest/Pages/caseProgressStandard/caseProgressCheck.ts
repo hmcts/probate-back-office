@@ -5,6 +5,7 @@ import assert from "assert";
 import moment from "moment";
 import commonConfig from "../common/commonConfig.json" with { type: "json" };
 import {testConfig} from "../../Configs/config.ts";
+import caseProgressConfig from "../caseProgressAppStopped/caseProgressConfig.json" with { type: "json" };
 
 export class CaseProgressPage extends SignInPage {
   readonly deceasedForenameLocator = this.page.locator("#deceasedForenames");
@@ -147,7 +148,7 @@ export class CaseProgressPage extends SignInPage {
       await this.page.reload();
       await this.caseProgressSelectPenultimateNextStep();
       await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
-      await this.page.waitForTimeout(100);
+      await this.page.waitForTimeout(3000);
       attempts++;
     }
 
@@ -158,5 +159,41 @@ export class CaseProgressPage extends SignInPage {
   async caseProgressResumeDeceasedDetails() {
     await expect(this.deceasedForenameLocator).toBeEnabled();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async caseProgressStopEscalateIssueStoppedTabCheck() {
+    await expect(this.page.getByText('Case stopped', { exact: true })).toBeVisible();
+
+    // Check date format
+    await expect(this.page.getByText(`The case was stopped on ${moment().format('DD MMM yyyy')} for one of two reasons:`, { exact: true })).toBeVisible();
+
+  }
+
+  async caseProgressStopEscalateIssueEscalatedTabCheck() {
+    await expect(this.page.getByText('Case escalated to a Registrar', { exact: true })).toBeVisible();
+
+    // Check date format
+    await expect(this.page.getByText(`The case was escalated on ${moment().format('DD MMM yyyy')}.`, { exact: true })).toBeVisible();
+    // await I.waitForText(`The case was escalated on ${moment().format('DD MMM yyyy')}.`);
+  }
+
+  async caseProgressAppStoppedDetails() {
+    await expect(this.page.getByText(caseProgressConfig.AppStoppedHeader, { exact: true })).toBeVisible();
+    await expect(this.page.getByText(caseProgressConfig.AppStoppedReasonText, { exact: true })).toBeVisible();
+    await expect(this.page.getByText(caseProgressConfig.AppStoppedAdditionalText, { exact: true })).toBeVisible();
+    await this.waitForNavigationToComplete('button[type="submit"]');
+
+    // await I.waitForText(caseProgressConfig.AppStoppedHeader);
+    // await I.waitForText(caseProgressConfig.AppStoppedReasonText);
+    // await I.waitForText(caseProgressConfig.AppStoppedAdditionalText);
+    // await I.waitForNavigationToComplete('button[type="submit"]');
+  }
+
+  async caseProgressAppStoppedTabCheck() {
+    await expect(this.page.locator( 'div.govuk-inset-text').first()).toContainText(caseProgressConfig.AppStoppedTabTitle, { timeout: 2000 });
+    await expect(this.page.getByText( caseProgressConfig.AppStoppedTabCheckText, { exact: true })).toBeVisible();
+    // await I.waitForText(caseProgressConfig.AppStoppedTabTitle, 2, {css: 'div.govuk-inset-text'});
+
+    // await I.waitForText(caseProgressConfig.AppStoppedTabCheckText);
   }
 };
