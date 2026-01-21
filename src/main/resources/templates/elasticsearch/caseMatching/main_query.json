@@ -11,6 +11,16 @@
           "match": {
             "state": "Pending"
           }
+        },
+        {
+          "match": {
+            "state": "SolAppUpdated"
+          }
+        },
+        {
+          "match": {
+            "state": "CasePaymentFailed"
+          }
         }
       ],
       "should": [
