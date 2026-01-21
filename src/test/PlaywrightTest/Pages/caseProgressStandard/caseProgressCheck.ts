@@ -87,7 +87,7 @@ export class CaseProgressPage extends SignInPage {
     }
 
     if (opts.numInProgress > 0) {
-      let imgSrcInProgress = await this.page.locator('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="IN PROGRESS"]').getAttribute('src');
+      let imgSrcInProgress = await this.page.locator('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt="IN PROGRESS"]').first().getAttribute('src');
       if (typeof imgSrcInProgress !== 'string') {
         imgSrcInProgress = imgSrcInProgress[0];
       }

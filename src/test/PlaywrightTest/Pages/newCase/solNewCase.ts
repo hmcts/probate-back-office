@@ -3,6 +3,7 @@ import { expect, Page, TestInfo } from "@playwright/test";
 import dateFns from "date-fns";
 import { testConfig } from "../../Configs/config.ts";
 import postPaymentReviewTabConfig from "../caseDetails/solicitorApplyProbate/postPaymentReviewTabConfig.json" with { type: "json" };
+import makeCardPaymentConfig from "../solicitorApplyProbate/makePayment/makeCardPaymentConfig.json" with { type: "json" };
 import serviceRequestTabConfig from "../caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
 import commonConfig from "../common/commonConfig.json" with { type: "json" };
 import createCaveatConfig from "../createCaveat/createCaveatConfig.json" with { type: "json" };
@@ -54,9 +55,14 @@ export class SolCreateCasePage extends BasePage {
   });
   readonly pbaOptionLocator = this.page.locator("#pbaAccount");
   readonly pbaAccountNumberLocator = this.page.locator("#pbaAccountNumber");
-  readonly confirmPaymentButton = this.page.getByRole("button", {name: "Confirm payment",});
+  readonly confirmPaymentButton = this.page.getByRole("button", {name: "Confirm payment"});
+  readonly continuePaymentButton = this.page.getByRole("button", {name: "Continue"});
   readonly serviceRequestLinkLocator = this.page.getByRole("link", {
     name: makePaymentConfig.serviceRequestLink,
+    exact: true,
+  });
+  readonly cardServiceRequestLinkLocator = this.page.getByRole("link", {
+    name: makeCardPaymentConfig.serviceRequestLink,
     exact: true,
   });
   readonly eventHistoryTab = this.page.getByRole("tab", {name: makePaymentConfig.eventHistoryTab,});
@@ -189,6 +195,7 @@ export class SolCreateCasePage extends BasePage {
   readonly furtherEvidenceLocator = this.page.locator('#furtherEvidenceForApplication');
   readonly additionalInfoLocator = this.page.locator('#solsAdditionalInfo');
   readonly sotUpdateRequiredLocator = this.page.locator('#solsSOTNeedToUpdate');
+  readonly sotUpdateRequiredYesLocator = this.page.locator(`#solsSOTNeedToUpdate_${completeProbateApplicationConfig.optionYes}`);
   readonly sotUpdateNotRequiredLocator = this.page.locator(`#solsSOTNeedToUpdate_${completeProbateApplicationConfig.optionNo}`);
   readonly reviewLegalStatement1Locator = this.page.locator('#solsReviewLegalStatement1');
   readonly reviewLegalStatement2Locator = this.page.locator('#solsReviewLegalStatement2');
@@ -461,8 +468,71 @@ export class SolCreateCasePage extends BasePage {
     await this.page.waitForTimeout(testConfig.ManualDelayLong);
   }
 
-  async viewPaymentStatus(testInfo: TestInfo, caseRef: string, appType: string) {
+  async makeCardPaymentPage(caseRef) {
+    await expect(this.payNowLinkLocator).toBeVisible();
+    await this.payNowLinkLocator.click();
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
+    await expect(this.page.locator('#cardPayment')).toBeVisible();
+    await this.page.locator('#cardPayment').click();
+    await expect(this.continuePaymentButton).toBeEnabled();
+    await this.continuePaymentButton.click();
+  }
+
+  async makeCardPaymentPage2(){
+    await expect(this.page.getByRole('heading', { name: makeCardPaymentConfig.cardPaymentHeading })).toBeVisible();
+    await expect(this.page.locator('#card-no')).toBeVisible();
+    await this.page.locator('#card-no').fill(makeCardPaymentConfig.cardNumber);
+    await this.page.locator('#expiry-month').fill(makeCardPaymentConfig.expiryMonth);
+    await this.page.locator('#expiry-year').fill(makeCardPaymentConfig.expiryYear);
+    await this.page.locator('#cvc').fill(makeCardPaymentConfig.cardCvc);
+    await this.page.locator('#cardholder-name').fill(makeCardPaymentConfig.nameOnCard);
+    await this.page.locator('#address-line-1').fill(makeCardPaymentConfig.addressLine1);
+    await this.page.locator('#address-city').fill(makeCardPaymentConfig.addressTown);
+    await this.page.locator('#address-postcode').fill(makeCardPaymentConfig.addressPostcode);
+    await this.page.locator('#email').fill(makeCardPaymentConfig.emailAddress);
+    await expect(this.continuePaymentButton).toBeEnabled();
+    await this.continuePaymentButton.click();
+  }
+
+  async confirmCardDetails() {
+    await expect(this.page. getByRole('heading', { name: makeCardPaymentConfig.cardVerifyPageHeading })).toBeVisible();
+    await expect(this.page.getByText(makeCardPaymentConfig.nameOnCard)).toBeVisible();
+    await expect(this.page.getByText(makeCardPaymentConfig.emailAddress)).toBeVisible();
+    await this.confirmPaymentButton.click();
+  }
+
+  async viewCardPaymentStatus(caseRef: string) {
+    await expect(
+      this.page.getByText(makePaymentConfig.paymentStatusConfirmText)
+    ).toBeVisible();
+    await expect(this.cardServiceRequestLinkLocator).toBeEnabled();
+    await this.cardServiceRequestLinkLocator.click();
+    await expect(this.page.getByText(caseRef).first()).toBeVisible();
+    await expect(
+      this.page.getByText(makePaymentConfig.paymentStatus)
+    ).toBeVisible();
+    await expect(
+      this.page.getByText(makePaymentConfig.payNowLinkText)
+    ).toBeHidden();
+    await this.postPaymentReviewDetails(caseRef);
+    for (let i = 0; i <= 6; i++) {
+      await expect(this.eventHistoryTab).toBeEnabled();
+      await expect(this.page.getByText(caseRef).first()).toBeVisible();
+      await this.eventHistoryTab.click();
+      const result = await this.page
+        .getByText(makePaymentConfig.statusText)
+        .isVisible()
+        .catch(() => true);
+      await this.page.waitForTimeout(10000);
+      if (result) {
+        break;
+      }
+      await this.page.reload();
+      // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+    }
+  }
+  async viewPaymentStatus(testInfo: TestInfo, caseRef: string, appType: string) {
+    // await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(
       this.page.getByText(makePaymentConfig.paymentStatusConfirmText)
     ).toBeVisible();
@@ -883,6 +953,18 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     await this.additionalInfoLocator.fill(grantOfProbateConfig.page5_applicationNotes);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async completeApplicationUpdateSot() {
+    await expect(this.sotUpdateRequiredYesLocator).toBeVisible();
+    await this.sotUpdateRequiredYesLocator.click();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async selectReenterTask(task) {
+    await expect(this.page.locator('#solsAmendLegalStatmentSelect')).toBeEnabled();
+    await this.page.locator('#solsAmendLegalStatmentSelect').selectOption(task);
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async completeApplicationPage1(willType = 'WillLeft') {

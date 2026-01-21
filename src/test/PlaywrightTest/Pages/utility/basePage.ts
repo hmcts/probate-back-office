@@ -67,7 +67,7 @@ export class BasePage {
     const navigationPromise = this.page.waitForNavigation();
     await expect(this.page.locator(buttonLocator)).toBeVisible();
     await expect(this.page.locator(buttonLocator)).toBeEnabled();
-    await this.page.locator(buttonLocator).click({ noWaitAfter: true });
+    await this.page.locator(buttonLocator).click();
     await this.page.waitForTimeout(1000);
     await navigationPromise;
   }
