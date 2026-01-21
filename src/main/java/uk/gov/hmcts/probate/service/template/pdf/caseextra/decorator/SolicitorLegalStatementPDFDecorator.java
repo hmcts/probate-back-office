@@ -1,19 +1,33 @@
 package uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.businessrule.IhtEstateNotCompletedBusinessRule;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.CodicilDateCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseDateCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstateConfirmCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.ProfitSharingCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.WillDateCaseExtra;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_CONFIRM;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.EN_TO_WELSH;
 
+@Slf4j
 @Component
 @AllArgsConstructor
 public class SolicitorLegalStatementPDFDecorator {
     private final CaseExtraDecorator caseExtraDecorator;
     private final IhtEstateNotCompletedBusinessRule ihtEstateNotCompletedBusinessRule;
+    private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     public String decorate(CaseData caseData) {
         String decoration = "";
@@ -24,6 +38,95 @@ public class SolicitorLegalStatementPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.decorate(ihtEstateConfirmCaseExtra);
         }
+        if (null != caseData.getOriginalWillSignedDate()) {
+            String welshWillFormattedDate = localDateToWelshStringConverter
+                    .convert(caseData.getOriginalWillSignedDate());
+            WillDateCaseExtra willDateCaseExtra = WillDateCaseExtra.builder()
+                .showWillDate(YES)
+                .originalWillSignedDateWelshFormatted(welshWillFormattedDate)
+                .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                    caseExtraDecorator.decorate(willDateCaseExtra));
+        }
+
+        if (null != caseData.getCodicilAddedDateList()) {
+            List<CollectionMember<String>> formattedCodicilDates = new ArrayList<>();
+            caseData.getCodicilAddedDateList().forEach(date -> {
+                String welshCodicilFormattedDate = localDateToWelshStringConverter.convert(date.getValue()
+                        .getDateCodicilAdded());
+                formattedCodicilDates.add(new CollectionMember<>(welshCodicilFormattedDate));
+            });
+            CodicilDateCaseExtra codicilDateCaseExtra = CodicilDateCaseExtra.builder()
+                .showCodicilDate(YES)
+                .codicilSignedDateWelshFormatted(formattedCodicilDates)
+                .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                    caseExtraDecorator.decorate(codicilDateCaseExtra));
+        }
+
+        if (null != caseData.getDispenseWithNoticeLeaveGivenDate()) {
+            String welshDispenseFormattedDate = localDateToWelshStringConverter
+                    .convert(caseData.getDispenseWithNoticeLeaveGivenDate());
+            DispenseDateCaseExtra dispenseDateCaseExtra = DispenseDateCaseExtra.builder().showDispenseDate(YES)
+                    .dispenseDateWelshFormatted(welshDispenseFormattedDate)
+                    .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                        caseExtraDecorator.decorate(dispenseDateCaseExtra));
+        }
+
+        if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType()) && null != caseData.getWhoSharesInCompanyProfits()) {
+            ProfitSharingCaseExtra profitSharingCaseExtra = ProfitSharingCaseExtra.builder()
+                .welshSingularProfitSharingText(getWelshProfitSharingText(
+                        caseData.getWhoSharesInCompanyProfits(), false))
+                .welshPluralProfitSharingText(getWelshProfitSharingText(
+                        caseData.getWhoSharesInCompanyProfits(), true))
+                .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                    caseExtraDecorator.decorate(profitSharingCaseExtra));
+        }
+        log.info("Welsh Profit sharing decoration: {}", decoration);
         return decoration;
+    }
+
+    private static String getWelshConjunction(String nextWord) {
+        // "ac" before a, e, i, o, w, y; "a" otherwise
+        char first = Character.toLowerCase(nextWord.charAt(0));
+        return "aeiowy".indexOf(first) >= 0 ? "ac" : "a";
+    }
+
+    private static String mutateAfterConjunction(String word) {
+        if (word.startsWith("p")) {
+            return "ph" + word.substring(1);
+        } else if (word.startsWith("c")) {
+            return "ch" + word.substring(1);
+        }
+        return word;
+    }
+
+    private String getWelshProfitSharingText(List<String> whoShares, boolean plural) {
+        if (whoShares == null || whoShares.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder profitText = new StringBuilder();
+        for (int i = 0; i < whoShares.size(); i++) {
+            String en = whoShares.get(i).toLowerCase();
+            String[] welshForms = EN_TO_WELSH.get(en);
+            if (welshForms == null) {
+                continue;
+            }
+            String welsh = plural ? welshForms[1] : welshForms[0];
+
+            if (i > 0) {
+                profitText.append(" ");
+                profitText.append(getWelshConjunction(welsh));
+                profitText.append(" ");
+                profitText.append(mutateAfterConjunction(welsh));
+            } else {
+                profitText.append(welsh);
+            }
+        }
+        log.info("Profit sharing decoration: {}", profitText);
+        return profitText.toString();
     }
 }

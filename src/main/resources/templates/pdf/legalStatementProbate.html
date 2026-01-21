@@ -74,9 +74,9 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>Creda’r {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}ysgutorion yn credu{% else %}ysgutor yn credu{% endif %} fod yr holl wybodaeth sydd yn y datganiad cyfreithiol yn wir.</p>
+            <p>Creda’r {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}ysgutorion{% else %}ysgutor{% endif %} fod yr holl wybodaeth sydd yn y datganiad cyfreithiol yn wir.</p>
             <p>Mae’r datganiad hwn wedi’i seilio ar yr wybodaeth a roddwyd yn eich cais. Bydd yn cael ei storio fel cofnod cyhoeddus.</p>
-            <p>{% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}Rydym ni{% else %}Rwyf{% endif %},
+            <p>{% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}Rydym ni{% else %}Rydw i{% endif %},
                 {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplyingLegalStatement %}
                 {{ executor.value.applyingExecutorFirstName }} {{ executor.value.applyingExecutorLastName }} o
                 {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }},{% endif %}
@@ -99,10 +99,10 @@
     <tr>
         <td colspan="2">
             <p>
-                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }},
+                Ganwyd {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }},
                 {% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} a elwir hefyd yn
                 {% for alias in case_details.case_data.solsDeceasedAliasNamesList %} {{ alias.value.SolsAliasname }}{%
-                if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} ac{% endif %} {% endfor
+                if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} a{% endif %} {% endfor
                 %}
                 {% endif %}
                 o
@@ -127,8 +127,8 @@
                 {% if case_details.case_data.deceasedAddress.Country != null and
                 case_details.case_data.deceasedAddress.Country != "" %}{{
                 case_details.case_data.deceasedAddress.Country }}{% endif %}
-                a anwyd ar {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
-                ac a fu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, domisil yng {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}Nghymru a Lloegr.{% endif %}
+                ar {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
+                a bu farw ar {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, domisil yng {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}Nghymru a Lloegr.{% endif %}
                 {% if case_details.case_data.appointExec == "Yes" %}
                 Mae’r ewyllys yn penodi ysgutor.{% endif %}
                 {% if case_details.case_data.appointExecNo == "Yes" %}
@@ -142,10 +142,10 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>Mae gwerth gros yr ystad yng Nghymru a Lloegr yn cyfateb i {% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn cyfateb i &#163;{{ case_extras.netValue }}.</p>
+            <p>Mae gwerth gros yr ystad yn Cymru a Lloegr yn gyfanswm o {% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae gwerth net yr ystad yn cyfateb i &#163;{{ case_extras.netValue }}.</p>
             {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
             {% endif %}
-            <p>Hyd eithaf {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}ein{% else %}fy{% endif %} gwybodaeth a’n cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn marwolaeth (ac nid drwy ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} a chodisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} a chodisiliau{% endif %}) o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
+            <p>Hyd eithaf {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}ein gwybodaeth{% else %}fy ngwybodaeth{% endif %} a’m cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn eu marwolaeth (ac nid drwy yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} a’r codisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} a chodisiliau{% endif %}) {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
         </td>
     </tr>
 
@@ -162,7 +162,7 @@
             {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
             <p>
                 {{ executor.value.applyingExecutorFirstName }} {{ executor.value.applyingExecutorLastName }},
-                {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}yn{% else %}y{% endif %} ysgutor a enwir yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} a’r codisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} a chodisiliau{% endif %}{% if executor.value.applyingExecutorOtherNames != null and executor.value.applyingExecutorOtherNames != "" %} fel {{ executor.value.applyingExecutorOtherNames }}{% endif %},
+                yr ysgutor a enwir yn yr ewyllys{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} a’r codisil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} a chodisiliau{% endif %}{% if executor.value.applyingExecutorOtherNames != null and executor.value.applyingExecutorOtherNames != "" %} fel {{ executor.value.applyingExecutorOtherNames }}{% endif %},
                 yn gwneud cais am brofiant.
             </p>
             {% endfor %}
@@ -205,25 +205,25 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>{% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}rydym{% else %}Rwyf{% endif %} yn cadarnhau {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}rydym{% else %}Rwyf{% endif %} yn delio ag ystad {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, yn unol â’r gyfraith. {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}rydym{% else %}Rwyf{% endif %} ewyllys:</p>
+            <p>{% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}Rydym{% else %}Rwyf yn{% endif %} cadarnhau y {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}byddwn{% else %}byddaf{% endif %} yn delio ag ystad {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, yn unol â’r gyfraith. {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}byddwn:{% else %}byddaf yn:{% endif %}</p>
             <ul>
                 <li>casglu’r ystad i gyd</li>
                 <li>cadw manylion llawn (rhestr) o’r ystad</li>
                 <li>cadw cofnod llawn o’r ffordd y mae’r ystad wedi cael ei rhannu</li>
             </ul>
 
-            <p>Os bydd y gofrestrfa brofiant (y llys) yn gofyn {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}inni{% else %}fi{% endif %} i wneud hynny, {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}rydym{% else %}Rwyf{% endif %} ewyllys:</p>
+            <p>Os bydd y gofrestrfa brofiant (llys) yn gofyn i {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}ni{% else %}fi{% endif %} i wneud hynny, {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}byddwn:{% else %}byddaf yn:{% endif %}</p>
             <ul>
                 <li>darparu manylion llawn yr ystad a’r ffordd y cafodd ei rhannu</li>
                 <li>dychwelyd y grant profiant i'r llys</li>
             </ul>
 
-            <p>{% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}rydym{% else %}Rwyf{% endif %} deall hynny:</p>
+            <p>{% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}Rydym{% else %}Rwyf{% endif %} yn deall:</p>
             <ul>
-                <li>y bydd y cais yn cael ei wrthod os {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}rydym{% else %}Rwyf{% endif %} na ddarperir gwybodaeth (os gofynnir am hynny)</li>
-                <li>y gellir dwyn achos dirmyg llys yn erbyn y sawl sy’n llofnodi isod os canfyddir bod y dystiolaeth a ddarparwyd yn fwriadol anwir neu’n anonest, yn ogystal â diddymu’r grant</li>
+                <li>y bydd y cais yn cael ei wrthod os na {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}fyddwn{% else %}fyddaf yn{% endif %} darparu gwybodaeth (os gofynnir)</li>
+                <li>y gellir dwyn achos dirmyg llys yn erbyn y sawl sy’n llofnodi isod os canfyddir bod y dystiolaeth a ddarparwyd yn fwriadol anwir neu’n anonest, yn ogystal â diddymu’r grant.</li>
             </ul>
-            <p>{% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}rydym{% else %}Rwyf{% endif %} awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, fel {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}ein{% else %}fy{% endif %} cwmni a benodwyd, i gyflwyno’r cais hwn ar {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}ein{% else %}fy{% endif %} rhan.</p>
+            <p>{% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}Rydym{% else %}Rydw i’n{% endif %} awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, fel {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}ein{% else %}fy{% endif %} ymarferydd Profiant penodedig, i gyflwyno’r cais hwn ar {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}ein{% else %}fy{% endif %} rhan.</p>
         </td>
     </tr>
     <tr>

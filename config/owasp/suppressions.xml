@@ -16,4 +16,9 @@
         -->
         <cve>CVE-2025-7962</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: netty-buffer-4.1.124.Final.jar]]></notes>
+        <cve>CVE-2025-58056</cve>
+        <cve>CVE-2025-58057</cve>
+    </suppress>
 </suppressions>
