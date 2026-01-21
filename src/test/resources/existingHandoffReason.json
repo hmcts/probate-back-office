@@ -1,0 +1,25 @@
+{
+  "case_details": {
+    "case_data": {
+      "deceasedForenames": "John",
+      "deceasedSurname": "Cook",
+      "deceasedDateOfDeath": "2006-11-16",
+      "caseHandedOffToLegacySite": "Yes",
+      "boHandoffReasonList":[
+        {
+          "value":{
+            "caseHandoffReason":"ForeignWill"
+          },
+          "id":"99e50c81-56b5-4f25-8d2a-1451d481d6c9"
+        },
+        {
+          "value":{
+            "caseHandoffReason":"ColligendaBona"
+          },
+          "id":"99e50c81-56b5-4f25-8d2a-1451d481d6c8"
+        }
+      ]
+    },
+    "id": 1621002468661478
+  }
+}
