@@ -15,12 +15,12 @@ export const testConfig = {
   WaitForTextTimeout:
     Number(process.env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT) || 200,
   TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === "true",
-  TestEnvCwUser: ConfigUtils.getEnvVar("CW_USER_EMAIL"),
-  TestEnvCwPassword: ConfigUtils.getEnvVar("CW_USER_PASSWORD"),
-  TestEnvSuperCwUser: ConfigUtils.getEnvVar("CW_SUPERUSER_EMAIL"),
-  TestEnvSuperCwPassword: ConfigUtils.getEnvVar("CW_SUPERUSER_PASSWORD"),
-  TestEnvProfUser: ConfigUtils.getEnvVar("SOL_USER_EMAIL"),
-  TestEnvProfPassword: ConfigUtils.getEnvVar("SOL_USER_PASSWORD"),
+  TestEnvCwUser: process.env.CW_USER_EMAIL  || 'probatecaseworker@gmail.com',
+  TestEnvCwPassword: process.env.CW_USER_PASSWORD  || 'Monday01',
+  //TestEnvSuperCwUser: ConfigUtils.getEnvVar("CW_SUPERUSER_EMAIL"),
+  //TestEnvSuperCwPassword: ConfigUtils.getEnvVar("CW_SUPERUSER_PASSWORD"),
+  //TestEnvProfUser: ConfigUtils.getEnvVar("SOL_USER_EMAIL"),
+  //TestEnvProfPassword: ConfigUtils.getEnvVar("SOL_USER_PASSWORD"),
   //  TestEnvProfUser2 User for share case e2e only
   //  For Local Environment please use below email for User2 to run shareCase, you should be able to share that case with the other PP user
   //  probatesolicitortestorg2test1@gmail.com
@@ -73,5 +73,6 @@ export const testConfig = {
   FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === "true" ? 2 : 1,
   CheckYourAnswersDelay: 0.5, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.5
   ExecutorsPageDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 10 : 0
-  dateFormat: "D MMM YYYY",
+  dateFormat: "d MMM yyyy",
+  solsDateFormat: "dd/MM/yyyy"
 };

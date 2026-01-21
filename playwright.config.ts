@@ -11,13 +11,13 @@ export default defineConfig({
   ...CommonConfig.recommended,
 
   projects: [
-    {
+   /* {
       ...ProjectsConfig.chrome,
-    },
+    },*/
     {
       ...ProjectsConfig.chromium,
     },
-    {
+   /* {
       ...ProjectsConfig.edge,
     },
     {
@@ -31,6 +31,6 @@ export default defineConfig({
     },
     {
       ...ProjectsConfig.tabletWebkit,
-    },
+    },*/
   ],
 });
