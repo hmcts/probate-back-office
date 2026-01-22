@@ -7,6 +7,7 @@ configFolder=${conversionFolder}/../configFiles
 environment="$2"
 shutterOption=${3:-false}
 acc="$4"
+envExcludedFilenamePatterns="$5"
 
 if [ -z "$1" ]
   then
@@ -26,6 +27,9 @@ else
   echo Creating unshuttered CCD Definition
   excludedFilenamePatterns="-e *-shutter.json"
 fi
+
+excludedFilenamePatterns="$excludedFilenamePatterns  $envExcludedFilenamePatterns"
+
 echo excludedFilenamePatterns = $excludedFilenamePatterns
 
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
