@@ -19,6 +19,7 @@ else
   echo Creating unshuttered CCD Definition
   excludedFilenamePatterns="-e *-shutter.json"
 fi
+excludedFilenamePatterns="$excludedFilenamePatterns,*-prod.json"
 echo excludedFilenamePatterns = $excludedFilenamePatterns
 
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
