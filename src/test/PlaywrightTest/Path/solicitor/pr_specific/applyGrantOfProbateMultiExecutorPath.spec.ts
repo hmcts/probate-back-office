@@ -1,23 +1,23 @@
-import { test } from "../../Fixtures/fixtures.ts";
+import { test } from "../../../Fixtures/fixtures.ts";
 
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import createCaseConfig from "../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 
-import applyProbateConfig from "../../Pages/solicitorApplyProbate/applyProbate/applyProbateConfig.json" with { type: "json" };
-import deceasedDetailsConfig from "../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
-import gopConfig from "../../Pages/solicitorApplyProbate/grantOfProbate/grantOfProbate.json" with { type: "json" };
-import completeApplicationConfig from "../../Pages/solicitorApplyProbate/completeApplication/completeApplication.json" with { type: "json" };
+import applyProbateConfig from "../../../Pages/solicitorApplyProbate/applyProbate/applyProbateConfig.json" with { type: "json" };
+import deceasedDetailsConfig from "../../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
+import gopConfig from "../../../Pages/solicitorApplyProbate/grantOfProbate/grantOfProbate.json" with { type: "json" };
+import completeApplicationConfig from "../../../Pages/solicitorApplyProbate/completeApplication/completeApplication.json" with { type: "json" };
 
-import applicantDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig.json" with { type: "json" };
-import applicantExecutorDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/applicantExecDetailsTrustCorpTabConfig.json" with { type: "json" };
-import deceasedTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/deceasedTabConfig.json" with { type: "json" };
-import caseDetailsTabDeceasedDtlsConfig from "../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfigMulti.json" with { type: "json" };
-import caseDetailsTabGopConfig from "../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabGopTrustCorpConfig.json" with { type: "json" };
-import caseDetailsTabUpdatesConfig from "../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig.json" with { type: "json" };
-import sotTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/sotTabConfig.json" with { type: "json" };
-import copiesTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/copiesTabConfig.json" with { type: "json" };
-import historyTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/historyTabConfig.json" with { type: "json" };
-import serviceRequestTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
-import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
+import applicantDetailsTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig.json" with { type: "json" };
+import applicantExecutorDetailsTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/applicantExecDetailsTrustCorpTabConfig.json" with { type: "json" };
+import deceasedTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/deceasedTabConfig.json" with { type: "json" };
+import caseDetailsTabDeceasedDtlsConfig from "../../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfigMulti.json" with { type: "json" };
+import caseDetailsTabGopConfig from "../../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabGopTrustCorpConfig.json" with { type: "json" };
+import caseDetailsTabUpdatesConfig from "../../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig.json" with { type: "json" };
+import sotTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/sotTabConfig.json" with { type: "json" };
+import copiesTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/copiesTabConfig.json" with { type: "json" };
+import historyTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/historyTabConfig.json" with { type: "json" };
+import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
+import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Apply Grant of probate", () => {
     test("Solicitor - Apply Grant of probate Multi Executor", async ({

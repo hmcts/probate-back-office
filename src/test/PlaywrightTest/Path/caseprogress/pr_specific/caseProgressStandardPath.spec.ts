@@ -1,13 +1,13 @@
-import { test } from "../../Fixtures/fixtures.ts";
+import { test } from "../../../Fixtures/fixtures.ts";
 
-import { testConfig } from "../../Configs/config.ts";
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
-import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
-import serviceRequestTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
-import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
-import documentUploadSolTabConfigBilingual from "../../Pages/caseDetails/grantOfProbate/documentUploadSolTabConfigBilingual.json" with { type: "json" };
-import deceasedDetailsConfig from "../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
-import nextStepConfig from "../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
+import { testConfig } from "../../../Configs/config.ts";
+import createCaseConfig from "../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import caseProgressConfig from "../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
+import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
+import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
+import documentUploadSolTabConfigBilingual from "../../../Pages/caseDetails/grantOfProbate/documentUploadSolTabConfigBilingual.json" with { type: "json" };
+import deceasedDetailsConfig from "../../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
+import nextStepConfig from "../../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
 
 test.describe("Case Progress - standard path", () => {
   test("Case Progress - standard path", async ({

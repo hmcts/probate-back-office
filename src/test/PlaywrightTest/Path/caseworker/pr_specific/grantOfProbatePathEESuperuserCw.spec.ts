@@ -1,26 +1,26 @@
 import dateFns from 'date-fns';
-import { testConfig } from '../../Configs/config.ts';
-import { test } from '../../Fixtures/fixtures.ts';
-import applicantDetailsTabConfig from '../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json' with { type: 'json' };
-import caseDetailsTabConfig from '../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigBeforeSwitchDate.json' with { type: 'json' };
-import caseMatchesTabConfig from '../../Pages/caseDetails/grantOfProbate/caseMatchesTabConfig.json' with { type: 'json' };
-import copiesTabConfig from '../../Pages/caseDetails/grantOfProbate/copiesTabConfig.json' with { type: 'json' };
-import deceasedTabConfigUpdated from '../../Pages/caseDetails/grantOfProbate/deceasedTabConfigChangeDOB.json' with { type: 'json' };
-import deceasedTabConfig from '../../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE400.json' with { type: 'json' };
-import documentUploadTabConfig from '../../Pages/caseDetails/grantOfProbate/documentUploadTabConfig.json' with { type: 'json' };
-import grantNotificationsTabConfig from '../../Pages/caseDetails/grantOfProbate/grantNotificationsTabConfig.json' with { type: 'json' };
-import historyTabConfig from '../../Pages/caseDetails/grantOfProbate/historyTabConfig.json' with { type: 'json' };
-import registrarsDecisionConfig from '../../Pages/caseDetails/grantOfProbate/registrarsDecisionConfig.json' with { type: 'json' };
-import registrarsDecisionTabConfig from '../../Pages/caseDetails/grantOfProbate/registrarsDecisionTabConfig.json' with { type: 'json' };
-import newConfig from '../../Pages/caseDetails/grantOfProbate/superUserCwConfig.json' with { type: 'json' };
-import caseMatchesConfig from '../../Pages/caseMatches/grantOfProbate/caseMatchesConfigBeforeSwitchDate.json' with { type: 'json' };
-import caseProgressConfig from '../../Pages/caseProgressStandard/caseProgressConfig.json' with { type: 'json' };
-import createCaseConfig from '../../Pages/createCase/createCaseConfig.json' with { type: 'json' };
-import createGrantOfProbateConfig from '../../Pages/createGrantOfProbateManual/createGrantOfProbateManualConfig.json' with { type: 'json' };
-import documentUploadConfig from '../../Pages/documentUpload/grantOfProbate/documentUploadConfig.json' with { type: 'json' };
-import eventSummaryConfig from '../../Pages/eventSummary/eventSummaryConfig.json' with { type: 'json' };
-import issueGrantConfig from '../../Pages/issueGrant/issueGrantConfig.json' with { type: 'json' };
-import nextStepConfig from '../../Pages/nextStep/nextStepConfig.json' with { type: 'json' };
+import { testConfig } from '../../../Configs/config.ts';
+import { test } from '../../../Fixtures/fixtures.ts';
+import applicantDetailsTabConfig from '../../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json' with { type: 'json' };
+import caseDetailsTabConfig from '../../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigBeforeSwitchDate.json' with { type: 'json' };
+import caseMatchesTabConfig from '../../../Pages/caseDetails/grantOfProbate/caseMatchesTabConfig.json' with { type: 'json' };
+import copiesTabConfig from '../../../Pages/caseDetails/grantOfProbate/copiesTabConfig.json' with { type: 'json' };
+import deceasedTabConfigUpdated from '../../../Pages/caseDetails/grantOfProbate/deceasedTabConfigChangeDOB.json' with { type: 'json' };
+import deceasedTabConfig from '../../../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE400.json' with { type: 'json' };
+import documentUploadTabConfig from '../../../Pages/caseDetails/grantOfProbate/documentUploadTabConfig.json' with { type: 'json' };
+import grantNotificationsTabConfig from '../../../Pages/caseDetails/grantOfProbate/grantNotificationsTabConfig.json' with { type: 'json' };
+import historyTabConfig from '../../../Pages/caseDetails/grantOfProbate/historyTabConfig.json' with { type: 'json' };
+import registrarsDecisionConfig from '../../../Pages/caseDetails/grantOfProbate/registrarsDecisionConfig.json' with { type: 'json' };
+import registrarsDecisionTabConfig from '../../../Pages/caseDetails/grantOfProbate/registrarsDecisionTabConfig.json' with { type: 'json' };
+import newConfig from '../../../Pages/caseDetails/grantOfProbate/superUserCwConfig.json' with { type: 'json' };
+import caseMatchesConfig from '../../../Pages/caseMatches/grantOfProbate/caseMatchesConfigBeforeSwitchDate.json' with { type: 'json' };
+import caseProgressConfig from '../../../Pages/caseProgressStandard/caseProgressConfig.json' with { type: 'json' };
+import createCaseConfig from '../../../Pages/createCase/createCaseConfig.json' with { type: 'json' };
+import createGrantOfProbateConfig from '../../../Pages/createGrantOfProbateManual/createGrantOfProbateManualConfig.json' with { type: 'json' };
+import documentUploadConfig from '../../../Pages/documentUpload/grantOfProbate/documentUploadConfig.json' with { type: 'json' };
+import eventSummaryConfig from '../../../Pages/eventSummary/eventSummaryConfig.json' with { type: 'json' };
+import issueGrantConfig from '../../../Pages/issueGrant/issueGrantConfig.json' with { type: 'json' };
+import nextStepConfig from '../../../Pages/nextStep/nextStepConfig.json' with { type: 'json' };
 
 test.describe('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker', () => {
     test('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker',

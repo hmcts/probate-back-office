@@ -1,25 +1,25 @@
 import dateFns from "date-fns";
-import { test } from "../../Fixtures/fixtures.ts";
+import { test } from "../../../Fixtures/fixtures.ts";
 
-import caseMatchesConfig from "../../Pages/caseMatches/grantOfProbate/caseMatchesConfigEE.json" with { type: "json" };
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
-import eventSummaryConfig from "../../Pages/eventSummary/eventSummaryConfig.json" with { type: "json" };
+import caseMatchesConfig from "../../../Pages/caseMatches/grantOfProbate/caseMatchesConfigEE.json" with { type: "json" };
+import createCaseConfig from "../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import eventSummaryConfig from "../../../Pages/eventSummary/eventSummaryConfig.json" with { type: "json" };
 
-import { testConfig } from "../../Configs/config.ts";
-import applicantDetailsTabConfig from "../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json" with { type: "json" };
-import caseDetailsTabConfig from "../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigEE.json" with { type: "json" };
-import caseMatchesTabConfig from "../../Pages/caseDetails/grantOfProbate/caseMatchesTabConfig.json" with { type: "json" };
-import copiesTabConfig from "../../Pages/caseDetails/grantOfProbate/copiesTabConfig.json" with { type: "json" };
-import deceasedTabConfig from "../../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE.json" with { type: "json" };
-import documentUploadTabConfig from "../../Pages/caseDetails/grantOfProbate/documentUploadTabConfig.json" with { type: "json" };
-import grantNotificationsTabConfig from "../../Pages/caseDetails/grantOfProbate/grantNotificationsTabConfig.json" with { type: "json" };
-import historyTabConfig from "../../Pages/caseDetails/grantOfProbate/historyTabConfig.json" with { type: "json" };
-import ihtTabConfig from "../../Pages/caseDetails/grantOfProbate/ihtTabConfig.json" with { type: "json" };
-import ihtTabConfigUpdate from "../../Pages/caseDetails/grantOfProbate/ihtUpdateTabConfig.json" with { type: "json" };
-import createGrantOfProbateConfig from "../../Pages/createGrantOfProbateManual/createGrantOfProbateManualConfig.json" with { type: "json" };
-import documentUploadConfig from "../../Pages/documentUpload/grantOfProbate/documentUploadConfig.json" with { type: "json" };
-import issueGrantConfig from "../../Pages/issueGrant/issueGrantConfig.json" with { type: "json" };
-import nextStepConfig from "../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
+import { testConfig } from "../../../Configs/config.ts";
+import applicantDetailsTabConfig from "../../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json" with { type: "json" };
+import caseDetailsTabConfig from "../../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigEE.json" with { type: "json" };
+import caseMatchesTabConfig from "../../../Pages/caseDetails/grantOfProbate/caseMatchesTabConfig.json" with { type: "json" };
+import copiesTabConfig from "../../../Pages/caseDetails/grantOfProbate/copiesTabConfig.json" with { type: "json" };
+import deceasedTabConfig from "../../../Pages/caseDetails/grantOfProbate/deceasedTabConfigEE.json" with { type: "json" };
+import documentUploadTabConfig from "../../../Pages/caseDetails/grantOfProbate/documentUploadTabConfig.json" with { type: "json" };
+import grantNotificationsTabConfig from "../../../Pages/caseDetails/grantOfProbate/grantNotificationsTabConfig.json" with { type: "json" };
+import historyTabConfig from "../../../Pages/caseDetails/grantOfProbate/historyTabConfig.json" with { type: "json" };
+import ihtTabConfig from "../../../Pages/caseDetails/grantOfProbate/ihtTabConfig.json" with { type: "json" };
+import ihtTabConfigUpdate from "../../../Pages/caseDetails/grantOfProbate/ihtUpdateTabConfig.json" with { type: "json" };
+import createGrantOfProbateConfig from "../../../Pages/createGrantOfProbateManual/createGrantOfProbateManualConfig.json" with { type: "json" };
+import documentUploadConfig from "../../../Pages/documentUpload/grantOfProbate/documentUploadConfig.json" with { type: "json" };
+import issueGrantConfig from "../../../Pages/issueGrant/issueGrantConfig.json" with { type: "json" };
+import nextStepConfig from "../../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
 
 test.describe("Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker", () => {
   test("Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker", async ({

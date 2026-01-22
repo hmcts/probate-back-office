@@ -1,35 +1,35 @@
 import dateFns from "date-fns";
-import { test } from "../../Fixtures/fixtures.ts";
+import { test } from "../../../Fixtures/fixtures.ts";
 
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
-import eventSummaryConfig from "../../Pages/eventSummary/eventSummaryConfig.json" with { type: "json" };
+import createCaseConfig from "../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import eventSummaryConfig from "../../../Pages/eventSummary/eventSummaryConfig.json" with { type: "json" };
 
-import caseMatchesTabConfig from "../../Pages/caseDetails/caveat/caseMatchesTabConfig.json" with { type: "json" };
-import caseMatchesConfig from "../../Pages/caseMatches/caveat/caseMatchesConfig.json" with { type: "json" };
-import createCaveatConfig from "../../Pages/createCaveat/createCaveatConfig.json" with { type: "json" };
-import emailCaveatorConfig from "../../Pages/emailNotifications/caveat/emailCaveatorConfig.json" with { type: "json" };
+import caseMatchesTabConfig from "../../../Pages/caseDetails/caveat/caseMatchesTabConfig.json" with { type: "json" };
+import caseMatchesConfig from "../../../Pages/caseMatches/caveat/caseMatchesConfig.json" with { type: "json" };
+import createCaveatConfig from "../../../Pages/createCaveat/createCaveatConfig.json" with { type: "json" };
+import emailCaveatorConfig from "../../../Pages/emailNotifications/caveat/emailCaveatorConfig.json" with { type: "json" };
 
-import documentUploadConfig from "../../Pages/documentUpload/caveat/documentUploadConfig.json" with { type: "json" };
+import documentUploadConfig from "../../../Pages/documentUpload/caveat/documentUploadConfig.json" with { type: "json" };
 
-import historyTabConfig from "../../Pages/caseDetails/caveat/historyTabConfig.json" with { type: "json" };
+import historyTabConfig from "../../../Pages/caseDetails/caveat/historyTabConfig.json" with { type: "json" };
 
-import caseDetailsTabConfig from "../../Pages/caseDetails/caveat/caseDetailsTabConfig.json" with { type: "json" };
-import caveatDetailsTabConfig from "../../Pages/caseDetails/caveat/caveatDetailsTabConfig.json" with { type: "json" };
-import caveatorDetailsTabConfig from "../../Pages/caseDetails/caveat/caveatorDetailsTabConfig.json" with { type: "json" };
-import deceasedDetailsTabConfig from "../../Pages/caseDetails/caveat/deceasedDetailsTabConfig.json" with { type: "json" };
+import caseDetailsTabConfig from "../../../Pages/caseDetails/caveat/caseDetailsTabConfig.json" with { type: "json" };
+import caveatDetailsTabConfig from "../../../Pages/caseDetails/caveat/caveatDetailsTabConfig.json" with { type: "json" };
+import caveatorDetailsTabConfig from "../../../Pages/caseDetails/caveat/caveatorDetailsTabConfig.json" with { type: "json" };
+import deceasedDetailsTabConfig from "../../../Pages/caseDetails/caveat/deceasedDetailsTabConfig.json" with { type: "json" };
 
-import caseDetailsTabUpdateConfig from "../../Pages/caseDetails/caveat/caseDetailsTabUpdateConfig.json" with { type: "json" };
-import caveatDetailsTabUpdateConfig from "../../Pages/caseDetails/caveat/caveatDetailsTabUpdateConfig.json" with { type: "json" };
-import caveatorDetailsTabUpdateConfig from "../../Pages/caseDetails/caveat/caveatorDetailsTabUpdateConfig.json" with { type: "json" };
-import deceasedDetailsTabUpdateConfig from "../../Pages/caseDetails/caveat/deceasedDetailsTabUpdateConfig.json" with { type: "json" };
+import caseDetailsTabUpdateConfig from "../../../Pages/caseDetails/caveat/caseDetailsTabUpdateConfig.json" with { type: "json" };
+import caveatDetailsTabUpdateConfig from "../../../Pages/caseDetails/caveat/caveatDetailsTabUpdateConfig.json" with { type: "json" };
+import caveatorDetailsTabUpdateConfig from "../../../Pages/caseDetails/caveat/caveatorDetailsTabUpdateConfig.json" with { type: "json" };
+import deceasedDetailsTabUpdateConfig from "../../../Pages/caseDetails/caveat/deceasedDetailsTabUpdateConfig.json" with { type: "json" };
 
-import documentsTabEmailCaveatorConfig from "../../Pages/caseDetails/caveat/documentsTabEmailCaveatorConfig.json" with { type: "json" };
-import documentsTabUploadDocumentConfig from "../../Pages/caseDetails/caveat/documentsTabUploadDocumentConfig.json" with { type: "json" };
+import documentsTabEmailCaveatorConfig from "../../../Pages/caseDetails/caveat/documentsTabEmailCaveatorConfig.json" with { type: "json" };
+import documentsTabUploadDocumentConfig from "../../../Pages/caseDetails/caveat/documentsTabUploadDocumentConfig.json" with { type: "json" };
 
-import registrarsDecisionConfig from "../../Pages/caseDetails/caveat/registrarsDecisionConfig.json" with { type: "json" };
-import registrarsDecisionTabConfig from "../../Pages/caseDetails/caveat/registrarsDecisionTabConfig.json" with { type: "json" };
+import registrarsDecisionConfig from "../../../Pages/caseDetails/caveat/registrarsDecisionConfig.json" with { type: "json" };
+import registrarsDecisionTabConfig from "../../../Pages/caseDetails/caveat/registrarsDecisionTabConfig.json" with { type: "json" };
 
-import { testConfig } from "../../Configs/config.ts";
+import { testConfig } from "../../../Configs/config.ts";
 
 test.describe("Caseworker Caveat1 - Order summons", () => {
   test("Caseworker Caveat1 - Order summons", async ({

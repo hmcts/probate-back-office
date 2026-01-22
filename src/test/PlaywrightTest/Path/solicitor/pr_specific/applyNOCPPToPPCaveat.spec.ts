@@ -1,30 +1,30 @@
 import dateFns from "date-fns";
-import { test } from "../../Fixtures/fixtures.ts";
+import { test } from "../../../Fixtures/fixtures.ts";
 
 // const {runAccessibilityTest} = require('../../Accessibility/axeUtils');
 // const testConfig = require('src/test/config');
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import createCaseConfig from "../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 
-import applicationDetailsConfig from "../../Pages/solicitorApplyCaveat/applicationDetails/applicationDetails.json" with { type: "json" };
-import applyCaveatConfig from "../../Pages/solicitorApplyCaveat/applyCaveat/applyCaveat.json" with { type: "json" };
-import completeApplicationConfig from "../../Pages/solicitorApplyCaveat/completeApplication/completeApplication.json" with { type: "json" };
+import applicationDetailsConfig from "../../../Pages/solicitorApplyCaveat/applicationDetails/applicationDetails.json" with { type: "json" };
+import applyCaveatConfig from "../../../Pages/solicitorApplyCaveat/applyCaveat/applyCaveat.json" with { type: "json" };
+import completeApplicationConfig from "../../../Pages/solicitorApplyCaveat/completeApplication/completeApplication.json" with { type: "json" };
 
-import { testConfig } from "../../Configs/config.ts";
-import caseDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/caseDetailsTabConfig.json" with { type: "json" };
-import caveatDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/caveatDetailsTabConfig.json" with { type: "json" };
-import caveatorDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/caveatorDetailsTabConfig.json" with { type: "json" };
-import deceasedDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/deceasedDetailsTabConfig.json" with { type: "json" };
-import historyTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/historyTabConfig.json" with { type: "json" };
-import notificationsTabConfig from "../../Pages/caseDetails/solicitorApplyCaveat/notificationsTabConfig.json" with { type: "json" };
-import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
-import serviceRequestTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
-import deceasedDetailsConfig from "../../Pages/solicitorApplyCaveat/applicationDetails/applicationDetails.json" with { type: "json" };
-import changeOfRepresentativesTabConfig from "../../Pages/noticeOfChange/changeOfRepresentativeCaveatTabConfig.json" with { type: "json" };
-import changeOfRepresentativesCaveatorDetailsConfigDemo from "../../Pages/noticeOfChange/changeOfRepresentativesCaveatConfig.json" with { type: "json" };
-import postNocCaveatorDetailsTabConfig from "../../Pages/noticeOfChange/postNocCaveatorDetailsTabConfig.json" with { type: "json" };
-import postNocCaveatorConfig from "../../Pages/noticeOfChange/postNocCaveatorDetailsConfig.json" with { type: "json" };
-import postNocCaveatorConfigDemo from "../../Pages/noticeOfChange/postNocCaveatorDetailsConfigDemo.json" with { type: "json" };
-import changeOfRepresentativesCaveatorDetailsConfigAAT from "../../Pages/noticeOfChange/changeOfRepresentativesCaveatConfigAAT.json" with { type: "json" };
+import { testConfig } from "../../../Configs/config.ts";
+import caseDetailsTabConfig from "../../../Pages/caseDetails/solicitorApplyCaveat/caseDetailsTabConfig.json" with { type: "json" };
+import caveatDetailsTabConfig from "../../../Pages/caseDetails/solicitorApplyCaveat/caveatDetailsTabConfig.json" with { type: "json" };
+import caveatorDetailsTabConfig from "../../../Pages/caseDetails/solicitorApplyCaveat/caveatorDetailsTabConfig.json" with { type: "json" };
+import deceasedDetailsTabConfig from "../../../Pages/caseDetails/solicitorApplyCaveat/deceasedDetailsTabConfig.json" with { type: "json" };
+import historyTabConfig from "../../../Pages/caseDetails/solicitorApplyCaveat/historyTabConfig.json" with { type: "json" };
+import notificationsTabConfig from "../../../Pages/caseDetails/solicitorApplyCaveat/notificationsTabConfig.json" with { type: "json" };
+import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
+import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
+import deceasedDetailsConfig from "../../../Pages/solicitorApplyCaveat/applicationDetails/applicationDetails.json" with { type: "json" };
+import changeOfRepresentativesTabConfig from "../../../Pages/noticeOfChange/changeOfRepresentativeCaveatTabConfig.json" with { type: "json" };
+import changeOfRepresentativesCaveatorDetailsConfigDemo from "../../../Pages/noticeOfChange/changeOfRepresentativesCaveatConfig.json" with { type: "json" };
+import postNocCaveatorDetailsTabConfig from "../../../Pages/noticeOfChange/postNocCaveatorDetailsTabConfig.json" with { type: "json" };
+import postNocCaveatorConfig from "../../../Pages/noticeOfChange/postNocCaveatorDetailsConfig.json" with { type: "json" };
+import postNocCaveatorConfigDemo from "../../../Pages/noticeOfChange/postNocCaveatorDetailsConfigDemo.json" with { type: "json" };
+import changeOfRepresentativesCaveatorDetailsConfigAAT from "../../../Pages/noticeOfChange/changeOfRepresentativesCaveatConfigAAT.json" with { type: "json" };
 
 test.describe("Solicitor - Apply NOC Caveat", () => {
   test("Solicitor - Apply Caveat", async ({
