@@ -9,7 +9,7 @@ if [[ ${environment} != "prod" && ${environment} != "aat" && ${environment} != "
   exit 1
 fi
 # Set up with non prod exclusion
-excludedFilenamePatterns="*-nonprod.json"
+excludedFilenamePatterns="*-nonProd.json"
 
 if [[ ${environment} == "aat" && ${environment} == "demo" && ${environment} == "ithc" && ${environment} == "perftest" ]]; then
   excludedFilenamePatterns="*-prod.json"
