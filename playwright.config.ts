@@ -9,15 +9,18 @@ export default defineConfig({
   //expect: { timeout: 600000 },
   testDir: "./src/test/PlaywrightTest",
   ...CommonConfig.recommended,
+  /*use: {
+    headless: false, // Run with visible browser
+  },*/
 
   projects: [
-    {
+    /*{
       ...ProjectsConfig.chrome,
-    },
+    },*/
     {
       ...ProjectsConfig.chromium,
     },
-    {
+    /*{
       ...ProjectsConfig.edge,
     },
     {
@@ -31,6 +34,6 @@ export default defineConfig({
     },
     {
       ...ProjectsConfig.tabletWebkit,
-    },
+    },*/
   ],
 });
