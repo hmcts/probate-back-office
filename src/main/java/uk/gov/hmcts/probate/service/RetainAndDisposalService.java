@@ -55,7 +55,7 @@ public class RetainAndDisposalService {
             String esQueryString = DISPOSE_GOP_QUERY;
             if (isCaveat) {
                 caseTypeName = CAVEAT.getName();
-                esQueryString = DISPOSE_CAVEAT_PA_QUERY;
+                esQueryString = DISPOSE_CAVEAT_PP_QUERY;
             }
 
             log.info("Start sending email for inactive {} cases runDate: {}, fromDate: {}, toDate: {}",
