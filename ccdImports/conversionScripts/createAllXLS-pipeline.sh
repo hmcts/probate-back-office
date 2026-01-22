@@ -27,7 +27,7 @@ else
   echo Creating unshuttered CCD Definition
   excludedFilenamePatterns="-e *-shutter.json"
 fi
-
+echo envExcludedFilenamePatterns = $envExcludedFilenamePatterns
 excludedFilenamePatterns="$excludedFilenamePatterns  $envExcludedFilenamePatterns"
 
 echo excludedFilenamePatterns = $excludedFilenamePatterns
