@@ -16,7 +16,7 @@
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
     "test-crossbrowser-e2e": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true ./node_modules/codeceptjs/bin/codecept.js run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --grep '@crossbrowser'",
     "test:functional": "yarn playwright install chromium && NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-workers 3 -c ./src/test/end-to-end/codecept.conf.cjs",
-    "test:fullfunctional-pr": "yarn playwright install chromium && yarn playwright test **/pr_specific/*.spec.ts --project=chromium --workers=4",
+    "test:fullfunctional-pr": "yarn playwright install chromium && yarn playwright test **/pr_specific/*.spec.ts --project=chromium --workers=1",
     "test:fullfunctional": "E2E_TEST_PATH='./paths/**/*.js' ./bin/run-e2e-tests.sh",
     "test:fullfunctionalChrome": "yarn playwright install chromium && yarn playwright test --project=chromium",
     "test:fullfunctionalWebkit": "yarn playwright install webkit && yarn playwright test --project=webkit",
