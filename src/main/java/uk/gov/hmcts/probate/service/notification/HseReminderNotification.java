@@ -98,7 +98,8 @@ public class HseReminderNotification implements NotificationStrategy {
             return YES.equals(evidenceHandled)
                     && isValidState(cd.getState())
                     && evidenceHandledDate != null
-                    && evidenceHandledDate.equals(referenceDate);
+                    && evidenceHandledDate.equals(referenceDate)
+                    && !CaseStopReasonHelper.isCaveatStop(cd);
         };
     }
 

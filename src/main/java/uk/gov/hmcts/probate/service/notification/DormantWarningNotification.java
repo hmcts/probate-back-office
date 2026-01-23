@@ -85,7 +85,8 @@ public class DormantWarningNotification implements NotificationStrategy {
                 && cd.getData() != null
                 && referenceDate != null
                 && !STATE_DORMANT.equals(cd.getState())
-                && isValidLastModifiedDate(cd);
+                && isValidLastModifiedDate(cd)
+                && !CaseStopReasonHelper.isCaveatStop(cd);
     }
 
     private boolean isValidLastModifiedDate(CaseDetails caseDetails) {
