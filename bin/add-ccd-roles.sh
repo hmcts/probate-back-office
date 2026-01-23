@@ -20,6 +20,7 @@ ${dir}/ccd-add-role.sh caseworker-probate-systemupdate
 ${dir}/ccd-add-role.sh caseworker-probate-pcqextractor
 ${dir}/ccd-add-role.sh caseworker-probate-caseofficer
 ${dir}/ccd-add-role.sh caseworker-probate-rparobot
+${dir}/ccd-add-role.sh caseworker-probate-legacysearch
 ${dir}/ccd-add-role.sh caseworker-probate-caseadmin
 ${dir}/ccd-add-role.sh caseworker-probate-registrar
 ${dir}/ccd-add-role.sh caseworker-probate-superuser

@@ -175,7 +175,7 @@ public class ExceptionRecordOCRFields {
     private final String attorneyOnBehalfOfAddressLine2;
     private final String attorneyOnBehalfOfAddressTown;
     private final String attorneyOnBehalfOfAddressCounty;
-    private final String attorneyOnBehalfOfAddressPostCode;
+    private String attorneyOnBehalfOfAddressPostCode;
     private final String mentalCapacity;
     private final String courtOfProtection;
     private final String epaOrLpa;

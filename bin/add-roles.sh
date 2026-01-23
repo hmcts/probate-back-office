@@ -12,6 +12,7 @@ ${dir}/idam-role.sh caseworker-probate-authoriser
 ${dir}/idam-role.sh caseworker-probate-systemupdate
 ${dir}/idam-role.sh caseworker-probate-caseofficer
 ${dir}/idam-role.sh caseworker-probate-rparobot
+${dir}/idam-role.sh caseworker-probate-legacysearch
 ${dir}/idam-role.sh caseworker-probate-caseadmin
 ${dir}/idam-role.sh caseworker-probate-registrar
 ${dir}/idam-role.sh caseworker-probate-superuser
