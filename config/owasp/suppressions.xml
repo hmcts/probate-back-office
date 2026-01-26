@@ -16,4 +16,8 @@
         -->
         <cve>CVE-2025-7962</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: commons-validator-1.10.1.jar]]></notes>
+        <cve>CVE-2025-15104</cve>
+    </suppress>
 </suppressions>
