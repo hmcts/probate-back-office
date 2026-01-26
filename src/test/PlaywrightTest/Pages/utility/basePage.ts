@@ -64,12 +64,13 @@ export class BasePage {
   }
 
   async waitForNavigationToComplete(buttonLocator) {
-    const navigationPromise = this.page.waitForNavigation();
+    // const navigationPromise = this.page.waitForNavigation();
     await expect(this.page.locator(buttonLocator)).toBeVisible();
     await expect(this.page.locator(buttonLocator)).toBeEnabled();
     await this.page.locator(buttonLocator).click();
-    await this.page.waitForTimeout(1000);
-    await navigationPromise;
+    await this.page.waitForLoadState('load');
+    // await this.page.waitForTimeout(1000);
+    // await navigationPromise;
   }
 
   async waitForStopNavigationToComplete(buttonLocator) {
