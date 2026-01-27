@@ -1474,6 +1474,7 @@ public class CallbackResponseTransformer {
             .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
+            .childAlive(caseData.getChildAlive())
             .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased());
 
         handleDeceasedAliases(
