@@ -215,6 +215,19 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse setCaseSubmissionDate(Document sentEmail, Document coversheet,
+                                                  CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), Optional.empty(),true)
+                .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
+                .applicationSubmittedDate(LocalDate.now().format(dateTimeFormatter))
+                .paymentTaken(YES);
+        if (sentEmail != null) {
+            documentTransformer.addDocument(callbackRequest, sentEmail, false);
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
                                                                 Optional<String> newState,
                                                                 Optional<UserInfo> caseworkerInfo) {
@@ -746,7 +759,8 @@ public class CallbackResponseTransformer {
         final var applicationFee = transformMoneyGBPToString(feesResponse.getApplicationFeeResponse().getFeeAmount());
         final var totalFee = transformMoneyGBPToString(feesResponse.getTotalAmount());
 
-        final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
+        final var applicationSubmittedDate = feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO) == 0
+                ? dateTimeFormatter.format(LocalDate.now()) : null;
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
         caseDataTransformer
                 .transformForSolicitorApplicationCompletion(callbackRequest, feesResponse.getTotalAmount());
