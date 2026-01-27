@@ -136,7 +136,7 @@ public class CallbackResponseTransformer {
     private static final String IHT400 = "IHT400";
     private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection",
             "boCorrection");
-    private static final List<String> EXCLUDE_STATE_LIST = List.of(
+    private static final List<String> MIGRATE_STATE_LIST = List.of(
             "BOPostGrantIssued",
             "BOExaminingReissue",
             "BOCaseMatchingReissue",
@@ -649,7 +649,7 @@ public class CallbackResponseTransformer {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         auditEventService
                 .getLatestAuditEventExcludingDormantState(callbackRequest.getCaseDetails().getId().toString(),
-                        EXCLUDE_STATE_LIST, securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation())
+                        MIGRATE_STATE_LIST, securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation())
                 .ifPresent(auditEvent -> {
                     log.info("Audit event found: Case ID = {}, Event State = {}",
                             callbackRequest.getCaseDetails().getId(), auditEvent.getStateId());

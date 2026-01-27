@@ -45,7 +45,7 @@ public class AuditEventService {
                 = caseDataApi.getAuditEvents(userToken, authToken, false, caseId);
         log.info("auditEventsResponse AuditEvents().size(): {}", auditEventsResponse.getAuditEvents().size());
         return auditEventsResponse.getAuditEvents().stream()
-                .filter(auditEvent -> !stateNames.contains(auditEvent.getStateId()))
+                .filter(auditEvent -> stateNames.contains(auditEvent.getStateId()))
                 .max(Comparator.comparing(AuditEvent::getCreatedDate));
     }
 }
