@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
-set -eu
+set -xeu
 
 microservice=${1}
 oneTimePassword=${2}
 
-curl --insecure --fail --show-error --silent -X POST \
-  ${SERVICE_AUTH_PROVIDER_API_BASE_URL:-http://localhost:4502}/lease \
+s2sUrl=${S2S_URL_BASE:-http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}/testing-support/lease
+
+if [[ "${ENV}" == 'prod' ]]; then
+  s2sUrl=${S2S_URL_BASE:-http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}/lease
+fi
+
+curl -v --insecure --fail --show-error --silent -X POST \
+  ${s2sUrl} \
   -H "Content-Type: application/json" \
   -d '{
     "microservice": "'${microservice}'",

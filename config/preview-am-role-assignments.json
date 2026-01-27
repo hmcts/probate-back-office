@@ -1,0 +1,362 @@
+[
+  {
+    "email": "probatecaseworker@gmail.com",
+    "id": "5927",
+    "roleAssignments": [
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "case-allocator",
+        "grantType": "STANDARD",
+        "roleCategory": "ADMIN",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "region": "7",
+          "substantive": "N",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA5:CHECKAPPLICATIONC100",
+          "SKILL:ABA5:SERVEAPPLICATIONC100",
+          "SKILL:ABA5:HEARINGMANAGEMENTC100",
+          "SKILL:ABA5:ORDERMANAGEMENTC100",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEC100",
+          "SKILL:ABA5:CHECKAPPLICATIONFL401",
+          "SKILL:ABA5:SERVEAPPLICATIONFL401",
+          "SKILL:ABA5:HEARINGMANAGEMENTFL401",
+          "SKILL:ABA5:ORDERMANAGEMENTFL401",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEFL401",
+          "SKILL:ABA5:GATEKEEPING"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "case-allocator",
+        "grantType": "STANDARD",
+        "roleCategory": "CTSC",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "substantive": "N",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA5:CHECKAPPLICATIONC100",
+          "SKILL:ABA5:SERVEAPPLICATIONC100",
+          "SKILL:ABA5:HEARINGMANAGEMENTC100",
+          "SKILL:ABA5:ORDERMANAGEMENTC100",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEC100",
+          "SKILL:ABA5:CHECKAPPLICATIONFL401",
+          "SKILL:ABA5:SERVEAPPLICATIONFL401",
+          "SKILL:ABA5:HEARINGMANAGEMENTFL401",
+          "SKILL:ABA5:ORDERMANAGEMENTFL401",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEFL401",
+          "SKILL:ABA5:GATEKEEPING"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "ctsc",
+        "grantType": "STANDARD",
+        "roleCategory": "CTSC",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "workTypes": "routine_work,hearing_work,applications",
+          "substantive": "Y",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA5:CHECKAPPLICATIONC100",
+          "SKILL:ABA5:SERVEAPPLICATIONC100",
+          "SKILL:ABA5:HEARINGMANAGEMENTC100",
+          "SKILL:ABA5:ORDERMANAGEMENTC100",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEC100",
+          "SKILL:ABA5:CHECKAPPLICATIONFL401",
+          "SKILL:ABA5:SERVEAPPLICATIONFL401",
+          "SKILL:ABA5:HEARINGMANAGEMENTFL401",
+          "SKILL:ABA5:ORDERMANAGEMENTFL401",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEFL401",
+          "SKILL:ABA5:GATEKEEPING"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "ctsc-team-leader",
+        "grantType": "STANDARD",
+        "roleCategory": "CTSC",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "workTypes": "routine_work,hearing_work,applications",
+          "substantive": "Y",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA5:CHECKAPPLICATIONC100",
+          "SKILL:ABA5:SERVEAPPLICATIONC100",
+          "SKILL:ABA5:HEARINGMANAGEMENTC100",
+          "SKILL:ABA5:ORDERMANAGEMENTC100",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEC100",
+          "SKILL:ABA5:CHECKAPPLICATIONFL401",
+          "SKILL:ABA5:SERVEAPPLICATIONFL401",
+          "SKILL:ABA5:HEARINGMANAGEMENTFL401",
+          "SKILL:ABA5:ORDERMANAGEMENTFL401",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEFL401",
+          "SKILL:ABA5:GATEKEEPING"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "hearing-centre-admin",
+        "grantType": "STANDARD",
+        "roleCategory": "ADMIN",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "region": "7",
+          "workTypes": "routine_work,hearing_work,applications",
+          "substantive": "Y",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA5:CHECKAPPLICATIONC100",
+          "SKILL:ABA5:SERVEAPPLICATIONC100",
+          "SKILL:ABA5:HEARINGMANAGEMENTC100",
+          "SKILL:ABA5:ORDERMANAGEMENTC100",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEC100",
+          "SKILL:ABA5:CHECKAPPLICATIONFL401",
+          "SKILL:ABA5:SERVEAPPLICATIONFL401",
+          "SKILL:ABA5:HEARINGMANAGEMENTFL401",
+          "SKILL:ABA5:ORDERMANAGEMENTFL401",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEFL401",
+          "SKILL:ABA5:GATEKEEPING"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "hearing-centre-team-leader",
+        "grantType": "STANDARD",
+        "roleCategory": "ADMIN",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "region": "7",
+          "workTypes": "routine_work,hearing_work,applications",
+          "substantive": "Y",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA5:CHECKAPPLICATIONC100",
+          "SKILL:ABA5:SERVEAPPLICATIONC100",
+          "SKILL:ABA5:HEARINGMANAGEMENTC100",
+          "SKILL:ABA5:ORDERMANAGEMENTC100",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEC100",
+          "SKILL:ABA5:CHECKAPPLICATIONFL401",
+          "SKILL:ABA5:SERVEAPPLICATIONFL401",
+          "SKILL:ABA5:HEARINGMANAGEMENTFL401",
+          "SKILL:ABA5:ORDERMANAGEMENTFL401",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEFL401",
+          "SKILL:ABA5:GATEKEEPING"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "specific-access-approver-admin",
+        "grantType": "STANDARD",
+        "roleCategory": "ADMIN",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "region": "7",
+          "workTypes": "access_requests",
+          "substantive": "N",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA5:CHECKAPPLICATIONC100",
+          "SKILL:ABA5:SERVEAPPLICATIONC100",
+          "SKILL:ABA5:HEARINGMANAGEMENTC100",
+          "SKILL:ABA5:ORDERMANAGEMENTC100",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEC100",
+          "SKILL:ABA5:CHECKAPPLICATIONFL401",
+          "SKILL:ABA5:SERVEAPPLICATIONFL401",
+          "SKILL:ABA5:HEARINGMANAGEMENTFL401",
+          "SKILL:ABA5:ORDERMANAGEMENTFL401",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEFL401",
+          "SKILL:ABA5:GATEKEEPING"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "specific-access-approver-ctsc",
+        "grantType": "STANDARD",
+        "roleCategory": "CTSC",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "workTypes": "access_requests",
+          "substantive": "N",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA5:CHECKAPPLICATIONC100",
+          "SKILL:ABA5:SERVEAPPLICATIONC100",
+          "SKILL:ABA5:HEARINGMANAGEMENTC100",
+          "SKILL:ABA5:ORDERMANAGEMENTC100",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEC100",
+          "SKILL:ABA5:CHECKAPPLICATIONFL401",
+          "SKILL:ABA5:SERVEAPPLICATIONFL401",
+          "SKILL:ABA5:HEARINGMANAGEMENTFL401",
+          "SKILL:ABA5:ORDERMANAGEMENTFL401",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEFL401",
+          "SKILL:ABA5:GATEKEEPING"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "task-supervisor",
+        "grantType": "STANDARD",
+        "roleCategory": "ADMIN",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "region": "7",
+          "workTypes": "routine_work,hearing_work,applications",
+          "substantive": "N",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA5:CHECKAPPLICATIONC100",
+          "SKILL:ABA5:SERVEAPPLICATIONC100",
+          "SKILL:ABA5:HEARINGMANAGEMENTC100",
+          "SKILL:ABA5:ORDERMANAGEMENTC100",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEC100",
+          "SKILL:ABA5:CHECKAPPLICATIONFL401",
+          "SKILL:ABA5:SERVEAPPLICATIONFL401",
+          "SKILL:ABA5:HEARINGMANAGEMENTFL401",
+          "SKILL:ABA5:ORDERMANAGEMENTFL401",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEFL401",
+          "SKILL:ABA5:GATEKEEPING"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "task-supervisor",
+        "grantType": "STANDARD",
+        "roleCategory": "CTSC",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "workTypes": "routine_work,hearing_work,applications",
+          "substantive": "N",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA5:CHECKAPPLICATIONC100",
+          "SKILL:ABA5:SERVEAPPLICATIONC100",
+          "SKILL:ABA5:HEARINGMANAGEMENTC100",
+          "SKILL:ABA5:ORDERMANAGEMENTC100",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEC100",
+          "SKILL:ABA5:CHECKAPPLICATIONFL401",
+          "SKILL:ABA5:SERVEAPPLICATIONFL401",
+          "SKILL:ABA5:HEARINGMANAGEMENTFL401",
+          "SKILL:ABA5:ORDERMANAGEMENTFL401",
+          "SKILL:ABA5:REVIEWCORRESPONDENCEFL401",
+          "SKILL:ABA5:GATEKEEPING"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "hearing-manager",
+        "grantType": "STANDARD",
+        "roleCategory": "CTSC",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "substantive": "N",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": []
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "hearing-manager",
+        "grantType": "STANDARD",
+        "roleCategory": "ADMIN",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "substantive": "N",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": []
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "hearing-viewer",
+        "grantType": "STANDARD",
+        "roleCategory": "ADMIN",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "substantive": "N",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": []
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "hearing-viewer",
+        "grantType": "STANDARD",
+        "roleCategory": "CTSC",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "substantive": "N",
+          "jurisdiction": "PRIVATELAW",
+          "primaryLocation": "234946"
+        },
+        "authorisations": []
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "hmcts-admin",
+        "grantType": "BASIC",
+        "roleCategory": "ADMIN",
+        "classification": "PRIVATE",
+        "readOnly": true,
+        "attributes": {
+          "substantive": "N"
+        },
+        "authorisations": []
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "hmcts-ctsc",
+        "grantType": "BASIC",
+        "roleCategory": "CTSC",
+        "classification": "PRIVATE",
+        "readOnly": true,
+        "attributes": {
+          "substantive": "N"
+        },
+        "authorisations": []
+      }
+    ],
+    "overrideAll": true
+  }
+]
