@@ -642,7 +642,7 @@ public class CallbackResponseTransformer {
                 caseworkerInfo);
     }
 
-    public CallbackResponse migrate(CallbackRequest callbackRequest) {
+    public CallbackResponse migrate(CallbackRequest callbackRequest) throws RuntimeException {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(),false);
@@ -650,10 +650,13 @@ public class CallbackResponseTransformer {
         auditEventService
                 .getLatestAuditEventExcludingDormantState(callbackRequest.getCaseDetails().getId().toString(),
                         MIGRATE_STATE_LIST, securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation())
-                .ifPresent(auditEvent -> {
+                .ifPresentOrElse(auditEvent -> {
                     log.info("Audit event found: Case ID = {}, Event State = {}",
                             callbackRequest.getCaseDetails().getId(), auditEvent.getStateId());
                     responseCaseDataBuilder.state(auditEvent.getStateId());
+                }, () -> {
+                    log.info("Audit event NOT found: Case ID = {}, Event State = {}");
+                    throw new RuntimeException("No audit event found for migration");
                 });
         return transformResponse(responseCaseDataBuilder.build());
     }

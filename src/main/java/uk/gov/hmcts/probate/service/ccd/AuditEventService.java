@@ -40,12 +40,21 @@ public class AuditEventService {
 
     public Optional<AuditEvent> getLatestAuditEventExcludingDormantState(String caseId, List<String> stateNames,
                                                                          String userToken, String authToken) {
+        String maxEventId = caseDataApi.getAuditEvents(userToken, authToken, false, caseId)
+                .getAuditEvents().stream()
+                .max(Comparator.comparing(AuditEvent::getId))
+                .map(AuditEvent::getId)
+                .orElse(null);
+        if (maxEventId == null) {
+            return Optional.empty();
+        }
         log.info("Getting latest audit event for caseId: {}", caseId);
         AuditEventsResponse auditEventsResponse
                 = caseDataApi.getAuditEvents(userToken, authToken, false, caseId);
         log.info("auditEventsResponse AuditEvents().size(): {}", auditEventsResponse.getAuditEvents().size());
         return auditEventsResponse.getAuditEvents().stream()
-                .filter(auditEvent -> stateNames.contains(auditEvent.getStateId()))
-                .max(Comparator.comparing(AuditEvent::getCreatedDate));
+                .filter(auditEvent -> stateNames.contains(auditEvent.getStateId())
+                        && auditEvent.getId().equals(maxEventId))
+                .findFirst();
     }
 }
