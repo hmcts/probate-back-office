@@ -147,6 +147,7 @@ export class CaseProgressPage extends SignInPage {
     while (this.page.url() === currentUrl && attempts < 50) {
       await this.page.reload();
       await this.caseProgressSelectPenultimateNextStep();
+      await this.page.waitForTimeout(1000);
       await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
       await this.page.waitForTimeout(3000);
       attempts++;

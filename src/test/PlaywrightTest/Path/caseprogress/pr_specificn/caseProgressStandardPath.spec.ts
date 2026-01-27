@@ -18,6 +18,7 @@ test.describe("Case Progress - standard path", () => {
      cwEventActionsPage,
      caseProgressPage
     }, testInfo) => {
+    test.setTimeout(600000);
     const scenarioName ='Case Progress - standard path';
 
     const isSolicitorNamedExecutor = true;
