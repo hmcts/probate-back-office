@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.servlet.ServletException;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,6 +63,7 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
@@ -1341,8 +1343,11 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(MIGRATE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        assertThrows(ServletException.class, () ->
+                mockMvc.perform(post(MIGRATE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(content().string(CoreMatchers.containsString(
+                                "No audit event found for migration")))
+        );
     }
 
     @Test
