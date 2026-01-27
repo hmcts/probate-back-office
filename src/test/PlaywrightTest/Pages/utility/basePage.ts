@@ -68,8 +68,9 @@ export class BasePage {
     await expect(this.page.locator(buttonLocator)).toBeVisible();
     await expect(this.page.locator(buttonLocator)).toBeEnabled();
     await this.page.locator(buttonLocator).click();
-    await this.page.waitForLoadState('load');
-    // await this.page.waitForTimeout(1000);
+    await this.page.waitForTimeout(1000);
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForTimeout(1000);
     // await navigationPromise;
   }
 

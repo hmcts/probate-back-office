@@ -21,7 +21,7 @@ export class SignInPage extends BasePage {
       waitUntil: 'domcontentloaded',
       timeout: 60000
     });
-    await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+    await this.page.waitForTimeout(testConfig.ManualDelayLong);
     await expect(
       this.page.getByRole("heading", {
         name: "Sign in",
@@ -54,7 +54,7 @@ export class SignInPage extends BasePage {
     //await this.page.waitForSelector(this.submitButtonLocator, signInDelay);
     await expect(this.submitButtonLocator).toBeEnabled();
     await this.submitButtonLocator.click();
-
+    await this.page.waitForTimeout(signInDelay);
     await expect(this.usernameLocator).toBeHidden();
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
