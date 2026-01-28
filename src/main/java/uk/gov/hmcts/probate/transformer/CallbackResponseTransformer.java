@@ -881,6 +881,28 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse clearRelationships(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), Optional.empty(),false);
+
+        String relationshipBefore = callbackRequest.getCaseDetailsBefore().getData()
+                .getPrimaryApplicantRelationshipToDeceased();
+        String relationshipAfter = callbackRequest.getCaseDetails().getData()
+                .getPrimaryApplicantRelationshipToDeceased();
+        if (relationshipBefore != null && !relationshipBefore.equals(relationshipAfter)) {
+            responseCaseDataBuilder.primaryApplicantAdoptedIn(null);
+            responseCaseDataBuilder.primaryApplicantAdoptedOut(null);
+            responseCaseDataBuilder.primaryApplicantAdoptionInEnglandOrWales(null);
+            responseCaseDataBuilder.primaryApplicantParentAdoptedIn(null);
+            responseCaseDataBuilder.primaryApplicantParentAdoptedOut(null);
+            responseCaseDataBuilder.primaryApplicantParentAdoptionInEnglandOrWales(null);
+            responseCaseDataBuilder.deceasedAdoptedIn(null);
+            responseCaseDataBuilder.deceasedAdoptionInEnglandOrWales(null);
+            responseCaseDataBuilder.deceasedAdoptedOut(null);
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformCaseForAttachScannedDocs(CallbackRequest callbackRequest, Document document,
                                                               Optional<UserInfo> caseworkerInfo) {
         boolean transform = doTransform(callbackRequest);

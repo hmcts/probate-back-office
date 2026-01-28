@@ -142,6 +142,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     @JsonProperty(value = "executorsNotApplying")
     private final List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
+    private final List<CollectionMember<IntestacyAdditionalExecutor>> solsIntestacyExecutorList;
     private final SolsAddress deceasedAddress;
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
