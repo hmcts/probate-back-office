@@ -786,7 +786,7 @@ export class SolCreateCasePage extends BasePage {
 
   async grantOfProbatePage2(verifyTrustCorpOpts, isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
     await this.runAccessibilityTest();
-
+    await this.page.waitForTimeout(testConfig.ManualDelayLong);
     if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {
       await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).toBeVisible();
       await expect(this.page.getByText(grantOfProbateConfig.page2_sol_name)).toBeVisible();
