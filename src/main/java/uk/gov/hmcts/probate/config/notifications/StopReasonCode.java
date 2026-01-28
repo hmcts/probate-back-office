@@ -44,6 +44,8 @@ public class StopReasonCode {
     private String grants;
     private String iht205;
     private String iht207;
+    private String pa1a;
+    private String pa1p;
     private String pa11;
     private String pa12;
     private String pa13;
