@@ -1479,12 +1479,13 @@ public class CallbackResponseTransformer {
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
             .childAlive(caseData.getChildAlive())
-            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased());
+            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
+            .deceasedAliasNameList(caseData.getDeceasedAliasNameList());
 
         handleDeceasedAliases(
                 builder,
                 caseData,
-                caseDetails.getId());
+                caseDetails.getId(), eventId);
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1504,9 +1505,14 @@ public class CallbackResponseTransformer {
     void handleDeceasedAliases(
             final ResponseCaseDataBuilder<?,?> builder,
             final CaseData caseData,
-            final Long caseRef) {
+            final Long caseRef, final String eventId) {
         // Question this asks is "Is the name on the will the same?" Not "Are there other names on the will?" as the
         // name of the variable in the CaseData object suggests.
+
+        if (eventId.equalsIgnoreCase("intestacyRelationshipDraft")) {
+            //need to do for all PA draft event if there are callbacks
+            return;
+        }
         final String decNameOnWillSame = caseData.getDeceasedAnyOtherNameOnWill();
         final var decAliases = caseData.getDeceasedAliasNameList();
         final var solsDecAliases = caseData.getSolsDeceasedAliasNamesList();

@@ -450,4 +450,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String halfBloodSiblingsOverEighteen;
     private final String halfBloodNiecesAndNephewsOverEighteen;
     private final String childAlive;
+    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
 }
