@@ -67,6 +67,10 @@ public final class Constants {
 
     public static final String SOLS_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD = "ChildAdopted";
     public static final String PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD = "adoptedChild";
+    public static final String CHILD = "Child";
+    public static final String GRAND_CHILD = "Grandchild";
+    public static final String PARENT = "Parent";
+    public static final String SIBLING = "Sibling";
 
     public static final String TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED = "TCTPartSuccPowerRes";
     public static final String TITLE_AND_CLEARING_FIRM_CEASED_TRADING_NO_SUCCESSOR = "TCTFirmCeasedTradingNoSucc";
