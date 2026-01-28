@@ -17,6 +17,7 @@ public class CCDData implements Serializable {
     private final String solicitorReference;
     private final Solicitor solicitor;
     private final Deceased deceased;
+    private final Applicant applicant;
     private final InheritanceTax iht;
     private final Fee fee;
     private final String solsAdditionalInfo;

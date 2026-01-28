@@ -107,7 +107,7 @@ public class ExecutorsTransformer {
         builder.solsIdentifiedNotApplyingExecsCcdCopy(execsNotApplyingNames);
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> createCaseworkerApplyingList(CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutorApplying>>  createCaseworkerApplyingList(CaseData caseData) {
 
         // Initialise executor lists
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = getExecsApplying(caseData);

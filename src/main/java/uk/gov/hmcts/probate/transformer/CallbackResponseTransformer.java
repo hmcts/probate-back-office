@@ -12,7 +12,6 @@ import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
@@ -83,6 +82,10 @@ import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
+import static uk.gov.hmcts.probate.model.Constants.CHILD;
+import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
+import static uk.gov.hmcts.probate.model.Constants.PARENT;
+import static uk.gov.hmcts.probate.model.Constants.SIBLING;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -875,9 +878,8 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse clearRelationships(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
-                        Optional.empty(),false);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), Optional.empty(),false);
 
         String relationshipBefore = callbackRequest.getCaseDetailsBefore().getData()
                 .getPrimaryApplicantRelationshipToDeceased();
@@ -2296,17 +2298,16 @@ public class CallbackResponseTransformer {
         final var caseDetailsBefore = callbackRequest.getCaseDetailsBefore();
         String relationshipAfter = caseDetails.getData().getSolsApplicantRelationshipToDeceased();
         String relationshipBefore = caseDetailsBefore.getData().getSolsApplicantRelationshipToDeceased();
+        List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList = caseDetailsBefore.getData()
+                .getSolsIntestacyExecutorList();
         log.info("Relationship to deceased before: {}", relationshipBefore);
         final var caseData = caseDetails.getData();
 
-        DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData);
+        DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData, existingExecutorList);
         String  otherExecutorExists = caseData.getOtherExecutorExists();
         log.info("Other executor exists answer: {}", otherExecutorExists);
 
-        List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList = caseData.getSolsIntestacyExecutorList();
-        if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
-            responseCaseDataBuilder.solsIntestacyExecutorList(existingExecutorList);
-        } else if (YES.equalsIgnoreCase(otherExecutorExists) && (!relationshipAfter.equals(relationshipBefore))) {
+        if (YES.equalsIgnoreCase(otherExecutorExists) && (!relationshipAfter.equals(relationshipBefore))) {
             List<CollectionMember<IntestacyAdditionalExecutor>> additionalExecutorList = new ArrayList<>();
             IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
                     .solsApplicantFamilyDetails(SolsApplicantFamilyDetails.builder()
@@ -2314,40 +2315,47 @@ public class CallbackResponseTransformer {
                     .build();
             additionalExecutorList.add(new CollectionMember<>(additionalExecutor));
             responseCaseDataBuilder.solsIntestacyExecutorList(additionalExecutorList);
+        } else if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
+            responseCaseDataBuilder.solsIntestacyExecutorList(existingExecutorList);
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    private DynamicRadioList getAppropriateRelationshipRadioList(CaseData caseData) {
+    private DynamicRadioList getAppropriateRelationshipRadioList(CaseData caseData,
+                                                                 List<CollectionMember<IntestacyAdditionalExecutor>>
+                                                                         existingExecutorList) {
         List<DynamicRadioListElement> listItems = new ArrayList<>();
         String relationship = caseData.getSolsApplicantRelationshipToDeceased();
         log.info("Setting up relationship radio list for relationship: {}", relationship);
 
-        if ("child".equalsIgnoreCase(relationship) || "grandchild".equalsIgnoreCase(relationship)) {
+        if (CHILD.equalsIgnoreCase(relationship) || GRAND_CHILD.equalsIgnoreCase(relationship)) {
             listItems.add(buildRadioListItem("child", "They are the deceased’s child"));
             listItems.add(buildRadioListItem("grandchild", "They are the deceased’s grandchild"));
-        } else if ("parent".equalsIgnoreCase(relationship)) {
+        } else if (PARENT.equalsIgnoreCase(relationship)) {
             listItems.add(buildRadioListItem("parent", "They are the deceased’s parent"));
-        } else if ("sibling".equalsIgnoreCase(relationship)) {
+        } else if (SIBLING.equalsIgnoreCase(relationship)) {
             if (YES.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased())) {
-                listItems.add(buildRadioListItem("wholeBloodSibling", "They are the deceased’s whole blood sibling"));
-                listItems.add(buildRadioListItem("wholeBloodNieceOrNephew", "They are the deceased’s whole blood niece or nephew"));
+                listItems.add(buildRadioListItem("wholeBloodSibling",
+                        "They are the deceased’s whole blood sibling"));
+                listItems.add(buildRadioListItem("wholeBloodNieceOrNephew",
+                        "They are the deceased’s whole blood niece or nephew"));
             } else {
-                listItems.add(buildRadioListItem("halfBloodSibling", "They are the deceased’s half blood sibling"));
-                listItems.add(buildRadioListItem("halfBloodNieceOrNephew", "They are the deceased’s half blood niece or nephew"));
+                listItems.add(buildRadioListItem("halfBloodSibling",
+                        "They are the deceased’s half blood sibling"));
+                listItems.add(buildRadioListItem("halfBloodNieceOrNephew",
+                        "They are the deceased’s half blood niece or nephew"));
             }
         }
 
         DynamicRadioListElement selectedValue = null;
-        List<CollectionMember<IntestacyAdditionalExecutor>> additionalExecutorList = caseData.getSolsIntestacyExecutorList();
-        if (additionalExecutorList != null && !additionalExecutorList.isEmpty()) {
-            for (CollectionMember<IntestacyAdditionalExecutor> additionalExecutor : additionalExecutorList) {
-                if (additionalExecutor.getValue().getSolsApplicantFamilyDetails() != null &&
-                        additionalExecutor.getValue().getSolsApplicantFamilyDetails().getRelationship() != null) {
+        if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
+            for (CollectionMember<IntestacyAdditionalExecutor> additionalExecutor : existingExecutorList) {
+                if (additionalExecutor.getValue().getSolsApplicantFamilyDetails() != null
+                        && additionalExecutor.getValue().getSolsApplicantFamilyDetails().getRelationship() != null) {
                     DynamicRadioList relationshipRadioList =
                             additionalExecutor.getValue().getSolsApplicantFamilyDetails().getRelationship();
-                    if (relationshipRadioList.getValue() != null &&
-                            relationshipRadioList.getValue().getCode() != null) {
+                    if (relationshipRadioList.getValue() != null
+                            && relationshipRadioList.getValue().getCode() != null) {
                         String code = relationshipRadioList.getValue().getCode();
                         selectedValue = listItems.stream()
                                 .filter(item -> code.equals(item.getCode()))
