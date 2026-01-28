@@ -488,7 +488,7 @@ Configuration is set by default to be able to run in an npx created local enviro
 
 Config is by environment variables with defaults if not present. The .env file does not contain environment variables, 
 and so default values will be used for local run. These can be found in src/test/config.js, and are used by
-codecept config file src/test/end-to-end/codecept.conf.js.
+codecept config file src/test/end-to-end/codecept.conf.cjs.
 
 The tests are node.js and best run in vs code. A launch vs code configuration has been provided to run the 
 yarn script test:fullfunctional (not to be confused with functional tests).

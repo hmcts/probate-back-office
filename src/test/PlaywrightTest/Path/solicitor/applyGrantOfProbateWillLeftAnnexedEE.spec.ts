@@ -1,0 +1,124 @@
+import {test} from "../../Fixtures/fixtures.ts";
+
+import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+
+import applyProbateConfig from "../../Pages/solicitorApplyProbate/applyProbate/applyProbateConfig.json" with { type: "json" };
+import deceasedDetailsConfig from "../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
+import admonWillDetailsConfig from "../../Pages/solicitorApplyProbate/admonWillDetails/admonWillDetails.json" with { type: "json" };
+import completeApplicationConfig from "../../Pages/solicitorApplyProbate/completeApplication/completeApplication.json" with { type: "json" };
+
+import applicantDetailsTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig.json" with { type: "json" };
+import deceasedTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/deceasedTabConfigEE.json" with { type: "json" };
+import iHTTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/iHTTabConfigEE400.json" with { type: "json" };
+import caseDetailsTabDeceasedDtlsConfig from "../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfigEEIHT400.json" with { type: "json" };
+import caseDetailsTabAdmonWillConfig from "../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabAdmonWillConfig.json" with { type: "json" };
+import caseDetailsTabUpdatesConfig from "../../Pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig.json" with { type: "json" };
+
+import sotTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/sotTabConfig.json" with { type: "json" };
+import copiesTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/copiesTabConfig.json" with { type: "json" };
+import historyTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/historyTabConfig.json" with { type: "json" };
+import serviceRequestTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
+import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
+import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
+
+test.describe("Solicitor - Apply Grant of probate Admon Will Excepted Estates", () => {
+  test("Solicitor - Apply Grant of probate - Admon Will Excepted Estates (Will left annexed)", async ({
+    basePage,
+    signInPage,
+    createCasePage,
+    solCreateCasePage,
+    cwEventActionsPage
+  }, testInfo) => {
+    const scenarioName = 'Solicitor - Apply Grant of probate - Admon Will Excepted Estates (Will left annexed)';
+    const updateAddressManually = true;
+    const willType = 'WillLeftAnnexed';
+
+    // @ts-ignore
+    await basePage.logInfo(scenarioName, 'Login as Solicitor');
+    await signInPage.authenticateWithIdamIfAvailable(true);
+
+    let nextStepName = 'Apply for probate';
+    let endState = 'Application created (deceased details)';
+    // @ts-ignore
+    await basePage.logInfo(scenarioName, nextStepName);
+    await createCasePage.selectNewCase();
+    await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
+    await solCreateCasePage.applyForProbatePage1();
+    await solCreateCasePage.applyForProbatePage2();
+    await solCreateCasePage.cyaPage();
+
+    await solCreateCasePage.seeEndState(endState);
+
+    const caseRef = await basePage.getCaseRefFromUrl();
+
+    await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
+    await basePage.seeCaseDetails(testInfo, caseRef, applicantDetailsTabConfig, applyProbateConfig);
+
+    nextStepName = 'Deceased details';
+    endState = 'Admon will grant created';
+
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepName);
+    await solCreateCasePage.deceasedDetailsPage1('EE');
+    await solCreateCasePage.deceasedDetailsPage2('EE', 'Yes', 'IHT400');
+    await solCreateCasePage.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
+    await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, 'IHT400');
+    await solCreateCasePage.deceasedDetailsPage3(willType);
+    await solCreateCasePage.cyaPage();
+
+    await solCreateCasePage.seeEndState(endState);
+    await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
+    // @ts-ignore
+    await basePage.seeCaseDetails(testInfo, caseRef, deceasedTabConfig, deceasedDetailsConfig);
+    await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
+    await basePage.seeCaseDetails(testInfo, caseRef, iHTTabConfig, deceasedDetailsConfig);
+    await basePage.seeUpdatesOnCase(testInfo, caseRef, caseDetailsTabUpdatesConfig, willType, deceasedDetailsConfig);
+
+    nextStepName = 'Admon will details';
+    endState = 'Application updated';
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepName);
+    await solCreateCasePage.admonWillDetailsPage1();
+    await solCreateCasePage.admonWillDetailsPage2(updateAddressManually);
+    await solCreateCasePage.admonWillDetailsPage3();
+    await solCreateCasePage.admonWillDetailsPage4();
+    await solCreateCasePage.admonWillDetailsPage5();
+    await solCreateCasePage.cyaPage();
+
+    await solCreateCasePage.seeEndState(endState);
+    await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
+
+    const admonWillDtlsAndDcsdDtls = {...deceasedDetailsConfig, ...admonWillDetailsConfig};
+
+    await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabDeceasedDtlsConfig, admonWillDtlsAndDcsdDtls);
+    await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabAdmonWillConfig, admonWillDtlsAndDcsdDtls);
+
+    await basePage.seeUpdatesOnCase(testInfo, caseRef, sotTabConfig, willType, completeApplicationConfig);
+    await basePage.seeUpdatesOnCase(testInfo, caseRef, applicantDetailsTabConfig, 'Applicant', admonWillDetailsConfig);
+
+    nextStepName = 'Complete application';
+    endState = 'Awaiting documentation';
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepName);
+    await solCreateCasePage.completeApplicationPage1(willType);
+    await solCreateCasePage.completeApplicationPage3();
+    await solCreateCasePage.completeApplicationPage4();
+    await solCreateCasePage.completeApplicationPage5();
+    await solCreateCasePage.completeApplicationPage6();
+    await solCreateCasePage.completeApplicationPage7();
+    await solCreateCasePage.completeApplicationPage8();
+
+    // @ts-ignore
+    await basePage.logInfo(scenarioName, 'Payment');
+    await solCreateCasePage.makePaymentPage1(caseRef, serviceRequestTabConfig);
+    await solCreateCasePage.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
+    await solCreateCasePage.makePaymentPage2(caseRef);
+    // @ts-ignore
+    await solCreateCasePage.viewPaymentStatus(testInfo, caseRef);
+
+    await solCreateCasePage.seeEndState(endState);
+    await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
+    await basePage.seeCaseDetails(testInfo, caseRef, copiesTabConfig, completeApplicationConfig);
+
+  });
+});
