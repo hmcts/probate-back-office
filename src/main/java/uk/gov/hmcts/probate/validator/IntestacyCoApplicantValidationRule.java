@@ -21,12 +21,12 @@ import static uk.gov.hmcts.probate.model.Constants.SIBLING;
 @Component
 @RequiredArgsConstructor
 public class IntestacyCoApplicantValidationRule implements ValidationRule {
-    private static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "adoptedOutsideEnglandOrWales";
-    private static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWales";
-    private static final String ADOPTED_OUT = "adoptedOut";
-    private static final String ADOPTED_OUT_WELSH = "adoptedOut";
-    private static final String PARENT_IS_NOT_DECEASED = "parentIsNotDeceased";
-    private static final String PARENT_IS_NOT_DECEASED_WELSH = "parentIsNotDeceased";
+    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "adoptedOutsideEnglandOrWales";
+    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWales";
+    public static final String ADOPTED_OUT = "adoptedOut";
+    public static final String ADOPTED_OUT_WELSH = "adoptedOut";
+    public static final String PARENT_IS_NOT_DECEASED = "parentIsNotDeceased";
+    public static final String PARENT_IS_NOT_DECEASED_WELSH = "parentIsNotDeceased";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
