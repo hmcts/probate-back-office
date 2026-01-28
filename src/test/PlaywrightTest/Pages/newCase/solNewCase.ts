@@ -1039,6 +1039,7 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.getByRole('heading', { name: caseRef })).toBeVisible();
     await expect(this.page.getByRole('link', { name: makePaymentConfig.paymentLinkText })).toBeVisible();
     await this.page.getByRole('link', { name: makePaymentConfig.paymentLinkText }).click();
+    await this.page.waitForLoadState('domcontentloaded');
     await expect(this.serviceRequestTab).toBeEnabled();
     await this.serviceRequestTab.focus();
     await this.serviceRequestTab.click();

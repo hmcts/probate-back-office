@@ -55,6 +55,7 @@ export class SignInPage extends BasePage {
     await expect(this.submitButtonLocator).toBeEnabled();
     await this.submitButtonLocator.click();
     await this.page.waitForTimeout(signInDelay);
+    await this.page.waitForLoadState('domcontentloaded');
     await expect(this.usernameLocator).toBeHidden();
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
