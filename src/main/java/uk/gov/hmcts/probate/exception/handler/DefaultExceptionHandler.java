@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
+import uk.gov.hmcts.probate.exception.DataMigrationException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.exception.SocketException;
@@ -125,6 +126,15 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(TextFileBuilderException.class)
     public ResponseEntity<CallbackResponse> handle(TextFileBuilderException exception) {
         log.error("Error from TestFileBuilderService", exception);
+
+        List<String> errors = List.of(exception.getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
+        return ResponseEntity.ok(callbackResponse);
+    }
+
+    @ExceptionHandler(DataMigrationException.class)
+    public ResponseEntity<CallbackResponse>  handle(DataMigrationException exception) {
+        log.error("Exception within data migration", exception);
 
         List<String> errors = List.of(exception.getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
