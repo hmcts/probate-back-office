@@ -567,3 +567,11 @@ dependencyCheck {
 rootProject.tasks.named("processResources") {
   dependsOn("generateGitProperties")
 }
+
+tasks.register('buildStateDiagram', JavaExec) {
+  group = 'application'
+  description = 'Generate PlantUML state diagrams'
+
+  classpath = sourceSets.test.runtimeClasspath
+  mainClass = 'uk.gov.hmcts.probate.util.diagrams.plantuml.BuildStateDiagram'
+}
