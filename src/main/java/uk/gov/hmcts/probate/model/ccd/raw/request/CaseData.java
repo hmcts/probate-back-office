@@ -227,8 +227,7 @@ public class CaseData extends CaseDataParent {
         ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
     private SolsAddress primaryApplicantAddress;
 
-    @NotBlank(groups = {ApplicationAdmonGroup.class,
-        ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
+    @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
     private String primaryApplicantEmailAddress;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{otherExecutorExistsIsNull}")
@@ -540,6 +539,7 @@ public class CaseData extends CaseDataParent {
     private final String deceasedAnyLivingDescendants;
     private final String deceasedAnyOtherParentAlive;
     private final String deceasedHasAssetsOutsideUK;
+    private final String assetsOutsideNetValue;
     private final String boEmailRequestInfoNotificationRequested;
     @Builder.Default
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
