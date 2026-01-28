@@ -770,7 +770,8 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest,
             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
-        var rules = new ValidationRule[]{intestacyApplicantDetailsValidationRule,
+        var rules = new ValidationRule[]{checkIntestacyOtherApplicantRule, checkIntestacyMaritalStatusRule,
+                intestacyApplicantDetailsValidationRule,
             intestacyDivorceOrSeparationValidationRule};
         final List<ValidationRule> intestacyApplicantValidations = Arrays.asList(rules);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,

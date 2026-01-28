@@ -49,7 +49,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String REDECLARATION_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
     private static final String SOLS_VALIDATE_IHT_ESTATE = "/case/validate-iht-estate";
-    private static final String SOLS_UPDATE_INTESTACY_VALIDATE = "/case/sols-update-intestacy-validate";
+    private static final String SOLS_TRANSFORM_RELATIONSHIP_TO_DECEASED = "/case/transformRelationshipToDeceased";
     private static final String DEFAULT_SOLS_IHT_ESTATE = "/case/default-iht-estate";
     private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
     private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
@@ -705,7 +705,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     void verifyRequestInTestacySuccessForUpdatePage2() throws IOException {
         final ResponseBody body = validatePostSuccessForPayload(utils.getJsonFromFile(
-                "solicitorPDFPayloadIntestacy.json"), SOLS_UPDATE_INTESTACY_VALIDATE,
+                "solicitorPDFPayloadIntestacy.json"), SOLS_TRANSFORM_RELATIONSHIP_TO_DECEASED,
                 utils.getHeadersWithCaseworkerUser());
 
         final JsonPath jsonPath = JsonPath.from(body.asString());
@@ -720,7 +720,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 "\"deceasedMaritalStatus\": \"divorcedCivilPartnership\",");
         validatePostFailureWithPayload(payload, "The selected marital status is not possible if the "
                         + "applicant is the deceased's husband, wife or civil partner.",
-                200, SOLS_UPDATE_INTESTACY_VALIDATE);
+                200, SOLS_TRANSFORM_RELATIONSHIP_TO_DECEASED);
     }
 
     @Test
@@ -733,7 +733,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                         + "applicant is the deceased's husband, wife or civil partner.\n"
                         + "In some cases, the deceased's child can be a joint "
                         + "applicant. Use Form PA1A to apply by post instead.",
-                200, SOLS_UPDATE_INTESTACY_VALIDATE);
+                200, SOLS_TRANSFORM_RELATIONSHIP_TO_DECEASED);
     }
 
     @Test
