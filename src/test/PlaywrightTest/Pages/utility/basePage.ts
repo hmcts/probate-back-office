@@ -92,11 +92,12 @@ export class BasePage {
   }
 
   async waitForSignOutNavigationToComplete(signOutLocator: string) {
-    const navigationPromise = this.page.waitForNavigation();
+    // const navigationPromise = this.page.waitForNavigation();
     await expect(this.page.locator(`${signOutLocator}`)).toBeVisible();
     await expect(this.page.locator(`${signOutLocator}`)).toBeEnabled();
     await this.page.locator(`${signOutLocator}`).click();
-    await navigationPromise;
+    await this.page.waitForLoadState("domcontentloaded")
+    // await navigationPromise;
   }
 
   async seeCaseDetails(
