@@ -159,6 +159,7 @@ public class CallbackResponseTransformer {
     private final OrganisationsRetrievalService organisationsRetrievalService;
     private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
+    private final GrantIssueTooEarlyTransformer grantIssueTooEarlyTransformer;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final AuditEventService auditEventService;
@@ -575,6 +576,9 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.matches("No matches found");
         }
 
+        responseCaseDataBuilder.issueEarlySwitch(
+                grantIssueTooEarlyTransformer.defaultIssueTooEarlySwitch(callbackRequest.getCaseDetails().getData())
+        );
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -877,28 +881,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse clearRelationships(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
-                callbackRequest.getEventId(), Optional.empty(),false);
-
-        String relationshipBefore = callbackRequest.getCaseDetailsBefore().getData()
-                .getPrimaryApplicantRelationshipToDeceased();
-        String relationshipAfter = callbackRequest.getCaseDetails().getData()
-                .getPrimaryApplicantRelationshipToDeceased();
-        if (relationshipBefore != null && !relationshipBefore.equals(relationshipAfter)) {
-            responseCaseDataBuilder.primaryApplicantAdoptedIn(null);
-            responseCaseDataBuilder.primaryApplicantAdoptedOut(null);
-            responseCaseDataBuilder.primaryApplicantAdoptionInEnglandOrWales(null);
-            responseCaseDataBuilder.primaryApplicantParentAdoptedIn(null);
-            responseCaseDataBuilder.primaryApplicantParentAdoptedOut(null);
-            responseCaseDataBuilder.primaryApplicantParentAdoptionInEnglandOrWales(null);
-            responseCaseDataBuilder.deceasedAdoptedIn(null);
-            responseCaseDataBuilder.deceasedAdoptionInEnglandOrWales(null);
-            responseCaseDataBuilder.deceasedAdoptedOut(null);
-        }
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
     public CallbackResponse transformCaseForAttachScannedDocs(CallbackRequest callbackRequest, Document document,
                                                               Optional<UserInfo> caseworkerInfo) {
         boolean transform = doTransform(callbackRequest);
@@ -1137,6 +1119,10 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
+        if (SOLICITOR.equals(cd.getApplicationType())) {
+            responseCaseDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
+        }
+
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
         return transformResponse(responseCaseDataBuilder
@@ -1316,15 +1302,13 @@ public class CallbackResponseTransformer {
             .bulkPrintId(caseData.getBulkPrintId())
 
             .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
+            .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
             .deceasedSpouseNotApplyingReason(caseData.getDeceasedSpouseNotApplyingReason())
             .deceasedOtherChildren(caseData.getDeceasedOtherChildren())
             .allDeceasedChildrenOverEighteen(caseData.getAllDeceasedChildrenOverEighteen())
             .anyDeceasedChildrenDieBeforeDeceased(caseData.getAnyDeceasedChildrenDieBeforeDeceased())
-            .childrenDiedBeforeDeceased(caseData.getChildrenDiedBeforeDeceased())
             .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
             .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
-            .deceasedAnyLivingDescendants(caseData.getDeceasedAnyLivingDescendants())
-            .deceasedAnyOtherParentAlive(caseData.getDeceasedAnyOtherParentAlive())
             .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
             .statementOfTruthDocument(caseData.getStatementOfTruthDocument())
             .amendedLegalStatement(caseData.getAmendedLegalStatement())
@@ -1452,35 +1436,9 @@ public class CallbackResponseTransformer {
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
             .isSaveAndClose(caseData.getIsSaveAndClose())
             .executorsNamed(caseData.getExecutorsNamed())
-            .hasCoApplicant(caseData.getHasCoApplicant())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
-            .evidenceHandledDate(caseData.getEvidenceHandledDate())
-            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
-            .grandchildParentOtherChildren(caseData.getGrandchildParentOtherChildren())
-            .grandchildParentChildrenOverEighteen(caseData.getGrandchildParentChildrenOverEighteen())
-            .otherWholeBloodSiblings(caseData.getOtherWholeBloodSiblings())
-            .wholeBloodSiblingsDiedBeforeDeceased(caseData.getWholeBloodSiblingsDiedBeforeDeceased())
-            .wholeBloodNiecesAndNephewsSurvived(caseData.getWholeBloodNiecesAndNephewsSurvived())
-            .wholeBloodSiblingsOverEighteen(caseData.getWholeBloodSiblingsOverEighteen())
-            .wholeBloodNiecesAndNephewsOverEighteen(caseData.getWholeBloodNiecesAndNephewsOverEighteen())
-            .otherHalfBloodSiblings(caseData.getOtherHalfBloodSiblings())
-            .halfBloodSiblingsDiedBeforeDeceased(caseData.getHalfBloodSiblingsDiedBeforeDeceased())
-            .halfBloodNiecesAndNephewsSurvived(caseData.getHalfBloodNiecesAndNephewsSurvived())
-            .halfBloodSiblingsOverEighteen(caseData.getHalfBloodSiblingsOverEighteen())
-            .halfBloodNiecesAndNephewsOverEighteen(caseData.getHalfBloodNiecesAndNephewsOverEighteen())
-            .primaryApplicantAdoptedIn(caseData.getPrimaryApplicantAdoptedIn())
-            .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
-            .primaryApplicantAdoptedOut(caseData.getPrimaryApplicantAdoptedOut())
-            .primaryApplicantParentAdoptedIn(caseData.getPrimaryApplicantParentAdoptedIn())
-            .primaryApplicantParentAdoptionInEnglandOrWales(caseData
-                .getPrimaryApplicantParentAdoptionInEnglandOrWales())
-            .primaryApplicantParentAdoptedOut(caseData.getPrimaryApplicantParentAdoptedOut())
-            .deceasedAdoptedIn(caseData.getDeceasedAdoptedIn())
-            .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
-            .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
-            .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
-            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased());
+            .evidenceHandledDate(caseData.getEvidenceHandledDate());
 
         handleDeceasedAliases(
                 builder,
@@ -1805,7 +1763,6 @@ public class CallbackResponseTransformer {
                 .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
                 .bulkScanEnvelopes(caseData.getBulkScanEnvelopes())
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
-                .solsIntestacyExecutorList(caseData.getSolsIntestacyExecutorList())
                 .additionalExecutorsTrustCorpList(caseData.getAdditionalExecutorsTrustCorpList())
                 .otherPartnersApplyingAsExecutors(caseData.getOtherPartnersApplyingAsExecutors())
                 .dispenseWithNoticeOtherExecsList(caseData.getDispenseWithNoticeOtherExecsList())
@@ -2286,6 +2243,17 @@ public class CallbackResponseTransformer {
         } else {
             responseCaseDataBuilder.informationNeededByPostSwitch(NO);
         }
+    }
+
+    private OrganisationPolicy buildEmptySolicitorOrganisationPolicy() {
+        return OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
     }
 
     public CallbackResponse setupDynamicList(CallbackRequest callbackRequest) {
