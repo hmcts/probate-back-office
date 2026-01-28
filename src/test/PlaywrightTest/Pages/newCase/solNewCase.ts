@@ -781,7 +781,14 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.languagePreferenceLabelLocator).toBeVisible();
     await this.languagePreferenceWelshLocator.click();
     await this.page.waitForTimeout(testConfig.ManualDelayLong);
-    await this.waitForNavigationToComplete(commonConfig.continueButton);
+    const isLanguagePreferenceSelected = await this.languagePreferenceWelshLocator.isChecked();
+    if (isLanguagePreferenceSelected) {
+      await this.waitForNavigationToComplete(commonConfig.continueButton);
+    } else {
+      await this.languagePreferenceWelshLocator.click();
+      await this.waitForNavigationToComplete(commonConfig.continueButton);
+    }
+
   }
 
   async grantOfProbatePage2(verifyTrustCorpOpts, isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
