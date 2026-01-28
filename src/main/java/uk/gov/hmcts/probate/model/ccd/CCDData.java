@@ -40,6 +40,7 @@ public class CCDData implements Serializable {
     private final LocalDate originalWillSignedDate;
     private final List<CodicilAddedDate> codicilAddedDateList;
     private final LocalDate deceasedDateOfDeath;
+    private final String deceasedMaritalStatus;
     private final DocumentLink solsCoversheetDocument;
     private final String solsApplicantRelationshipToDeceased;
     private final String solsApplicantSiblings;
@@ -49,4 +50,5 @@ public class CCDData implements Serializable {
     private final String dispenseWithNoticeSupportingDocs;
     private final String englishWill;
     private final String channelChoice;
+    private final String otherExecutorExists;
 }

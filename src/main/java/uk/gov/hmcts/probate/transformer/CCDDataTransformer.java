@@ -62,6 +62,7 @@ public class CCDDataTransformer {
             .originalWillSignedDate(caseData.getOriginalWillSignedDate())
             .codicilAddedDateList(getCodicilAddedDates(caseData))
             .deceasedDateOfDeath(caseData.getDeceasedDateOfDeath())
+            .deceasedMaritalStatus(caseData.getDeceasedMaritalStatus())
             .solsCoversheetDocument(caseData.getSolsCoversheetDocument())
             .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
             .solsApplicantSiblings(caseData.getSolsApplicantSiblings())
@@ -70,6 +71,7 @@ public class CCDDataTransformer {
             .englishWill(caseData.getEnglishWill())
             .dispenseWithNotice(caseData.getDispenseWithNotice())
             .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs())
+            .otherExecutorExists(caseData.getOtherExecutorExists())
             .channelChoice(caseData.getChannelChoice());
 
         if (caseData.getApplicationType() != null) {

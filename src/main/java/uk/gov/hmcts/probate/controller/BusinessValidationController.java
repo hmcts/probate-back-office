@@ -51,6 +51,8 @@ import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
+import uk.gov.hmcts.probate.validator.CheckIntestacyMaritalStatusRule;
+import uk.gov.hmcts.probate.validator.CheckIntestacyOtherApplicantRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
@@ -138,6 +140,8 @@ public class BusinessValidationController {
     private final Pre1900DOBValidationRule pre1900DOBValidationRule;
     private final AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
     private final ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
+    private final CheckIntestacyOtherApplicantRule checkIntestacyOtherApplicantRule;
+    private final CheckIntestacyMaritalStatusRule checkIntestacyMaritalStatusRule;
     private final IntestacyApplicantDetailsValidationRule intestacyApplicantDetailsValidationRule;
     private final IntestacyDivorceOrSeparationValidationRule intestacyDivorceOrSeparationValidationRule;
     private final IntestacyCoApplicantValidationRule intestacyCoApplicantValidationRule;
@@ -303,6 +307,25 @@ public class BusinessValidationController {
         caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequest);
         CallbackResponse response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
 
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-update-intestacy-validate", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> solsUpdateIntestacyPage2(
+            @RequestBody CallbackRequest callbackRequest,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+        var rules = new ValidationRule[]{checkIntestacyOtherApplicantRule, checkIntestacyMaritalStatusRule};
+        final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
+                gopPage1ValidationRules);
+
+        if (response.getErrors().isEmpty()) {
+            response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
+        }
         return ResponseEntity.ok(response);
     }
 
