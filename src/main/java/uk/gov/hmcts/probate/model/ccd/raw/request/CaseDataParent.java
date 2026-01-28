@@ -91,9 +91,9 @@ public class CaseDataParent {
     private final String solsOrgHasPBAs;
     private final String solsNeedsPBAPayment;
 
-    /// This has to be mutable to permit us to rollback DTSPB-5005. mutation is done by
-    /// clearApplicantOrganisationPolicy() which we should remove after that migration completes and make this
-    /// final again
+    // This has to be mutable to permit us to rollback DTSPB-5005. mutation is done by
+    // clearApplicantOrganisationPolicy() which we should remove after that migration completes and make this
+    // final again
     @Getter
     @Setter(AccessLevel.NONE)
     private OrganisationPolicy applicantOrganisationPolicy;
