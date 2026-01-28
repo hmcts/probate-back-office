@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import uk.gov.hmcts.probate.exception.DataMigrationException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -22,7 +23,6 @@ import uk.gov.hmcts.probate.service.migration.GorMigrationHandler;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -116,7 +116,7 @@ public class DataMigrationController {
                         caseId,
                         migrationData,
                         e);
-                throw e;
+                throw new DataMigrationException("Unable to parse migration metadata", e);
             }
         } else {
             migrationDataJson = null;
@@ -124,7 +124,16 @@ public class DataMigrationController {
 
         final CallbackRequest migrated;
         if (migrationDataJson != null) {
-            final String migrationId = migrationDataJson.getString("migrationId");
+            final String migrationId;
+            try {
+                migrationId = migrationDataJson.getString("migrationId");
+            } catch (JSONException e) {
+                log.error("GrantOfRepresentation {} {} - Migration metadata does not have migrationId: {}",
+                        migrationOperation,
+                        caseId,
+                        migrationData);
+                throw new DataMigrationException("GrantOfRepresentation migration metadata does not have migrationId");
+            }
             log.info("GrantOfRepresentation {} {} with migrationId: {}",
                     migrationOperation,
                     caseId,
@@ -132,12 +141,8 @@ public class DataMigrationController {
             final GorMigrationHandler migration = gorMigrationHandlers.get(migrationId);
             if (migration == null) {
                 log.error("No GrantOfRepresentation migration found for migrationId: {}", migrationId);
-                final CallbackResponse callbackResponse = CallbackResponse
-                        .builder()
-                        .errors(List.of("No GrantOfRepresentation migration found for migrationId: " + migrationId))
-                        .build();
-
-                return ResponseEntity.ok(callbackResponse);
+                throw new DataMigrationException(
+                        "No GrantOfRepresentation migration found for migrationId: " + migrationId);
             }
 
             migrated = migration.migrate(callbackRequest, migrationDataJson);
@@ -181,7 +186,7 @@ public class DataMigrationController {
                         migrationOperation,
                         migrationData,
                         e);
-                throw e;
+                throw new DataMigrationException("Unable to parse migration metadata", e);
             }
         } else {
             migrationDataJson = null;
@@ -189,7 +194,16 @@ public class DataMigrationController {
 
         final CaveatCallbackRequest migrated;
         if (migrationDataJson != null) {
-            final String migrationId = migrationDataJson.getString("migrationId");
+            final String migrationId;
+            try {
+                migrationId = migrationDataJson.getString("migrationId");
+            } catch (JSONException e) {
+                log.error("Caveat {} {} - Migration metadata does not have migrationId: {}",
+                        migrationOperation,
+                        caseId,
+                        migrationData);
+                throw new DataMigrationException("Caveat migration metadata does not have migrationId");
+            }
             log.info("Caveat {} {} with migrationId: {}",
                     caseId,
                     migrationOperation,
@@ -197,12 +211,7 @@ public class DataMigrationController {
             final CaveatMigrationHandler migration = caveatMigrationHandlers.get(migrationId);
             if (migration == null) {
                 log.error("No Caveat migration found for migrationId: {}", migrationId);
-                final CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse
-                        .builder()
-                        .errors(List.of("No Caveat migration found for migrationId: " + migrationId))
-                        .build();
-
-                return ResponseEntity.ok(caveatCallbackResponse);
+                throw new DataMigrationException("No Caveat migration found for migrationId: " + migrationId);
             }
 
             migrated = migration.migrate(callbackRequest, migrationDataJson);
