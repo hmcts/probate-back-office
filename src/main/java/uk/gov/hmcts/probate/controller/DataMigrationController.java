@@ -53,10 +53,10 @@ public class DataMigrationController {
     }
 
     @PostMapping(
-            path="/grant_of_representation/apply" ,
+            path = "/grant_of_representation/apply",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> runDataMigration(
+    public ResponseEntity<CallbackResponse> runGorDataMigration(
             @RequestBody final CallbackRequest callbackRequest,
             final HttpServletRequest request) {
         return gorDataMigration(callbackRequest, request, MigrationOperation.APPLY);
@@ -66,17 +66,17 @@ public class DataMigrationController {
             path = "/grant_of_representation/rollback",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> rollbackDataMigration(
+    public ResponseEntity<CallbackResponse> rollbackGorDataMigration(
             @RequestBody final CallbackRequest callbackRequest,
             final HttpServletRequest request) {
         return gorDataMigration(callbackRequest, request, MigrationOperation.ROLLBACK);
     }
 
     @PostMapping(
-            path="/caveat/apply" ,
+            path = "/caveat/apply",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<CaveatCallbackResponse> runDataMigration(
+    public ResponseEntity<CaveatCallbackResponse> runCaveatDataMigration(
             @RequestBody final CaveatCallbackRequest callbackRequest,
             final HttpServletRequest request) {
         return caveatDataMigration(callbackRequest, request, MigrationOperation.APPLY);
@@ -86,7 +86,7 @@ public class DataMigrationController {
             path = "/caveat/rollback",
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<CaveatCallbackResponse> rollbackDataMigration(
+    public ResponseEntity<CaveatCallbackResponse> rollbackCaveatDataMigration(
             @RequestBody final CaveatCallbackRequest callbackRequest,
             final HttpServletRequest request) {
         return caveatDataMigration(callbackRequest, request, MigrationOperation.ROLLBACK);
@@ -116,7 +116,7 @@ public class DataMigrationController {
                         caseId,
                         migrationData,
                         e);
-                throw new RuntimeException(e);
+                throw e;
             }
         } else {
             migrationDataJson = null;
@@ -181,7 +181,7 @@ public class DataMigrationController {
                         migrationOperation,
                         migrationData,
                         e);
-                throw new RuntimeException(e);
+                throw e;
             }
         } else {
             migrationDataJson = null;
