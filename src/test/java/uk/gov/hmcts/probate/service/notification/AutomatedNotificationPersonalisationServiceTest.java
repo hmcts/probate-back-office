@@ -81,7 +81,7 @@ class AutomatedNotificationPersonalisationServiceTest {
                 () -> assertEquals("123",     result.get("case_ref")),
                 () -> assertEquals("Solicitor Smith", result.get("solicitor_name")),
                 () -> assertEquals(
-                        urlPrefixSolicitorCase + "/cases/case-details/123",
+                        urlPrefixSolicitorCase + "/cases/PROBATE/GrantOfRepresentation/123",
                         result.get("link_to_case"))
         );
     }
