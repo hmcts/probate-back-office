@@ -438,6 +438,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String executorsNamed;
     private final String hasCoApplicant;
     private final LocalDate firstStopReminderSentDate;
+    private String issueEarlySwitch;
     private final String otherWholeBloodSiblings;
     private final String wholeBloodSiblingsDiedBeforeDeceased;
     private final String wholeBloodNiecesAndNephewsSurvived;
@@ -448,4 +449,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String halfBloodNiecesAndNephewsSurvived;
     private final String halfBloodSiblingsOverEighteen;
     private final String halfBloodNiecesAndNephewsOverEighteen;
+    private final String childAlive;
+    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
 }

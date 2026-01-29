@@ -139,6 +139,7 @@ public class CallbackResponseTransformer {
     private static final List<String> ROLLBACK_STATE_LIST = List.of("Pending", "CasePaymentFailed", "SolAdmonCreated",
             "SolAppCreatedDeceasedDtls", "SolAppCreatedSolicitorDtls", "SolAppUpdated", "SolProbateCreated",
             "SolIntestacyCreated", "Deleted", "Stopped");
+    private static final String INTESTACY_RELATIONSHIP_DRAFT_EVENT = "intestacyRelationshipDraft";
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -151,6 +152,7 @@ public class CallbackResponseTransformer {
     private final OrganisationsRetrievalService organisationsRetrievalService;
     private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
+    private final GrantIssueTooEarlyTransformer grantIssueTooEarlyTransformer;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final AuditEventService auditEventService;
@@ -567,6 +569,9 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.matches("No matches found");
         }
 
+        responseCaseDataBuilder.issueEarlySwitch(
+                grantIssueTooEarlyTransformer.defaultIssueTooEarlySwitch(callbackRequest.getCaseDetails().getData())
+        );
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1474,12 +1479,14 @@ public class CallbackResponseTransformer {
             .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
-            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased());
+            .childAlive(caseData.getChildAlive())
+            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
+            .deceasedAliasNameList(caseData.getDeceasedAliasNameList());
 
         handleDeceasedAliases(
                 builder,
                 caseData,
-                caseDetails.getId());
+                caseDetails.getId(), eventId);
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1499,9 +1506,14 @@ public class CallbackResponseTransformer {
     void handleDeceasedAliases(
             final ResponseCaseDataBuilder<?,?> builder,
             final CaseData caseData,
-            final Long caseRef) {
+            final Long caseRef, final String eventId) {
         // Question this asks is "Is the name on the will the same?" Not "Are there other names on the will?" as the
         // name of the variable in the CaseData object suggests.
+
+        if ((INTESTACY_RELATIONSHIP_DRAFT_EVENT).equalsIgnoreCase(eventId)) {
+            //need to do for all PA draft event if there are callbacks
+            return;
+        }
         final String decNameOnWillSame = caseData.getDeceasedAnyOtherNameOnWill();
         final var decAliases = caseData.getDeceasedAliasNameList();
         final var solsDecAliases = caseData.getSolsDeceasedAliasNamesList();

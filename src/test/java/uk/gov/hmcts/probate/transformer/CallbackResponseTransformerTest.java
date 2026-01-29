@@ -495,6 +495,7 @@ class CallbackResponseTransformerTest {
         .givenName("givenname")
         .roles(Arrays.asList("caseworker-probate"))
         .build());
+    private static final String EVENT_ID = "eventId";
 
 
     @InjectMocks
@@ -574,6 +575,9 @@ class CallbackResponseTransformerTest {
 
     @Mock
     private ExecutorsTransformer solicitorExecutorTransformerMock;
+
+    @Mock
+    private GrantIssueTooEarlyTransformer grantIssueTooEarlyTransformer;
 
     @Mock
     private CaseDataTransformer caseDataTransformerMock;
@@ -5205,7 +5209,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5237,7 +5241,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5268,7 +5272,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5299,7 +5303,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5330,7 +5334,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5361,7 +5365,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5391,7 +5395,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5421,7 +5425,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5454,7 +5458,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5491,7 +5495,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5528,7 +5532,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
