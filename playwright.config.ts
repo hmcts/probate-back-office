@@ -6,12 +6,23 @@ import { defineConfig } from "@playwright/test";
  */
 export default defineConfig({
   timeout: 600000,
-  //expect: { timeout: 600000 },
   testDir: "./src/test/PlaywrightTest",
   ...CommonConfig.recommended,
-  /*use: {
-    headless: false, // Run with visible browser
-  },*/
+    expect: {
+        timeout: 10000, // 10 seconds for all expect() assertions
+    },
+
+    use: {
+        // Navigation timeout (affects goto, waitForLoadState, etc.)
+        navigationTimeout: 30000, // 30 seconds
+
+        // Action timeout (affects click, fill, etc.)
+        actionTimeout: 10000, // 10 seconds
+        // headless: false, // Run with visible browser
+        screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
+        trace: 'on-first-retry',
+    },
 
   projects: [
     /*{
