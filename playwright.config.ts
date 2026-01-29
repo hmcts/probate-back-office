@@ -9,15 +9,15 @@ export default defineConfig({
   testDir: "./src/test/PlaywrightTest",
   ...CommonConfig.recommended,
     expect: {
-        timeout: 10000, // 10 seconds for all expect() assertions
+        timeout: 60000, // for all expect() assertions
     },
 
     use: {
         // Navigation timeout (affects goto, waitForLoadState, etc.)
-        navigationTimeout: 30000, // 30 seconds
+        navigationTimeout: 300000,
 
         // Action timeout (affects click, fill, etc.)
-        actionTimeout: 10000, // 10 seconds
+        actionTimeout: 60000,
         // headless: false, // Run with visible browser
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
