@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -217,6 +218,9 @@ class BusinessValidationUnitTest {
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
+    @Mock
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
+
     private BusinessValidationController underTest;
 
     @BeforeEach
@@ -260,7 +264,8 @@ class BusinessValidationUnitTest {
             zeroApplyingExecutorsValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
-            documentTransformerMock);
+            documentTransformerMock,
+            ccdSupplementaryDataService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
@@ -1283,7 +1288,7 @@ class BusinessValidationUnitTest {
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
                 () -> assertThat(notificationsGenerated, empty()));
     }
-  
+
     @Test
     void shouldAttemptToEmailCaseworkerWhenEscalateToRegistrarFails() throws RegistrarEscalationException {
 

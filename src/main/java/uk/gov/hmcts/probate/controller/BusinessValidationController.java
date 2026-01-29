@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -138,6 +139,7 @@ public class BusinessValidationController {
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
     private final DocumentTransformer documentTransformer;
+    private final CcdSupplementaryDataService ccdSupplementaryDataService;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
@@ -811,6 +813,16 @@ public class BusinessValidationController {
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
+    }
+
+    @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> setSupplementaryData(@RequestBody final CallbackRequest callbackRequest) {
+        ccdSupplementaryDataService.submitSupplementaryDataToCcd(callbackRequest.getCaseDetails().getId().toString());
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .build();
+
+        return ResponseEntity.ok(callbackResponse);
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {

@@ -14,5 +14,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-rparobot", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "TTL_profile", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "TTL_profile", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "GS_PROFILE", "CRUD": "R"}
 ]
