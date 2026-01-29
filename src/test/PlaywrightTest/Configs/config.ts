@@ -17,8 +17,8 @@ export const testConfig = {
   TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === "true",
   TestEnvCwUser: process.env.CW_USER_EMAIL  || 'probatecaseworker@gmail.com',
   TestEnvCwPassword: process.env.CW_USER_PASSWORD  || 'Monday01',
-  //TestEnvSuperCwUser: ConfigUtils.getEnvVar("CW_SUPERUSER_EMAIL"),
-  //TestEnvSuperCwPassword: ConfigUtils.getEnvVar("CW_SUPERUSER_PASSWORD"),
+  TestEnvSuperCwUser: process.env.CW_USER_EMAIL  || 'probatesuperuser2@gmail.com',
+  TestEnvSuperCwPassword: process.env.CW_USER_EMAIL  || 'Monday01',
   //TestEnvProfUser: ConfigUtils.getEnvVar("SOL_USER_EMAIL"),
   //TestEnvProfPassword: ConfigUtils.getEnvVar("SOL_USER_PASSWORD"),
   //  TestEnvProfUser2 User for share case e2e only
