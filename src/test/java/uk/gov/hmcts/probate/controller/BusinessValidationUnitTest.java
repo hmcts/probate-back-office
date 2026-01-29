@@ -83,8 +83,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -317,10 +316,12 @@ class BusinessValidationUnitTest {
     void shouldVerifySolsAccessWithNoErrors() {
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1000L);
 
         ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess(AUTH_TOKEN,
                 "GrantOfRepresentation", callbackRequestMock);
 
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -1356,4 +1357,17 @@ class BusinessValidationUnitTest {
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
                 () -> assertThat(notificationsGenerated, empty()));
     }
+
+    @Test
+    void shouldSetSupplementaryData() {
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1000L);
+
+        ResponseEntity<CallbackResponse> response = underTest.setSupplementaryData(callbackRequestMock);
+
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
 }
