@@ -21,6 +21,7 @@ export class SignInPage extends BasePage {
       waitUntil: 'domcontentloaded',
       timeout: 60000
     });
+    await this.page.waitForLoadState('networkidle');
     await this.page.waitForTimeout(testConfig.ManualDelayLong);
     await expect(
       this.page.getByRole("heading", {
