@@ -1111,6 +1111,10 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
+        if (SOLICITOR.equals(cd.getApplicationType())) {
+            responseCaseDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
+        }
+
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
         return transformResponse(responseCaseDataBuilder
@@ -2231,5 +2235,16 @@ public class CallbackResponseTransformer {
         } else {
             responseCaseDataBuilder.informationNeededByPostSwitch(NO);
         }
+    }
+
+    private OrganisationPolicy buildEmptySolicitorOrganisationPolicy() {
+        return OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
     }
 }
