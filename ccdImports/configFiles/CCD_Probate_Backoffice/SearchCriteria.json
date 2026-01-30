@@ -1,7 +1,3 @@
 [
-  {
-    "LiveFrom": "6/2/2023",
-    "CaseTypeID": "GrantOfRepresentation",
-    "OtherCaseReference":  "caseNameHMCTSInternal"
-  }
+  {"LiveFrom": "6/2/2023", "CaseTypeID": "GrantOfRepresentation", "OtherCaseReference":  "caseNameHmctsInternal"}
 ]

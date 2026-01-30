@@ -30,3 +30,4 @@ ${dir}/ccd-add-role.sh caseworker-probate-bulkscan
 ${dir}/ccd-add-role.sh caseworker-caa
 ${dir}/ccd-add-role.sh caseworker-approver
 ${dir}/ccd-add-role.sh TTL_profile
+${dir}/ccd-add-role.sh GS_profile
