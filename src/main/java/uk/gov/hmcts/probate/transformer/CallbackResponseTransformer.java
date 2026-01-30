@@ -70,8 +70,12 @@ import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CHILD;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
+import static uk.gov.hmcts.probate.model.Constants.PARENT;
+import static uk.gov.hmcts.probate.model.Constants.SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
@@ -884,17 +888,85 @@ public class CallbackResponseTransformer {
         String relationshipAfter = callbackRequest.getCaseDetails().getData()
                 .getPrimaryApplicantRelationshipToDeceased();
         if (relationshipBefore != null && !relationshipBefore.equals(relationshipAfter)) {
+            switch (relationshipBefore) {
+                case CHILD:
+                    clearChildRelatedFields(responseCaseDataBuilder);
+                    break;
+                case GRAND_CHILD:
+                    clearGrandchildRelatedFields(responseCaseDataBuilder);
+                    break;
+                case PARENT:
+                    clearParentRelatedFields(responseCaseDataBuilder);
+                    break;
+                case SIBLING:
+                    clearSiblingRelatedFields(responseCaseDataBuilder);
+                    break;
+
+                default:
+                    break;
+            }
             responseCaseDataBuilder.primaryApplicantAdoptedIn(null);
             responseCaseDataBuilder.primaryApplicantAdoptedOut(null);
             responseCaseDataBuilder.primaryApplicantAdoptionInEnglandOrWales(null);
-            responseCaseDataBuilder.primaryApplicantParentAdoptedIn(null);
-            responseCaseDataBuilder.primaryApplicantParentAdoptedOut(null);
-            responseCaseDataBuilder.primaryApplicantParentAdoptionInEnglandOrWales(null);
-            responseCaseDataBuilder.deceasedAdoptedIn(null);
-            responseCaseDataBuilder.deceasedAdoptionInEnglandOrWales(null);
-            responseCaseDataBuilder.deceasedAdoptedOut(null);
+            responseCaseDataBuilder.primaryApplicantForenames(null);
+            responseCaseDataBuilder.primaryApplicantSurname(null);
+            responseCaseDataBuilder.primaryApplicantAddress(null);
+            responseCaseDataBuilder.primaryApplicantPhoneNumber(null);
         }
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private void clearChildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        responseCaseDataBuilder.deceasedOtherChildren(null);
+        responseCaseDataBuilder.childrenDiedBeforeDeceased(null);
+        responseCaseDataBuilder.grandChildrenSurvived(null);
+        responseCaseDataBuilder.anyDeceasedGrandChildrenUnderEighteen(null);
+        responseCaseDataBuilder.allDeceasedChildrenOverEighteen(null);
+    }
+
+    private void clearGrandchildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        clearChildRelatedFields(responseCaseDataBuilder);
+        responseCaseDataBuilder.childAlive(null);
+        responseCaseDataBuilder.primaryApplicantParentAdoptedIn(null);
+        responseCaseDataBuilder.primaryApplicantParentAdoptedOut(null);
+        responseCaseDataBuilder.primaryApplicantParentAdoptionInEnglandOrWales(null);
+        responseCaseDataBuilder.grandchildParentOtherChildren(null);
+        responseCaseDataBuilder.grandchildParentChildrenOverEighteen(null);
+    }
+
+    private void clearParentRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        responseCaseDataBuilder.deceasedAnyLivingDescendants(null);
+        responseCaseDataBuilder.deceasedAnyOtherParentAlive(null);
+        responseCaseDataBuilder.deceasedAdoptedIn(null);
+        responseCaseDataBuilder.deceasedAdoptionInEnglandOrWales(null);
+        responseCaseDataBuilder.deceasedAdoptedOut(null);
+    }
+
+    private void clearSiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        responseCaseDataBuilder.deceasedAnyLivingDescendants(null);
+        responseCaseDataBuilder.deceasedAnyLivingParents(null);
+        responseCaseDataBuilder.deceasedAdoptedIn(null);
+        responseCaseDataBuilder.deceasedAdoptionInEnglandOrWales(null);
+        responseCaseDataBuilder.deceasedAdoptedOut(null);
+        responseCaseDataBuilder.applicantSameParentsAsDeceased(null);
+        clearFullSiblingRelatedFields(responseCaseDataBuilder);
+        clearHalfSiblingRelatedFields(responseCaseDataBuilder);
+    }
+
+    private void clearFullSiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        responseCaseDataBuilder.otherWholeBloodSiblings(null);
+        responseCaseDataBuilder.wholeBloodSiblingsDiedBeforeDeceased(null);
+        responseCaseDataBuilder.wholeBloodNiecesAndNephewsSurvived(null);
+        responseCaseDataBuilder.wholeBloodSiblingsOverEighteen(null);
+        responseCaseDataBuilder.wholeBloodNiecesAndNephewsOverEighteen(null);
+    }
+
+    private void clearHalfSiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        responseCaseDataBuilder.otherHalfBloodSiblings(null);
+        responseCaseDataBuilder.halfBloodSiblingsDiedBeforeDeceased(null);
+        responseCaseDataBuilder.halfBloodNiecesAndNephewsSurvived(null);
+        responseCaseDataBuilder.halfBloodSiblingsOverEighteen(null);
+        responseCaseDataBuilder.halfBloodNiecesAndNephewsOverEighteen(null);
     }
 
     public CallbackResponse transformCaseForAttachScannedDocs(CallbackRequest callbackRequest, Document document,
