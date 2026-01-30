@@ -917,6 +917,7 @@ public class CallbackResponseTransformer {
     }
 
     private void clearChildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        responseCaseDataBuilder.deceasedSpouseNotApplyingReason(null);
         responseCaseDataBuilder.deceasedOtherChildren(null);
         responseCaseDataBuilder.childrenDiedBeforeDeceased(null);
         responseCaseDataBuilder.grandChildrenSurvived(null);
