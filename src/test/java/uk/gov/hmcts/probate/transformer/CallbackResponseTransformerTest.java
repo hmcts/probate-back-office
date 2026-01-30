@@ -489,11 +489,10 @@ class CallbackResponseTransformerTest {
     private static final String DAMAGE_CULPRIT_FN = "Damage Culprit FN";
     private static final String DAMAGE_CULPRIT_LN = "Damage Culprit LN";
     private static final String DAMAGE_DATE = "9/2021";
-    private static final String SERVICE_REQUEST_REFEREMCE = "Service Request Ref";
     private static final Optional<UserInfo> CASEWORKER_USERINFO = Optional.ofNullable(UserInfo.builder()
         .familyName("familyName")
         .givenName("givenname")
-        .roles(Arrays.asList("caseworker-probate"))
+        .roles(List.of("caseworker-probate"))
         .build());
 
 
@@ -3685,263 +3684,349 @@ class CallbackResponseTransformerTest {
     }
 
     private void assertCommon(CallbackResponse callbackResponse) {
-        assertCommonDetails(callbackResponse);
-        assertCommonPayments(callbackResponse);
-        assertLegacyInfo(callbackResponse);
-        assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
-        assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
-        assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
+        assertAll(
+                () -> assertCommonDetails(callbackResponse),
+                () -> assertCommonPayments(callbackResponse),
+                () -> assertLegacyInfo(callbackResponse),
+                () -> assertApplicationType(callbackResponse, ApplicationType.SOLICITOR),
+                () -> assertEquals(APPLICANT_HAS_ALIAS,
+                        callbackResponse.getData().getPrimaryApplicantHasAlias()),
+                () -> assertEquals(OTHER_EXECS_EXIST,
+                        callbackResponse.getData().getOtherExecutorExists())
+        );
     }
 
-    private void assertSolsDetails(CallbackResponse callbackResponse) {
-        assertEquals(SOLICITOR_FIRM_NAME, callbackResponse.getData().getSolsSolicitorFirmName());
-        assertEquals(SOLICITOR_FIRM_LINE1, callbackResponse.getData().getSolsSolicitorAddress().getAddressLine1());
-        assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorAddress().getPostCode());
-        assertEquals(SOLICITOR_FIRM_EMAIL, callbackResponse.getData().getSolsSolicitorEmail());
-        assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
-        assertEquals(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME,
-            callbackResponse.getData().getSolsSOTName());
-        assertEquals(SOLICITOR_SOT_JOB_TITLE, callbackResponse.getData().getSolsSOTJobTitle());
-        assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
 
+    private void assertSolsDetails(CallbackResponse callbackResponse) {
+        assertAll(
+                () -> assertEquals(SOLICITOR_FIRM_NAME,
+                        callbackResponse.getData().getSolsSolicitorFirmName()),
+                () -> assertEquals(SOLICITOR_FIRM_LINE1,
+                        callbackResponse.getData().getSolsSolicitorAddress().getAddressLine1()),
+                () -> assertEquals(SOLICITOR_FIRM_POSTCODE,
+                        callbackResponse.getData().getSolsSolicitorAddress().getPostCode()),
+                () -> assertEquals(SOLICITOR_FIRM_EMAIL,
+                        callbackResponse.getData().getSolsSolicitorEmail()),
+                () -> assertEquals(SOLICITOR_FIRM_PHONE,
+                        callbackResponse.getData().getSolsSolicitorPhoneNumber()),
+                () -> assertEquals(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME,
+                        callbackResponse.getData().getSolsSOTName()),
+                () -> assertEquals(SOLICITOR_SOT_JOB_TITLE,
+                        callbackResponse.getData().getSolsSOTJobTitle()),
+                () -> assertEquals(APP_REF,
+                        callbackResponse.getData().getSolsSolicitorAppReference())
+        );
     }
 
     private void assertCommonDetails(CallbackResponse callbackResponse) {
-        assertEquals(REGISTRY_LOCATION, callbackResponse.getData().getRegistryLocation());
+        assertAll(
+                () -> assertEquals(REGISTRY_LOCATION,
+                        callbackResponse.getData().getRegistryLocation()),
 
-        assertEquals(DECEASED_FIRSTNAME, callbackResponse.getData().getDeceasedForenames());
-        assertEquals(DECEASED_LASTNAME, callbackResponse.getData().getDeceasedSurname());
-        assertEquals("2016-12-31", callbackResponse.getData().getDeceasedDateOfBirth());
-        assertEquals("2017-12-31", callbackResponse.getData().getDeceasedDateOfDeath());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWillNumberOfCodicils());
+                () -> assertAll("Deceased details",
+                        () -> assertEquals(DECEASED_FIRSTNAME,
+                                callbackResponse.getData().getDeceasedForenames()),
+                        () -> assertEquals(DECEASED_LASTNAME,
+                                callbackResponse.getData().getDeceasedSurname()),
+                        () -> assertEquals("2016-12-31",
+                                callbackResponse.getData().getDeceasedDateOfBirth()),
+                        () -> assertEquals("2017-12-31",
+                                callbackResponse.getData().getDeceasedDateOfDeath())
+                ),
 
-        assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
-        assertThat(new BigDecimal("10000"), comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
-        assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
-        assertThat(new BigDecimal("10000"),
-            comparesEqualTo(callbackResponse.getData().getIhtEstateGrossValue()));
-        assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtEstateNetValue()));
-        assertThat(new BigDecimal("9000"),
-            comparesEqualTo(callbackResponse.getData().getIhtEstateNetQualifyingValue()));
-        assertEquals("10000", callbackResponse.getData().getIhtEstateGrossValueField());
-        assertEquals("9000", callbackResponse.getData().getIhtEstateNetValueField());
-        assertEquals("9000", callbackResponse.getData().getIhtEstateNetQualifyingValueField());
+                () -> assertAll("IHT values",
+                        () -> assertEquals(IHT_FORM_ID,
+                                callbackResponse.getData().getIhtFormId()),
+                        () -> assertThat(new BigDecimal("10000"),
+                                comparesEqualTo(callbackResponse.getData().getIhtGrossValue())),
+                        () -> assertThat(new BigDecimal("9000"),
+                                comparesEqualTo(callbackResponse.getData().getIhtNetValue())),
+                        () -> assertEquals("10000",
+                                callbackResponse.getData().getIhtEstateGrossValueField()),
+                        () -> assertEquals("9000",
+                                callbackResponse.getData().getIhtEstateNetValueField())
+                ),
 
-        assertEquals(APPLICANT_FORENAME, callbackResponse.getData().getPrimaryApplicantForenames());
-        assertEquals(APPLICANT_SURNAME, callbackResponse.getData().getPrimaryApplicantSurname());
-        assertEquals(APPLICANT_EMAIL_ADDRESS, callbackResponse.getData().getPrimaryApplicantEmailAddress());
-        assertEquals(PRIMARY_EXEC_APPLYING, callbackResponse.getData().getPrimaryApplicantIsApplying());
-        assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
-        assertEquals(DECEASED_ADDRESS, callbackResponse.getData().getDeceasedAddress());
-        assertEquals(EXEC_ADDRESS, callbackResponse.getData().getPrimaryApplicantAddress());
-        assertEquals(ADDITIONAL_INFO, callbackResponse.getData().getSolsAdditionalInfo());
+                () -> assertAll("Primary applicant",
+                        () -> assertEquals(APPLICANT_FORENAME,
+                                callbackResponse.getData().getPrimaryApplicantForenames()),
+                        () -> assertEquals(APPLICANT_SURNAME,
+                                callbackResponse.getData().getPrimaryApplicantSurname()),
+                        () -> assertEquals(APPLICANT_EMAIL_ADDRESS,
+                                callbackResponse.getData().getPrimaryApplicantEmailAddress()),
+                        () -> assertEquals(PRIMARY_EXEC_APPLYING,
+                                callbackResponse.getData().getPrimaryApplicantIsApplying())
+                ),
 
-        assertEquals(BO_DOCS_RECEIVED, callbackResponse.getData().getBoEmailDocsReceivedNotificationRequested());
-        assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
-        assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
-        assertEquals(CAVEAT_STOP_NOTIFICATION, callbackResponse.getData().getBoCaveatStopNotificationRequested());
-        assertEquals(CAVEAT_STOP_NOTIFICATION, callbackResponse.getData().getBoCaveatStopEmailNotification());
-        assertEquals(CASE_STOP_CAVEAT_ID, callbackResponse.getData().getBoCaseStopCaveatId());
-        assertEquals(CAVEAT_STOP_EMAIL_NOTIFICATION,
-            callbackResponse.getData().getBoCaveatStopEmailNotificationRequested());
-        assertEquals(CAVEAT_STOP_SEND_TO_BULK_PRINT,
-            callbackResponse.getData().getBoCaveatStopSendToBulkPrintRequested());
-        assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
-        assertEquals(STOP_DETAILS, callbackResponse.getData().getBoStopDetails());
+                () -> assertEquals(DECEASED_ADDRESS,
+                        callbackResponse.getData().getDeceasedAddress()),
+                () -> assertEquals(EXEC_ADDRESS,
+                        callbackResponse.getData().getPrimaryApplicantAddress()),
 
-        assertEquals(DECEASED_TITLE, callbackResponse.getData().getBoDeceasedTitle());
-        assertEquals(DECEASED_HONOURS, callbackResponse.getData().getBoDeceasedHonours());
+                () -> assertEquals(YES,
+                        callbackResponse.getData().getWillHasVisibleDamage()),
+                () -> assertEquals(DAMAGE_DESC,
+                        callbackResponse.getData().getWillDamage().getOtherDamageDescription()),
 
-        assertEquals(WILL_MESSAGE, callbackResponse.getData().getBoWillMessage());
-        assertEquals(EXECUTOR_LIMITATION, callbackResponse.getData().getBoExecutorLimitation());
-        assertEquals(ADMIN_CLAUSE_LIMITATION, callbackResponse.getData().getBoAdminClauseLimitation());
-        assertEquals(LIMITATION_TEXT, callbackResponse.getData().getBoLimitationText());
+                () -> assertEquals(YES,
+                        callbackResponse.getData().getCodicilsHasVisibleDamage()),
+                () -> assertEquals(DAMAGE_DESC,
+                        callbackResponse.getData().getCodicilsDamage().getOtherDamageDescription()),
 
-        assertEquals(IHT_REFERENCE, callbackResponse.getData().getIhtReferenceNumber());
-        assertEquals(IHT_ONLINE, callbackResponse.getData().getIhtFormCompletedOnline());
-
-        assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ1());
-        assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ2());
-        assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
-        assertEquals(ORDER_NEEDED, callbackResponse.getData().getOrderNeeded());
-        assertEquals(REISSUE_REASON, callbackResponse.getData().getReissueReason());
-        assertEquals(REISSUE_DATE, callbackResponse.getData().getReissueDate());
-        assertEquals(REISSUE_NOTATION, callbackResponse.getData().getReissueReasonNotation());
-
-        assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
-        assertEquals(YES, callbackResponse.getData().getBoStopDetailsDeclarationParagraph());
-        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
-        assertEquals(YES, callbackResponse.getData().getBoAssembleLetterSendToBulkPrintRequested());
-        assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
-        assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrintRequested());
-        assertEquals(EXECEUTORS_APPLYING_NOTIFICATION, callbackResponse
-            .getData().getExecutorsApplyingNotifications());
-        assertEquals(APPLICANT_SIBLINGS, callbackResponse.getData().getSolsApplicantSiblings());
-        assertEquals(DIED_OR_NOT_APPLYING, callbackResponse.getData().getSolsDiedOrNotApplying());
-        assertEquals(ENTITLED_MINORITY, callbackResponse.getData().getSolsEntitledMinority());
-        assertEquals(LIFE_INTEREST, callbackResponse.getData().getSolsLifeInterest());
-        assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
-        assertEquals(RESIDUARY_TYPE, callbackResponse.getData().getSolsResiduaryType());
-        assertEquals(APP_REF, callbackResponse.getData().getPcqId());
-
-        assertEquals(YES, callbackResponse.getData().getWillHasVisibleDamage());
-        assertEquals(DAMAGE_TYPE_1, callbackResponse.getData().getWillDamage().getDamageTypesList().get(0));
-        assertEquals(DAMAGE_TYPE_2, callbackResponse.getData().getWillDamage().getDamageTypesList().get(1));
-        assertEquals(DAMAGE_TYPE_OTHER, callbackResponse.getData().getWillDamage().getDamageTypesList().get(2));
-        assertEquals(DAMAGE_DESC, callbackResponse.getData().getWillDamage().getOtherDamageDescription());
-        assertEquals(YES, callbackResponse.getData().getWillDamageReasonKnown());
-        assertEquals(DAMAGE_REASON_DESC, callbackResponse.getData().getWillDamageReasonDescription());
-        assertEquals(YES, callbackResponse.getData().getWillDamageCulpritKnown());
-        assertEquals(DAMAGE_CULPRIT_FN, callbackResponse.getData().getWillDamageCulpritName().getFirstName());
-        assertEquals(DAMAGE_CULPRIT_LN, callbackResponse.getData().getWillDamageCulpritName().getLastName());
-        assertEquals(YES, callbackResponse.getData().getWillDamageDateKnown());
-        assertEquals(DAMAGE_DATE, callbackResponse.getData().getWillDamageDate());
-
-        assertEquals(YES, callbackResponse.getData().getCodicilsHasVisibleDamage());
-        assertEquals(DAMAGE_TYPE_1, callbackResponse.getData().getCodicilsDamage().getDamageTypesList().get(0));
-        assertEquals(DAMAGE_TYPE_2, callbackResponse.getData().getCodicilsDamage().getDamageTypesList().get(1));
-        assertEquals(DAMAGE_TYPE_OTHER, callbackResponse.getData().getCodicilsDamage().getDamageTypesList().get(2));
-        assertEquals(DAMAGE_DESC, callbackResponse.getData().getCodicilsDamage().getOtherDamageDescription());
-        assertEquals(YES, callbackResponse.getData().getCodicilsDamageReasonKnown());
-        assertEquals(DAMAGE_REASON_DESC, callbackResponse.getData().getCodicilsDamageReasonDescription());
-        assertEquals(YES, callbackResponse.getData().getCodicilsDamageCulpritKnown());
-        assertEquals(DAMAGE_CULPRIT_FN, callbackResponse.getData().getCodicilsDamageCulpritName().getFirstName());
-        assertEquals(DAMAGE_CULPRIT_LN, callbackResponse.getData().getCodicilsDamageCulpritName().getLastName());
-        assertEquals(YES, callbackResponse.getData().getCodicilsDamageDateKnown());
-        assertEquals(DAMAGE_DATE, callbackResponse.getData().getCodicilsDamageDate());
-        assertEquals(YES, callbackResponse.getData().getDeceasedWrittenWishes());
+                () -> assertEquals(YES,
+                        callbackResponse.getData().getDeceasedWrittenWishes())
+        );
     }
+
 
     private void assertCommonPayments(CallbackResponse callbackResponse) {
         assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
     }
 
     private void assertCommonAdditionalExecutors(CallbackResponse callbackResponse) {
-        assertEquals(emptyList(), callbackResponse.getData().getSolsAdditionalExecutorList());
-        assertEquals(emptyList(), callbackResponse.getData().getAdditionalExecutorsApplying());
-        assertEquals(emptyList(), callbackResponse.getData().getAdditionalExecutorsNotApplying());
+        assertAll(
+                () -> assertEquals(emptyList(),
+                        callbackResponse.getData().getSolsAdditionalExecutorList()),
+                () -> assertEquals(emptyList(),
+                        callbackResponse.getData().getAdditionalExecutorsApplying()),
+                () -> assertEquals(emptyList(),
+                        callbackResponse.getData().getAdditionalExecutorsNotApplying())
+        );
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {
-        assertEquals(RECORD_ID, callbackResponse.getData().getRecordId());
-        assertEquals(LEGACY_CASE_TYPE, callbackResponse.getData().getLegacyType());
-        assertEquals(LEGACY_CASE_URL, callbackResponse.getData().getLegacyCaseViewUrl());
+        assertAll(
+                () -> assertEquals(RECORD_ID,
+                        callbackResponse.getData().getRecordId()),
+                () -> assertEquals(LEGACY_CASE_TYPE,
+                        callbackResponse.getData().getLegacyType()),
+                () -> assertEquals(LEGACY_CASE_URL,
+                        callbackResponse.getData().getLegacyCaseViewUrl())
+        );
     }
+
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {
         assertEquals(applicationType, callbackResponse.getData().getApplicationType());
     }
 
     private void assertCommonPaperForm(CallbackResponse callbackResponse) {
-        assertEquals(EXEC_PHONE, callbackResponse.getData().getPrimaryApplicantSecondPhoneNumber());
-        assertEquals("other", callbackResponse.getData().getPrimaryApplicantRelationshipToDeceased());
-        assertEquals("cousin", callbackResponse.getData().getPaRelationshipToDeceasedOther());
-        assertEquals("neverMarried", callbackResponse.getData().getDeceasedMaritalStatus());
+        assertAll(
+                () -> assertAll("Primary applicant & deceased status",
+                        () -> assertEquals(EXEC_PHONE,
+                                callbackResponse.getData().getPrimaryApplicantSecondPhoneNumber()),
+                        () -> assertEquals("other",
+                                callbackResponse.getData().getPrimaryApplicantRelationshipToDeceased()),
+                        () -> assertEquals("cousin",
+                                callbackResponse.getData().getPaRelationshipToDeceasedOther()),
+                        () -> assertEquals("neverMarried",
+                                callbackResponse.getData().getDeceasedMaritalStatus())
+                ),
 
-        assertEquals(YES, callbackResponse.getData().getWillDatedBeforeApril());
-        assertEquals(NO, callbackResponse.getData().getDeceasedEnterMarriageOrCP());
-        assertEquals(null, callbackResponse.getData().getDateOfMarriageOrCP());
-        assertEquals(null, callbackResponse.getData().getDateOfDivorcedCPJudicially());
-        assertEquals(YES, callbackResponse.getData().getWillsOutsideOfUK());
-        assertEquals("Random Court Name", callbackResponse.getData().getCourtOfDecree());
-        assertEquals(NO, callbackResponse.getData().getWillGiftUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getApplyingAsAnAttorney());
-        assertEquals(YES, callbackResponse.getData().getMentalCapacity());
-        assertEquals(YES, callbackResponse.getData().getCourtOfProtection());
-        assertEquals(NO, callbackResponse.getData().getEpaOrLpa());
+                () -> assertAll("Will and marital history",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getWillDatedBeforeApril()),
+                        () -> assertEquals(NO,
+                                callbackResponse.getData().getDeceasedEnterMarriageOrCP()),
+                        () -> assertEquals(null,
+                                callbackResponse.getData().getDateOfMarriageOrCP()),
+                        () -> assertEquals(null,
+                                callbackResponse.getData().getDateOfDivorcedCPJudicially()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getWillsOutsideOfUK()),
+                        () -> assertEquals("Random Court Name",
+                                callbackResponse.getData().getCourtOfDecree()),
+                        () -> assertEquals(NO,
+                                callbackResponse.getData().getWillGiftUnderEighteen())
+                ),
 
-        assertEquals(NO, callbackResponse.getData().getEpaRegistered());
-        assertEquals("Spain", callbackResponse.getData().getDomicilityCountry());
-        assertEquals(NO, callbackResponse.getData().getSpouseOrPartner());
+                () -> assertAll("Capacity and legal authority",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getApplyingAsAnAttorney()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getMentalCapacity()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getCourtOfProtection()),
+                        () -> assertEquals(NO,
+                                callbackResponse.getData().getEpaOrLpa()),
+                        () -> assertEquals(NO,
+                                callbackResponse.getData().getEpaRegistered())
+                ),
 
-        assertEquals(YES, callbackResponse.getData().getChildrenSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getChildrenOverEighteenSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getChildrenUnderEighteenSurvived());
-        assertEquals(YES, callbackResponse.getData().getChildrenDied());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getChildrenDiedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getChildrenDiedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getGrandChildrenSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getGrandChildrenSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getGrandChildrenSurvivedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getParentsExistSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getParentsExistOverEighteenSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getParentsExistUnderEighteenSurvived());
-        assertEquals(YES, callbackResponse.getData().getWholeBloodSiblingsSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodSiblingsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodSiblingsSurvivedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getWholeBloodSiblingsDied());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodSiblingsDiedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodSiblingsDiedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getWholeBloodNeicesAndNephews());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodNeicesAndNephewsOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodNeicesAndNephewsUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getHalfBloodSiblingsSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodSiblingsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodSiblingsSurvivedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getHalfBloodSiblingsDied());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodSiblingsDiedUnderEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodSiblingsDiedOverEighteen());
-        assertEquals(YES, callbackResponse.getData().getHalfBloodNeicesAndNephews());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodNeicesAndNephewsUnderEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodNeicesAndNephewsOverEighteen());
-        assertEquals(YES, callbackResponse.getData().getGrandparentsDied());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getGrandparentsDiedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getGrandparentsDiedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getWholeBloodUnclesAndAuntsSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodUnclesAndAuntsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodUnclesAndAuntsSurvivedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getWholeBloodUnclesAndAuntsDied());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodUnclesAndAuntsDiedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodUnclesAndAuntsDiedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getWholeBloodCousinsSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodCousinsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodCousinsSurvivedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvivedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getHalfBloodUnclesAndAuntsDied());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvivedUnderEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvivedOverEighteen());
-        assertEquals(YES, callbackResponse.getData().getHalfBloodCousinsSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodCousinsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodCousinsSurvivedUnderEighteen());
+                () -> assertAll("Domicile and family overview",
+                        () -> assertEquals("Spain",
+                                callbackResponse.getData().getDomicilityCountry()),
+                        () -> assertEquals(NO,
+                                callbackResponse.getData().getSpouseOrPartner())
+                ),
 
-        assertEquals(YES, callbackResponse.getData().getPaperForm());
-        assertEquals(IHT_REFERENCE, callbackResponse.getData().getPaymentReferenceNumberPaperform());
-        assertEquals("debitOrCredit", callbackResponse.getData().getPaperPaymentMethod());
-        assertEquals("0", callbackResponse.getData().getApplicationFeePaperForm());
-        assertEquals("0", callbackResponse.getData().getFeeForCopiesPaperForm());
-        assertEquals("0", callbackResponse.getData().getTotalFeePaperForm());
-        assertEquals(YES, callbackResponse.getData().getAdopted());
-        assertEquals(YES, callbackResponse.getData().getDomicilityIHTCert());
-        assertEquals(YES, callbackResponse.getData().getEntitledToApply());
-        assertEquals(YES, callbackResponse.getData().getEntitledToApplyOther());
-        assertEquals(YES, callbackResponse.getData().getNotifiedApplicants());
-        assertEquals(YES, callbackResponse.getData().getForeignAsset());
-        assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
-        assertEquals(DECEASED_DATE_OF_DEATH_TYPE, callbackResponse.getData().getDateOfDeathType());
+                () -> assertAll("Children",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getChildrenSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getChildrenOverEighteenSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getChildrenUnderEighteenSurvived()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getChildrenDied()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getChildrenDiedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getChildrenDiedUnderEighteen())
+                ),
 
-        assertEquals(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES,
-            callbackResponse.getData().getDeceasedDivorcedInEnglandOrWales());
-        assertEquals(PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES,
-            callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
-        assertEquals(DECEASED_SPOUSE_NOT_APPLYING_REASON,
-            callbackResponse.getData().getDeceasedSpouseNotApplyingReason());
-        assertEquals(DECEASED_OTHER_CHILDREN, callbackResponse.getData().getDeceasedOtherChildren());
-        assertEquals(ALL_DECEASED_CHILDREN_OVER_EIGHTEEN,
-            callbackResponse.getData().getAllDeceasedChildrenOverEighteen());
-        assertEquals(ANY_DECEASED_GRANDCHILDREN_UNDER_EIGHTEEN,
-            callbackResponse.getData().getAnyDeceasedGrandChildrenUnderEighteen());
-        assertEquals(ANY_DECEASED_CHILDREN_DIE_BEFORE_DECEASED,
-            callbackResponse.getData().getAnyDeceasedChildrenDieBeforeDeceased());
-        assertEquals(DECEASED_ANY_CHILDREN, callbackResponse.getData().getDeceasedAnyChildren());
-        assertEquals(DECEASED_HAS_ASSETS_OUTSIDE_UK, callbackResponse.getData().getDeceasedHasAssetsOutsideUK());
-        assertEquals(GRANT_DELAYED_NOTIFICATION_SENT, callbackResponse.getData().getGrantDelayedNotificationSent());
-        assertEquals(CallbackResponseTransformer.dateTimeFormatter.format(GRANT_DELAYED_DATE),
-            callbackResponse.getData().getGrantDelayedNotificationDate());
-        assertEquals(CallbackResponseTransformer.dateTimeFormatter.format(GRANT_STOPPED_DATE),
-            callbackResponse.getData().getGrantStoppedDate());
+                () -> assertAll("Grandchildren",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getGrandChildrenSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getGrandChildrenSurvivedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getGrandChildrenSurvivedUnderEighteen())
+                ),
+
+                () -> assertAll("Parents",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getParentsExistSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getParentsExistOverEighteenSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getParentsExistUnderEighteenSurvived())
+                ),
+
+                () -> assertAll("Whole blood siblings",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getWholeBloodSiblingsSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodSiblingsSurvivedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodSiblingsSurvivedUnderEighteen()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getWholeBloodSiblingsDied()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodSiblingsDiedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodSiblingsDiedUnderEighteen())
+                ),
+
+                () -> assertAll("Whole blood nieces and nephews",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getWholeBloodNeicesAndNephews()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodNeicesAndNephewsOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodNeicesAndNephewsUnderEighteen())
+                ),
+
+                () -> assertAll("Half blood siblings",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getHalfBloodSiblingsSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getHalfBloodSiblingsSurvivedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getHalfBloodSiblingsSurvivedUnderEighteen()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getHalfBloodSiblingsDied()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getHalfBloodSiblingsDiedUnderEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getHalfBloodSiblingsDiedOverEighteen())
+                ),
+
+                () -> assertAll("Half blood nieces and nephews",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getHalfBloodNeicesAndNephews()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getHalfBloodNeicesAndNephewsUnderEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getHalfBloodNeicesAndNephewsOverEighteen())
+                ),
+
+                () -> assertAll("Grandparents",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getGrandparentsDied()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getGrandparentsDiedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getGrandparentsDiedUnderEighteen())
+                ),
+
+                () -> assertAll("Uncles, aunts and cousins",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getWholeBloodUnclesAndAuntsSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodUnclesAndAuntsSurvivedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodUnclesAndAuntsSurvivedUnderEighteen()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getWholeBloodUnclesAndAuntsDied()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodUnclesAndAuntsDiedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodUnclesAndAuntsDiedUnderEighteen()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getWholeBloodCousinsSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodCousinsSurvivedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getWholeBloodCousinsSurvivedUnderEighteen()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvivedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvivedUnderEighteen()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getHalfBloodUnclesAndAuntsDied()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getHalfBloodCousinsSurvivedOverEighteen()),
+                        () -> assertEquals(NUM_CODICILS,
+                                callbackResponse.getData().getHalfBloodCousinsSurvivedUnderEighteen())
+                ),
+
+                () -> assertAll("Paper form payment",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getPaperForm()),
+                        () -> assertEquals(IHT_REFERENCE,
+                                callbackResponse.getData().getPaymentReferenceNumberPaperform()),
+                        () -> assertEquals("debitOrCredit",
+                                callbackResponse.getData().getPaperPaymentMethod()),
+                        () -> assertEquals("0",
+                                callbackResponse.getData().getApplicationFeePaperForm()),
+                        () -> assertEquals("0",
+                                callbackResponse.getData().getFeeForCopiesPaperForm()),
+                        () -> assertEquals("0",
+                                callbackResponse.getData().getTotalFeePaperForm())
+                ),
+
+                () -> assertAll("Additional declarations and grant status",
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getAdopted()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getDomicilityIHTCert()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getEntitledToApply()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getEntitledToApplyOther()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getNotifiedApplicants()),
+                        () -> assertEquals(YES,
+                                callbackResponse.getData().getForeignAsset()),
+                        () -> assertEquals("123",
+                                callbackResponse.getData().getForeignAssetEstateValue()),
+                        () -> assertEquals(DECEASED_DATE_OF_DEATH_TYPE,
+                                callbackResponse.getData().getDateOfDeathType()),
+                        () -> assertEquals(GRANT_DELAYED_NOTIFICATION_SENT,
+                                callbackResponse.getData().getGrantDelayedNotificationSent()),
+                        () -> assertEquals(
+                                CallbackResponseTransformer.dateTimeFormatter.format(GRANT_DELAYED_DATE),
+                                callbackResponse.getData().getGrantDelayedNotificationDate()),
+                        () -> assertEquals(
+                                CallbackResponseTransformer.dateTimeFormatter.format(GRANT_STOPPED_DATE),
+                                callbackResponse.getData().getGrantStoppedDate())
+                )
+        );
     }
+
 
     @Test
     void bulkScanGrantOfRepresentationTransform() {
@@ -4000,151 +4085,176 @@ class CallbackResponseTransformerTest {
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails gorCreationDetails) {
+
         uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData
-            grantOfRepresentationData =
-            (uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData)
-                gorCreationDetails
-                    .getCaseData();
-        assertEquals(GOR_EXCEPTION_RECORD_EVENT_ID, gorCreationDetails.getEventId());
-        assertEquals(GOR_EXCEPTION_RECORD_CASE_TYPE_ID, gorCreationDetails.getCaseTypeId());
-        assertEquals(BULK_SCAN_REGISTRY_LOCATION.name(), grantOfRepresentationData.getRegistryLocation().name());
-        assertEquals(ApplicationType.PERSONAL.name(),
-            grantOfRepresentationData.getApplicationType().getName().toUpperCase());
+                grantOfRepresentationData =
+                (uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData)
+                        gorCreationDetails.getCaseData();
 
-        assertEquals(TRUE, grantOfRepresentationData.getPaperForm());
-        assertEquals(GrantType.INTESTACY, grantOfRepresentationData.getGrantType());
+        assertAll(
+                () -> assertAll("Case metadata",
+                        () -> assertEquals(GOR_EXCEPTION_RECORD_EVENT_ID,
+                                gorCreationDetails.getEventId()),
+                        () -> assertEquals(GOR_EXCEPTION_RECORD_CASE_TYPE_ID,
+                                gorCreationDetails.getCaseTypeId()),
+                        () -> assertEquals(BULK_SCAN_REGISTRY_LOCATION.name(),
+                                grantOfRepresentationData.getRegistryLocation().name()),
+                        () -> assertEquals(ApplicationType.PERSONAL.name(),
+                                grantOfRepresentationData.getApplicationType().getName().toUpperCase())
+                ),
 
-        assertEquals(DECEASED_FIRSTNAME, grantOfRepresentationData.getDeceasedForenames());
-        assertEquals(DECEASED_LASTNAME, grantOfRepresentationData.getDeceasedSurname());
-        assertEquals("2016-12-31", grantOfRepresentationData.getDeceasedDateOfBirth().toString());
-        assertEquals("2017-12-31", grantOfRepresentationData.getDeceasedDateOfDeath().toString());
-        assertEquals(Long.valueOf(NUM_CODICILS), grantOfRepresentationData.getWillNumberOfCodicils());
+                () -> assertAll("Application type and grant",
+                        () -> assertEquals(TRUE,
+                                grantOfRepresentationData.getPaperForm()),
+                        () -> assertEquals(GrantType.INTESTACY,
+                                grantOfRepresentationData.getGrantType())
+                ),
 
-        assertEquals(IHT_FORM_ID, grantOfRepresentationData.getIhtFormId().getDescription());
-        assertThat(Long.valueOf("10000"), comparesEqualTo(grantOfRepresentationData.getIhtGrossValue()));
-        assertThat(Long.valueOf("9000"), comparesEqualTo(grantOfRepresentationData.getIhtNetValue()));
+                () -> assertAll("Deceased details",
+                        () -> assertEquals(DECEASED_FIRSTNAME,
+                                grantOfRepresentationData.getDeceasedForenames()),
+                        () -> assertEquals(DECEASED_LASTNAME,
+                                grantOfRepresentationData.getDeceasedSurname()),
+                        () -> assertEquals("2016-12-31",
+                                grantOfRepresentationData.getDeceasedDateOfBirth().toString()),
+                        () -> assertEquals("2017-12-31",
+                                grantOfRepresentationData.getDeceasedDateOfDeath().toString()),
+                        () -> assertEquals(Long.valueOf(NUM_CODICILS),
+                                grantOfRepresentationData.getWillNumberOfCodicils())
+                ),
 
-        assertEquals(APPLICANT_FORENAME, grantOfRepresentationData.getPrimaryApplicantForenames());
-        assertEquals(APPLICANT_SURNAME, grantOfRepresentationData.getPrimaryApplicantSurname());
-        assertEquals(APPLICANT_EMAIL_ADDRESS, grantOfRepresentationData.getPrimaryApplicantEmailAddress());
-        assertEquals(BooleanUtils.toBoolean(PRIMARY_EXEC_APPLYING),
-            grantOfRepresentationData.getPrimaryApplicantIsApplying());
-        assertEquals(PRIMARY_EXEC_ALIAS_NAMES, grantOfRepresentationData.getPrimaryApplicantAlias());
-        assertEquals(BSP_DECEASED_ADDRESS, grantOfRepresentationData.getDeceasedAddress());
-        assertEquals(BSP_APPLICANT_ADDRESS, grantOfRepresentationData.getPrimaryApplicantAddress());
+                () -> assertAll("IHT values",
+                        () -> assertEquals(IHT_FORM_ID,
+                                grantOfRepresentationData.getIhtFormId().getDescription()),
+                        () -> assertThat(Long.valueOf("10000"),
+                                comparesEqualTo(grantOfRepresentationData.getIhtGrossValue())),
+                        () -> assertThat(Long.valueOf("9000"),
+                                comparesEqualTo(grantOfRepresentationData.getIhtNetValue()))
+                ),
 
-        assertEquals(IHT_REFERENCE, grantOfRepresentationData.getIhtReferenceNumber());
-        assertEquals(BooleanUtils.toBoolean(IHT_ONLINE), grantOfRepresentationData.getIhtFormCompletedOnline());
+                () -> assertAll("Primary applicant",
+                        () -> assertEquals(APPLICANT_FORENAME,
+                                grantOfRepresentationData.getPrimaryApplicantForenames()),
+                        () -> assertEquals(APPLICANT_SURNAME,
+                                grantOfRepresentationData.getPrimaryApplicantSurname()),
+                        () -> assertEquals(APPLICANT_EMAIL_ADDRESS,
+                                grantOfRepresentationData.getPrimaryApplicantEmailAddress()),
+                        () -> assertEquals(BooleanUtils.toBoolean(PRIMARY_EXEC_APPLYING),
+                                grantOfRepresentationData.getPrimaryApplicantIsApplying()),
+                        () -> assertEquals(PRIMARY_EXEC_ALIAS_NAMES,
+                                grantOfRepresentationData.getPrimaryApplicantAlias()),
+                        () -> assertEquals(BSP_DECEASED_ADDRESS,
+                                grantOfRepresentationData.getDeceasedAddress()),
+                        () -> assertEquals(BSP_APPLICANT_ADDRESS,
+                                grantOfRepresentationData.getPrimaryApplicantAddress())
+                ),
 
-        assertEquals(BSP_SCANNED_DOCUMENTS_LIST, grantOfRepresentationData.getScannedDocuments());
-        assertEquals(Boolean.FALSE, grantOfRepresentationData.getBoEmailRequestInfoNotificationRequested());
+                () -> assertAll("IHT reference and documents",
+                        () -> assertEquals(IHT_REFERENCE,
+                                grantOfRepresentationData.getIhtReferenceNumber()),
+                        () -> assertEquals(BooleanUtils.toBoolean(IHT_ONLINE),
+                                grantOfRepresentationData.getIhtFormCompletedOnline()),
+                        () -> assertEquals(BSP_SCANNED_DOCUMENTS_LIST,
+                                grantOfRepresentationData.getScannedDocuments()),
+                        () -> assertEquals(Boolean.FALSE,
+                                grantOfRepresentationData.getBoEmailRequestInfoNotificationRequested())
+                ),
 
-        assertEquals(EXEC_PHONE, grantOfRepresentationData.getPrimaryApplicantSecondPhoneNumber());
-        assertEquals(Relationship.OTHER, grantOfRepresentationData.getPrimaryApplicantRelationshipToDeceased());
-        assertEquals("cousin", grantOfRepresentationData.getPaRelationshipToDeceasedOther());
-        assertEquals(MaritalStatus.NEVER_MARRIED, grantOfRepresentationData.getDeceasedMaritalStatus());
+                () -> assertAll("Relationship, marital and authority details",
+                        () -> assertEquals(EXEC_PHONE,
+                                grantOfRepresentationData.getPrimaryApplicantSecondPhoneNumber()),
+                        () -> assertEquals(Relationship.OTHER,
+                                grantOfRepresentationData.getPrimaryApplicantRelationshipToDeceased()),
+                        () -> assertEquals("cousin",
+                                grantOfRepresentationData.getPaRelationshipToDeceasedOther()),
+                        () -> assertEquals(MaritalStatus.NEVER_MARRIED,
+                                grantOfRepresentationData.getDeceasedMaritalStatus()),
+                        () -> assertEquals(null,
+                                grantOfRepresentationData.getDateOfMarriageOrCP()),
+                        () -> assertEquals(null,
+                                grantOfRepresentationData.getDateOfDivorcedCPJudicially()),
+                        () -> assertEquals(TRUE,
+                                grantOfRepresentationData.getWillsOutsideOfUK()),
+                        () -> assertEquals("Random Court Name",
+                                grantOfRepresentationData.getCourtOfDecree()),
+                        () -> assertEquals(Boolean.FALSE,
+                                grantOfRepresentationData.getWillGiftUnderEighteen()),
+                        () -> assertEquals(TRUE,
+                                grantOfRepresentationData.getApplyingAsAnAttorney()),
+                        () -> assertEquals(null,
+                                grantOfRepresentationData.getAttorneyOnBehalfOfNameAndAddress()),
+                        () -> assertEquals(TRUE,
+                                grantOfRepresentationData.getMentalCapacity()),
+                        () -> assertEquals(TRUE,
+                                grantOfRepresentationData.getCourtOfProtection()),
+                        () -> assertEquals(Boolean.FALSE,
+                                grantOfRepresentationData.getEpaOrLpa()),
+                        () -> assertEquals(Boolean.FALSE,
+                                grantOfRepresentationData.getEpaRegistered()),
+                        () -> assertEquals("Spain",
+                                grantOfRepresentationData.getDomicilityCountry())
+                ),
 
-        assertEquals(null, grantOfRepresentationData.getDateOfMarriageOrCP());
-        assertEquals(null, grantOfRepresentationData.getDateOfDivorcedCPJudicially());
-        assertEquals(TRUE, grantOfRepresentationData.getWillsOutsideOfUK());
-        assertEquals("Random Court Name", grantOfRepresentationData.getCourtOfDecree());
-        assertEquals(Boolean.FALSE, grantOfRepresentationData.getWillGiftUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getApplyingAsAnAttorney());
-        assertEquals(TRUE, grantOfRepresentationData.getMentalCapacity());
-        assertEquals(TRUE, grantOfRepresentationData.getCourtOfProtection());
-        assertEquals(Boolean.FALSE, grantOfRepresentationData.getEpaOrLpa());
+                () -> assertAll("Adoption and foreign assets",
+                        () -> assertEquals(TRUE,
+                                grantOfRepresentationData.getAdopted()),
+                        () -> assertEquals(null,
+                                grantOfRepresentationData.getAdoptiveRelatives()),
+                        () -> assertEquals(TRUE,
+                                grantOfRepresentationData.getDomicilityIHTCert()),
+                        () -> assertEquals(TRUE,
+                                grantOfRepresentationData.getForeignAsset()),
+                        () -> assertEquals(Long.valueOf("123"),
+                                grantOfRepresentationData.getForeignAssetEstateValue())
+                ),
 
-        assertEquals(Boolean.FALSE, grantOfRepresentationData.getEpaRegistered());
-        assertEquals("Spain", grantOfRepresentationData.getDomicilityCountry());
+                () -> assertAll("Family relationships",
+                        () -> assertEquals(TRUE, grantOfRepresentationData.getChildrenSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                grantOfRepresentationData.getChildrenOverEighteenSurvivedText()),
+                        () -> assertEquals(NUM_CODICILS,
+                                grantOfRepresentationData.getChildrenUnderEighteenSurvivedText()),
+                        () -> assertEquals(TRUE, grantOfRepresentationData.getChildrenDied()),
+                        () -> assertEquals(NUM_CODICILS, grantOfRepresentationData.getChildrenDiedOverEighteenText()),
+                        () -> assertEquals(NUM_CODICILS, grantOfRepresentationData.getChildrenDiedUnderEighteenText()),
+                        () -> assertEquals(TRUE, grantOfRepresentationData.getGrandChildrenSurvived()),
+                        () -> assertEquals(NUM_CODICILS,
+                                grantOfRepresentationData.getGrandChildrenSurvivedOverEighteenText()),
+                        () -> assertEquals(NUM_CODICILS,
+                                grantOfRepresentationData.getGrandChildrenSurvivedUnderEighteenText())
+                ),
 
-        assertEquals(EXEC_PHONE, grantOfRepresentationData.getPrimaryApplicantSecondPhoneNumber());
-        assertEquals(Relationship.OTHER, grantOfRepresentationData.getPrimaryApplicantRelationshipToDeceased());
-        assertEquals("cousin", grantOfRepresentationData.getPaRelationshipToDeceasedOther());
-        assertEquals(MaritalStatus.NEVER_MARRIED, grantOfRepresentationData.getDeceasedMaritalStatus());
-        assertEquals(null, grantOfRepresentationData.getDateOfMarriageOrCP());
-        assertEquals(null, grantOfRepresentationData.getDateOfDivorcedCPJudicially());
-        assertEquals(TRUE, grantOfRepresentationData.getWillsOutsideOfUK());
-        assertEquals("Random Court Name", grantOfRepresentationData.getCourtOfDecree());
-        assertEquals(Boolean.FALSE, grantOfRepresentationData.getWillGiftUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getApplyingAsAnAttorney());
-        assertEquals(null, grantOfRepresentationData.getAttorneyOnBehalfOfNameAndAddress());
-        assertEquals(TRUE, grantOfRepresentationData.getMentalCapacity());
-        assertEquals(TRUE, grantOfRepresentationData.getCourtOfProtection());
-        assertEquals(Boolean.FALSE, grantOfRepresentationData.getEpaOrLpa());
-        assertEquals(Boolean.FALSE, grantOfRepresentationData.getEpaRegistered());
-        assertEquals("Spain", grantOfRepresentationData.getDomicilityCountry());
-        assertEquals(TRUE, grantOfRepresentationData.getAdopted());
-        assertEquals(null, grantOfRepresentationData.getAdoptiveRelatives());
-        assertEquals(TRUE, grantOfRepresentationData.getDomicilityIHTCert());
-        assertEquals(TRUE, grantOfRepresentationData.getForeignAsset());
-        assertEquals(Long.valueOf("123"), grantOfRepresentationData.getForeignAssetEstateValue());
+                () -> assertAll("Paper payment",
+                        () -> assertEquals(IHT_REFERENCE,
+                                grantOfRepresentationData.getPaymentReferenceNumberPaperform()),
+                        () -> assertEquals("debitOrCredit",
+                                grantOfRepresentationData.getPaperPaymentMethod()),
+                        () -> assertEquals(Long.valueOf("0"),
+                                grantOfRepresentationData.getApplicationFeePaperForm()),
+                        () -> assertEquals(Long.valueOf("0"),
+                                grantOfRepresentationData.getFeeForCopiesPaperForm()),
+                        () -> assertEquals(Long.valueOf("0"),
+                                grantOfRepresentationData.getTotalFeePaperForm())
+                ),
 
-        assertEquals(TRUE, grantOfRepresentationData.getChildrenSurvived());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getChildrenOverEighteenSurvivedText());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getChildrenUnderEighteenSurvivedText());
-        assertEquals(TRUE, grantOfRepresentationData.getChildrenDied());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getChildrenDiedOverEighteenText());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getChildrenDiedUnderEighteenText());
-        assertEquals(TRUE, grantOfRepresentationData.getGrandChildrenSurvived());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getGrandChildrenSurvivedOverEighteenText());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getGrandChildrenSurvivedUnderEighteenText());
-        assertEquals(TRUE, grantOfRepresentationData.getParentsExistSurvived());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getParentsExistOverEighteenSurvived());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getParentsExistUnderEighteenSurvived());
-        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodSiblingsSurvived());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodSiblingsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodSiblingsSurvivedUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodSiblingsDied());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodSiblingsDiedOverEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodSiblingsDiedUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodNeicesAndNephews());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodNeicesAndNephewsOverEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodNeicesAndNephewsUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodSiblingsSurvived());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodSiblingsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodSiblingsSurvivedUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodSiblingsDied());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodSiblingsDiedUnderEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodSiblingsDiedOverEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodNeicesAndNephews());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodNeicesAndNephewsUnderEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodNeicesAndNephewsOverEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getGrandparentsDied());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getGrandparentsDiedOverEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getGrandparentsDiedUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodUnclesAndAuntsSurvived());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodUnclesAndAuntsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodUnclesAndAuntsSurvivedUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodUnclesAndAuntsDied());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodUnclesAndAuntsDiedOverEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodUnclesAndAuntsDiedUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodCousinsSurvived());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodCousinsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodCousinsSurvivedUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvived());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodUnclesAndAuntsDied());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvivedOverEighteen());
-        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodCousinsSurvived());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodCousinsSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodCousinsSurvivedUnderEighteen());
+                () -> assertAll("Bulk scan metadata",
+                        () -> assertEquals(BULK_SCAN_REFERENCE,
+                                grantOfRepresentationData.getBulkScanCaseReference()),
+                        () -> assertEquals(BULK_SCAN_ENVELOPES,
+                                grantOfRepresentationData.getBulkScanEnvelopes())
+                ),
 
-        assertEquals(IHT_REFERENCE, grantOfRepresentationData.getPaymentReferenceNumberPaperform());
-        assertEquals("debitOrCredit", grantOfRepresentationData.getPaperPaymentMethod());
-        assertEquals(Long.valueOf("0"), grantOfRepresentationData.getApplicationFeePaperForm());
-        assertEquals(Long.valueOf("0"), grantOfRepresentationData.getFeeForCopiesPaperForm());
-        assertEquals(Long.valueOf("0"), grantOfRepresentationData.getTotalFeePaperForm());
-
-        assertEquals(BULK_SCAN_REFERENCE, grantOfRepresentationData.getBulkScanCaseReference());
-        assertEquals(BULK_SCAN_ENVELOPES, grantOfRepresentationData.getBulkScanEnvelopes());
-
-        assertEquals(TRUE, grantOfRepresentationData.getGrantDelayedNotificationSent());
-        assertEquals(GRANT_DELAYED_DATE, grantOfRepresentationData.getGrantDelayedNotificationDate());
-        assertEquals(GRANT_STOPPED_DATE, grantOfRepresentationData.getGrantStoppedDate());
-
-        assertEquals(Boolean.FALSE, grantOfRepresentationData.getEvidenceHandled());
+                () -> assertAll("Grant status and evidence",
+                        () -> assertEquals(TRUE,
+                                grantOfRepresentationData.getGrantDelayedNotificationSent()),
+                        () -> assertEquals(GRANT_DELAYED_DATE,
+                                grantOfRepresentationData.getGrantDelayedNotificationDate()),
+                        () -> assertEquals(GRANT_STOPPED_DATE,
+                                grantOfRepresentationData.getGrantStoppedDate()),
+                        () -> assertEquals(Boolean.FALSE,
+                                grantOfRepresentationData.getEvidenceHandled())
+                )
+        );
     }
 
     @Test
@@ -4215,6 +4325,46 @@ class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         verify(caseDataTransformerMock, times(1))
             .transformForSolicitorApplicationCompletion(callbackRequestMock);
+    }
+
+    @Test
+    void shouldTransformPaperFormSolsCaseWithEmptyOrgPolicy() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.caseType(GRANT_OF_PROBATE_NAME);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        OrganisationPolicy orgPolicy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertEquals(orgPolicy, callbackResponse.getData().getApplicantOrganisationPolicy());
+    }
+
+    @Test
+    void shouldTransformPaperFormPACaseWithNullOrgPolicy() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.caseType(GRANT_OF_PROBATE_NAME);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document, CASEWORKER_USERINFO);
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertNull(callbackResponse.getData().getApplicantOrganisationPolicy());
     }
 
     @Test
