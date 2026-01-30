@@ -14,7 +14,6 @@ The Probate Back Office handles callbacks from the CCD data store to implement b
   <img src="https://raw.githubusercontent.com/hmcts/reform-api-docs/master/docs/c4/probate/images/structurizr-probate-overview.png" width="800"/>
 </p>
 
-
 <details>
 <summary>Citizen view</summary>
 <img src="https://raw.githubusercontent.com/hmcts/reform-api-docs/master/docs/c4/probate/images/structurizr-probate-citizen.png" width="700">
