@@ -4320,5 +4320,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseNameHMCTSInternal", "UserRole": "GS_profile", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseManagementCategory", "UserRole": "GS_profile", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseManagementLocation", "UserRole": "GS_profile", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "SearchParty", "UserRole": "GS_profile", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "SearchCriteria", "UserRole": "GS_profile", "CRUD": "R"}
 ]
