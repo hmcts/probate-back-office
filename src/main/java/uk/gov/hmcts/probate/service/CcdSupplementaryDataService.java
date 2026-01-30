@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.SupplementaryDataConfiguration;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -39,12 +40,13 @@ public class CcdSupplementaryDataService {
     }
 
     public void submitSupplementaryDataToCcd(String caseId) {
+        SecurityDTO securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
         Map<String, Map<String, Map<String, Object>>> supplementaryDataUpdates = new HashMap<>();
         supplementaryDataUpdates.put(SUPPLEMENTARY_FIELD,
             singletonMap(SET_OPERATION, singletonMap(SERVICE_ID_FIELD,
                 supplementaryDataConfiguration.getHmctsId())));
 
-        coreCaseDataApi.submitSupplementaryData(securityUtils.getAuthorisation(),
+        coreCaseDataApi.submitSupplementaryData(securityDTO.getAuthorisation(),
             authTokenGenerator.generate(),
             caseId,
             supplementaryDataUpdates);

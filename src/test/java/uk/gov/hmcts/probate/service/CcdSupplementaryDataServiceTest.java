@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.config.SupplementaryDataConfiguration;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -35,8 +36,9 @@ class CcdSupplementaryDataServiceTest {
 
     @Test
     void shouldSubmitSupplementaryDataToCcd() {
+        SecurityDTO securityDTO = SecurityDTO.builder().authorisation("AUTH").build();
         when(supplementaryDataConfiguration.getHmctsId()).thenReturn("PROBATE");
-        when(securityUtils.getAuthorisation()).thenReturn("AUTH");
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
         when(authTokenGenerator.generate()).thenReturn("AUTH_TOKEN");
         ccdSupplementaryDataService.submitSupplementaryDataToCcd("1234567812345678");
 
