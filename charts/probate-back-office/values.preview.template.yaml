@@ -139,13 +139,18 @@ ccd:
       autoscaling:
         maxReplicas: 2
       imagePullPolicy: Always
+      devmemoryRequests: 1Gi
+      devcpuRequests: 1000m
+      devmemoryLimits: 2Gi
+      devcpuLimits: 2000m
       environment:
         DEFINITION_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
         DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,xui_webapp,aac_manage_case_assignment
-        DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
+        DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 240
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         ELASTIC_SEARCH_ENABLED: true
+        ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 50000
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
