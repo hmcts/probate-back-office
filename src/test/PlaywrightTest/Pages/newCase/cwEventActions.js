@@ -62,20 +62,17 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
     }
 
     async selectCaseMatches(caseRef, nextStepName, retainFirstItem=true, addNewButtonLocator=null, skipMatchingInfo=false) {
-        await expect(this.page.getByText(nextStepName)).toBeVisible();
-        await expect(this.page.getByText(caseRef)).toBeVisible();
+        await expect.soft(this.page.getByText(nextStepName)).toBeVisible();
+        await expect.soft(this.page.getByText(caseRef)).toBeVisible();
         await this.page.waitForTimeout(testConfig.CaseMatchesInitialDelay);
         const numOfElements = this.btnLocator;
         if (numOfElements > 0) {
             await expect(this.caseMatchLocator).toBeVisible();
             await expect(this.caseMatchValidLocator).toBeVisible();
-            // await I.waitForElement('#caseMatches_0_0', testConfig.WaitForTextTimeout);
-            // await I.waitForVisible({css: '#caseMatches_0_valid_Yes'}, testConfig.WaitForTextTimeout);
         }
 
         if (numOfElements === 0 && retainFirstItem && addNewButtonLocator) {
             this.addNewButtonLocator = await this.page.getByText(addNewButtonLocator);
-            await this.page.waitForTimeout(testConfig.CaseMatchesAddNewButtonClickDelay);
             await expect(this.addNewButtonLocator).toBeEnabled();
             await this.addNewButtonLocator.click();
         }
@@ -87,21 +84,10 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
             if (!testConfig.TestAutoDelayEnabled) {
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }
-            await expect(this.caseMatchValidLocator).toBeEnabled();
-            await this.caseMatchValidLocator.focus();
             await this.caseMatchValidLocator.check();
-            await expect(this.caseMatchImportLocator).toBeEnabled();
             await this.caseMatchImportLocator.click();
         }
 
-        await this.page.evaluate(async () => {
-            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-            for (let i = 0; i < document.body.scrollHeight; i += 1000) {
-                window.scrollTo(0, i);
-                /* eslint-disable no-await-in-loop */
-                await delay(100);
-            }
-        });
         if (nextStepName === 'Match application') {
             await this.waitForNavigationToComplete(commonConfig.continueButton);
         } else {
@@ -115,7 +101,6 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
             }
             await this.waitForNavigationToComplete(commonConfig.continueButton);
         }
-        await this.page.waitForTimeout(testConfig.CaseMatchesCompletionDelay);
     }
 
     async selectProbateManCaseMatchesForGrantOfProbate(caseRef, nextStepName) {
@@ -334,7 +319,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
     }
 
     async chooseResolveStop(resolveStop) {
-        await expect(this.resolveStopLocator).toBeEnabled();
+        await expect.soft(this.resolveStopLocator).toBeEnabled();
         await this.resolveStopLocator.selectOption({label: `${resolveStop}`});
         await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);

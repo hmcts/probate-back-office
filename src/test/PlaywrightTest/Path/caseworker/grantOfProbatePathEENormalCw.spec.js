@@ -90,8 +90,6 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-            //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
-
             nextStepName = 'Add Comment';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepConfig.addComment);
@@ -130,12 +128,12 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Resolve stop';
-            const resolveStop = 'Case Matching (Issue grant)';
+            const resolveStop = 'Case selected for QA';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepConfig.resolveStop);
             await cwEventActionsPage.chooseResolveStop(resolveStop);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            endState = 'Case Matching (Issue grant)';
+            endState = 'Case selected for QA';
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Find matches (cases)';
@@ -143,7 +141,7 @@ test.describe('Caseworker Grant of Representation - Personal application - Grant
             await cwEventActionsPage.chooseNextStep(nextStepConfig.findMatch);
             await cwEventActionsPage.selectCaseMatches(caseRef, nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            endState = 'Case Matching (Issue grant)';
+            endState = 'Case selected for QA';
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             await basePage.seeCaseDetails(testInfo, caseRef, caseMatchesTabConfig, caseMatchesConfig);
 

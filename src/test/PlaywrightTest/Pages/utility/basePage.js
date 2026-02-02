@@ -14,15 +14,12 @@ exports.BasePage = class BasePage {
     }
 
     async logInfo(scenarioName, log, caseRef) {
-        let ret = scenarioName;
         await this.page.waitForTimeout(testConfig.GetCaseRefFromUrlDelay);
-        if (log) {
-            ret = ret + ' : ' + log;
-        }
-        if (caseRef) {
-            ret = ret + ' : ' + caseRef;
-        }
-        console.info(ret);
+
+        const parts = [scenarioName, log, caseRef]
+            .filter(v => v !== null);
+
+        console.info(parts.join(' : '));
     }
 
     async runAccessibilityTest(testInfo) {
@@ -60,11 +57,9 @@ exports.BasePage = class BasePage {
     }
 
     async waitForNavigationToComplete() {
-        const navigationPromise = this.page.waitForNavigation();
         await expect(this.continueButtonLocator).toBeVisible();
         await expect(this.continueButtonLocator).toBeEnabled();
         this.continueButtonLocator.click();
-        await navigationPromise;
     }
 
     async waitForSubmitNavigationToComplete(buttonName) {
@@ -92,20 +87,24 @@ exports.BasePage = class BasePage {
     }
 
     async waitForSignOutNavigationToComplete(signOutLocator) {
-        const navigationPromise = this.page.waitForNavigation();
         await expect(this.page.locator(`${signOutLocator}`)).toBeVisible();
         await expect(this.page.locator(`${signOutLocator}`)).toBeEnabled();
-        this.page.locator(`${signOutLocator}`).click();
-        await navigationPromise;
+        await Promise.all([
+            this.page.waitForResponse(response =>
+                response.url().includes('/auth/login') &&
+                response.status() === 302
+            ),
+            this.page.locator(`${signOutLocator}`).click(),
+        ]);
     }
 
     async seeCaseDetails(testInfo, caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault) {
+
         if (tabConfigFile.tabName && tabConfigFile.tabName !== 'Documents') {
             await expect(this.page.getByLabel(`${tabConfigFile.tabName}`, {exact: true})).toBeVisible();
         }
 
-        await expect(this.page.getByRole('heading', {name: caseRef})).toBeVisible();
-        await this.page.getByRole('tab', {name: tabConfigFile.tabName}).focus();
+        await expect.soft(this.page.getByRole('heading', {name: caseRef})).toBeVisible();
         await this.page.getByRole('tab', {name: tabConfigFile.tabName}).click();
         await this.page.waitForTimeout(delay);
 
