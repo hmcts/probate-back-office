@@ -77,7 +77,8 @@ public class CaseDataTransformer {
         final var caseDetails = callbackRequest.getCaseDetails();
         final var caseData = caseDetails.getData();
 
-        solicitorApplicationCompletionTransformer.clearAdditionalExecutorWhenUpdatingApplicantDetails(caseDetails);
+        solicitorApplicationCompletionTransformer
+                .clearAdditionalExecutorWhenUpdatingIntestacyApplicantDetails(caseDetails);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
     }

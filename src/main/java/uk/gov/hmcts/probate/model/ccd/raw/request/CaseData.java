@@ -666,6 +666,7 @@ public class CaseData extends CaseDataParent {
     private final String hasCoApplicant;
     private LocalDate firstStopReminderSentDate;
     private final String evidenceHandledDate;
+    private final String childAlive;
 
 
     private TTL ttl;
@@ -817,5 +818,9 @@ public class CaseData extends CaseDataParent {
 
     public void clearAdditionalExecutorList() {
         getSolsAdditionalExecutorList().clear();
+    }
+
+    public void clearAdditionalIntestacyExecutorList() {
+        getSolsIntestacyExecutorList().clear();
     }
 }
