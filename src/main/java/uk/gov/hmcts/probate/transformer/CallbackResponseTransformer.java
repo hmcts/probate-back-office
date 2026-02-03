@@ -1573,8 +1573,7 @@ public class CallbackResponseTransformer {
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
             .childAlive(caseData.getChildAlive())
-            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
-            .deceasedAliasNameList(caseData.getDeceasedAliasNameList());
+            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased());
 
         handleDeceasedAliases(
                 builder,
