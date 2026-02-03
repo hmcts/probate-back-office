@@ -119,13 +119,6 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
             emailCaveatorConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
             await basePage.seeCaseDetails(testInfo, caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
-            nextStepName = 'Await caveat resolution';
-            await basePage.logInfo(scenarioName, nextStepName, caseRef);
-            await cwEventActionsPage.chooseNextStep(nextStepName);
-            await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            endState = 'Awaiting caveat resolution';
-            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
             nextStepName = 'Upload document';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
@@ -140,6 +133,13 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             // Note that End State does not change when adding a comment.
+            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+            nextStepName = 'Await caveat resolution';
+            await basePage.logInfo(scenarioName, nextStepName, caseRef);
+            await cwEventActionsPage.chooseNextStep(nextStepName);
+            await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+            endState = 'Awaiting caveat resolution';
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Warning requested';
