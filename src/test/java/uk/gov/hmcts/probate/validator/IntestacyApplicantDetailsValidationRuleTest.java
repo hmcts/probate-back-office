@@ -23,6 +23,9 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule.ADOPTED_OUTSIDE_ENGLAND_OR_WALES;
 import static uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule.ADOPTED_OUT;
+import static uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule.DECEASED_CHILD_DEAD;
+
+
 
 @ExtendWith(SpringExtension.class)
 class IntestacyApplicantDetailsValidationRuleTest {
@@ -43,6 +46,9 @@ class IntestacyApplicantDetailsValidationRuleTest {
         underTest = new IntestacyApplicantDetailsValidationRule(businessValidationMessageService);
         when(ccdDataMock.getApplicant()).thenReturn(applicantMock);
 
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, DECEASED_CHILD_DEAD))
+                .thenReturn(FieldErrorResponse.builder().code(DECEASED_CHILD_DEAD).build());
+
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, ADOPTED_OUTSIDE_ENGLAND_OR_WALES))
                 .thenReturn(FieldErrorResponse.builder().code(ADOPTED_OUTSIDE_ENGLAND_OR_WALES).build());
 
@@ -58,6 +64,33 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
         verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
         assertTrue(validationError.isEmpty());
+    }
+    @Test
+    void shouldValidateFailureIfDeceasedChildDead() {
+        when(applicantMock.getChildAlive()).thenReturn(NO);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertEquals(DECEASED_CHILD_DEAD, validationErrors.getFirst().getCode());
+    }
+
+
+    @Test
+    void shouldValidateSuccessIfApplicantParentAdoptedInEnglandOrWales() {
+        when(applicantMock.getPrimaryApplicantParentAdoptionInEnglandOrWales()).thenReturn(YES);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    @Test
+    void shouldValidateFailureIfApplicantParentAdoptedOutsideEnglandOrWales() {
+        when(applicantMock.getPrimaryApplicantParentAdoptionInEnglandOrWales()).thenReturn(NO);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertEquals(ADOPTED_OUTSIDE_ENGLAND_OR_WALES, validationErrors.getFirst().getCode());
     }
 
     @Test
@@ -76,6 +109,24 @@ class IntestacyApplicantDetailsValidationRuleTest {
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
 
         assertEquals(ADOPTED_OUTSIDE_ENGLAND_OR_WALES, validationErrors.getFirst().getCode());
+    }
+
+    @Test
+    void shouldValidateSuccessIfApplicantParentIsNotAdoptedOut() {
+        when(applicantMock.getPrimaryApplicantParentAdoptedOut()).thenReturn(NO);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    @Test
+    void shouldValidateFailureIfApplicantParentIsAdoptedOut() {
+        when(applicantMock.getPrimaryApplicantParentAdoptedOut()).thenReturn(YES);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertEquals(ADOPTED_OUT, validationErrors.getFirst().getCode());
     }
 
     @Test

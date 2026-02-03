@@ -18,6 +18,8 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
     public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "adoptedOutsideEnglandOrWales";
     public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWales";
+    public static final String DECEASED_CHILD_DEAD = "deceasedChildDead";
+    public static final String DECEASED_CHILD_DEAD_WELSH = "deceasedChildDeadWales";
     public static final String ADOPTED_OUT = "adoptedOut";
     public static final String ADOPTED_OUT_WELSH = "adoptedOut";
 
@@ -28,16 +30,25 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
         var applicant = ccdData.getApplicant();
         if (applicant != null) {
             List<String> codes = new ArrayList<>();
+            String childAlive = applicant.getChildAlive();
+            String primaryApplicantParentAdoptionInEnglandOrWales = applicant.getPrimaryApplicantParentAdoptionInEnglandOrWales();
+            String primaryApplicantParentAdoptedOut = applicant.getPrimaryApplicantParentAdoptedOut();
             String applicantAdoptedInEnglandOrWales = applicant.getPrimaryApplicantAdoptionInEnglandOrWales();
             String applicantAdoptedOut = applicant.getPrimaryApplicantAdoptedOut();
 
-            if (NO.equalsIgnoreCase(applicantAdoptedInEnglandOrWales)) {
+            if (NO.equalsIgnoreCase(childAlive) ) {
+                codes.add(DECEASED_CHILD_DEAD);
+                codes.add(DECEASED_CHILD_DEAD_WELSH);
+            }
+
+            if (NO.equalsIgnoreCase(applicantAdoptedInEnglandOrWales) || NO.equalsIgnoreCase(primaryApplicantParentAdoptionInEnglandOrWales)) {
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
-            } else if (YES.equalsIgnoreCase(applicantAdoptedOut)) {
+            } else if (YES.equalsIgnoreCase(applicantAdoptedOut) || YES.equalsIgnoreCase(primaryApplicantParentAdoptedOut)) {
                 codes.add(ADOPTED_OUT);
                 codes.add(ADOPTED_OUT_WELSH);
             }
+
             for (String code : codes) {
                 errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, code));
             }
