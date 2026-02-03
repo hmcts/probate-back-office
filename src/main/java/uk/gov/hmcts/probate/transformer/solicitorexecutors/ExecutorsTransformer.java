@@ -152,8 +152,7 @@ public class ExecutorsTransformer {
             // Add main solicitor executor list
             execsApplying.addAll(executorListMapperService
                     .mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
-        }
-        if (DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
+        } else if (DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
                 && caseData.getSolsIntestacyExecutorList() != null
                 && !caseData.getSolsIntestacyExecutorList().isEmpty()) {
             // Add intestacy solicitor executor list
