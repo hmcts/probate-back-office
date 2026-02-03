@@ -151,6 +151,7 @@ public class CallbackResponseTransformer {
     private final OrganisationsRetrievalService organisationsRetrievalService;
     private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
+    private final GrantIssueTooEarlyTransformer grantIssueTooEarlyTransformer;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final AuditEventService auditEventService;
@@ -580,6 +581,9 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.matches("No matches found");
         }
 
+        responseCaseDataBuilder.issueEarlySwitch(
+                grantIssueTooEarlyTransformer.defaultIssueTooEarlySwitch(callbackRequest.getCaseDetails().getData())
+        );
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1120,6 +1124,10 @@ public class CallbackResponseTransformer {
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
+
+        if (SOLICITOR.equals(cd.getApplicationType())) {
+            responseCaseDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
+        }
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
@@ -2241,5 +2249,16 @@ public class CallbackResponseTransformer {
         } else {
             responseCaseDataBuilder.informationNeededByPostSwitch(NO);
         }
+    }
+
+    private OrganisationPolicy buildEmptySolicitorOrganisationPolicy() {
+        return OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
     }
 }

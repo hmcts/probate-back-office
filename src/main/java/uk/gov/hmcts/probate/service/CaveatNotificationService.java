@@ -60,7 +60,7 @@ public class CaveatNotificationService {
                 // Bulk scan may not include caveator email for solicitor.
                 setCaveatExpiryDate(caveatDetails);
                 caveatCallbackResponse =
-                    caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
+                    caveatCallbackResponseTransformer.transformResponseWithOrgPolicy(caveatCallbackRequest);
             }
         } else {
             caveatCallbackResponse = citizenCaveatRaise(caveatCallbackRequest);
