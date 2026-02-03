@@ -65,6 +65,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
         verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
         assertTrue(validationError.isEmpty());
     }
+
     @Test
     void shouldValidateFailureIfDeceasedChildDead() {
         when(applicantMock.getChildAlive()).thenReturn(NO);

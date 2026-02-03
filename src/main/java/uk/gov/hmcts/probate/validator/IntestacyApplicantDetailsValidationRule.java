@@ -31,20 +31,23 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
         if (applicant != null) {
             List<String> codes = new ArrayList<>();
             String childAlive = applicant.getChildAlive();
-            String primaryApplicantParentAdoptionInEnglandOrWales = applicant.getPrimaryApplicantParentAdoptionInEnglandOrWales();
+            String primaryApplicantParentAdoptionInEnglandOrWales =
+                    applicant.getPrimaryApplicantParentAdoptionInEnglandOrWales();
             String primaryApplicantParentAdoptedOut = applicant.getPrimaryApplicantParentAdoptedOut();
             String applicantAdoptedInEnglandOrWales = applicant.getPrimaryApplicantAdoptionInEnglandOrWales();
             String applicantAdoptedOut = applicant.getPrimaryApplicantAdoptedOut();
 
-            if (NO.equalsIgnoreCase(childAlive) ) {
+            if (NO.equalsIgnoreCase(childAlive)) {
                 codes.add(DECEASED_CHILD_DEAD);
                 codes.add(DECEASED_CHILD_DEAD_WELSH);
             }
 
-            if (NO.equalsIgnoreCase(applicantAdoptedInEnglandOrWales) || NO.equalsIgnoreCase(primaryApplicantParentAdoptionInEnglandOrWales)) {
+            if (NO.equalsIgnoreCase(applicantAdoptedInEnglandOrWales)
+                    || NO.equalsIgnoreCase(primaryApplicantParentAdoptionInEnglandOrWales)) {
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
-            } else if (YES.equalsIgnoreCase(applicantAdoptedOut) || YES.equalsIgnoreCase(primaryApplicantParentAdoptedOut)) {
+            } else if (YES.equalsIgnoreCase(applicantAdoptedOut)
+                    || YES.equalsIgnoreCase(primaryApplicantParentAdoptedOut)) {
                 codes.add(ADOPTED_OUT);
                 codes.add(ADOPTED_OUT_WELSH);
             }

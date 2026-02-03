@@ -132,7 +132,8 @@ public class CCDDataTransformer {
     private Applicant buildApplicantDetails(CaseData caseData) {
         return Applicant.builder()
                 .childAlive(caseData.getChildAlive())
-                .primaryApplicantParentAdoptionInEnglandOrWales(caseData.getPrimaryApplicantParentAdoptionInEnglandOrWales())
+                .primaryApplicantParentAdoptionInEnglandOrWales(
+                        caseData.getPrimaryApplicantParentAdoptionInEnglandOrWales())
                 .primaryApplicantParentAdoptedOut(caseData.getPrimaryApplicantParentAdoptedOut())
                 .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
                 .primaryApplicantAdoptedOut(caseData.getPrimaryApplicantAdoptedOut())
