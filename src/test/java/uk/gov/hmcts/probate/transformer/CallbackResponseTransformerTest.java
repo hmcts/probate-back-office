@@ -499,6 +499,7 @@ class CallbackResponseTransformerTest {
         .givenName("givenname")
         .roles(List.of("caseworker-probate"))
         .build());
+    private static final String EVENT_ID = "eventId";
 
 
     @InjectMocks
@@ -5086,7 +5087,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldClearRelationshipsWhenRelationshipChanges() {
+    void shouldClearRelationshipsWhenRelationshipChangedFromChild() {
         caseDataBuilder.primaryApplicantRelationshipToDeceased("grandchild");
 
         caseDataBuilderBefore.primaryApplicantRelationshipToDeceased("child")
@@ -5113,9 +5114,84 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedIn());
         assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedOut());
         assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptionInEnglandOrWales());
+    }
+
+
+    @Test
+    void shouldClearRelationshipsWhenRelationshipChangesFromSibling() {
+        caseDataBuilder.primaryApplicantRelationshipToDeceased("child");
+
+        caseDataBuilderBefore.primaryApplicantRelationshipToDeceased("sibling")
+                .deceasedAnyLivingDescendants("Yes")
+                .deceasedAnyLivingParents("No")
+                .deceasedAdoptedIn("Yes")
+                .deceasedAdoptionInEnglandOrWales("Yes")
+                .applicantSameParentsAsDeceased("Yes")
+                .otherWholeBloodSiblings("Yes")
+                .wholeBloodSiblingsDiedBeforeDeceased("No")
+                .wholeBloodNiecesAndNephewsSurvived("Yes")
+                .wholeBloodSiblingsOverEighteen("No")
+                .wholeBloodNiecesAndNephewsOverEighteen("Yes")
+                .otherHalfBloodSiblings("No")
+                .primaryApplicantAdoptedIn("Yes")
+                .primaryApplicantAdoptionInEnglandOrWales("Yes")
+                .primaryApplicantForenames("Jane")
+                .primaryApplicantSurname("Smith")
+                .primaryApplicantPhoneNumber("987654321");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse callbackResponse = underTest.clearRelationships(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getDeceasedAnyLivingDescendants());
+        assertNull(callbackResponse.getData().getDeceasedAnyLivingParents());
         assertNull(callbackResponse.getData().getDeceasedAdoptedIn());
         assertNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
-        assertNull(callbackResponse.getData().getDeceasedAdoptedOut());
+        assertNull(callbackResponse.getData().getApplicantSameParentsAsDeceased());
+        assertNull(callbackResponse.getData().getOtherWholeBloodSiblings());
+        assertNull(callbackResponse.getData().getWholeBloodSiblingsDiedBeforeDeceased());
+        assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsSurvived());
+        assertNull(callbackResponse.getData().getWholeBloodSiblingsOverEighteen());
+        assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsOverEighteen());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+        assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
+        assertNull(callbackResponse.getData().getPrimaryApplicantSurname());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAddress());
+        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
+    }
+
+    @Test
+    void shouldClearRelationshipsWhenRelationshipChangesFromParent() {
+        caseDataBuilder.primaryApplicantRelationshipToDeceased("sibling");
+
+        caseDataBuilderBefore.primaryApplicantRelationshipToDeceased("parent")
+                .deceasedAnyLivingDescendants("Yes")
+                .deceasedAnyOtherParentAlive("No")
+                .deceasedAdoptedIn("Yes")
+                .deceasedAdoptionInEnglandOrWales("Yes")
+                .primaryApplicantForenames("John")
+                .primaryApplicantSurname("Doe")
+                .primaryApplicantPhoneNumber("123456789");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse callbackResponse = underTest.clearRelationships(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getDeceasedAnyLivingDescendants());
+        assertNull(callbackResponse.getData().getDeceasedAnyOtherParentAlive());
+        assertNull(callbackResponse.getData().getDeceasedAdoptedIn());
+        assertNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
+        assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
+        assertNull(callbackResponse.getData().getPrimaryApplicantSurname());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAddress());
+        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
     }
 
     @Test
@@ -5426,7 +5502,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5458,7 +5534,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5489,7 +5565,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5520,7 +5596,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5551,7 +5627,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5582,7 +5658,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5612,7 +5688,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5642,7 +5718,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5675,7 +5751,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5712,7 +5788,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
@@ -5749,7 +5825,7 @@ class CallbackResponseTransformerTest {
         underTest.handleDeceasedAliases(
                 builderSpy,
                 caseData,
-                caseRef);
+                caseRef, EVENT_ID);
 
         verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
         verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
