@@ -37,12 +37,16 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioListElement;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyAdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsApplicantFamilyDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -134,6 +138,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -5153,6 +5158,69 @@ class CallbackResponseTransformerTest {
         assertNotNull(callbackResponse.getData().getDeceasedAdoptedIn());
         assertNotNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
         assertNotNull(callbackResponse.getData().getDeceasedAdoptedOut());
+    }
+
+    @Test
+    void shouldSetupNewDynamicListForParentRelationship() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased("parent")
+                .otherExecutorExists("Yes");
+        caseDataBuilderBefore.solsApplicantRelationshipToDeceased("child");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse response = underTest.setupDynamicList(callbackRequestMock);
+
+        List<CollectionMember<IntestacyAdditionalExecutor>> executorList =
+                response.getData().getSolsIntestacyExecutorList();
+        assertNotNull(executorList);
+        assertEquals(1, executorList.size());
+        IntestacyAdditionalExecutor executor = executorList.get(0).getValue();
+        assertNotNull(executor.getSolsApplicantFamilyDetails());
+        DynamicRadioList relationshipList = executor.getSolsApplicantFamilyDetails().getRelationship();
+        assertNotNull(relationshipList);
+        assertEquals(1, relationshipList.getListItems().size());
+        assertEquals(PARENT, relationshipList.getListItems().getFirst().getCode());
+    }
+
+    @Test
+    void shouldSetupDynamicListWithExistingExecutorList() {
+        DynamicRadioListElement radioListElement = DynamicRadioListElement.builder()
+                .code("child")
+                .label("Child")
+                .build();
+        DynamicRadioList radioList = DynamicRadioList.builder()
+                .listItems(List.of(radioListElement))
+                .value(radioListElement)
+                .build();
+        SolsApplicantFamilyDetails familyDetails = SolsApplicantFamilyDetails.builder()
+                .relationship(radioList)
+                .build();
+        IntestacyAdditionalExecutor existingExecutor = IntestacyAdditionalExecutor.builder()
+                .solsApplicantFamilyDetails(familyDetails)
+                .build();
+        List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList =
+                List.of(new CollectionMember<>(existingExecutor));
+
+        caseDataBuilder.solsApplicantRelationshipToDeceased("child")
+                .otherExecutorExists("Yes");
+        caseDataBuilderBefore.solsApplicantRelationshipToDeceased("child")
+                .solsIntestacyExecutorList(existingExecutorList);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse response = underTest.setupDynamicList(callbackRequestMock);
+
+        List<CollectionMember<IntestacyAdditionalExecutor>> executorList =
+                response.getData().getSolsIntestacyExecutorList();
+        assertNotNull(executorList);
+        assertEquals(1, executorList.size());
+        assertEquals(existingExecutor, executorList.getFirst().getValue());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

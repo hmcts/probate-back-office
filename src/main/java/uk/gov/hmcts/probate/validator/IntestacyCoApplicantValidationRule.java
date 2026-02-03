@@ -36,11 +36,12 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
             for (var executor : executors) {
                 var details = executor.getApplicantFamilyDetails();
                 List<String> codes = new ArrayList<>();
-                String coApplicantAdoptedInEnglandOrWales = details.getChildAdoptionInEnglandOrWales();
-                String coApplicantAdoptedOut = details.getChildAdoptedOut();
-                String applicantParentIsDeceased = details.getChildDieBeforeDeceased();
-                String relationshipToDeceased = details.getRelationship() != null
-                        ? details.getRelationship().getValueCode() : null;
+                String coApplicantAdoptedInEnglandOrWales = null != details ? details
+                        .getChildAdoptionInEnglandOrWales() : null;
+                String coApplicantAdoptedOut = null != details ? details.getChildAdoptedOut() : null;
+                String applicantParentIsDeceased = null != details ? details.getChildDieBeforeDeceased() : null;
+                String relationshipToDeceased = null != details && null != details.getRelationship() ? details
+                        .getRelationship().getValueCode() : null;
 
                 boolean isRelevantRelation = CHILD.equalsIgnoreCase(relationshipToDeceased)
                         || GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)

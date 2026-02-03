@@ -140,7 +140,8 @@ class IntestacyCoApplicantValidationRuleTest {
     }
 
     @Test
-    void shouldValidateFailureIfCoApplicantIsAdoptedOut() {List<Executor> executor = List.of(
+    void shouldValidateFailureIfCoApplicantIsAdoptedOut() {
+        List<Executor> executor = List.of(
             Executor.builder()
                     .applicantFamilyDetails(SolsApplicantFamilyDetails.builder()
                             .childAdoptedIn(NO)
@@ -161,6 +162,7 @@ class IntestacyCoApplicantValidationRuleTest {
 
         assertEquals(ADOPTED_OUT, validationErrors.getFirst().getCode());
     }
+
     @Test
     void shouldValidateSuccessIfCoApplicantIsGrandchildAndTheirParentIsDeceased() {
         List<Executor> executor = List.of(
@@ -186,7 +188,8 @@ class IntestacyCoApplicantValidationRuleTest {
     }
 
     @Test
-    void shouldValidateSuccessIfCoApplicantIsGrandchildAndTheirParentIsNotDeceased() {List<Executor> executor = List.of(
+    void shouldValidateSuccessIfCoApplicantIsGrandchildAndTheirParentIsNotDeceased() {
+        List<Executor> executor = List.of(
             Executor.builder()
                     .applicantFamilyDetails(SolsApplicantFamilyDetails.builder()
                             .grandchildAdoptedIn(NO)

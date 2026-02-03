@@ -310,25 +310,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-update-intestacy-validate", consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> solsUpdateIntestacyPage2(
-            @RequestBody CallbackRequest callbackRequest,
-            HttpServletRequest request) {
-
-        logRequest(request.getRequestURI(), callbackRequest);
-        var rules = new ValidationRule[]{checkIntestacyOtherApplicantRule, checkIntestacyMaritalStatusRule};
-        final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
-
-        CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
-                gopPage1ValidationRules);
-
-        if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
-        }
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping(path = "/sols-validate-will-and-codicil-dates", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateProbatePage1(
@@ -764,15 +745,14 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
 
-    @PostMapping(path = "/transformRelationshipToDeceased",
+    @PostMapping(path = "/validateApplicantAndSetupDynamicList",
             consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> setupDynamicList(
+    public ResponseEntity<CallbackResponse> validateIntestacyApplicantAndSetupDynamicList(
             @RequestBody CallbackRequest callbackRequest,
             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         var rules = new ValidationRule[]{checkIntestacyOtherApplicantRule, checkIntestacyMaritalStatusRule,
-                intestacyApplicantDetailsValidationRule,
-            intestacyDivorceOrSeparationValidationRule};
+            intestacyApplicantDetailsValidationRule, intestacyDivorceOrSeparationValidationRule};
         final List<ValidationRule> intestacyApplicantValidations = Arrays.asList(rules);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
                 intestacyApplicantValidations);

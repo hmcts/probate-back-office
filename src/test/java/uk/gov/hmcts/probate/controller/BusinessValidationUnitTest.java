@@ -1371,4 +1371,65 @@ class BusinessValidationUnitTest {
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
                 () -> assertThat(notificationsGenerated, empty()));
     }
+
+    @Test
+    void shouldValidateIntestacyApplicantAndSetupDynamicListWithNoErrors() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors()).thenReturn(Collections.emptyList());
+        CallbackResponse transformedResponse = mock(CallbackResponse.class);
+        when(callbackResponseTransformerMock.setupDynamicList(callbackRequestMock))
+                .thenReturn(transformedResponse);
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .validateIntestacyApplicantAndSetupDynamicList(callbackRequestMock, httpServletRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(transformedResponse, response.getBody());
+    }
+
+    @Test
+    void shouldValidateIntestacyApplicantAndSetupDynamicListWithErrors() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors()).thenReturn(List.of("error"));
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .validateIntestacyApplicantAndSetupDynamicList(callbackRequestMock, httpServletRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(callbackResponseMock, response.getBody());
+    }
+
+    @Test
+    void shouldValidateIntestacyCoApplicantWithNoErrors() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors()).thenReturn(Collections.emptyList());
+        CallbackResponse transformedResponse = mock(CallbackResponse.class);
+        when(callbackResponseTransformerMock.setupDynamicList(callbackRequestMock))
+                .thenReturn(transformedResponse);
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .validateIntestacyCoApplicants(callbackRequestMock, httpServletRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(callbackResponseTransformerMock).transformCase(callbackRequestMock, Optional.empty());
+    }
+
+    @Test
+    void shouldValidateIntestacyCoApplicantWithErrors() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors()).thenReturn(List.of("error"));
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .validateIntestacyCoApplicants(callbackRequestMock, httpServletRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 }
