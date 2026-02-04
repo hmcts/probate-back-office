@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
@@ -232,5 +233,8 @@ public class CaveatNotificationService {
         caveatData.setExpiryDate(baseDate.plusMonths(CAVEAT_LIFESPAN));
     }
 
-
+    public void setPaymentTaken(CaveatCallbackRequest request) {
+        CaveatData caveatData = request.getCaseDetails().getData();
+        caveatData.setPaymentTaken(YES);
+    }
 }
