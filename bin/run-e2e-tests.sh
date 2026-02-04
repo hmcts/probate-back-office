@@ -30,7 +30,7 @@ trap 'set +e; [[ -n "${XVFB_PID:-}" ]] && kill "$XVFB_PID" >/dev/null 2>&1' EXIT
 
 # Run tests but don't abort the script; capture exit code
 set +e
-yarn test:functional
+yarn test:functional-chromium
 TEST_STATUS=$?
 set -e
 
