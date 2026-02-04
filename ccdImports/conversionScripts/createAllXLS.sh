@@ -5,6 +5,7 @@ set -eu
 conversionFolder=$(dirname "$0")
 configFolder=${conversionFolder}/../configFiles
 shutterOption=${2:-false}
+extraExclusions=${3:-",*-nonprod.json"}
 
 if [ -z "$1" ]
   then
@@ -14,10 +15,10 @@ fi
 
 if [ ${shutterOption} == true ]; then
   echo Creating shuttered CCD Definition
-  excludedFilenamePatterns="-e *-unshutter.json"
+  excludedFilenamePatterns="-e *-unshutter.json$extraExclusions"
 else
   echo Creating unshuttered CCD Definition
-  excludedFilenamePatterns="-e *-shutter.json"
+  excludedFilenamePatterns="-e *-shutter.json$extraExclusions"
 fi
 echo excludedFilenamePatterns = $excludedFilenamePatterns
 
@@ -28,10 +29,10 @@ echo CCD_DEF_AAC_URL=$CCD_DEF_AAC_URL
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL
 
 ${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Backoffice/ "${excludedFilenamePatterns}"
-${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Caveat/ "${excludedFilenamePatterns}"
-${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Legacy_Cases/ "${excludedFilenamePatterns}"
-${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Legacy_Search/ "${excludedFilenamePatterns}"
-${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Will_Lodgement/ "${excludedFilenamePatterns}"
-${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Standing_Search/ "${excludedFilenamePatterns}"
+#${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Caveat/ "${excludedFilenamePatterns}"
+#${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Legacy_Cases/ "${excludedFilenamePatterns}"
+#${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Legacy_Search/ "${excludedFilenamePatterns}"
+#${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Will_Lodgement/ "${excludedFilenamePatterns}"
+#${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Standing_Search/ "${excludedFilenamePatterns}"
 
 echo XLS files placed in /jsonToXLS folder
