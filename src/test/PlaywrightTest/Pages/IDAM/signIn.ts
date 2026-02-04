@@ -51,14 +51,14 @@ export class SignInPage extends BasePage {
             : testConfig.TestEnvCwPassword
         );
     }
-    //await this.page.waitForSelector(this.submitButtonLocator, signInDelay);
+    // await this.page.waitForSelector(this.submitButtonLocator, signInDelay);
     await expect(this.submitButtonLocator).toBeEnabled();
     await this.submitButtonLocator.click();
     // await this.page.waitForTimeout(signInDelay);
     await this.page.waitForLoadState('domcontentloaded');
     await expect(this.usernameLocator).toBeHidden();
     await this.rejectCookies();
-    // await this.page.waitForTimeout(signInDelay);
+    await this.page.waitForTimeout(signInDelay);
   }
 
   async signOut() {

@@ -24,16 +24,12 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
 
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
 
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
     await createCasePage.selectNewCase();
     await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
-    // await I.waitForNavigationToComplete(commonConfig.continueButton, testConfig.CreateCaseContinueDelay);
 
-    /* eslint-disable no-console */
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Initial application entry');
     await solCreateCasePage.applyForProbatePage1();
     await solCreateCasePage.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
@@ -46,11 +42,8 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
       linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
       goToNextStep: true});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Deceased details');
-    // @ts-ignore
     await solCreateCasePage.deceasedDetailsPage1();
-    // @ts-ignore
     await solCreateCasePage.deceasedDetailsPage2();
     await solCreateCasePage.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
     await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, 'IHT400');
@@ -65,7 +58,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
       linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
       goToNextStep: true});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Add application details');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2(true, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
@@ -82,7 +74,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
       linkUrl: '/trigger/solicitorReviewAndConfirm/solicitorReviewAndConfirmsolicitorReviewLegalStatementPage1',
       goToNextStep: true});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Reenter solicitor details');
     await solCreateCasePage.completeApplicationUpdateSot();
     await solCreateCasePage.selectReenterTask('1: SolAppCreatedSolicitorDtls');
@@ -107,7 +98,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
 
     await caseProgressPage.caseProgressSelectPenultimateNextStepAndGo();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Reenter deceased details');
     await solCreateCasePage.completeApplicationUpdateSot();
     await solCreateCasePage.selectReenterTask('2: SolAppCreatedDeceasedDtls');
@@ -142,7 +132,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
       linkUrl: '/trigger/solicitorReviewAndConfirm/solicitorReviewAndConfirmsolicitorReviewLegalStatementPage1',
       goToNextStep: true});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Confirm application');
     await solCreateCasePage.completeApplicationPage1();
     await solCreateCasePage.completeApplicationPage3();
@@ -159,7 +148,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
       linkText: 'Make payment',
       linkUrl: '#Service%20Request'});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Payment');
     await solCreateCasePage.makePaymentPage1(caseRef, serviceRequestTabConfig);
     await solCreateCasePage.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
@@ -167,7 +155,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
     await solCreateCasePage.makeCardPaymentPage(caseRef);
     await solCreateCasePage.makeCardPaymentPage2();
     await solCreateCasePage.confirmCardDetails();
-    // @ts-ignore
     await solCreateCasePage.viewCardPaymentStatus(caseRef);
 
     await caseProgressPage.caseProgressCheckCaseProgressTab({
@@ -224,7 +211,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
     await signInPage.signOut();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Check progress tab for Case Matching (Issue grant)');
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);

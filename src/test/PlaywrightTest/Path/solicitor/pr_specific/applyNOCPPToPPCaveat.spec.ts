@@ -140,7 +140,6 @@ test.describe("Solicitor - Apply NOC Caveat", () => {
 
     await signInPage.signOut();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Login as PP user 1 to verify NoC');
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
     await solCreateCasePage.verifyNoc(caseRef);

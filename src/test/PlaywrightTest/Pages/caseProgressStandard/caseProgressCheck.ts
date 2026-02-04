@@ -1,5 +1,4 @@
 import { expect, Page } from "@playwright/test";
-// @ts-ignore
 import {SignInPage} from "../IDAM/signIn.ts";
 import assert from "assert";
 import moment from "moment";
