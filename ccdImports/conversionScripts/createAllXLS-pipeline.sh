@@ -9,6 +9,8 @@ shutterOption=${3:-false}
 acc="$4"
 envExcludedFilenamePatterns="${5:-}"
 
+extraExclusions = ",*-wa.json"
+
 if [ -z "$1" ]
   then
     echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL"
@@ -20,12 +22,16 @@ if [ -z "$4" ]
     exit 1
 fi
 
+if[ $WA_PROBATE_FLAG ]
+  extraExclusions = ""
+fi
+
 if [ ${shutterOption} == true ]; then
   echo Creating shuttered CCD Definition
-  excludedFilenamePatterns="-e *-unshutter.json"
+  excludedFilenamePatterns="-e *-unshutter.json$extraExclusions"
 else
   echo Creating unshuttered CCD Definition
-  excludedFilenamePatterns="-e *-shutter.json"
+  excludedFilenamePatterns="-e *-shutter.json$extraExclusions"
 fi
 
 if [ -n "$envExcludedFilenamePatterns" ]; then

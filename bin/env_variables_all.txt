@@ -57,3 +57,4 @@ DEFINITION_STORE_DB_USE_SSL=false
 ES_ENABLED_DOCKER=true
 DB_USE_SSL=false
 MY_IP=docker.for.mac.localhost
+WA_PROBATE_FLAG=false

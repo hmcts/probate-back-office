@@ -144,16 +144,13 @@ def archiveCoreCaseDataDefinitions(env) {
       shutterOption = "false"
     }
 
-    excludedFilenamePatterns="*-wa.json"
+    checkForWAEnableLabel(env.BRANCH_NAME)
+
     if ("preview" == env) {
-      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
-      } else {
-        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
-      }
     }
     else {
-      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
+      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption}"
     }
   }
 
