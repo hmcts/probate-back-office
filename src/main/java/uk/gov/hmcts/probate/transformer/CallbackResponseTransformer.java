@@ -59,9 +59,14 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.HashSet;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -1466,10 +1471,47 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
+    private static final class AliasHandle {
+        private final Map<Long, Queue<String>> caseHistories = new ConcurrentHashMap<>();
+        private final AtomicInteger next = new AtomicInteger(0);
+        private static final String[] aliases = {
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+            "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+
+        public String getNext() {
+            final int current = next.getAndIncrement();
+            return aliases[current % aliases.length];
+        }
+
+        public void recordHistory(final Long caseId, final String event) {
+            final var caseHistory = caseHistories.computeIfAbsent(
+                    caseId,
+                    k -> new ConcurrentLinkedQueue<String>());
+            caseHistory.add(event);
+        }
+
+        public String getHistory(final Long caseId) {
+            final var sb = new StringBuilder();
+            final var caseHistory = caseHistories.get(caseId);
+            if (caseHistory != null) {
+                for (final var entry : caseHistory) {
+                    sb.append("- ")
+                            .append(entry)
+                            .append("\n");
+                }
+            }
+            return sb.toString();
+        }
+    }
+
+    private final AliasHandle aliasHandle = new AliasHandle();
+
     void handleDeceasedAliases(
             final ResponseCaseDataBuilder<?,?> builder,
             final CaseData caseData,
             final Long caseRef) {
+        boolean updateWillMessage = false;
+
         // Question this asks is "Is the name on the will the same?" Not "Are there other names on the will?" as the
         // name of the variable in the CaseData object suggests.
         final String decNameOnWillSame = caseData.getDeceasedAnyOtherNameOnWill();
@@ -1495,6 +1537,48 @@ public class CallbackResponseTransformer {
         List<CollectionMember<AliasName>> newSolsDecAliases = new ArrayList<>();
 
         if (solsDecAliases != null) {
+            final StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            final String collected = solsDecAliases.stream()
+                    .map(v -> v.getValue().getSolsAliasname() + ", ")
+                    .collect(
+                            () -> sb,
+                            StringBuilder::append,
+                            StringBuilder::append)
+                    .append("]")
+                    .toString();
+            log.info("{}: Before collection: {}", caseRef, collected);
+            aliasHandle.recordHistory(caseRef, "Before collection: " + collected);
+        } else {
+            log.info("{}: Before collection: []", caseRef);
+            aliasHandle.recordHistory(caseRef, "Before collection: []");
+        }
+
+        final String decTitle = caseData.getBoDeceasedTitle();
+        if ("ADD_FIRST".equals(decTitle)) {
+            updateWillMessage = true;
+            final String nextAlias = aliasHandle.getNext();
+            final String beforeName = "BEFORE_" + nextAlias;
+            final AliasName beforeAlias = AliasName.builder()
+                    .solsAliasname(beforeName)
+                    .build();
+            log.info("{}: Adding {} at start", caseRef, beforeName);
+            aliasHandle.recordHistory(caseRef, "Adding " + beforeName + " at start");
+            newSolsDecAliases.add(new CollectionMember<>(null, beforeAlias));
+
+            final String currentDom = caseData.getDeceasedDomicileInEngWales();
+            if (YES.equals(currentDom)) {
+                log.info("{}: domE&W: {}, set No", caseRef, currentDom);
+                aliasHandle.recordHistory(caseRef, "domE&W: " + currentDom + ", set No");
+                builder.deceasedDomicileInEngWales(NO);
+            } else {
+                log.info("{}: domE&W: {}, set Yes", caseRef, currentDom);
+                aliasHandle.recordHistory(caseRef, "domE&W: " + currentDom + ", set Yes");
+                builder.deceasedDomicileInEngWales(YES);
+            }
+        }
+
+        if (solsDecAliases != null) {
             newSolsDecAliases.addAll(solsDecAliases);
         }
 
@@ -1510,12 +1594,54 @@ public class CallbackResponseTransformer {
                     decAliasFNOnWill,
                     decAliasLNOnWill));
         }
+        if ("ADD_LAST".equals(decTitle)) {
+            updateWillMessage = true;
+            final String nextAlias = aliasHandle.getNext();
+            final String afterName = "AFTER_" + nextAlias;
+            final AliasName afterAlias = AliasName.builder()
+                    .solsAliasname(afterName)
+                    .build();
+            log.info("{}: Adding {} at end", caseRef, afterName);
+            aliasHandle.recordHistory(caseRef, "Adding " + afterName + " at end");
+            newSolsDecAliases.add(new CollectionMember<>(null, afterAlias));
+
+
+            final String currentDom = caseData.getDeceasedDomicileInEngWales();
+            if (YES.equals(currentDom)) {
+                log.info("{}: domE&W: {}, set No", caseRef, currentDom);
+                aliasHandle.recordHistory(caseRef, "domE&W: " + currentDom + ", set No");
+                builder.deceasedDomicileInEngWales(NO);
+            } else {
+                log.info("{}: domE&W: {}, set Yes", caseRef, currentDom);
+                aliasHandle.recordHistory(caseRef, "domE&W: " + currentDom + ", set Yes");
+                builder.deceasedDomicileInEngWales(YES);
+            }
+        }
 
         Set<String> seenAliasNames = new HashSet<>();
 
-        builder.solsDeceasedAliasNamesList(newSolsDecAliases.stream()
+        final List<CollectionMember<AliasName>> list = newSolsDecAliases.stream()
                 .filter(a -> seenAliasNames.add(a.getValue().getSolsAliasname()))
-                .toList());
+                .toList();
+        final StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        final String after = list.stream()
+                .map(v -> v.getValue().getSolsAliasname() + ", ")
+                .collect(
+                        () -> sb,
+                        StringBuilder::append,
+                        StringBuilder::append)
+                .append("]")
+                .toString();
+        log.info("{}: After collection:  {}", caseRef, after);
+        aliasHandle.recordHistory(caseRef, "After collection: " + after);
+
+        if (updateWillMessage) {
+            builder.boWillMessage(aliasHandle.getHistory(caseRef));
+        }
+
+        builder.solsDeceasedAliasNamesList(list);
+
     }
 
     List<CollectionMember<AliasName>> convertAliasOnWillToSolsDecAliasList(
