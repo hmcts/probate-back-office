@@ -123,6 +123,10 @@ def checkForEnableCWNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "cw-nightly").contains("cw-nightly")
 }
 
+def checkForWAEnableLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
+}
+
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
@@ -140,12 +144,16 @@ def archiveCoreCaseDataDefinitions(env) {
       shutterOption = "false"
     }
 
+    excludedFilenamePatterns="*-nonprod.json"
     if ("preview" == env) {
-      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      } else {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+      }
     }
-
-      else {
-      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption}"
+    else {
+      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
     }
   }
 
