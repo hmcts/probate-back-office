@@ -139,6 +139,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_R
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
+import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
@@ -1144,6 +1145,7 @@ class CallbackResponseTransformerTest {
         assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
         assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
         assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
+        assertNull(callbackResponse.getData().getApplicationSubmittedDate());
     }
 
     @Test
@@ -1233,7 +1235,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
                 SENTEMAIL, coversheetMock, USER_ID);
 
-        assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
+        assertNull(callbackResponse.getData().getDeceasedDateOfBirth());
     }
 
     @Test
@@ -1245,7 +1247,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
                 SENTEMAIL, coversheetMock, USER_ID);
 
-        assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
+        assertNull(callbackResponse.getData().getDeceasedDateOfDeath());
     }
 
     @Test
@@ -1268,6 +1270,22 @@ class CallbackResponseTransformerTest {
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
         assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
+    }
+
+    @Test
+    void shouldSetApplicationSubmittedDateForNoPaymentRequired() {
+        CaseData caseData = caseDataBuilder.build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.ZERO);
+
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+                SENTEMAIL, coversheetMock, USER_ID);
+        assertAll(
+                () -> assertEquals(BigDecimal.ZERO.toString(), callbackResponse.getData().getTotalFee()),
+                () -> assertEquals(CallbackResponseTransformer.dateTimeFormatter.format(LocalDate.now()),
+                callbackResponse.getData().getApplicationSubmittedDate())
+        );
     }
 
     @Test
@@ -5071,6 +5089,30 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
         assertEquals(NO, callbackResponse.getData().getInformationNeededByPostSwitch());
+    }
+
+    @Test
+    void shouldSetCaseSubmissionDateWithCoversheetAndSentEmail() {
+        Document sentEmail = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(SENT_EMAIL)
+                .documentFileName(SENT_EMAIL.getTemplateName())
+                .build();
+        Document coversheet = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(SOLICITOR_COVERSHEET)
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.setCaseSubmissionDate(sentEmail, coversheet, callbackRequestMock);
+
+        assertEquals(LocalDate.now().format(dateTimeFormatter),
+                callbackResponse.getData().getApplicationSubmittedDate());
+        assertEquals(documentLinkMock, callbackResponse.getData().getSolsCoversheetDocument());
+        verify(documentTransformer, times(1)).addDocument(callbackRequestMock, sentEmail,
+                false);
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

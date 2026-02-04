@@ -51,7 +51,6 @@ import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION
 @Slf4j
 public class PaymentsService {
 
-    private static final String SERVICE_REQUEST_REFERENCE_KEY = "service_request_reference";
     private static final String PAYMENT_SUMMARY = "Service request payment details updated on case";
     private static final String PAYMENT_COMMENT = "Service request payment status ";
     private static final String SRP_STATUS_PAID = "Paid";
@@ -83,14 +82,14 @@ public class PaymentsService {
         SecurityDTO securityDTO = getCaseworkerSecurityDTO();
         if (GRANT_OF_REPRESENTATION == ccdCaseType) {
             GrantOfRepresentationData caseData = buildGrantData(retrievedCaseDetails, response);
-            String paymentStatus = caseData.getPayments().get(caseData.getPayments().size() - 1)
+            String paymentStatus = caseData.getPayments().getLast()
                     .getValue().getStatus().getName();
             ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId, retrievedCaseDetails.getLastModified(),
                     caseData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
                     securityDTO, PAYMENT_COMMENT + paymentStatus, PAYMENT_SUMMARY);
         } else if (CAVEAT == ccdCaseType) {
             CaveatData caveatData = buildCaveatData(retrievedCaseDetails, response);
-            String paymentStatus = caveatData.getPayments().get(caveatData.getPayments().size() - 1)
+            String paymentStatus = caveatData.getPayments().getLast()
                     .getValue().getStatus().getName();
             ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId, retrievedCaseDetails.getLastModified(),
                     caveatData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
@@ -162,6 +161,7 @@ public class PaymentsService {
             }
             documentTransformer.addDocument(callbackRequest, sentEmail, false);
         }
+        final var applicationSubmittedDate = LocalDate.now();
 
         List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
                 caseDetails.getData().getPayments(), response);
@@ -178,6 +178,7 @@ public class PaymentsService {
                 .payments(allPayments)
                 .paymentTaken(getPaymentTakenStatus(caseDetails.getData().getPaymentTaken(),
                         response.getServiceRequestStatus()))
+                .applicationSubmittedDate(applicationSubmittedDate)
                 .build();
     }
 
