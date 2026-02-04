@@ -5,7 +5,7 @@ set -eu
 conversionFolder=$(dirname "$0")
 configFolder=${conversionFolder}/../configFiles
 shutterOption=${2:-false}
-extraExclusions=${3:-",*-nonprod.json"}
+extraExclusions=${3:-",*-wa.json"}
 
 if [ -z "$1" ]
   then
