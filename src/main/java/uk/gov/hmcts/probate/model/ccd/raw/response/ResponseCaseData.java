@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyAdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -141,6 +142,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     @JsonProperty(value = "executorsNotApplying")
     private final List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
+    private final List<CollectionMember<IntestacyAdditionalExecutor>> solsIntestacyExecutorList;
     private final SolsAddress deceasedAddress;
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
@@ -450,5 +452,4 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String halfBloodSiblingsOverEighteen;
     private final String halfBloodNiecesAndNephewsOverEighteen;
     private final String childAlive;
-    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
 }

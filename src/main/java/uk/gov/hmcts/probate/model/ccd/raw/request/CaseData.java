@@ -42,6 +42,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyAdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -226,14 +227,15 @@ public class CaseData extends CaseDataParent {
         ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
     private SolsAddress primaryApplicantAddress;
 
-    @NotBlank(groups = {ApplicationAdmonGroup.class,
-        ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
+    @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
     private String primaryApplicantEmailAddress;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{otherExecutorExistsIsNull}")
     private final String otherExecutorExists;
 
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
+
+    private List<CollectionMember<IntestacyAdditionalExecutor>> solsIntestacyExecutorList;
 
     private final String solsAdditionalInfo;
 
@@ -815,5 +817,9 @@ public class CaseData extends CaseDataParent {
 
     public void clearAdditionalExecutorList() {
         getSolsAdditionalExecutorList().clear();
+    }
+
+    public void clearAdditionalIntestacyExecutorList() {
+        getSolsIntestacyExecutorList().clear();
     }
 }
