@@ -14,7 +14,7 @@ export class BasePage {
 
   constructor(public readonly page: Page) {}
 
-  async logInfo(scenarioName: string, log: string, caseRef: string) {
+  async logInfo(scenarioName: string, log: string, caseRef?: string) {
     let ret = scenarioName;
     await this.page.waitForTimeout(testConfig.GetCaseRefFromUrlDelay);
     if (log) {

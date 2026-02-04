@@ -1,4 +1,3 @@
-import { ConfigUtils } from "@hmcts/playwright-common";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "./src/test/PlaywrightTest/.env" });

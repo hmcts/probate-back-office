@@ -23,7 +23,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
 
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
 
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
@@ -32,7 +31,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     // await I.waitForNavigationToComplete(commonConfig.continueButton, testConfig.CreateCaseContinueDelay);
 
     /* eslint-disable no-console */
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Initial application entry');
     await solCreateCasePage.applyForProbatePage1();
     await solCreateCasePage.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
@@ -45,11 +43,8 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
       linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
       goToNextStep: true});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Deceased details');
-    // @ts-ignore
     await solCreateCasePage.deceasedDetailsPage1();
-    // @ts-ignore
     await solCreateCasePage.deceasedDetailsPage2();
     await solCreateCasePage.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
     await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, 'IHT400');
@@ -64,7 +59,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
       linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
       goToNextStep: true});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Add application details');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2(true, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
@@ -81,7 +75,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
       linkUrl: '/trigger/solicitorReviewAndConfirm/solicitorReviewAndConfirmsolicitorReviewLegalStatementPage1',
       goToNextStep: true});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Confirm application');
     await solCreateCasePage.completeApplicationPage1();
     await solCreateCasePage.completeApplicationPage3();
@@ -98,12 +91,10 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
       linkText: 'Make payment',
       linkUrl: '#Service%20Request'});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Payment');
     await solCreateCasePage.makePaymentPage1(caseRef, serviceRequestTabConfig);
     await solCreateCasePage.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
     await solCreateCasePage.makePaymentPage2(caseRef);
-    // @ts-ignore
     await solCreateCasePage.viewPaymentStatus(testInfo, caseRef);
 
     await caseProgressPage.caseProgressCheckCaseProgressTab({
@@ -116,7 +107,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.stopCase);
     await cwEventActionsPage.caseProgressStopEscalateIssueAddCaseStoppedReason();
@@ -126,7 +116,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, 'Check progress tab for Case stopped', caseRef);
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await caseProgressPage.caseProgressStopEscalateIssueStoppedTabCheck();
     await signInPage.signOut();
@@ -135,7 +124,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.registrarEscalation);
     // await I.caseProgressCaseworkerChooseNextStepAndGo('Escalate to registrar', caseRef);
@@ -146,7 +134,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, 'Check progress tab for Case escalated', caseRef);
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await caseProgressPage.caseProgressStopEscalateIssueEscalatedTabCheck();
     await signInPage.signOut();
@@ -154,7 +141,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, 'Stop case', caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.stopCase);
     await cwEventActionsPage.caseProgressStopEscalateIssueCaseStopAgainReason();
@@ -164,7 +150,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, 'Check progress tab for Case stopped', caseRef);
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await caseProgressPage.caseProgressStopEscalateIssueStoppedTabCheck();
     await signInPage.signOut();
@@ -174,7 +159,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.resolveStop);
     await cwEventActionsPage.chooseResolveStop(resolveStop);
@@ -184,7 +168,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, 'Check progress tab for Resolve stop', caseRef);
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await caseProgressPage.caseProgressCheckCaseProgressTab({
       numCompleted: 5,
@@ -197,7 +180,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.selectForQa);
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
@@ -206,7 +188,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, 'Check progress tab for Select for QA', caseRef);
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await caseProgressPage.caseProgressCheckCaseProgressTab({
       numCompleted: 7,
@@ -218,7 +199,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.generateGrantPreview);
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
@@ -227,7 +207,6 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, 'Check progress tab for Generate grant preview', caseRef);
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await caseProgressPage.caseProgressCheckCaseProgressTab({
       numCompleted: 7,
@@ -239,18 +218,15 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.findMatchesIssueGrant);
     await cwEventActionsPage.selectCaseMatches(caseRef, nextStepName);
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
     await signInPage.signOut();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Check progress tab for Case Matching (Issue grant)');
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await caseProgressPage.caseProgressCheckCaseProgressTab({
       numCompleted: 8,
@@ -263,18 +239,15 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.issueGrant);
     await cwEventActionsPage.issueGrant(caseRef);
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
     await signInPage.signOut();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Check progress tab for Issue grant');
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
 
     await basePage.seeTabDetailsBilingual(caseRef, documentUploadSolTabConfigBilingual, caseProgressConfig);

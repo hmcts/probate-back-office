@@ -15,7 +15,6 @@ test.describe("01 BO Case Progress E2E - application stopped: complete", () => {
     }) => {
     const scenarioName ='Case Progress - application stopped path';
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
 
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
@@ -24,7 +23,6 @@ test.describe("01 BO Case Progress E2E - application stopped: complete", () => {
     // await I.waitForNavigationToComplete(commonConfig.continueButton, testConfig.CreateCaseContinueDelay);
 
     /* eslint-disable no-console */
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Initial application entry');
     await solCreateCasePage.applyForProbatePage1();
     await solCreateCasePage.applyForProbatePage2();
@@ -37,11 +35,8 @@ test.describe("01 BO Case Progress E2E - application stopped: complete", () => {
       linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
       goToNextStep: true});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Deceased details');
-    // @ts-ignore
     await solCreateCasePage.deceasedDetailsPage1();
-    // @ts-ignore
     await solCreateCasePage.deceasedDetailsPage2();
     await solCreateCasePage.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
     await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, 'IHT400');
@@ -56,7 +51,6 @@ test.describe("01 BO Case Progress E2E - application stopped: complete", () => {
       linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
       goToNextStep: true});
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Add application details');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2NoExecutors();
@@ -66,16 +60,13 @@ test.describe("01 BO Case Progress E2E - application stopped: complete", () => {
     await solCreateCasePage.grantOfProbatePage6();
     await solCreateCasePage.cyaPage();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'App stopped details');
     await caseProgressPage.caseProgressAppStoppedDetails();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'App stopped tab check');
     await caseProgressPage.caseProgressAppStoppedTabCheck();
     await signInPage.signOut();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, '01 BO Case Progress E2E - application stopped: complete');
   });
 });

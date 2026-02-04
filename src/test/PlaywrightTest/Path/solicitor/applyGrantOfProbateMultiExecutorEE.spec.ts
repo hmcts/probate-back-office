@@ -31,7 +31,6 @@ test.describe("Solicitor - Apply Grant of probate Excepted Estates", () => {
     const scenarioName ='Solicitor - Apply Grant of probate Multi Executor for Excepted Estates';
 
     const willType = 'WillLeft';
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
     await signInPage.authenticateWithIdamIfAvailable(true);
 
@@ -55,9 +54,7 @@ test.describe("Solicitor - Apply Grant of probate Excepted Estates", () => {
     endState = 'Grant of probate created';
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.deceasedDetailsPage1('EE');
-    // @ts-ignore
     await solCreateCasePage.deceasedDetailsPage2('EE', 'No');
-    // @ts-ignore
     await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
     await solCreateCasePage.deceasedDetailsPage3();
     await solCreateCasePage.deceasedDetailsPage4();
@@ -106,12 +103,10 @@ test.describe("Solicitor - Apply Grant of probate Excepted Estates", () => {
     await solCreateCasePage.completeApplicationPage7();
     await solCreateCasePage.completeApplicationPage8();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Payment');
     await solCreateCasePage.makePaymentPage1(caseRef, serviceRequestTabConfig);
     await solCreateCasePage.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
     await solCreateCasePage.makePaymentPage2(caseRef);
-    // @ts-ignore
     await solCreateCasePage.viewPaymentStatus(testInfo, caseRef);
 
     await solCreateCasePage.seeEndState(endState);

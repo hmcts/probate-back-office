@@ -26,13 +26,11 @@ test.describe("Solicitor - Apply Grant of probate Admon Will (Will left annexed)
     const willType = 'WillLeftAnnexed';
     const updateAddressManually = true;
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
     await signInPage.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Apply for probate';
     let endState = 'Application created (deceased details)';
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'New case');
     await createCasePage.selectNewCase();
     await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
@@ -52,9 +50,7 @@ test.describe("Solicitor - Apply Grant of probate Admon Will (Will left annexed)
 
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
-    // @ts-ignore
     await solCreateCasePage.deceasedDetailsPage1();
-    // @ts-ignore
     await solCreateCasePage.deceasedDetailsPage2();
     await solCreateCasePage.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
     await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, 'IHT400');

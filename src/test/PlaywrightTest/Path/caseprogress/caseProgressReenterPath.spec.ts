@@ -180,7 +180,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.selectForQa);
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
@@ -189,7 +188,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
     await basePage.logInfo(scenarioName, 'Check progress tab for Select for QA', caseRef);
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await caseProgressPage.caseProgressCheckCaseProgressTab({
       numCompleted: 7,
@@ -201,7 +199,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.generateGrantPreview);
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
@@ -210,7 +207,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
     await basePage.logInfo(scenarioName, 'Check progress tab for Generate grant preview', caseRef);
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await caseProgressPage.caseProgressCheckCaseProgressTab({
       numCompleted: 7,
@@ -222,7 +218,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.findMatchesIssueGrant);
     await cwEventActionsPage.selectCaseMatches(caseRef, nextStepName);
@@ -233,7 +228,6 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
     await basePage.logInfo(scenarioName, 'Check progress tab for Case Matching (Issue grant)');
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await caseProgressPage.caseProgressCheckCaseProgressTab({
       numCompleted: 8,
@@ -246,18 +240,15 @@ test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepConfig.issueGrant);
     await cwEventActionsPage.issueGrant(caseRef);
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
     await signInPage.signOut();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Check progress tab for Issue grant');
     // log back in as solicitor
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    // @ts-ignore
     await solCreateCasePage.navigateToCase(caseRef);
 
     await basePage.seeTabDetailsBilingual(caseRef, documentUploadSolTabConfigBilingual, caseProgressConfig);

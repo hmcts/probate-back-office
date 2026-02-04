@@ -33,13 +33,11 @@ test.describe("Solicitor - Apply Grant of probate Admon Will Excepted Estates", 
     const updateAddressManually = true;
     const willType = 'WillLeftAnnexed';
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
     await signInPage.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Apply for probate';
     let endState = 'Application created (deceased details)';
-    // @ts-ignore
     await basePage.logInfo(scenarioName, nextStepName);
     await createCasePage.selectNewCase();
     await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
@@ -68,7 +66,6 @@ test.describe("Solicitor - Apply Grant of probate Admon Will Excepted Estates", 
 
     await solCreateCasePage.seeEndState(endState);
     await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
-    // @ts-ignore
     await basePage.seeCaseDetails(testInfo, caseRef, deceasedTabConfig, deceasedDetailsConfig);
     await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabDeceasedDtlsConfig, deceasedDetailsConfig);
     await basePage.seeCaseDetails(testInfo, caseRef, iHTTabConfig, deceasedDetailsConfig);
@@ -108,12 +105,10 @@ test.describe("Solicitor - Apply Grant of probate Admon Will Excepted Estates", 
     await solCreateCasePage.completeApplicationPage7();
     await solCreateCasePage.completeApplicationPage8();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Payment');
     await solCreateCasePage.makePaymentPage1(caseRef, serviceRequestTabConfig);
     await solCreateCasePage.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
     await solCreateCasePage.makePaymentPage2(caseRef);
-    // @ts-ignore
     await solCreateCasePage.viewPaymentStatus(testInfo, caseRef);
 
     await solCreateCasePage.seeEndState(endState);

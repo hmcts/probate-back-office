@@ -99,7 +99,6 @@ test.describe("Solicitor - Apply NOC Caveat", () => {
 
     await signInPage.signOut();
 
-    // @ts-ignore
     await basePage.logInfo(scenarioName, 'Login as PP user 2 to perform NoC');
 
     let env = 'AAT';

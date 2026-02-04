@@ -1,5 +1,4 @@
 import { expect, Page, TestInfo } from "@playwright/test";
-// @ts-ignore
 import dateFns from "date-fns";
 import { testConfig } from "../../Configs/config.ts";
 import postPaymentReviewTabConfig from "../caseDetails/solicitorApplyProbate/postPaymentReviewTabConfig.json" with { type: "json" };
@@ -531,7 +530,7 @@ export class SolCreateCasePage extends BasePage {
       // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     }
   }
-  async viewPaymentStatus(testInfo: TestInfo, caseRef: string, appType: string) {
+  async viewPaymentStatus(testInfo?: TestInfo, caseRef?: string, appType?: string) {
     // await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(
       this.page.getByText(makePaymentConfig.paymentStatusConfirmText)
@@ -546,6 +545,7 @@ export class SolCreateCasePage extends BasePage {
       this.page.getByText(makePaymentConfig.payNowLinkText)
     ).toBeHidden();
     await this.postPaymentReviewDetails(caseRef);
+
     for (let i = 0; i <= 6; i++) {
       await expect(this.eventHistoryTab).toBeEnabled();
       await expect(this.page.getByText(caseRef).first()).toBeVisible();
@@ -648,7 +648,7 @@ export class SolCreateCasePage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
-  async deceasedDetailsPage1(deathTypeDate) {
+  async deceasedDetailsPage1(deathTypeDate?: string) {
     await expect(this.deceasedForenameLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.deceasedForenameLocator.fill(deceasedDetailsConfig.page1_forenames);
@@ -683,7 +683,7 @@ export class SolCreateCasePage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
-  async deceasedDetailsPage2(applicationType, iHTFormsCompleted, whichIHTFormsCompleted) {
+  async deceasedDetailsPage2(applicationType?: string, iHTFormsCompleted?: string, whichIHTFormsCompleted?: string) {
     await this.runAccessibilityTest();
 
     if (applicationType === 'EE') {
@@ -727,7 +727,7 @@ export class SolCreateCasePage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
-  async provideIhtValues(ihtGrossValue, ihtNetValue, whichIHTFormsCompleted) {
+  async provideIhtValues(ihtGrossValue?: string, ihtNetValue?: string, whichIHTFormsCompleted?: string) {
     await this.runAccessibilityTest();
     await expect(this.ihtGrossValueLocator).toBeVisible();
     await this.ihtGrossValueLocator.fill(ihtGrossValue);
@@ -1202,16 +1202,18 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.getByText(caseRef)).not.toBeVisible();
   }
 
-  async navigateToCase(caseRef, useWaitInUrl = true, caseType) {
+  async navigateToCase(caseRef: string, useWaitInUrl?: boolean, caseType?: string) {
     const scenarioName = 'Find cases';
-    // @ts-ignore
     await this.logInfo(scenarioName, 'Navigating to case');
     const caseRefNoDashes = caseRef.replaceAll('-', '');
     const caveatUrl = `${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/Caveat/${caseRefNoDashes}`;
     const gorUrl = `${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`;
     const url = caseType === 'Caveat' ? caveatUrl : gorUrl;
     await this.page.goto(url);
-    await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+    if (useWaitInUrl) {
+      await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+    }
+
     await this.rejectCookies();
   }
 

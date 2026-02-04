@@ -15,7 +15,6 @@ test.describe("Solicitor - Share A Case", () => {
     const isSolicitorApplyingExecutor = true;
     await signInPage.authenticateUserShareCase(true);
     const nextStepName = 'Deceased details';
-    // @ts-ignore
     await basePage.logInfo(scenarioName, nextStepName);
     await createCasePage.selectNewCase();
     await createCasePage.selectCaseTypeOptions(

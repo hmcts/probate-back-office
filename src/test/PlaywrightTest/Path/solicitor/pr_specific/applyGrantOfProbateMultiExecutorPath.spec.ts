@@ -51,12 +51,9 @@ test.describe("Solicitor - Apply Grant of probate", () => {
       nextStepName = 'Deceased details';
       endState = 'Grant of probate created';
       await cwEventActionsPage.chooseNextStep(nextStepName);
-      // @ts-ignore
-        await solCreateCasePage.deceasedDetailsPage1();
-      // @ts-ignore
-        await solCreateCasePage.deceasedDetailsPage2('MultiExec');
-      // @ts-ignore
-        await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
+      await solCreateCasePage.deceasedDetailsPage1();
+      await solCreateCasePage.deceasedDetailsPage2('MultiExec');
+      await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
       await solCreateCasePage.deceasedDetailsPage3();
       await solCreateCasePage.deceasedDetailsPage4();
       await solCreateCasePage.cyaPage();
@@ -107,8 +104,7 @@ test.describe("Solicitor - Apply Grant of probate", () => {
       await solCreateCasePage.makePaymentPage1(caseRef, serviceRequestTabConfig);
       await solCreateCasePage.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
       await solCreateCasePage.makePaymentPage2(caseRef);
-      // @ts-ignore
-        await solCreateCasePage.viewPaymentStatus(testInfo, caseRef);
+      await solCreateCasePage.viewPaymentStatus(testInfo, caseRef);
 
       await solCreateCasePage.seeEndState(endState);
       await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);

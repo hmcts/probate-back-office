@@ -146,7 +146,7 @@ export class CaseProgressPage extends SignInPage {
     let attempts = 0;
     while (this.page.url() === currentUrl && attempts < 50) {
       await this.page.reload();
-      await this.page.waitForLoadState('networkidle');
+      await this.page.waitForLoadState('load');
       await this.caseProgressSelectPenultimateNextStep();
       await this.page.waitForTimeout(1000);
       await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
