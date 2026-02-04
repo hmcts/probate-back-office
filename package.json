@@ -20,7 +20,7 @@
     "test:fullfunctional": "E2E_TEST_PATH='./paths/**/*.js' ./bin/run-e2e-tests.sh",
     "test:functional-nightly": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --project=chromium --project=webkit --project=firefox",
     "test:functional-Edge": "yarn playwright install msedge && yarn playwright test --project=edge ",
-    "test:functional-chromium": "yarn playwright install chrome  && yarn playwright test  --project=chrome ",
+    "test:functional-chromium": "yarn playwright install chrome  && yarn playwright test --project=chromium ",
     "test:functional-webkit": "yarn playwright install webkit && yarn playwright test  --project=webkit ",
     "test:functional-firefox": "yarn playwright install firefox  && yarn playwright test --project=firefox ",
     "test:functional-ipadPro11": " yarn playwright install webkit  && yarn playwright test --project=iPadPro11 ",
