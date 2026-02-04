@@ -127,17 +127,17 @@ def checkForWAEnableLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
 }
 
-def archiveCoreCaseDataDefinitions(env) {
+def archiveCoreCaseDataDefinitions(environment) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
-    if("preview" == env){
+    if("preview" == environment){
       shutterOption = "false"
-    } else if("demo" == env){
+    } else if("demo" == environment){
       shutterOption = "false"
-    } else if("aat" == env){
+    } else if("aat" == environment){
       //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
       shutterOption = "false"
-    } else if("prod" == env){
+    } else if("prod" == environment){
       //WARNING, CHANGING THIS WILL SHUTTER PROD
       shutterOption = "false"
     } else {
@@ -145,7 +145,7 @@ def archiveCoreCaseDataDefinitions(env) {
     }
 
     excludedFilenamePatterns="*-wa.json"
-    if ("preview" == env) {
+    if ("preview" == environment) {
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
       } else {
@@ -158,7 +158,7 @@ def archiveCoreCaseDataDefinitions(env) {
   }
 
   dir("${WORKSPACE}/build") {
-    if("preview" == env){
+    if("preview" == environment){
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Backoffice.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Caveat.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Legacy_Cases.xlsx"
@@ -166,12 +166,12 @@ def archiveCoreCaseDataDefinitions(env) {
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Standing_Search.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Will_Lodgement.xlsx"
     } else {
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Backoffice.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Caveat.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Cases.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Search.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Standing_Search.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Will_Lodgement.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Backoffice.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Caveat.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Legacy_Cases.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Legacy_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Standing_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Will_Lodgement.xlsx"
     }
   }
   }
