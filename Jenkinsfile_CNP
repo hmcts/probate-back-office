@@ -144,7 +144,7 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
       shutterOption = "false"
     }
 
-    excludedFilenamePatterns="*-nonprod.json"
+    excludedFilenamePatterns="*-wa.json"
     if ("preview" == env) {
       if (checkForWAEnableLabel(branch_name)) {
         sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
