@@ -127,17 +127,17 @@ def checkForWAEnableLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
 }
 
-def archiveCoreCaseDataDefinitions(environment) {
+def archiveCoreCaseDataDefinitions(env, branch_name) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
-    if("preview" == environment){
+    if("preview" == env){
       shutterOption = "false"
-    } else if("demo" == environment){
+    } else if("demo" == env){
       shutterOption = "false"
-    } else if("aat" == environment){
+    } else if("aat" == env){
       //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
       shutterOption = "false"
-    } else if("prod" == environment){
+    } else if("prod" == env){
       //WARNING, CHANGING THIS WILL SHUTTER PROD
       shutterOption = "false"
     } else {
@@ -145,8 +145,8 @@ def archiveCoreCaseDataDefinitions(environment) {
     }
 
     excludedFilenamePatterns="*-wa.json"
-    if ("preview" == environment) {
-      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
+    if ("preview" == env) {
+      if (checkForWAEnableLabel(branch_name)) {
         sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
       } else {
         sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
@@ -158,7 +158,7 @@ def archiveCoreCaseDataDefinitions(environment) {
   }
 
   dir("${WORKSPACE}/build") {
-    if("preview" == environment){
+    if("preview" == env){
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Backoffice.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Caveat.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Legacy_Cases.xlsx"
@@ -166,12 +166,12 @@ def archiveCoreCaseDataDefinitions(environment) {
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Standing_Search.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Will_Lodgement.xlsx"
     } else {
-      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Backoffice.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Caveat.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Legacy_Cases.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Legacy_Search.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Standing_Search.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${environment}/CCD_Probate_Will_Lodgement.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Backoffice.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Caveat.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Cases.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Standing_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Will_Lodgement.xlsx"
     }
   }
   }
@@ -299,7 +299,7 @@ withPipeline("java", product, component) {
       echo "CCD definition upload for environment: ${env.ENV}"
       withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
         withTeamSecrets(pipelineConf, env.ENV) {
-          archiveCoreCaseDataDefinitions(env.ENV)
+          archiveCoreCaseDataDefinitions(env.ENV, env.BRANCH_NAME)
           uploadCoreCaseDataDefinitions(env.ENV)
         }
       }
@@ -338,7 +338,7 @@ withPipeline("java", product, component) {
       ./bin/add-ccd-roles.sh
     """
     archiveCoreCaseDataDefinitions('preview')
-    uploadCoreCaseDataDefinitions('preview')
+    uploadCoreCaseDataDefinitions('preview', env.BRANCH_NAME)
 
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
     env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
