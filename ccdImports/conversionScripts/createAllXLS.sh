@@ -13,6 +13,13 @@ if [ -z "$1" ]
     exit 1
 fi
 
+# need flag here for probate WA setup
+# Read in env_variables_all.txt
+if [ ${PROBATE_WA_PREVIEW_SETUP} == true ]; then
+  echo Creating preview WA setup
+  extraExclusions=""
+fi
+
 if [ ${shutterOption} == true ]; then
   echo Creating shuttered CCD Definition
   excludedFilenamePatterns="-e *-unshutter.json$extraExclusions"
