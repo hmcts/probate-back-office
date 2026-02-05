@@ -340,8 +340,8 @@ withPipeline("java", product, component) {
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
       ./bin/add-ccd-roles.sh
     """
-    archiveCoreCaseDataDefinitions('preview')
-    uploadCoreCaseDataDefinitions('preview', env.BRANCH_NAME)
+    archiveCoreCaseDataDefinitions('preview', env.BRANCH_NAME)
+    uploadCoreCaseDataDefinitions('preview')
 
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
     env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
