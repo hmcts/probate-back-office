@@ -7,6 +7,11 @@ configFolder=${conversionFolder}/../configFiles
 shutterOption=${2:-false}
 extraExclusions=${3:-",*-wa.json"}
 
+
+if [ $WA_ENABLED == true ]; then
+  extraExclusions=""
+fi
+
 if [ -z "$1" ]
   then
     echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
