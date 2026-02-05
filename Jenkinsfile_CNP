@@ -127,6 +127,9 @@ def checkForWAEnableLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
 }
 
+// check github label for Probate WA preview yadda yadda
+// set PROBATE_WA_PREVIEW_SETUP to appropriate value - can then read in createALLXLS as required
+
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
