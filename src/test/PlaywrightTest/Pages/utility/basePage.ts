@@ -280,7 +280,7 @@ export class BasePage {
     await expect(this.page.getByRole("heading", { name: caseRef })).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
-    // await this.page.waitForTimeout(delay);
+    await this.page.waitForTimeout(delay);
     await this.runAccessibilityTest();
     // await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
     // await I.clickTab(tabConfigFile.tabName);
