@@ -11,12 +11,12 @@ envExcludedFilenamePatterns="${5:-}"
 
 if [ -z "$1" ]
   then
-    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL"
+    echo "Usage: ./ccdImports/conversionScripts/createAllXLS-pipeline.sh CCD_DEF_CASE_SERVICE_BASE_URL"
     exit 1
 fi
 if [ -z "$4" ]
   then
-    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
+    echo "Usage: ./ccdImports/conversionScripts/createAllXLS-pipeline.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
     exit 1
 fi
 
