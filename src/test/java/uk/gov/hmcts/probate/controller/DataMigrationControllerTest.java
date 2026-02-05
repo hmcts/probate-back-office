@@ -291,6 +291,12 @@ class DataMigrationControllerTest {
         when(caveatData.getMigrationCallbackMetadata())
                 .thenReturn(migrationMetadata);
 
+        // Mock getCaseDetailsBefore and its getState
+        final CaveatDetails caveatDetailsBefore = mock();
+        when(caveatCallbackRequest.getCaseDetailsBefore()).thenReturn(caveatDetailsBefore);
+        when(caveatDetailsBefore.getState()).thenReturn("state");
+        when(caveatDetails.getState()).thenReturn("state");
+
         controller.caveatDataMigration(
                 caveatCallbackRequest,
                 request,
@@ -401,6 +407,12 @@ class DataMigrationControllerTest {
         final CaveatCallbackRequest migratedCaveatCallbackRequest = mock();
         when(caveatMigrationHandler.migrate(eq(caveatCallbackRequest), any()))
                 .thenReturn(migratedCaveatCallbackRequest);
+
+        // Mock getCaseDetailsBefore and its getState
+        final CaveatDetails caveatDetailsBefore = mock();
+        when(caveatCallbackRequest.getCaseDetailsBefore()).thenReturn(caveatDetailsBefore);
+        when(caveatDetailsBefore.getState()).thenReturn("state");
+        when(caveatDetails.getState()).thenReturn("state");
 
         controller.caveatDataMigration(caveatCallbackRequest, request, migrationOperation);
 
