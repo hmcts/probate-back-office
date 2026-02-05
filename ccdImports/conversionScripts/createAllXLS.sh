@@ -5,8 +5,7 @@ set -eu
 conversionFolder=$(dirname "$0")
 configFolder=${conversionFolder}/../configFiles
 shutterOption=${2:-false}
-extraExclusions=${3:-",*-wa.json"}
-
+extraExclusions=${3:-",*-nonprod.json"}
 
 if [ $WA_ENABLED == true ]; then
   extraExclusions=""
