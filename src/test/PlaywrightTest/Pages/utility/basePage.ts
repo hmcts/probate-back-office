@@ -16,7 +16,7 @@ export class BasePage {
 
   async logInfo(scenarioName: string, log: string, caseRef?: string) {
     let ret = scenarioName;
-    await this.page.waitForTimeout(testConfig.GetCaseRefFromUrlDelay);
+    // await this.page.waitForTimeout(testConfig.GetCaseRefFromUrlDelay);
     if (log) {
       ret = ret + " : " + log;
     }
@@ -39,7 +39,7 @@ export class BasePage {
           // just reject additional cookies
           await expect(this.rejectLocator).toBeEnabled();
           await this.rejectLocator.click();
-          await this.page.waitForTimeout(testConfig.RejectCookieDelay);
+          // await this.page.waitForTimeout(testConfig.RejectCookieDelay);
         }
       } catch (e) {
         console.error(`error trying to close cookie banner: ${e.message}`);
@@ -48,7 +48,7 @@ export class BasePage {
   }
 
   async getCaseRefFromUrl() {
-    await this.page.waitForTimeout(testConfig.GetCaseRefFromUrlDelay);
+    // await this.page.waitForTimeout(testConfig.GetCaseRefFromUrlDelay);
     const url = this.page.url();
     return url
       .replace("#Event%20History", "")
@@ -78,7 +78,7 @@ export class BasePage {
     await expect(this.page.locator(buttonLocator)).toBeVisible();
     await expect(this.page.locator(buttonLocator)).toBeEnabled();
     await this.page.locator(buttonLocator).click({ noWaitAfter: true });
-    await this.page.waitForTimeout(1000);
+    // await this.page.waitForTimeout(1000);
   }
 
   async waitForGoNavigationToComplete() {
@@ -280,7 +280,7 @@ export class BasePage {
     await expect(this.page.getByRole("heading", { name: caseRef })).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
-    await this.page.waitForTimeout(delay);
+    // await this.page.waitForTimeout(delay);
     await this.runAccessibilityTest();
     // await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
     // await I.clickTab(tabConfigFile.tabName);

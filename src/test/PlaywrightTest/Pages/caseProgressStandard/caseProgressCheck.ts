@@ -3,7 +3,6 @@ import {SignInPage} from "../IDAM/signIn.ts";
 import assert from "assert";
 import moment from "moment";
 import commonConfig from "../common/commonConfig.json" with { type: "json" };
-import {testConfig} from "../../Configs/config.ts";
 import caseProgressConfig from "../caseProgressAppStopped/caseProgressConfig.json" with { type: "json" };
 
 export class CaseProgressPage extends SignInPage {
@@ -15,7 +14,7 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressCheckCaseProgressTab(opts) {
-    await this.page.waitForTimeout(testConfig.ManualDelayLong);
+    // await this.page.waitForTimeout(testConfig.ManualDelayLong);
     await expect(this.page.getByLabel('Case Progress', { exact: true })).toBeVisible();
     await this.page.getByRole("tab", { name: 'Case Progress' }).focus();
     await this.page.getByRole("tab", { name: 'Case Progress' }).click();
@@ -147,14 +146,14 @@ export class CaseProgressPage extends SignInPage {
       await this.page.reload();
       await this.page.waitForLoadState('load');
       await this.caseProgressSelectPenultimateNextStep();
-      await this.page.waitForTimeout(1000);
+      // await this.page.waitForTimeout(1000);
       await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
-      await this.page.waitForTimeout(3000);
+      // await this.page.waitForTimeout(3000);
       attempts++;
     }
 
     // Additional settle time
-    await this.page.waitForTimeout(2000);
+    // await this.page.waitForTimeout(2000);
   }
 
   async caseProgressResumeDeceasedDetails() {

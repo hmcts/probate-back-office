@@ -1,5 +1,4 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { testConfig } from '../../Configs/config.ts';
 import caseProgressConfig from '../caseProgressStandard/caseProgressConfig.json' with { type: 'json' };
 import checkYourAnswersConfig from '../checkYourAnswers/checkYourAnswersConfig.json' with { type: 'json' };
 import commonConfig from '../common/commonConfig.json' with { type: 'json' };
@@ -63,31 +62,31 @@ export class CreateCasePage extends BasePage {
     }
 
     async selectNewCase() {
-        await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await expect(this.createCasePageLocator).toBeVisible();
         await this.rejectCookies();
         await expect(this.createCaseLocator).toBeEnabled();
-        await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await this.createCaseLocator.click();
     }
 
     async selectCaseTypeOptions(caseType: string, event: string) {
-        await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await expect(this.createCaseLocator).toBeVisible();
         await expect(this.jurisdictionLocator).toBeEnabled();
         await this.jurisdictionLocator.selectOption({value: newCaseConfig.jurisdictionValue});
-        await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await expect(this.caseTypeLocator).toBeEnabled();
         await this.caseTypeLocator.selectOption({value: caseType});
         await expect(this.page.getByRole('option', {name: caseType}).first()).toBeHidden();
-        await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await expect(this.eventLocator).toBeEnabled();
         await this.eventLocator.selectOption({label: event});
         await expect(this.page.getByRole('option', {name: event})).toBeHidden();
-        await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await expect(this.startButtonLocator).toBeEnabled();
         await this.startButtonLocator.click();
-        await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
     }
 
     async enterCaveatPage1(crud: string) {
@@ -133,9 +132,9 @@ export class CreateCasePage extends BasePage {
 
                 if (propName.includes('page2_alias_')) {
                     await addNewButtonLocator.click();
-                    if (!testConfig.TestAutoDelayEnabled) {
+                    /*if (!testConfig.TestAutoDelayEnabled) {
                         await this.page.waitForTimeout(testConfig.ManualDelayShort); // implicit wait needed here
-                    }
+                    }*/
                     await expect(this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`)).toBeEnabled();
                     await this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`).fill(createCaveatConfig[propName]);
                     idx += 1;
@@ -144,9 +143,9 @@ export class CreateCasePage extends BasePage {
 
             await this.postcodeLinkLocator.focus();
             await this.postcodeLinkLocator.click();
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 await this.page.waitForTimeout(testConfig.ManualDelayShort); // implicit wait needed here
-            }
+            }*/
             await this.page.locator('#deceasedAddress__detailAddressLine1').fill(createCaveatConfig.address_line1);
             await this.page.locator('#deceasedAddress__detailAddressLine2').fill(createCaveatConfig.address_line2);
             await this.page.locator('#deceasedAddress__detailAddressLine3').fill(createCaveatConfig.address_line3);
@@ -242,11 +241,11 @@ export class CreateCasePage extends BasePage {
             await this.page.locator('#primaryApplicantEmailAddress')
                 .fill(createConfig.page1_email);
 
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
-            }
+            }*/
 
             await this.pcLocator.click();
             await expect(this.page.locator('#primaryApplicantAddress__detailAddressLine1')).toBeVisible();
@@ -522,7 +521,7 @@ export class CreateCasePage extends BasePage {
         await this.page.locator('#field-trigger-summary').fill(eventSummaryPrefix + eventSummaryConfig.summary);
         await this.page.locator('#field-trigger-description').fill(eventSummaryPrefix + eventSummaryConfig.comment);
 
-        await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await this.waitForNavigationToComplete(commonConfig.submitButton);
     }
 
@@ -538,7 +537,7 @@ export class CreateCasePage extends BasePage {
 
     async enterWillLodgementPage1(crud: string) {
         if (crud === 'create') {
-            await this.page.waitForTimeout(testConfig.WaitForTextTimeout);
+            // await this.page.waitForTimeout(testConfig.WaitForTextTimeout);
             await expect(this.applicationTypeLocator).toBeEnabled();
             await this.applicationTypeLocator.selectOption({label: createWillLodgementConfig.page1_list1_application_type});
             await expect(this.registryLocator).toBeVisible();
@@ -565,7 +564,7 @@ export class CreateCasePage extends BasePage {
         }
 
         if (crud === 'update') {
-            await this.page.waitForTimeout(testConfig.WaitForTextTimeout);
+            // await this.page.waitForTimeout(testConfig.WaitForTextTimeout);
             await expect(this.registryLocator).toBeVisible();
             await expect(this.registryLocator).toBeEnabled();
             await this.registryLocator.selectOption({label: createWillLodgementConfig.page1_list2_registry_location_update});
@@ -585,17 +584,17 @@ export class CreateCasePage extends BasePage {
         if (crud === 'create') {
             await expect(this.createWillWaitForTextLocator).toBeVisible();
 
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
-            }
+            }*/
             await this.page.locator('#deceasedForenames').fill(createWillLodgementConfig.page2_forenames + '_' + unique_deceased_user);
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
-            }
+            }*/
 
             await this.page.locator('#deceasedSurname').fill(createWillLodgementConfig.page2_surname + '_' + unique_deceased_user);
             await this.genderLocator.selectOption({label: createWillLodgementConfig.page2_gender});
@@ -606,7 +605,7 @@ export class CreateCasePage extends BasePage {
             await this.page.locator('#deceasedDateOfDeath-month').fill(createWillLodgementConfig.page2_dateOfDeath_month);
             await this.page.locator('#deceasedDateOfDeath-year').fill(createWillLodgementConfig.page2_dateOfDeath_year);
             await this.page.locator('#deceasedTypeOfDeath').selectOption({label: createWillLodgementConfig.page2_typeOfDeath});
-            await this.page.waitForTimeout(testConfig.ManualDelayShort);
+            // await this.page.waitForTimeout(testConfig.ManualDelayShort);
             await expect(this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementConfig.page2_hasAliasYes}`)).toBeEnabled();
             await this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementConfig.page2_hasAliasYes}`).click();
             await this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementConfig.page2_hasAliasYes}`).click();
@@ -619,23 +618,23 @@ export class CreateCasePage extends BasePage {
                     await this.page.locator(createWillLodgementConfig.page2_addAliasButton)
                         .first()
                         .click();
-                    await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+                    // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
                     const deceasedNameListlocator = this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`);
-                    if (!testConfig.TestAutoDelayEnabled) {
+                    /*if (!testConfig.TestAutoDelayEnabled) {
                         // only valid for local dev where we need it to run as fast as poss to minimise
                         // lost dev time
                         await this.page.waitForTimeout(testConfig.ManualDelayShort);
-                    }
+                    }*/
                     await expect(deceasedNameListlocator).toBeVisible();
                     await deceasedNameListlocator.fill(createWillLodgementConfig[propName]);
                     idx += 1;
                 }
             }
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
-            }
+            }*/
             await this.page.locator('#deceasedFullAliasNameList_0_FullAliasName').fill(createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user);
 
             await this.pcLocator2.click();
@@ -652,24 +651,24 @@ export class CreateCasePage extends BasePage {
         if (crud === 'update') {
             await expect(this.amendWillWaitForTextLocator).toBeVisible();
 
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
-            }
+            }*/
             await this.page.locator('#deceasedForenames').fill(createWillLodgementConfig.page2_forenames + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-            }
+            }*/
 
             await this.page.locator('#deceasedSurname').fill(createWillLodgementConfig.page2_surname + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-            }
+            }*/
             await this.page.locator('#deceasedFullAliasNameList_0_FullAliasName').fill(createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
             await this.page.locator('#deceasedDateOfDeath-day').fill(createWillLodgementConfig.page2_dateOfDeath_day_update);
             await this.page.locator('#deceasedDateOfDeath-month').fill(createWillLodgementConfig.page2_dateOfDeath_month_update);
@@ -711,18 +710,18 @@ export class CreateCasePage extends BasePage {
         if (crud === 'create') {
             await expect(this.page.getByText(createWillLodgementConfig.page3_waitForText)).toBeVisible();
             await this.page.locator('#executorTitle').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title`)]]);
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-            }
+            }*/
             await this.page.locator('#executorForenames').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames`)]]);
             // await I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames`)]]);
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-            }
+            }*/
             await this.page.locator('#executorSurname').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname`)]]);
             await this.page.locator('#executorEmailAddress').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email`)]]);
             await this.postcodeLinkLocator.click();
@@ -742,13 +741,13 @@ export class CreateCasePage extends BasePage {
 
             await this.page.locator(createWillLodgementConfig.page3_addExecutorButton).click();
             await expect(this.page.locator(`#additionalExecutorList_${index}_executorForenames`)).toBeEnabled();
-            await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+            // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             await this.page.locator(`#additionalExecutorList_${index}_executorTitle`).fill(createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_title`)]]);
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-            }
+            }*/
 
             await this.page.locator(`#additionalExecutorList_${index}_executorForenames`).fill(createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_forenames`)]]);
             await this.page.locator(`#additionalExecutorList_${index}_executorSurname`).fill(createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_surname`)]]);
@@ -768,17 +767,17 @@ export class CreateCasePage extends BasePage {
             await expect(this.page.getByText(createWillLodgementConfig.page3_amend_waitForText)).toBeVisible();
             await this.page.locator('#executorTitle').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title_update`)]]);
 
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-            }
+            }*/
             await this.page.locator('#executorForenames').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames_update`)]]);
-            if (!testConfig.TestAutoDelayEnabled) {
+            /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-            }
+            }*/
             await this.page.locator('#executorSurname').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname_update`)]]);
             await this.page.locator('#executorEmailAddress').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email_update`)]]);
         }

@@ -321,7 +321,7 @@ export class SolCreateCasePage extends BasePage {
     if (!testConfig.TestAutoDelayEnabled) {
       // only valid for local dev where we need it to run as fast as poss to minimise
       // lost dev time
-      await this.page.waitForTimeout(testConfig.ManualDelayShort);
+      // await this.page.waitForTimeout(testConfig.ManualDelayShort);
     }
 
     let idx = 0;
@@ -335,11 +335,12 @@ export class SolCreateCasePage extends BasePage {
           })
           .first()
           .click();
+        /*
         if (!testConfig.TestAutoDelayEnabled) {
           // only valid for local dev where we need it to run as fast as poss to minimise
           // lost dev time
           await this.page.waitForTimeout(testConfig.ManualDelayShort);
-        }
+        }*/
         await expect(
           this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`)
         ).toBeVisible();
@@ -464,7 +465,7 @@ export class SolCreateCasePage extends BasePage {
       )
       .click();
     await this.confirmPaymentButton.click();
-    await this.page.waitForTimeout(testConfig.ManualDelayLong);
+    // await this.page.waitForTimeout(testConfig.ManualDelayLong);
   }
 
   async makeCardPaymentPage(caseRef) {
@@ -780,7 +781,7 @@ export class SolCreateCasePage extends BasePage {
     await this.codicilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
     await expect(this.languagePreferenceLabelLocator).toBeVisible();
     await this.languagePreferenceWelshLocator.click();
-    await this.page.waitForTimeout(testConfig.ManualDelayLong);
+    // await this.page.waitForTimeout(testConfig.ManualDelayLong);
     const isLanguagePreferenceSelected = await this.languagePreferenceWelshLocator.isChecked();
     if (isLanguagePreferenceSelected) {
       await this.waitForNavigationToComplete(commonConfig.continueButton);
@@ -793,7 +794,7 @@ export class SolCreateCasePage extends BasePage {
 
   async grantOfProbatePage2(verifyTrustCorpOpts, isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
     await this.runAccessibilityTest();
-    await this.page.waitForTimeout(testConfig.ManualDelayLong);
+    // await this.page.waitForTimeout(testConfig.ManualDelayLong);
     if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {
       await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).toBeVisible();
       await expect(this.page.getByText(grantOfProbateConfig.page2_sol_name)).toBeVisible();
@@ -1211,7 +1212,7 @@ export class SolCreateCasePage extends BasePage {
     const url = caseType === 'Caveat' ? caveatUrl : gorUrl;
     await this.page.goto(url);
     if (useWaitInUrl) {
-      await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+      // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
     }
 
     await this.rejectCookies();
@@ -1271,7 +1272,7 @@ export class SolCreateCasePage extends BasePage {
     await this.page.locator('//input[@id="select-' + sacCaseRefNumber + '"]').click();
     await this.shareCaseButtonLocator.click();
     await this.page.waitForLoadState();
-    await this.page.waitForTimeout(10);
+    // await this.page.waitForTimeout(10);
     await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).focus();
     await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).click();
     await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).focus();

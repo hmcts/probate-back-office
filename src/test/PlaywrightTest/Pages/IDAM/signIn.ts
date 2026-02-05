@@ -70,7 +70,7 @@ export class SignInPage extends BasePage {
 
   async authenticateUserNoc(useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
     await this.page.goto(`${testConfig.TestBackOfficeUrl}/`);
-    await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+    // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
     await expect(
       this.page.getByRole("heading", {
         name: "Sign in",
@@ -91,7 +91,7 @@ export class SignInPage extends BasePage {
 
   async authenticateUserShareCase (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
     await this.page.goto(`${testConfig.TestBackOfficeUrl}/`);
-    await this.page.waitForTimeout(testConfig.ManualDelayMedium);
+    // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
     await expect(
       this.page.getByRole("heading", {
         name: "Sign in",
