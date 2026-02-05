@@ -144,7 +144,7 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
       shutterOption = "false"
     }
 
-    excludedFilenamePatterns="*-wa.json"
+    excludedFilenamePatterns="*-nonprod.json"
     if ("preview" == env) {
       if (checkForWAEnableLabel(branch_name)) {
         sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
@@ -316,7 +316,7 @@ withPipeline("java", product, component) {
   onPR() {
       env.ENV='preview'
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
-        env.ENABLE_WA = true
+        env.WA_ENABLED = true
       }
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
       env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
