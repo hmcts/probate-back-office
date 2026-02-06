@@ -8,7 +8,7 @@ shutterOption=${2:-false}
 extraExclusions=${3:-",*-wa.json"}
 
 waEnabledVar=${WA_ENABLED:-false}
-if [ waEnabledVar == true]; then
+if [ ${waEnabledVar} == true ]; then
   extraExclusions=""
 fi
 
