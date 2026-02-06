@@ -128,7 +128,7 @@ dependencies {
 
 ./gradlew bootJar
 # run gradle with bootWithCCD to bring up the IDAM and CCD including cftlib Docker with elastic and database
-./gradle bootWithCCD 
+./gradlew bootWithCCD 
 # run in debugger with 
 ./gradlew bootWithCCD --debug-jvm
 or just click debug in intellij on probate-back-office [bootWithCCD] run/debug configuration
