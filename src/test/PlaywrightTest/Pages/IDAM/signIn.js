@@ -11,7 +11,7 @@ exports.SignInPage = class SignInPage extends BasePage {
         this.passwordLocator = this.page.getByText('Password', {exact: true});
         this.submitButtonLocator = page.getByRole('button', {name: 'Sign in'});
     }
-    async authenticateWithIdamIfAvailable (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
+    async authenticateWithIdamIfAvailable (useProfessionalUser) {
         await this.page.goto(`${testConfig.TestBackOfficeUrl}/`);
         await this.page.waitForTimeout(testConfig.ManualDelayMedium);
         await expect(this.page.getByRole('heading', {name: 'Sign in', exact: true}, {timeout: 6000})).toBeVisible();
@@ -24,13 +24,15 @@ exports.SignInPage = class SignInPage extends BasePage {
             await this.page.locator('#username').fill(useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvCwUser);
             await this.page.locator('#password').fill(useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvCwPassword);
         }
-        //await this.page.waitForSelector(this.submitButtonLocator, signInDelay);
-        await expect(this.submitButtonLocator).toBeEnabled();
-        await this.submitButtonLocator.click();
 
-        await expect(this.usernameLocator).not.toBeVisible();
+        await Promise.all([
+            this.page.waitForResponse(response =>
+                response.url().includes('/auth/isAuthenticated') &&
+                response.status() === 200
+            ),
+            this.submitButtonLocator.click(),
+        ]);
         await this.rejectCookies();
-        await this.page.waitForTimeout(signInDelay);
     }
 
     async signOut(delay = testConfig.SignOutDelayDefault) {
