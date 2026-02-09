@@ -64,9 +64,10 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await createCasePage.enterCaveatPage4('create');
             await createCasePage.checkMyAnswers(nextStepName);
             let endState = 'Caveat raised';
-            await basePage.logInfo(endState);
+            // await basePage.logInfo(endState);
 
             const caseRef = await basePage.getCaseRefFromUrl();
+            // await basePage.logInfo(caseRef);
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             await basePage.seeCaseDetails(testInfo, caseRef, caseDetailsTabConfig, createCaveatConfig);
             await basePage.seeCaseDetails(testInfo, caseRef, deceasedDetailsTabConfig, createCaveatConfig);
@@ -82,6 +83,8 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat matching';
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+            // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
+            // await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
             nextStepName = 'Caveat not matched';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
