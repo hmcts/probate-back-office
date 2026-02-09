@@ -58,18 +58,12 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
     }
 
     async selectNewCase() {
+        await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await expect(this.createCasePageLocator).toBeVisible();
         await this.rejectCookies();
         await expect(this.createCaseLocator).toBeEnabled();
-        await Promise.all([
-            this.page.waitForResponse(response =>
-                response.url().includes('/aggregated/caseworkers/') &&
-                response.url().includes('/jurisdictions') &&
-                response.request().method() === 'GET' &&
-                response.status() === 200
-            ),
-            this.createCaseLocator.click(),
-        ]);
+        await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+        await this.createCaseLocator.click();
     }
 
     async selectCaseTypeOptions(caseType, event) {

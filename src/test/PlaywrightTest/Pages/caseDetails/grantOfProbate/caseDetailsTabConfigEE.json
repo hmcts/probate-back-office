@@ -5,15 +5,12 @@
     "What is the channel choice?",
     "Gross value of the estate for probate",
     "Net value of the estate for probate",
-    "Were any Inheritance Tax (IHT) forms completed to report the value of the estate?",
-    "Did the deceased have a late husband, wife or civil partner?",
-    "Are you claiming the unused IHT allowance (‘nil-rate band’) of the deceased’s late husband, wife or civil partner?",
+    "Did you complete Inheritance Tax (IHT) forms to report the estate’s value?",
+    "Did the deceased have a late spouse or civil partner?",
+    "Are you claiming the unused IHT allowance (‘nil-rate band’) of the deceased’s late spouse or civil partner?",
     "Registry location",
     "Application type",
-    "Did the deceased leave a will?",
-    "Did the deceased have assets in any other names?",
-    "Is the language preference Welsh?",
-    "Case handed off to legacy site"
+    "Did the deceased leave a will?"
   ],
   "dataKeys": [
     "page1_list3_case_type",
