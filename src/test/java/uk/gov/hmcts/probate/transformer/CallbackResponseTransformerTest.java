@@ -4956,15 +4956,13 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldClearRelationshipsWhenRelationshipChangedFromChild() {
+    void shouldClearChildFieldsWhenRelationshipChangedFromChild() {
         caseDataBuilder.primaryApplicantRelationshipToDeceased("grandchild");
 
         caseDataBuilderBefore.primaryApplicantRelationshipToDeceased("child")
                 .primaryApplicantAdoptedIn("Yes")
-                .primaryApplicantAdoptedOut("No")
                 .primaryApplicantAdoptionInEnglandOrWales("Yes")
                 .primaryApplicantParentAdoptedIn("Yes")
-                .primaryApplicantParentAdoptedOut("No")
                 .primaryApplicantParentAdoptionInEnglandOrWales("Yes")
                 .deceasedAdoptedIn("Yes")
                 .deceasedAdoptionInEnglandOrWales("Yes")
@@ -4975,19 +4973,17 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
 
-        CallbackResponse callbackResponse = underTest.clearRelationships(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
 
         assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
-        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedOut());
         assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
         assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedIn());
-        assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedOut());
         assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptionInEnglandOrWales());
     }
 
 
     @Test
-    void shouldClearRelationshipsWhenRelationshipChangesFromSibling() {
+    void shouldClearSiblingFieldsWhenRelationshipChangesFromSibling() {
         caseDataBuilder.primaryApplicantRelationshipToDeceased("child");
 
         caseDataBuilderBefore.primaryApplicantRelationshipToDeceased("sibling")
@@ -5013,7 +5009,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
 
-        CallbackResponse callbackResponse = underTest.clearRelationships(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
 
         assertNull(callbackResponse.getData().getDeceasedAnyLivingDescendants());
         assertNull(callbackResponse.getData().getDeceasedAnyLivingParents());
@@ -5034,7 +5030,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldClearRelationshipsWhenRelationshipChangesFromParent() {
+    void shouldClearParentFieldsWhenRelationshipChangesFromParent() {
         caseDataBuilder.primaryApplicantRelationshipToDeceased("sibling");
 
         caseDataBuilderBefore.primaryApplicantRelationshipToDeceased("parent")
@@ -5051,7 +5047,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
 
-        CallbackResponse callbackResponse = underTest.clearRelationships(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
 
         assertNull(callbackResponse.getData().getDeceasedAnyLivingDescendants());
         assertNull(callbackResponse.getData().getDeceasedAnyOtherParentAlive());
@@ -5064,45 +5060,133 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldNotClearRelationshipsWhenRelationshipUnchanged() {
+    void shouldNotClearFieldsWhenRelationshipUnchanged() {
         caseDataBuilder.primaryApplicantRelationshipToDeceased("child")
                 .primaryApplicantAdoptedIn("Yes")
-                .primaryApplicantAdoptedOut("No")
                 .primaryApplicantAdoptionInEnglandOrWales("Yes")
                 .primaryApplicantParentAdoptedIn("Yes")
                 .primaryApplicantParentAdoptedOut("No")
                 .primaryApplicantParentAdoptionInEnglandOrWales("Yes")
                 .deceasedAdoptedIn("Yes")
-                .deceasedAdoptionInEnglandOrWales("Yes")
-                .deceasedAdoptedOut("No");
+                .deceasedAdoptionInEnglandOrWales("Yes");
 
         caseDataBuilderBefore.primaryApplicantRelationshipToDeceased("child")
                 .primaryApplicantAdoptedIn("Yes")
-                .primaryApplicantAdoptedOut("No")
                 .primaryApplicantAdoptionInEnglandOrWales("Yes")
                 .primaryApplicantParentAdoptedIn("Yes")
                 .primaryApplicantParentAdoptedOut("No")
                 .primaryApplicantParentAdoptionInEnglandOrWales("Yes")
                 .deceasedAdoptedIn("Yes")
-                .deceasedAdoptionInEnglandOrWales("Yes")
-                .deceasedAdoptedOut("No");
+                .deceasedAdoptionInEnglandOrWales("Yes");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
 
-        CallbackResponse callbackResponse = underTest.clearRelationships(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
 
-        assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
-        assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptedOut());
-        assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
         assertNotNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedIn());
-        assertNotNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedOut());
         assertNotNull(callbackResponse.getData().getPrimaryApplicantParentAdoptionInEnglandOrWales());
         assertNotNull(callbackResponse.getData().getDeceasedAdoptedIn());
         assertNotNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
-        assertNotNull(callbackResponse.getData().getDeceasedAdoptedOut());
+    }
+
+    @Test
+    void shouldClearFullSiblingFieldsWhenOnlyOneParentISSame() {
+        caseDataBuilder.applicantSameParentsAsDeceased("oneParentsSame");
+
+        caseDataBuilderBefore.applicantSameParentsAsDeceased("bothParentsSame")
+                .otherWholeBloodSiblings("Yes")
+                .wholeBloodSiblingsDiedBeforeDeceased("YesSome")
+                .wholeBloodNiecesAndNephewsSurvived("Yes")
+                .wholeBloodSiblingsOverEighteen("Yes")
+                .primaryApplicantAdoptedIn("Yes")
+                .primaryApplicantAdoptionInEnglandOrWales("Yes")
+                .primaryApplicantForenames("John")
+                .primaryApplicantSurname("Doe")
+                .primaryApplicantPhoneNumber("123456789");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse callbackResponse = underTest.clearSiblingFields(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
+        assertNull(callbackResponse.getData().getOtherWholeBloodSiblings());
+        assertNull(callbackResponse.getData().getWholeBloodSiblingsDiedBeforeDeceased());
+        assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsSurvived());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+        assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
+        assertNull(callbackResponse.getData().getPrimaryApplicantSurname());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAddress());
+        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
+    }
+
+    @Test
+    void shouldClearHalfSiblingFieldsWhenBothParentISSame() {
+        caseDataBuilder.applicantSameParentsAsDeceased("bothParentsSame");
+
+        caseDataBuilderBefore.applicantSameParentsAsDeceased("oneParentsSame")
+                .otherHalfBloodSiblings("Yes")
+                .halfBloodSiblingsDiedBeforeDeceased("YesSome")
+                .halfBloodNiecesAndNephewsSurvived("Yes")
+                .halfBloodSiblingsOverEighteen("Yes")
+                .primaryApplicantAdoptedIn("Yes")
+                .primaryApplicantAdoptionInEnglandOrWales("Yes")
+                .primaryApplicantForenames("John")
+                .primaryApplicantSurname("Doe")
+                .primaryApplicantPhoneNumber("123456789");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse callbackResponse = underTest.clearSiblingFields(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
+        assertNull(callbackResponse.getData().getOtherHalfBloodSiblings());
+        assertNull(callbackResponse.getData().getHalfBloodSiblingsDiedBeforeDeceased());
+        assertNull(callbackResponse.getData().getHalfBloodNiecesAndNephewsSurvived());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+        assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
+        assertNull(callbackResponse.getData().getPrimaryApplicantSurname());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAddress());
+        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
+    }
+
+    @Test
+    void shouldNotClearFieldsWhenSameParentsOptionIsUnchanged() {
+        caseDataBuilder.applicantSameParentsAsDeceased("oneParentsSame")
+                .otherHalfBloodSiblings("Yes")
+                .halfBloodSiblingsDiedBeforeDeceased("YesSome")
+                .halfBloodNiecesAndNephewsSurvived("Yes")
+                .halfBloodSiblingsOverEighteen("Yes")
+                .primaryApplicantAdoptedIn("Yes")
+                .primaryApplicantAdoptionInEnglandOrWales("Yes");
+
+        caseDataBuilderBefore.applicantSameParentsAsDeceased("oneParentsSame")
+                .otherHalfBloodSiblings("Yes")
+                .halfBloodSiblingsDiedBeforeDeceased("YesSome")
+                .halfBloodNiecesAndNephewsSurvived("Yes")
+                .halfBloodSiblingsOverEighteen("Yes")
+                .primaryApplicantAdoptedIn("Yes")
+                .primaryApplicantAdoptionInEnglandOrWales("Yes")
+                .primaryApplicantForenames("John")
+                .primaryApplicantSurname("Doe")
+                .primaryApplicantPhoneNumber("123456789");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse callbackResponse = underTest.clearSiblingFields(callbackRequestMock);
+
+        assertNotNull(callbackResponse.getData().getOtherHalfBloodSiblings());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

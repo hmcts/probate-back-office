@@ -76,6 +76,8 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.HALF_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
@@ -892,7 +894,7 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse clearRelationships(CallbackRequest callbackRequest) {
+    public CallbackResponse clearFieldsBasedOnRelationships(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(),false);
@@ -2393,5 +2395,37 @@ public class CallbackResponseTransformer {
                 .orgPolicyReference(null)
                 .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
                 .build();
+    }
+
+    public CallbackResponse clearSiblingFields(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
+                        Optional.empty(), false);
+
+        String applicantSameParentsAsDeceasedBefore = callbackRequest.getCaseDetailsBefore().getData()
+                .getApplicantSameParentsAsDeceased();
+        String applicantSameParentsAsDeceasedAfter = callbackRequest.getCaseDetails().getData()
+                .getApplicantSameParentsAsDeceased();
+        if (applicantSameParentsAsDeceasedBefore != null && !applicantSameParentsAsDeceasedBefore
+                .equals(applicantSameParentsAsDeceasedAfter)) {
+            switch (applicantSameParentsAsDeceasedBefore) {
+                case WHOLE_SIBLING:
+                    clearFullSiblingRelatedFields(responseCaseDataBuilder);
+                    break;
+                case HALF_SIBLING:
+                    clearHalfSiblingRelatedFields(responseCaseDataBuilder);
+                    break;
+                default:
+                    break;
+            }
+            responseCaseDataBuilder.primaryApplicantAdoptedIn(null);
+            responseCaseDataBuilder.primaryApplicantAdoptedOut(null);
+            responseCaseDataBuilder.primaryApplicantAdoptionInEnglandOrWales(null);
+            responseCaseDataBuilder.primaryApplicantForenames(null);
+            responseCaseDataBuilder.primaryApplicantSurname(null);
+            responseCaseDataBuilder.primaryApplicantAddress(null);
+            responseCaseDataBuilder.primaryApplicantPhoneNumber(null);
+        }
+        return transformResponse(responseCaseDataBuilder.build());
     }
 }
