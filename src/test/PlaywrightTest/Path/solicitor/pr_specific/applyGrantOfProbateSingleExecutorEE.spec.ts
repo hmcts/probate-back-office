@@ -20,8 +20,10 @@ import historyTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/h
 import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
 import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 import caseProgressConfig from "../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
+import {testConfig} from "../../../Configs/config.ts";
 
-test.describe("SSolicitor - Apply Grant of probate Excepted Estates", () => {
+test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Refunds", () => {
+  let caseRef;
   test("Solicitor - Apply Grant of probate Single Executor for Excepted Estates", async ({
       basePage,
       signInPage,
@@ -48,7 +50,7 @@ test.describe("SSolicitor - Apply Grant of probate Excepted Estates", () => {
 
     await solCreateCasePage.seeEndState(endState);
 
-    const caseRef = await basePage.getCaseRefFromUrl();
+    caseRef = await basePage.getCaseRefFromUrl();
 
     await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
     await basePage.seeCaseDetails(testInfo, caseRef, applicantDetailsTabConfig, applyProbateConfig);
@@ -119,5 +121,25 @@ test.describe("SSolicitor - Apply Grant of probate Excepted Estates", () => {
     await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
     await basePage.seeCaseDetails(testInfo, caseRef, copiesTabConfig, completeApplicationConfig);
     await basePage.seeCaseDetails(testInfo, caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
+  });
+
+  test("Add Remission for HPW and Approve Refund", async ({
+                                                                                           basePage,
+                                                                                           signInPage,
+                                                                                           createCasePage,
+                                                                                           solCreateCasePage,
+                                                                                           cwEventActionsPage
+                                                                                         }, testInfo) => {
+    const scenarioName = 'Add Remission for HPW and Approve Refund';
+    const nextStepName = 'Add Remission';
+    caseRef = '1769-7960-5743-8105';
+
+    //Add API here to process the payment at Liberata and create reconciliation for refunds.
+
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    // log in as case worker
+    await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
+    await solCreateCasePage.navigateToCase(caseRef);
+    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef);
   });
 });

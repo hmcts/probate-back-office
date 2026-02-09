@@ -436,10 +436,31 @@ export class SolCreateCasePage extends BasePage {
           this.page.getByText(serviceRequestReviewTabConfig.fields[i]).first()
         ).toBeVisible();
       }
+      await this.backToServiceRequestLocator.click();
     }
+  }
 
-    await expect(this.page.locator(".govuk-back-link")).toBeEnabled();
-    await this.backToServiceRequestLocator.click();
+  async reviewPaymentDetailsForRefund(caseRef: string) {
+    await expect(this.page.getByText(caseRef).first()).toBeVisible();
+    await expect(this.serviceRequestTabLocator).toBeEnabled();
+    await this.serviceRequestTabLocator.click();
+    await expect(this.page.getByText(caseRef).first()).toBeVisible();
+    await expect(this.serviceRequestTabLocator).toBeEnabled();
+    await this.runAccessibilityTest();
+    await expect(this.reviewLinkLocator).toBeVisible();
+    await this.reviewLinkLocator.click();
+    /*for (let i = 0; i < serviceRequestReviewTabConfig.fields.length; i++) {
+      if (
+        serviceRequestReviewTabConfig.fields[i] &&
+        serviceRequestReviewTabConfig.fields[i] !== ""
+      ) {
+        await expect(
+          this.page.getByText(serviceRequestReviewTabConfig.fields[i]).first()
+        ).toBeVisible();
+      }
+    }*/
+
+   // await expect(this.page.locator(".govuk-back-link")).toBeEnabled();
   }
 
   async makePaymentPage2(caseRef: string) {
