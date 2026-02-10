@@ -187,6 +187,18 @@ class CaveatControllerIT {
     }
 
     @Test
+    void solicitorCreateCaveatShouldReturnDataPayloadOkResponseCode() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+
+        mockMvc.perform(post("/caveat/setCaseSubmissionDate")
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
     void personalCaveatRaisedNoEmailShouldReturnDataPayloadOkResponseCode() throws Exception {
         String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
 
