@@ -7,7 +7,7 @@ configFolder=${conversionFolder}/../configFiles
 shutterOption=${2:-false}
 extraExclusions=${3:-",*-wa.json"}
 
-waEnabledVar=${WA_ENABLED:-false}
+waEnabledVar=${PROBATE_WA_ENABLED:-false}
 if [ ${waEnabledVar} == true ]; then
   extraExclusions=""
 fi
