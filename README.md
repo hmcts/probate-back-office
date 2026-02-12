@@ -760,7 +760,7 @@ https://github.com/hmcts/probate-back-office/tree/DTSPB-1172-investigate-sol-cas
 https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client_id=ccd_admin&redirect_uri=https%3A%2F%2Fccd-admin-web.demo.platform.hmcts.net%2Foauth2redirect
 
 ##Local Work Allocation Enablement
-###Build and import XLSX for preview
+###Build and import XLSX for local
 1. export PROBATE_WA_ENABLED=true
 2. echo $PROBATE_WA_ENABLED
 3. ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
@@ -770,8 +770,7 @@ https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client
 
 1. ##Preview Work Allocation Enablement
 2. Ensure that you have enable_keep_helm and pr-values:wa added as github labels on your PR
-3. The build will use the flag to include any wa functionality in the build. ie all .json files with a ***-wa/json extension for building the XLSX, and any code toggled behind the PROBATE_PROBATE_WA_ENABLED env var
-
+3. The build will use the flag to include any wa functionality in the build. ie all .json files with a ***-wa/json extension for building the XLSX, and any code toggled behind the PROBATE_WA_ENABLED env var
 ###Build and import XLSX for preview
 1. export PROBATE_WA_ENABLED=true
 2. echo $PROBATE_WA_ENABLED
