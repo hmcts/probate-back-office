@@ -165,6 +165,7 @@ am-org-role-mapping-service:
       ORM_ENV: pr
 
 xui-webapp:
+  enabled: true
   nodejs:
     imagePullPolicy: Always
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
@@ -175,6 +176,29 @@ xui-webapp:
     devcpuLimits: 1
     devmemoryLimits: 1Gi
     environment:
+      HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
+      HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
+      HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}/health
+      SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
+      SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+      SERVICES_DOCUMENTS_API_V2: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
+      SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}
+      SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      JURISDICTIONS: PROBATE
+      LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
+      FEATURE_REDIS_ENABLED: false
+      FEATURE_APP_INSIGHTS_ENABLED: false
+      FEATURE_SECURE_COOKIE_ENABLED: false
+      FEATURE_PROXY_ENABLED: false
+      FEATURE_TERMS_AND_CONDITIONS_ENABLED: false
+      FEATURE_HELMET_ENABLED: true
+      FEATURE_OIDC_ENABLED: false
+      NOW: false
+      REDISCLOUD_URL: http://dummyrediscloudurl
+      UV_THREADPOOL_SIZE: 128
+      PROTOCOL: http
       SERVICES_WA_WORKFLOW_API_URL: http://{{ .Release.Name }}-wa-workflow-api
       HEALTH_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api/health
       SERVICES_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api
@@ -182,6 +206,14 @@ xui-webapp:
       SERVICES_ROLE_ASSIGNMENT_MAPPING_API: http://{{ .Release.Name }}-am-org-role-mapping-service
       FEATURE_WORKALLOCATION_ENABLED: true
       WA_SUPPORTED_JURISDICTIONS: PROBATE
+    keyVaults:
+      rpx:
+        resourceGroup: rpx
+        secrets:
+          - mc-s2s-client-secret
+          - mc-idam-client-secret
+          - system-user-name
+          - system-user-password
 
 ccd-message-publisher:
   enabled: true
