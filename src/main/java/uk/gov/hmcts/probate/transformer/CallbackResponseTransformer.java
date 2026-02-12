@@ -2449,21 +2449,29 @@ public class CallbackResponseTransformer {
                                                                  List<CollectionMember<IntestacyAdditionalExecutor>>
                                                                          existingExecutorList) {
         List<DynamicRadioListElement> listItems = new ArrayList<>();
-        String relationship = caseData.getSolsApplicantRelationshipToDeceased();
+        String relationship = StringUtils.defaultString(caseData.getSolsApplicantRelationshipToDeceased())
+                .toLowerCase();
 
-        if (CHILD.equalsIgnoreCase(relationship) || GRAND_CHILD.equalsIgnoreCase(relationship)) {
-            listItems.add(buildRadioListItem(CHILD, CHILD_LABEL));
-            listItems.add(buildRadioListItem(GRAND_CHILD, GRAND_CHILD_LABEL));
-        } else if (PARENT.equalsIgnoreCase(relationship)) {
-            listItems.add(buildRadioListItem(PARENT, PARENT_LABEL));
-        } else if (SIBLING.equalsIgnoreCase(relationship)) {
-            if (YES.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased())) {
-                listItems.add(buildRadioListItem(WHOLE_BLOOD_SIBLING, WHOLE_BLOOD_SIBLING_LABEL));
-                listItems.add(buildRadioListItem(WHOLE_BLOOD_NIECE_OR_NEPHEW, WHOLE_BLOOD_NIECE_OR_NEPHEW_LABEL));
-            } else {
-                listItems.add(buildRadioListItem(HALF_BLOOD_SIBLING, HALF_BLOOD_SIBLING_LABEL));
-                listItems.add(buildRadioListItem(HALF_BLOOD_NIECE_OR_NEPHEW, HALF_BLOOD_NIECE_OR_NEPHEW_LABEL));
-            }
+        switch (relationship) {
+            case CHILD:
+            case GRAND_CHILD:
+                listItems.add(buildRadioListItem(CHILD, CHILD_LABEL));
+                listItems.add(buildRadioListItem(GRAND_CHILD, GRAND_CHILD_LABEL));
+                break;
+            case PARENT:
+                listItems.add(buildRadioListItem(PARENT, PARENT_LABEL));
+                break;
+            case SIBLING:
+                if (YES.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased())) {
+                    listItems.add(buildRadioListItem(WHOLE_BLOOD_SIBLING, WHOLE_BLOOD_SIBLING_LABEL));
+                    listItems.add(buildRadioListItem(WHOLE_BLOOD_NIECE_OR_NEPHEW, WHOLE_BLOOD_NIECE_OR_NEPHEW_LABEL));
+                } else {
+                    listItems.add(buildRadioListItem(HALF_BLOOD_SIBLING, HALF_BLOOD_SIBLING_LABEL));
+                    listItems.add(buildRadioListItem(HALF_BLOOD_NIECE_OR_NEPHEW, HALF_BLOOD_NIECE_OR_NEPHEW_LABEL));
+                }
+                break;
+            default:
+                break;
         }
 
         DynamicRadioListElement selectedValue = null;
