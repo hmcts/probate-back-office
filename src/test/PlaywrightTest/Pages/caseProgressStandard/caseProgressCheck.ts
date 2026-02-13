@@ -8,14 +8,15 @@ import caseProgressConfig from "../caseProgressAppStopped/caseProgressConfig.jso
 export class CaseProgressPage extends SignInPage {
   readonly deceasedForenameLocator = this.page.locator("#deceasedForenames");
   readonly goButtonLocator = this.page.getByRole("button", { name: "Go" });
+  readonly caseProgressHeadingLocator = this.page.getByLabel('Case Progress', { exact: true });
 
   constructor(public readonly page: Page) {
     super(page);
   }
 
   async caseProgressCheckCaseProgressTab(opts) {
-    // await this.page.waitForTimeout(testConfig.ManualDelayLong);
-    await expect(this.page.getByLabel('Case Progress', { exact: true })).toBeVisible();
+    await this.verifyPageLoad(this.caseProgressHeadingLocator);
+    await expect(this.caseProgressHeadingLocator).toBeVisible();
     await this.page.getByRole("tab", { name: 'Case Progress' }).focus();
     await this.page.getByRole("tab", { name: 'Case Progress' }).click();
     await this.page.getByRole("tab", { name: 'Case Progress' }).click();
