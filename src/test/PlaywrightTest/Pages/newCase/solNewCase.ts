@@ -232,6 +232,7 @@ export class SolCreateCasePage extends BasePage {
   readonly shareCaseButtonLocator = this.page.locator('#btn-share-button');
   readonly showAllTextLocator = this.page.locator('#accordion-with-summary-sections > div > button > span.govuk-accordion__show-all-text');
   readonly caseListHeadingLocator = this.page.getByRole('heading', { name: nocConfig.nocWaitForText });
+  readonly cyaPageLocator = this.page.getByText("Check your answers");
 
   constructor(public readonly page: Page) {
     super(page);
@@ -284,7 +285,8 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async cyaPage() {
-    await expect(this.page.getByText("Check your answers")).toBeVisible();
+    await this.verifyPageLoad(this.cyaPageLocator);
+    await expect(this.cyaPageLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
@@ -595,12 +597,14 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async applyForProbatePage1() {
+    await this.verifyPageLoad(this.solsStartPageLocator);
     await expect(this.solsStartPageLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async applyForProbatePage2(isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
+    await this.verifyPageLoad(this.solsApplyPageLocator);
     await expect(this.solsApplyPageLocator).toBeVisible();
     await this.runAccessibilityTest();
     await expect(this.solsPageSubHeading).toBeVisible();
