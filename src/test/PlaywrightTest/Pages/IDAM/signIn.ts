@@ -22,6 +22,7 @@ export class SignInPage extends BasePage {
       timeout: 60000
     });
     // await this.page.waitForTimeout(testConfig.ManualDelayLong);
+    await this.verifyPageLoad(this.usernameLocator);
     await expect(
       this.page.getByRole("heading", {
         name: "Sign in",

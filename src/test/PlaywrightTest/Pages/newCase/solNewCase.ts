@@ -231,6 +231,7 @@ export class SolCreateCasePage extends BasePage {
   readonly caseReferenceLocator = this.page.locator('//button[normalize-space()="Apply"]');
   readonly shareCaseButtonLocator = this.page.locator('#btn-share-button');
   readonly showAllTextLocator = this.page.locator('#accordion-with-summary-sections > div > button > span.govuk-accordion__show-all-text');
+  readonly caseListHeadingLocator = this.page.getByRole('heading', { name: nocConfig.nocWaitForText });
 
   constructor(public readonly page: Page) {
     super(page);
@@ -1211,15 +1212,12 @@ export class SolCreateCasePage extends BasePage {
     const gorUrl = `${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`;
     const url = caseType === 'Caveat' ? caveatUrl : gorUrl;
     await this.page.goto(url);
-    if (useWaitInUrl) {
-      // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-    }
 
     await this.rejectCookies();
   }
 
   async nocNavigation() {
-    await expect(this.page.getByRole('heading', { name: nocConfig.nocWaitForText })).toBeVisible();
+    await expect(this.caseListHeadingLocator).toBeVisible();
     await this.rejectCookies();
     await expect(this.page.locator(nocConfig.xuiNocLocator)).toBeEnabled();
     await this.waitForNavigationToComplete(nocConfig.xuiNocLocator)

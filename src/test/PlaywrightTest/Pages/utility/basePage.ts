@@ -1,5 +1,5 @@
 import { AxeUtils } from "@hmcts/playwright-common";
-import { expect, Page, TestInfo } from "@playwright/test";
+import {expect, Locator, Page, TestInfo} from "@playwright/test";
 import { testConfig } from "../../Configs/config.ts";
 import commonConfig from "../common/commonConfig.json" with { type: "json" };
 
@@ -64,7 +64,7 @@ export class BasePage {
   }
 
   async waitForNavigationToComplete(buttonLocator): Promise<void> {
-    // const navigationPromise = this.page.waitForNavigation();
+    const currentUrl = await this.page.url();
     await expect(this.page.locator(buttonLocator)).toBeVisible();
     await expect(this.page.locator(buttonLocator)).toBeEnabled();
 
@@ -72,9 +72,19 @@ export class BasePage {
       if ((await this.page.locator(buttonLocator).isVisible()) && (await this.page.locator(buttonLocator).isEnabled())) {
         await this.page.locator(buttonLocator).click();
       }
-      await expect(this.page.locator(buttonLocator)).toBeHidden({ timeout: 5_000 });
+      await expect(this.page).not.toHaveURL(currentUrl);
     }).toPass({ intervals: [1_000], timeout: 30_000 });
 
+  }
+
+  async verifyPageLoad(pageLocator: Locator): Promise<void> {
+    await expect(pageLocator).toBeVisible();
+    await expect(async () => {
+      if (!(await pageLocator.isVisible())) {
+        await this.page.reload();
+      }
+      await expect(pageLocator).toBeVisible({ timeout: 5_000 });
+    }).toPass({ intervals: [1_000], timeout: 30_000 });
   }
 
   async waitForStopNavigationToComplete(buttonLocator) {

@@ -97,6 +97,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async chooseNextStep(nextStep: string) {
+    await this.verifyPageLoad(this.nextStepLocator);
     await expect(this.nextStepLocator).toBeEnabled();
     await this.nextStepLocator.selectOption({ label: nextStep });
     // await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
@@ -267,6 +268,7 @@ export class CwEventActionsPage extends BasePage {
   async enterEventSummary(caseRef: string, nextStepName: string) {
     // await this.page.waitForTimeout(testConfig.EventSummaryDelay);
     let eventSummaryPrefix = nextStepName;
+    await this.verifyPageLoad(this.page.getByText(nextStepName));
     await expect(this.page.getByText(nextStepName)).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     eventSummaryPrefix =

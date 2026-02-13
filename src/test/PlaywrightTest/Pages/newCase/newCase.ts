@@ -72,6 +72,7 @@ export class CreateCasePage extends BasePage {
 
     async selectCaseTypeOptions(caseType: string, event: string) {
         // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+        await this.verifyPageLoad(this.createCaseLocator);
         await expect(this.createCaseLocator).toBeVisible();
         await expect(this.jurisdictionLocator).toBeEnabled();
         await this.jurisdictionLocator.selectOption({value: newCaseConfig.jurisdictionValue});
