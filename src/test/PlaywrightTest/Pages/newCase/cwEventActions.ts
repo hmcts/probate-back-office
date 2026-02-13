@@ -111,6 +111,7 @@ export class CwEventActionsPage extends BasePage {
     addNewButtonLocator: string | null = null,
     skipMatchingInfo: boolean = false
   ) {
+    await this.verifyPageLoad(this.page.getByText(nextStepName));
     await expect(this.page.getByText(nextStepName)).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     // await this.page.waitForTimeout(testConfig.CaseMatchesInitialDelay);
@@ -173,6 +174,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async selectProbateManCaseMatchesForGrantOfProbate(caseRef: string, nextStepName: string) {
+    await this.verifyPageLoad(this.page.getByText(nextStepName));
     await expect(this.page.getByText(nextStepName)).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     // await this.page.waitForTimeout(testConfig.CaseMatchesInitialDelay);
@@ -284,6 +286,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async uploadDocument(caseRef: string, documentUploadConfig: DocumentUploadConfig) {
+    await this.verifyPageLoad(this.page.getByRole("heading", { name: documentUploadConfig.waitForText }));
     await expect(
       this.page.getByRole("heading", {
         name: documentUploadConfig.waitForText,
@@ -395,6 +398,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async emailCaveator(caseRef: string) {
+    await this.verifyPageLoad(this.emailCaveatorHeadingLocator);
     await expect(this.emailCaveatorHeadingLocator).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.emailLocator).toBeEnabled();
@@ -403,6 +407,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async reopenCaveat(caseRef: string) {
+    await this.verifyPageLoad(this.reopenCaveatHeadingLocator);
     await expect(this.reopenCaveatHeadingLocator).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.caveatReopenReasonLocator).toBeEnabled();
@@ -413,6 +418,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async withdrawCaveatPage1() {
+    await this.verifyPageLoad(this.withdrawCaveatHeadingLocator);
     await expect(this.withdrawCaveatHeadingLocator).toBeVisible();
     await expect(this.emailRequestedLocator).toBeEnabled();
     await this.emailRequestedLocator.focus();
@@ -424,6 +430,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async registrarsDecision(caseRef: string) {
+    await this.verifyPageLoad(this.registrarDecisionHeadingLocator);
     await expect(this.registrarDecisionHeadingLocator).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.registrarDecisionSelectionLocator).toBeEnabled();
@@ -439,6 +446,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async handleEvidence(caseRef: string, handled: string = "No") {
+    await this.verifyPageLoad(this.handleEvidenceHeadingLocator);
     await expect(this.handleEvidenceHeadingLocator).toBeVisible();
     const caseRefLocator = this.page.getByRole("heading", {
       name: `${caseRef}`,
@@ -454,6 +462,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async caseProgressStopEscalateIssueAddCaseStoppedReason() {
+    await this.verifyPageLoad(this.addCaseStopReasonLocator);
     await expect(this.addCaseStopReasonLocator).toBeEnabled();
     await this.addCaseStopReasonLocator.click();
     await expect(this.caseStopReasonLocator).toBeEnabled();
@@ -467,6 +476,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async chooseResolveStop(resolveStop: string) {
+    await this.verifyPageLoad(this.resolveStopLocator);
     await expect(this.resolveStopLocator).toBeEnabled();
     await this.resolveStopLocator.selectOption({ label: `${resolveStop}` });
     // await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
@@ -474,6 +484,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async issueGrant(caseRef: string) {
+    await this.verifyPageLoad(this.issueGrantHeadingLocator);
     await expect(this.issueGrantHeadingLocator).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.bulkPrintLocator).toBeEnabled();
@@ -485,6 +496,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async enterNewDob(updatedDoB: string) {
+    await this.verifyPageLoad(this.page.getByRole("heading", { name: newConfig.waitForText }));
     await expect(
       this.page.getByRole("heading", { name: newConfig.waitForText })
     ).toBeVisible();
@@ -495,6 +507,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async chooseNewState(newState: string) {
+    await this.verifyPageLoad(this.page.getByRole("heading", { name: newConfig.newState_waitForText }));
     await expect(
       this.page.getByRole("heading", { name: newConfig.newState_waitForText })
     ).toBeVisible();
@@ -505,6 +518,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async selectWithdrawalReason(caseRef: string, withdrawalConfig: WithdrawalConfig) {
+    await this.verifyPageLoad(this.page.getByText(withdrawalConfig.waitForText));
     await expect(
       this.page.getByText(withdrawalConfig.waitForText)
     ).toBeVisible();
@@ -516,28 +530,18 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async caseProgressSelectEscalateReason() {
+    await this.verifyPageLoad(this.page.locator('#registrarEscalateReason'));
     await expect(this.page.locator('#registrarEscalateReason')).toBeEnabled();
     await this.page.locator('#registrarEscalateReason').selectOption('1: referrals');
     await this.waitForNavigationToComplete(commonConfig.continueButton);
-
-    // await I.waitForElement({css: '#registrarEscalateReason'});
-    // await I.selectOption({css: '#registrarEscalateReason'}, '1: referrals');
-
-    // await I.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async caseProgressStopEscalateIssueCaseStopAgainReason() {
+    await this.verifyPageLoad(this.page.locator('#boCaseStopReasonList_0_caseStopReason'));
     await expect(this.page.locator('#boCaseStopReasonList_0_caseStopReason')).toBeEnabled();
     await this.page.locator('#boCaseStopReasonList_0_caseStopReason').selectOption('10: DocumentsRequired');
     await expect(this.page.locator('#boCaseStopReasonList_0_caseStopSubReasonDocRequired')).toBeEnabled();
     await this.page.locator('#boCaseStopReasonList_0_caseStopSubReasonDocRequired').selectOption('7: PA11');
     await this.waitForNavigationToComplete(commonConfig.continueButton);
-
-    // await I.waitForElement({css: '#boCaseStopReasonList_0_caseStopReason'});
-    // await I.selectOption({css: '#boCaseStopReasonList_0_caseStopReason'}, '10: DocumentsRequired');
-    // await I.waitForElement({css: '#boCaseStopReasonList_0_caseStopSubReasonDocRequired'});
-    // await I.selectOption({css: '#boCaseStopReasonList_0_caseStopSubReasonDocRequired'}, '7: PA11');
-
-    // await I.waitForNavigationToComplete(commonConfig.continueButton);
   }
 }

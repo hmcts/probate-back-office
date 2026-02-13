@@ -108,7 +108,13 @@ export class BasePage {
     // const navigationPromise = this.page.waitForNavigation();
     await expect(this.page.locator(`${signOutLocator}`)).toBeVisible();
     await expect(this.page.locator(`${signOutLocator}`)).toBeEnabled();
-    await this.page.locator(`${signOutLocator}`).click();
+
+    await expect(async () => {
+      if ((await this.page.locator(`${signOutLocator}`).isVisible()) && (await this.page.locator(`${signOutLocator}`).isEnabled())) {
+        await this.page.locator(`${signOutLocator}`).click();
+      }
+      await expect(this.page.locator(`${signOutLocator}`)).not.toBeVisible({ timeout: 5000 });
+    }).toPass({ intervals: [1_000], timeout: 30_000 });
     await this.page.waitForLoadState("domcontentloaded")
     // await navigationPromise;
   }

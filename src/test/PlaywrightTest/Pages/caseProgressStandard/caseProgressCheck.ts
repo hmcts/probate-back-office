@@ -158,11 +158,13 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressResumeDeceasedDetails() {
+    await this.verifyPageLoad(this.deceasedForenameLocator);
     await expect(this.deceasedForenameLocator).toBeEnabled();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async caseProgressStopEscalateIssueStoppedTabCheck() {
+    await this.verifyPageLoad(this.page.getByText('Case stopped', { exact: true }));
     await expect(this.page.getByText('Case stopped', { exact: true })).toBeVisible();
 
     // Check date format
@@ -171,6 +173,7 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressStopEscalateIssueEscalatedTabCheck() {
+    await this.verifyPageLoad(this.page.getByText('Case escalated to a Registrar', { exact: true }));
     await expect(this.page.getByText('Case escalated to a Registrar', { exact: true })).toBeVisible();
 
     // Check date format
@@ -179,6 +182,7 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressAppStoppedDetails() {
+    await this.verifyPageLoad(this.page.getByText(caseProgressConfig.AppStoppedHeader, { exact: true }));
     await expect(this.page.getByText(caseProgressConfig.AppStoppedHeader, { exact: true })).toBeVisible();
     await expect(this.page.getByText(caseProgressConfig.AppStoppedReasonText, { exact: true })).toBeVisible();
     await expect(this.page.getByText(caseProgressConfig.AppStoppedAdditionalText, { exact: true })).toBeVisible();
@@ -191,6 +195,7 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressAppStoppedTabCheck() {
+    await this.verifyPageLoad(this.page.getByText(caseProgressConfig.AppStoppedTabTitle));
     await expect(this.page.locator( 'div.govuk-inset-text').first()).toContainText(caseProgressConfig.AppStoppedTabTitle, { timeout: 2000 });
     await expect(this.page.getByText( caseProgressConfig.AppStoppedTabCheckText, { exact: true })).toBeVisible();
     // await I.waitForText(caseProgressConfig.AppStoppedTabTitle, 2, {css: 'div.govuk-inset-text'});

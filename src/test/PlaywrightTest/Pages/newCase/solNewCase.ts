@@ -427,6 +427,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async reviewPaymentDetails(caseRef: string, serviceRequestReviewTabConfig: ServiceRequestTabConfig) {
+    await this.verifyPageLoad(this.page.getByText(caseRef).first());
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(this.serviceRequestTabLocator).toBeEnabled();
     await this.runAccessibilityTest();
@@ -446,6 +447,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async makePaymentPage2(caseRef: string) {
+    await this.verifyPageLoad(this.page.getByText(caseRef).first());
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(this.payNowLinkLocator).toBeVisible();
     await this.payNowLinkLocator.click();
@@ -536,6 +538,7 @@ export class SolCreateCasePage extends BasePage {
   }
   async viewPaymentStatus(testInfo?: TestInfo, caseRef?: string, appType?: string) {
     // await expect(this.page.getByText(caseRef).first()).toBeVisible();
+    await this.verifyPageLoad(this.page.getByText(makePaymentConfig.paymentStatusConfirmText));
     await expect(
       this.page.getByText(makePaymentConfig.paymentStatusConfirmText)
     ).toBeVisible();
@@ -755,6 +758,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async deceasedDetailsPage3(willType = 'WillLeft') {
+    await this.verifyPageLoad(this.solsWillTypeLocator);
     await expect(this.solsWillTypeLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator(`#solsWillType-${willType}`).click();
@@ -762,6 +766,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async deceasedDetailsPage4() {
+    await this.verifyPageLoad(this.willDisposeLocator);
     await expect(this.willDisposeLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.willDisposeOptionLocator.click();
@@ -771,6 +776,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async grantOfProbatePage1() {
+    await this.verifyPageLoad(this.willHasCodicilsLocator);
     await expect(this.willHasCodicilsLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.willAccessOriginalOptionNoLocator.click();
@@ -806,6 +812,7 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     // await this.page.waitForTimeout(testConfig.ManualDelayLong);
     if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {
+      await this.verifyPageLoad(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text));
       await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).toBeVisible();
       await expect(this.page.getByText(grantOfProbateConfig.page2_sol_name)).toBeVisible();
     } else {
@@ -875,6 +882,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async verifyTitleAndClearingTypeOptionPage(optName) {
+    await this.verifyPageLoad(this.page.locator(`#titleAndClearingType-${optName}`));
     await expect(this.page.locator(`#titleAndClearingType-${optName}`)).toBeEnabled();
     await this.page.locator(`#titleAndClearingType-${optName}`).scrollIntoViewIfNeeded();
     await this.page.locator(`#titleAndClearingType-${optName}`).click();
@@ -891,6 +899,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async grantOfProbatePage3() {
+    await this.verifyPageLoad(this.displenseWithNoticeLeaveLocator);
     await expect(this.displenseWithNoticeLeaveLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.displenseWithNoticeLeaveLocator.click();
@@ -916,6 +925,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async grantOfProbatePage4(isSolicitorApplying = false) {
+    await this.verifyPageLoad(this.otherExecutorExistsLocator);
     await expect(this.otherExecutorExistsLocator).toBeEnabled();
     await this.runAccessibilityTest();
 
@@ -960,6 +970,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async grantOfProbatePage5() {
+    await this.verifyPageLoad(this.furtherEvidenceLocator);
     await expect(this.furtherEvidenceLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.furtherEvidenceLocator.fill(grantOfProbateConfig.page5_applicationNotes);
@@ -967,6 +978,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async grantOfProbatePage6() {
+    await this.verifyPageLoad(this.additionalInfoLocator);
     await expect(this.additionalInfoLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.additionalInfoLocator.fill(grantOfProbateConfig.page5_applicationNotes);
@@ -974,18 +986,21 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async completeApplicationUpdateSot() {
+    await this.verifyPageLoad(this.sotUpdateRequiredYesLocator);
     await expect(this.sotUpdateRequiredYesLocator).toBeVisible();
     await this.sotUpdateRequiredYesLocator.click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async selectReenterTask(task) {
+    await this.verifyPageLoad(this.page.locator('#solsAmendLegalStatmentSelect'));
     await expect(this.page.locator('#solsAmendLegalStatmentSelect')).toBeEnabled();
     await this.page.locator('#solsAmendLegalStatmentSelect').selectOption(task);
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async completeApplicationPage1(willType = 'WillLeft') {
+    await this.verifyPageLoad(this.sotUpdateRequiredLocator);
     await expect(this.sotUpdateRequiredLocator).toBeVisible();
     await expect(this.reviewLegalStatement1Locator).toBeVisible();
     await expect(this.reviewLegalStatement2Locator).toBeVisible();
@@ -1005,12 +1020,14 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async completeApplicationPage3() {
+    await this.verifyPageLoad(this.completeApplicationWaitForText);
     await expect(this.completeApplicationWaitForText).toBeVisible();
     await this.runAccessibilityTest();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async completeApplicationPage4() {
+    await this.verifyPageLoad(this.sotConfirmCheck1Locator);
     await this.runAccessibilityTest();
     await this.sotConfirmCheck1Locator.scrollIntoViewIfNeeded();
     await this.sotConfirmCheck1Locator.click();
@@ -1020,6 +1037,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async completeApplicationPage5() {
+    await this.verifyPageLoad(this.extrCopiesLocator);
     await expect(this.extrCopiesLocator).toBeVisible();
 
     /*****Need to uncomment this accessibility test after fixing the bug in exui ******/
@@ -1030,6 +1048,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async completeApplicationPage6() {
+    await this.verifyPageLoad(this.solsPbaPaymentRefLocator);
     await expect(this.solsPbaPaymentRefLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.solsPbaPaymentRefLocator.fill(completeProbateApplicationConfig.page6_paymentReference);
@@ -1037,12 +1056,14 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async completeApplicationPage7() {
+    await this.verifyPageLoad(this.page.getByText(completeProbateApplicationConfig.page7_waitForText));
     await expect(this.page.getByText(completeProbateApplicationConfig.page7_waitForText)).toBeVisible();
     await this.runAccessibilityTest();
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async completeApplicationPage8() {
+    await this.verifyPageLoad(this.page.getByText(completeProbateApplicationConfig.page8_waitForText));
     await expect(this.page.getByText(completeProbateApplicationConfig.page8_waitForText)).toBeVisible();
     await this.runAccessibilityTest();
     await expect(this.page.getByText(completeProbateApplicationConfig.page8_applicationFee)).toBeVisible();
@@ -1054,6 +1075,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async makePaymentPage1(caseRef, serviceRequestTabConfig) {
+    await this.verifyPageLoad(this.page.getByRole('heading', { name: caseRef }));
     await expect(this.page.getByRole('heading', { name: caseRef })).toBeVisible();
     await expect(this.page.getByRole('link', { name: makePaymentConfig.paymentLinkText })).toBeVisible();
     await this.page.getByRole('link', { name: makePaymentConfig.paymentLinkText }).click();
@@ -1073,6 +1095,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async intestacyDetailsPage1() {
+    await this.verifyPageLoad(this.primaryApplicantForenameLocator);
     await expect(this.primaryApplicantForenameLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.primaryApplicantForenameLocator.fill(intestacyDetailsConfig.applicant_firstname);
@@ -1093,6 +1116,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async intestacyDetailsPage2() {
+    await this.verifyPageLoad(this.page.locator('#solsMinorityInterest'));
     await expect(this.page.locator('#solsMinorityInterest')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator(`#solsApplicantRelationshipToDeceased-${intestacyDetailsConfig.page2_child}`).click();
@@ -1103,6 +1127,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async intestacyDetailsPage3() {
+    await this.verifyPageLoad(this.page.locator('#furtherEvidenceForApplication'));
     await expect(this.page.locator('#furtherEvidenceForApplication')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator('#furtherEvidenceForApplication').fill(intestacyDetailsConfig.page3_applicationNotes);
@@ -1110,6 +1135,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async intestacyDetailsPage4() {
+    await this.verifyPageLoad(this.page.locator('#solsAdditionalInfo'));
     await expect(this.page.locator('#solsAdditionalInfo')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator('#solsAdditionalInfo').fill(intestacyDetailsConfig.page3_applicationNotes);
