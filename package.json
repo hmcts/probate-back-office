@@ -59,7 +59,7 @@
     "test-e2e-cw-willLodgement-Playwright": "npx playwright test Path/caseworker/willLodgementPath.spec.ts --headed",
     "test-e2e-sol-grantOfProbateMulti-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/applyGrantOfProbateMultiExecutorPath.spec.ts --headed",
     "test-e2e-sol-gorNoWillEE-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/applyGrantOfProbateNoWillEE.spec.ts --headed",
-    "test-e2e-sol-grantOfProbateEE-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/applyGrantOfProbateSingleExecutorEE.spec.ts --headed",
+    "test-e2e-sol-grantOfProbateEE-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/pr_specific/applyGrantOfProbateSingleExecutorEE.spec.ts --headed",
     "test-e2e-sol-grantOfProbateMultiEE-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/applyGrantOfProbateMultiExecutorEE.spec.ts --headed",
     "test-e2e-sol-gorNoWill-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/applyGrantOfProbateNoWill.spec.ts --headed",
     "test-e2e-sol-grantOfProbateNotNamedApplying-Playwright": "yarn playwright install chromium && npx playwright test Path/solicitor/applyGrantOfProbateSingleExecNotNamedApplying.spec.ts --headed",

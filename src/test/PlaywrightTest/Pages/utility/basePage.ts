@@ -63,15 +63,18 @@ export class BasePage {
     await this.page.locator('//div[@class="column-one-half"]//ccd-case-header').textContent();
   }
 
-  async waitForNavigationToComplete(buttonLocator) {
+  async waitForNavigationToComplete(buttonLocator): Promise<void> {
     // const navigationPromise = this.page.waitForNavigation();
     await expect(this.page.locator(buttonLocator)).toBeVisible();
     await expect(this.page.locator(buttonLocator)).toBeEnabled();
-    await this.page.locator(buttonLocator).click();
-    // await this.page.waitForTimeout(1000);
-    await this.page.waitForLoadState('domcontentloaded');
-    // await this.page.waitForTimeout(1000);
-    // await navigationPromise;
+
+    await expect(async () => {
+      if ((await this.page.locator(buttonLocator).isVisible()) && (await this.page.locator(buttonLocator).isEnabled())) {
+        await this.page.locator(buttonLocator).click();
+      }
+      await expect(this.page.locator(buttonLocator)).toBeHidden({ timeout: 5_000 });
+    }).toPass({ intervals: [1_000], timeout: 30_000 });
+
   }
 
   async waitForStopNavigationToComplete(buttonLocator) {
