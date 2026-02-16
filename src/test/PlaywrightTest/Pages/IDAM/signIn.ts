@@ -22,6 +22,7 @@ export class SignInPage extends BasePage {
       timeout: 60000
     });
     // await this.page.waitForTimeout(testConfig.ManualDelayLong);
+    await this.verifyPageLoad(this.usernameLocator);
     await expect(
       this.page.getByRole("heading", {
         name: "Sign in",
@@ -62,9 +63,9 @@ export class SignInPage extends BasePage {
   }
 
   async signOut() {
-    await this.waitForSignOutNavigationToComplete(
-      "nav.hmcts-header__navigation ul li:last-child a"
-    );
+    await this.verifyPageLoad(this.page.locator('nav.hmcts-header__navigation ul li:last-child a'));
+    await this.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 10);
+    await this.verifyPageLoad(this.usernameLocator, 10);
     await expect(this.usernameLocator).toBeVisible();
   }
 

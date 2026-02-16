@@ -1,5 +1,5 @@
 import { AxeUtils } from "@hmcts/playwright-common";
-import { expect, Page, TestInfo } from "@playwright/test";
+import {expect, Locator, Page, TestInfo} from "@playwright/test";
 import { testConfig } from "../../Configs/config.ts";
 import commonConfig from "../common/commonConfig.json" with { type: "json" };
 
@@ -10,7 +10,7 @@ export class BasePage {
   readonly submitButtonLocator = this.page.getByRole("button", {
     name: "Submit",
   });
-  readonly goButtonLocator = this.page.getByRole("button", { name: "Go" });
+
 
   constructor(public readonly page: Page) {}
 
@@ -63,18 +63,37 @@ export class BasePage {
     await this.page.locator('//div[@class="column-one-half"]//ccd-case-header').textContent();
   }
 
-  async waitForNavigationToComplete(buttonLocator) {
-    // const navigationPromise = this.page.waitForNavigation();
-    await expect(this.page.locator(buttonLocator)).toBeVisible();
-    await expect(this.page.locator(buttonLocator)).toBeEnabled();
-    await this.page.locator(buttonLocator).click();
-    // await this.page.waitForTimeout(1000);
-    await this.page.waitForLoadState('domcontentloaded');
-    // await this.page.waitForTimeout(1000);
-    // await navigationPromise;
+  async waitForNavigationToComplete(buttonLocator: Locator | string, timeout: number = 5_000): Promise<void> {
+    const currentUrl = await this.page.url();
+    const locator = typeof buttonLocator === 'string'
+      ? this.page.locator(buttonLocator)  // String - convert to Locator
+      : buttonLocator;
+    await expect(locator).toBeVisible();
+    await expect(locator).toBeEnabled();
+
+    await expect(async () => {
+      if (this.page.url() === currentUrl) {
+        await expect(locator).toBeVisible();
+        await expect(locator).toBeEnabled();
+        await locator.click({ timeout: timeout });
+      }
+      await expect(this.page).not.toHaveURL(currentUrl);
+      console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
+    }).toPass({ intervals: [2_000], timeout: 60_000 });
+
   }
 
-  async waitForStopNavigationToComplete(buttonLocator) {
+  async verifyPageLoad(pageLocator: Locator, timeout: number = 5_000): Promise<void> {
+    await expect(async () => {
+      if (!(await pageLocator.isVisible())) {
+        await this.page.reload();
+        await this.page.waitForLoadState('load');
+      }
+      await expect(pageLocator).toBeVisible({ timeout: timeout });
+    }).toPass({ intervals: [1_000], timeout: 60_000 });
+  }
+
+ /* async waitForStopNavigationToComplete(buttonLocator) {
     await expect(this.page.locator(buttonLocator)).toBeVisible();
     await expect(this.page.locator(buttonLocator)).toBeEnabled();
     await this.page.locator(buttonLocator).click({ noWaitAfter: true });
@@ -89,13 +108,19 @@ export class BasePage {
       this.goButtonLocator.click(),
       this.goButtonLocator.waitFor({ state: "detached", timeout: 10000 }),
     ]);
-  }
+  }*/
 
   async waitForSignOutNavigationToComplete(signOutLocator: string) {
     // const navigationPromise = this.page.waitForNavigation();
     await expect(this.page.locator(`${signOutLocator}`)).toBeVisible();
     await expect(this.page.locator(`${signOutLocator}`)).toBeEnabled();
-    await this.page.locator(`${signOutLocator}`).click();
+
+    await expect(async () => {
+      if ((await this.page.locator(`${signOutLocator}`).isVisible()) && (await this.page.locator(`${signOutLocator}`).isEnabled())) {
+        await this.page.locator(`${signOutLocator}`).click();
+      }
+      await expect(this.page.locator(`${signOutLocator}`)).not.toBeVisible({ timeout: 5000 });
+    }).toPass({ intervals: [1_000], timeout: 30_000 });
     await this.page.waitForLoadState("domcontentloaded")
     // await navigationPromise;
   }

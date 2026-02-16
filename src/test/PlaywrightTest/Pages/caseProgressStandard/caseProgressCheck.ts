@@ -8,14 +8,15 @@ import caseProgressConfig from "../caseProgressAppStopped/caseProgressConfig.jso
 export class CaseProgressPage extends SignInPage {
   readonly deceasedForenameLocator = this.page.locator("#deceasedForenames");
   readonly goButtonLocator = this.page.getByRole("button", { name: "Go" });
+  readonly caseProgressHeadingLocator = this.page.getByLabel('Case Progress', { exact: true });
 
   constructor(public readonly page: Page) {
     super(page);
   }
 
   async caseProgressCheckCaseProgressTab(opts) {
-    // await this.page.waitForTimeout(testConfig.ManualDelayLong);
-    await expect(this.page.getByLabel('Case Progress', { exact: true })).toBeVisible();
+    await this.verifyPageLoad(this.caseProgressHeadingLocator);
+    await expect(this.caseProgressHeadingLocator).toBeVisible();
     await this.page.getByRole("tab", { name: 'Case Progress' }).focus();
     await this.page.getByRole("tab", { name: 'Case Progress' }).click();
     await this.page.getByRole("tab", { name: 'Case Progress' }).click();
@@ -108,6 +109,7 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressSelectPenultimateNextStepAndGo() {
+    await this.verifyPageLoad(this.page.locator('#next-step'));
     await expect(this.page.locator('#next-step')).toBeEnabled();
     const penultimateOpt = await this.page.locator('#next-step option:nth-last-child(2)').innerText();
 
@@ -119,10 +121,12 @@ export class CaseProgressPage extends SignInPage {
       await this.page.locator('#next-step').selectOption(penultimateOptFinal);
     }
 
-    await this.clickGoButton();
+    await this.waitForNavigationToComplete('button[type="submit"].button', 10_000);
+    // await this.clickGoButton();
   }
 
   async caseProgressSelectPenultimateNextStep() {
+    await this.verifyPageLoad(this.page.locator('#next-step'));
     await expect(this.page.locator('#next-step')).toBeEnabled();
     const penultimateOpt = await this.page.locator('#next-step option:nth-last-child(2)').innerText();
 
@@ -138,30 +142,43 @@ export class CaseProgressPage extends SignInPage {
   async clickGoButton() {
     const currentUrl = this.page.url();
 
+    await expect(this.page.locator('button[type="submit"].button')).toBeVisible();
+    await expect(this.page.locator('button[type="submit"].button')).toBeEnabled();
     await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
 
+    await expect(async () => {
+      if (this.page.url() === currentUrl) {
+        await this.page.reload({ timeout: 10_000 });
+        await this.caseProgressSelectPenultimateNextStep();
+        await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
+      }
+      await expect(this.page).not.toHaveURL(currentUrl);
+    }).toPass({ intervals: [1_000], timeout: 60_000 });
+
     // Wait for URL to be anything different
-    let attempts = 0;
-    while (this.page.url() === currentUrl && attempts < 50) {
+    /* let attempts = 0;
+      while (this.page.url() === currentUrl && attempts < 50) {
       await this.page.reload();
       await this.page.waitForLoadState('load');
       await this.caseProgressSelectPenultimateNextStep();
       // await this.page.waitForTimeout(1000);
-      await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
+      await this.page.locator('button[type="submit"].button').click({ timeout: 5_000 });
       // await this.page.waitForTimeout(3000);
       attempts++;
-    }
+    }*/
 
     // Additional settle time
     // await this.page.waitForTimeout(2000);
   }
 
   async caseProgressResumeDeceasedDetails() {
+    await this.verifyPageLoad(this.deceasedForenameLocator);
     await expect(this.deceasedForenameLocator).toBeEnabled();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async caseProgressStopEscalateIssueStoppedTabCheck() {
+    await this.verifyPageLoad(this.page.getByText('Case stopped', { exact: true }));
     await expect(this.page.getByText('Case stopped', { exact: true })).toBeVisible();
 
     // Check date format
@@ -170,6 +187,7 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressStopEscalateIssueEscalatedTabCheck() {
+    await this.verifyPageLoad(this.page.getByText('Case escalated to a Registrar', { exact: true }));
     await expect(this.page.getByText('Case escalated to a Registrar', { exact: true })).toBeVisible();
 
     // Check date format
@@ -178,6 +196,7 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressAppStoppedDetails() {
+    await this.verifyPageLoad(this.page.getByText(caseProgressConfig.AppStoppedHeader, { exact: true }));
     await expect(this.page.getByText(caseProgressConfig.AppStoppedHeader, { exact: true })).toBeVisible();
     await expect(this.page.getByText(caseProgressConfig.AppStoppedReasonText, { exact: true })).toBeVisible();
     await expect(this.page.getByText(caseProgressConfig.AppStoppedAdditionalText, { exact: true })).toBeVisible();
@@ -190,6 +209,7 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressAppStoppedTabCheck() {
+    await this.verifyPageLoad(this.page.getByText(caseProgressConfig.AppStoppedTabTitle));
     await expect(this.page.locator( 'div.govuk-inset-text').first()).toContainText(caseProgressConfig.AppStoppedTabTitle, { timeout: 2000 });
     await expect(this.page.getByText( caseProgressConfig.AppStoppedTabCheckText, { exact: true })).toBeVisible();
     // await I.waitForText(caseProgressConfig.AppStoppedTabTitle, 2, {css: 'div.govuk-inset-text'});
