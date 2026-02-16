@@ -218,6 +218,12 @@ withPipeline("java", product, component) {
         echo "Dependencies installed successfully."
       }
     }
+    stage('Dependency Check') {
+      steps {
+        echo "Running security scan..."
+        // Your dependency check command here
+      }
+    }
   }
   afterAlways('test') {
     junit 'build/test-results/test/**/*.xml'
