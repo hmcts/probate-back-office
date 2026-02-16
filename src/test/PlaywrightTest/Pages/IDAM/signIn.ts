@@ -64,10 +64,8 @@ export class SignInPage extends BasePage {
 
   async signOut() {
     await this.verifyPageLoad(this.page.locator('nav.hmcts-header__navigation ul li:last-child a'));
-    await this.waitForNavigationToComplete(
-      'nav.hmcts-header__navigation ul li:last-child a'
-    );
-    await this.verifyPageLoad(this.usernameLocator);
+    await this.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 10);
+    await this.verifyPageLoad(this.usernameLocator, 10);
     await expect(this.usernameLocator).toBeVisible();
   }
 
