@@ -288,7 +288,7 @@ export class SolCreateCasePage extends BasePage {
     await this.verifyPageLoad(this.cyaPageLocator);
     await expect(this.cyaPageLocator).toBeVisible();
     await this.runAccessibilityTest();
-    await this.waitForNavigationToComplete(commonConfig.submitButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton, 10);
   }
 
   async seeEndState(endState: string) {
@@ -538,7 +538,7 @@ export class SolCreateCasePage extends BasePage {
   }
   async viewPaymentStatus(testInfo?: TestInfo, caseRef?: string, appType?: string) {
     // await expect(this.page.getByText(caseRef).first()).toBeVisible();
-    await this.verifyPageLoad(this.page.getByText(makePaymentConfig.paymentStatusConfirmText));
+    // await this.verifyPageLoad(this.page.getByText(makePaymentConfig.paymentStatusConfirmText));
     await expect(
       this.page.getByText(makePaymentConfig.paymentStatusConfirmText)
     ).toBeVisible();

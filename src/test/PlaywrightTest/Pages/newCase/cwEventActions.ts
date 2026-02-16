@@ -91,6 +91,7 @@ export class CwEventActionsPage extends BasePage {
     name: "Grant Application",
   });
   readonly willWithdrawReasonLocator = this.page.locator("#withdrawalReason");
+  readonly goButtonLocator = this.page.getByRole("button", { name: "Go" });
 
   constructor(public readonly page: Page) {
     super(page);
@@ -101,7 +102,7 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.nextStepLocator).toBeEnabled();
     await this.nextStepLocator.selectOption({ label: nextStep });
     // await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
-    await this.waitForGoNavigationToComplete();
+    await this.waitForNavigationToComplete(this.goButtonLocator);
   }
 
   async selectCaseMatches(
@@ -471,7 +472,7 @@ export class CwEventActionsPage extends BasePage {
       label: `${createCaseConfig.stopReason}`,
     });
     // await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
-    await this.waitForStopNavigationToComplete(commonConfig.submitButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton, 10);
 
   }
 

@@ -125,7 +125,7 @@ export class CaseProgressPage extends SignInPage {
     // await this.clickGoButton();
   }
 
-  /*async caseProgressSelectPenultimateNextStep() {
+  async caseProgressSelectPenultimateNextStep() {
     await this.verifyPageLoad(this.page.locator('#next-step'));
     await expect(this.page.locator('#next-step')).toBeEnabled();
     const penultimateOpt = await this.page.locator('#next-step option:nth-last-child(2)').innerText();
@@ -142,11 +142,22 @@ export class CaseProgressPage extends SignInPage {
   async clickGoButton() {
     const currentUrl = this.page.url();
 
+    await expect(this.page.locator('button[type="submit"].button')).toBeVisible();
+    await expect(this.page.locator('button[type="submit"].button')).toBeEnabled();
     await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
 
+    await expect(async () => {
+      if (this.page.url() === currentUrl) {
+        await this.page.reload({ timeout: 10_000 });
+        await this.caseProgressSelectPenultimateNextStep();
+        await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
+      }
+      await expect(this.page).not.toHaveURL(currentUrl);
+    }).toPass({ intervals: [1_000], timeout: 60_000 });
+
     // Wait for URL to be anything different
-    let attempts = 0;
-    while (this.page.url() === currentUrl && attempts < 50) {
+    /* let attempts = 0;
+      while (this.page.url() === currentUrl && attempts < 50) {
       await this.page.reload();
       await this.page.waitForLoadState('load');
       await this.caseProgressSelectPenultimateNextStep();
@@ -154,11 +165,11 @@ export class CaseProgressPage extends SignInPage {
       await this.page.locator('button[type="submit"].button').click({ timeout: 5_000 });
       // await this.page.waitForTimeout(3000);
       attempts++;
-    }
+    }*/
 
     // Additional settle time
     // await this.page.waitForTimeout(2000);
-  }*/
+  }
 
   async caseProgressResumeDeceasedDetails() {
     await this.verifyPageLoad(this.deceasedForenameLocator);

@@ -10,7 +10,7 @@ export class BasePage {
   readonly submitButtonLocator = this.page.getByRole("button", {
     name: "Submit",
   });
-  readonly goButtonLocator = this.page.getByRole("button", { name: "Go" });
+
 
   constructor(public readonly page: Page) {}
 
@@ -73,26 +73,27 @@ export class BasePage {
 
     await expect(async () => {
       if (this.page.url() === currentUrl) {
-        if ((await locator.isVisible()) && (await locator.isEnabled())) {
-          await locator.click({ timeout: timeout });
-        }
+        await expect(locator).toBeVisible();
+        await expect(locator).toBeEnabled();
+        await locator.click({ timeout: timeout });
       }
       await expect(this.page).not.toHaveURL(currentUrl);
-    }).toPass({ intervals: [1_000], timeout: 30_000 });
+      console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
+    }).toPass({ intervals: [2_000], timeout: 60_000 });
 
   }
 
-  async verifyPageLoad(pageLocator: Locator, timeout: number = 5_000): Promise<void> {
+  async verifyPageLoad(pageLocator: Locator, timeout: number = 5_000, signOutTimeOut: number = 1_000): Promise<void> {
     await expect(async () => {
       if (!(await pageLocator.isVisible())) {
         await this.page.reload();
         await this.page.waitForLoadState('load');
       }
       await expect(pageLocator).toBeVisible({ timeout: timeout });
-    }).toPass({ intervals: [1_000], timeout: 30_000 });
+    }).toPass({ intervals: [signOutTimeOut], timeout: 60_000 });
   }
 
-  async waitForStopNavigationToComplete(buttonLocator) {
+ /* async waitForStopNavigationToComplete(buttonLocator) {
     await expect(this.page.locator(buttonLocator)).toBeVisible();
     await expect(this.page.locator(buttonLocator)).toBeEnabled();
     await this.page.locator(buttonLocator).click({ noWaitAfter: true });
@@ -107,7 +108,7 @@ export class BasePage {
       this.goButtonLocator.click(),
       this.goButtonLocator.waitFor({ state: "detached", timeout: 10000 }),
     ]);
-  }
+  }*/
 
   async waitForSignOutNavigationToComplete(signOutLocator: string) {
     // const navigationPromise = this.page.waitForNavigation();
