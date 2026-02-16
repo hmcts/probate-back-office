@@ -213,7 +213,9 @@ withPipeline("java", product, component) {
       steps {
         // 'npm ci' is generally preferred in CI/CD over 'npm install'
         // because it's faster and uses the package-lock.json strictly.
+        echo "Starting npm install phase..."
         sh 'npm ci'
+        echo "Dependencies installed successfully."
       }
     }
   }
