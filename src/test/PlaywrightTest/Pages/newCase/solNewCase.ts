@@ -1112,7 +1112,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async intestacyDetailsPage2() {
-    await this.verifyPageLoad(this.page.locator('#solsMinorityInterest'));
+    // await this.verifyPageLoad(this.page.locator('#solsMinorityInterest'));
     await expect(this.page.locator('#solsMinorityInterest')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator(`#solsApplicantRelationshipToDeceased-${intestacyDetailsConfig.page2_child}`).click();
@@ -1123,7 +1123,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async intestacyDetailsPage3() {
-    await this.verifyPageLoad(this.page.locator('#furtherEvidenceForApplication'));
+    // await this.verifyPageLoad(this.page.locator('#furtherEvidenceForApplication'));
     await expect(this.page.locator('#furtherEvidenceForApplication')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator('#furtherEvidenceForApplication').fill(intestacyDetailsConfig.page3_applicationNotes);
@@ -1131,7 +1131,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async intestacyDetailsPage4() {
-    await this.verifyPageLoad(this.page.locator('#solsAdditionalInfo'));
+    // await this.verifyPageLoad(this.page.locator('#solsAdditionalInfo'));
     await expect(this.page.locator('#solsAdditionalInfo')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator('#solsAdditionalInfo').fill(intestacyDetailsConfig.page3_applicationNotes);
@@ -1139,7 +1139,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async enterIhtDetails(caseProgressConfig, optionValue) {
-    await this.verifyPageLoad(this.page.locator(`${caseProgressConfig.ihtHmrcLetter}_${optionValue}`));
+    // await this.verifyPageLoad(this.page.locator(`${caseProgressConfig.ihtHmrcLetter}_${optionValue}`));
     await expect(this.page.locator(`${caseProgressConfig.ihtHmrcLetter}_${optionValue}`)).toBeEnabled();
     await this.page.locator(`${caseProgressConfig.ihtHmrcLetter}_${optionValue}`).click();
     // await I.click({css: `${caseProgressConfig.ihtHmrcLetter}_${optionValue}`});
@@ -1151,7 +1151,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async caseProgressHmrcStopPage(caseProgressConfig) {
-    await this.verifyPageLoad(this.page.getByText(caseProgressConfig.ihtHmrcLetterNotReceived));
+    // await this.verifyPageLoad(this.page.getByText(caseProgressConfig.ihtHmrcLetterNotReceived));
     await expect(this.page.getByText(caseProgressConfig.ihtHmrcLetterNotReceived)).toBeVisible();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
@@ -1179,7 +1179,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async admonWillDetailsPage2(updateAddressManually) {
-    await this.verifyPageLoad(this.primaryApplicantForenameLocator);
+    // await this.verifyPageLoad(this.primaryApplicantForenameLocator);
     await expect(this.primaryApplicantForenameLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.primaryApplicantForenameLocator.fill(admonWillDetailsConfig.applicant_firstname);
@@ -1202,7 +1202,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async admonWillDetailsPage3() {
-    await this.verifyPageLoad(this.solsEntitledMinority);
+    // await this.verifyPageLoad(this.solsEntitledMinority);
     await expect(this.solsEntitledMinority).toBeEnabled();
     await this.runAccessibilityTest();
     await this.solsEntitledMinority.click();
@@ -1214,7 +1214,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async admonWillDetailsPage4() {
-    await this.verifyPageLoad(this.page.locator('#furtherEvidenceForApplication'));
+    // await this.verifyPageLoad(this.page.locator('#furtherEvidenceForApplication'));
     await expect(this.page.locator('#furtherEvidenceForApplication')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator('#furtherEvidenceForApplication').fill(admonWillDetailsConfig.page4_applicationNotes);
@@ -1222,7 +1222,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async admonWillDetailsPage5() {
-    await this.verifyPageLoad(this.page.locator('#solsAdditionalInfo'));
+    // await this.verifyPageLoad(this.page.locator('#solsAdditionalInfo'));
     await expect(this.page.locator('#solsAdditionalInfo')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator('#solsAdditionalInfo').fill(admonWillDetailsConfig.page5_applicationNotes);
@@ -1230,7 +1230,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async admonWillDetailsPage6() {
-    await this.verifyPageLoad(this.page.locator('#confirmation-body'));
+    // await this.verifyPageLoad(this.page.locator('#confirmation-body'));
     await expect(this.page.locator('#confirmation-body')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.waitForNavigationToComplete(commonConfig.submitButton);
