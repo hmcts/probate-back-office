@@ -233,6 +233,7 @@ export class SolCreateCasePage extends BasePage {
   readonly showAllTextLocator = this.page.locator('#accordion-with-summary-sections > div > button > span.govuk-accordion__show-all-text');
   readonly caseListHeadingLocator = this.page.getByRole('heading', { name: nocConfig.nocWaitForText });
   readonly cyaPageLocator = this.page.getByText("Check your answers");
+  readonly goButtonLocator = this.page.getByRole("button", { name: "Go" });
 
   constructor(public readonly page: Page) {
     super(page);
@@ -1360,7 +1361,7 @@ export class SolCreateCasePage extends BasePage {
     const caseRefNoDashes = caseRef.replaceAll('-', '');
     await this.page.goto(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);
     await this.page.locator('//select[@id="next-step"]').selectOption('Delete');
-    await this.waitForGoNavigationToComplete();
+    await this.waitForNavigationToComplete(this.goButtonLocator);
     await expect(this.page.getByText('#'+caseIdShareCase)).toBeVisible();
     await this.waitForNavigationToComplete(commonConfig.submitButton);
     await expect(this.page.getByText('#'+caseIdShareCase)).toBeVisible();
