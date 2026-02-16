@@ -208,6 +208,15 @@ withPipeline("java", product, component) {
   enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
 
+  afterAlways('Checkout') {
+    stage('Install Dependencies') {
+      steps {
+        // 'npm ci' is generally preferred in CI/CD over 'npm install'
+        // because it's faster and uses the package-lock.json strictly.
+        sh 'npm ci'
+      }
+    }
+  }
   afterAlways('test') {
     junit 'build/test-results/test/**/*.xml'
     archiveArtifacts 'build/reports/tests/test/index.html'
