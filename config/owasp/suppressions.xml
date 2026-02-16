@@ -24,4 +24,9 @@
         -->
         <cve>CVE-2025-15104</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[Forcefully resolved to 22.0.0 via yarn resolutions.]]></notes>
+        <packageUrl regex="true">^pkg:npm/yargs-parser@7\.0\.0$</packageUrl>
+        <cve>CVE-2020-7608</cve>
+    </suppress>
 </suppressions>

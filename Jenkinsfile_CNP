@@ -209,8 +209,7 @@ withPipeline("java", product, component) {
 
   afterAlways('checkout') {
         echo "Starting npm install phase..."
-        sh 'rm -rf node_modules'
-        sh 'yarn install --immutable'
+        sh 'yarn why yargs-parser'
         echo "Dependencies installed successfully."
   }
   afterAlways('test') {
