@@ -121,11 +121,11 @@ export class CaseProgressPage extends SignInPage {
       await this.page.locator('#next-step').selectOption(penultimateOptFinal);
     }
 
-    // await this.waitForNavigationToComplete('button[type="submit"].button', 10_000);
-    await this.clickGoButton();
+    await this.waitForNavigationToComplete('button[type="submit"].button', 10_000);
+    // await this.clickGoButton();
   }
 
-  async caseProgressSelectPenultimateNextStep() {
+  /*async caseProgressSelectPenultimateNextStep() {
     await this.verifyPageLoad(this.page.locator('#next-step'));
     await expect(this.page.locator('#next-step')).toBeEnabled();
     const penultimateOpt = await this.page.locator('#next-step option:nth-last-child(2)').innerText();
@@ -151,14 +151,14 @@ export class CaseProgressPage extends SignInPage {
       await this.page.waitForLoadState('load');
       await this.caseProgressSelectPenultimateNextStep();
       // await this.page.waitForTimeout(1000);
-      await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
+      await this.page.locator('button[type="submit"].button').click({ timeout: 5_000 });
       // await this.page.waitForTimeout(3000);
       attempts++;
     }
 
     // Additional settle time
     // await this.page.waitForTimeout(2000);
-  }
+  }*/
 
   async caseProgressResumeDeceasedDetails() {
     await this.verifyPageLoad(this.deceasedForenameLocator);

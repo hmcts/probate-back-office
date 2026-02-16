@@ -74,10 +74,10 @@ export class BasePage {
     await expect(async () => {
       if (this.page.url() === currentUrl) {
         if ((await locator.isVisible()) && (await locator.isEnabled())) {
-          await locator.click();
+          await locator.click({ timeout: timeout });
         }
       }
-      await expect(this.page).not.toHaveURL(currentUrl, {timeout: timeout});
+      await expect(this.page).not.toHaveURL(currentUrl);
     }).toPass({ intervals: [1_000], timeout: 30_000 });
 
   }
