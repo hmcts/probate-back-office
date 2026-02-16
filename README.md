@@ -501,7 +501,7 @@ As a step towards running an individual test, a new env var has been added for l
 (see config.js).
 
 This defaults to './paths/**/*.js', which the Jenkins nightly build will use. 
-However you can set this to a specific .js file path in src/test/paths to narrow down to a failing area.
+However you can set this to a specific .js file path in src/test/paths to narrow down to a failing area. 
 
  
 ## Complete setup for local FE + e2e development
