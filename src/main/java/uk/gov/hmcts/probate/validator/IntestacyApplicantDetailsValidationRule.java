@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
-import static uk.gov.hmcts.probate.model.Constants.CHILD;
-import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -35,16 +33,6 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
         var applicant = ccdData.getApplicant();
         if (applicant != null) {
             List<String> codes = new ArrayList<>();
-            String childAlive = applicant.getChildAlive();
-            String primaryApplicantParentAdoptionInEnglandOrWales =
-                    applicant.getPrimaryApplicantParentAdoptionInEnglandOrWales();
-            String primaryApplicantParentAdoptedOut = applicant.getPrimaryApplicantParentAdoptedOut();
-            String applicantAdoptedInEnglandOrWales = applicant.getPrimaryApplicantAdoptionInEnglandOrWales();
-            String applicantAdoptedOut = applicant.getPrimaryApplicantAdoptedOut();
-
-            boolean isRelevantRelation = SIBLING.equalsIgnoreCase(ccdData.getSolsApplicantRelationshipToDeceased())
-                    || CHILD.equalsIgnoreCase(ccdData.getSolsApplicantRelationshipToDeceased())
-                    || GRAND_CHILD.equalsIgnoreCase(ccdData.getSolsApplicantRelationshipToDeceased());
 
             if (SIBLING.equalsIgnoreCase(ccdData.getSolsApplicantRelationshipToDeceased()) && NO
                     .equalsIgnoreCase(applicant.getAnyLivingWholeBloodSiblings())) {
@@ -52,18 +40,18 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
                 codes.add(SIBLING_NOT_DIED_WELSH);
             }
 
-            if (NO.equalsIgnoreCase(childAlive)) {
+            if (NO.equalsIgnoreCase(applicant.getChildAlive())) {
                 codes.add(DECEASED_CHILD_DEAD);
                 codes.add(DECEASED_CHILD_DEAD_WELSH);
             }
 
-            if (isRelevantRelation && (NO.equalsIgnoreCase(applicantAdoptedInEnglandOrWales)
-                    || NO.equalsIgnoreCase(primaryApplicantParentAdoptionInEnglandOrWales))) {
+            if (NO.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptionInEnglandOrWales())
+                    || NO.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptionInEnglandOrWales())) {
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
             }
-            if (isRelevantRelation && (YES.equalsIgnoreCase(applicantAdoptedOut)
-                    || YES.equalsIgnoreCase(primaryApplicantParentAdoptedOut))) {
+            if (YES.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedOut())
+                    || YES.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedOut())) {
                 codes.add(ADOPTED_OUT);
                 codes.add(ADOPTED_OUT_WELSH);
             }
