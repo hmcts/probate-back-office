@@ -1236,11 +1236,11 @@ export class SolCreateCasePage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
-  async verifyNoc(caseRef) {
+  async verifyNoc(caseRef, caseType) {
     await this.verifyPageLoad(this.page.getByText('Your cases'));
     await expect(this.page.getByText('Your cases')).toBeVisible();
-    await this.navigateToCase(caseRef, false, 'Caveat');
-    await expect(this.page.getByRole('heading', { name: nocConfig.nocWaitForText })).toBeVisible();
+    await this.navigateToCase(caseRef, false, caseType);
+    await expect(this.page.getByRole('heading', { name: nocConfig.nocVerifyText })).toBeVisible();
     await expect(this.page.getByText(caseRef)).not.toBeVisible();
   }
 
