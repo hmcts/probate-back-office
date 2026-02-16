@@ -109,6 +109,7 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressSelectPenultimateNextStepAndGo() {
+    await this.verifyPageLoad(this.page.locator('#next-step'));
     await expect(this.page.locator('#next-step')).toBeEnabled();
     const penultimateOpt = await this.page.locator('#next-step option:nth-last-child(2)').innerText();
 
@@ -120,10 +121,12 @@ export class CaseProgressPage extends SignInPage {
       await this.page.locator('#next-step').selectOption(penultimateOptFinal);
     }
 
+    // await this.waitForNavigationToComplete('button[type="submit"].button', 10_000);
     await this.clickGoButton();
   }
 
   async caseProgressSelectPenultimateNextStep() {
+    await this.verifyPageLoad(this.page.locator('#next-step'));
     await expect(this.page.locator('#next-step')).toBeEnabled();
     const penultimateOpt = await this.page.locator('#next-step option:nth-last-child(2)').innerText();
 

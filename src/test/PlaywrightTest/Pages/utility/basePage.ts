@@ -63,27 +63,32 @@ export class BasePage {
     await this.page.locator('//div[@class="column-one-half"]//ccd-case-header').textContent();
   }
 
-  async waitForNavigationToComplete(buttonLocator): Promise<void> {
+  async waitForNavigationToComplete(buttonLocator: Locator | string, timeout: number = 5_000): Promise<void> {
     const currentUrl = await this.page.url();
-    await expect(this.page.locator(buttonLocator)).toBeVisible();
-    await expect(this.page.locator(buttonLocator)).toBeEnabled();
+    const locator = typeof buttonLocator === 'string'
+      ? this.page.locator(buttonLocator)  // String - convert to Locator
+      : buttonLocator;
+    await expect(locator).toBeVisible();
+    await expect(locator).toBeEnabled();
 
     await expect(async () => {
-      if ((await this.page.locator(buttonLocator).isVisible()) && (await this.page.locator(buttonLocator).isEnabled())) {
-        await this.page.locator(buttonLocator).click();
+      if (this.page.url() === currentUrl) {
+        if ((await locator.isVisible()) && (await locator.isEnabled())) {
+          await locator.click();
+        }
       }
-      await expect(this.page).not.toHaveURL(currentUrl);
+      await expect(this.page).not.toHaveURL(currentUrl, {timeout: timeout});
     }).toPass({ intervals: [1_000], timeout: 30_000 });
 
   }
 
-  async verifyPageLoad(pageLocator: Locator): Promise<void> {
-    await expect(pageLocator).toBeVisible();
+  async verifyPageLoad(pageLocator: Locator, timeout: number = 5_000): Promise<void> {
     await expect(async () => {
       if (!(await pageLocator.isVisible())) {
         await this.page.reload();
+        await this.page.waitForLoadState('load');
       }
-      await expect(pageLocator).toBeVisible({ timeout: 5_000 });
+      await expect(pageLocator).toBeVisible({ timeout: timeout });
     }).toPass({ intervals: [1_000], timeout: 30_000 });
   }
 

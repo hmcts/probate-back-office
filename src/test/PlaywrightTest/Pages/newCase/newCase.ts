@@ -72,7 +72,7 @@ export class CreateCasePage extends BasePage {
 
     async selectCaseTypeOptions(caseType: string, event: string) {
         // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
-        await this.verifyPageLoad(this.createCaseLocator);
+        await this.verifyPageLoad(this.createCaseLocator, 10_000);
         await expect(this.createCaseLocator).toBeVisible();
         await expect(this.jurisdictionLocator).toBeEnabled();
         await this.jurisdictionLocator.selectOption({value: newCaseConfig.jurisdictionValue});
@@ -85,8 +85,9 @@ export class CreateCasePage extends BasePage {
         await this.eventLocator.selectOption({label: event});
         await expect(this.page.getByRole('option', {name: event})).toBeHidden();
         // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
-        await expect(this.startButtonLocator).toBeEnabled();
-        await this.startButtonLocator.click();
+        await this.waitForNavigationToComplete(this.startButtonLocator);
+        // await expect(this.startButtonLocator).toBeEnabled();
+        // await this.startButtonLocator.click();
         // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
     }
 

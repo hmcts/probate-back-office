@@ -1155,7 +1155,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async caseProgressHmrcStopPage(caseProgressConfig) {
-    await this.verifyPageLoad(this.page.locator(`${caseProgressConfig.hmrcStopPage}`));
+    await this.verifyPageLoad(this.page.getByText(caseProgressConfig.ihtHmrcLetterNotReceived));
     await expect(this.page.getByText(caseProgressConfig.ihtHmrcLetterNotReceived)).toBeVisible();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
