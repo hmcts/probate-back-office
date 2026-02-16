@@ -24,9 +24,4 @@
         -->
         <cve>CVE-2025-15104</cve>
     </suppress>
-    <suppress>
-        <notes>Ignoring all artifacts from old npm lockfiles as we have migrated to Yarn Berry.</notes>
-        <filePath regex="true">.*package-lock\.json</filePath>
-        <cvssBelow>11</cvssBelow>
-    </suppress>
 </suppressions>
