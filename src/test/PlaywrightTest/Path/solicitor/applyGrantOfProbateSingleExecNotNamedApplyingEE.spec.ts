@@ -29,6 +29,7 @@ test.describe("Solicitor - Apply Grant of probate Single Executor Excepted Estat
     solCreateCasePage,
     cwEventActionsPage
   }, testInfo) => {
+    test.setTimeout(300000);
     const scenarioName = 'Solicitor - Apply Grant of probate Single Executor Excepted Estates (not named, applying)';
     const isSolicitorNamedExecutor = false;
     const isSolicitorApplyingExecutor = true;

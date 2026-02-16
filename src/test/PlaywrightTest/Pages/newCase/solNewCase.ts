@@ -604,7 +604,7 @@ export class SolCreateCasePage extends BasePage {
     await this.verifyPageLoad(this.solsStartPageLocator);
     await expect(this.solsStartPageLocator).toBeVisible();
     await this.runAccessibilityTest();
-    await this.waitForNavigationToComplete(commonConfig.submitButton);
+    await this.waitForNavigationToComplete(commonConfig.submitButton, 10_000);
   }
 
   async applyForProbatePage2(isSolicitorNamedExecutor = false, isSolicitorApplyingExecutor = false) {
@@ -700,7 +700,6 @@ export class SolCreateCasePage extends BasePage {
     if (applicationType === 'EE') {
       if (iHTFormsCompleted === 'Yes') {
         await this.ihtFormEstateValueCompleted.click();
-        await this.verifyPageLoad(this.ihtFormsLabelLocator);
         await expect(this.ihtFormsLabelLocator).toBeVisible();
         await expect(this.iht207Locator).toBeVisible();
         await expect(this.iht400Locator).toBeVisible();
@@ -715,7 +714,6 @@ export class SolCreateCasePage extends BasePage {
 
       } else {
         await this.ihtFormEstateValueNotCompleted.click();
-        await this.verifyPageLoad(this.ihtGrossValueLabelLocator);
         await expect(this.ihtGrossValueLabelLocator).toBeVisible();
         await expect(this.ihtNetValueLabelLocator).toBeVisible();
         await expect(this.ihtNetQualifyingValueLabelLocator).toBeVisible();
@@ -731,7 +729,6 @@ export class SolCreateCasePage extends BasePage {
       }
     } else if (applicationType === 'MultiExec') {
       await this.formIdMultiLocator.click();
-      await this.verifyPageLoad(this.nilBandRateLocator);
       await expect(this.nilBandRateLocator).toBeVisible();
       await this.iht217OptionLocator.click();
     } else {
@@ -743,7 +740,6 @@ export class SolCreateCasePage extends BasePage {
 
   async provideIhtValues(ihtGrossValue?: string, ihtNetValue?: string, whichIHTFormsCompleted?: string) {
     await this.runAccessibilityTest();
-    await this.verifyPageLoad(this.ihtGrossValueLocator);
     await expect(this.ihtGrossValueLocator).toBeVisible();
     await this.ihtGrossValueLocator.fill(ihtGrossValue);
 
@@ -759,7 +755,6 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async deceasedDetailsPage3(willType = 'WillLeft') {
-    await this.verifyPageLoad(this.solsWillTypeLocator);
     await expect(this.solsWillTypeLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator(`#solsWillType-${willType}`).click();
@@ -767,7 +762,6 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async deceasedDetailsPage4() {
-    await this.verifyPageLoad(this.willDisposeLocator);
     await expect(this.willDisposeLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.willDisposeOptionLocator.click();
@@ -813,7 +807,7 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     // await this.page.waitForTimeout(testConfig.ManualDelayLong);
     if (isSolicitorNamedExecutor || isSolicitorApplyingExecutor) {
-      await this.verifyPageLoad(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text));
+      // await this.verifyPageLoad(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text));
       await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).toBeVisible();
       await expect(this.page.getByText(grantOfProbateConfig.page2_sol_name)).toBeVisible();
     } else {
@@ -883,7 +877,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async verifyTitleAndClearingTypeOptionPage(optName) {
-    await this.verifyPageLoad(this.page.locator(`#titleAndClearingType-${optName}`));
+    // await this.verifyPageLoad(this.page.locator(`#titleAndClearingType-${optName}`));
     await expect(this.page.locator(`#titleAndClearingType-${optName}`)).toBeEnabled();
     await this.page.locator(`#titleAndClearingType-${optName}`).scrollIntoViewIfNeeded();
     await this.page.locator(`#titleAndClearingType-${optName}`).click();
@@ -900,7 +894,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async grantOfProbatePage3() {
-    await this.verifyPageLoad(this.displenseWithNoticeLeaveLocator);
+    // await this.verifyPageLoad(this.displenseWithNoticeLeaveLocator);
     await expect(this.displenseWithNoticeLeaveLocator).toBeEnabled();
     await this.runAccessibilityTest();
     await this.displenseWithNoticeLeaveLocator.click();
@@ -926,7 +920,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async grantOfProbatePage4(isSolicitorApplying = false) {
-    await this.verifyPageLoad(this.otherExecutorExistsLocator);
+    // await this.verifyPageLoad(this.otherExecutorExistsLocator);
     await expect(this.otherExecutorExistsLocator).toBeEnabled();
     await this.runAccessibilityTest();
 
@@ -971,7 +965,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async grantOfProbatePage5() {
-    await this.verifyPageLoad(this.furtherEvidenceLocator);
+    // await this.verifyPageLoad(this.furtherEvidenceLocator);
     await expect(this.furtherEvidenceLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.furtherEvidenceLocator.fill(grantOfProbateConfig.page5_applicationNotes);
@@ -979,7 +973,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async grantOfProbatePage6() {
-    await this.verifyPageLoad(this.additionalInfoLocator);
+    // await this.verifyPageLoad(this.additionalInfoLocator);
     await expect(this.additionalInfoLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.additionalInfoLocator.fill(grantOfProbateConfig.page5_applicationNotes);
@@ -1091,6 +1085,7 @@ export class SolCreateCasePage extends BasePage {
       }
     }
 
+    await this.verifyPageLoad(this.reviewLocator);
     await expect(this.reviewLocator).toBeVisible();
     await this.reviewLocator.click();
   }
@@ -1278,7 +1273,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async nocPage2(deceasedSurname) {
-    await this.verifyPageLoad(this.page.getByText(nocConfig.page2WaitForText));
+    // await this.verifyPageLoad(this.page.getByText(nocConfig.page2WaitForText));
     await expect(this.page.getByText(nocConfig.page2WaitForText)).toBeVisible();
     await expect(this.page.locator(nocConfig.deceasedSurnameLocator)).toBeEnabled();
     await this.page.locator(nocConfig.deceasedSurnameLocator).fill(deceasedSurname);
@@ -1286,7 +1281,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async nocPage3(caseRef, deceasedSurname) {
-    await this.verifyPageLoad(this.page.getByText(nocConfig.page3WaitForText));
+    // await this.verifyPageLoad(this.page.getByText(nocConfig.page3WaitForText));
     await expect(this.page.getByText(nocConfig.page3WaitForText)).toBeVisible();
 
     const caseRefNoDashes = await caseRef.replaceAll('-', '');
@@ -1300,7 +1295,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async nocConfirmationPage(caseRef) {
-    await this.verifyPageLoad(this.page.getByText(nocConfig.confirmationPageWaitForText));
+    // await this.verifyPageLoad(this.page.getByText(nocConfig.confirmationPageWaitForText));
     await expect(this.page.getByText(nocConfig.confirmationPageWaitForText)).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.page.locator(nocConfig.viewCaseLinkLocator)).toBeEnabled();

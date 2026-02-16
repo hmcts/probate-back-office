@@ -65,7 +65,6 @@ test.describe("01 BO Case Progress E2E - application stopped: complete", () => {
 
     await basePage.logInfo(scenarioName, 'App stopped tab check');
     await caseProgressPage.caseProgressAppStoppedTabCheck();
-    await signInPage.signOut();
 
     await basePage.logInfo(scenarioName, '01 BO Case Progress E2E - application stopped: complete');
   });

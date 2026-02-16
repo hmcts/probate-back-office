@@ -150,7 +150,7 @@ export class CaseProgressPage extends SignInPage {
       if (this.page.url() === currentUrl) {
         await this.page.reload({ timeout: 10_000 });
         await this.caseProgressSelectPenultimateNextStep();
-        await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
+        await this.page.locator('button[type="submit"].button').click({ timeout: 5_000 });
       }
       await expect(this.page).not.toHaveURL(currentUrl);
     }).toPass({ intervals: [1_000], timeout: 60_000 });
@@ -192,7 +192,6 @@ export class CaseProgressPage extends SignInPage {
 
     // Check date format
     await expect(this.page.getByText(`The case was escalated on ${moment().format('DD MMM yyyy')}.`, { exact: true })).toBeVisible();
-    // await I.waitForText(`The case was escalated on ${moment().format('DD MMM yyyy')}.`);
   }
 
   async caseProgressAppStoppedDetails() {
@@ -201,19 +200,11 @@ export class CaseProgressPage extends SignInPage {
     await expect(this.page.getByText(caseProgressConfig.AppStoppedReasonText, { exact: true })).toBeVisible();
     await expect(this.page.getByText(caseProgressConfig.AppStoppedAdditionalText, { exact: true })).toBeVisible();
     await this.waitForNavigationToComplete('button[type="submit"]');
-
-    // await I.waitForText(caseProgressConfig.AppStoppedHeader);
-    // await I.waitForText(caseProgressConfig.AppStoppedReasonText);
-    // await I.waitForText(caseProgressConfig.AppStoppedAdditionalText);
-    // await I.waitForNavigationToComplete('button[type="submit"]');
   }
 
   async caseProgressAppStoppedTabCheck() {
-    await this.verifyPageLoad(this.page.getByText(caseProgressConfig.AppStoppedTabTitle));
+    await this.verifyPageLoad(this.page.getByText(caseProgressConfig.AppStoppedTabTitle, { exact: true }));
     await expect(this.page.locator( 'div.govuk-inset-text').first()).toContainText(caseProgressConfig.AppStoppedTabTitle, { timeout: 2000 });
     await expect(this.page.getByText( caseProgressConfig.AppStoppedTabCheckText, { exact: true })).toBeVisible();
-    // await I.waitForText(caseProgressConfig.AppStoppedTabTitle, 2, {css: 'div.govuk-inset-text'});
-
-    // await I.waitForText(caseProgressConfig.AppStoppedTabCheckText);
   }
 };

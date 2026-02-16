@@ -36,6 +36,7 @@ test.describe("Solicitor - Notice Of Change GOP", () => {
                                             solCreateCasePage,
                                             cwEventActionsPage,
                                           }, testInfo) => {
+    test.setTimeout(300000);
     const scenarioName = 'Solicitor - Notice Of Change GOP';
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;

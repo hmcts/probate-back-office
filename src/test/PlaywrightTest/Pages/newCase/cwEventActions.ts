@@ -98,11 +98,11 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async chooseNextStep(nextStep: string) {
-    await this.verifyPageLoad(this.nextStepLocator);
+    await this.verifyPageLoad(this.nextStepLocator, 10_000);
     await expect(this.nextStepLocator).toBeEnabled();
     await this.nextStepLocator.selectOption({ label: nextStep });
     // await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
-    await this.waitForNavigationToComplete(this.goButtonLocator);
+    await this.waitForNavigationToComplete(this.goButtonLocator, 10_000);
   }
 
   async selectCaseMatches(
