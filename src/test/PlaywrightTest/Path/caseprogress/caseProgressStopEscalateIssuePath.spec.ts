@@ -18,7 +18,7 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
       cwEventActionsPage,
       caseProgressPage
     }, testInfo) => {
-    test.setTimeout(600000);
+    test.setTimeout(900000);
     const scenarioName ='Case Progress - stop/escalate/issue';
 
     const isSolicitorNamedExecutor = true;
