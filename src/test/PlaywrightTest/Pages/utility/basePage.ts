@@ -78,7 +78,7 @@ export class BasePage {
         await locator.click({ timeout: timeout });
       }
       await expect(this.page).not.toHaveURL(currentUrl);
-      console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
+      // console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
     }).toPass({ intervals: [2_000], timeout: 60_000 });
 
   }
@@ -108,7 +108,7 @@ export class BasePage {
       this.goButtonLocator.click(),
       this.goButtonLocator.waitFor({ state: "detached", timeout: 10000 }),
     ]);
-  }*/
+  }
 
   async waitForSignOutNavigationToComplete(signOutLocator: string) {
     // const navigationPromise = this.page.waitForNavigation();
@@ -123,7 +123,7 @@ export class BasePage {
     }).toPass({ intervals: [1_000], timeout: 30_000 });
     await this.page.waitForLoadState("domcontentloaded")
     // await navigationPromise;
-  }
+  }*/
 
   async seeCaseDetails(
     testInfo: TestInfo,
