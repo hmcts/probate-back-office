@@ -289,7 +289,7 @@ export class SolCreateCasePage extends BasePage {
     await this.verifyPageLoad(this.cyaPageLocator);
     await expect(this.cyaPageLocator).toBeVisible();
     await this.runAccessibilityTest();
-    await this.waitForNavigationToComplete(commonConfig.submitButton, 10);
+    await this.waitForNavigationToComplete(commonConfig.submitButton, 10_000);
   }
 
   async seeEndState(endState: string) {
@@ -1270,6 +1270,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async nocPage1(caseRef) {
+    await this.verifyPageLoad(this.page.getByRole('heading', { name: nocConfig.page1WaitForText }));
     await expect(this.page.getByRole('heading', { name: nocConfig.page1WaitForText })).toBeVisible();
     await expect(this.page.locator(nocConfig.caseRefLocator)).toBeEnabled();
     await this.page.locator(nocConfig.caseRefLocator).fill(caseRef);
@@ -1277,6 +1278,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async nocPage2(deceasedSurname) {
+    await this.verifyPageLoad(this.page.getByText(nocConfig.page2WaitForText));
     await expect(this.page.getByText(nocConfig.page2WaitForText)).toBeVisible();
     await expect(this.page.locator(nocConfig.deceasedSurnameLocator)).toBeEnabled();
     await this.page.locator(nocConfig.deceasedSurnameLocator).fill(deceasedSurname);
@@ -1284,6 +1286,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async nocPage3(caseRef, deceasedSurname) {
+    await this.verifyPageLoad(this.page.getByText(nocConfig.page3WaitForText));
     await expect(this.page.getByText(nocConfig.page3WaitForText)).toBeVisible();
 
     const caseRefNoDashes = await caseRef.replaceAll('-', '');
@@ -1297,6 +1300,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async nocConfirmationPage(caseRef) {
+    await this.verifyPageLoad(this.page.getByText(nocConfig.confirmationPageWaitForText));
     await expect(this.page.getByText(nocConfig.confirmationPageWaitForText)).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.page.locator(nocConfig.viewCaseLinkLocator)).toBeEnabled();
@@ -1304,6 +1308,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async shareCaseSelection(sacCaseRefNumber) {
+    await this.verifyPageLoad(this.caseListLocator);
     await expect(this.caseListLocator).toBeVisible();
     await this.caseListLocator.click();
     await expect(this.caseViewTextLocator).toBeVisible();
@@ -1335,6 +1340,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async verifyShareCase(sacCaseRefNumber) {
+    await this.verifyPageLoad(this.caseViewTextLocator);
     await expect(this.caseViewTextLocator).toBeVisible();
     await this.caseReferenceLocator.click();
     await this.page.getByLabel(shareCaseConfig.caseList_sortCase).click();
@@ -1350,6 +1356,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async shareCaseVerifyUserRemove(sacCaseRefNumber) {
+    await this.verifyPageLoad(this.caseViewTextLocator);
     await expect(this.caseViewTextLocator).toBeVisible();
     await this.caseReferenceLocator.click();
     await this.page.getByLabel(shareCaseConfig.caseList_sortCase).click();
@@ -1357,6 +1364,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async shareCaseDelete(caseIdShareCase, caseRef) {
+    await this.verifyPageLoad(this.caseViewTextLocator);
     await expect(this.caseViewTextLocator).toBeVisible();
     const caseRefNoDashes = caseRef.replaceAll('-', '');
     await this.page.goto(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`);

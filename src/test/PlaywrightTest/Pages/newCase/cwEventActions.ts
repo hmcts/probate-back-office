@@ -287,7 +287,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async uploadDocument(caseRef: string, documentUploadConfig: DocumentUploadConfig) {
-    await this.verifyPageLoad(this.page.getByRole("heading", { name: documentUploadConfig.waitForText }));
+    await this.verifyPageLoad(this.page.getByRole("heading", { name: documentUploadConfig.waitForText }), 10_000);
     await expect(
       this.page.getByRole("heading", {
         name: documentUploadConfig.waitForText,
@@ -297,10 +297,7 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.addNewLocator).toBeEnabled();
     await this.addNewLocator.focus();
-    await this.addNewLocator.click();
-    /*if (!testConfig.TestAutoDelayEnabled) {
-      await this.page.waitForTimeout(testConfig.ManualDelayShort);
-    }*/
+    await this.addNewLocator.click({ timeout: testConfig.ManualDelayShort });
     await expect(
       this.page.locator(`${documentUploadConfig.id}_0_Comment`)
     ).toBeVisible();

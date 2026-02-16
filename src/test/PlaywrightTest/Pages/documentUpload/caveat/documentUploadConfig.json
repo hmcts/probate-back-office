@@ -1,5 +1,5 @@
 {
-  "waitForText": "Documents uploaded",
+  "waitForText": "Document upload",
   "documentType": [
     "Email",
     "Correspondence",
