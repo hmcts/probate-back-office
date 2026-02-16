@@ -13,4 +13,5 @@ public class Applicant implements Serializable {
     private final String primaryApplicantParentAdoptedOut;
     private final String primaryApplicantAdoptionInEnglandOrWales;
     private final String primaryApplicantAdoptedOut;
+    private final String anyLivingWholeBloodSiblings;
 }

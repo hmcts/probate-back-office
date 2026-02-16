@@ -58,6 +58,7 @@ import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationValidationRule;
 import uk.gov.hmcts.probate.validator.NaValidationRule;
@@ -210,6 +211,8 @@ class BusinessValidationUnitTest {
     @Mock
     private IHTFormIDValidationRule ihtFormIDValidationRule;
     @Mock
+    private IntestacyDeceasedDetailsValidationRule intestacyDeceasedDetailsValidationRule;
+    @Mock
     private IntestacyApplicantDetailsValidationRule intestacyApplicantDetailsValidationRule;
     @Mock
     private IntestacyCoApplicantValidationRule intestacyCoApplicantValidationRule;
@@ -277,6 +280,7 @@ class BusinessValidationUnitTest {
             zeroApplyingExecutorsValidationRule,
             checkIntestacyOtherApplicantRule,
             checkIntestacyMaritalStatusRule,
+            intestacyDeceasedDetailsValidationRule,
             intestacyApplicantDetailsValidationRule,
             intestacyDivorceOrSeparationValidationRule,
             intestacyCoApplicantValidationRule,

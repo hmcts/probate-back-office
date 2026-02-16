@@ -94,6 +94,7 @@ import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_SIBLING_LABEL;
 import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.PARENT_LABEL;
 import static uk.gov.hmcts.probate.model.Constants.SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW_LABEL;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
@@ -1587,7 +1588,9 @@ public class CallbackResponseTransformer {
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
             .childAlive(caseData.getChildAlive())
-            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased());
+            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
+            .solsIntestacyExecutorList(caseData.getSolsIntestacyExecutorList())
+            .anyLivingWholeBloodSiblings(caseData.getAnyLivingWholeBloodSiblings());
 
         handleDeceasedAliases(
                 builder,
@@ -2423,6 +2426,8 @@ public class CallbackResponseTransformer {
         final var caseDetailsBefore = callbackRequest.getCaseDetailsBefore();
         String relationshipAfter = caseDetails.getData().getSolsApplicantRelationshipToDeceased();
         String relationshipBefore = caseDetailsBefore.getData().getSolsApplicantRelationshipToDeceased();
+        String wholeOrHalfSiblingBefore = caseDetailsBefore.getData().getApplicantSameParentsAsDeceased();
+        String wholeOrHalfSiblingAfter = caseDetails.getData().getApplicantSameParentsAsDeceased();
         List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList = caseDetailsBefore.getData()
                 .getSolsIntestacyExecutorList();
         log.info("Relationship to deceased before: {}", relationshipBefore);
@@ -2431,11 +2436,13 @@ public class CallbackResponseTransformer {
         DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData, existingExecutorList);
         String  otherExecutorExists = caseData.getOtherExecutorExists();
 
-        if (YES.equalsIgnoreCase(otherExecutorExists) && (!relationshipAfter.equals(relationshipBefore))) {
+        if (YES.equalsIgnoreCase(otherExecutorExists) && (!relationshipAfter.equals(relationshipBefore)
+                || (null != wholeOrHalfSiblingBefore && !wholeOrHalfSiblingBefore.equals(wholeOrHalfSiblingAfter)))) {
             List<CollectionMember<IntestacyAdditionalExecutor>> additionalExecutorList = new ArrayList<>();
             IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
                     .solsApplicantFamilyDetails(SolsApplicantFamilyDetails.builder()
-                            .relationship(relationshipList).build())
+                            .relationship(relationshipList)
+                            .applicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased()).build())
                     .build();
             additionalExecutorList.add(new CollectionMember<>(additionalExecutor));
             responseCaseDataBuilder.solsIntestacyExecutorList(additionalExecutorList);
@@ -2462,7 +2469,7 @@ public class CallbackResponseTransformer {
                 listItems.add(buildRadioListItem(PARENT, PARENT_LABEL));
                 break;
             case SIBLING:
-                if (YES.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased())) {
+                if (WHOLE_SIBLING.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased())) {
                     listItems.add(buildRadioListItem(WHOLE_BLOOD_SIBLING, WHOLE_BLOOD_SIBLING_LABEL));
                     listItems.add(buildRadioListItem(WHOLE_BLOOD_NIECE_OR_NEPHEW, WHOLE_BLOOD_NIECE_OR_NEPHEW_LABEL));
                 } else {

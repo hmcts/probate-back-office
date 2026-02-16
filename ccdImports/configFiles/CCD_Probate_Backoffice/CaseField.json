@@ -410,7 +410,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyDeceasedChildrenDieBeforeDeceased", "Label": "Did any of the deceased's children die before deceased?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyDeceasedGrandChildrenUnderEighteen", "Label": "Are any of the deceased's grand children under eighteen?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAnyChildren", "Label": "Did the deceased have any children?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAnyLivingDescendants", "Label": "Did the deceased have any living descendants?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAnyLivingDescendants", "Label": "Are there any living children, grandchildren or great-grandchildren of the deceased?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAnyOtherParentAlive", "Label": "Is the deceased’s other parent alive?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "statementOfTruthDocument", "Label": "Legal Statement", "FieldType": "Document", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "amendedLegalStatement", "Label": "Amended Legal Statement", "FieldType": "Document", "SecurityClassification": "Public", "RegularExpression":  ".pdf"},
@@ -559,5 +559,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grandchildParentChildrenOverEighteen", "Label": "Did the grandchild parent children are over 18?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantSameParentsAsDeceased", "Label": "Did the applicant share both the same parents as the deceased?", "FieldType": "FixedList", "FieldTypeParameter": "sameParentFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAnyLivingParents", "Label": "Are there any living parents of the deceased?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsIntestacyExecutorList", "Label": "Co-applicant", "FieldType": "Collection", "FieldTypeParameter": "solIntestacyAdditionalExecutor", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsIntestacyExecutorList", "Label": "Co-applicant", "FieldType": "Collection", "FieldTypeParameter": "solIntestacyAdditionalExecutor", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyLivingWholeBloodSiblings", "Label": "Are there any living whole blood siblings of the deceased?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]

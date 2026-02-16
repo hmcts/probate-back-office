@@ -7,15 +7,14 @@ import lombok.Data;
 @Builder
 public class SolsApplicantFamilyDetails {
     private final DynamicRadioList relationship;
-    private final String childAdoptedIn;
-    private final String childAdoptionInEnglandOrWales;
-    private final String childAdoptedOut;
-    private final String childDieBeforeDeceased;
+    private final String applicantRelationshipToDeceased;
+    private final String coApplicantAdoptedIn;
+    private final String coApplicantAdoptionInEnglandOrWales;
+    private final String coApplicantAdoptedOut;
+    private final String grandchildParentDieBeforeDeceased;
     private final String grandchildParentAdoptedIn;
     private final String grandchildParentAdoptionInEnglandOrWales;
     private final String grandchildParentAdoptedOut;
-    private final String grandchildAdoptedIn;
-    private final String grandchildAdoptionInEnglandOrWales;
-    private final String grandchildAdoptedOut;
-
+    private final String wholeNieceOrNephewParentDieBeforeDeceased;
+    private final String halfNieceOrNephewParentDieBeforeDeceased;
 }

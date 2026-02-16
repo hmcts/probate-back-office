@@ -508,7 +508,6 @@ public class CaseData extends CaseDataParent {
     private final String boGrantReissueSendToBulkPrintRequested;
     private final String deceasedDivorcedInEnglandOrWales;
     private final String deceasedDivorcedDateKnown;
-    private final String childAlive;
     private final String primaryApplicantAdoptedIn;
     private final String primaryApplicantAdoptionInEnglandOrWales;
     private final String primaryApplicantAdoptedOut;
@@ -666,6 +665,8 @@ public class CaseData extends CaseDataParent {
     private final String hasCoApplicant;
     private LocalDate firstStopReminderSentDate;
     private final String evidenceHandledDate;
+    private final String childAlive;
+    private final String anyLivingWholeBloodSiblings;
 
 
     private TTL ttl;
