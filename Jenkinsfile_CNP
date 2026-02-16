@@ -209,7 +209,8 @@ withPipeline("java", product, component) {
 
   afterAlways('checkout') {
         echo "Starting npm install phase..."
-        sh 'npm ci'
+        sh 'rm -rf node_modules'
+        sh 'yarn install --immutable'
         echo "Dependencies installed successfully."
   }
   afterAlways('test') {
