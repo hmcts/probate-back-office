@@ -199,21 +199,6 @@ withPipeline("java", product, component) {
   env.IDAM_CLIENT_NAME='probate'
   env.CASE_DOCUMENT_AM_URL='http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
   pipelineConf = config;
-  stage('Install Dependencies') {
-    steps {
-      // 'npm ci' is generally preferred in CI/CD over 'npm install'
-      // because it's faster and uses the package-lock.json strictly.
-      echo "Starting npm install phase..."
-      sh 'npm ci'
-      echo "Dependencies installed successfully."
-    }
-  }
-  stage('Dependency Check') {
-    steps {
-      echo "Running security scan..."
-      // Your dependency check command here
-    }
-  }
   enableAksStagingDeployment()
   disableLegacyDeployment()
   loadVaultSecrets(secrets)
@@ -222,7 +207,7 @@ withPipeline("java", product, component) {
   enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
 
-  afterAlways('Checkout') {
+  afterAlways('checkout') {
     stage('Install Dependencies') {
       steps {
         // 'npm ci' is generally preferred in CI/CD over 'npm install'
