@@ -2138,7 +2138,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.12.2, axios@npm:^1.3.3":
+"axios@npm:1.13.2":
+  version: 1.13.2
+  resolution: "axios@npm:1.13.2"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.4"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10/ae4e06dcd18289f2fd18179256d550d27f9a53ecb2f9c59f2ccc4efd1d7151839ba8c3e0fb533dac793e4a59a576ca8689a19244dce5c396680837674a47a867
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.3.3":
   version: 1.12.2
   resolution: "axios@npm:1.12.2"
   dependencies:
@@ -4655,14 +4666,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:11.3.2, fs-extra@npm:^11.3.0":
-  version: 11.3.2
-  resolution: "fs-extra@npm:11.3.2"
+"fs-extra@npm:11.3.3":
+  version: 11.3.3
+  resolution: "fs-extra@npm:11.3.3"
   dependencies:
     graceful-fs: "npm:^4.2.0"
     jsonfile: "npm:^6.0.1"
     universalify: "npm:^2.0.0"
-  checksum: 10/d559545c73fda69c75aa786f345c2f738b623b42aea850200b1582e006a35278f63787179e3194ba19413c26a280441758952b0c7e88dd96762d497e365a6c3e
+  checksum: 10/daeaefafbebe8fa6efd2fb96fc926f2c952be5877811f00a6794f0d64e0128e3d0d93368cd328f8f063b45deacf385c40e3d931aa46014245431cd2f4f89c67a
   languageName: node
   linkType: hard
 
@@ -4685,6 +4696,17 @@ __metadata:
     jsonfile: "npm:^6.0.1"
     universalify: "npm:^2.0.0"
   checksum: 10/05ce2c3b59049bcb7b52001acd000e44b3c4af4ec1f8839f383ef41ec0048e3cfa7fd8a637b1bddfefad319145db89be91f4b7c1db2908205d38bf91e7d1d3b7
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:^11.3.0":
+  version: 11.3.2
+  resolution: "fs-extra@npm:11.3.2"
+  dependencies:
+    graceful-fs: "npm:^4.2.0"
+    jsonfile: "npm:^6.0.1"
+    universalify: "npm:^2.0.0"
+  checksum: 10/d559545c73fda69c75aa786f345c2f738b623b42aea850200b1582e006a35278f63787179e3194ba19413c26a280441758952b0c7e88dd96762d497e365a6c3e
   languageName: node
   linkType: hard
 
@@ -7167,10 +7189,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-forge@npm:1.3.1":
-  version: 1.3.1
-  resolution: "node-forge@npm:1.3.1"
-  checksum: 10/05bab6868633bf9ad4c3b1dd50ec501c22ffd69f556cdf169a00998ca1d03e8107a6032ba013852f202035372021b845603aeccd7dfcb58cdb7430013b3daa8d
+"node-forge@npm:1.3.3":
+  version: 1.3.3
+  resolution: "node-forge@npm:1.3.3"
+  checksum: 10/f41c31b9296771a4b8c955d58417471712f54f324603a35f8e6cbac19d5e6eaaf5fd5fd14584dfedecbf46a05438ded6eee60a5f2f0822fc5061aaa073cfc75d
   languageName: node
   linkType: hard
 
@@ -8078,10 +8100,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"properties-file@npm:3.6.1":
-  version: 3.6.1
-  resolution: "properties-file@npm:3.6.1"
-  checksum: 10/72ae41f898c97c2ef3f4e088a4546faf1427bc333c7daa1d129d9e8ab5befc0ea4cd31ff71f0f5753ad833ef704e759050506b7e86e51cc5d68eacdd7e88f3ba
+"properties-file@npm:3.6.3":
+  version: 3.6.3
+  resolution: "properties-file@npm:3.6.3"
+  checksum: 10/cd9cc6d4c382f32c64c83fdccd28e29a81438f282297f946c7375a5119706193e8e7eeb31eaf0113d774a07d46c229a20041f05277559ed59ba0ae661d7b2591
   languageName: node
   linkType: hard
 
@@ -8766,7 +8788,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.7.2, semver@npm:^7.2.1, semver@npm:^7.3.5, semver@npm:^7.3.8, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.6.0, semver@npm:^7.7.2, semver@npm:~7.7.1":
+"semver@npm:7.7.3":
+  version: 7.7.3
+  resolution: "semver@npm:7.7.3"
+  bin:
+    semver: bin/semver.js
+  checksum: 10/8dbc3168e057a38fc322af909c7f5617483c50caddba135439ff09a754b20bdd6482a5123ff543dad4affa488ecf46ec5fb56d61312ad20bb140199b88dfaea9
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.2.1, semver@npm:^7.3.5, semver@npm:^7.3.8, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.6.0, semver@npm:^7.7.2, semver@npm:~7.7.1":
   version: 7.7.2
   resolution: "semver@npm:7.7.2"
   bin:
@@ -9023,24 +9054,24 @@ __metadata:
   linkType: hard
 
 "sonarqube-scanner@npm:^4.0.0":
-  version: 4.3.2
-  resolution: "sonarqube-scanner@npm:4.3.2"
+  version: 4.3.4
+  resolution: "sonarqube-scanner@npm:4.3.4"
   dependencies:
     adm-zip: "npm:0.5.16"
-    axios: "npm:1.12.2"
+    axios: "npm:1.13.2"
     commander: "npm:13.1.0"
-    fs-extra: "npm:11.3.2"
+    fs-extra: "npm:11.3.3"
     hpagent: "npm:1.2.0"
-    node-forge: "npm:1.3.1"
-    properties-file: "npm:3.6.1"
+    node-forge: "npm:1.3.3"
+    properties-file: "npm:3.6.3"
     proxy-from-env: "npm:1.1.0"
-    semver: "npm:7.7.2"
+    semver: "npm:7.7.3"
     slugify: "npm:1.6.6"
     tar-stream: "npm:3.1.7"
   bin:
     sonar: bin/sonar-scanner.js
     sonar-scanner: bin/sonar-scanner.js
-  checksum: 10/dd218acc93eefa048ccf6b62041becfb288de1a5c0b17845bea709189eed0ba0ce4df71bf5887fea90be0b824d6e70bac4c9be129d1b73c6129fea67f92d764f
+  checksum: 10/0f9d3dfc195e77495ea91d945b5ff993def4c9eed4ac3d2f098c0c4ef17f3dbe7e35529e270886befec4f9c4c50c51cf2dce04ef9d0ee18226d6521f5a257e2f
   languageName: node
   linkType: hard
 
