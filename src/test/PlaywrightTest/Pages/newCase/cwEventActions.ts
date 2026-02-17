@@ -469,7 +469,7 @@ export class CwEventActionsPage extends BasePage {
       label: `${createCaseConfig.stopReason}`,
     });
     // await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
-    await this.waitForNavigationToComplete(commonConfig.submitButton, 10);
+    await this.waitForNavigationToComplete(commonConfig.submitButton, 10_000);
 
   }
 
