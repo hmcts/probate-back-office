@@ -539,7 +539,7 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.page.locator('#boCaseStopReasonList_0_caseStopReason')).toBeEnabled();
     await this.page.locator('#boCaseStopReasonList_0_caseStopReason').selectOption('10: DocumentsRequired');
     await expect(this.page.locator('#boCaseStopReasonList_0_caseStopSubReasonDocRequired')).toBeEnabled();
-    await this.page.locator('#boCaseStopReasonList_0_caseStopSubReasonDocRequired').selectOption('7: PA11');
+    await this.page.locator('#boCaseStopReasonList_0_caseStopSubReasonDocRequired').selectOption('9: PA11');
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 }
