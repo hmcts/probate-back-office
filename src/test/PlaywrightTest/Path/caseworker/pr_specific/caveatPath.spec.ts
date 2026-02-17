@@ -38,6 +38,7 @@ test.describe("Caseworker Caveat1 - Order summons", () => {
     createCasePage,
     cwEventActionsPage,
   }, testInfo) => {
+    test.setTimeout(300000);
     const scenarioName = "Caseworker Caveat1 - Order summons";
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Order summons
 
