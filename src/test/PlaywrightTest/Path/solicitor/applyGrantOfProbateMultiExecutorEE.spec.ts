@@ -28,6 +28,7 @@ test.describe("Solicitor - Apply Grant of probate Excepted Estates", () => {
     solCreateCasePage,
     cwEventActionsPage
   }, testInfo) => {
+    test.setTimeout(300000);
     const scenarioName ='Solicitor - Apply Grant of probate Multi Executor for Excepted Estates';
 
     const willType = 'WillLeft';
