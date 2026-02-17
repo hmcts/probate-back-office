@@ -63,6 +63,7 @@ export class CreateCasePage extends BasePage {
 
     async selectNewCase() {
         // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
+      await this.verifyPageLoad(this.createCaseLocator, 10_000);
         await expect(this.createCasePageLocator).toBeVisible();
         await this.rejectCookies();
         await expect(this.createCaseLocator).toBeEnabled();
