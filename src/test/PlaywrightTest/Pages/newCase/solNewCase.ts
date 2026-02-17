@@ -1174,6 +1174,7 @@ export class SolCreateCasePage extends BasePage {
     await this.codicilAddedDayLocator.fill(admonWillDetailsConfig.page1_codicilDate_day);
     await this.codicilAddedMonthLocator.fill(admonWillDetailsConfig.page1_codicilDate_month);
     await this.codicilAddedYearLocator.fill(admonWillDetailsConfig.page1_codicilDate_year);
+    await this.languageLocator.focus();
     await this.languageLocator.click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
