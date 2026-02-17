@@ -116,8 +116,9 @@ export class BasePage {
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
     await this.page.waitForTimeout(delay);
 
-    // *****Need to comment this until accessibility script is completed*****/
-    await this.runAccessibilityTest();
+    if(!nocEvent) {
+      await this.runAccessibilityTest();
+    }
 
     if (tabConfigFile.waitForText) {
       const tabLocator = this.page.getByLabel(tabConfigFile.waitForText);
