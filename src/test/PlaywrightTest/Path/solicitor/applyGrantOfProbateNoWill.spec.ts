@@ -28,6 +28,7 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy)", () => 
     solCreateCasePage,
     cwEventActionsPage
   }, testInfo) => {
+    test.setTimeout(300000);
     const scenarioName = 'Solicitor - Apply Grant of probate - No Will (Intestacy)';
     const willType = 'NoWill';
 

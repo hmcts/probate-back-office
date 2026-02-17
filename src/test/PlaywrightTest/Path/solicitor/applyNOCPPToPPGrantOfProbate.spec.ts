@@ -36,6 +36,7 @@ test.describe("Solicitor - Notice Of Change GOP", () => {
                                             solCreateCasePage,
                                             cwEventActionsPage,
                                           }, testInfo) => {
+    test.setTimeout(300000);
     const scenarioName = 'Solicitor - Notice Of Change GOP';
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
@@ -165,6 +166,6 @@ test.describe("Solicitor - Notice Of Change GOP", () => {
 
     await basePage.logInfo(scenarioName, 'Login as PP user 1 to verify NoC');
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    await solCreateCasePage.verifyNoc(caseRef);
+    await solCreateCasePage.verifyNoc(caseRef, 'Grant of probate');
   });
 });

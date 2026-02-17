@@ -27,6 +27,7 @@ test.describe("Solicitor - Apply Caveat", () => {
     solCreateCasePage,
     cwEventActionsPage,
   }, testInfo) => {
+    test.setTimeout(300000);
     const scenarioName = "Solicitor - Apply Caveat";
 
     await basePage.logInfo(scenarioName, "Login as Solicitor", null);

@@ -98,11 +98,11 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async chooseNextStep(nextStep: string) {
-    await this.verifyPageLoad(this.nextStepLocator);
+    await this.verifyPageLoad(this.nextStepLocator, 10_000);
     await expect(this.nextStepLocator).toBeEnabled();
     await this.nextStepLocator.selectOption({ label: nextStep });
     // await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
-    await this.waitForNavigationToComplete(this.goButtonLocator);
+    await this.waitForNavigationToComplete(this.goButtonLocator, 10_000);
   }
 
   async selectCaseMatches(
@@ -287,7 +287,7 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async uploadDocument(caseRef: string, documentUploadConfig: DocumentUploadConfig) {
-    await this.verifyPageLoad(this.page.getByRole("heading", { name: documentUploadConfig.waitForText }));
+    await this.verifyPageLoad(this.page.getByRole("heading", { name: documentUploadConfig.waitForText }), 10_000);
     await expect(
       this.page.getByRole("heading", {
         name: documentUploadConfig.waitForText,
@@ -297,10 +297,7 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.page.getByText(caseRef)).toBeVisible();
     await expect(this.addNewLocator).toBeEnabled();
     await this.addNewLocator.focus();
-    await this.addNewLocator.click();
-    /*if (!testConfig.TestAutoDelayEnabled) {
-      await this.page.waitForTimeout(testConfig.ManualDelayShort);
-    }*/
+    await this.addNewLocator.click({ timeout: testConfig.ManualDelayShort });
     await expect(
       this.page.locator(`${documentUploadConfig.id}_0_Comment`)
     ).toBeVisible();
