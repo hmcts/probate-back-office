@@ -93,38 +93,6 @@ export class BasePage {
     }).toPass({ intervals: [1_000], timeout: 60_000 });
   }
 
- /* async waitForStopNavigationToComplete(buttonLocator) {
-    await expect(this.page.locator(buttonLocator)).toBeVisible();
-    await expect(this.page.locator(buttonLocator)).toBeEnabled();
-    await this.page.locator(buttonLocator).click({ noWaitAfter: true });
-    // await this.page.waitForTimeout(1000);
-  }
-
-  async waitForGoNavigationToComplete() {
-    await expect(this.goButtonLocator).toBeVisible();
-    await expect(this.goButtonLocator).toBeEnabled();
-    await Promise.all([
-      this.goButtonLocator.waitFor({ state: "visible" }),
-      this.goButtonLocator.click(),
-      this.goButtonLocator.waitFor({ state: "detached", timeout: 10000 }),
-    ]);
-  }
-
-  async waitForSignOutNavigationToComplete(signOutLocator: string) {
-    // const navigationPromise = this.page.waitForNavigation();
-    await expect(this.page.locator(`${signOutLocator}`)).toBeVisible();
-    await expect(this.page.locator(`${signOutLocator}`)).toBeEnabled();
-
-    await expect(async () => {
-      if ((await this.page.locator(`${signOutLocator}`).isVisible()) && (await this.page.locator(`${signOutLocator}`).isEnabled())) {
-        await this.page.locator(`${signOutLocator}`).click();
-      }
-      await expect(this.page.locator(`${signOutLocator}`)).not.toBeVisible({ timeout: 5000 });
-    }).toPass({ intervals: [1_000], timeout: 30_000 });
-    await this.page.waitForLoadState("domcontentloaded")
-    // await navigationPromise;
-  }*/
-
   async seeCaseDetails(
     testInfo: TestInfo,
     caseRef: string,
