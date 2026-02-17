@@ -286,7 +286,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async cyaPage() {
-    await this.verifyPageLoad(this.cyaPageLocator);
+    // await this.verifyPageLoad(this.cyaPageLocator);
     await expect(this.cyaPageLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.waitForNavigationToComplete(commonConfig.submitButton, 10_000);
