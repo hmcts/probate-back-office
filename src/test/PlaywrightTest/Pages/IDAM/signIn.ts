@@ -22,7 +22,7 @@ export class SignInPage extends BasePage {
       timeout: 60000
     });
     // await this.page.waitForTimeout(testConfig.ManualDelayLong);
-    await this.verifyPageLoad(this.usernameLocator);
+    await this.verifyPageLoad(this.usernameLocator, 10_000);
     await expect(
       this.page.getByRole("heading", {
         name: "Sign in",
@@ -53,10 +53,11 @@ export class SignInPage extends BasePage {
         );
     }
     // await this.page.waitForSelector(this.submitButtonLocator, signInDelay);
-    await expect(this.submitButtonLocator).toBeEnabled();
-    await this.submitButtonLocator.click();
+    // await expect(this.submitButtonLocator).toBeEnabled();
+    // await this.submitButtonLocator.click();
+    await this.waitForNavigationToComplete(this.submitButtonLocator);
     // await this.page.waitForTimeout(signInDelay);
-    await this.page.waitForLoadState('domcontentloaded');
+    // await this.page.waitForLoadState('domcontentloaded');
     await expect(this.usernameLocator).toBeHidden();
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
