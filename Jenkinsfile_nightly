@@ -144,7 +144,7 @@ withNightlyPipeline("nodejs", product, component) {
                         keepAll              : true,
                         reportDir            : 'functional-output/reports/iPadProTests',
                         reportFiles          : 'index.html',
-                        reportName           : 'UITestipadPro11Report'
+                        reportName           : 'UITestiPadPro11Report'
                 ])
                 steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
             }
