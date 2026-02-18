@@ -29,7 +29,7 @@ import changeOfRepresentativesDetailsConfigAAT from "../../Pages/noticeOfChange/
 import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Notice Of Change GOP", () => {
-  test("Solicitor - Notice Of Change GOP @ipadpro11", async ({
+  test("Solicitor - Notice Of Change GOP @firefox", async ({
                                             basePage,
                                             signInPage,
                                             createCasePage,

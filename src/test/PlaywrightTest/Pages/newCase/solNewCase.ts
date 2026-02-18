@@ -555,6 +555,7 @@ export class SolCreateCasePage extends BasePage {
     await this.postPaymentReviewDetails(caseRef);
 
     for (let i = 0; i <= 6; i++) {
+      await this.verifyPageLoad(this.eventHistoryTab);
       await expect(this.eventHistoryTab).toBeEnabled();
       await expect(this.page.getByText(caseRef).first()).toBeVisible();
       await this.eventHistoryTab.click();
@@ -562,10 +563,10 @@ export class SolCreateCasePage extends BasePage {
         .getByText(makePaymentConfig.statusText)
         .isVisible()
         .catch(() => true);
-      await this.page.waitForTimeout(10000);
       if (result) {
         break;
       }
+      await this.page.waitForTimeout(10000);
       await this.page.reload();
       // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     }

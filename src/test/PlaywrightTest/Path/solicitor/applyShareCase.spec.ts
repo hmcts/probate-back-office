@@ -3,7 +3,7 @@ import { test } from "../../Fixtures/fixtures.ts";
 import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Share A Case", () => {
-  test("Solicitor - Share A Case @webkit", async ({
+  test("Solicitor - Share A Case", async ({
                                                     page,
                                                     basePage,
                                                     signInPage,

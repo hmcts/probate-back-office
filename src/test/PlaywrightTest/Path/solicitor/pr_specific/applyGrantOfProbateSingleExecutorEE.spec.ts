@@ -22,7 +22,7 @@ import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorA
 import caseProgressConfig from "../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
 test.describe("SSolicitor - Apply Grant of probate Excepted Estates", () => {
-  test("Solicitor - Apply Grant of probate Single Executor for Excepted Estates @ipadpro11", async ({
+  test("Solicitor - Apply Grant of probate Single Executor for Excepted Estates @firefox", async ({
       basePage,
       signInPage,
       createCasePage,

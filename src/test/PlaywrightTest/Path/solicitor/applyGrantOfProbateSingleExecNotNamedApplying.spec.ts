@@ -21,7 +21,7 @@ import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorAppl
 import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Apply Grant of probate Single Executor (not named, applying)", () => {
-  test("Solicitor - Apply Grant of probate Single Executor (not named, applying) @ipadpro11", async ({
+  test("Solicitor - Apply Grant of probate Single Executor (not named, applying) @edge", async ({
     basePage,
     signInPage,
     createCasePage,

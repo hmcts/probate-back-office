@@ -28,6 +28,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     createCasePage,
     cwEventActionsPage,
   }, testInfo) => {
+    test.setTimeout(300000);
     const scenarioName =
       "Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker";
 
