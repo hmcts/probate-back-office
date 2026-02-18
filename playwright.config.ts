@@ -37,6 +37,7 @@ export default defineConfig({
     {
       ...ProjectsConfig.chromium,
         outputDir: './test-results/FullFunctionalTests',
+        grepInvert: /@edge|@firefox|@webkit|@ipadpro11|@galaxys4/
     },
     {
       ...ProjectsConfig.edge,
