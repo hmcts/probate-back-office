@@ -67,6 +67,16 @@ withNightlyPipeline("nodejs", product, component) {
 
     afterAlways('fullFunctionalTest') {
 
+        publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'functional-output/reports',
+                reportFiles: 'index.html',
+                reportName: 'Playwright Test Report',
+                reportTitles: 'E2E Test Results'
+        ])
+
         stage('Functional UI tests Edge') {
             try {
                 yarnBuilder.yarn('test:functional-Edge')
