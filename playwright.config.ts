@@ -31,10 +31,10 @@ export default defineConfig({
     {
       ...ProjectsConfig.chromium,
     },
-    /*{
+    {
       ...ProjectsConfig.edge,
     },
-    {
+    /*{
       ...ProjectsConfig.firefox,
     },
     {
