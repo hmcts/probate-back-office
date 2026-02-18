@@ -38,5 +38,7 @@ yarn test:functional-chromium
 TEST_STATUS=$?
 set -e
 
+echo "Full e2e tests completed with status: $TEST_STATUS"
+
 # Exit with the tests' status (fails pipeline if tests failed)
-exit TEST_STATUS=0
+exit $TEST_STATUS
