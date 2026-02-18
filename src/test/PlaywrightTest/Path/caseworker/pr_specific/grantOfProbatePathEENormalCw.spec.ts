@@ -22,7 +22,7 @@ import issueGrantConfig from "../../../Pages/issueGrant/issueGrantConfig.json" w
 import nextStepConfig from "../../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
 
 test.describe("Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker", () => {
-  test("Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker @ipadpro11", async ({
+  test("Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker @webkit", async ({
     basePage,
     signInPage,
     createCasePage,
