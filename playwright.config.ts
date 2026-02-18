@@ -1,5 +1,6 @@
 import { CommonConfig, ProjectsConfig } from "@hmcts/playwright-common";
 import { defineConfig, devices } from "@playwright/test";
+const browserName = process.env.BROWSER_NAME || 'default';
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -13,7 +14,7 @@ export default defineConfig({
     },
 
     reporter: [
-        ['html', { outputFolder: './functional-output/reports', open: 'never' }],
+        ['html', { outputFolder: `./functional-output/reports/${browserName}`, open: 'never' }],
         ['json', { outputFile: './functional-output/results.json' }],
         ['list'], // Console output
     ],
