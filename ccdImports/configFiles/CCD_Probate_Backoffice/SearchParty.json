@@ -1,3 +1,4 @@
 [
-  {"LiveFrom": "1/1/2022", "CaseTypeID": "GrantOfRepresentation", "SearchPartyName": "deceasedForenames", "SearchPartyEmailAddress": "", "SearchPartyAddressLine1": "", "SearchPartyPostCode": "", "SearchPartyDoB": "", "SearchPartyDoD": "deceasedDateOfDeath"}
+  {"LiveFrom": "1/1/2022", "CaseTypeID": "GrantOfRepresentation", "SearchPartyName": "deceasedForenames,deceasedSurname", "SearchPartyEmailAddress": "", "SearchPartyAddressLine1": "", "SearchPartyPostCode": "", "SearchPartyDOB": "", "SearchPartyDOD": "deceasedDateOfDeath"},
+  {"LiveFrom": "1/1/2022", "CaseTypeID": "GrantOfRepresentation", "SearchPartyName": "primaryApplicantForenames,primaryApplicantSurname", "SearchPartyEmailAddress": "", "SearchPartyAddressLine1": "", "SearchPartyPostCode": "", "SearchPartyDOB": "", "SearchPartyDOD": ""}
 ]
