@@ -10,7 +10,7 @@ import deceasedDetailsConfig from "../../Pages/solicitorApplyProbate/deceasedDet
 import nextStepConfig from "../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
 
 test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
-  test("04 BO Case Progress E2E - stop/escalate/issue", async ({
+  test("04 BO Case Progress E2E - stop/escalate/issue @firefox", async ({
       basePage,
       signInPage,
       createCasePage,

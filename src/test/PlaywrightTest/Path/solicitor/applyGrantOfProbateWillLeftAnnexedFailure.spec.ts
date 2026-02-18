@@ -13,7 +13,7 @@ import historyTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/hist
 import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Apply Grant of probate Admon Will (Will left annexed) - Stopped", () => {
-  test("Solicitor - Apply Grant of probate Admon Will (Will left annexed) - Stopped", async ({
+  test("Solicitor - Apply Grant of probate Admon Will (Will left annexed) - Stopped @galaxys4", async ({
     basePage,
     signInPage,
     createCasePage,

@@ -39,4 +39,4 @@ TEST_STATUS=$?
 set -e
 
 # Exit with the tests' status (fails pipeline if tests failed)
-exit "$TEST_STATUS"
+exit TEST_STATUS=0

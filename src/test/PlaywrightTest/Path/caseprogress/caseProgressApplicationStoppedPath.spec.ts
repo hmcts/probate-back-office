@@ -6,7 +6,7 @@ import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressCon
 import deceasedDetailsConfig from "../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
 
 test.describe("01 BO Case Progress E2E - application stopped: complete", () => {
-  test("01 BO Case Progress E2E - application stopped: complete", async ({
+  test("01 BO Case Progress E2E - application stopped: complete @webkit", async ({
       basePage,
       signInPage,
       createCasePage,

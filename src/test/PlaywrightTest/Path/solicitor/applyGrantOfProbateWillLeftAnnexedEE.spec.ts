@@ -22,7 +22,7 @@ import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorAppl
 import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Apply Grant of probate Admon Will Excepted Estates", () => {
-  test("Solicitor - Apply Grant of probate - Admon Will Excepted Estates (Will left annexed)", async ({
+  test("Solicitor - Apply Grant of probate - Admon Will Excepted Estates (Will left annexed) @firefox", async ({
     basePage,
     signInPage,
     createCasePage,

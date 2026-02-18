@@ -1,5 +1,5 @@
 import { CommonConfig, ProjectsConfig } from "@hmcts/playwright-common";
-import { defineConfig } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -39,18 +39,25 @@ export default defineConfig({
     },
     {
       ...ProjectsConfig.edge,
+        grep: /@edge/,
     },
-    /*{
+    {
       ...ProjectsConfig.firefox,
+        grep: /@firefox/,
     },
     {
       ...ProjectsConfig.webkit,
+        grep: /@webkit/,
     },
     {
-      ...ProjectsConfig.tabletChrome,
+        name: 'galaxyS4',
+        use: { ...devices['Galaxy S4'] },
+        grep: /@galaxys4/,
     },
     {
-      ...ProjectsConfig.tabletWebkit,
-    },*/
+        name: 'iPadPro11',
+        use: { ...devices['iPad Pro 11'] },
+        grep: /@ipadpro11/,
+    },
   ],
 });

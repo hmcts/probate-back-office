@@ -10,7 +10,7 @@ import deceasedDetailsConfig from "../../../Pages/solicitorApplyProbate/deceased
 import nextStepConfig from "../../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
 
 test.describe("Case Progress - standard path", () => {
-  test("Case Progress - standard path", async ({
+  test("Case Progress - standard path @ipadpro11", async ({
      basePage,
      signInPage,
      createCasePage,

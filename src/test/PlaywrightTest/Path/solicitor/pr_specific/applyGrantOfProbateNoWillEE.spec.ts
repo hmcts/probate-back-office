@@ -24,7 +24,7 @@ import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyPr
 import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Apply Grant of probate Excepted Estates - No Will (Intestacy)", () => {
-  test("Solicitor - Apply Grant of probate Excepted Estates", async ({
+  test("Solicitor - Apply Grant of probate Excepted Estates @firefox", async ({
       basePage,
       signInPage,
       createCasePage,

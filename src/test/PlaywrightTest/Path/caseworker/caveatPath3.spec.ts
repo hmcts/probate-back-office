@@ -25,7 +25,7 @@ import { testConfig } from "../../Configs/config.ts";
 import documentsTabUploadDocumentConfig from "../../Pages/caseDetails/caveat/documentsTabUploadDocumentConfig.json" with { type: "json" };
 
 test.describe("Caseworker Caveat3 - Caveat expired", () => {
-  test("Caseworker Caveat3 - Caveat expired", async ({
+  test("Caseworker Caveat3 - Caveat expired @webkit", async ({
     basePage,
     signInPage,
     createCasePage,
