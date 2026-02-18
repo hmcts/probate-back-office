@@ -20,6 +20,10 @@ export CW_USER_PASSWORD=${CW_USER_PASSWORD}
 # Paths
 export E2E_OUTPUT_DIR='./functional-output'
 
+# Clean up old reports
+rm -rf ./functional-output/reports
+mkdir -p ./functional-output/reports
+
 # Run with xvfb
 export DISPLAY=:99
 Xvfb :99 -screen 0 1280x720x24 &
@@ -30,12 +34,9 @@ trap 'set +e; [[ -n "${XVFB_PID:-}" ]] && kill "$XVFB_PID" >/dev/null 2>&1' EXIT
 
 # Run tests but don't abort the script; capture exit code
 set +e
-yarn test:functional-chromium
+npx playwright test:functional-chromium
 TEST_STATUS=$?
 set -e
-
-# Always run merge, regardless of test outcome
-yarn merge-reports
 
 # Exit with the tests' status (fails pipeline if tests failed)
 exit "$TEST_STATUS"

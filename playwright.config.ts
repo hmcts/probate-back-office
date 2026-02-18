@@ -12,6 +12,12 @@ export default defineConfig({
         timeout: 30000, // for all expect() assertions
     },
 
+    reporter: [
+        ['html', { outputFolder: './functional-output/reports', open: 'never' }],
+        ['json', { outputFile: './functional-output/results.json' }],
+        ['list'], // Console output
+    ],
+
     use: {
         // Navigation timeout (affects goto, waitForLoadState, etc.)
         navigationTimeout: 60000,
