@@ -67,6 +67,19 @@ withNightlyPipeline("nodejs", product, component) {
 
     afterAlways('fullFunctionalTest') {
 
+        stage('Publish e2e Test Report') {
+            publishHTML([
+                    allowMissing         : false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll              : true,
+                    reportDir            : 'functional-output/reports/FullFunctionalTest',
+                    reportFiles          : 'index.html',
+                    reportName           : 'Playwright Test Report',
+                    reportTitles         : 'E2E Test Results'
+            ])
+            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+        }
+
         stage('Functional UI tests Edge') {
             try {
                 yarnBuilder.yarn('test:functional-Edge')
@@ -74,14 +87,14 @@ withNightlyPipeline("nodejs", product, component) {
                 unstable(message: "${STAGE_NAME} is unstable: " + Error.toString())
             } finally {
                 publishHTML([
-                        allowMissing: true,
+                        allowMissing         : true,
                         alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'test-results/functional',
-                        reportFiles: 'index.html',
-                        reportName: 'UITestEdgeReport'
+                        keepAll              : true,
+                        reportDir            : 'functional-output/reports/EdgeTests',
+                        reportFiles          : 'index.html',
+                        reportName           : 'UITestEdgeReport'
                 ])
-                steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/test-results/functional/**/*'
+                steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
             }
         }
 
@@ -92,14 +105,14 @@ withNightlyPipeline("nodejs", product, component) {
                 unstable(message: "${STAGE_NAME} is unstable: " + Error.toString())
             } finally {
                 publishHTML([
-                        allowMissing: true,
+                        allowMissing         : true,
                         alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'test-results/functional',
-                        reportFiles: 'index.html',
-                        reportName: 'UITestFirefoxReport'
+                        keepAll              : true,
+                        reportDir            : 'functional-output/reports/FirefoxTests',
+                        reportFiles          : 'index.html',
+                        reportName           : 'UITestFirefoxReport'
                 ])
-                steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/test-results/functional/**/*'
+                steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
             }
         }
         stage('Functional UI tests webkit ') {
@@ -109,14 +122,14 @@ withNightlyPipeline("nodejs", product, component) {
                 unstable(message: "${STAGE_NAME} is unstable: " + Error.toString())
             } finally {
                 publishHTML([
-                        allowMissing: true,
+                        allowMissing         : true,
                         alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'test-results/functional',
-                        reportFiles: 'index.html',
-                        reportName: 'UITestWebkitReport'
+                        keepAll              : true,
+                        reportDir            : 'functional-output/reports/WebkitTests',
+                        reportFiles          : 'index.html',
+                        reportName           : 'UITestWebkitReport'
                 ])
-                steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/test-results/functional/**/*'
+                steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
             }
         }
         stage('Functional UI tests ipadPro11 ') {
@@ -126,14 +139,14 @@ withNightlyPipeline("nodejs", product, component) {
                 unstable(message: "${STAGE_NAME} is unstable: " + Error.toString())
             } finally {
                 publishHTML([
-                        allowMissing: true,
+                        allowMissing         : true,
                         alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'test-results/functional',
-                        reportFiles: 'index.html',
-                        reportName: 'UITestipadPro11Report'
+                        keepAll              : true,
+                        reportDir            : 'functional-output/reports/iPadProTests',
+                        reportFiles          : 'index.html',
+                        reportName           : 'UITestiPadPro11Report'
                 ])
-                steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/test-results/functional/**/*'
+                steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
             }
         }
         stage('Functional UI tests galaxyS4 ') {
@@ -143,29 +156,25 @@ withNightlyPipeline("nodejs", product, component) {
                 unstable(message: "${STAGE_NAME} is unstable: " + Error.toString())
             } finally {
                 publishHTML([
-                        allowMissing: true,
+                        allowMissing         : true,
                         alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'test-results/functional',
-                        reportFiles: 'index.html',
-                        reportName: 'UITestGalaxyS4Report'
+                        keepAll              : true,
+                        reportDir            : 'functional-output/reports/GalaxyS4Tests',
+                        reportFiles          : 'index.html',
+                        reportName           : 'UITestGalaxyS4Report'
                 ])
-                steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/test-results/functional/**/*'
+                steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
             }
         }
-    }
 
-    afterAlways('fullFunctionalTest') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-    }
+        afterAlways('fullFunctionalTest') {
+            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+        }
 
-    afterAlways('crossBrowserTest') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-    }
+        afterSuccess('fortify-scan') {
+            steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+        }
 
-    afterSuccess('fortify-scan') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+        // enableSlackNotifications('#probate-jenkins')  // can be turned back on once the overnight functionality is working fully
     }
-
-    // enableSlackNotifications('#probate-jenkins')  // can be turned back on once the overnight functionality is working fully
 }

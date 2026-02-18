@@ -29,7 +29,7 @@ import caseMatchesTabConfig from "../../Pages/caseDetails/willLodgement/caseMatc
 import willWithdrawalDetailsTabConfig from "../../Pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig.json" with { type: "json" };
 
 test.describe("Caseworker Will Lodgement - Withdraw will", () => {
-  test("Caseworker Will Lodgement - Withdraw will", async ({
+  test("Caseworker Will Lodgement - Withdraw will @galaxys4", async ({
     basePage,
     signInPage,
     createCasePage,

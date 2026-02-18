@@ -32,7 +32,7 @@ import registrarsDecisionTabConfig from "../../../Pages/caseDetails/caveat/regis
 import { testConfig } from "../../../Configs/config.ts";
 
 test.describe("Caseworker Caveat1 - Order summons", () => {
-  test("Caseworker Caveat1 - Order summons", async ({
+  test("Caseworker Caveat1 - Order summons @galaxys4 @ipadpro11", async ({
     basePage,
     signInPage,
     createCasePage,

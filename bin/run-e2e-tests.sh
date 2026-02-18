@@ -20,6 +20,10 @@ export CW_USER_PASSWORD=${CW_USER_PASSWORD}
 # Paths
 export E2E_OUTPUT_DIR='./functional-output'
 
+# Clean up old reports
+rm -rf ./functional-output/reports
+mkdir -p ./functional-output/reports
+
 # Run with xvfb
 export DISPLAY=:99
 Xvfb :99 -screen 0 1280x720x24 &
@@ -34,8 +38,7 @@ yarn test:functional-chromium
 TEST_STATUS=$?
 set -e
 
-# Always run merge, regardless of test outcome
-yarn merge-reports
+echo "Full e2e tests completed with status: $TEST_STATUS"
 
 # Exit with the tests' status (fails pipeline if tests failed)
-exit "$TEST_STATUS"
+exit $TEST_STATUS

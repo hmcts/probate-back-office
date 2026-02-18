@@ -27,7 +27,7 @@ import postNocCaveatorConfigDemo from "../../../Pages/noticeOfChange/postNocCave
 import changeOfRepresentativesCaveatorDetailsConfigAAT from "../../../Pages/noticeOfChange/changeOfRepresentativesCaveatConfigAAT.json" with { type: "json" };
 
 test.describe("Solicitor - Apply NOC Caveat", () => {
-  test("Solicitor - Apply Caveat", async ({
+  test("Solicitor - Apply NOC Caveat @galaxys4", async ({
                                             basePage,
                                             signInPage,
                                             createCasePage,

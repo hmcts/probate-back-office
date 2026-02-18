@@ -20,7 +20,7 @@ import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyPr
 import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Apply Grant of probate", () => {
-    test("Solicitor - Apply Grant of probate Multi Executor", async ({
+    test("Solicitor - Apply Grant of probate Multi Executor @edge", async ({
       basePage,
       signInPage,
       createCasePage,

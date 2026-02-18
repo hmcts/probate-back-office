@@ -11,7 +11,7 @@ import deceasedDetailsConfig from "../../Pages/solicitorApplyProbate/deceasedDet
 import nextStepConfig from "../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
 
 test.describe("03 BO Case Progress E2E - Renter Deceased details", () => {
-  test("03 BO Case Progress E2E - Renter Deceased details", async ({
+  test("03 BO Case Progress E2E - Renter Deceased details @edge", async ({
       basePage,
       signInPage,
       createCasePage,

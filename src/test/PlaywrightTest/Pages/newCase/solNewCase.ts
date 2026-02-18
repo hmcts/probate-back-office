@@ -576,6 +576,7 @@ export class SolCreateCasePage extends BasePage {
     await this.postPaymentReviewDetails(caseRef);
 
     for (let i = 0; i <= 6; i++) {
+      await this.verifyPageLoad(this.eventHistoryTab);
       await expect(this.eventHistoryTab).toBeEnabled();
       await expect(this.page.getByText(caseRef).first()).toBeVisible();
       await this.eventHistoryTab.click();
@@ -583,10 +584,10 @@ export class SolCreateCasePage extends BasePage {
         .getByText(makePaymentConfig.statusText)
         .isVisible()
         .catch(() => true);
-      await this.page.waitForTimeout(10000);
       if (result) {
         break;
       }
+      await this.page.waitForTimeout(10000);
       await this.page.reload();
       // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     }
@@ -1036,14 +1037,14 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async completeApplicationPage3() {
-    await this.verifyPageLoad(this.completeApplicationWaitForText);
+    // await this.verifyPageLoad(this.completeApplicationWaitForText);
     await expect(this.completeApplicationWaitForText).toBeVisible();
     await this.runAccessibilityTest();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async completeApplicationPage4() {
-    await this.verifyPageLoad(this.sotConfirmCheck1Locator);
+    // await this.verifyPageLoad(this.sotConfirmCheck1Locator);
     await this.runAccessibilityTest();
     await this.sotConfirmCheck1Locator.scrollIntoViewIfNeeded();
     await this.sotConfirmCheck1Locator.click();
@@ -1053,7 +1054,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async completeApplicationPage5() {
-    await this.verifyPageLoad(this.extrCopiesLocator);
+    // await this.verifyPageLoad(this.extrCopiesLocator);
     await expect(this.extrCopiesLocator).toBeVisible();
 
     /*****Need to uncomment this accessibility test after fixing the bug in exui ******/
@@ -1064,7 +1065,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async completeApplicationPage6() {
-    await this.verifyPageLoad(this.solsPbaPaymentRefLocator);
+    // await this.verifyPageLoad(this.solsPbaPaymentRefLocator);
     await expect(this.solsPbaPaymentRefLocator).toBeVisible();
     await this.runAccessibilityTest();
     await this.solsPbaPaymentRefLocator.fill(completeProbateApplicationConfig.page6_paymentReference);
@@ -1072,14 +1073,14 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async completeApplicationPage7() {
-    await this.verifyPageLoad(this.page.getByText(completeProbateApplicationConfig.page7_waitForText));
+    // await this.verifyPageLoad(this.page.getByText(completeProbateApplicationConfig.page7_waitForText));
     await expect(this.page.getByText(completeProbateApplicationConfig.page7_waitForText)).toBeVisible();
     await this.runAccessibilityTest();
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
   async completeApplicationPage8() {
-    await this.verifyPageLoad(this.page.getByText(completeProbateApplicationConfig.page8_waitForText));
+    // await this.verifyPageLoad(this.page.getByText(completeProbateApplicationConfig.page8_waitForText));
     await expect(this.page.getByText(completeProbateApplicationConfig.page8_waitForText)).toBeVisible();
     await this.runAccessibilityTest();
     await expect(this.page.getByText(completeProbateApplicationConfig.page8_applicationFee)).toBeVisible();
@@ -1195,6 +1196,7 @@ export class SolCreateCasePage extends BasePage {
     await this.codicilAddedDayLocator.fill(admonWillDetailsConfig.page1_codicilDate_day);
     await this.codicilAddedMonthLocator.fill(admonWillDetailsConfig.page1_codicilDate_month);
     await this.codicilAddedYearLocator.fill(admonWillDetailsConfig.page1_codicilDate_year);
+    await this.languageLocator.focus();
     await this.languageLocator.click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }

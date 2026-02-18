@@ -20,7 +20,7 @@ import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorA
 import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Apply Caveat", () => {
-  test("Solicitor - Apply Caveat", async ({
+  test("Solicitor - Apply Caveat @webkit", async ({
     basePage,
     signInPage,
     createCasePage,

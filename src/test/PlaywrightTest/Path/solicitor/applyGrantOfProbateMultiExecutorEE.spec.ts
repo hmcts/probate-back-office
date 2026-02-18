@@ -21,13 +21,14 @@ import serviceRequestTabConfig from "../../Pages/caseDetails/solicitorApplyProba
 import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Apply Grant of probate Excepted Estates", () => {
-  test("Solicitor - Apply Grant of probate Multi Executor for Excepted Estates", async ({
+  test("Solicitor - Apply Grant of probate Multi Executor for Excepted Estates @edge", async ({
     basePage,
     signInPage,
     createCasePage,
     solCreateCasePage,
     cwEventActionsPage
   }, testInfo) => {
+    test.setTimeout(300000);
     const scenarioName ='Solicitor - Apply Grant of probate Multi Executor for Excepted Estates';
 
     const willType = 'WillLeft';

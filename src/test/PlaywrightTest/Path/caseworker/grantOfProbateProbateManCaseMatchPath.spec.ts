@@ -16,7 +16,7 @@ import caseMatchesTabConfig from "../../Pages/caseDetails/grantOfProbate/probate
 import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
 test.describe("Caseworker Grant of Representation - probateman case match", () => {
-  test("Caseworker Grant of Representation - probateman case match", async ({
+  test("Caseworker Grant of Representation - probateman case match @edge", async ({
     basePage,
     signInPage,
     createCasePage,
