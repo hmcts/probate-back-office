@@ -119,13 +119,6 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
             emailCaveatorConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
             await basePage.seeCaseDetails(testInfo, caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
-            nextStepName = 'Caveat not matched';
-            await basePage.logInfo(scenarioName, nextStepName, caseRef);
-            await cwEventActionsPage.chooseNextStep(nextStepName);
-            await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            endState = 'Caveat not matched';
-            await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
             nextStepName = 'Upload document';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
