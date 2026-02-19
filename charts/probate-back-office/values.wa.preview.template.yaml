@@ -1,0 +1,254 @@
+# OVERRIDE VALUES IF pr-values:wa tag is applied
+servicebus:
+  enabled: true
+  releaseNameOverride: ${SERVICE_NAME}
+  resourceGroup: probate-aso-preview-rg
+  sbNamespace: probate-servicebus-preview
+  setup:
+    topics:
+      - name: crd-topic
+        subscriptionNeeded: yes
+      - name: jrd-topic
+        subscriptionNeeded: yes
+      - name: ccd-case-events
+        subscriptionNeeded: yes
+        requiresSession: true
+
+global:
+  postgresUsername: hmcts
+  postgresSecret: postgres
+  postgresHost: probate-preview.postgres.database.azure.com
+  databaseNamePrefix: "pr-${CHANGE_ID}-"
+
+postgresql:
+  enabled: true
+  flexibleserver: "probate-preview"
+  setup:
+    databases:
+      - name: "pr-${CHANGE_ID}-camunda"
+      - name: "pr-${CHANGE_ID}-cft_task_db"
+      - name: "pr-${CHANGE_ID}-wa_workflow_api"
+      - name: "pr-${CHANGE_ID}-wa-case-event-handler"
+      - name: "pr-${CHANGE_ID}-org-role-mapping"
+
+wa:
+  enabled: true
+  camunda-bpm:
+    java:
+      image: hmctsprivate.azurecr.io/camunda/bpm:latest
+      devcpuRequests: 500m
+      devmemoryRequests: 1Gi
+      devcpuLimits: 2
+      devmemoryLimits: 4Gi
+      environment:
+        CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+
+  wa-case-event-handler:
+    java:
+      ingressHost: wa-case-event-handler-${SERVICE_FQDN}
+      releaseNameOverride: ${SERVICE_NAME}-wa-case-event-handler
+      secrets:
+        AZURE_SERVICE_BUS_CONNECTION_STRING:
+          secretRef: probate-sb-preview
+          key: connectionString
+      devcpuRequests: 500m
+      devmemoryRequests: 1Gi
+      devcpuLimits: 2
+      devmemoryLimits: 4Gi
+      environment:
+        CAMUNDA_URL: "http://{{ .Release.Name }}-camunda/engine-rest"
+        CCD_URL: "http://{{ .Release.Name }}-ccd-data-store-api"
+        CCD_SEARCH_URL: "http://{{ .Release.Name }}-ccd-data-store-api"
+        ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+        WA_WORKFLOW_API_URL: "http://{{ .Release.Name }}-wa-workflow-api"
+        WA_TASK_MANAGEMENT_API_URL: "http://{{ .Release.Name }}-wa-task-management-api"
+        AZURE_SERVICE_BUS_TOPIC_NAME: ${SERVICE_NAME}-ccd-case-events
+        AZURE_SERVICE_BUS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-ccd-case-events
+        AZURE_SERVICE_BUS_CCD_CASE_EVENTS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-ccd-case-events
+
+  wa-task-management-api:
+    java:
+      ingressHost: wa-task-management-api-${SERVICE_FQDN}
+      devcpuRequests: 500m
+      devmemoryRequests: 1Gi
+      devcpuLimits: 2
+      devmemoryLimits: 4Gi
+      environment:
+        CAMUNDA_URL: "http://{{ .Release.Name }}-camunda/engine-rest"
+        IDAM_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net"
+        S2S_URL: "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+        OPEN_ID_IDAM_URL: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net"
+        ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+        ALLOWED_JURISDICTIONS: wa,ia,sscs,civil,publiclaw,privatelaw,employment,st_cic,probate
+        ALLOWED_CASE_TYPES: asylum,wacasetype,sscs,civil,generalapplication,care_supervision_epo,prlapps,privatelaw_exceptionrecord,et_englandwales,et_scotland,benefit,criminalinjuriescompensation,GrantOfRepresentation
+
+  wa-task-monitor:
+    java:
+      ingressHost: wa-task-monitor-${SERVICE_FQDN}
+      environment:
+        WA_TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
+
+  wa-workflow-api:
+    java:
+      devcpuRequests: 500m
+      devmemoryRequests: 1Gi
+      devcpuLimits: 2
+      devmemoryLimits: 4Gi
+      environment:
+        DB_READER_USERNAME: "hmcts"
+
+  wa-message-cron-service:
+    job:
+      schedule: "*/1 * * * *"
+
+  wa-initiation-batch:
+    job:
+      schedule: "*/1 * * * *"
+      releaseNameOverride: "{{ .Release.Name }}-wa-task-batch"
+
+  wa-reconfiguration-batch:
+    job:
+      schedule: "*/1 * * * *"
+      releaseNameOverride: "{{ .Release.Name }}-reconfiguration"
+
+  wa-termination-batch:
+    job:
+      schedule: "*/1 * * * *"
+      releaseNameOverride: "{{ .Release.Name }}-termination-batch"
+
+  #disable wa db as we are using the postgres flexible server
+  wa:
+    postgresql:
+      enabled: false
+#check this
+am-org-role-mapping-service:
+  enabled: true
+  java:
+    image: 'hmctspublic.azurecr.io/am/org-role-mapping-service:latest'
+    ingressHost: am-org-role-mapping-service-${SERVICE_FQDN}
+    releaseNameOverride: ${SERVICE_NAME}-am-org-role-mapping-service
+    secrets:
+      SB_ACCESS_KEY:
+        secretRef: probate-sb-preview
+        key: primaryKey
+      SB_CONNECTION_STRING:
+        secretRef: probate-sb-preview
+        key: connectionString
+      ORG_ROLE_MAPPING_DB_PASSWORD:
+        secretRef: "{{ .Values.global.postgresSecret }}"
+        key: PASSWORD
+        disabled: false
+    keyVaults:
+      am:
+        secrets:
+          - name: app-insights-connection-string
+            alias: app-insights-connection-string
+          - name: am-org-role-mapping-service-s2s-secret
+            alias: AM_ORG_ROLE_MAPPING_SERVICE_SECRET
+          - name: orm-IDAM-CLIENT-ID
+            alias: ORM_IDAM_CLIENT_ID
+          - name: orm-IDAM-CLIENT-SECRET
+            alias: ORG_ROLE_MAPPING_IDAM_CLIENT_SECRET
+          - name: orm-IDAM-ADMIN-SECRET
+            alias: ORG_ROLE_MAPPING_IDAM_ADMIN_PASSWORD
+    devcpuRequests: 500m
+    devmemoryRequests: 1Gi
+    devcpuLimits: 1
+    devmemoryLimits: 4Gi
+    environment:
+      ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+      AMQP_SHARED_ACCESS_KEY_NAME: RootManageSharedAccessKey
+      AMQP_HOST: "probate-sb-preview.servicebus.windows.net"
+      CRD_SUBSCRIPTION_NAME: "{{ .Release.Name}}-asb-crd-topic"
+      JRD_SUBSCRIPTION_NAME: "{{ .Release.Name}}-asb-jrd-topic"
+      CRD_TOPIC_NAME: "{{ .Release.Name}}-asb-crd-topic"
+      JRD_TOPIC_NAME: "{{ .Release.Name}}-asb-jrd-topic"
+      AMQP_CRD_SHARED_ACCESS_KEY_VALUE: "$(SB_ACCESS_KEY)"
+      AMQP_JRD_SHARED_ACCESS_KEY_VALUE: "$(SB_ACCESS_KEY)"
+      ORG_ROLE_MAPPING_DB_HOST: '{{ tpl .Values.global.postgresHost $}}'
+      ORG_ROLE_MAPPING_DB_NAME: "pr-${CHANGE_ID}-org-role-mapping"
+      ORG_ROLE_MAPPING_DB_USERNAME: hmcts
+      ORG_ROLE_MAPPING_DB_PORT: 5432
+      ORG_ROLE_MAPPING_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+      TESTING_SUPPORT_ENABLED: true
+      REFRESH_BULK_ASSIGNMENT_INCLUDE_BOOKINGS: true
+      DB_FEATURE_FLAG_ENABLE: st_cic_wa_1_0
+      ORM_ENV: pr
+
+xui-webapp:
+  enabled: true
+  nodejs:
+    imagePullPolicy: Always
+    releaseNameOverride: ${SERVICE_NAME}-xui-webapp
+    image: hmctspublic.azurecr.io/xui/webapp:pr-4877
+    ingressHost: xui-${SERVICE_FQDN}
+    devcpuRequests: 500m
+    devmemoryRequests: 512Mi
+    devcpuLimits: 1
+    devmemoryLimits: 1Gi
+    environment:
+      HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
+      HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
+      HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}/health
+      SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
+      SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+      SERVICES_DOCUMENTS_API_V2: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
+      SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}
+      SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      JURISDICTIONS: PROBATE
+      LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
+      FEATURE_REDIS_ENABLED: false
+      FEATURE_APP_INSIGHTS_ENABLED: false
+      FEATURE_SECURE_COOKIE_ENABLED: false
+      FEATURE_PROXY_ENABLED: false
+      FEATURE_TERMS_AND_CONDITIONS_ENABLED: false
+      FEATURE_HELMET_ENABLED: true
+      FEATURE_OIDC_ENABLED: false
+      NOW: false
+      REDISCLOUD_URL: http://dummyrediscloudurl
+      UV_THREADPOOL_SIZE: 128
+      PROTOCOL: http
+      SERVICES_WA_WORKFLOW_API_URL: http://{{ .Release.Name }}-wa-workflow-api
+      HEALTH_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api/health
+      SERVICES_WORK_ALLOCATION_TASK_API: http://{{ .Release.Name }}-wa-task-management-api
+      SERVICES_ROLE_ASSIGNMENT_API: http://{{ .Release.Name }}-am-role-assignment-service
+      SERVICES_ROLE_ASSIGNMENT_MAPPING_API: http://{{ .Release.Name }}-am-org-role-mapping-service
+      FEATURE_WORKALLOCATION_ENABLED: true
+      WA_SUPPORTED_JURISDICTIONS: PROBATE
+    keyVaults:
+      rpx:
+        resourceGroup: rpx
+        secrets:
+          - mc-s2s-client-secret
+          - mc-idam-client-secret
+          - system-user-name
+          - system-user-password
+
+ccd-message-publisher:
+  enabled: true
+  servicebus:
+    enabled: false
+  java:
+    ingressHost: ccd-message-publisher-${SERVICE_FQDN}
+    releaseNameOverride: ${SERVICE_NAME}-ccd-message-publisher
+    disableKeyVaults: true # TODO - check if this can be disabled or not
+    devcpuRequests: 500m
+    devmemoryRequests: 1Gi
+    devcpuLimits: 1
+    devmemoryLimits: 4Gi
+    environment:
+      DATA_STORE_DB_HOST: probate-preview.postgres.database.azure.com
+      DATA_STORE_DB_NAME: "pr-${CHANGE_ID}-data-store"
+      DATA_STORE_DB_USERNAME: hmcts
+      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+      CCD_CASE_EVENTS_DESTINATION: ${SERVICE_NAME}-ccd-case-events
+    secrets:
+      SERVICE_BUS_CONNECTION_STRING:
+        secretRef: probate-sb-preview
+        key: connectionString
+      DATA_STORE_DB_PASSWORD:
+        secretRef: postgres
+        key: PASSWORD
+        disabled: false
