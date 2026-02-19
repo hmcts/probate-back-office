@@ -128,7 +128,7 @@ dependencies {
 
 ./gradlew bootJar
 # run gradle with bootWithCCD to bring up the IDAM and CCD including cftlib Docker with elastic and database
-./gradle bootWithCCD 
+./gradlew bootWithCCD 
 # run in debugger with 
 ./gradlew bootWithCCD --debug-jvm
 or just click debug in intellij on probate-back-office [bootWithCCD] run/debug configuration
@@ -759,4 +759,26 @@ https://github.com/hmcts/probate-back-office/tree/DTSPB-1172-investigate-sol-cas
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-demo.service.core-compute-demo.internal aac-manage-case-assignment-demo.service.core-compute-demo.internal
 https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client_id=ccd_admin&redirect_uri=https%3A%2F%2Fccd-admin-web.demo.platform.hmcts.net%2Foauth2redirect
 
+##Local Work Allocation Enablement
+###Build and import XLSX for local
+1. export PROBATE_WA_ENABLED=true
+2. echo $PROBATE_WA_ENABLED
+3. ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
+4. ./ccdImports/conversionScripts/importAllXLS.sh
+8. Check your XUI for any new wa XLSX usage - https://localhost:3000
+9. unset WA_ENABLED if needed or set to false
+
+1. ##Preview Work Allocation Enablement
+2. Ensure that you have enable_keep_helm and pr-values:wa added as github labels on your PR
+3. The build will use the flag to include any wa functionality in the build. ie all .json files with a ***-wa/json extension for building the XLSX, and any code toggled behind the PROBATE_WA_ENABLED env var
+###Build and import XLSX for preview
+1. export PROBATE_WA_ENABLED=true
+2. echo $PROBATE_WA_ENABLED
+3. run ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-pr-XXXX-java probate-back-office-pr-XXXX-aac-manage-case-assignment
+4. goto to the ccd-web-admin page for yoru pr eg: https://admin-web-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
+5. click import definitions 
+6. load your locally genereated XLSX file from the root jsonToXLS folder
+7. monitor your definition store pod to ensure the upload has completed - eg. probate-back-office-pr-XXXX-ccd-definition-store-yyyyyyy - loos for a line failing the TranslationService at the end... this means its passed upload!
+8. Check your XUI for any new wa XLSX usage - https://xui-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
+9. unset WA_ENABLED if needed or set to false
 

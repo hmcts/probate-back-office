@@ -123,7 +123,11 @@ def checkForEnableCWNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "cw-nightly").contains("cw-nightly")
 }
 
-def archiveCoreCaseDataDefinitions(env) {
+def checkForWAEnableLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
+}
+
+def archiveCoreCaseDataDefinitions(env, branch_name) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
     if("preview" == env){
@@ -140,12 +144,16 @@ def archiveCoreCaseDataDefinitions(env) {
       shutterOption = "false"
     }
 
+    excludedFilenamePatterns="*-wa.json"
     if ("preview" == env) {
-      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      if (checkForWAEnableLabel(branch_name)) {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      } else {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+      }
     }
-
-      else {
-      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption}"
+    else {
+      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
     }
   }
 
@@ -291,7 +299,7 @@ withPipeline("java", product, component) {
       echo "CCD definition upload for environment: ${env.ENV}"
       withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
         withTeamSecrets(pipelineConf, env.ENV) {
-          archiveCoreCaseDataDefinitions(env.ENV)
+          archiveCoreCaseDataDefinitions(env.ENV, env.BRANCH_NAME)
           uploadCoreCaseDataDefinitions(env.ENV)
         }
       }
@@ -307,6 +315,9 @@ withPipeline("java", product, component) {
 
   onPR() {
       env.ENV='preview'
+      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
+        env.PROBATE_WA_ENABLED = true
+      }
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
       env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
   }
@@ -329,7 +340,7 @@ withPipeline("java", product, component) {
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
       ./bin/add-ccd-roles.sh
     """
-    archiveCoreCaseDataDefinitions('preview')
+    archiveCoreCaseDataDefinitions('preview', env.BRANCH_NAME)
     uploadCoreCaseDataDefinitions('preview')
 
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
