@@ -203,6 +203,32 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "deceasedWrittenWishes", "TabFieldDisplayOrder": 169},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "caseHandedOffToLegacySite", "TabFieldDisplayOrder": 170},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "boHandoffReasonList", "TabFieldDisplayOrder": 171},
+
+
+
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "otherWholeBloodSiblings", "TabFieldDisplayOrder": 172},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "wholeBloodSiblingsDiedBeforeDeceased", "TabFieldDisplayOrder": 173},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "wholeBloodNiecesAndNephewsSurvived", "TabFieldDisplayOrder": 174},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "wholeBloodSiblingsOverEighteen", "TabFieldDisplayOrder": 175},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "wholeBloodNiecesAndNephewsOverEighteen", "TabFieldDisplayOrder": 176},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "otherHalfBloodSiblings", "TabFieldDisplayOrder": 177},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "halfBloodSiblingsDiedBeforeDeceased", "TabFieldDisplayOrder": 178},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "halfBloodNiecesAndNephewsSurvived", "TabFieldDisplayOrder": 179},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "halfBloodSiblingsOverEighteen", "TabFieldDisplayOrder": 180},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "halfBloodNiecesAndNephewsOverEighteen", "TabFieldDisplayOrder": 181},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "deceasedAnyLivingDescendants", "TabFieldDisplayOrder": 182},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "deceasedAnyOtherParentAlive", "TabFieldDisplayOrder": 183},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "deceasedDivorcedDateKnown", "TabFieldDisplayOrder": 184},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "applicantFamilyDetails", "TabFieldDisplayOrder": 185},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "childrenDiedBeforeDeceased", "TabFieldDisplayOrder": 186},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "hasCoApplicant", "TabFieldDisplayOrder": 187},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "childAlive", "TabFieldDisplayOrder": 188},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "grandchildParentOtherChildren", "TabFieldDisplayOrder": 189},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "applicantSameParentsAsDeceased", "TabFieldDisplayOrder": 190},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseDetailsTab", "TabLabel": "Case details", "TabDisplayOrder": 7, "CaseFieldID": "deceasedAnyLivingParents", "TabFieldDisplayOrder": 191},
+
+
+
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "applicationType", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "entitledToApply", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "entitledToApplyOther", "TabFieldDisplayOrder": 3},
