@@ -51,6 +51,8 @@ import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
+import uk.gov.hmcts.probate.validator.CheckIntestacyMaritalStatusRule;
+import uk.gov.hmcts.probate.validator.CheckIntestacyOtherApplicantRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
@@ -58,6 +60,10 @@ import uk.gov.hmcts.probate.validator.IHTFormIDValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationValidationRule;
 import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
@@ -136,6 +142,12 @@ public class BusinessValidationController {
     private final Pre1900DOBValidationRule pre1900DOBValidationRule;
     private final AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
     private final ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
+    private final CheckIntestacyOtherApplicantRule checkIntestacyOtherApplicantRule;
+    private final CheckIntestacyMaritalStatusRule checkIntestacyMaritalStatusRule;
+    private final IntestacyDeceasedDetailsValidationRule intestacyDeceasedDetailsValidationRule;
+    private final IntestacyApplicantDetailsValidationRule intestacyApplicantDetailsValidationRule;
+    private final IntestacyDivorceOrSeparationValidationRule intestacyDivorceOrSeparationValidationRule;
+    private final IntestacyCoApplicantValidationRule intestacyCoApplicantValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
     private final DocumentTransformer documentTransformer;
@@ -274,6 +286,8 @@ public class BusinessValidationController {
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
+            caseDataTransformer.transformCaseDataForValidateIntestacy(callbackRequest);
+
             Optional<String> newState =
                 stateChangeService.getChangedStateForIntestacyUpdate(callbackRequest.getCaseDetails().getData());
             response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_INTESTACY,
@@ -734,11 +748,54 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
 
+    @PostMapping(path = "/validateApplicantAndSetupDynamicList",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> validateIntestacyApplicantAndSetupDynamicList(
+            @RequestBody CallbackRequest callbackRequest,
+            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        var rules = new ValidationRule[]{checkIntestacyOtherApplicantRule, checkIntestacyMaritalStatusRule,
+            intestacyDeceasedDetailsValidationRule, intestacyApplicantDetailsValidationRule,
+            intestacyDivorceOrSeparationValidationRule};
+        final List<ValidationRule> intestacyApplicantValidations = Arrays.asList(rules);
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
+                intestacyApplicantValidations);
+        if (response.getErrors().isEmpty()) {
+            return ResponseEntity.ok(callbackResponseTransformer.setupDynamicList(callbackRequest));
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/validateCoApplicants",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> validateIntestacyCoApplicants(
+            @RequestBody CallbackRequest callbackRequest,
+            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        var rules = new ValidationRule[]{intestacyCoApplicantValidationRule};
+        final List<ValidationRule> intestacyCoApplicantValidations = Arrays.asList(rules);
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
+                intestacyCoApplicantValidations);
+        if (response.getErrors().isEmpty()) {
+            return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest,
+                    Optional.empty()));
+        }
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/default-registrars-decision",
             consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> setupRegistrarsDecision(
             @RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseWithRegistrarDirection(callbackRequest));
+    }
+
+    @PostMapping(path = "/clearRelationships",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> clearRelationships(
+            @RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(callbackResponseTransformer.clearRelationships(callbackRequest));
     }
 
     @PostMapping(path = "/registrars-decision", consumes = APPLICATION_JSON_VALUE,

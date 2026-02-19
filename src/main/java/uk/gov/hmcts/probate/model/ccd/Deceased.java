@@ -16,4 +16,10 @@ public class Deceased implements Serializable {
     private final LocalDate dateOfBirth;
     private final LocalDate dateOfDeath;
     private final SolsAddress address;
+    private final String deceasedMaritalStatus;
+    private final String deceasedDivorcedInEnglandOrWales;
+    private final String deceasedAdoptionInEnglandOrWales;
+    private final String deceasedAdoptedOut;
+    private final String deceasedAnyLivingDescendants;
+    private final String deceasedAnyLivingParents;
 }

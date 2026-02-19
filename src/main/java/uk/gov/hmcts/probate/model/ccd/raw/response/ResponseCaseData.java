@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyAdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -141,6 +142,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     @JsonProperty(value = "executorsNotApplying")
     private final List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
+    private final List<CollectionMember<IntestacyAdditionalExecutor>> solsIntestacyExecutorList;
     private final SolsAddress deceasedAddress;
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
@@ -238,6 +240,8 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String parentsExistSurvived;
     private final String parentsExistOverEighteenSurvived;
     private final String parentsExistUnderEighteenSurvived;
+    private final String deceasedAnyLivingParents;
+    private final String applicantSameParentsAsDeceased;
     private final String wholeBloodNeicesAndNephews;
     private final String wholeBloodNeicesAndNephewsOverEighteen;
     private final String wholeBloodNeicesAndNephewsUnderEighteen;
@@ -314,14 +318,29 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String latestGrantReissueDate;
 
     private final String deceasedDivorcedInEnglandOrWales;
+    private final String deceasedDivorcedDateKnown;
+    private final String primaryApplicantAdoptedIn;
     private final String primaryApplicantAdoptionInEnglandOrWales;
+    private final String primaryApplicantAdoptedOut;
+    private final String primaryApplicantParentAdoptedIn;
+    private final String primaryApplicantParentAdoptionInEnglandOrWales;
+    private final String primaryApplicantParentAdoptedOut;
+    private final String deceasedAdoptedIn;
+    private final String deceasedAdoptionInEnglandOrWales;
+    private final String deceasedAdoptedOut;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
     private final String allDeceasedChildrenOverEighteen;
     private final String anyDeceasedChildrenDieBeforeDeceased;
+    private final String childrenDiedBeforeDeceased;
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
+    private final String grandchildParentOtherChildren;
+    private final String grandchildParentChildrenOverEighteen;
+    private final String deceasedAnyLivingDescendants;
+    private final String deceasedAnyOtherParentAlive;
     private final String deceasedHasAssetsOutsideUK;
+    private final String assetsOutsideNetValue;
 
     private final String boStopDetailsDeclarationParagraph;
     private final String boEmailRequestInfoNotificationRequested;
@@ -419,6 +438,19 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<String>> autoCaseWarnings;
     private final TTL ttl;
     private final String executorsNamed;
+    private final String hasCoApplicant;
     private final LocalDate firstStopReminderSentDate;
     private String issueEarlySwitch;
+    private final String otherWholeBloodSiblings;
+    private final String wholeBloodSiblingsDiedBeforeDeceased;
+    private final String wholeBloodNiecesAndNephewsSurvived;
+    private final String wholeBloodSiblingsOverEighteen;
+    private final String wholeBloodNiecesAndNephewsOverEighteen;
+    private final String otherHalfBloodSiblings;
+    private final String halfBloodSiblingsDiedBeforeDeceased;
+    private final String halfBloodNiecesAndNephewsSurvived;
+    private final String halfBloodSiblingsOverEighteen;
+    private final String halfBloodNiecesAndNephewsOverEighteen;
+    private final String childAlive;
+    private final String anyLivingWholeBloodSiblings;
 }

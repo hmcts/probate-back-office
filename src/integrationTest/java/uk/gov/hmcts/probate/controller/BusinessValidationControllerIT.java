@@ -137,9 +137,7 @@ class BusinessValidationControllerIT {
     private static final String RESIDUARY = "Yes";
     private static final String RESIDUARY_TYPE = "Legatee";
     private static final String LIFE_INTEREST = "No";
-    private static final String ANSWER_NO = "No";
     private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
-    private static final String APPLICATION_GROUNDS = "Application grounds";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_DEFAULT_IHT_ESTATE_URL = "/case/default-iht-estate";
@@ -161,7 +159,6 @@ class BusinessValidationControllerIT {
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
-    private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
     private static final String REACTIVATE_CASE = "/case/reactivate-case";
     private static final String PA_CREATE_URL = "/case/pa-create";
     private static final String DEFAULT_REGISTRARS_DECISION = "/case/default-registrars-decision";
@@ -169,9 +166,7 @@ class BusinessValidationControllerIT {
     private static final String AUTH_HEADER = "Authorization";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
-    private static final String CASE_WORKER_ESCALATED = "/case/case-worker-escalated";
     private static final String CASE_WORKER_RESOLVED_ESCALATED = "/case/resolve-case-worker-escalated";
-    private static final String PREPARE_FOR_NOC = "/case/prepare-case-for-noc";
     private static final String UNIQUE_CODE = "/case/validate-unique-code";
     private static final String ROLLBACK = "/case/rollback";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
@@ -187,6 +182,8 @@ class BusinessValidationControllerIT {
     private static final String MOVE_TO_POST_GRANT_ISSUED = "/case/moveToPostGrantIssued";
     private static final String ESCALATE_TO_REGISTRAR = "/case/case-escalated";
     private static final String SOLICITOR_SUBMIT_CASE = "/case/setCaseSubmissionDate";
+    private static final String VALIDATE_APPLICANT = "/case/validateApplicantAndSetupDynamicList";
+    private static final String VALIDATE_CO_APPLICANT = "/case/validateCoApplicants";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -1485,6 +1482,30 @@ class BusinessValidationControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.schemaVersion").doesNotExist())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void shouldValidateIntestacyApplicantAndSetupDynamicList() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState("Intestacy");
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setCaseDetailsBefore(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(VALIDATE_APPLICANT).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldValidateIntestacyCoApplicant() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(VALIDATE_CO_APPLICANT).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
 

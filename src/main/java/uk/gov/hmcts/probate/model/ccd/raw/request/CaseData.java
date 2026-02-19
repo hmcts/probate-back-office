@@ -42,6 +42,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyAdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -226,14 +227,15 @@ public class CaseData extends CaseDataParent {
         ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
     private SolsAddress primaryApplicantAddress;
 
-    @NotBlank(groups = {ApplicationAdmonGroup.class,
-        ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
+    @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
     private String primaryApplicantEmailAddress;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{otherExecutorExistsIsNull}")
     private final String otherExecutorExists;
 
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
+
+    private List<CollectionMember<IntestacyAdditionalExecutor>> solsIntestacyExecutorList;
 
     private final String solsAdditionalInfo;
 
@@ -427,6 +429,8 @@ public class CaseData extends CaseDataParent {
     private final String parentsExistSurvived;
     private final String parentsExistOverEighteenSurvived;
     private final String parentsExistUnderEighteenSurvived;
+    private final String deceasedAnyLivingParents;
+    private final String applicantSameParentsAsDeceased;
     private final String wholeBloodSiblingsSurvived;
     private final String wholeBloodSiblingsSurvivedOverEighteen;
     private final String wholeBloodSiblingsSurvivedUnderEighteen;
@@ -503,14 +507,39 @@ public class CaseData extends CaseDataParent {
     private final String boGrantReissueSendToBulkPrint = YES;
     private final String boGrantReissueSendToBulkPrintRequested;
     private final String deceasedDivorcedInEnglandOrWales;
+    private final String deceasedDivorcedDateKnown;
+    private final String primaryApplicantAdoptedIn;
     private final String primaryApplicantAdoptionInEnglandOrWales;
+    private final String primaryApplicantAdoptedOut;
+    private final String primaryApplicantParentAdoptedIn;
+    private final String primaryApplicantParentAdoptionInEnglandOrWales;
+    private final String primaryApplicantParentAdoptedOut;
+    private final String deceasedAdoptedIn;
+    private final String deceasedAdoptionInEnglandOrWales;
+    private final String deceasedAdoptedOut;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
     private final String allDeceasedChildrenOverEighteen;
     private final String anyDeceasedChildrenDieBeforeDeceased;
+    private final String childrenDiedBeforeDeceased;
     private final String anyDeceasedGrandChildrenUnderEighteen;
+    private final String otherWholeBloodSiblings;
+    private final String wholeBloodSiblingsDiedBeforeDeceased;
+    private final String wholeBloodNiecesAndNephewsSurvived;
+    private final String wholeBloodSiblingsOverEighteen;
+    private final String wholeBloodNiecesAndNephewsOverEighteen;
+    private final String otherHalfBloodSiblings;
+    private final String halfBloodSiblingsDiedBeforeDeceased;
+    private final String halfBloodNiecesAndNephewsSurvived;
+    private final String halfBloodSiblingsOverEighteen;
+    private final String halfBloodNiecesAndNephewsOverEighteen;
     private final String deceasedAnyChildren;
+    private final String grandchildParentOtherChildren;
+    private final String grandchildParentChildrenOverEighteen;
+    private final String deceasedAnyLivingDescendants;
+    private final String deceasedAnyOtherParentAlive;
     private final String deceasedHasAssetsOutsideUK;
+    private final String assetsOutsideNetValue;
     private final String boEmailRequestInfoNotificationRequested;
     @Builder.Default
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
@@ -633,8 +662,12 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private List<CollectionMember<CitizenResponse>> citizenResponses;
     private final String executorsNamed;
+    private final String hasCoApplicant;
     private LocalDate firstStopReminderSentDate;
     private final String evidenceHandledDate;
+    private final String childAlive;
+    private final String anyLivingWholeBloodSiblings;
+
 
     private TTL ttl;
 
@@ -785,5 +818,9 @@ public class CaseData extends CaseDataParent {
 
     public void clearAdditionalExecutorList() {
         getSolsAdditionalExecutorList().clear();
+    }
+
+    public void clearAdditionalIntestacyExecutorList() {
+        getSolsIntestacyExecutorList().clear();
     }
 }

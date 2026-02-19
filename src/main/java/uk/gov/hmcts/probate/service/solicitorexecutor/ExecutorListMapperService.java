@@ -6,6 +6,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.ApplicantFamilyDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsApplicantFamilyDetails;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +15,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.Constants.CHILD;
+import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
+import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_NIECE_OR_NEPHEW;
+import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_NOT_APPLYING_REASON;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
@@ -170,6 +178,97 @@ public class ExecutorListMapperService {
                                     .notApplyingExecutorDispenseWithNotice(caseData.getDispenseWithNotice())
                                     .notApplyingExecutorDispenseWithNoticeLeaveGiven(dispWNoticeLeaveGiven)
                                     .notApplyingExecutorDispenseWithNoticeLeaveGivenDate(dispWNoticeLeaveGivenDate)
+                                    .build());
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<CollectionMember<AdditionalExecutorApplying>> mapFromSolsIntestacyExecutorListToApplyingExecutors(
+            CaseData caseData) {
+        return caseData.getSolsIntestacyExecutorList()
+                .stream()
+                .map(exec -> {
+                    final String applExecFNames = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecForenames(),
+                            "additional executor forenames");
+                    final String applExecLName = FormattingService.capitaliseEachWord(
+                            exec.getValue().getAdditionalExecLastname(),
+                            "additional executor last name");
+                    final String applExecName = applExecFNames + " " + applExecLName;
+                    final SolsApplicantFamilyDetails solsApplicantFamilyDetails =
+                            exec.getValue().getSolsApplicantFamilyDetails();
+                    final String selectedRelationship = solsApplicantFamilyDetails.getRelationship().getValue()
+                            .getCode();
+                    ApplicantFamilyDetails.ApplicantFamilyDetailsBuilder builder = ApplicantFamilyDetails.builder()
+                            .relationshipToDeceased(selectedRelationship);
+                    switch (selectedRelationship) {
+                        case CHILD:
+                            builder.childAdoptedIn(solsApplicantFamilyDetails.getCoApplicantAdoptedIn())
+                                    .childAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                            .getCoApplicantAdoptionInEnglandOrWales())
+                                    .childAdoptedOut(solsApplicantFamilyDetails.getCoApplicantAdoptedOut());
+                            break;
+                        case GRAND_CHILD:
+                            builder.childDieBeforeDeceased(solsApplicantFamilyDetails
+                                            .getGrandchildParentDieBeforeDeceased())
+                                    .grandchildParentAdoptedIn(solsApplicantFamilyDetails
+                                            .getGrandchildParentAdoptedIn())
+                                    .grandchildParentAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                            .getGrandchildParentAdoptionInEnglandOrWales())
+                                    .grandchildParentAdoptedOut(solsApplicantFamilyDetails
+                                            .getGrandchildParentAdoptedOut())
+                                    .grandchildAdoptedIn(solsApplicantFamilyDetails.getCoApplicantAdoptedIn())
+                                    .grandchildAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                            .getCoApplicantAdoptionInEnglandOrWales())
+                                    .grandchildAdoptedOut(solsApplicantFamilyDetails.getCoApplicantAdoptedOut());
+                            break;
+                        case WHOLE_BLOOD_SIBLING:
+                            builder.wholeBloodSiblingAdoptedIn(solsApplicantFamilyDetails.getCoApplicantAdoptedIn())
+                                    .wholeBloodSiblingAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                            .getCoApplicantAdoptionInEnglandOrWales())
+                                    .wholeBloodSiblingAdoptedOut(solsApplicantFamilyDetails.getCoApplicantAdoptedOut());
+                            break;
+                        case WHOLE_BLOOD_NIECE_OR_NEPHEW:
+                            builder.wholeBloodSiblingDiedBeforeDeceased(solsApplicantFamilyDetails
+                                            .getWholeNieceOrNephewParentDieBeforeDeceased())
+                                    .wholeBloodNieceOrNephewAdoptedIn(solsApplicantFamilyDetails
+                                            .getCoApplicantAdoptedIn())
+                                    .wholeBloodNieceOrNephewAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                            .getCoApplicantAdoptionInEnglandOrWales())
+                                    .wholeBloodNieceOrNephewAdoptedOut(solsApplicantFamilyDetails
+                                            .getCoApplicantAdoptedOut());
+                            break;
+                        case HALF_BLOOD_SIBLING:
+                            builder.halfBloodSiblingAdoptedIn(solsApplicantFamilyDetails.getCoApplicantAdoptedIn())
+                                    .halfBloodSiblingAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                            .getCoApplicantAdoptionInEnglandOrWales())
+                                    .halfBloodSiblingAdoptedOut(solsApplicantFamilyDetails.getCoApplicantAdoptedOut());
+                            break;
+                        case HALF_BLOOD_NIECE_OR_NEPHEW:
+                            builder.halfBloodSiblingDiedBeforeDeceased(solsApplicantFamilyDetails
+                                            .getHalfNieceOrNephewParentDieBeforeDeceased())
+                                    .halfBloodNieceOrNephewAdoptedIn(solsApplicantFamilyDetails
+                                            .getCoApplicantAdoptedIn())
+                                    .halfBloodNieceOrNephewAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                            .getCoApplicantAdoptionInEnglandOrWales())
+                                    .halfBloodNieceOrNephewAdoptedOut(solsApplicantFamilyDetails
+                                            .getCoApplicantAdoptedOut());
+                            break;
+                        default:
+                            log.warn("Unexpected relationship to deceased for additional applying executor: {}",
+                                    selectedRelationship);
+                            break;
+                    }
+                    ApplicantFamilyDetails applicantFamilyDetails = builder.build();
+                    return new CollectionMember<>(
+                            exec.getId(),
+                            AdditionalExecutorApplying.builder()
+                                    .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
+                                    .applyingExecutorFirstName(applExecFNames)
+                                    .applyingExecutorLastName(applExecLName)
+                                    .applyingExecutorName(applExecName)
+                                    .applicantFamilyDetails(applicantFamilyDetails)
+                                    .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                                     .build());
                 })
                 .collect(Collectors.toList());

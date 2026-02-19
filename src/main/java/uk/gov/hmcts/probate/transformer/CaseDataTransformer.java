@@ -73,6 +73,16 @@ public class CaseDataTransformer {
         solicitorApplicationCompletionTransformer.eraseCodicilAddedDateIfWillHasNoCodicils(caseData);
     }
 
+    public void transformCaseDataForValidateIntestacy(CallbackRequest callbackRequest) {
+        final var caseDetails = callbackRequest.getCaseDetails();
+        final var caseData = caseDetails.getData();
+
+        solicitorApplicationCompletionTransformer
+                .clearAdditionalExecutorWhenUpdatingIntestacyApplicantDetails(caseDetails);
+        solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
+        solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
+    }
+
     public void transformCaseDataForValidateAdmon(CallbackRequest callbackRequest) {
         final var caseData = callbackRequest.getCaseDetails().getData();
         legalStatementExecutorTransformer.formatFields(caseData);
