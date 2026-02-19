@@ -1,7 +1,7 @@
 # OVERRIDE VALUES IF pr-values:wa tag is applied
 servicebus:
   enabled: true
-  releaseNameOverride: ${SERVICE_NAME}-asb
+  releaseNameOverride: ${SERVICE_NAME}
   resourceGroup: probate-aso-preview-rg
   sbNamespace: probate-servicebus-preview
   setup:
