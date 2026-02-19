@@ -239,7 +239,7 @@ ccd-message-publisher:
     devcpuLimits: 1
     devmemoryLimits: 4Gi
     environment:
-      DATA_STORE_DB_HOST: '{{ tpl .Values.global.postgresHost $}}'
+      DATA_STORE_DB_HOST: probate-preview.postgres.database.azure.com
       DATA_STORE_DB_NAME: "pr-${CHANGE_ID}-data-store"
       DATA_STORE_DB_USERNAME: hmcts
       DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
