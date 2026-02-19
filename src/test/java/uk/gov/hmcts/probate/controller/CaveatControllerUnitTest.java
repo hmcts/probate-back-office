@@ -105,7 +105,8 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDodValidationRule,
             caveatDataTransformer, caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService,
             notificationService, caveatNotificationService, confirmationResponseService, paymentsService, feeService,
-            registrarDirectionService, documentGeneratorService, caveatAcknowledgementValidationRule, ccdSupplementaryDataService);
+            registrarDirectionService, documentGeneratorService, caveatAcknowledgementValidationRule,
+                ccdSupplementaryDataService);
     }
 
     @Test
