@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
@@ -92,6 +93,10 @@ class CaveatControllerIT {
 
     @MockitoSpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
+
+    @MockitoBean
+     CcdSupplementaryDataService ccdSupplementaryDataService;
+
 
     @BeforeEach
     public void setUp() throws NotificationClientException, BadRequestException {
