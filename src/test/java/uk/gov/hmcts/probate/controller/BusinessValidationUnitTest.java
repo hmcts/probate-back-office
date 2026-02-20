@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -84,6 +85,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -219,6 +221,9 @@ class BusinessValidationUnitTest {
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
+    @Mock
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
+
     private BusinessValidationController underTest;
 
     @BeforeEach
@@ -262,7 +267,8 @@ class BusinessValidationUnitTest {
             zeroApplyingExecutorsValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
-            documentTransformerMock);
+            documentTransformerMock,
+            ccdSupplementaryDataService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
@@ -314,10 +320,12 @@ class BusinessValidationUnitTest {
     void shouldVerifySolsAccessWithNoErrors() {
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1000L);
 
         ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess(AUTH_TOKEN,
                 "GrantOfRepresentation", callbackRequestMock);
 
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -1285,7 +1293,7 @@ class BusinessValidationUnitTest {
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
                 () -> assertThat(notificationsGenerated, empty()));
     }
-  
+
     @Test
     void shouldAttemptToEmailCaseworkerWhenEscalateToRegistrarFails() throws RegistrarEscalationException {
 
@@ -1394,5 +1402,17 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(notificationService, times(1))
                 .sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetailsMock);
+    }
+
+    @Test
+    void shouldSetSupplementaryData() {
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1000L);
+
+        ResponseEntity<CallbackResponse> response = underTest.setSupplementaryData(callbackRequestMock);
+
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

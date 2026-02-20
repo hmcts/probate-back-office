@@ -4317,5 +4317,10 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorFirmName", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSOTName", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastModifiedDateForDormant", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "TTL", "UserRole": "TTL_profile", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "TTL", "UserRole": "TTL_profile", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseNameHmctsInternal", "UserRole": "GS_profile", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseManagementCategory", "UserRole": "GS_profile", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseManagementLocation", "UserRole": "GS_profile", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "SearchParty", "UserRole": "GS_profile", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "SearchCriteria", "UserRole": "GS_profile", "CRUD": "R"}
 ]
