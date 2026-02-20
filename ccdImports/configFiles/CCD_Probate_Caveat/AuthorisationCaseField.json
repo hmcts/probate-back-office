@@ -644,6 +644,6 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorAddress", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorFirmName", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "TTL", "UserRole": "TTL_profile", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "SearchParty", "UserRole": "GS_profile", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "SearchCriteria", "UserRole": "GS_profile", "CRUD": "R"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "SearchParty", "UserRole": "GS_profile", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "SearchCriteria", "UserRole": "GS_profile", "CRUD": "R"}
 ]
