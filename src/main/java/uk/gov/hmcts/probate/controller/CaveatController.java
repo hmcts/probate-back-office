@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
@@ -68,6 +69,7 @@ public class CaveatController {
     private final RegistrarDirectionService registrarDirectionService;
     private final DocumentGeneratorService documentGeneratorService;
     private final CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
+    private final CcdSupplementaryDataService ccdSupplementaryDataService;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -76,7 +78,8 @@ public class CaveatController {
         throws NotificationClientException {
 
         CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
-
+        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                caveatCallbackRequest.getCaseDetails().getId().toString());
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
