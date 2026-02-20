@@ -86,11 +86,11 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
             // await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
-            nextStepName = 'Caveat not matched';
+            nextStepName = 'Await caveat resolution';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-            endState = 'Caveat not matched';
+            endState = 'Awaiting caveat resolution';
             await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
             nextStepName = 'Upload document';
