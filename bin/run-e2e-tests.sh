@@ -36,7 +36,7 @@ trap 'set +e; [[ -n "${XVFB_PID:-}" ]] && kill "$XVFB_PID" >/dev/null 2>&1' EXIT
 set +e
 yarn test:functional-chromium
 TEST_STATUS=$?
-set -e
+# set -e
 
 echo "Full e2e tests completed with status: $TEST_STATUS"
 
