@@ -483,6 +483,28 @@ class StopReasonServiceTest {
     }
 
     @Test
+    void returnsMappedDescriptionForPA1A() {
+        StopReasonCode stopReasonCodes = new StopReasonCode();
+        stopReasonCodes.setPa1a("PA1A");
+        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.ENGLISH, stopReasonCodes));
+
+        assertEquals("PA1A",
+                stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH,
+                        "PA1A"));
+    }
+
+    @Test
+    void returnsMappedDescriptionForPA1P() {
+        StopReasonCode stopReasonCodes = new StopReasonCode();
+        stopReasonCodes.setPa1p("PA1P");
+        when(notificationStop.getReasons()).thenReturn(Map.of(LanguagePreference.ENGLISH, stopReasonCodes));
+
+        assertEquals("PA1P",
+                stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH,
+                        "PA1P"));
+    }
+
+    @Test
     void returnsMappedDescriptionForPA11() {
         StopReasonCode stopReasonCodes = new StopReasonCode();
         stopReasonCodes.setPa11("PA11");
