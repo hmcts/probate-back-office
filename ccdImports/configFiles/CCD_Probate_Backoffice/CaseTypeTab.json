@@ -218,7 +218,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "primaryApplicantEmailAddress", "TabFieldDisplayOrder": 13},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "primaryApplicantPhoneNumber", "TabFieldDisplayOrder": 14},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "primaryApplicantSecondPhoneNumber", "TabFieldDisplayOrder": 15},
-
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "primaryApplicantParentAdoptedIn", "TabFieldDisplayOrder": 16},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "primaryApplicantParentAdoptionInEnglandOrWales", "TabFieldDisplayOrder": 17},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "primaryApplicantParentAdoptedOut",  "TabFieldDisplayOrder": 18},
@@ -228,7 +227,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "primaryApplicantAdoptedIn", "TabFieldDisplayOrder": 22},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "primaryApplicantAdoptionInEnglandOrWales", "TabFieldDisplayOrder": 23},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "primaryApplicantAdoptedOut",  "TabFieldDisplayOrder": 24},
-
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "primaryApplicantAddress", "TabFieldDisplayOrder": 25},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "solsSolicitorFirmName", "TabFieldDisplayOrder": 26},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "applicantTab", "TabLabel": "Applicant details", "TabDisplayOrder": 8, "CaseFieldID": "solsSolicitorAppReference", "TabFieldDisplayOrder": 27},
