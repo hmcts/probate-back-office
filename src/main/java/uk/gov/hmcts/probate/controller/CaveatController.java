@@ -81,6 +81,17 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
+    @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> setCaveatSupplementaryData(
+            @RequestBody final CaveatCallbackRequest caveatCallbackRequest) {
+        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                caveatCallbackRequest.getCaseDetails().getId().toString());
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()
+                .build();
+
+        return ResponseEntity.ok(caveatCallbackResponse);
+    }
 
 
     @PostMapping(path = "/setCaseSubmissionDate")
