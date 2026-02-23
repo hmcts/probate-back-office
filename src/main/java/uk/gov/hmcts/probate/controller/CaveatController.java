@@ -78,10 +78,10 @@ public class CaveatController {
         throws NotificationClientException {
 
         CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
-        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
-                caveatCallbackRequest.getCaseDetails().getId().toString());
         return ResponseEntity.ok(caveatCallbackResponse);
     }
+
+
 
     @PostMapping(path = "/setCaseSubmissionDate")
     public ResponseEntity<CaveatCallbackResponse> setCaseSubmissionDateForSolicitorCases(
