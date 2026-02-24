@@ -63,17 +63,25 @@ class AutomatedNotificationPersonalisationServiceTest {
     }
 
     @Test
-    void getDisposalReminderPersonalisation_shouldBuildCorrectMap() {
-        Map<String,Object> data = Map.of(
+    void getDisposalReminderPersonalisationShouldBuildCorrectMap() {
+        LocalDate dod = LocalDate.of(2025,5,1);
+        Map<String, Object> data = Map.of(
                 "solsSOTName", "Solicitor Smith",
-                "caseType",    "foo"
+                "caseType", "foo",
+                "deceasedDateOfDeath", dod,
+                "deceasedForenames", "Bob",
+                "deceasedSurname", "Brown"
         );
         CaseDetails cd = mock(CaseDetails.class);
         when(cd.getData()).thenReturn(data);
         when(cd.getId()).thenReturn(123L);
         when(cd.getCreatedDate()).thenReturn(LocalDateTime.of(2025,6,10,0,0));
+        when(dateFormatterService.formatDate(dod))
+                .thenReturn("1st May 2025");
+        when(localDateToWelshStringConverter.convert(dod))
+                .thenReturn("1 Mai 2025");
 
-        Map<String,String> result =
+        Map<String, Object> result =
                 underTest.getDisposalReminderPersonalisation(cd, ApplicationType.SOLICITOR);
 
         assertAll("disposal reminder personalisation",
@@ -81,8 +89,39 @@ class AutomatedNotificationPersonalisationServiceTest {
                 () -> assertEquals("123",     result.get("case_ref")),
                 () -> assertEquals("Solicitor Smith", result.get("solicitor_name")),
                 () -> assertEquals(
-                        urlPrefixSolicitorCase + "/cases/case-details/123",
-                        result.get("link_to_case"))
+                        urlPrefixSolicitorCase + "/cases/PROBATE/GrantOfRepresentation/123",
+                        result.get("link_to_case")),
+                () -> assertEquals("1st May 2025", result.get("deceased_dod")),
+                () -> assertEquals("1 Mai 2025", result.get("welsh_deceased_date_of_death")),
+                () -> assertEquals("Bob Brown", result.get("deceased_name"))
+        );
+    }
+
+    @Test
+    void getDisposalReminderPersonalisationShouldDefaultTextIfDeceasedNameOrDodIsNull() {
+        Map<String, Object> data = Map.of(
+                "solsSOTName", "Solicitor Smith",
+                "caseType", "foo"
+        );
+        CaseDetails cd = mock(CaseDetails.class);
+        when(cd.getData()).thenReturn(data);
+        when(cd.getId()).thenReturn(123L);
+        when(cd.getCreatedDate()).thenReturn(LocalDateTime.of(2025,6,10,0,0));
+
+        Map<String, Object> result =
+                underTest.getDisposalReminderPersonalisation(cd, ApplicationType.SOLICITOR);
+
+        assertAll("disposal reminder personalisation",
+                () -> assertEquals("10 June 2025", result.get("date_created")),
+                () -> assertEquals("123",     result.get("case_ref")),
+                () -> assertEquals("Solicitor Smith", result.get("solicitor_name")),
+                () -> assertEquals(
+                        urlPrefixSolicitorCase + "/cases/PROBATE/GrantOfRepresentation/123",
+                        result.get("link_to_case")),
+                () -> assertEquals("Date not entered yet", result.get("deceased_dod")),
+                () -> assertEquals("Dyddiad heb ei nodi eto", result.get("welsh_deceased_date_of_death")),
+                () -> assertEquals("Name not entered yet", result.get("deceased_name")),
+                () -> assertEquals("Enw heb ei nodi eto", result.get("welsh_deceased_name"))
         );
     }
 
