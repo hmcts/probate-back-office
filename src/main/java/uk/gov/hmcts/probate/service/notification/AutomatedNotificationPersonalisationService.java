@@ -52,7 +52,7 @@ public class AutomatedNotificationPersonalisationService {
     private static final String TODAY_WELSH = "today_welsh";
     private static final String CASE_ID_STRING = "<CASE_ID>";
     private static final String CASE_TYPE_STRING = "<CASE_TYPE>";
-    private static final String SOLICITOR_CASE_URL = "/cases/PROBATE/<CASE_TYPE>/<CASE_ID>";
+    private static final String SOLICITOR_CASE_URL = "/cases/case-details/PROBATE/<CASE_TYPE>/<CASE_ID>";
     private static final String PERSONAL_CASE_URL = "/get-case/<CASE_ID>?probateType=<CASE_TYPE>";
     private static final String NAME_NOT_ENTERED = "Name not entered yet";
     private static final String NAME_NOT_ENTERED_WELSH = "Enw heb ei nodi eto";
