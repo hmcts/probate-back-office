@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.model.caseprogress;
 
 public class UrlConstants {
     // for CCD should be v2/case/
-    private static final String URL_PREFIX = "cases/PROBATE/<CASE_TYPE>/";
+    private static final String URL_PREFIX = "cases/case-details/PROBATE/<CASE_TYPE>/";
 
     public static final String SOLICITOR_DETAILS_URL_TEMPLATE = URL_PREFIX
         + "<CASE_ID>/trigger/solicitorUpdateAppSolDtls/solicitorUpdateAppSolDtlssolicitorUpdateAppSolDtlsPage1";

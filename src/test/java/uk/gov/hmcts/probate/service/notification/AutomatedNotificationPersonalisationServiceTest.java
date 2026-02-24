@@ -89,7 +89,7 @@ class AutomatedNotificationPersonalisationServiceTest {
                 () -> assertEquals("123",     result.get("case_ref")),
                 () -> assertEquals("Solicitor Smith", result.get("solicitor_name")),
                 () -> assertEquals(
-                        urlPrefixSolicitorCase + "/cases/PROBATE/GrantOfRepresentation/123",
+                        urlPrefixSolicitorCase + "/cases/case-details/PROBATE/GrantOfRepresentation/123",
                         result.get("link_to_case")),
                 () -> assertEquals("1st May 2025", result.get("deceased_dod")),
                 () -> assertEquals("1 Mai 2025", result.get("welsh_deceased_date_of_death")),
@@ -116,7 +116,7 @@ class AutomatedNotificationPersonalisationServiceTest {
                 () -> assertEquals("123",     result.get("case_ref")),
                 () -> assertEquals("Solicitor Smith", result.get("solicitor_name")),
                 () -> assertEquals(
-                        urlPrefixSolicitorCase + "/cases/PROBATE/GrantOfRepresentation/123",
+                        urlPrefixSolicitorCase + "/cases/case-details/PROBATE/GrantOfRepresentation/123",
                         result.get("link_to_case")),
                 () -> assertEquals("Date not entered yet", result.get("deceased_dod")),
                 () -> assertEquals("Dyddiad heb ei nodi eto", result.get("welsh_deceased_date_of_death")),
