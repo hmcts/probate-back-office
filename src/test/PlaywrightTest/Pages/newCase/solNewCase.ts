@@ -1305,6 +1305,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async shareCaseSelection(sacCaseRefNumber) {
+    const secondProbatePractionerId = shareCaseConfig.secondProbatePractitioner_value.replace('{secondProbatePractitioner}', testConfig.TestEnvProfUserSAC);
     await this.verifyPageLoad(this.caseListLocator);
     await expect(this.caseListLocator).toBeVisible();
     await this.caseListLocator.click();
@@ -1326,10 +1327,10 @@ export class SolCreateCasePage extends BasePage {
     await this.showAllTextLocator.click();
     await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).click();
     await this.page.locator(shareCaseConfig.shareCase_comboBoxLocator).fill('Te');
-    await this.page.getByRole('option', { name: shareCaseConfig.secondProbatePractitioner_value }).click();
+    await this.page.getByRole('option', { name: secondProbatePractionerId }).click();
     await expect(this.page.locator('#btn-add-user')).toBeEnabled();
     await this.page.locator('#btn-add-user').click();
-    await expect(this.page.getByText(shareCaseConfig.secondProbatePractitioner_email)).toBeVisible();
+    await expect(this.page.getByText(testConfig.TestEnvProfUserSAC)).toBeVisible();
     await expect(this.page.getByText(shareCaseConfig.caseAdded_Text)).toBeVisible();
     await this.page.getByRole('button', { name: 'Continue' }).click();
     await this.page.getByRole('button', { name: 'Confirm' }).click();

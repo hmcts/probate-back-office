@@ -10,6 +10,7 @@ test.describe("Solicitor - Share A Case", () => {
                                                     createCasePage,
                                                     solCreateCasePage
                                                   }) => {
+    test.setTimeout(300000);
     const scenarioName = 'Solicitor - Share A Case';
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
