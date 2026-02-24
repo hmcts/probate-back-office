@@ -1,7 +1,7 @@
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.springframework.boot' version '3.5.9'
+  id 'org.springframework.boot' version '3.5.11'
   id 'uk.gov.hmcts.java' version '0.12.67'
   id 'com.github.ben-manes.versions' version '0.53.0'
   id 'com.gorylenko.gradle-git-properties' version '2.5.4'
@@ -157,7 +157,7 @@ gitProperties {
 }
 
 def versions = [
-        applicationInsightsVersion      : '3.7.6',
+        applicationInsightsVersion      : '3.7.7',
         authCheckerLib                  : '3.1.1',
         ccdClient                       : '5.2.0',
         commonsIO                       : '2.21.0',
@@ -165,7 +165,7 @@ def versions = [
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '7.17.29',
         fortifyClientVersion            : '1.4.10',
-        hmctsJavaLogging                : '7.0.0',
+        hmctsJavaLogging                : '8.0.0',
         jacksonDatabind                 : '2.17.1',
         jsoup                           : '1.22.1',
         lifeEventsClientVersion         : '1.5.2',
@@ -176,9 +176,9 @@ def versions = [
         probateCommonsVersion           : '2.2.17',
         restAssured                     : '5.5.6',
         sendLetterClientVersion         : '5.1.1',
-        serenity                        : '5.0.5',
+        serenity                        : '5.2.4',
         serviceAuthVersion              : '5.3.3',
-        springBootVersion               : '3.5.9',
+        springBootVersion               : '3.5.11',
         springCloud                     : '4.3.0',
         springDocOpenUi                 : '2.8.15',
         swaggerAnnotations              : '2.2.41',
@@ -272,7 +272,7 @@ dependencies {
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.5.1'
 
   implementation group: 'org.pitest', name: 'pitest', version: '1.22.0'
-  implementation group: 'org.commonmark', name: 'commonmark', version: '0.27.0'
+  implementation group: 'org.commonmark', name: 'commonmark', version: '0.27.1'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
