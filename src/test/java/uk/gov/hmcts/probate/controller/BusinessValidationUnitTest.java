@@ -46,6 +46,8 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationC
 import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
+import uk.gov.hmcts.probate.validator.CheckIntestacyMaritalStatusRule;
+import uk.gov.hmcts.probate.validator.CheckIntestacyOtherApplicantRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
@@ -211,6 +213,10 @@ class BusinessValidationUnitTest {
     @Mock
     private AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
     @Mock
+    private CheckIntestacyMaritalStatusRule checkIntestacyMaritalStatusRule;
+    @Mock
+    private CheckIntestacyOtherApplicantRule checkIntestacyOtherApplicantRule;
+    @Mock
     private UserInfoService userInfoServiceMock;
     @Mock
     private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
@@ -260,6 +266,8 @@ class BusinessValidationUnitTest {
             pre1900DOBValidationRuleMock,
             adColligendaBonaCaseTypeValidationRule,
             zeroApplyingExecutorsValidationRule,
+            checkIntestacyOtherApplicantRule,
+            checkIntestacyMaritalStatusRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
             documentTransformerMock);
