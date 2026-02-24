@@ -87,6 +87,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "paymentConfirmCheckbox", "Label": " ", "FieldType": "MultiSelectList", "FieldTypeParameter": "paymentAcknowledgement", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "TTL", "Label": "Set up TTL", "FieldType": "TTL", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2018", "CaseTypeID": "Caveat", "ID": "caseNameHmctsInternal", "Label": "case Name Hmcts Internal", "FieldType": "Text", "SecurityClassification": "Public", "Searchable": "Y"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "Caveat", "ID": "SearchCriteria", "Label": "Search Criteria", "FieldType": "SearchCriteria", "SecurityClassification": "Public", "Searchable": "Y"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "Caveat", "ID": "SearchParty", "Label": "Search Party", "FieldType": "SearchParty", "SecurityClassification": "Public", "Searchable": "Y"}
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "Caveat", "ID": "SearchCriteria", "Label": "Search Criteria", "FieldType": "SearchCriteria", "SecurityClassification": "Public", "Searchable": "Y"}
 ]
