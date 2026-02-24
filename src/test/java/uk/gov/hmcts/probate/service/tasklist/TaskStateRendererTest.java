@@ -126,6 +126,7 @@ class TaskStateRendererTest {
     void shouldRenderCorrectHtmlForState_CaseCreatedSolDtls() {
         final String expectedHtml = "<div><a href=\""
                 + UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999")
+                    .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
                 + "\" class=\"govuk-link\">Add Probate practitioner details</a></div>\n"
                 + "<div>Add deceased details</div>\n"
                 + "<div>Add application details</div>\n"
@@ -177,6 +178,7 @@ class TaskStateRendererTest {
         final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div><a href=\""
             + UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999")
+                .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
             + "\" class=\"govuk-link\">Add deceased details</a></div>\n"
             + "<div>Add application details</div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
@@ -236,6 +238,7 @@ class TaskStateRendererTest {
         final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
                 + "<div><a href=\""
                 + UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999")
+                    .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
                 + "\" class=\"govuk-link\">Add deceased details</a></div>\n"
                 + "<div>Add application details</div>\n"
                 + "<div>Review and sign legal statement and submit application</div>\n"
@@ -297,6 +300,7 @@ class TaskStateRendererTest {
             + "<div>Add deceased details</div>\n"
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>", "9999")
+                .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
             + "<div>Make payment</div>\n"
@@ -380,6 +384,7 @@ class TaskStateRendererTest {
             + "<div>Add deceased details</div>\n"
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>", "9999")
+                .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
             + "<div>Make payment</div>\n"
@@ -450,6 +455,7 @@ class TaskStateRendererTest {
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY
                 .replaceFirst("<CASE_ID>", "9999")
+                .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
             + "<div>Make payment</div>\n"
@@ -520,6 +526,7 @@ class TaskStateRendererTest {
             + "<div><a href=\""
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL
                 .replaceFirst("<CASE_ID>", "9999")
+                .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
             + "<div>Make payment</div>\n"

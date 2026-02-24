@@ -12,8 +12,8 @@
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
-<p class="govuk-body-s"><a href="cases/case-details/1528365719153338/trigger/solicitorUpdateAppSolDtls/solicitorUpdateAppSolDtlssolicitorUpdateAppSolDtlsPage1" class="govuk-link">Add Probate practitioner details</a></p>
-<p class="govuk-body-s"><a href="cases/case-details/1528365719153338/trigger/solicitorUpdateAppSolDtls/solicitorUpdateAppSolDtlssolicitorUpdateAppSolDtlsPage1" class="govuk-link">Ychwanegu manylion ymarferydd profiant</a></p>
+<p class="govuk-body-s"><a href="cases/PROBATE/GrantOfRepresentation/1528365719153338/trigger/solicitorUpdateAppSolDtls/solicitorUpdateAppSolDtlssolicitorUpdateAppSolDtlsPage1" class="govuk-link">Add Probate practitioner details</a></p>
+<p class="govuk-body-s"><a href="cases/PROBATE/GrantOfRepresentation/1528365719153338/trigger/solicitorUpdateAppSolDtls/solicitorUpdateAppSolDtlssolicitorUpdateAppSolDtlsPage1" class="govuk-link">Ychwanegu manylion ymarferydd profiant</a></p>
 </div>
 <div class="govuk-grid-column-one-third">
 <p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/not-started.png" alt="NOT STARTED" title="NOT STARTED" /></p>
