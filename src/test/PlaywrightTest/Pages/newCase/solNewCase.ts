@@ -566,11 +566,13 @@ export class SolCreateCasePage extends BasePage {
       if (result) {
         break;
       }
+
       await this.page.waitForTimeout(10000);
       await this.page.reload();
       // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     }
     if (appType !== "Caveat") {
+      await this.verifyPageLoad(this.caseProgressTabLocator);
       await expect(this.caseProgressTabLocator).toBeVisible();
       await expect(this.page.getByText(caseRef).first()).toBeVisible();
       await this.caseProgressTabLocator.focus();
