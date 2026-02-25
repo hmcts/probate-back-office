@@ -16,7 +16,7 @@
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
     "test-crossbrowser-e2e": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=true ./node_modules/codeceptjs/bin/codecept.js run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --grep '@crossbrowser'",
     "test:functional": "yarn playwright install chromium && NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-workers 3 -c ./src/test/end-to-end/codecept.conf.cjs",
-    "test:fullfunctional-pr": "yarn playwright install chromium && yarn playwright test **/pr_specificn/*.spec.ts --project=chromium --workers=1",
+    "test:fullfunctional-pr": "yarn playwright install chromium && yarn playwright test **/pr_specific/*.spec.ts --project=chromium --workers=1",
     "test:fullfunctional": "E2E_TEST_PATH=${TEST_E2E_URL} ./bin/run-e2e-tests.sh",
     "merge-reports": "mochawesome-merge ./temp-reports/*.json > ./functional-output/merged.json && marge ./functional-output/merged.json -f 'functional_report' -o ./functional-output/reports --inline && rm -rf ./temp-reports",
     "test:functional-nightly": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --project=chromium --project=webkit --project=firefox",
