@@ -3,5 +3,6 @@
   {"CaseTypeID": "StandingSearch", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
-  {"CaseTypeID": "StandingSearch", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
+  {"CaseTypeID": "StandingSearch", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "UserRole": "GS_profile", "CRUD": "R"}
 ]
