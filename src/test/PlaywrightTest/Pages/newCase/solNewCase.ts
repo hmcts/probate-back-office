@@ -1112,9 +1112,21 @@ export class SolCreateCasePage extends BasePage {
 
     await this.verifyPageLoad(this.reviewLocator);
     await expect(this.reviewLocator).toBeVisible();
-    await this.waitForNavigationToComplete(this.reviewLocator);
+    // await this.waitForNavigationToComplete(this.reviewLocator);
     // await this.reviewLocator.focus();
-    // await this.reviewLocator.click();
+    // await expect(locator).toBeVisible();
+    await expect(this.reviewLocator).toBeEnabled();
+
+    await expect(async () => {
+      if ((await this.reviewLocator.isVisible()) && (await this.reviewLocator.isEnabled())) {
+        await expect(this.reviewLocator).toBeVisible();
+        await expect(this.reviewLocator).toBeEnabled();
+        await this.reviewLocator.click({ timeout: 1000 });
+      }
+      await expect(this.reviewLocator).toBeHidden({ timeout: 5_000 });
+      // console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
+    }).toPass({ intervals: [2_000], timeout: 60_000 });
+    await this.reviewLocator.click();
   }
 
   async intestacyDetailsPage1() {
