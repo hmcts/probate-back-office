@@ -234,6 +234,7 @@ export class SolCreateCasePage extends BasePage {
   readonly caseListHeadingLocator = this.page.getByRole('heading', { name: nocConfig.nocWaitForText });
   readonly cyaPageLocator = this.page.getByText("Check your answers");
   readonly goButtonLocator = this.page.getByRole("button", { name: "Go" });
+  readonly shareCaseUser = this.page.getByText(testConfig.TestEnvProfUserSAC);
 
   constructor(public readonly page: Page) {
     super(page);
@@ -587,11 +588,13 @@ export class SolCreateCasePage extends BasePage {
       if (result) {
         break;
       }
+
       await this.page.waitForTimeout(10000);
       await this.page.reload();
       // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     }
     if (appType !== "Caveat") {
+      await this.verifyPageLoad(this.caseProgressTabLocator);
       await expect(this.caseProgressTabLocator).toBeVisible();
       await expect(this.page.getByText(caseRef).first()).toBeVisible();
       await this.caseProgressTabLocator.focus();
@@ -1326,6 +1329,7 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async shareCaseSelection(sacCaseRefNumber) {
+    // const secondProbatePractionerId = shareCaseConfig.secondProbatePractitioner_value.replace('{secondProbatePractitioner}', this.shareCaseUser);
     await this.verifyPageLoad(this.caseListLocator);
     await expect(this.caseListLocator).toBeVisible();
     await this.caseListLocator.click();
