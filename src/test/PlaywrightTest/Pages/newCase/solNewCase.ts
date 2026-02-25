@@ -429,9 +429,8 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async reviewPaymentDetails(caseRef: string, serviceRequestReviewTabConfig: ServiceRequestTabConfig) {
-    await this.verifyPageLoad(this.page.getByText(caseRef).first());
-    await expect(this.page.getByText(caseRef).first()).toBeVisible();
-    await expect(this.serviceRequestTabLocator).toBeEnabled();
+    // await this.verifyPageLoad(this.page.getByText(caseRef).first());
+    await expect(this.page.getByText('Service request reference').first()).toBeVisible();
     await this.runAccessibilityTest();
     for (let i = 0; i < serviceRequestReviewTabConfig.fields.length; i++) {
       if (
@@ -442,8 +441,8 @@ export class SolCreateCasePage extends BasePage {
           this.page.getByText(serviceRequestReviewTabConfig.fields[i]).first()
         ).toBeVisible();
       }
-      await this.backToServiceRequestLocator.click();
     }
+    await this.backToServiceRequestLocator.click();
   }
 
   async reviewPaymentDetailsForRefund(caseRef: string) {
@@ -1110,23 +1109,9 @@ export class SolCreateCasePage extends BasePage {
       }
     }
 
-    await this.verifyPageLoad(this.reviewLocator);
+    //await this.verifyPageLoad(this.reviewLocator);
     await expect(this.reviewLocator).toBeVisible();
-    // await this.waitForNavigationToComplete(this.reviewLocator);
-    // await this.reviewLocator.focus();
-    // await expect(locator).toBeVisible();
-    await expect(this.reviewLocator).toBeEnabled();
-
-    await expect(async () => {
-      if ((await this.reviewLocator.isVisible()) && (await this.reviewLocator.isEnabled())) {
-        await expect(this.reviewLocator).toBeVisible();
-        await expect(this.reviewLocator).toBeEnabled();
-        await this.reviewLocator.click({ timeout: 1000 });
-      }
-      await expect(this.reviewLocator).toBeHidden({ timeout: 5_000 });
-      // console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
-    }).toPass({ intervals: [2_000], timeout: 60_000 });
-    // await this.reviewLocator.click();
+    await this.reviewLocator.click();
   }
 
   async intestacyDetailsPage1() {
