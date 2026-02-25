@@ -1112,6 +1112,7 @@ export class SolCreateCasePage extends BasePage {
 
     await this.verifyPageLoad(this.reviewLocator);
     await expect(this.reviewLocator).toBeVisible();
+    await this.reviewLocator.focus();
     await this.reviewLocator.click();
   }
 
