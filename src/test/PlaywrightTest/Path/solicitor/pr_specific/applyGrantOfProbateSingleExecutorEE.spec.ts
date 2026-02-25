@@ -20,7 +20,6 @@ import historyTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/h
 import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
 import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 import caseProgressConfig from "../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
-import {testConfig} from "../../../Configs/config.ts";
 
 test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Refunds", () => {
   let caseRef;
