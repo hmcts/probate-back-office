@@ -1126,7 +1126,7 @@ export class SolCreateCasePage extends BasePage {
       await expect(this.reviewLocator).toBeHidden({ timeout: 5_000 });
       // console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
     }).toPass({ intervals: [2_000], timeout: 60_000 });
-    await this.reviewLocator.click();
+    // await this.reviewLocator.click();
   }
 
   async intestacyDetailsPage1() {
