@@ -1112,8 +1112,9 @@ export class SolCreateCasePage extends BasePage {
 
     await this.verifyPageLoad(this.reviewLocator);
     await expect(this.reviewLocator).toBeVisible();
-    await this.reviewLocator.focus();
-    await this.reviewLocator.click();
+    await this.waitForNavigationToComplete(this.reviewLocator);
+    // await this.reviewLocator.focus();
+    // await this.reviewLocator.click();
   }
 
   async intestacyDetailsPage1() {
