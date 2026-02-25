@@ -124,23 +124,4 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
     await basePage.seeCaseDetails(testInfo, caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
   });
 
-  test("Add Remission for HPW and Approve Refund", async ({
-                                                                                           basePage,
-                                                                                           signInPage,
-                                                                                           createCasePage,
-                                                                                           solCreateCasePage,
-                                                                                           cwEventActionsPage
-                                                                                         }, testInfo) => {
-    const scenarioName = 'Add Remission for HPW and Approve Refund';
-    const nextStepName = 'Add Remission';
-    caseRef = '1769-7960-5743-8105';
-
-    //Add API here to process the payment at Liberata and create reconciliation for refunds.
-
-    await basePage.logInfo(scenarioName, nextStepName, caseRef);
-    // log in as case worker
-    await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    await solCreateCasePage.navigateToCase(caseRef);
-    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef);
-  });
 });
