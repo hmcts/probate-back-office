@@ -24,4 +24,11 @@
         -->
         <cve>CVE-2025-15104</cve>
     </suppress>
+    <suppress until = "2026-07-13">
+        <notes><![CDATA[
+   file name: kotlin-stdlib-1.9.25.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin-stdlib@.*$</packageUrl>
+        <cve>CVE-2020-29582</cve>
+    </suppress>
 </suppressions>
