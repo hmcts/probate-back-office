@@ -531,9 +531,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "executorsNamed", "Label": "Executors named", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyExecutorsDied", "Label": "Any executors died", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "firstStopReminderSentDate", "Label": "First stop reminder sent date", "FieldType": "Date", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "ID": "caseNameHmctsInternal", "Label": "case Name Hmcts Internal", "FieldType": "Text", "SecurityClassification": "Public", "Searchable": "Y"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "ID": "SearchCriteria", "Label": "Search Criteria", "FieldType": "SearchCriteria", "SecurityClassification": "Public", "Searchable": "Y"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "ID": "SearchParty", "Label": "Search Party", "FieldType": "SearchParty", "SecurityClassification": "Public", "Searchable": "Y"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "ID": "caseManagementCategory", "Label": "case Management Category ", "FieldType": "DynamicList", "SecurityClassification": "Public", "Searchable": "Y"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "ID": "caseManagementLocation", "Label": "case Management Location ", "FieldType": "CaseManagementLocation", "SecurityClassification": "Public", "Searchable": "Y"}
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "ID": "SearchCriteria", "Label": "Search Criteria", "FieldType": "SearchCriteria", "SecurityClassification": "Public", "Searchable": "Y"}
 ]
