@@ -36,12 +36,12 @@
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchClosed", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "ProcessingStandingSearch", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchCompleted", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchCreated", "UserRole": "GS_profile", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchMatching", "UserRole": "GS_profile", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchNotMatched", "UserRole": "GS_profile", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "AwaitingProbateGrant", "UserRole": "GS_profile", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchClosed", "UserRole": "GS_profile", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "ProcessingStandingSearch", "UserRole": "GS_profile", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchCompleted", "UserRole": "GS_profile", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchImported", "UserRole": "GS_profile", "CRUD": "CRUD"}
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchCreated", "UserRole": "GS_profile", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchMatching", "UserRole": "GS_profile", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchNotMatched", "UserRole": "GS_profile", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "AwaitingProbateGrant", "UserRole": "GS_profile", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchClosed", "UserRole": "GS_profile", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "ProcessingStandingSearch", "UserRole": "GS_profile", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchCompleted", "UserRole": "GS_profile", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "StandingSearch", "CaseStateID": "StandingSearchImported", "UserRole": "GS_profile", "CRUD": "R"}
 ]
