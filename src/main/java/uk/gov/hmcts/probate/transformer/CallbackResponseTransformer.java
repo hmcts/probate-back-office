@@ -151,6 +151,7 @@ public class CallbackResponseTransformer {
     private final OrganisationsRetrievalService organisationsRetrievalService;
     private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
+    private final GrantIssueTooEarlyTransformer grantIssueTooEarlyTransformer;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final AuditEventService auditEventService;
@@ -211,6 +212,19 @@ public class CallbackResponseTransformer {
                 callbackRequest.getEventId(), Optional.empty(),true);
         iht400421Defaulter.defaultPageFlowForIht400421(callbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse setCaseSubmissionDate(Document sentEmail, Document coversheet,
+                                                  CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), Optional.empty(),true)
+                .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
+                .applicationSubmittedDate(LocalDate.now().format(dateTimeFormatter))
+                .paymentTaken(YES);
+        if (sentEmail != null) {
+            documentTransformer.addDocument(callbackRequest, sentEmail, false);
+        }
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -567,6 +581,9 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.matches("No matches found");
         }
 
+        responseCaseDataBuilder.issueEarlySwitch(
+                grantIssueTooEarlyTransformer.defaultIssueTooEarlySwitch(callbackRequest.getCaseDetails().getData())
+        );
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -742,7 +759,8 @@ public class CallbackResponseTransformer {
         final var applicationFee = transformMoneyGBPToString(feesResponse.getApplicationFeeResponse().getFeeAmount());
         final var totalFee = transformMoneyGBPToString(feesResponse.getTotalAmount());
 
-        final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
+        final var applicationSubmittedDate = feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO) == 0
+                ? dateTimeFormatter.format(LocalDate.now()) : null;
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
         caseDataTransformer
                 .transformForSolicitorApplicationCompletion(callbackRequest, feesResponse.getTotalAmount());
@@ -1106,6 +1124,10 @@ public class CallbackResponseTransformer {
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
+
+        if (SOLICITOR.equals(cd.getApplicationType())) {
+            responseCaseDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
+        }
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
@@ -2227,5 +2249,16 @@ public class CallbackResponseTransformer {
         } else {
             responseCaseDataBuilder.informationNeededByPostSwitch(NO);
         }
+    }
+
+    private OrganisationPolicy buildEmptySolicitorOrganisationPolicy() {
+        return OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
     }
 }

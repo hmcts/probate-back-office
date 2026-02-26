@@ -16,4 +16,18 @@
         -->
         <cve>CVE-2025-7962</cve>
     </suppress>
+    <suppress until = "2026-07-13">
+        <!--
+            Nu Html Checker (validator.nu) contains a restriction bypass that allows remote attackers to make the server
+            perform arbitrary HTTP/HTTPS requests to internal resources, including localhost services.
+            spring-boot-starter-validation:3.5.10 is the latest version and so suppression is the only option.
+        -->
+        <cve>CVE-2025-15104</cve>
+    </suppress>
+    <suppress until = "2026-07-13">
+        <notes><![CDATA[
+   file name: kotlin-stdlib-1.9.25.jar
+   ]]></notes>
+        <cve>CVE-2020-29582</cve>
+    </suppress>
 </suppressions>

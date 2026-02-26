@@ -83,7 +83,7 @@ class PrepareNocServiceTest {
         caseData.put("solsSOTForenames","OldSolicitorFirstName");
         caseData.put("solsSOTSurname","OldSolicitorLastName");
         caseData.put("solsSolicitorEmail","OldSolicitor@gmail.com");
-        
+
         when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
                 ChangeOrganisationRequest.class)).thenReturn(changeRequest);
         when(objectMapper.convertValue(any(), any(TypeReference.class))).thenReturn(changeOfRepresentatives);
@@ -126,8 +126,7 @@ class PrepareNocServiceTest {
         verify(organisationApi, times(1))
                 .findSolicitorOrganisation(anyString(), anyString(), anyString());
         verify(assignCaseAccessClient, times(1))
-                .applyDecision(anyString(), anyString(), any(
-                DecisionRequest.class));
+                .applyDecision(anyString(), anyString(), any(DecisionRequest.class));
     }
 
     @Test
@@ -145,8 +144,7 @@ class PrepareNocServiceTest {
         verify(organisationApi, times(1))
                 .findSolicitorOrganisation(anyString(), anyString(), anyString());
         verify(assignCaseAccessClient, times(1))
-                .applyDecision(anyString(), anyString(), any(
-                        DecisionRequest.class));
+                .applyDecision(anyString(), anyString(), any(DecisionRequest.class));
     }
 
     @Test
@@ -164,8 +162,7 @@ class PrepareNocServiceTest {
         verify(organisationApi, times(1))
                 .findSolicitorOrganisation(anyString(), anyString(), anyString());
         verify(assignCaseAccessClient, times(1))
-                .applyDecision(anyString(), anyString(), any(
-                        DecisionRequest.class));
+                .applyDecision(anyString(), anyString(), any(DecisionRequest.class));
     }
 
     @Test
@@ -182,8 +179,7 @@ class PrepareNocServiceTest {
         verify(organisationApi, times(1))
                 .findSolicitorOrganisation(anyString(), anyString(), anyString());
         verify(assignCaseAccessClient, times(1))
-                .applyDecision(anyString(), anyString(), any(
-                        DecisionRequest.class));
+                .applyDecision(anyString(), anyString(), any(DecisionRequest.class));
     }
 
     @Test
@@ -198,8 +194,7 @@ class PrepareNocServiceTest {
         verify(organisationApi, times(1))
                 .findSolicitorOrganisation(anyString(), anyString(), anyString());
         verify(assignCaseAccessClient, times(1))
-                .applyDecision(anyString(), anyString(), any(
-                        DecisionRequest.class));
+                .applyDecision(anyString(), anyString(), any(DecisionRequest.class));
     }
 
     @Test
@@ -215,8 +210,7 @@ class PrepareNocServiceTest {
         verify(organisationApi, times(1))
                 .findSolicitorOrganisation(anyString(), anyString(), anyString());
         verify(assignCaseAccessClient, times(1))
-                .applyDecision(anyString(), anyString(), any(
-                        DecisionRequest.class));
+                .applyDecision(anyString(), anyString(), any(DecisionRequest.class));
     }
 
     @Test
@@ -230,8 +224,7 @@ class PrepareNocServiceTest {
         verify(organisationApi, times(1))
                 .findOrganisationByOrgId(anyString(), anyString(), anyString());
         verify(assignCaseAccessClient, times(1))
-                .applyDecision(anyString(), anyString(), any(
-                        DecisionRequest.class));
+                .applyDecision(anyString(), anyString(), any(DecisionRequest.class));
     }
 
     @Test
@@ -245,8 +238,7 @@ class PrepareNocServiceTest {
         verify(organisationApi, times(1))
                 .findSolicitorOrganisation(anyString(), anyString(), anyString());
         verify(assignCaseAccessClient, times(1))
-                .applyDecision(anyString(), anyString(), any(
-                        DecisionRequest.class));
+                .applyDecision(anyString(), anyString(), any(DecisionRequest.class));
     }
 
     @Test
@@ -263,22 +255,22 @@ class PrepareNocServiceTest {
 
 
         assertEquals(address.getAddressLine1(),
-                organisationEntityResponse.getContactInformation().get(0).getAddressLine1());
+                organisationEntityResponse.getContactInformation().getFirst().getAddressLine1());
         assertEquals(address.getCounty(),
-                organisationEntityResponse.getContactInformation().get(0).getCounty());
+                organisationEntityResponse.getContactInformation().getFirst().getCounty());
         assertEquals(address.getCountry(),
-                organisationEntityResponse.getContactInformation().get(0).getCountry());
+                organisationEntityResponse.getContactInformation().getFirst().getCountry());
         assertEquals(address.getPostTown(),
-                organisationEntityResponse.getContactInformation().get(0).getTownCity());
+                organisationEntityResponse.getContactInformation().getFirst().getTownCity());
         assertEquals(address.getPostCode(),
-                organisationEntityResponse.getContactInformation().get(0).getPostCode());
+                organisationEntityResponse.getContactInformation().getFirst().getPostCode());
 
     }
 
     private List<CollectionMember<ChangeOfRepresentative>> setupRepresentative() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-        List<CollectionMember<ChangeOfRepresentative>> representatives = new ArrayList();
+        List<CollectionMember<ChangeOfRepresentative>> representatives = new ArrayList<>();
         CollectionMember<ChangeOfRepresentative> removedRepresentative1 =
                 new CollectionMember<>(null, ChangeOfRepresentative
                         .builder()
