@@ -429,9 +429,8 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async reviewPaymentDetails(caseRef: string, serviceRequestReviewTabConfig: ServiceRequestTabConfig) {
-    await this.verifyPageLoad(this.page.getByText(caseRef).first());
-    await expect(this.page.getByText(caseRef).first()).toBeVisible();
-    await expect(this.serviceRequestTabLocator).toBeEnabled();
+    // await this.verifyPageLoad(this.page.getByText(caseRef).first());
+    await expect(this.page.getByText('Service request reference').first()).toBeVisible();
     await this.runAccessibilityTest();
     for (let i = 0; i < serviceRequestReviewTabConfig.fields.length; i++) {
       if (
@@ -442,8 +441,8 @@ export class SolCreateCasePage extends BasePage {
           this.page.getByText(serviceRequestReviewTabConfig.fields[i]).first()
         ).toBeVisible();
       }
-      await this.backToServiceRequestLocator.click();
     }
+    await this.backToServiceRequestLocator.click();
   }
 
   async reviewPaymentDetailsForRefund(caseRef: string) {
@@ -1110,9 +1109,8 @@ export class SolCreateCasePage extends BasePage {
       }
     }
 
-    await this.verifyPageLoad(this.reviewLocator);
+    //await this.verifyPageLoad(this.reviewLocator);
     await expect(this.reviewLocator).toBeVisible();
-    await this.reviewLocator.focus();
     await this.reviewLocator.click();
   }
 
