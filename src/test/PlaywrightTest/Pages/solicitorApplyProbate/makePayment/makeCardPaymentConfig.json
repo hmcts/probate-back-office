@@ -1,0 +1,14 @@
+{
+  "cardPaymentHeading": "Enter card details",
+  "cardNumber": "4242424242424242",
+  "expiryMonth": "06",
+  "expiryYear": "99",
+  "nameOnCard": "Test User",
+  "cardCvc": "123",
+  "addressLine1": "1 Test",
+  "addressTown": "London",
+  "addressPostcode": "SW1A 1AA",
+  "emailAddress": "test@test.com",
+  "cardVerifyPageHeading": "Confirm your payment",
+  "serviceRequestLink": "Return to service request"
+}
