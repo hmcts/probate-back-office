@@ -1395,4 +1395,28 @@ class BusinessValidationUnitTest {
         verify(notificationService, times(1))
                 .sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetailsMock);
     }
+
+    @Test
+    void shouldClearFieldsBasedOnRelationships() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+                .clearFieldsBasedOnRelationships(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldClearSiblingFields() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+                .clearFieldsBasedOnRelationships(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }
