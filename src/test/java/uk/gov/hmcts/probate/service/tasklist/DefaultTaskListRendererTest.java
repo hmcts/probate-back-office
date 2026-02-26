@@ -531,7 +531,7 @@ class DefaultTaskListRendererTest {
                 + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p "
                 + "class=\"govuk-body-s\">Send documents<br/><sendDocsLink/>"
                 + "Anfon dogfennau<br/><sendDocsLinkWelsh/></p></div><div class=\"govuk-grid-column-one-third\">"
-                + "<status-sendDocuments/></div></div>\n"
+                + "<status-sendDocuments/><status-sendDocumentsWelsh/></div></div>\n"
                 + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
                 + "\n"
                 + "<br/>\n"

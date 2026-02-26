@@ -24,6 +24,7 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
             + "<p>Send documents<br/><sendDocsLink/>Anfon dogfennau<br/><sendDocsLinkWelsh/></p>"
             + "</gridCol-two-thirds><gridCol-one-third>"
             + "<status-sendDocuments/>"
+            + "<status-sendDocumentsWelsh/>"
             + "</gridCol-one-third></gridRow>\n"
             + "<gridRowSeparator/>\n";
 
