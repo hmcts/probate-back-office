@@ -2932,18 +2932,28 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformRollbackState() {
+    void shouldTransformMigrateCase() {
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         caseDataBuilder.applicationType(SOLICITOR);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(auditEventService.getLatestAuditEventByState(any(), any(), any(), any()))
+        when(auditEventService.getLatestAuditEventExcludingDormantState(any(), any(), any(), any()))
                 .thenReturn(Optional.ofNullable(AuditEvent.builder()
-                        .stateId("SolsAppUpdated")
+                        .stateId("BOPostGrantIssued")
                         .createdDate(LocalDateTime.now())
                         .build()));
+        CallbackResponse callbackResponse = underTest.migrate(callbackRequestMock);
+        assertEquals("BOPostGrantIssued", callbackResponse.getData().getState());
+    }
+
+    @Test
+    void shouldTransformRollback() {
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        caseDataBuilder.applicationType(SOLICITOR);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertEquals("SolsAppUpdated", callbackResponse.getData().getState());
+        assertCommon(callbackResponse);
     }
 
     @Test

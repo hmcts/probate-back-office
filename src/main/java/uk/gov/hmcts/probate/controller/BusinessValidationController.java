@@ -563,10 +563,20 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/migrateCase", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> migrateCase(@RequestBody CallbackRequest callbackRequest,
+                                                        HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        log.info("Proceed Data migration for case: {}", callbackRequest.getCaseDetails().getId());
+        CallbackResponse response = callbackResponseTransformer.migrate(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/rollback", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> rollbackDataMigration(@RequestBody CallbackRequest callbackRequest,
-                                                            HttpServletRequest request) {
+                                                                  HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         log.info("Rollback Data migration for case: {}", callbackRequest.getCaseDetails().getId());
         CallbackResponse response = callbackResponseTransformer.rollback(callbackRequest);
@@ -575,14 +585,14 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/stopConfirmation", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> stopWithConfirmation(
-        @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody
+            @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody
             CallbackRequest callbackRequest,
-        BindingResult bindingResult) {
+            BindingResult bindingResult) {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse =
-            confirmationResponseService.getStopConfirmation(callbackRequest);
+                confirmationResponseService.getStopConfirmation(callbackRequest);
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 

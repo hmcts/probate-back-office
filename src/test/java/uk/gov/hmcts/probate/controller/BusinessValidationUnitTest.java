@@ -1069,6 +1069,18 @@ class BusinessValidationUnitTest {
     }
 
     @Test
+    void shouldMigrateCase() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.migrateCase(callbackRequestMock, httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .migrate(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
     void shouldRollback() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(bindingResultMock.hasErrors()).thenReturn(false);
@@ -1285,7 +1297,7 @@ class BusinessValidationUnitTest {
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
                 () -> assertThat(notificationsGenerated, empty()));
     }
-  
+
     @Test
     void shouldAttemptToEmailCaseworkerWhenEscalateToRegistrarFails() throws RegistrarEscalationException {
 
