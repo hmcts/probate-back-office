@@ -1,0 +1,24 @@
+{
+  "page2_waitForText": "Name of your firm",
+  "page2_subheading": "Probate practitioner details",
+  "page2_probatePractionerHelp": "Provide the name of the probate practitioner making this application. This includes solicitors or other qualified persons",
+  "page2_firm_name": "ProbateTest Org2",
+  "page2_optionYes": "Yes",
+  "page2_optionNo": "No",
+  "page2_sol_forename":"Jason",
+  "page2_sol_surname":"Rob",
+  "page2_sol_name":"ProbatePPOne Org2",
+  "page2_app_ref": "SOL-123-456",
+  "page2_sol_email": "probate.pp1.org2@gmail.com",
+  "page2_phone_num" : "0129898989",
+
+  "address_line1": "Probate Street",
+  "address_line2": "HMCTS Lane",
+  "address_line3": "",
+  "address_town": "London",
+  "address_county": "London",
+  "address_country": "United Kingdom",
+  "address_postcode": "SW1 1AA",
+
+  "UKpostcodeLink": ".manual-link"
+}

@@ -12,8 +12,8 @@
   "dataKeys": [
     "page1_list3_case_type",
     "page1_optionChannelChoiceCW",
-    "EE_ihtEstateGrossValue",
-    "EE_ihtEstateNetValue",
+    "EE_ihtEstateGrossValuePound",
+    "EE_ihtEstateNetValuePound",
     "page1_list1_registry_location",
     "page1_list2_application_type",
     "page1_optionNo"

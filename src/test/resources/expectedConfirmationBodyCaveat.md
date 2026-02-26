@@ -6,7 +6,7 @@ Your application has been submitted but cannot be processed until payment has be
 
 How to pay
 =================
-[Pay the application fee](cases/PROBATE/Caveat/123#Service%20Request) using Payment by Account (PBA) or a credit or debit card by returning to the case details and selecting the Service Request tab.
+[Pay the application fee](cases/case-details/PROBATE/Caveat/123#Service%20Request) using Payment by Account (PBA) or a credit or debit card by returning to the case details and selecting the Service Request tab.
 
 After you’ve paid, you may need to refresh the page or re-enter the case for the payment status to update.
 
@@ -21,7 +21,7 @@ Mae eich cais wedi'i gyflwyno ond ni ellir ei brosesu nes bydd taliad wedi'i wne
 
 Sut i dalu
 =================
-[Talu ffi’r cais](cases/PROBATE/Caveat/123#Service%20Request) defnyddio Trosglwyddiad Cyfrif (PBA) neu gerdyn credyd neu ddebyd trwy ddychwelyd at fanylion yr achos a dewis y tab Cais am Daliad.
+[Talu ffi’r cais](cases/case-details/PROBATE/Caveat/123#Service%20Request) defnyddio Trosglwyddiad Cyfrif (PBA) neu gerdyn credyd neu ddebyd trwy ddychwelyd at fanylion yr achos a dewis y tab Cais am Daliad.
 
 Ar ôl i chi dalu, efallai y bydd angen i chi adnewyddu'r dudalen neu ail-deipio cyfeirnod yr achos er mwyn i statws y taliad ddiweddaru.
 

@@ -1,0 +1,12 @@
+{
+  "tabName": "Documents",
+  "waitForText" : "Manage Cases",
+  "fields": [
+    "Type",
+    "Document Url"
+  ],
+  "dataKeysBilingual": [
+    "documentType",
+    "filenameBilingual"
+  ]
+}
