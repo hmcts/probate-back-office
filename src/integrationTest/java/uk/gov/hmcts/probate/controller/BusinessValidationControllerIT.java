@@ -189,6 +189,7 @@ class BusinessValidationControllerIT {
     private static final String VALIDATE_STOP_REASON = "/case/validate-stop-reason";
     private static final String MOVE_TO_POST_GRANT_ISSUED = "/case/moveToPostGrantIssued";
     private static final String ESCALATE_TO_REGISTRAR = "/case/case-escalated";
+    private static final String SOLICITOR_SUBMIT_CASE = "/case/setCaseSubmissionDate";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -1490,6 +1491,27 @@ class BusinessValidationControllerIT {
                 // validate that the generated notification has been added as the last entry in the list of notifs
                 .andExpect(jsonPath("$.data.probateNotificationsGenerated[-1].value.DocumentFileName")
                         .value(document.getDocumentFileName()));
+    }
+
+    @Test
+    void shouldReturnSuccessForSolicitorSubmitEvent() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+
+        solicitorPayload =  solicitorPayload.replaceFirst("\"applicationType\": \"Solicitor\"",
+                "\"applicationType\": \"Personal\"");
+
+        Document emailDocument = Document.builder().documentType(DocumentType.EMAIL)
+                .documentLink(DocumentLink.builder().documentFilename("email.pdf").build())
+                .build();
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
+                .thenReturn(emailDocument);
+
+        mockMvc.perform(post(SOLICITOR_SUBMIT_CASE).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.schemaVersion").doesNotExist())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 }
 

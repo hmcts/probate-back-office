@@ -20,5 +20,6 @@
   "failQa": "Fail QA",
   "resolveStop": "Resolve stop",
   "postGrantIssue": "Post Grant Issue",
-  "resolvePostGrantIssue": "Resolve Post Grant Issue"
+  "resolvePostGrantIssue": "Resolve Post Grant Issue",
+  "registrarEscalation": "Escalate to registrar"
 }

@@ -85,6 +85,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
@@ -762,6 +763,25 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest) {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
+    }
+
+    @PostMapping(path = "/setCaseSubmissionDate", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> setCaseSubmissionDateForSolicitorCases(
+            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        Document sentEmail;
+        if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
+            notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
+            sentEmail = notificationService.sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails());
+        } else {
+            sentEmail = notificationService
+                    .sendEmail(APPLICATION_RECEIVED_NO_DOCS, callbackRequest.getCaseDetails());
+        }
+        Document coversheet = pdfManagementService
+                .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+        caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
+        return ResponseEntity.ok(callbackResponseTransformer.setCaseSubmissionDate(sentEmail, coversheet,
+                callbackRequest));
     }
 
     @PostMapping(path = "/invalidEvent", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})

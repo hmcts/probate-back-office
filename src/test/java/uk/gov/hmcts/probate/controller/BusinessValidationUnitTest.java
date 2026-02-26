@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -96,6 +97,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 
@@ -1362,5 +1364,47 @@ class BusinessValidationUnitTest {
         assertAll(
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
                 () -> assertThat(notificationsGenerated, empty()));
+    }
+
+    @Test
+    void shouldSetApplicationSubmittedDateForEvidenceHandled() throws NotificationClientException {
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getEvidenceHandled()).thenReturn(YES);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
+                .thenReturn(documentMock);
+        when(callbackResponseTransformerMock.setCaseSubmissionDate(documentMock, documentMock, callbackRequestMock))
+                .thenReturn(callbackResponseMock);
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, DocumentType.SOLICITOR_COVERSHEET))
+                .thenReturn(documentMock);
+        ResponseEntity<CallbackResponse> response = underTest
+                .setCaseSubmissionDateForSolicitorCases(callbackRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(notificationService, times(1))
+                .sendEmail(APPLICATION_RECEIVED, caseDetailsMock);
+    }
+
+    @Test
+    void shouldSetApplicationSubmittedDateForNoEvidenceHandled() throws NotificationClientException {
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getEvidenceHandled()).thenReturn(NO);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(notificationService.sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetailsMock,
+                Optional.of(CaseOrigin.CASEWORKER))).thenReturn(documentMock);
+        when(callbackResponseTransformerMock.setCaseSubmissionDate(documentMock, documentMock, callbackRequestMock))
+                .thenReturn(callbackResponseMock);
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, DocumentType.SOLICITOR_COVERSHEET))
+                .thenReturn(documentMock);
+        ResponseEntity<CallbackResponse> response = underTest
+                .setCaseSubmissionDateForSolicitorCases(callbackRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(notificationService, times(1))
+                .sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetailsMock);
     }
 }
