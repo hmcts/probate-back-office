@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "useDefineForClassFields": false,
+    "allowJs": true,
+    "noEmit": true,
+  },
+  "include":["src/test/PlaywrightTest/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
