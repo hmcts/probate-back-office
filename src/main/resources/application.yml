@@ -815,3 +815,6 @@ automated_notification:
   dormant_reminder_days: 365
   unsubmitted_application_days: 28
   declaration_not_signed_days: 3
+
+supplementary-data:
+  hmctsid: ${SUPPLEMENTARY_DATA_HMCTSID:ABA6}
