@@ -85,5 +85,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "changeOfRepresentative", "Label": "Change Of Representative", "FieldType": "ChangeOfRepresentative", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "paymentConfirmCheckboxLabel", "Label": "### You must complete payment after submitting your application.", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "paymentConfirmCheckbox", "Label": " ", "FieldType": "MultiSelectList", "FieldTypeParameter": "paymentAcknowledgement", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "TTL", "Label": "Set up TTL", "FieldType": "TTL", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "TTL", "Label": "Set up TTL", "FieldType": "TTL", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "Caveat", "ID": "SearchCriteria", "Label": "Search Criteria", "FieldType": "SearchCriteria", "SecurityClassification": "Public", "Searchable": "Y"}
 ]

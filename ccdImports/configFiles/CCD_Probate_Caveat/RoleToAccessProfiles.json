@@ -13,5 +13,13 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:caseworker-probate-pcqextractor", "ReadOnly": "Y", "AccessProfiles": "caseworker-probate-pcqextractor"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "[CREATOR]", "ReadOnly": "N", "AccessProfiles": "[CREATOR]"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "[APPLICANTSOLICITOR]", "ReadOnly": "N", "AccessProfiles": "[APPLICANTSOLICITOR]"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:cft-ttl-manager", "ReadOnly": "N", "AccessProfiles": "TTL_profile"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "idam:cft-ttl-manager", "ReadOnly": "N", "AccessProfiles": "TTL_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "hmcts-admin", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "hmcts-judiciary", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "hmcts-legal-operations", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "hmcts-ctsc", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "specific-access-judiciary", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "specific-access-legal-ops", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "specific-access-admin", "ReadOnly": "y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "RoleName": "specific-access-ctsc", "ReadOnly": "y", "AccessProfiles": "GS_profile"}
 ]

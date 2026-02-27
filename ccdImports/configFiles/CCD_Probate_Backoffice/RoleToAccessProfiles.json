@@ -16,5 +16,13 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "idam:caseworker-probate-rparobot", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-rparobot"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "idam:cft-ttl-manager", "ReadOnly": "N", "AccessProfiles": "TTL_profile"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "[CREATOR]", "ReadOnly": "N", "AccessProfiles": "[CREATOR]"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "[APPLICANTSOLICITOR]", "ReadOnly": "N", "AccessProfiles": "[APPLICANTSOLICITOR]"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "[APPLICANTSOLICITOR]", "ReadOnly": "N", "AccessProfiles": "[APPLICANTSOLICITOR]"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "hmcts-admin", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "hmcts-judiciary", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "hmcts-legal-operations", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "hmcts-ctsc", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "specific-access-judiciary", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "specific-access-legal-ops", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "specific-access-admin", "ReadOnly": "y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "specific-access-ctsc", "ReadOnly": "y", "AccessProfiles": "GS_profile"}
 ]

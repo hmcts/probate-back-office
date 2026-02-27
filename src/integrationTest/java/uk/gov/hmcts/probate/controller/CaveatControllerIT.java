@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
@@ -93,6 +94,10 @@ class CaveatControllerIT {
     @MockitoSpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
 
+    @MockitoBean
+     CcdSupplementaryDataService ccdSupplementaryDataService;
+
+
     @BeforeEach
     public void setUp() throws NotificationClientException, BadRequestException {
         MockitoAnnotations.openMocks(this);
@@ -124,6 +129,23 @@ class CaveatControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("data")));
+
+
+    }
+
+    @Test
+    void solsCaveatSupplementaryData_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
+
+        mockMvc.perform(post("/caveat//supplementaryData")
+                        .header("Authorization", AUTH_TOKEN)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+
     }
 
     @Test
