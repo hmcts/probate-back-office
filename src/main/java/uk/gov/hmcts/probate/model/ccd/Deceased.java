@@ -22,4 +22,5 @@ public class Deceased implements Serializable {
     private final String deceasedAdoptedOut;
     private final String deceasedAnyLivingDescendants;
     private final String deceasedAnyLivingParents;
+    private final String dateOfDivorcedCPJudicially;
 }

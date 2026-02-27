@@ -18,13 +18,13 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @RequiredArgsConstructor
 public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
     public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "adoptedOutsideEnglandOrWales";
-    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWales";
+    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWalesWelsh";
     public static final String DECEASED_CHILD_DEAD = "deceasedChildDead";
     public static final String DECEASED_CHILD_DEAD_WELSH = "deceasedChildDeadWales";
     public static final String ADOPTED_OUT = "adoptedOut";
-    public static final String ADOPTED_OUT_WELSH = "adoptedOut";
+    public static final String ADOPTED_OUT_WELSH = "adoptedOutWelsh";
     public static final String SIBLING_NOT_DIED = "siblingNotDied";
-    public static final String SIBLING_NOT_DIED_WELSH = "siblingNotDied";
+    public static final String SIBLING_NOT_DIED_WELSH = "siblingNotDiedWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 

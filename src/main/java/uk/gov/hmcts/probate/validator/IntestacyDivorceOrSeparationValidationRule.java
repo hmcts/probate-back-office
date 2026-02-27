@@ -18,9 +18,9 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 @RequiredArgsConstructor
 public class IntestacyDivorceOrSeparationValidationRule implements ValidationRule {
     public static final String DIVORCED_OUTSIDE_ENGLAND_OR_WALES = "divorcedOutsideEnglandOrWales";
-    public static final String DIVORCED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "divorcedOutsideEnglandOrWales";
+    public static final String DIVORCED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "divorcedOutsideEnglandOrWalesWelsh";
     public static final String SEPARATED_OUTSIDE_ENGLAND_OR_WALES = "separatedOutsideEnglandOrWales";
-    public static final String SEPARATED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "separatedOutsideEnglandOrWales";
+    public static final String SEPARATED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "separatedOutsideEnglandOrWalesWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -42,9 +42,8 @@ public class IntestacyDivorceOrSeparationValidationRule implements ValidationRul
                 codes.add(SEPARATED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
             }
 
-            for (String code : codes) {
-                errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, code));
-            }
+            codes.forEach(code -> errors.add(businessValidationMessageService
+                    .generateError(BUSINESS_ERROR, code)));
         }
         return errors;
     }
