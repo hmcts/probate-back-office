@@ -129,6 +129,23 @@ class CaveatControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("data")));
+
+
+    }
+
+    @Test
+    void solsCaveatSupplementaryData_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
+
+        mockMvc.perform(post("/caveat//supplementaryData")
+                        .header("Authorization", AUTH_TOKEN)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+
     }
 
     @Test

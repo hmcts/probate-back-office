@@ -60,6 +60,16 @@ class StandingSearchControllerIT {
     }
 
     @Test
+    void standingSearchSupplementaryDataShouldReturnDataPayloadOkResponseCode() throws Exception {
+        String standingSearchPayload = testUtils.getStringFromFile("standingSearchPayload.json");
+
+        mockMvc.perform(post("/standing-search/supplementaryData")
+                .content(standingSearchPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void standingSetupForDocRemoval() throws Exception {
 
         String standingSearchPayload = testUtils.getStringFromFile("standingSearchPayload.json");
