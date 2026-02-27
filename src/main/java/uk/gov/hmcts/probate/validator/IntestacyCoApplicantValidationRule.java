@@ -24,12 +24,14 @@ import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
 @Component
 @RequiredArgsConstructor
 public class IntestacyCoApplicantValidationRule implements ValidationRule {
-    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "adoptedOutsideEnglandOrWales";
-    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWales";
+    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "coApplicantAdoptedOut";
+    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "coApplicantAdoptedOutWelsh";
     public static final String ADOPTED_OUT = "adoptedOut";
-    public static final String ADOPTED_OUT_WELSH = "adoptedOut";
+    public static final String ADOPTED_OUT_WELSH = "adoptedOutWelsh";
     public static final String PARENT_IS_NOT_DECEASED = "parentIsNotDeceased";
-    public static final String PARENT_IS_NOT_DECEASED_WELSH = "parentIsNotDeceased";
+    public static final String PARENT_IS_NOT_DECEASED_WELSH = "parentIsNotDeceasedWelsh";
+    public static final String PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "coApplicantParentAdoptedOut";
+    public static final String PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "coApplicantParentAdoptedOutWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -62,6 +64,10 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
                         || NO.equalsIgnoreCase(halfNieceOrNephewParentIsDeceased)) {
                     codes.add(PARENT_IS_NOT_DECEASED);
                     codes.add(PARENT_IS_NOT_DECEASED_WELSH);
+                }
+                if (NO.equalsIgnoreCase(details.getGrandchildParentAdoptedOut())) {
+                    codes.add(PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
+                    codes.add(PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
                 }
 
                 codes.forEach(code -> errors.add(businessValidationMessageService
