@@ -158,7 +158,7 @@ gitProperties {
 
 def versions = [
         applicationInsightsVersion      : '3.7.7',
-        authCheckerLib                  : '3.1.1',
+        authCheckerLib                  : '3.2.0',
         ccdClient                       : '5.2.0',
         commonsIO                       : '2.21.0',
         commonsValidator                : '1.10.1',
