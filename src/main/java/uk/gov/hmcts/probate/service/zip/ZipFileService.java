@@ -74,7 +74,7 @@ public class ZipFileService {
         ADMON_WILL_GRANT_REISSUE, AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE,
         WELSH_INTESTACY_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE};
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/ManifestFileHeaderRow.csv";
-    private static final String ERROR_MASSAGE = "Exception occurred while generating zip file ";
+    private static final String ERROR_MESSAGE = "Exception occurred while generating zip file ";
 
     public File generateZipFile(List<ReturnedCaseDetails> cases, File tempFile, String date, DataExtractType type) {
         log.info("{} generateZipFile for {} cases", type, cases.size());
@@ -85,7 +85,7 @@ public class ZipFileService {
             zipOut.closeEntry();
             return tempFile;
         } catch (Exception e) {
-            log.error(ERROR_MASSAGE, e);
+            log.error(ERROR_MESSAGE, e);
             throw new ZipFileException(e.getMessage());
         }
     }
@@ -112,7 +112,7 @@ public class ZipFileService {
             fos.close();
             strategy.uploadToBlobStorage(tempFile);
         } catch (Exception e) {
-            log.error(ERROR_MASSAGE, e);
+            log.error(ERROR_MESSAGE, e);
             throw new ZipFileException(e.getMessage());
         }
     }
@@ -148,8 +148,9 @@ public class ZipFileService {
                         final String binaryUrl = doc.getValue().getUrl().getDocumentBinaryUrl();
                         final String documentTypeName = "scanned_" + WILL.getTemplateName()
                                 + "_" + scannedDocIndex.getAndIncrement();
-                        fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF,
-                                manifestDataList);
+                        final String documentSubType = doc.getValue().getSubtype();
+                        fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, documentSubType,
+                                manifestDataList, null);
                     });
         }
     }
@@ -166,8 +167,9 @@ public class ZipFileService {
                         final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                         final String documentTypeName = "uploaded_" + WILL.getTemplateName()
                                 + "_" + uploadedDocIndex.getAndIncrement();
-                        fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF,
-                                manifestDataList);
+                        final String documentComment = doc.getValue().getComment();
+                        fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, null,
+                                manifestDataList, documentComment);
                     });
         }
     }
@@ -182,7 +184,7 @@ public class ZipFileService {
                 .forEach(doc -> {
                     final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                     fetchAndUploadDocument(zos, binaryUrl, caseDetails,
-                            doc.getValue().getDocumentType().getTemplateName(), PDF, manifestDataList);
+                            doc.getValue().getDocumentType().getTemplateName(), PDF, null, manifestDataList, null);
                 });
     }
 
@@ -198,7 +200,7 @@ public class ZipFileService {
                     final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                     final String documentTypeName = doc.getValue().getDocumentType().getTemplateName()
                             + "_" + reIssueGrantDocIndex.getAndIncrement();
-                    fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, manifestDataList);
+                    fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, null, manifestDataList, null);
                 });
 
     }
@@ -208,7 +210,9 @@ public class ZipFileService {
                                         ReturnedCaseDetails caseDetails,
                                         String documentTypeName,
                                         String docType,
-                                        List<ZippedManifestData> manifestDataList) {
+                                        String documentSubType,
+                                        List<ZippedManifestData> manifestDataList,
+                                        String documentComment) {
         final String documentId = binaryUrl.substring(binaryUrl
                 .indexOf("/documents/") + 11, binaryUrl.lastIndexOf("/"));
         String errorDescription = "";
@@ -217,8 +221,11 @@ public class ZipFileService {
                 .documentId(documentId)
                 .docType(documentTypeName)
                 .docFileType(docType)
-                .subType(caseDetails.getData().getCaseType())
-                .errorDescription(errorDescription).build();
+                .subType(documentSubType)
+                .caseType(caseDetails.getData().getCaseType())
+                .errorDescription(errorDescription)
+                .comment(documentComment)
+                .build();
 
         try {
             ByteArrayResource byteArrayResource =
@@ -305,6 +312,8 @@ public class ZipFileService {
             data.append(zippedManifestData.getDocumentName());
             data.append(DELIMITER);
             data.append(zippedManifestData.getErrorDescription());
+            data.append(DELIMITER);
+            data.append(zippedManifestData.getComment());
             data.append(NEW_LINE);
         }
 

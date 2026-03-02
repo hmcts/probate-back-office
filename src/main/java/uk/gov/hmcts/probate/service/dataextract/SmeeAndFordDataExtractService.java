@@ -26,7 +26,7 @@ public class SmeeAndFordDataExtractService {
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
     private final ZipFileService zipFileService;
-    private final SmeeAndFordDataExtractStrategy smeeAndFOrdDataExtractStrategy;
+    private final SmeeAndFordDataExtractStrategy smeeAndFordDataExtractStrategy;
     @Value("${feature.blobstorage.smeeandford.enabled}")
     public boolean featureBlobStorageSmeeAndFord;
 
@@ -58,7 +58,7 @@ public class SmeeAndFordDataExtractService {
                 log.info("FeatureBlobStorageSmeeAndFord flag enabled is {}", featureBlobStorageSmeeAndFord);
                 if (featureBlobStorageSmeeAndFord) {
                     File tempFile = zipFileService.createTempZipFile("Probate_Docs_" + fromDate);
-                    zipFileService.generateAndUploadZipFile(cases, tempFile, fromDate, smeeAndFOrdDataExtractStrategy);
+                    zipFileService.generateAndUploadZipFile(cases, tempFile, fromDate, smeeAndFordDataExtractStrategy);
                     log.info("Zip file uploaded on blob store");
                     Files.deleteIfExists(tempFile.toPath());
                 }
