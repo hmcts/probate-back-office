@@ -4,8 +4,14 @@ set -eu
 
 conversionFolder=$(dirname "$0")
 configFolder=${conversionFolder}/../configFiles
-shutterOption=${2:-false}
-extraExclusions=${3:-",*-wa.json"}
+# Params:
+#   $1 = CCD_DEF_CASE_SERVICE_BASE_URL
+#   $2 = CCD_DEF_AAC_URL
+#   $3 = shutterOption (true|false), optional, defaults to false
+caseServiceUrl="${1-}"
+aacUrl="${2-}"
+shutterOption="${3:-false}"
+extraExclusions=${4:-",*-wa.json"}
 
 waEnabledVar=${PROBATE_WA_ENABLED:-false}
 if [ ${waEnabledVar} == true ]; then
@@ -27,11 +33,10 @@ else
 fi
 echo excludedFilenamePatterns = $excludedFilenamePatterns
 
-export CCD_DEF_CASE_SERVICE_BASE_URL=$1
-export CCD_DEF_AAC_URL=$2
-echo CCD_DEF_AAC_URL=$CCD_DEF_AAC_URL
+export CCD_DEF_CASE_SERVICE_BASE_URL="${caseServiceUrl}"
+export CCD_DEF_AAC_URL="${aacUrl}"
 
-echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL
+echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,$CCD_DEF_AAC_URL
 
 ${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Backoffice/ "${excludedFilenamePatterns}"
 ${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Caveat/ "${excludedFilenamePatterns}"
