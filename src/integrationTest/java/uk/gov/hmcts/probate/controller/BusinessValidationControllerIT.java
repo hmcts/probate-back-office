@@ -182,6 +182,7 @@ class BusinessValidationControllerIT {
     private static final String MOVE_TO_POST_GRANT_ISSUED = "/case/moveToPostGrantIssued";
     private static final String ESCALATE_TO_REGISTRAR = "/case/case-escalated";
     private static final String SOLICITOR_SUBMIT_CASE = "/case/setCaseSubmissionDate";
+    private static final String CLEAR_FIELDS_BASED_ON_RELATIONSHIPS = "/case/clearFieldsBasedOnRelationships";
     private static final String VALIDATE_APPLICANT = "/case/validateApplicantAndSetupDynamicList";
     private static final String VALIDATE_CO_APPLICANT = "/case/validateCoApplicants";
 
