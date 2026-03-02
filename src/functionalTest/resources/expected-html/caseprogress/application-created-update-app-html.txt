@@ -23,8 +23,8 @@
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
-<p class="govuk-body-s"><a href="cases/case-details/1528365719153338/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1" class="govuk-link">Add deceased details</a></p>
-<p class="govuk-body-s"><a href="cases/case-details/1528365719153338/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1" class="govuk-link">Ychwanegu manylion yr ymadawedig </a></p>
+<p class="govuk-body-s"><a href="cases/case-details/PROBATE/GrantOfRepresentation/1528365719153338/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1" class="govuk-link">Add deceased details</a></p>
+<p class="govuk-body-s"><a href="cases/case-details/PROBATE/GrantOfRepresentation/1528365719153338/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1" class="govuk-link">Ychwanegu manylion yr ymadawedig </a></p>
 </div>
 <div class="govuk-grid-column-one-third">
 <p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/in-progress.png" alt="IN PROGRESS" title="IN PROGRESS" /></p>
