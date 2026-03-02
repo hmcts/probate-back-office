@@ -200,7 +200,8 @@ public class ZipFileService {
                     final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                     final String documentTypeName = doc.getValue().getDocumentType().getTemplateName()
                             + "_" + reIssueGrantDocIndex.getAndIncrement();
-                    fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, null, manifestDataList, null);
+                    fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, null,
+                            manifestDataList, null);
                 });
 
     }
