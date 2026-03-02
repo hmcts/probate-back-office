@@ -58,6 +58,8 @@ public class StopReasonService {
             case "Grants" -> stopReasonCodes.getGrants();
             case "IHT205" -> stopReasonCodes.getIht205();
             case "IHT207" -> stopReasonCodes.getIht207();
+            case "PA1A" -> stopReasonCodes.getPa1a();
+            case "PA1P" -> stopReasonCodes.getPa1p();
             case "PA11" -> stopReasonCodes.getPa11();
             case "PA12" -> stopReasonCodes.getPa12();
             case "PA13" -> stopReasonCodes.getPa13();

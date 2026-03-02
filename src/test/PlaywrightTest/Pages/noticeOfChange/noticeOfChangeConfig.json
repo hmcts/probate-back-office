@@ -10,5 +10,6 @@
   "affirmationLocator": "#affirmation",
   "notifyCheckboxLocator": "#notifyEveryParty",
   "viewCaseLinkLocator": "#content > div > exui-noc-navigation > div > div > exui-noc-submit-success > div > div > div > div > p:nth-child(8) > a",
-  "continueButtonLocator": "div > exui-noc-navigation > button"
+  "continueButtonLocator": "div > exui-noc-navigation > button",
+  "nocVerifyText": "No results found"
 }
