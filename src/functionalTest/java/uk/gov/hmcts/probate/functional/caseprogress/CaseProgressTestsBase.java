@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.functional.caseprogress;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
@@ -14,6 +15,8 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -132,15 +135,26 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
     }
 
     protected String getSolicitorDtlsUrl() {
-        return UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE
-            .replaceFirst("<CASE_ID>", "1528365719153338");
+        return StringUtils.replaceEach(
+            UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE,
+            new String[]{"<CASE_ID>", "<CASE_TYPE>"},
+            new String[]{"1528365719153338", GRANT_OF_REPRESENTATION.getCode()}
+        );
     }
 
     protected String getDeceasedDtlsUrl() {
-        return UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "1528365719153338");
+        return StringUtils.replaceEach(
+            UrlConstants.DECEASED_DETAILS_URL_TEMPLATE,
+            new String[]{"<CASE_ID>", "<CASE_TYPE>"},
+            new String[]{"1528365719153338", GRANT_OF_REPRESENTATION.getCode()}
+        );
     }
 
     protected String getReviewOrSubmitUrl() {
-        return UrlConstants.REVIEW_OR_SUBMIT_URL_TEMPLATE.replaceFirst("<CASE_ID>", "1528365719153338");
+        return StringUtils.replaceEach(
+            UrlConstants.REVIEW_OR_SUBMIT_URL_TEMPLATE,
+            new String[]{"<CASE_ID>", "<CASE_TYPE>"},
+            new String[]{"1528365719153338", GRANT_OF_REPRESENTATION.getCode()}
+        );
     }
 }

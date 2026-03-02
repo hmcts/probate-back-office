@@ -488,7 +488,7 @@ Configuration is set by default to be able to run in an npx created local enviro
 
 Config is by environment variables with defaults if not present. The .env file does not contain environment variables, 
 and so default values will be used for local run. These can be found in src/test/config.js, and are used by
-codecept config file src/test/end-to-end/codecept.conf.js.
+codecept config file src/test/end-to-end/codecept.conf.cjs.
 
 The tests are node.js and best run in vs code. A launch vs code configuration has been provided to run the 
 yarn script test:fullfunctional (not to be confused with functional tests).
@@ -758,5 +758,3 @@ https://github.com/hmcts/probate-back-office/tree/DTSPB-1172-investigate-sol-cas
 #Upload spreadsheet on Demo with below:
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-demo.service.core-compute-demo.internal aac-manage-case-assignment-demo.service.core-compute-demo.internal
 https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client_id=ccd_admin&redirect_uri=https%3A%2F%2Fccd-admin-web.demo.platform.hmcts.net%2Foauth2redirect
-
-
