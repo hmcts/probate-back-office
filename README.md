@@ -488,7 +488,7 @@ Configuration is set by default to be able to run in an npx created local enviro
 
 Config is by environment variables with defaults if not present. The .env file does not contain environment variables, 
 and so default values will be used for local run. These can be found in src/test/config.js, and are used by
-codecept config file src/test/end-to-end/codecept.conf.js.
+codecept config file src/test/end-to-end/codecept.conf.cjs.
 
 The tests are node.js and best run in vs code. A launch vs code configuration has been provided to run the 
 yarn script test:fullfunctional (not to be confused with functional tests).
@@ -778,7 +778,8 @@ https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client
 4. goto to the ccd-web-admin page for yoru pr eg: https://admin-web-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
 5. click import definitions 
 6. load your locally genereated XLSX file from the root jsonToXLS folder
-7. monitor your definition store pod to ensure the upload has completed - eg. probate-back-office-pr-XXXX-ccd-definition-store-yyyyyyy - loos for a line failing the TranslationService at the end... this means its passed upload!
+7. monitor your definition store pod to ensure the upload has completed - eg. probate-back-office-pr-XXXX-ccd-definition-store-yyyyyyy - look for a line failing the TranslationService at the end... this means its passed upload!
 8. Check your XUI for any new wa XLSX usage - https://xui-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
 9. unset WA_ENABLED if needed or set to false
+
 
