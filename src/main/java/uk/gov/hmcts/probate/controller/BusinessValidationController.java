@@ -741,6 +741,20 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseWithRegistrarDirection(callbackRequest));
     }
 
+    @PostMapping(path = "/clearFieldsBasedOnRelationships",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> clearFieldsBasedOnRelationships(
+            @RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(callbackResponseTransformer.clearFieldsBasedOnRelationships(callbackRequest));
+    }
+
+    @PostMapping(path = "/clearSiblingFields",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> clearSiblingFields(
+            @RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(callbackResponseTransformer.clearSiblingFields(callbackRequest));
+    }
+
     @PostMapping(path = "/registrars-decision", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> registrarsDecision(@RequestBody CallbackRequest callbackRequest) {
