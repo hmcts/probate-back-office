@@ -133,39 +133,22 @@ export class CwEventActionsPage extends BasePage {
     if (numOfElements > 0) {
       await expect(this.caseMatchLocator).toBeVisible();
       await expect(this.caseMatchValidLocator).toBeVisible();
-      // await I.waitForElement('#caseMatches_0_0', testConfig.WaitForTextTimeout);
-      // await I.waitForVisible({css: '#caseMatches_0_valid_Yes'}, testConfig.WaitForTextTimeout);
     }
 
     if (numOfElements === 0 && retainFirstItem && addNewButtonLocator) {
       const addNewButton = this.page.getByText(addNewButtonLocator as string);
-      /*await this.page.waitForTimeout(
-        testConfig.CaseMatchesAddNewButtonClickDelay
-      );*/
+
       await expect(addNewButton).toBeEnabled();
       await addNewButton.click();
     }
 
     if (retainFirstItem && (numOfElements > 0 || addNewButtonLocator)) {
-      // Just a small delay - occasionally we get issues here but only relevant for local dev.
-      // Only necessary where we have no auto delay (local dev).
-      /*if (!testConfig.TestAutoDelayEnabled) {
-        await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-      }*/
       await expect(this.caseMatchValidLocator).toBeEnabled();
       await this.caseMatchValidLocator.focus();
       await this.caseMatchValidLocator.check();
       await expect(this.caseMatchImportLocator).toBeEnabled();
       await this.caseMatchImportLocator.click();
     }
-
-    /*await this.page.evaluate(async () => {
-      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-      for (let i = 0; i < document.body.scrollHeight; i += 1000) {
-        window.scrollTo(0, i);
-        await delay(100);
-      }
-    });*/
 
     await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
 
@@ -179,9 +162,6 @@ export class CwEventActionsPage extends BasePage {
 
     if (skipMatchingInfo) {
       await expect(this.summaryLocator).toBeVisible();
-      /*if (!testConfig.TestAutoDelayEnabled) {
-        await this.page.waitForTimeout(testConfig.ManualDelayShort);
-      }*/
       await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
     // await this.page.waitForTimeout(testConfig.CaseMatchesCompletionDelay);
@@ -191,35 +171,23 @@ export class CwEventActionsPage extends BasePage {
     await this.verifyPageLoad(this.page.getByText(nextStepName));
     await expect(this.page.getByText(nextStepName)).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
-    // await this.page.waitForTimeout(testConfig.CaseMatchesInitialDelay);
 
     const numOfElements = await this.btnLocator.count();
-
-    // await I.wait(testConfig.CaseMatchesInitialDelay);
-
-    // const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
 
     if (numOfElements > 0) {
       await expect(this.caseMatchValidLocator).toBeVisible();
     }
-    // const legacyApplication = this.page.locator('#caseMatches_%s_%s > fieldset > ccd-field-read:nth-child(2) > div > ccd-field-read-label > div > dl > dd');
     const legacyApplicationTypeText = "Legacy LEGACY APPLICATION";
     for (let i = numOfElements; i >= 0; i--) {
       const currentCaseLocator = (i - 1).toString();
       const legacyApplication = `#caseMatches_${currentCaseLocator}_${currentCaseLocator} > fieldset > ccd-field-read:nth-child(2) > div > ccd-field-read-label > div > dl > dd`;
 
-      /*await this.page.waitForTimeout(
-        testConfig.CaseMatchesLocateRemoveButtonDelay
-      );*/
       const text = await this.page
         .locator(legacyApplication)
         .filter({ hasText: legacyApplicationTypeText })
         .textContent();
 
       if (text === legacyApplicationTypeText) {
-        /*if (!testConfig.TestAutoDelayEnabled) {
-          await this.page.waitForTimeout(testConfig.ManualDelayShort);
-        }*/
         const caseMatchesValidYesLocatorNew = `#caseMatches_${currentCaseLocator}_valid_Yes`;
         const caseMatchesImportLocatorNew = this.page.locator(
           `#caseMatches_${currentCaseLocator}_doImport_No`
@@ -242,7 +210,6 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.submitButtonLocator).toBeVisible();
     await expect(this.submitButtonLocator).toBeEnabled();
     await this.submitButtonLocator.click();
-    // await this.page.waitForTimeout(testConfig.CaseMatchesCompletionDelay);
   }
 
   async verifyProbateManCcdCaseNumber() {
@@ -262,11 +229,7 @@ export class CwEventActionsPage extends BasePage {
     }
 
     await this.page.goto(caseUrl);
-    // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
     await expect(this.probateManPrint_waitForText).toBeVisible();
-    // this.amOnLoadedPage(caseUrl);
-    // await I.wait(testConfig.ManualDelayMedium);
-    // await I.waitForText('Grant Application', 600);
     const ccdCaseNoTextXpath = "xpath=/html/body/pre/table/tbody/tr[3]/td[1]"; // //td[text()='Ccd Case No:']
     const ccdCaseNoText = await this.page
       .locator(ccdCaseNoTextXpath)
@@ -318,10 +281,6 @@ export class CwEventActionsPage extends BasePage {
     await this.page
       .locator(`${documentUploadConfig.id}_0_Comment`)
       .fill(documentUploadConfig.comment);
-    // await this.page.waitForTimeout(1);
-    /*if (!testConfig.TestAutoDelayEnabled) {
-      await this.page.waitForTimeout(testConfig.ManualDelayShort); // needed in order to be able to switch off auto delay for local dev
-    }*/
 
     await expect(
       this.page.locator(`${documentUploadConfig.id}_0_Comment`)
@@ -338,12 +297,10 @@ export class CwEventActionsPage extends BasePage {
     await expect(
       this.page.locator(`${documentUploadConfig.id}_0_DocumentLink`)
     ).toBeEnabled();
-    // await this.page.waitForTimeout(3);
     await this.page
       .locator(`${documentUploadConfig.id}_0_DocumentLink`)
       .setInputFiles(`${documentUploadConfig.fileToUploadUrl}`);
     await this.waitForUploadToBeCompleted();
-    // await this.page.waitForTimeout(testConfig.DocumentUploadDelay);
 
     if (documentUploadConfig.documentType) {
       for (let i = 0; i < documentUploadConfig.documentType.length; i++) {
@@ -381,8 +338,6 @@ export class CwEventActionsPage extends BasePage {
     await expect(
       this.page.locator(`${documentUploadConfig.id}_0_Comment`)
     ).toHaveValue(documentUploadConfig.comment);
-    // small delay to allow hidden vars to be set
-    // await this.page.waitForTimeout(testConfig.DocumentUploadDelay);
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
@@ -400,12 +355,10 @@ export class CwEventActionsPage extends BasePage {
     await expect(
       this.page.locator(`${documentUploadConfig.uploadLegalStatementId}`)
     ).toBeEnabled();
-    // await this.page.waitForTimeout(3);
     await this.page
       .locator(`${documentUploadConfig.uploadLegalStatementId}`)
       .setInputFiles(`${documentUploadConfig.fileToUploadUrl}`);
     await this.waitForUploadToBeCompleted();
-    //await this.page.waitForTimeout(testConfig.DocumentUploadDelay);
   }
 
   async emailCaveator(caseRef: string) {
@@ -502,7 +455,6 @@ export class CwEventActionsPage extends BasePage {
     await this.bulkPrintLocator.click();
     await expect(this.emailGrantIssueNotificationLocator).toBeEnabled();
     await this.emailGrantIssueNotificationLocator.click();
-    // await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
@@ -513,7 +465,6 @@ export class CwEventActionsPage extends BasePage {
     ).toBeVisible();
     await expect(this.newDobLocator).toBeEnabled();
     await this.newDobLocator.fill(updatedDoB);
-    // await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
@@ -524,7 +475,6 @@ export class CwEventActionsPage extends BasePage {
     ).toBeVisible();
     await expect(this.newStateLocator).toBeEnabled();
     await this.newStateLocator.selectOption({ label: `${newState}` });
-    // await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 

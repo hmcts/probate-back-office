@@ -32,7 +32,7 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
   let caseRef;
   let caseRefApi;
   let env: string, serviceAuthToken: string, s2sUrl: string, authToken: string, idamUrl: string;
-  ;
+
  test("Solicitor - Apply Grant of probate Single Executor for Excepted Estates", async ({
       basePage,
       signInPage,
