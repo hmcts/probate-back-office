@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
@@ -48,6 +49,8 @@ class SmeeAndFordDataExtractServiceTest {
     private BlobUpload blobUpload;
     @Mock
     private SmeeAndFordDataExtractStrategy smeeAndFOrdDataExtractStrategy;
+    @Mock
+    private FeatureToggleService featureToggleService;
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
 
@@ -60,6 +63,7 @@ class SmeeAndFordDataExtractServiceTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = false;
+        when(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()).thenReturn(true);
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
             "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
             "test", LocalDateTime.now()));
