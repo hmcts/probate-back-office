@@ -263,7 +263,7 @@ withPipeline("java", product, component) {
     }
 
     onPR {
-      if (checkForEnableWALabel(env.BRANCH_NAME)) {
+      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
         println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
         sh 'chmod -R +x ./bin'
@@ -347,12 +347,9 @@ withPipeline("java", product, component) {
       env.ENV='preview'
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.PROBATE_WA_ENABLED = true
-      }
-      enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
-    if (checkForEnableWALabel(env.BRANCH_NAME)) {
-        env.ENABLE_WA = true
         setCommonEnvVariables()
       }
+      enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
       env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
   }
 
