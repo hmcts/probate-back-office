@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
-import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
@@ -28,10 +27,8 @@ public class SmeeAndFordDataExtractService {
     private final NotificationService notificationService;
     private final ZipFileService zipFileService;
     private final SmeeAndFordDataExtractStrategy smeeAndFordDataExtractStrategy;
-    private final FeatureToggleService featureToggleService;
     @Value("${feature.blobstorage.smeeandford.enabled}")
     public boolean featureBlobStorageSmeeAndFord;
-
 
     public void performSmeeAndFordExtractForDateRange(String fromDate, String toDate) {
         if (fromDate.equals(toDate)) {
@@ -59,19 +56,11 @@ public class SmeeAndFordDataExtractService {
         if (!cases.isEmpty()) {
             try {
                 log.info("FeatureBlobStorageSmeeAndFord flag enabled is {}", featureBlobStorageSmeeAndFord);
-                log.info("isSmeeAndFordCommentFieldFeatureToggleOn flag enabled is {}",
-                        featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn());
                 if (featureBlobStorageSmeeAndFord) {
-                    if (featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
-                        log.info("Feature toggle FirstStopReminderFeatureToggle is on, commencing task");
-                        File tempFile = zipFileService.createTempZipFile("Probate_Docs_" + fromDate);
-                        zipFileService.generateAndUploadZipFile(cases, tempFile, fromDate,
-                                smeeAndFordDataExtractStrategy);
-                        log.info("Zip file uploaded on blob store");
-                        Files.deleteIfExists(tempFile.toPath());
-                    } else {
-                        log.info("Feature toggle FirstStopReminderFeatureToggle is off, skipping task");
-                    }
+                    File tempFile = zipFileService.createTempZipFile("Probate_Docs_" + fromDate);
+                    zipFileService.generateAndUploadZipFile(cases, tempFile, fromDate, smeeAndFordDataExtractStrategy);
+                    log.info("Zip file uploaded on blob store");
+                    Files.deleteIfExists(tempFile.toPath());
                 }
                 notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
             } catch (NotificationClientException e) {
