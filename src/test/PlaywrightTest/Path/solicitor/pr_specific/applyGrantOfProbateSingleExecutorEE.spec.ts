@@ -31,13 +31,16 @@ import {getAccessToken, getServiceAuthToken, getServiceAuthTokenforLiberata} fro
 test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Refunds", () => {
   let caseRef;
   let caseRefApi;
+  let env: string, serviceAuthToken: string, s2sUrl: string, authToken: string, idamUrl: string;
+  ;
  test("Solicitor - Apply Grant of probate Single Executor for Excepted Estates", async ({
       basePage,
       signInPage,
       createCasePage,
       solCreateCasePage,
-      cwEventActionsPage
-  }, testInfo) => {
+      cwEventActionsPage,
+      callback
+    }, testInfo) => {
     test.setTimeout(300000);
     const scenarioName = 'Solicitor - Apply Grant of probate Single Executor for Excepted Estates';
     const isSolicitorNamedExecutor = true;
@@ -131,6 +134,17 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
     await basePage.seeCaseDetails(testInfo, caseRef, copiesTabConfig, completeApplicationConfig);
     await basePage.seeCaseDetails(testInfo, caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
     await signInPage.signOut();
+
+    const [apiResponse] = await Promise.all([
+      (async () => {
+        env = await basePage.getEnv();
+        idamUrl = `https://idam-api.${env}.platform.hmcts.net`;
+        s2sUrl = `http://rpe-service-auth-provider-${env}.service.core-compute-${env}.internal/testing-support/lease`;
+        authToken = await getAccessToken(idamUrl, testConfig.TestEnvCwUser, testConfig.TestEnvCwPassword);
+        serviceAuthToken = await getServiceAuthToken(s2sUrl);
+        await callback.backdatePayment(env, caseRefApi, authToken, serviceAuthToken, '5');
+     })()
+   ]);
   });
 
   test("Add Remission for HPW and Approve Refund", async ({
@@ -144,26 +158,10 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
     // caseRef = '1772-4480-5153-5727';
     // let remissionRefundRef = 'RF-1772-4481-7720-5544';
     const nextStepName = 'Add Remission';
-    let env: string;
-    let serviceAuthToken, s2sUrl;
-    await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    await signInPage.signOut();
-    const [apiResponse] = await Promise.all([
-      (async () => {
-        env = await basePage.getEnv();
-        const idamUrl = `https://idam-api.${env}.platform.hmcts.net`;
-        s2sUrl = `http://rpe-service-auth-provider-${env}.service.core-compute-${env}.internal/testing-support/lease`;
-        const authToken = await getAccessToken(idamUrl, testConfig.TestEnvCwUser, testConfig.TestEnvCwPassword);
-        serviceAuthToken = await getServiceAuthToken(s2sUrl);
-        await callback.backdatePayment(env, caseRefApi, authToken, serviceAuthToken, '5');
-      })(),
-      (async () => {
-        await basePage.logInfo(scenarioName, nextStepName, caseRef);
-        await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-      })()
-    ]);
 
     // log in as requestor case worker
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
     await solCreateCasePage.navigateToCase(caseRef);
     await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef);
 

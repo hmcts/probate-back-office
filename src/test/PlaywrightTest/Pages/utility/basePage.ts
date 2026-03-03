@@ -345,7 +345,7 @@ export class BasePage {
     } else if (url.includes("demo")) {
       return "demo";
     } else if (url.includes("preview")) {
-      return "preview";
+      return "aat";
     }
   }
 
