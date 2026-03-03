@@ -14,6 +14,7 @@ import reopenCaveatConfig from "../reopenningCases/caveat/reopenCaveatConfig.jso
 import { BasePage } from "../utility/basePage.ts";
 import withdrawCaveatConfig from "../withdrawCaveat/withdrawCaveatConfig.json" with { type: "json" };
 import withdrawalConfig from "../withdrawal/willLodgement/withdrawalConfig.json" with { type: "json" };
+import refundConfig from "../solicitorApplyProbate/makePayment/refundConfig.json" with { type: "json" };
 
 type DocumentUploadConfig = typeof documentUploadConfig;
 type LegalDocumentUploadConfig = typeof legalDocumentUploadConfig;
@@ -92,6 +93,18 @@ export class CwEventActionsPage extends BasePage {
   });
   readonly willWithdrawReasonLocator = this.page.locator("#withdrawalReason");
   readonly goButtonLocator = this.page.getByRole("button", { name: "Go" });
+  readonly addRemissionLocator = this.page.getByRole("button", {
+    name: refundConfig.addRemissionButton,
+    }
+  ).first();
+  readonly issueRefundButtonLocator = this.page.getByRole("button", { name: refundConfig.issueRefundButton });
+  readonly remissionPageHeadingLocator = this.page.getByText(refundConfig.remissionRefHeading);
+  readonly remissionPageSubHeadingLocator = this.page.getByText(refundConfig.remissionRefSubHeading);
+  readonly remissionAmountHeadingLocator = this.page.getByText(refundConfig.remissionAmountHeading);
+  readonly cyaPageHeadingLocator = this.page.getByText(refundConfig.cyaPageHeading);
+  readonly applicationFeeSelector = this.page.locator('input[name="organisation"]').first();
+  readonly copiesFeeSelector = this.page.locator('input[name="organisation"]').nth(1);
+  readonly returnToCaseLocator = this.page.getByRole('link', { name: refundConfig.returnToCaseLink });
 
   constructor(public readonly page: Page) {
     super(page);
@@ -541,5 +554,266 @@ export class CwEventActionsPage extends BasePage {
     await expect(this.page.locator('#boCaseStopReasonList_0_caseStopSubReasonDocRequired')).toBeEnabled();
     await this.page.locator('#boCaseStopReasonList_0_caseStopSubReasonDocRequired').selectOption('9: PA11');
     await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async addRemissionAndRefund(caseRef) {
+    const confirmationText = refundConfig.remissionConfirmationText2.replace('{remAmount}', refundConfig.remissionAmount);
+    await expect(this.page.getByRole('heading', { name: new RegExp(caseRef) })).toBeVisible();
+    await expect(this.addRemissionLocator).toBeEnabled();
+    await this.addRemissionLocator.focus();
+    await this.addRemissionLocator.click();
+
+    await expect(this.remissionPageHeadingLocator).toBeVisible();
+    await expect(this.remissionPageSubHeadingLocator).toBeVisible();
+    await this.page.locator('#remissionCode').fill(refundConfig.remissionReference);
+    await this.continueButtonLocator.click();
+    await expect(this.remissionPageSubHeadingLocator).not.toBeVisible();
+
+    await expect(this.remissionAmountHeadingLocator).toBeVisible();
+    await this.page.locator('#amount').fill(refundConfig.remissionAmount);
+    await this.page.getByRole('button', { name: 'Continue' }).click();
+    await expect(this.remissionAmountHeadingLocator).not.toBeVisible();
+
+    await expect(this.cyaPageHeadingLocator).toBeVisible();
+    await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.remissionReference) })).toBeVisible();
+    await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.remissionAmount) }).first()).toBeVisible();
+    await this.addRemissionLocator.click();
+    await expect(this.page.getByText(refundConfig.remissionConfirmationText1)).toBeVisible();
+    await expect(this.page.getByText(confirmationText)).toBeVisible();
+    await this.continueButtonLocator.click();
+
+    const remissionRefundRef = await this.issueRefundRequest(caseRef, true);
+    return remissionRefundRef as string;
+  }
+
+  async issueRefundRequest(caseRef, remissionRefund?: boolean) {
+    await expect(this.page.getByRole('heading', { name: new RegExp(caseRef) }).first()).toBeVisible();
+    if (!remissionRefund) {
+      await this.issueRefundPage1(caseRef);
+      await this.issueRefundPage2(caseRef);
+      await this.issueRefundPage3();
+      await this.issueRefundCyaPage(caseRef);
+      const refundRef = await this.issueRefundConfirmationPage();
+      return refundRef as string;
+    } else {
+      await this.issueRefundPage3();
+      await this.issueRefundCyaPage(caseRef, true);
+      const remissionRefundRef = await this.issueRefundConfirmationPage(true);
+      return remissionRefundRef as string;
+    }
+
+  }
+
+  async issueRefundPage1(caseRef) {
+
+    await expect(this.issueRefundButtonLocator).toBeEnabled();
+    await this.issueRefundButtonLocator.focus();
+    await this.issueRefundButtonLocator.click();
+
+    await expect(this.page.getByText(refundConfig.refundHeading)).toBeVisible();
+    await expect(this.page.getByRole('heading', { name: new RegExp(caseRef) }).first()).toBeVisible();
+    await expect(this.page.getByText(refundConfig.refundSubHeading)).toBeVisible();
+    await expect(this.applicationFeeSelector).toBeEnabled();
+    await this.applicationFeeSelector.click();
+    await expect(this.applicationFeeSelector).toBeChecked();
+    await expect(this.copiesFeeSelector).toBeEnabled();
+    await this.copiesFeeSelector.click();
+    await expect(this.copiesFeeSelector).toBeChecked();
+    await this.page.locator(`input[formcontrolname="refund_amount"]`).first().fill(refundConfig.refundAmountForApplication);
+    await this.page.locator(`input[formcontrolname="updated_volume"]`).clear();
+    await this.page.locator(`input[formcontrolname="updated_volume"]`).fill(refundConfig.refundNumberOfCopies);
+    await this.page.locator(`input[formcontrolname="refund_amount"]`).nth(1).fill(refundConfig.refundAmountForCopies);
+    await expect(this.continueButtonLocator).toBeEnabled();
+    await this.continueButtonLocator.click();
+    await expect(this.page.getByText(refundConfig.refundReasonHeading)).toBeVisible();
+  }
+
+  async issueRefundPage2(caseRef, changeRequired: boolean = false) {
+    await expect(this.page.getByText(refundConfig.refundHeading)).toBeVisible();
+    await expect(this.page.getByRole('heading', { name: new RegExp(caseRef) }).first()).toBeVisible();
+    await expect(this.page.getByText(refundConfig.refundReasonHeading)).toBeVisible();
+    if(changeRequired) {
+      await expect(this.page.locator(refundConfig.changeRefundReasonLocator)).toBeVisible();
+      await expect(this.page.locator(refundConfig.changeRefundReasonLocator)).toBeEnabled();
+      await this.page.locator(refundConfig.changeRefundReasonLocator).click();
+      await expect(this.page.locator(refundConfig.changeRefundReasonLocator)).toBeChecked();
+    } else {
+      await expect(this.page.locator(refundConfig.refundReasonLocator)).toBeVisible();
+      await expect(this.page.locator(refundConfig.refundReasonLocator)).toBeEnabled();
+      await this.page.locator(refundConfig.refundReasonLocator).click();
+      await expect(this.page.locator(refundConfig.refundReasonLocator)).toBeChecked();
+    }
+    await expect(this.continueButtonLocator).toBeEnabled();
+    await this.continueButtonLocator.click();
+  }
+
+  async issueRefundPage3() {
+    await expect(this.page.getByText(refundConfig.refundHeading)).toBeVisible();
+    await expect(this.page.getByText(refundConfig.contactInformationHeading)).toBeVisible();
+    await expect(this.page.getByRole('radio', { name: 'Email' })).toBeVisible();
+    await expect(this.page.getByRole('radio', { name: 'Post' })).toBeEnabled();
+    await expect(this.page.getByRole('radio', { name: 'Email' })).toBeChecked();
+    await expect(this.page.locator('#email')).toBeEnabled();
+    await this.page.locator('#email').fill(refundConfig.contactEmail);
+    await this.continueButtonLocator.click();
+  }
+
+  async issueRefundCyaPage(caseRef, remissionRefund: boolean = false, isUpdated: boolean = false) {
+    await expect(this.cyaPageHeadingLocator).toBeVisible();
+    await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.contactEmail) })).toBeVisible();
+    if (remissionRefund) {
+      await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.remissionAmount) }).first()).toBeVisible();
+      await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.remissionReference) })).toBeVisible();
+      await expect(this.page.getByRole('cell', { name: refundConfig.remissionRefundReason })).toBeVisible();
+      await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.remissionAmount) }).nth(1)).toBeVisible();
+    } else {
+      if (isUpdated) {
+        await expect(this.page.getByRole('cell', { name: refundConfig.updatedRefundReason })).toBeVisible();
+      } else {
+        await expect(this.page.getByRole('cell', { name: refundConfig.refundReasonText })).toBeVisible();
+      }
+      await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.refundAmount) })).toBeVisible();
+    }
+    await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.notificationText) })).toBeVisible();
+    await expect(this.page.getByRole('link', { name: 'Preview' })).toBeVisible();
+    await this.page.getByRole('button', { name: refundConfig.submitRefundButton}).click();
+  }
+
+  async issueRefundConfirmationPage(remissionRefund: boolean = false) {
+    let confirmationText;
+
+    await expect(this.page.getByText(refundConfig.refundConfirmationText)).toBeVisible();
+    confirmationText = await this.page.getByText(refundConfig.refundReferenceText, { exact: false }).textContent();
+    const refundReference = confirmationText?.match(new RegExp(`${refundConfig.refundReferenceText}\\s*([A-Z0-9-]+)`))?.[1]?.trim();
+    const refundConfirmationText = refundConfig.refundConfirmationText.replace('{refAmount}', remissionRefund ? refundConfig.remissionAmount : refundConfig.totalRefundAmount);
+    await expect(this.page.getByText(refundConfirmationText)).toBeVisible();
+    await this.returnToCaseLocator.click();
+
+    return refundReference as string;
+  }
+
+  async verifyAndInitiateProcessRefund(refundStatus, refundRef: string,
+                              config: {
+                                hasText: string;       // → filter({ hasText: row.hasText })
+                                expectedText: string;  // → toContainText(row.expectedText)
+                                useRegex: boolean;
+                              }[],
+                              isRemission: boolean = false, isUpdated: boolean = false ) {
+    let refAmount, refundReason;
+    if (isRemission) {
+      refAmount = refundConfig.totalRemissionRefundAmount;
+      refundReason = refundConfig.remissionRefundReason;
+    } else if (isUpdated) {
+      refAmount = refundConfig.totalRefundAmount;
+      refundReason = refundConfig.updatedRefundReason;
+    } else {
+      refAmount = refundConfig.totalRefundAmount;
+      refundReason = refundConfig.refundReasonText;
+    }
+    const dynamicData = {
+      refundRef: refundRef,
+      refundReason,
+      refAmount
+    };
+    const tables = this.page.locator('table');
+    const refundsDetailsTable = tables.nth(1);
+    const refundsStatusTable = tables.nth(3);
+
+    for (const row of config) {
+      const resolvedExpectedText = await this.resolvePlaceholders(
+        row.expectedText,
+        dynamicData
+      );
+      const labelCell = refundsDetailsTable.locator('td:first-child', { hasText: row.hasText });
+      await expect(labelCell).toHaveCount(1);
+
+      const tableRow = labelCell.locator('xpath=ancestor::tr[1]');
+      const valueCell = tableRow.locator('td').nth(1);
+
+      if (row.useRegex) {
+        await expect(valueCell).toHaveText(
+          new RegExp(resolvedExpectedText, 'i')
+        );
+
+      } else {
+        await expect(valueCell).toHaveText(resolvedExpectedText);
+      }
+    }
+
+    //To verify the refund status
+    if (refundStatus === 'Initiated') {
+      if (isUpdated) {
+        const refundStatusLocator = refundsStatusTable.locator('td:first-child', {hasText: refundConfig.refundStatus1});
+        await expect(refundStatusLocator).toHaveCount(2);
+      } else {
+        const refundStatusLocator = refundsStatusTable.locator('td:first-child', {hasText: refundConfig.refundStatus1});
+        await expect(refundStatusLocator).toHaveCount(1);
+      }
+
+      await this.page.getByRole('button', { name: refundConfig.processRefundButton }).click();
+    } else if (refundStatus === 'Approved') {
+      const refundStatusLocator = refundsStatusTable.locator('td:first-child', {hasText: refundConfig.refundStatus2});
+      await expect(refundStatusLocator).toHaveCount(1);
+      await this.page.getByRole('link', { name: 'Back', exact: true }).click();
+    } else if (refundStatus === refundConfig.refundStatus3) {
+      const refundStatusLocator = refundsStatusTable.locator('td:first-child', {hasText: refundConfig.refundStatus3});
+      await expect(refundStatusLocator).toHaveCount(1);
+      await this.page.getByRole('button', { name: refundConfig.changeRefundDetailsButton }).click();
+    } else if (refundStatus === refundConfig.refundStatus4) {
+      const refundStatusLocator = refundsStatusTable.locator('td:first-child', {hasText: refundConfig.refundStatus4});
+      await expect(refundStatusLocator).toHaveCount(1);
+    }
+  }
+
+  async submitRefundProcess(caseRef, refundProcess: string, isRemission: boolean = false, isUpdated: boolean = false) {
+    if (isRemission) {
+      await expect(this.page.getByRole('cell', { name: refundConfig.remissionRefundReason })).toBeVisible();
+      await expect(this.page.getByRole('cell', { name: refundConfig.totalRemissionRefundAmount, exact: true })).toBeVisible();
+    } else if (isUpdated) {
+      await expect(this.page.getByRole('cell', { name: refundConfig.updatedRefundReason })).toBeVisible();
+    } else {
+      await expect(this.page.getByRole('cell', { name: refundConfig.refundReasonText })).toBeVisible();
+      await expect(this.page.getByRole('cell', { name: refundConfig.refundAmount }).first()).toBeVisible();
+    }
+    await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.contactEmail) })).toBeVisible();
+    await expect(this.page.getByRole('cell', { name: new RegExp(refundConfig.notificationText) })).toBeVisible();
+    await expect(this.page.getByRole('link', { name: 'Preview' })).toBeVisible();
+    if (refundProcess === refundConfig.refundProcessApprove) {
+      await expect(this.page.locator('#refundAction-0')).toBeEnabled();
+      await this.page.locator('#refundAction-0').click();
+      await expect(this.page.getByRole('button', { name: 'Submit' })).toBeEnabled();
+      await this.page.getByRole('button', { name: 'Submit' }).click();
+    } else if (refundProcess === refundConfig.refundProcessReject) {
+      await expect(this.page.locator('#refundAction-1')).toBeEnabled();
+      await this.page.locator('#refundAction-1').click();
+      await expect(this.page.locator('#refundRejectReason-1')).toBeEnabled();
+      await this.page.locator('#refundRejectReason-1').click();
+      await expect(this.page.getByRole('button', { name: 'Submit' })).toBeEnabled();
+      await this.page.getByRole('button', { name: 'Submit' }).click();
+    } else if (refundProcess === refundConfig.refundProcessReturnToCw) {
+      await expect(this.page.locator('#refundAction-2')).toBeEnabled();
+      await this.page.locator('#refundAction-2').click();
+      await this.page.locator('#sendmeback').fill(refundConfig.refundProcessReturnToCw);
+      await expect(this.page.getByRole('button', { name: 'Submit' })).toBeEnabled();
+      await this.page.getByRole('button', { name: 'Submit' }).click();
+    } else if (refundProcess === 'changeRefundDetails') {
+      const tables = this.page.locator('table');
+      const selectTable = tables.nth(1);
+      const refCell = selectTable.locator('td').filter({
+        hasText: `${refundConfig.refundReasonText}`
+      });
+      await expect(refCell).toHaveCount(1);
+      const tableRow = refCell.locator('xpath=ancestor::tr[1]');
+      await tableRow.locator('a', { hasText: 'Change' }).click();
+      await this.issueRefundPage2(caseRef, true);
+      await this.issueRefundCyaPage(caseRef, false, true);
+      await this.issueRefundConfirmationPage(true);
+    }
+
+  }
+
+  async verifyRefundConfirmation(confirmationText: string) {
+    await expect(this.page.getByRole('heading', { name: confirmationText })).toBeVisible();
+    await this.returnToCaseLocator.click();
   }
 }

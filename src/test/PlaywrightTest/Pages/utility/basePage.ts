@@ -59,8 +59,15 @@ export class BasePage {
       .join("-");
   }
 
-  async getSacCaseRef() {
-    await this.page.locator('//div[@class="column-one-half"]//ccd-case-header').textContent();
+  async getCaseRefFromUrlNoHyphen() {
+    const url = this.page.url();
+    return url
+      .replace("#Event%20History", "")
+      .replace("#Case%20Progress", "")
+      .split("/")
+      .pop()
+      .match(/.{4}/g)
+      .join("");
   }
 
   async waitForNavigationToComplete(buttonLocator: Locator | string, timeout: number = 5_000): Promise<void> {
@@ -329,5 +336,26 @@ export class BasePage {
       // await I.waitForElement({css: commonConfig.continueButton});
       // await I.waitForNavigationToComplete(commonConfig.continueButton,testConfig.CaseProgressContinueWithoutChangingDelay);
     }
+  }
+
+  async getEnv() {
+    const url = this.page.url();
+    if (url.includes("aat")) {
+      return "aat";
+    } else if (url.includes("demo")) {
+      return "demo";
+    } else if (url.includes("preview")) {
+      return "preview";
+    }
+  }
+
+
+  async resolvePlaceholders(template: string, data: Record<string, string>) {
+    return template.replace(/{{(.*?)}}/g, (_, key) => {
+      if (!(key in data)) {
+        throw new Error(`Missing dynamic value for placeholder: ${key}`);
+      }
+      return data[key];
+    });
   }
 }
