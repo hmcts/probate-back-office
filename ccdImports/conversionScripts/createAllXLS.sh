@@ -5,6 +5,12 @@ set -eu
 conversionFolder=$(dirname "$0")
 configFolder=${conversionFolder}/../configFiles
 shutterOption=${2:-false}
+extraExclusions=${3:-",*-wa.json"}
+
+waEnabledVar=${PROBATE_WA_ENABLED:-false}
+if [ ${waEnabledVar} == true ]; then
+  extraExclusions=""
+fi
 
 if [ -z "$1" ]
   then
@@ -14,10 +20,10 @@ fi
 
 if [ ${shutterOption} == true ]; then
   echo Creating shuttered CCD Definition
-  excludedFilenamePatterns="-e *-unshutter.json"
+  excludedFilenamePatterns="-e *-unshutter.json$extraExclusions"
 else
   echo Creating unshuttered CCD Definition
-  excludedFilenamePatterns="-e *-shutter.json"
+  excludedFilenamePatterns="-e *-shutter.json$extraExclusions"
 fi
 echo excludedFilenamePatterns = $excludedFilenamePatterns
 
