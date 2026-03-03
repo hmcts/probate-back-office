@@ -31,7 +31,7 @@ export class apiService {
         status: 'ACCEPTED'
       }
     })
-    expect(updatePaymentDateResponse.status()).toBe(200);
+    expect(updatePaymentDateResponse.status()).toBe(204);
   }
 }
 

@@ -37,3 +37,23 @@ export const  getServiceAuthToken = async (url) => {
     throw error;
   }
 };
+
+export const  getServiceAuthTokenforLiberata = async (url) => {
+  try {
+    const axiosConfig = {
+      headers: {
+        'accept': '*/*',
+        'Content-Type': 'application/json',
+      },
+      timeout: 30000,  // - 30 second timeout
+    };
+    const body = {
+      microservice: 'ccpay_bubble'
+    };
+    const response = await axios.post(url, body, axiosConfig);
+    return response.data;
+  } catch (error) {
+    console.error('Auth failed:', error);
+    throw error;
+  }
+};

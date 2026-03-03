@@ -42,6 +42,7 @@
   "refundStatus2": "Approved",
   "refundStatus3": "Update required",
   "refundStatus4": "Rejected",
+  "refundStatus5": "Accepted",
   "refundProcessApprove": "Approve",
   "refundProcessReject": "Reject",
   "refundProcessReturnToCw": "Return to caseworker",

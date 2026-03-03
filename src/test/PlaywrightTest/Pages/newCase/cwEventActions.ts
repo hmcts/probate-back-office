@@ -700,6 +700,7 @@ export class CwEventActionsPage extends BasePage {
                               }[],
                               isRemission: boolean = false, isUpdated: boolean = false ) {
     let refAmount, refundReason;
+    let labelCell;
     if (isRemission) {
       refAmount = refundConfig.totalRemissionRefundAmount;
       refundReason = refundConfig.remissionRefundReason;
@@ -717,6 +718,7 @@ export class CwEventActionsPage extends BasePage {
     };
     const tables = this.page.locator('table');
     const refundsDetailsTable = tables.nth(1);
+    const refundsNotificationTable = tables.nth(2);
     const refundsStatusTable = tables.nth(3);
 
     for (const row of config) {
@@ -724,7 +726,7 @@ export class CwEventActionsPage extends BasePage {
         row.expectedText,
         dynamicData
       );
-      const labelCell = refundsDetailsTable.locator('td:first-child', { hasText: row.hasText });
+      labelCell = refundsDetailsTable.locator('td:first-child', { hasText: row.hasText });
       await expect(labelCell).toHaveCount(1);
 
       const tableRow = labelCell.locator('xpath=ancestor::tr[1]');
@@ -761,6 +763,14 @@ export class CwEventActionsPage extends BasePage {
       await this.page.getByRole('button', { name: refundConfig.changeRefundDetailsButton }).click();
     } else if (refundStatus === refundConfig.refundStatus4) {
       const refundStatusLocator = refundsStatusTable.locator('td:first-child', {hasText: refundConfig.refundStatus4});
+      await expect(refundStatusLocator).toHaveCount(1);
+      await this.page.getByRole('link', { name: 'Back', exact: true }).click();
+    } else if (refundStatus === refundConfig.refundStatus5) {
+      labelCell = refundsNotificationTable.locator('td:nth-child(3)', {
+        hasText: new RegExp(refundConfig.contactEmail.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+      });
+      await expect(labelCell).toHaveCount(1);
+      const refundStatusLocator = refundsStatusTable.locator('td:first-child', {hasText: refundConfig.refundStatus5});
       await expect(refundStatusLocator).toHaveCount(1);
     }
   }
