@@ -18,8 +18,7 @@ if [ ${waEnabledVar} == true ]; then
   extraExclusions=""
 fi
 
-if [ -z "$1" ]
-  then
+if [ -z "$caseServiceUrl" ] || [ -z "$aacUrl" ]; then
     echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
     exit 1
 fi
