@@ -252,3 +252,7 @@ ccd-message-publisher:
         secretRef: postgres
         key: PASSWORD
         disabled: false
+
+java:
+  environment:
+    PROBATE_WA_ENABLED: true
