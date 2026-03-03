@@ -7,15 +7,16 @@ configFolder=${conversionFolder}/../configFiles
 environment="$2"
 shutterOption=${3:-false}
 acc="$4"
+envExcludedFilenamePatterns="${5:-}"
 
 if [ -z "$1" ]
   then
-    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL"
+    echo "Usage: ./ccdImports/conversionScripts/createAllXLS-pipeline.sh CCD_DEF_CASE_SERVICE_BASE_URL"
     exit 1
 fi
 if [ -z "$4" ]
   then
-    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
+    echo "Usage: ./ccdImports/conversionScripts/createAllXLS-pipeline.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
     exit 1
 fi
 
@@ -26,6 +27,11 @@ else
   echo Creating unshuttered CCD Definition
   excludedFilenamePatterns="-e *-shutter.json"
 fi
+
+if [ -n "$envExcludedFilenamePatterns" ]; then
+  excludedFilenamePatterns="$excludedFilenamePatterns,$envExcludedFilenamePatterns"
+fi
+
 echo excludedFilenamePatterns = $excludedFilenamePatterns
 
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1

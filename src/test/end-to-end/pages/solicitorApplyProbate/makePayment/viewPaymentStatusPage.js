@@ -25,7 +25,11 @@ module.exports = async function (caseRef, appType) {
         if (result === true) {
             break;
         }
-        await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`); // eslint-disable-line no-await-in-loop
+        if (appType !== 'Caveat') {
+            await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/GrantOfRepresentation/${caseRefNoDashes}`); // eslint-disable-line no-await-in-loop
+        } else {
+            await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/PROBATE/Caveat/${caseRefNoDashes}`); // eslint-disable-line no-await-in-loop
+        }
     }
     if (appType !== 'Caveat') {
         await I.waitForElement(caseProgressTabXPath, 60);

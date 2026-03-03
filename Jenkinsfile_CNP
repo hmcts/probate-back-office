@@ -30,8 +30,10 @@ def secrets = [
                 secret('probatemandb-POSTGRES-PORT', 'PROBATE_POSTGRESQL_PORT_VAL'),
                 secret('probatemandb-POSTGRES-DATABASE', 'PROBATE_POSTGRESQL_DATABASE_VAL'),
                 secret('cwUserId', 'CW_USER_ID'),
-                secret('cwUserEmail', 'CW_USER_EMAIL'),
-                secret('cwUserPass', 'CW_USER_PASSWORD'),
+                secret('cwUserEmail', 'CW_SUPERUSER_EMAIL'),
+                secret('cwUserPass', 'CW_SUPERUSER_PASSWORD'),
+                secret('cwSuperuserEmail', 'CW_USER_EMAIL'),
+                secret('cwSuperuserPass', 'CW_USER_PASSWORD'),
                 secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
                 secret('solicitorUserPass', 'SOL_USER_PASSWORD'),
                 secret('solicitor2UserEmail', 'SOL2_USER_EMAIL'),
@@ -126,11 +128,11 @@ def checkForEnableCWNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "cw-nightly").contains("cw-nightly")
 }
 
-def checkForEnableWALabel(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa")
+def checkForWAEnableLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
 }
 
-def archiveCoreCaseDataDefinitions(env) {
+def archiveCoreCaseDataDefinitions(env, branch_name) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
     if("preview" == env){
@@ -147,12 +149,16 @@ def archiveCoreCaseDataDefinitions(env) {
       shutterOption = "false"
     }
 
+    excludedFilenamePatterns="*-wa.json"
     if ("preview" == env) {
-      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      if (checkForWAEnableLabel(branch_name)) {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      } else {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+      }
     }
-
-      else {
-      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption}"
+    else {
+      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
     }
   }
 
@@ -323,7 +329,7 @@ withPipeline("java", product, component) {
       echo "CCD definition upload for environment: ${env.ENV}"
       withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
         withTeamSecrets(pipelineConf, env.ENV) {
-          archiveCoreCaseDataDefinitions(env.ENV)
+          archiveCoreCaseDataDefinitions(env.ENV, env.BRANCH_NAME)
           uploadCoreCaseDataDefinitions(env.ENV)
         }
       }
@@ -339,7 +345,9 @@ withPipeline("java", product, component) {
 
   onPR() {
       env.ENV='preview'
-      env.ENABLE_WA = false
+      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
+        env.PROBATE_WA_ENABLED = true
+      }
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
     if (checkForEnableWALabel(env.BRANCH_NAME)) {
         env.ENABLE_WA = true
@@ -366,7 +374,7 @@ withPipeline("java", product, component) {
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
       ./bin/add-ccd-roles.sh
     """
-    archiveCoreCaseDataDefinitions('preview')
+    archiveCoreCaseDataDefinitions('preview', env.BRANCH_NAME)
     uploadCoreCaseDataDefinitions('preview')
 
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
