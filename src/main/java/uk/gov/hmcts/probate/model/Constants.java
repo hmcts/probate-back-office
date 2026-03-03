@@ -69,7 +69,7 @@ public final class Constants {
     public static final String PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD = "adoptedChild";
     public static final String CHILD = "child";
     public static final String SOLICITOR_SPOUSE = "SpouseOrCivil";
-    public static final String SPOUSE = "spouse";
+    public static final String SPOUSE = "partner";
     public static final String GRAND_CHILD = "grandchild";
     public static final String PARENT = "parent";
     public static final String SIBLING = "sibling";
