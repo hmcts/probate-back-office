@@ -340,12 +340,10 @@ export class BasePage {
 
   async getEnv() {
     const url = this.page.url();
-    if (url.includes("aat")) {
+    if (url.includes("aat") || url.includes("preview")) {
       return "aat";
     } else if (url.includes("demo")) {
       return "demo";
-    } else if (url.includes("preview")) {
-      return "aat";
     }
   }
 

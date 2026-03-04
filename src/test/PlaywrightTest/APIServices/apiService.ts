@@ -8,7 +8,7 @@ export class apiService {
   }
 
   async backdatePayment(env: string, caseRef: string, authToken: string, serviceAuthToken: string, backdateDate: string) {
-    const paymentApiUrl = `http://payment-api-${env}.service.core-compute-demo.internal/payments/ccd_case_reference/${caseRef}/lag_time/${backdateDate}`;
+    const paymentApiUrl = `http://payment-api-${env}.service.core-compute-${env}.internal/payments/ccd_case_reference/${caseRef}/lag_time/${backdateDate}`;
     const updatePaymentDateResponse = await this.request.patch(paymentApiUrl, {
       headers: {
         'Authorization': `${authToken}`,
