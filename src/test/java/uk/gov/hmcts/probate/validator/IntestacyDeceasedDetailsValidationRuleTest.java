@@ -73,6 +73,7 @@ class IntestacyDeceasedDetailsValidationRuleTest {
 
     @Test
     void shouldValidateSuccessIfDeceasedAdoptedInEnglandOrWalesAndApplicantIsSibling() {
+        when(deceasedMock.getDeceasedAdoptedIn()).thenReturn(YES);
         when(deceasedMock.getDeceasedAdoptionInEnglandOrWales()).thenReturn(YES);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -82,6 +83,7 @@ class IntestacyDeceasedDetailsValidationRuleTest {
 
     @Test
     void shouldValidateFailureIfDeceasedAdoptedOutsideEnglandOrWalesAndApplicantIsSibling() {
+        when(deceasedMock.getDeceasedAdoptedIn()).thenReturn(YES);
         when(deceasedMock.getDeceasedAdoptionInEnglandOrWales()).thenReturn(NO);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -92,6 +94,7 @@ class IntestacyDeceasedDetailsValidationRuleTest {
     @Test
     void shouldValidateFailureIfDeceasedAdoptedOutsideEnglandOrWalesAndApplicantIsParent() {
         when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(PARENT);
+        when(deceasedMock.getDeceasedAdoptedIn()).thenReturn(YES);
         when(deceasedMock.getDeceasedAdoptionInEnglandOrWales()).thenReturn(NO);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -101,6 +104,7 @@ class IntestacyDeceasedDetailsValidationRuleTest {
 
     @Test
     void shouldValidateSuccessIfDeceasedIsNotAdoptedOutAndApplicantIsSibling() {
+        when(deceasedMock.getDeceasedAdoptedIn()).thenReturn(NO);
         when(deceasedMock.getDeceasedAdoptedOut()).thenReturn(NO);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -110,6 +114,7 @@ class IntestacyDeceasedDetailsValidationRuleTest {
 
     @Test
     void shouldValidateFailureIfDeceasedIsAdoptedOutAndApplicantIsSibling() {
+        when(deceasedMock.getDeceasedAdoptedIn()).thenReturn(NO);
         when(deceasedMock.getDeceasedAdoptedOut()).thenReturn(YES);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -120,6 +125,7 @@ class IntestacyDeceasedDetailsValidationRuleTest {
     @Test
     void shouldValidateFailureIfDeceasedIsAdoptedOutAndApplicantIsParent() {
         when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(PARENT);
+        when(deceasedMock.getDeceasedAdoptedIn()).thenReturn(NO);
         when(deceasedMock.getDeceasedAdoptedOut()).thenReturn(YES);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -164,12 +170,12 @@ class IntestacyDeceasedDetailsValidationRuleTest {
     }
 
     @Test
-    void shouldValidateFailureIfDeceasedHasParentsAndApplicantIsParent() {
+    void shouldValidateFailureIfDeceasedHasDescendantsAndApplicantIsParent() {
         when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(PARENT);
-        when(deceasedMock.getDeceasedAnyLivingParents()).thenReturn(YES);
+        when(deceasedMock.getDeceasedAnyLivingDescendants()).thenReturn(YES);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
 
-        assertEquals(LIVING_PARENTS, validationErrors.getFirst().getCode());
+        assertEquals(LIVING_DESCENDANTS, validationErrors.getFirst().getCode());
     }
 }

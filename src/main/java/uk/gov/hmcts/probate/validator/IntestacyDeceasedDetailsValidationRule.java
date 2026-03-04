@@ -19,13 +19,13 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @RequiredArgsConstructor
 public class IntestacyDeceasedDetailsValidationRule implements ValidationRule {
     public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "adoptedOutsideEnglandOrWales";
-    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWales";
+    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWalesWelsh";
     public static final String DECEASED_ADOPTED_OUT = "deceasedAdoptedOut";
-    public static final String DECEASED_ADOPTED_OUT_WELSH = "deceasedAdoptedOut";
+    public static final String DECEASED_ADOPTED_OUT_WELSH = "deceasedAdoptedOutWelsh";
     public static final String LIVING_DESCENDANTS = "livingDescendants";
-    public static final String LIVING_DESCENDANTS_WELSH = "livingDescendants";
+    public static final String LIVING_DESCENDANTS_WELSH = "livingDescendantsWelsh";
     public static final String LIVING_PARENTS = "livingParents";
-    public static final String LIVING_PARENTS_WELSH = "livingParents";
+    public static final String LIVING_PARENTS_WELSH = "livingParentsWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -39,19 +39,21 @@ public class IntestacyDeceasedDetailsValidationRule implements ValidationRule {
             boolean isSibling = SIBLING.equalsIgnoreCase(relationship);
             boolean isSiblingOrParent = isSibling || PARENT.equalsIgnoreCase(relationship);
 
-            if (isSibling && YES.equalsIgnoreCase(deceased.getDeceasedAnyLivingDescendants())) {
+            if (isSiblingOrParent && YES.equalsIgnoreCase(deceased.getDeceasedAnyLivingDescendants())) {
                 codes.add(LIVING_DESCENDANTS);
                 codes.add(LIVING_DESCENDANTS_WELSH);
             }
-            if (isSiblingOrParent && YES.equalsIgnoreCase(deceased.getDeceasedAnyLivingParents())) {
+            if (isSibling && YES.equalsIgnoreCase(deceased.getDeceasedAnyLivingParents())) {
                 codes.add(LIVING_PARENTS);
                 codes.add(LIVING_PARENTS_WELSH);
             }
-            if (isSiblingOrParent && NO.equalsIgnoreCase(deceased.getDeceasedAdoptionInEnglandOrWales())) {
+            if (isSiblingOrParent && YES.equalsIgnoreCase(deceased.getDeceasedAdoptedIn())
+                    && NO.equalsIgnoreCase(deceased.getDeceasedAdoptionInEnglandOrWales())) {
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
             }
-            if (isSiblingOrParent && YES.equalsIgnoreCase(deceased.getDeceasedAdoptedOut())) {
+            if (isSiblingOrParent && NO.equalsIgnoreCase(deceased.getDeceasedAdoptedIn())
+                    && YES.equalsIgnoreCase(deceased.getDeceasedAdoptedOut())) {
                 codes.add(DECEASED_ADOPTED_OUT);
                 codes.add(DECEASED_ADOPTED_OUT_WELSH);
             }

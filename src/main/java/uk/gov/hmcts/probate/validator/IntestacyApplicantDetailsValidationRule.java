@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -18,13 +19,13 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @RequiredArgsConstructor
 public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
     public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "adoptedOutsideEnglandOrWales";
-    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWales";
+    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWalesWelsh";
     public static final String DECEASED_CHILD_DEAD = "deceasedChildDead";
-    public static final String DECEASED_CHILD_DEAD_WELSH = "deceasedChildDeadWales";
+    public static final String DECEASED_CHILD_DEAD_WELSH = "deceasedChildDeadWelsh";
     public static final String ADOPTED_OUT = "adoptedOut";
-    public static final String ADOPTED_OUT_WELSH = "adoptedOut";
+    public static final String ADOPTED_OUT_WELSH = "adoptedOutWelsh";
     public static final String SIBLING_NOT_DIED = "siblingNotDied";
-    public static final String SIBLING_NOT_DIED_WELSH = "siblingNotDied";
+    public static final String SIBLING_NOT_DIED_WELSH = "siblingNotDiedWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -40,25 +41,29 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
                 codes.add(SIBLING_NOT_DIED_WELSH);
             }
 
-            if (NO.equalsIgnoreCase(applicant.getChildAlive())) {
+            if (GRAND_CHILD.equalsIgnoreCase(ccdData.getSolsApplicantRelationshipToDeceased())
+                    && NO.equalsIgnoreCase(applicant.getChildAlive())) {
                 codes.add(DECEASED_CHILD_DEAD);
                 codes.add(DECEASED_CHILD_DEAD_WELSH);
             }
 
-            if (NO.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptionInEnglandOrWales())
-                    || NO.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptionInEnglandOrWales())) {
+            if ((YES.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedIn())
+                    && NO.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptionInEnglandOrWales()))
+                    || (YES.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedIn())
+                    && NO.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptionInEnglandOrWales()))) {
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
             }
-            if (YES.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedOut())
-                    || YES.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedOut())) {
+            if ((NO.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedIn())
+                    && YES.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedOut()))
+                    || (NO.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedIn())
+                    && YES.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedOut()))) {
                 codes.add(ADOPTED_OUT);
                 codes.add(ADOPTED_OUT_WELSH);
             }
 
-            for (String code : codes) {
-                errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, code));
-            }
+            codes.forEach(code -> errors.add(businessValidationMessageService
+                    .generateError(BUSINESS_ERROR, code)));
         }
         return errors;
     }

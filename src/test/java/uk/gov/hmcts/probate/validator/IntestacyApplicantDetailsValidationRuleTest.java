@@ -81,6 +81,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateFailureIfDeceasedChildDead() {
+        when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(GRAND_CHILD);
         when(applicantMock.getChildAlive()).thenReturn(NO);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -91,6 +92,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateSuccessIfApplicantParentAdoptedInEnglandOrWales() {
+        when(applicantMock.getPrimaryApplicantParentAdoptedIn()).thenReturn(YES);
         when(applicantMock.getPrimaryApplicantParentAdoptionInEnglandOrWales()).thenReturn(YES);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -100,6 +102,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateFailureIfApplicantParentAdoptedOutsideEnglandOrWales() {
+        when(applicantMock.getPrimaryApplicantParentAdoptedIn()).thenReturn(YES);
         when(applicantMock.getPrimaryApplicantParentAdoptionInEnglandOrWales()).thenReturn(NO);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -111,6 +114,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
     @MethodSource("relationship")
     void shouldValidateSuccessIfApplicantAdoptedInEnglandOrWales(final String relationship) {
         when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(relationship);
+        when(applicantMock.getPrimaryApplicantAdoptedIn()).thenReturn(YES);
         when(applicantMock.getPrimaryApplicantAdoptionInEnglandOrWales()).thenReturn(YES);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -122,6 +126,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
     @MethodSource("relationship")
     void shouldValidateFailureIfApplicantAdoptedOutsideEnglandOrWales(final String relationship) {
         when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(relationship);
+        when(applicantMock.getPrimaryApplicantAdoptedIn()).thenReturn(YES);
         when(applicantMock.getPrimaryApplicantAdoptionInEnglandOrWales()).thenReturn(NO);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -131,6 +136,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateSuccessIfApplicantParentIsNotAdoptedOut() {
+        when(applicantMock.getPrimaryApplicantParentAdoptedIn()).thenReturn(NO);
         when(applicantMock.getPrimaryApplicantParentAdoptedOut()).thenReturn(NO);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -140,6 +146,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateFailureIfApplicantParentIsAdoptedOut() {
+        when(applicantMock.getPrimaryApplicantParentAdoptedIn()).thenReturn(NO);
         when(applicantMock.getPrimaryApplicantParentAdoptedOut()).thenReturn(YES);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -151,6 +158,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
     @MethodSource("relationship")
     void shouldValidateSuccessIfApplicantIsNotAdoptedOut(final String relationship) {
         when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(relationship);
+        when(applicantMock.getPrimaryApplicantAdoptedIn()).thenReturn(NO);
         when(applicantMock.getPrimaryApplicantAdoptedOut()).thenReturn(NO);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
@@ -162,6 +170,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
     @MethodSource("relationship")
     void shouldValidateFailureIfApplicantIsAdoptedOut(final String relationship) {
         when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(relationship);
+        when(applicantMock.getPrimaryApplicantAdoptedIn()).thenReturn(NO);
         when(applicantMock.getPrimaryApplicantAdoptedOut()).thenReturn(YES);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
