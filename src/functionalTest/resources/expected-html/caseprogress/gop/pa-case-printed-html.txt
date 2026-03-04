@@ -252,7 +252,7 @@ Anfon dogfennau<br/>
 </div>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
-<p class="govuk-body-s"><font color="#505a5f">The grant will be delivered in the post a few days after issuing.</font></p>
+<p class="govuk-body-s"><font color="#505a5f">The grant will be delivered by post within 10 working days after it has been issued.</font></p>
 </div>
 <div class="govuk-grid-column-one-third">&nbsp;</div>
 </div>
