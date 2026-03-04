@@ -2464,7 +2464,7 @@ public class CallbackResponseTransformer {
         String wholeOrHalfSiblingAfter = caseDetails.getData().getApplicantSameParentsAsDeceased();
         List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList = caseDetailsBefore.getData()
                 .getSolsIntestacyExecutorList();
-        log.info("Relationship to deceased before: {}", relationshipBefore);
+        log.info("Relationship to deceased before for case {}: {}",caseDetails.getId(), relationshipBefore);
         final var caseData = caseDetails.getData();
 
         DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData, existingExecutorList);
