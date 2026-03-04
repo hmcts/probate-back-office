@@ -1589,6 +1589,7 @@ public class CallbackResponseTransformer {
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
             .childAlive(caseData.getChildAlive())
+            .isApplicantParentDeceasedChild(caseData.getIsApplicantParentDeceasedChild())
             .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
             .solsIntestacyExecutorList(caseData.getSolsIntestacyExecutorList())
             .anyLivingWholeBloodSiblings(caseData.getAnyLivingWholeBloodSiblings());

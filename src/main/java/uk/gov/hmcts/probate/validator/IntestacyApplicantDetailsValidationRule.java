@@ -42,7 +42,7 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
             }
 
             if (GRAND_CHILD.equalsIgnoreCase(ccdData.getSolsApplicantRelationshipToDeceased())
-                    && NO.equalsIgnoreCase(applicant.getChildAlive())) {
+                    && NO.equalsIgnoreCase(applicant.getIsApplicantParentDeceasedChild())) {
                 codes.add(DECEASED_CHILD_DEAD);
                 codes.add(DECEASED_CHILD_DEAD_WELSH);
             }

@@ -82,7 +82,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
     @Test
     void shouldValidateFailureIfDeceasedChildDead() {
         when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(GRAND_CHILD);
-        when(applicantMock.getChildAlive()).thenReturn(NO);
+        when(applicantMock.getIsApplicantParentDeceasedChild()).thenReturn(NO);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
 

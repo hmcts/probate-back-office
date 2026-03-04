@@ -136,7 +136,7 @@ public class CCDDataTransformer {
 
     private Applicant buildApplicantDetails(CaseData caseData) {
         return Applicant.builder()
-                .childAlive(caseData.getChildAlive())
+                .isApplicantParentDeceasedChild(caseData.getIsApplicantParentDeceasedChild())
                 .primaryApplicantAdoptedIn(caseData.getPrimaryApplicantAdoptedIn())
                 .primaryApplicantParentAdoptedIn((caseData.getPrimaryApplicantParentAdoptedIn()))
                 .primaryApplicantParentAdoptionInEnglandOrWales(
