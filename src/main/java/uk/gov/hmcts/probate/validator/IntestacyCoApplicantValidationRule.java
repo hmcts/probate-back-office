@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsApplicantFamilyDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.ArrayList;
