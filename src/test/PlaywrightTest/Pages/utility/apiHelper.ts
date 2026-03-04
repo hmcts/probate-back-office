@@ -2,6 +2,15 @@ import axios from 'axios';
 
 export const  getAccessToken = async ( idamUrl, email: string,  password: string  ) => {
   try {
+    console.log('=== API REQUEST DEBUG ===');
+    console.log('Base URL:', idamUrl);
+    console.log('Email:', email);
+    console.log('Email length:', email?.length);
+    console.log('Password length:', password?.length);
+    console.log('Email is undefined:', email === undefined);
+    console.log('Password is undefined:', password === undefined);
+    console.log('Email trimmed length:', email?.trim().length);
+    console.log('Password trimmed length:', password?.trim().length);
     const axiosConfig = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
