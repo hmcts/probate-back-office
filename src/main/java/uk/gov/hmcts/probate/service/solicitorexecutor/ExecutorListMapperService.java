@@ -255,9 +255,9 @@ public class ExecutorListMapperService {
                                             .getCoApplicantAdoptedOut());
                             break;
                         default:
-                            log.warn("Unexpected relationship to deceased for additional applying executor: {}",
-                                    selectedRelationship);
-                            break;
+                            throw new IllegalArgumentException(
+                                    "Unexpected relationship to deceased for additional applying executor: "
+                                            + selectedRelationship);
                     }
                     ApplicantFamilyDetails applicantFamilyDetails = builder.build();
                     return new CollectionMember<>(

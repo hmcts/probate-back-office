@@ -147,6 +147,7 @@ public class CCDDataTransformer {
             .dateOfDeath((caseData.getDeceasedDateOfDeath()))
             .deceasedMaritalStatus(caseData.getDeceasedMaritalStatus())
             .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
+            .deceasedAdoptedIn(caseData.getDeceasedAdoptedIn())
             .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
             .dateOfDivorcedCPJudicially(caseData.getDateOfDivorcedCPJudicially())
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
@@ -157,6 +158,8 @@ public class CCDDataTransformer {
     private Applicant buildApplicantDetails(CaseData caseData) {
         return Applicant.builder()
                 .childAlive(caseData.getChildAlive())
+                .primaryApplicantAdoptedIn(caseData.getPrimaryApplicantAdoptedIn())
+                .primaryApplicantParentAdoptedIn((caseData.getPrimaryApplicantParentAdoptedIn()))
                 .primaryApplicantParentAdoptionInEnglandOrWales(
                         caseData.getPrimaryApplicantParentAdoptionInEnglandOrWales())
                 .primaryApplicantParentAdoptedOut(caseData.getPrimaryApplicantParentAdoptedOut())

@@ -24,10 +24,10 @@ import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
 @Component
 @RequiredArgsConstructor
 public class IntestacyCoApplicantValidationRule implements ValidationRule {
-    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "coApplicantAdoptedOut";
-    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "coApplicantAdoptedOutWelsh";
-    public static final String ADOPTED_OUT = "adoptedOut";
-    public static final String ADOPTED_OUT_WELSH = "adoptedOutWelsh";
+    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "adoptedOutsideEnglandOrWales";
+    public static final String ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "adoptedOutsideEnglandOrWalesWelsh";
+    public static final String ADOPTED_OUT = "coApplicantAdoptedOut";
+    public static final String ADOPTED_OUT_WELSH = "coApplicantAdoptedOutWelsh";
     public static final String PARENT_IS_NOT_DECEASED = "parentIsNotDeceased";
     public static final String PARENT_IS_NOT_DECEASED_WELSH = "parentIsNotDeceasedWelsh";
     public static final String PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "coApplicantParentAdoptedOut";
@@ -46,26 +46,39 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
                 List<String> codes = new ArrayList<>();
                 String coApplicantAdoptedInEnglandOrWales = details.getCoApplicantAdoptionInEnglandOrWales();
                 String coApplicantAdoptedOut = details.getCoApplicantAdoptedOut();
+                String coApplicantAdoptedIn = details.getCoApplicantAdoptedIn();
                 String grandchildParentIsDeceased = details.getGrandchildParentDieBeforeDeceased();
                 String wholeNieceOrNephewParentIsDeceased = details.getWholeNieceOrNephewParentDieBeforeDeceased();
                 String halfNieceOrNephewParentIsDeceased = details.getHalfNieceOrNephewParentDieBeforeDeceased();
-                boolean isRelevantRelation = isRelevantRelation(details);
+                String relationshipToDeceased = null != details.getRelationship() ? details
+                        .getRelationship().getValueCode() : null;
+                boolean isRelevantRelation = isRelevantRelation(relationshipToDeceased);
 
-                if (isRelevantRelation && NO.equalsIgnoreCase(coApplicantAdoptedInEnglandOrWales)) {
+                if ((isRelevantRelation && YES.equalsIgnoreCase(coApplicantAdoptedIn)
+                        && NO.equalsIgnoreCase(coApplicantAdoptedInEnglandOrWales)) || (GRAND_CHILD
+                        .equalsIgnoreCase(relationshipToDeceased) && YES.equalsIgnoreCase(details
+                        .getGrandchildParentAdoptedIn()) && NO.equalsIgnoreCase(details
+                        .getGrandchildParentAdoptionInEnglandOrWales()))) {
                     codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
                     codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
                 }
-                if (isRelevantRelation && YES.equalsIgnoreCase(coApplicantAdoptedOut)) {
+                if (isRelevantRelation && NO.equalsIgnoreCase(coApplicantAdoptedIn)
+                        && YES.equalsIgnoreCase(coApplicantAdoptedOut)) {
                     codes.add(ADOPTED_OUT);
                     codes.add(ADOPTED_OUT_WELSH);
                 }
-                if (NO.equalsIgnoreCase(grandchildParentIsDeceased)
-                        || NO.equalsIgnoreCase(wholeNieceOrNephewParentIsDeceased)
-                        || NO.equalsIgnoreCase(halfNieceOrNephewParentIsDeceased)) {
+                if ((GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased) && NO
+                        .equalsIgnoreCase(grandchildParentIsDeceased)) || (WHOLE_BLOOD_NIECE_OR_NEPHEW
+                        .equalsIgnoreCase(relationshipToDeceased) && NO
+                        .equalsIgnoreCase(wholeNieceOrNephewParentIsDeceased)) || (HALF_BLOOD_NIECE_OR_NEPHEW
+                        .equalsIgnoreCase(relationshipToDeceased) && NO
+                        .equalsIgnoreCase(halfNieceOrNephewParentIsDeceased))) {
                     codes.add(PARENT_IS_NOT_DECEASED);
                     codes.add(PARENT_IS_NOT_DECEASED_WELSH);
                 }
-                if (NO.equalsIgnoreCase(details.getGrandchildParentAdoptedOut())) {
+                if (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
+                        && NO.equalsIgnoreCase(details.getGrandchildParentAdoptedIn())
+                        && YES.equalsIgnoreCase(details.getGrandchildParentAdoptedOut())) {
                     codes.add(PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
                     codes.add(PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
                 }
@@ -77,10 +90,7 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
         return errors;
     }
 
-    private static boolean isRelevantRelation(SolsApplicantFamilyDetails details) {
-        String relationshipToDeceased = null != details.getRelationship() ? details
-                .getRelationship().getValueCode() : null;
-
+    private static boolean isRelevantRelation(String relationshipToDeceased) {
 
         return CHILD.equalsIgnoreCase(relationshipToDeceased)
                 || GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)

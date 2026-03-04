@@ -36,6 +36,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.ADOPTED_OUT;
 import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.ADOPTED_OUTSIDE_ENGLAND_OR_WALES;
 import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.PARENT_IS_NOT_DECEASED;
+import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES;
 
 @ExtendWith(SpringExtension.class)
 class IntestacyCoApplicantValidationRuleTest {
@@ -69,6 +70,9 @@ class IntestacyCoApplicantValidationRuleTest {
 
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_IS_NOT_DECEASED))
                 .thenReturn(FieldErrorResponse.builder().code(PARENT_IS_NOT_DECEASED).build());
+
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES))
+                .thenReturn(FieldErrorResponse.builder().code(PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES).build());
 
     }
 
@@ -177,6 +181,84 @@ class IntestacyCoApplicantValidationRuleTest {
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
 
         assertEquals(ADOPTED_OUT, validationErrors.getFirst().getCode());
+    }
+
+    @Test
+    void shouldValidateFailureIfCoApplicantIsGrandchildAndTheirParentIsAdoptedOutsideEngWales() {
+        List<Executor> executor = List.of(
+                Executor.builder()
+                        .applicantFamilyDetails(SolsApplicantFamilyDetails.builder()
+                                .coApplicantAdoptedIn(NO)
+                                .coApplicantAdoptedOut(NO)
+                                .grandchildParentAdoptedIn(YES)
+                                .grandchildParentAdoptionInEnglandOrWales(NO)
+                                .grandchildParentDieBeforeDeceased(YES)
+                                .relationship(DynamicRadioList.builder()
+                                        .value(DynamicRadioListElement.builder()
+                                                .code(GRAND_CHILD)
+                                                .label("Grandchild")
+                                                .build())
+                                        .build()
+                                )
+                                .build()
+                        ).build());
+        when(ccdDataMock.getExecutors()).thenReturn(executor);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertEquals(ADOPTED_OUTSIDE_ENGLAND_OR_WALES, validationErrors.getFirst().getCode());
+    }
+
+    @Test
+    void shouldValidateSuccessIfCoApplicantIsGrandchildAndTheirParentIsNotAdoptedOut() {
+        List<Executor> executor = List.of(
+                Executor.builder()
+                        .applicantFamilyDetails(SolsApplicantFamilyDetails.builder()
+                                .coApplicantAdoptedIn(NO)
+                                .coApplicantAdoptedOut(NO)
+                                .grandchildParentAdoptedIn(NO)
+                                .grandchildParentAdoptedOut(NO)
+                                .grandchildParentDieBeforeDeceased(YES)
+                                .relationship(DynamicRadioList.builder()
+                                        .value(DynamicRadioListElement.builder()
+                                                .code(GRAND_CHILD)
+                                                .label("Grandchild")
+                                                .build())
+                                        .build()
+                                )
+                                .build()
+                        ).build());
+        when(ccdDataMock.getExecutors()).thenReturn(executor);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertTrue(validationErrors.isEmpty());
+    }
+
+    @Test
+    void shouldValidateFailureIfCoApplicantIsGrandchildAndTheirParentIsAdoptedOut() {
+        List<Executor> executor = List.of(
+                Executor.builder()
+                        .applicantFamilyDetails(SolsApplicantFamilyDetails.builder()
+                                .coApplicantAdoptedIn(NO)
+                                .coApplicantAdoptedOut(NO)
+                                .grandchildParentAdoptedIn(NO)
+                                .grandchildParentAdoptedOut(YES)
+                                .grandchildParentDieBeforeDeceased(YES)
+                                .relationship(DynamicRadioList.builder()
+                                        .value(DynamicRadioListElement.builder()
+                                                .code(GRAND_CHILD)
+                                                .label("Grandchild")
+                                                .build())
+                                        .build()
+                                )
+                                .build()
+                        ).build());
+        when(ccdDataMock.getExecutors()).thenReturn(executor);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertEquals(PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES, validationErrors.getFirst().getCode());
     }
 
     @Test
