@@ -22,6 +22,7 @@ module.exports = async function (applicationType, iHTFormsCompleted, whichIHTFor
             } else {
                 await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400421}`});
             }
+
         } else {
             await I.click(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionNo}`);
             await I.waitForText(deceasedDetailsConfig.page2_grossValueIHTEstateLabel);

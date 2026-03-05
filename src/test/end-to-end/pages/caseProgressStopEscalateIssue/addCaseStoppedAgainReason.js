@@ -7,7 +7,7 @@ module.exports = async function () {
     await I.waitForElement({css: '#boCaseStopReasonList_0_caseStopReason'});
     await I.selectOption({css: '#boCaseStopReasonList_0_caseStopReason'}, '10: DocumentsRequired');
     await I.waitForElement({css: '#boCaseStopReasonList_0_caseStopSubReasonDocRequired'});
-    await I.selectOption({css: '#boCaseStopReasonList_0_caseStopSubReasonDocRequired'}, '7: PA11');
+    await I.selectOption({css: '#boCaseStopReasonList_0_caseStopSubReasonDocRequired'}, '9: PA11');
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

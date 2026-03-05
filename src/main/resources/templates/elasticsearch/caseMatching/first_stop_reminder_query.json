@@ -18,6 +18,30 @@
             ]
           }
         }
+      ],
+      "must_not": [
+        {
+          "terms": {
+            "data.caseType.keyword": [
+              "edgeCase"
+            ]
+          }
+        },
+        {
+          "terms": {
+            "data.evidenceHandled": [
+              "No"
+            ]
+          }
+        },
+        {
+          "terms": {
+            "data.boCaseStopReasonList.value.caseStopReason.keyword": [
+              "CaveatMatch",
+              "Permanent Caveat"
+            ]
+          }
+        }
       ]
     }
   },

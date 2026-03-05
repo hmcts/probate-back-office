@@ -30,8 +30,10 @@ def secrets = [
                 secret('probatemandb-POSTGRES-PORT', 'PROBATE_POSTGRESQL_PORT_VAL'),
                 secret('probatemandb-POSTGRES-DATABASE', 'PROBATE_POSTGRESQL_DATABASE_VAL'),
                 secret('cwUserId', 'CW_USER_ID'),
-                secret('cwUserEmail', 'CW_USER_EMAIL'),
-                secret('cwUserPass', 'CW_USER_PASSWORD'),
+                secret('cwUserEmail', 'CW_SUPERUSER_EMAIL'),
+                secret('cwUserPass', 'CW_SUPERUSER_PASSWORD'),
+                secret('cwSuperuserEmail', 'CW_USER_EMAIL'),
+                secret('cwSuperuserPass', 'CW_USER_PASSWORD'),
                 secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
                 secret('solicitorUserPass', 'SOL_USER_PASSWORD'),
                 secret('solicitor2UserEmail', 'SOL2_USER_EMAIL'),
@@ -68,20 +70,23 @@ def secrets = [
                 secret('levDeathUrl', 'LEV_DEATH_URL'),
                 secret('definition-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
                 secret('definition-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
-                secret('probate-storage-account-primary-connection-string','PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING')
+                secret('probate-storage-account-primary-connection-string','PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING'),
+                secret('probate-storage-account-nfi-primary-connection-string','PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
                 secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
                 secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY'),
-                secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
+                secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY'),
+                secret('microservicekey-ccd-admin', 'ADMIN_S2S_KEY')
         ],
         'ccd-${env}'      : [
                 secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET'),
                 secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
                 secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
                 secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD'),
-                secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN')
+                secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN'),
+                secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
         ],
         'aac-${env}': [
                 secret('idam-mca-client-secret', 'IDAM_CLIENT_SECRET'),
@@ -109,8 +114,8 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
 // Configure branches to sync with master branch
-// diable sync branch to demo only
-def branchesToSync = ['ithc','perftest']
+// diable sync branch to demo and ithc
+def branchesToSync = ['perftest']
 
 def checkForEnableNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
@@ -120,7 +125,11 @@ def checkForEnableCWNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "cw-nightly").contains("cw-nightly")
 }
 
-def archiveCoreCaseDataDefinitions(env) {
+def checkForWAEnableLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
+}
+
+def archiveCoreCaseDataDefinitions(env, branch_name) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
     if("preview" == env){
@@ -137,12 +146,16 @@ def archiveCoreCaseDataDefinitions(env) {
       shutterOption = "false"
     }
 
+    excludedFilenamePatterns="*-wa.json"
     if ("preview" == env) {
-      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      if (checkForWAEnableLabel(branch_name)) {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      } else {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+      }
     }
-
-      else {
-      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption}"
+    else {
+      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
     }
   }
 
@@ -288,7 +301,7 @@ withPipeline("java", product, component) {
       echo "CCD definition upload for environment: ${env.ENV}"
       withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
         withTeamSecrets(pipelineConf, env.ENV) {
-          archiveCoreCaseDataDefinitions(env.ENV)
+          archiveCoreCaseDataDefinitions(env.ENV, env.BRANCH_NAME)
           uploadCoreCaseDataDefinitions(env.ENV)
         }
       }
@@ -304,7 +317,11 @@ withPipeline("java", product, component) {
 
   onPR() {
       env.ENV='preview'
+      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
+        env.PROBATE_WA_ENABLED = true
+      }
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+      env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
   }
 
   onIthc() {
@@ -325,7 +342,7 @@ withPipeline("java", product, component) {
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
       ./bin/add-ccd-roles.sh
     """
-    archiveCoreCaseDataDefinitions('preview')
+    archiveCoreCaseDataDefinitions('preview', env.BRANCH_NAME)
     uploadCoreCaseDataDefinitions('preview')
 
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"

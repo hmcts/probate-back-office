@@ -80,6 +80,15 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
+    @PostMapping(path = "/setCaseSubmissionDate")
+    public ResponseEntity<CaveatCallbackResponse> setCaseSubmissionDateForSolicitorCases(
+            @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+        caveatNotificationService.setPaymentTaken(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService
+                .solsCaveatRaise(caveatCallbackRequest);
+        return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
     @PostMapping(path = "/raise-caveat-validate")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveatValidate(
             @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
@@ -164,8 +173,7 @@ public class CaveatController {
             @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest,
             BindingResult bindingResult,
-            HttpServletRequest request)
-        throws NotificationClientException {
+            HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
             log.error("Case Id: {} ERROR: {}", caveatCallbackRequest.getCaseDetails().getId(), bindingResult);

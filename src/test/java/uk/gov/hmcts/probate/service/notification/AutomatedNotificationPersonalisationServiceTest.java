@@ -14,15 +14,17 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -61,17 +63,25 @@ class AutomatedNotificationPersonalisationServiceTest {
     }
 
     @Test
-    void getDisposalReminderPersonalisation_shouldBuildCorrectMap() {
-        Map<String,Object> data = Map.of(
+    void getDisposalReminderPersonalisationShouldBuildCorrectMap() {
+        LocalDate dod = LocalDate.of(2025,5,1);
+        Map<String, Object> data = Map.of(
                 "solsSOTName", "Solicitor Smith",
-                "caseType",    "foo"
+                "caseType", "foo",
+                "deceasedDateOfDeath", dod,
+                "deceasedForenames", "Bob",
+                "deceasedSurname", "Brown"
         );
         CaseDetails cd = mock(CaseDetails.class);
         when(cd.getData()).thenReturn(data);
         when(cd.getId()).thenReturn(123L);
         when(cd.getCreatedDate()).thenReturn(LocalDateTime.of(2025,6,10,0,0));
+        when(dateFormatterService.formatDate(dod))
+                .thenReturn("1st May 2025");
+        when(localDateToWelshStringConverter.convert(dod))
+                .thenReturn("1 Mai 2025");
 
-        Map<String,String> result =
+        Map<String, Object> result =
                 underTest.getDisposalReminderPersonalisation(cd, ApplicationType.SOLICITOR);
 
         assertAll("disposal reminder personalisation",
@@ -79,8 +89,39 @@ class AutomatedNotificationPersonalisationServiceTest {
                 () -> assertEquals("123",     result.get("case_ref")),
                 () -> assertEquals("Solicitor Smith", result.get("solicitor_name")),
                 () -> assertEquals(
-                        urlPrefixSolicitorCase + "/cases/case-details/123",
-                        result.get("link_to_case"))
+                        urlPrefixSolicitorCase + "/cases/case-details/PROBATE/GrantOfRepresentation/123",
+                        result.get("link_to_case")),
+                () -> assertEquals("1st May 2025", result.get("deceased_dod")),
+                () -> assertEquals("1 Mai 2025", result.get("welsh_deceased_date_of_death")),
+                () -> assertEquals("Bob Brown", result.get("deceased_name"))
+        );
+    }
+
+    @Test
+    void getDisposalReminderPersonalisationShouldDefaultTextIfDeceasedNameOrDodIsNull() {
+        Map<String, Object> data = Map.of(
+                "solsSOTName", "Solicitor Smith",
+                "caseType", "foo"
+        );
+        CaseDetails cd = mock(CaseDetails.class);
+        when(cd.getData()).thenReturn(data);
+        when(cd.getId()).thenReturn(123L);
+        when(cd.getCreatedDate()).thenReturn(LocalDateTime.of(2025,6,10,0,0));
+
+        Map<String, Object> result =
+                underTest.getDisposalReminderPersonalisation(cd, ApplicationType.SOLICITOR);
+
+        assertAll("disposal reminder personalisation",
+                () -> assertEquals("10 June 2025", result.get("date_created")),
+                () -> assertEquals("123",     result.get("case_ref")),
+                () -> assertEquals("Solicitor Smith", result.get("solicitor_name")),
+                () -> assertEquals(
+                        urlPrefixSolicitorCase + "/cases/case-details/PROBATE/GrantOfRepresentation/123",
+                        result.get("link_to_case")),
+                () -> assertEquals("Date not entered yet", result.get("deceased_dod")),
+                () -> assertEquals("Dyddiad heb ei nodi eto", result.get("welsh_deceased_date_of_death")),
+                () -> assertEquals("Name not entered yet", result.get("deceased_name")),
+                () -> assertEquals("Enw heb ei nodi eto", result.get("welsh_deceased_name"))
         );
     }
 
@@ -152,5 +193,42 @@ class AutomatedNotificationPersonalisationServiceTest {
                         urlPrefixToPersonalCase + "/get-case/999?probateType=INTESTACY",
                         p.get("link_to_case"))
         );
+    }
+
+    @Test
+    void getStopReasonShouldhandleNulls() {
+        final Map<String, String> reasons = new HashMap<>();
+        reasons.put("R1", "Reason One");
+        reasons.put("DocumentsRequired", "Doc XYZ");
+        reasons.put("SUB_NULL", null);
+        reasons.put("SUB_A", "Sub Reason A");
+        reasons.put("SUB_B", "Sub Reason B");
+        when(stopReasonService.getStopReasonDescription(any(), any()))
+            .thenAnswer(i -> reasons.get(i.getArgument(1, String.class)));
+
+        BiFunction<String, String, CollectionMember<StopReason>> build = (r, s) -> {
+            final StopReason sr = StopReason.builder()
+                    .caseStopReason(r)
+                    .caseStopSubReasonDocRequired(s)
+                    .build();
+            return new CollectionMember<>(sr);
+        };
+        List<CollectionMember<StopReason>> domainList = List.of(
+            build.apply("R1", null),
+            build.apply("DocumentsRequired", "SUB_A"),
+            build.apply("DocumentsRequired", "SUB_NULL"),
+            build.apply("DocumentsRequired", null),
+            build.apply("DocumentsRequired", "SUB_B")
+        );
+
+        assertDoesNotThrow(() -> {
+            String result = underTest.getStopReason(domainList, false);
+            assertEquals(
+                "Reason One\nDoc XYZ\n"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason A\n"
+                + "&nbsp;&nbsp;&nbsp;&nbsp;Sub Reason B\n",
+                result
+            );
+        });
     }
 }

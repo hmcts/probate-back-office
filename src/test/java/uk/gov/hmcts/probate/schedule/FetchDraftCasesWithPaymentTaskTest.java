@@ -6,20 +6,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.service.FetchDraftCaseService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 
 import java.time.Clock;
-import java.time.LocalDate;
+import java.time.Instant;
+import java.time.ZoneOffset;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
-import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 @ExtendWith(SpringExtension.class)
 class FetchDraftCasesWithPaymentTaskTest {
@@ -35,12 +35,14 @@ class FetchDraftCasesWithPaymentTaskTest {
 
     @InjectMocks
     private FetchDraftCasesWithPaymentTask fetchDraftCasesWithPaymentTask;
-    private static final String DATE_TODAY = DATE_FORMAT.format(LocalDate.now());
+    private static final String DATE_TODAY = "2025-10-02";
     private final String adhocDate = "2022-09-05";
 
     @BeforeEach
     void setUp() {
-        clock = Clock.systemDefaultZone();
+        clock = Clock.fixed(
+                Instant.parse("2025-10-02T03:00:00Z"),
+                ZoneOffset.UTC);
 
         fetchDraftCasesWithPaymentTask = new FetchDraftCasesWithPaymentTask(
                 dataExtractDateValidator,
@@ -52,36 +54,12 @@ class FetchDraftCasesWithPaymentTaskTest {
 
     @Test
     void shouldPerformDraftCasesExtractDateRange() {
-        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
-                .body("Perform hmrc data extract from date finished");
         fetchDraftCasesWithPaymentTask.run();
-        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
-        verify(fetchDraftCaseService).fetchGORCases(adhocDate, DATE_TODAY);
+        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,GRANT_OF_REPRESENTATION);
+        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,CAVEAT);
     }
 
-    @Test
-    void shouldPerformGORDraftCasesExtractForAdhocDate() {
-        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
-                .body("Perform hmrc data extract from date finished");
-        fetchDraftCasesWithPaymentTask.run();
-        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
-        verify(fetchDraftCaseService).fetchGORCases(adhocDate, DATE_TODAY);
-    }
-
-    @Test
-    void shouldPerformDraftCasesExtractForAdhocDateRange() {
-        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
-                .body("Perform hmrc data extract from date finished");
-        fetchDraftCasesWithPaymentTask.run();
-        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
-        assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
-        verify(fetchDraftCaseService).fetchGORCases(adhocDate, DATE_TODAY);
-    }
 
     @Test
     void shouldThrowClientExceptionWithBadRequestForDraftCasesExtractWithIncorrectDateFormat() {

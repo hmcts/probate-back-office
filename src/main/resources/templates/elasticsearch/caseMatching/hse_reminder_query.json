@@ -18,8 +18,19 @@
       ],
       "must_not": [
         {
-          "term": {
-            "state.keyword": "BOGrantIssued"
+          "terms": {
+            "state.keyword": [
+              "BOGrantIssued",
+              "BOCaseClosed"
+            ]
+          }
+        },
+        {
+          "terms": {
+            "data.boCaseStopReasonList.value.caseStopReason.keyword": [
+              "CaveatMatch",
+              "Permanent Caveat"
+            ]
           }
         }
       ]

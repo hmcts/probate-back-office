@@ -47,11 +47,11 @@ public class RetainAndDisposalTask implements Runnable {
         log.info("Calling send email for inactive case for date {}, with inactive period {}",
                 runDate, inactivityNotificationPeriod);
         try {
-            log.info("Perform send email for inactive gop case started");
+            log.info("Perform send email for inactive caveat case started");
             retainAndDisposalService
                     .sendEmailForInactiveCase(switchDate, runDate, Long.parseLong(inactivityNotificationPeriod),
                             true);
-            log.info("Perform send email for inactive caveat case started");
+            log.info("Perform send email for inactive gop case started");
             retainAndDisposalService
                     .sendEmailForInactiveCase(switchDate, runDate, Long.parseLong(inactivityNotificationPeriod),
                             false);
