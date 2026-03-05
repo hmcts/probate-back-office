@@ -22,15 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
-import uk.gov.hmcts.probate.service.BulkPrintService;
-import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.DocumentValidation;
-import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.EvidenceUploadService;
-import uk.gov.hmcts.probate.service.FeatureToggleService;
-import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.RegistryDetailsService;
-import uk.gov.hmcts.probate.service.ReprintService;
+import uk.gov.hmcts.probate.service.*;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
@@ -112,6 +104,10 @@ class DocumentControllerUnitTest {
     private FeatureToggleService featureToggleService;
     @Mock
     private DocumentTransformer documentTransformer;
+    @Mock
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
+
+
 
     /// The object under test
     private DocumentController documentController;
@@ -141,7 +137,7 @@ class DocumentControllerUnitTest {
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
-            evidenceUploadService, userInfoService, featureToggleService,documentTransformer);
+            evidenceUploadService, userInfoService, featureToggleService,documentTransformer,ccdSupplementaryDataService);
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
