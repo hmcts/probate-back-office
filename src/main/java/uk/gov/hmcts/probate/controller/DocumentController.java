@@ -21,6 +21,8 @@ import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -29,15 +31,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
-import uk.gov.hmcts.probate.service.BulkPrintService;
-import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.DocumentValidation;
-import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.EvidenceUploadService;
-import uk.gov.hmcts.probate.service.FeatureToggleService;
-import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.RegistryDetailsService;
-import uk.gov.hmcts.probate.service.ReprintService;
+import uk.gov.hmcts.probate.service.*;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
@@ -101,6 +95,7 @@ public class DocumentController {
     private final UserInfoService userInfoService;
     private final FeatureToggleService featureToggleService;
     private final DocumentTransformer documentTransformer;
+    private final CcdSupplementaryDataService ccdSupplementaryDataService;
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -569,4 +564,17 @@ public class DocumentController {
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
+
+
+    @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<WillLodgementCallbackResponse> setWillLodgementSupplementaryData(
+            @RequestBody final WillLodgementCallbackRequest WillLodgementCallbackRequest) {
+        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                WillLodgementCallbackRequest.getCaseDetails().getId().toString());
+        WillLodgementCallbackResponse willLodgementCallbackResponse = WillLodgementCallbackResponse.builder().build();
+
+        return ResponseEntity.ok(willLodgementCallbackResponse);
+    }
+
 }
