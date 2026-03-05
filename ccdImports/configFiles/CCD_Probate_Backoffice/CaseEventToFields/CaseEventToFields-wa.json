@@ -1,0 +1,3 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorCreateApplication", "CaseFieldID": "SearchCriteria", "PageFieldDisplayOrder": 17, "DisplayContext": "MANDATORY", "PageID": "solicitorCreateApplicationPage2", "PageDisplayOrder": 2, "FieldShowCondition": "[STATE]=\"NeverShowThisField\"", "ShowSummaryChangeOption": "n"}
+]
