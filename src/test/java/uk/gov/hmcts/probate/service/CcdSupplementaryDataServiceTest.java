@@ -38,7 +38,7 @@ class CcdSupplementaryDataServiceTest {
     void shouldSubmitSupplementaryDataToCcd() {
         SecurityDTO securityDTO = SecurityDTO.builder().authorisation("AUTH").build();
         when(supplementaryDataConfiguration.getHmctsId()).thenReturn("PROBATE");
-        when(securityUtils.getAuthorisation()).thenReturn("AUTH");
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
         when(authTokenGenerator.generate()).thenReturn("AUTH_TOKEN");
         ccdSupplementaryDataService.submitSupplementaryDataToCcd("1234567812345678");
 
