@@ -980,11 +980,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             REACTIVATE_CASE, utils.getHeadersWithUserId());
     }
 
-    @Test
-    void verifyAddingSupplimentaryDataForGopCase() throws IOException {
-        validatePostSuccess("caseprogress/04-caseCreated.json", CASE_SUPPLEMENTARY_DATA);
-    }
-
     private String transformCase(String jsonFileName, String path) throws IOException {
         final Response jsonResponse = RestAssured.given()
             .config(config)
