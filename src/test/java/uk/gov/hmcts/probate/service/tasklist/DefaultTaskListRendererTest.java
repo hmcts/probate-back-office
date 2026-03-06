@@ -795,7 +795,7 @@ class DefaultTaskListRendererTest {
                 + "</div><div class=\"govuk-grid-column-one-third\"><status-issueGrantWelsh/></div></div>\n"
                 + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">Bydd y grant yn cael ei ddanfon drwy'r post o "
-                + "fewn 10 diwrnod gwaith ar ôl iddo gael ei gyhoeddi</font></p>"
+                + "fewn 10 diwrnod gwaith ar ôl iddo gael ei gyhoeddi.</font></p>"
                 + "</div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
                 + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
                 + "\n"
