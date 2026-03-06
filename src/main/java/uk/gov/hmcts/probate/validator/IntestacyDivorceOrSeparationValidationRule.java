@@ -42,9 +42,8 @@ public class IntestacyDivorceOrSeparationValidationRule implements ValidationRul
                 codes.add(SEPARATED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
             }
 
-            for (String code : codes) {
-                errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, code));
-            }
+            codes.forEach(code -> errors.add(businessValidationMessageService
+                    .generateError(BUSINESS_ERROR, code)));
         }
         return errors;
     }

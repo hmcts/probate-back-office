@@ -24,6 +24,7 @@ public class CCDData implements Serializable {
     private final LocalDate caseSubmissionDate;
     private final String applicationSubmissionDate;
     private final List<Executor> executors;
+    private final List<ExecutorApplying> caseworkerExecutorsList;
     private final String boExaminationChecklistQ1;
     private final String boExaminationChecklistQ2;
     private final String applicationType;
@@ -43,6 +44,7 @@ public class CCDData implements Serializable {
     private final String deceasedMaritalStatus;
     private final DocumentLink solsCoversheetDocument;
     private final String solsApplicantRelationshipToDeceased;
+    private final String primaryApplicantRelationshipToDeceased;
     private final String solsApplicantSiblings;
     private final String solsSpouseOrCivilRenouncing;
     private final String titleAndClearingType;
