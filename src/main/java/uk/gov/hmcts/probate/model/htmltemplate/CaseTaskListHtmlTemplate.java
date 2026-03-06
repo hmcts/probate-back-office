@@ -170,7 +170,8 @@ public class CaseTaskListHtmlTemplate {
         + "</gridCol-two-thirds><gridCol-one-third><status-issueGrantWelsh/>"
         + CLOSE_GRID_ROW
         + OPEN_ROW
-        + "<p><secText>Bydd y grant yn cael ei anfon yn y post ychydig ddyddiau ar ôl ei gyhoeddi.</secText></p>"
+        + "<p><secText>Bydd y grant yn cael ei ddanfon drwy'r post o fewn 10 diwrnod gwaith ar ôl iddo gael ei "
+        + "gyhoeddi.</secText></p>"
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + SEPARATOR
         + "</gridCol-two-thirds>\n"
