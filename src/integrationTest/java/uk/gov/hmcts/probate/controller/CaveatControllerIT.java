@@ -138,7 +138,7 @@ class CaveatControllerIT {
 
         String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
 
-        mockMvc.perform(post("/caveat//supplementaryData")
+        mockMvc.perform(post("/caveat/supplementaryData")
                         .header("Authorization", AUTH_TOKEN)
                         .content(caveatPayload)
                         .contentType(MediaType.APPLICATION_JSON))

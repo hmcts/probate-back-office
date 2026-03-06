@@ -9,7 +9,7 @@ extraExclusions=${3:-",*-wa.json"}
 
 waEnabledVar=${PROBATE_WA_ENABLED:-false}
 if [ ${waEnabledVar} == true ]; then
-  extraExclusions=",CaseEvent.json"
+  extraExclusions=""
 fi
 
 if [ -z "$1" ]
