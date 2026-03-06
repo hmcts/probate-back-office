@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -46,6 +47,7 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -224,6 +226,8 @@ class BusinessValidationControllerIT {
     private WebApplicationContext webApplicationContext;
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private WorkAllocationToggleService workAllocationToggleService;
     private CaseDataBuilder caseDataBuilder;
 
     @MockitoBean
@@ -1499,6 +1503,7 @@ class BusinessValidationControllerIT {
                 .userId("id")
                 .build();
         when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        ReflectionTestUtils.setField(workAllocationToggleService, "probateWAEnabled", true);
 
         mockMvc.perform(post("/case/supplementaryData")
                         .content(gopPayload)

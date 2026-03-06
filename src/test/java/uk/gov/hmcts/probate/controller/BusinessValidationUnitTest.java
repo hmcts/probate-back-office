@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
@@ -223,6 +224,8 @@ class BusinessValidationUnitTest {
     private CaseEscalatedService caseEscalatedService;
     @Mock
     private CcdSupplementaryDataService ccdSupplementaryDataService;
+    @Mock
+    private WorkAllocationToggleService workAllocationToggleService;
 
     private BusinessValidationController underTest;
 
@@ -268,7 +271,8 @@ class BusinessValidationUnitTest {
             businessValidationMessageServiceMock,
             userInfoServiceMock,
             documentTransformerMock,
-            ccdSupplementaryDataService);
+            ccdSupplementaryDataService,
+            workAllocationToggleService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
@@ -1405,14 +1409,28 @@ class BusinessValidationUnitTest {
     }
 
     @Test
-    void shouldSetSupplementaryData() {
+    void shouldSetSupplementaryDataWithWaEnabled() {
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
         when(caseDetailsMock.getId()).thenReturn(1000L);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         ResponseEntity<CallbackResponse> response = underTest.setSupplementaryData(callbackRequestMock);
 
         verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldNotSetSupplementaryDataWithWaDisabled() {
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1000L);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+
+        ResponseEntity<CallbackResponse> response = underTest.setSupplementaryData(callbackRequestMock);
+
+        verify(ccdSupplementaryDataService, times(0)).submitSupplementaryDataToCcd(anyString());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
