@@ -146,7 +146,8 @@ class DocumentControllerUnitTest {
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
-            evidenceUploadService, userInfoService, featureToggleService,documentTransformer,ccdSupplementaryDataService);
+            evidenceUploadService, userInfoService, featureToggleService,documentTransformer,ccdSupplementaryDataService
+        );
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
