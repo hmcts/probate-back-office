@@ -257,7 +257,7 @@ withPipeline("java", product, component) {
               allowMissing         : true,
               alwaysLinkToLastBuild: true,
               keepAll              : true,
-              reportDir            : 'functional-output/reports/FullFunctionalTest',
+              reportDir            : 'functional-output/reports',
               reportFiles          : 'index.html',
               reportName           : 'Playwright Test Report',
               reportTitles         : 'E2E Test Results'
