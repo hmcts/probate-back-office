@@ -69,7 +69,7 @@ withNightlyPipeline("nodejs", product, component) {
 
         stage('Publish e2e Test Report') {
             publishHTML([
-                    allowMissing         : false,
+                    allowMissing         : true,
                     alwaysLinkToLastBuild: true,
                     keepAll              : true,
                     reportDir            : 'functional-output/reports/FullFunctionalTest',

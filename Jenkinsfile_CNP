@@ -254,7 +254,7 @@ withPipeline("java", product, component) {
 
   afterAlways('functionalTest:preview') {
       publishHTML([
-              allowMissing         : false,
+              allowMissing         : true,
               alwaysLinkToLastBuild: true,
               keepAll              : true,
               reportDir            : 'functional-output/reports/FullFunctionalTest',
