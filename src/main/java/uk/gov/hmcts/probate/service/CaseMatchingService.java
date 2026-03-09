@@ -2,11 +2,13 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
+import uk.gov.hmcts.probate.service.CaseMatchingJsonService.CaseMatchingJson;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,9 +28,11 @@ public class CaseMatchingService {
     private static final String ES_DECEASED_DOB_SUB_QUERY = "deceased_dob_sub_query.json";
     private static final String ES_DECEASED_DOD_SUB_QUERY = "deceased_dod_sub_query.json";
 
+
     private final FileSystemResourceService fileSystemResourceService;
     private final ElasticSearchService elasticSearchService;
     private final CaseMatchBuilderService caseMatchBuilderService;
+    private final CaseMatchingJsonService caseMatchingJsonService;
 
     public List<CaseMatch> findMatches(CaseType caseType, CaseMatchingCriteria criteria) {
 
@@ -52,7 +56,7 @@ public class CaseMatchingService {
                 .map(data -> getDoDTemplate().replace(":deceasedDateOfDeath", criteria.getDeceasedDateOfDeath()))
                 .orElse("");
 
-        String jsonQuery = getQueryTemplate()
+        String stringQuery = getQueryTemplateString()
                 .replace(":deceasedForenames", criteria.getDeceasedForenames())
                 .replace(":deceasedSurname", criteria.getDeceasedSurname())
                 .replace(":deceasedFullName", criteria.getDeceasedFullName())
@@ -62,7 +66,22 @@ public class CaseMatchingService {
                 .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery)
                 .replace(":optionalAliasesToAliasesNameListQuery",optionalAliasesToAliasesNameListQuery);
 
-        MatchedCases matchedCases = elasticSearchService.runQuery(caseType, jsonQuery);
+        MatchedCases matchedCases = elasticSearchService.runQuery(caseType, stringQuery);
+
+
+        final CaseMatchingJson baseQuery = caseMatchingJsonService.getBaseQuery();
+
+        final CaseMatchingJson withForenames = baseQuery.withDeceasedForenames(criteria.getDeceasedForenames());
+
+        final CaseMatchingJson withSurname = withForenames.withDeceasedSurname(criteria.getDeceasedSurname());
+
+        final CaseMatchingJson withFullName = withSurname.withDeceasedFullname(criteria.getDeceasedFullName());
+
+
+
+        final JSONObject jsonQuery = withFullName.stealJson().orElseThrow();
+
+        final MatchedCases matchedCasesJson = elasticSearchService.runJsonQuery(caseType, jsonQuery);
 
         String caseIds = matchedCases.getCases().stream()
                 .map(c -> Optional.ofNullable(c.getId())
@@ -84,7 +103,7 @@ public class CaseMatchingService {
                 .collect(Collectors.toList());
     }
 
-    private String getQueryTemplate() {
+    private String getQueryTemplateString() {
         return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY + ES_QUERY);
     }
 
