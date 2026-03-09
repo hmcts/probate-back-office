@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -uo pipefail
 set -x
 
 # Base export
@@ -30,15 +30,12 @@ Xvfb :99 -screen 0 1280x720x24 &
 XVFB_PID=$!
 
 # Always clean up Xvfb
-trap 'set +e; [[ -n "${XVFB_PID:-}" ]] && kill "$XVFB_PID" >/dev/null 2>&1' EXIT
+trap '[[ -n "${XVFB_PID:-}" ]] && kill "$XVFB_PID" >/dev/null 2>&1' EXIT
 
-# Run tests but don't abort the script; capture exit code
-set +e
 yarn test:functional-chromium
 TEST_STATUS=$?
-# set -e
 
 echo "Full e2e tests completed with status: $TEST_STATUS"
 
 # Exit with the tests' status (fails pipeline if tests failed)
-exit $TEST_STATUS
+exit "$TEST_STATUS"
