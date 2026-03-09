@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -43,5 +44,9 @@ public class ElasticSearchService {
         }
 
         return matchedCases;
+    }
+
+    public MatchedCases runJsonQuery(CaseType caseType, JSONObject jsonQuery) {
+        return runQuery(caseType, jsonQuery.toString());
     }
 }
