@@ -65,9 +65,6 @@
           }
         },
         {
-          "PLACEHOLDER": ":optionalAliasesToNameQuery"
-        },
-        {
           "bool": {
             "must": [
               {
@@ -139,9 +136,6 @@
           }
         },
         {
-          "PLACEHOLDER": ":optionalAliasesToAliasesQuery"
-        },
-        {
           "multi_match": {
             "query": ":deceasedFullName",
             "operator": "and",
@@ -161,9 +155,6 @@
               "data.deceasedFullAliasNameList.*"
             ]
           }
-        },
-        {
-          "PLACEHOLDER": ":optionalAliasesToAliasesNameListQuery"
         },
         {
           "multi_match": {
@@ -191,12 +182,6 @@
       "filter": {
         "bool": {
           "must": [
-            {
-              "PLACEHOLDER": ":optionalDeceasedDateOfBirth"
-            },
-            {
-              "PLACEHOLDER": ":optionalDeceasedDateOfDeath"
-            },
             {
               "bool": {
                 "should": [

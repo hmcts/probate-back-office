@@ -77,9 +77,19 @@ public class CaseMatchingService {
 
         final CaseMatchingJson withFullName = withSurname.withDeceasedFullname(criteria.getDeceasedFullName());
 
+        final Optional<CaseMatchingJson> birthSubquery = caseMatchingJsonService.getDateOfBirthSubquery(
+                criteria.getDeceasedDateOfBirthRaw());
+        final CaseMatchingJson withBirth = withFullName.withDateOfBirth(birthSubquery);
 
+        final Optional<CaseMatchingJson> deathSubquery = caseMatchingJsonService.getDateOfDeathSubquery(
+                criteria.getDeceasedDateOfDeathRaw());
+        final CaseMatchingJson withDeath = withFullName.withDateOfDeath(deathSubquery);
 
-        final JSONObject jsonQuery = withFullName.stealJson().orElseThrow();
+        final List<CaseMatchingJson> aliasesSubQueries = caseMatchingJsonService.getAliasesSubqueries(
+                criteria.getDeceasedAliases());
+        final CaseMatchingJson withAliases = withDeath.withAliases(aliasesSubQueries);
+
+        final JSONObject jsonQuery = withAliases.stealJson().orElseThrow();
 
         final MatchedCases matchedCasesJson = elasticSearchService.runJsonQuery(caseType, jsonQuery);
 
