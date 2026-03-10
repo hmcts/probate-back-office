@@ -1,0 +1,10 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "RoleName": "hmcts-admin", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "RoleName": "hmcts-judiciary", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "RoleName": "hmcts-legal-operations", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "RoleName": "hmcts-ctsc", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "RoleName": "specific-access-judiciary", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "RoleName": "specific-access-legal-ops", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "RoleName": "specific-access-admin", "ReadOnly": "y", "AccessProfiles": "GS_profile"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "RoleName": "specific-access-ctsc", "ReadOnly": "y", "AccessProfiles": "GS_profile"}
+]
