@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
@@ -70,6 +71,7 @@ public class CaveatController {
     private final DocumentGeneratorService documentGeneratorService;
     private final CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
     private final CcdSupplementaryDataService ccdSupplementaryDataService;
+    private final WorkAllocationToggleService workAllocationToggleService;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -85,11 +87,14 @@ public class CaveatController {
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CaveatCallbackResponse> setCaveatSupplementaryData(
             @RequestBody final CaveatCallbackRequest caveatCallbackRequest) {
-        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
-                caveatCallbackRequest.getCaseDetails().getId().toString());
+
+        if (workAllocationToggleService.isProbateWAEnabledToggleOn()){
+            ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                    caveatCallbackRequest.getCaseDetails().getId().toString());
+        }
+
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()
                 .build();
-
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 

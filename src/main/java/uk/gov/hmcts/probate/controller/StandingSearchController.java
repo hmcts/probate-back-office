@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
 import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
 
@@ -23,6 +24,7 @@ public class StandingSearchController {
     private final StandingSearchCallbackResponseTransformer standingSearchCallbackResponseTransformer;
     private final DocumentGeneratorService documentGeneratorService;
     private final CcdSupplementaryDataService ccdSupplementaryDataService;
+    private final WorkAllocationToggleService workAllocationToggleService;
 
     @PostMapping(path = "/create")
     public ResponseEntity<StandingSearchCallbackResponse> createStandingSearch(
@@ -39,8 +41,10 @@ public class StandingSearchController {
     public ResponseEntity<StandingSearchCallbackResponse> setSupplementaryData(
             @RequestBody StandingSearchCallbackRequest callbackRequest) {
 
-        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
-                callbackRequest.getCaseDetails().getId().toString());
+        if (workAllocationToggleService.isProbateWAEnabledToggleOn()){
+            ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                    callbackRequest.getCaseDetails().getId().toString());
+        }
         StandingSearchCallbackResponse callbackResponse =
                 StandingSearchCallbackResponse.builder().build();
         return ResponseEntity.ok(callbackResponse);
