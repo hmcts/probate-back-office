@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +28,7 @@ import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -62,8 +64,7 @@ public class CaveatQueryService {
     private final SecurityUtils securityUtils;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     @Value("${data-extract.pagination.size}")
-    protected int dataExtractPaginationSize;
-    private static final String SORT_COLUMN = "id";
+    protected int paginationSize;
 
     private static <T> T nonNull(@Nullable T result) {
         Assert.state(result != null, "Entity should be non null in CaveatQueryService");
@@ -134,7 +135,23 @@ public class CaveatQueryService {
                 .should(matchQuery(STATE, WARNING_VALIDATION))
                 .should(matchQuery(STATE, AWAITING_WARNING_RESPONSE))
                 .minimumShouldMatch(1);
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
-        return runQuery(CAVEAT, jsonQuery).getCaveats();
+
+        List<ReturnedCaveatDetails> allResults = new ArrayList<>();
+        int from = 0;
+        List<ReturnedCaveatDetails> pageResults;
+
+        do {
+            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
+                    .query(query)
+                    .sort("id", SortOrder.ASC)
+                    .from(from)
+                    .size(paginationSize);
+            String jsonQuery = sourceBuilder.toString();
+            pageResults = runQuery(CAVEAT, jsonQuery).getCaveats();
+            allResults.addAll(pageResults);
+            from += paginationSize;
+        }
+        while (!pageResults.isEmpty());
+        return allResults;
     }
 }
