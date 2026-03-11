@@ -41,7 +41,7 @@ public class StandingSearchController {
     public ResponseEntity<StandingSearchCallbackResponse> setSupplementaryData(
             @RequestBody StandingSearchCallbackRequest callbackRequest) {
 
-        if (workAllocationToggleService.isProbateWAEnabledToggleOn()) {
+        if (workAllocationToggleService.isProbateWAEnabled()) {
             ccdSupplementaryDataService.submitSupplementaryDataToCcd(
                     callbackRequest.getCaseDetails().getId().toString());
         }
