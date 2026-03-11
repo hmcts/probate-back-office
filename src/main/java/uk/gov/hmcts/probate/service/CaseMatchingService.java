@@ -106,8 +106,11 @@ public class CaseMatchingService {
 
     public List<CaseMatch> findMatches(CaseType caseType, CaseMatchingCriteria criteria) {
 
+        log.info("running new findMatches for case type {}", caseType);
         final MatchedCases newMatchedCases = newFindMatches(caseType, criteria);
+        log.info("completed new findMatches for case type {}", caseType);
         final MatchedCases matchedCases = oldFindMatches(caseType, criteria);
+        log.info("completed old findMatches for case type {}", caseType);
 
         String caseIds = matchedCases.getCases().stream()
                 .map(c -> Optional.ofNullable(c.getId())
