@@ -8,6 +8,7 @@ import org.json.JSONPointer;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,8 +18,16 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CaseMatchingJsonService {
 
     private static final String ES_BASE = "templates/elasticsearch/caseMatching/json/matching_base.json";
+
     private static final String DOB_BASE = "templates/elasticsearch/caseMatching/json/deceased_dob_sub_query.json";
     private static final String DOD_BASE = "templates/elasticsearch/caseMatching/json/deceased_dod_sub_query.json";
+
+    private static final String ALIAS_NAME_A_BASE = "templates/elasticsearch/caseMatching/json/aliases_sub_query_a.json";
+    private static final String ALIAS_NAME_B_BASE = "templates/elasticsearch/caseMatching/json/aliases_sub_query_b.json";
+    private static final String ALIAS_NAME_ALIAS_A_BASE = "templates/elasticsearch/caseMatching/json/aliases_to_aliases_list_sub_query_a.json";
+    private static final String ALIAS_NAME_ALIAS_B_BASE = "templates/elasticsearch/caseMatching/json/aliases_to_aliases_list_sub_query_b.json";
+    private static final String ALIAS_NAME_SOLS_ALIAS_A_BASE = "templates/elasticsearch/caseMatching/json/aliases_to_aliases_sub_query_a.json";
+    private static final String ALIAS_NAME_SOLS_ALIAS_B_BASE = "templates/elasticsearch/caseMatching/json/aliases_to_aliases_sub_query_b.json";
 
     private final FileSystemResourceService fileSystemResourceService;
     private final JsonObjectUtils jsonObjectUtils;
@@ -89,10 +98,131 @@ public class CaseMatchingJsonService {
         return Optional.of(new CaseMatchingJson(jsonObjectUtils, dodQuery));
     }
 
+    CaseMatchingJson getAliasNameASubquery(final String alias) {
+        final String aliasNameAString = fileSystemResourceService.getFileFromResourceAsString(ALIAS_NAME_A_BASE);
+        final JSONObject aliasNameAQuery = new JSONObject(aliasNameAString);
+
+        final JSONObject forenameMatch = jsonObjectUtils.findObjectInQuery(
+                aliasNameAQuery,
+                new JSONPointer("/bool/must/0/multi_match"),
+                "query",
+                ":deceasedAlias");
+        forenameMatch.put("query", alias);
+
+        final JSONObject surnameMatch = jsonObjectUtils.findObjectInQuery(
+                aliasNameAQuery,
+                new JSONPointer("/bool/must/1/multi_match"),
+                "query",
+                ":deceasedAlias");
+        surnameMatch.put("query", alias);
+
+        return new CaseMatchingJson(jsonObjectUtils, aliasNameAQuery);
+    }
+
+    CaseMatchingJson getAliasNameBSubquery(final String alias) {
+        final String aliasNameBString = fileSystemResourceService.getFileFromResourceAsString(ALIAS_NAME_B_BASE);
+        final JSONObject aliasNameBQuery = new JSONObject(aliasNameBString);
+
+        final JSONObject forenameMatch = jsonObjectUtils.findObjectInQuery(
+                aliasNameBQuery,
+                new JSONPointer("/bool/must/0/multi_match"),
+                "query",
+                ":deceasedAlias");
+        forenameMatch.put("query", alias);
+
+        final JSONObject surnameMatch = jsonObjectUtils.findObjectInQuery(
+                aliasNameBQuery,
+                new JSONPointer("/bool/must/1/multi_match"),
+                "query",
+                ":deceasedAlias");
+        surnameMatch.put("query", alias);
+
+        return new CaseMatchingJson(jsonObjectUtils, aliasNameBQuery);
+    }
+
+    CaseMatchingJson getAliasNameAliasASubquery(final String alias) {
+        final String aliasNameAliasAString = fileSystemResourceService
+                .getFileFromResourceAsString(ALIAS_NAME_ALIAS_A_BASE);
+        final JSONObject aliasNameAliasAQuery = new JSONObject(aliasNameAliasAString);
+
+        final JSONObject match = jsonObjectUtils.findObjectInQuery(
+                aliasNameAliasAQuery,
+                new JSONPointer("/multi_match"),
+                "query",
+                ":deceasedAlias");
+        match.put("query", alias);
+
+        return new CaseMatchingJson(jsonObjectUtils, aliasNameAliasAQuery);
+    }
+
+    CaseMatchingJson getAliasNameAliasBSubquery(final String alias) {
+        final String aliasNameAliasBString = fileSystemResourceService
+                .getFileFromResourceAsString(ALIAS_NAME_ALIAS_B_BASE);
+        final JSONObject aliasNameAliasBQuery = new JSONObject(aliasNameAliasBString);
+
+        final JSONObject match = jsonObjectUtils.findObjectInQuery(
+                aliasNameAliasBQuery,
+                new JSONPointer("/multi_match"),
+                "query",
+                ":deceasedAlias");
+        match.put("query", alias);
+
+        return new CaseMatchingJson(jsonObjectUtils, aliasNameAliasBQuery);
+    }
+
+    CaseMatchingJson getAliasNameSolsAliasASubquery(final String alias) {
+        final String aliasNameSolsAliasAString = fileSystemResourceService
+                .getFileFromResourceAsString(ALIAS_NAME_SOLS_ALIAS_A_BASE);
+        final JSONObject aliasNameSolsAliasAQuery = new JSONObject(aliasNameSolsAliasAString);
+
+        final JSONObject match = jsonObjectUtils.findObjectInQuery(
+                aliasNameSolsAliasAQuery,
+                new JSONPointer("/multi_match"),
+                "query",
+                ":deceasedAlias");
+        match.put("query", alias);
+
+        return new CaseMatchingJson(jsonObjectUtils, aliasNameSolsAliasAQuery);
+    }
+
+    CaseMatchingJson getAliasNameSolsAliasBSubquery(final String alias) {
+        final String aliasNameSolsAliasBString = fileSystemResourceService
+                .getFileFromResourceAsString(ALIAS_NAME_SOLS_ALIAS_B_BASE);
+        final JSONObject aliasNameSolsAliasBQuery = new JSONObject(aliasNameSolsAliasBString);
+
+        final JSONObject match = jsonObjectUtils.findObjectInQuery(
+                aliasNameSolsAliasBQuery,
+                new JSONPointer("/multi_match"),
+                "query",
+                ":deceasedAlias");
+        match.put("query", alias);
+
+        return new CaseMatchingJson(jsonObjectUtils, aliasNameSolsAliasBQuery);
+    }
+
+    List<CaseMatchingJson> getAliasSubquerires(final String alias) {
+        final CaseMatchingJson aliasNameA = getAliasNameASubquery(alias);
+        final CaseMatchingJson aliasNameB = getAliasNameBSubquery(alias);
+        final CaseMatchingJson aliasNameAliasA = getAliasNameAliasASubquery(alias);
+        final CaseMatchingJson aliasNameAliasB = getAliasNameAliasBSubquery(alias);
+        final CaseMatchingJson aliasNameSolsAliasA = getAliasNameSolsAliasASubquery(alias);
+        final CaseMatchingJson aliasNAmeSolsAliasB = getAliasNameSolsAliasBSubquery(alias);
+
+        return List.of(
+                aliasNameA,
+                aliasNameB,
+                aliasNameAliasA,
+                aliasNameAliasB,
+                aliasNameSolsAliasA,
+                aliasNAmeSolsAliasB);
+    }
+
     public List<CaseMatchingJson> getAliasesSubqueries(final List<String> aliases) {
-        throw new NotImplementedException();
-//        final String baseQueryString = fileSystemResourceService.getFileFromResourceAsString(ES_BASE);
-//        return new CaseMatchingJson(jsonObjectUtils, baseQueryString);
+        final List<CaseMatchingJson> collected = new ArrayList<>();
+        for (String alias : aliases) {
+            collected.addAll(getAliasSubquerires(alias));
+        }
+        return List.copyOf(collected);
     }
 
     public static class CaseMatchingJson {
@@ -262,8 +392,8 @@ public class CaseMatchingJsonService {
             }
             if (!subObject.get(expectKey).equals(expectValue)) {
                 throw new IllegalStateException(
-                        "Expected JSON object with \"" + expectKey + "\" key with value \"" + expectValue + "\" but got "
-                                + subObject);
+                        "Expected JSON object with \"" + expectKey + "\" key with value \"" + expectValue
+                        + "\" but got " + subObject);
             }
             return subObject;
         }
