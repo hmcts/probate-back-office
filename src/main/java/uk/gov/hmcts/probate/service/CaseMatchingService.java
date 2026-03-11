@@ -83,7 +83,7 @@ public class CaseMatchingService {
 
         final Optional<CaseMatchingJson> deathSubquery = caseMatchingJsonService.getDateOfDeathSubquery(
                 criteria.getDeceasedDateOfDeathRaw());
-        final CaseMatchingJson withDeath = withFullName.withDateOfDeath(deathSubquery);
+        final CaseMatchingJson withDeath = withBirth.withDateOfDeath(deathSubquery);
 
         final List<CaseMatchingJson> aliasesSubQueries = caseMatchingJsonService.getAliasesSubqueries(
                 criteria.getDeceasedAliases());
