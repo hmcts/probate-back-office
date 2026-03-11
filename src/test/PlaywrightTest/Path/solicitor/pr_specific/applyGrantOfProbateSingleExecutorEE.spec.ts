@@ -147,14 +147,14 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
    ]);
   });
 
-  test("Add Remission for HPW and Approve Refund", async ({
+  test("Add Remission for HWF and Approve Refund", async ({
       basePage,
       signInPage,
       solCreateCasePage,
       callback,
       cwEventActionsPage
     }) => {
-    const scenarioName = 'Add Remission for HPW and Approve Refund';
+    const scenarioName = 'Add Remission for HWF and Approve Refund';
     // caseRef = '1772-4480-5153-5727';
     // let remissionRefundRef = 'RF-1772-4481-7720-5544';
     const nextStepName = 'Add Remission';
