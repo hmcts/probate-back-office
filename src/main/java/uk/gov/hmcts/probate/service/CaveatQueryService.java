@@ -151,8 +151,7 @@ public class CaveatQueryService {
             pageResults = runQuery(CAVEAT, jsonQuery).getCaveats();
             allResults.addAll(pageResults);
             from += dataExtractPaginationSize;
-        }
-        while (!pageResults.isEmpty());
+        } while (!pageResults.isEmpty());
         return allResults;
     }
 }
