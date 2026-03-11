@@ -88,7 +88,7 @@ public class CaveatController {
     public ResponseEntity<CaveatCallbackResponse> setCaveatSupplementaryData(
             @RequestBody final CaveatCallbackRequest caveatCallbackRequest) {
 
-        if (workAllocationToggleService.isProbateWAEnabledToggleOn()){
+        if (workAllocationToggleService.isProbateWAEnabledToggleOn()) {
             ccdSupplementaryDataService.submitSupplementaryDataToCcd(
                     caveatCallbackRequest.getCaseDetails().getId().toString());
         }

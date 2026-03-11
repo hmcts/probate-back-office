@@ -843,8 +843,9 @@ public class BusinessValidationController {
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> setSupplementaryData(@RequestBody final CallbackRequest callbackRequest) {
 
-        if (workAllocationToggleService.isProbateWAEnabledToggleOn()){
-            ccdSupplementaryDataService.submitSupplementaryDataToCcd(callbackRequest.getCaseDetails().getId().toString());
+        if (workAllocationToggleService.isProbateWAEnabledToggleOn()) {
+            ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                    callbackRequest.getCaseDetails().getId().toString());
         }
 
         CallbackResponse callbackResponse = CallbackResponse.builder()
