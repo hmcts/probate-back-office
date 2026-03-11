@@ -15,7 +15,9 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping(value = "/standing-search", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
@@ -42,8 +44,13 @@ public class StandingSearchController {
             @RequestBody StandingSearchCallbackRequest callbackRequest) {
 
         if (workAllocationToggleService.isProbateWAEnabled()) {
+            log.info("Work Allocation enabled. Submitting supplementary data for caseId={}",
+                    callbackRequest.getCaseDetails().getId());
             ccdSupplementaryDataService.submitSupplementaryDataToCcd(
                     callbackRequest.getCaseDetails().getId().toString());
+        } else {
+            log.info("Work Allocation disabled. Skipping supplementary data submission for caseId={}",
+                    callbackRequest.getCaseDetails().getId());
         }
         StandingSearchCallbackResponse callbackResponse =
                 StandingSearchCallbackResponse.builder().build();
