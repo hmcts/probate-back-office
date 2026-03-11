@@ -64,7 +64,8 @@ public class CaveatQueryService {
     private final SecurityUtils securityUtils;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     @Value("${data-extract.pagination.size}")
-    protected int paginationSize;
+    protected int dataExtractPaginationSize;
+    private static final String SORT_COLUMN = "id";
 
     private static <T> T nonNull(@Nullable T result) {
         Assert.state(result != null, "Entity should be non null in CaveatQueryService");
@@ -143,13 +144,13 @@ public class CaveatQueryService {
         do {
             SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
                     .query(query)
-                    .sort("id", SortOrder.ASC)
+                    .sort(SORT_COLUMN, SortOrder.ASC)
                     .from(from)
-                    .size(paginationSize);
+                    .size(dataExtractPaginationSize);
             String jsonQuery = sourceBuilder.toString();
             pageResults = runQuery(CAVEAT, jsonQuery).getCaveats();
             allResults.addAll(pageResults);
-            from += paginationSize;
+            from += dataExtractPaginationSize;
         }
         while (!pageResults.isEmpty());
         return allResults;
