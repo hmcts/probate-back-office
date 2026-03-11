@@ -135,7 +135,7 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
     await basePage.seeCaseDetails(testInfo, caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
     await signInPage.signOut();
 
-    const [apiResponse] = await Promise.all([
+    const [_apiResponse] = await Promise.all([
       (async () => {
         env = await basePage.getEnv();
         idamUrl = `https://idam-api.${env}.platform.hmcts.net`;

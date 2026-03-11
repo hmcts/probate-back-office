@@ -630,10 +630,8 @@ export class CwEventActionsPage extends BasePage {
   }
 
   async issueRefundConfirmationPage(remissionRefund: boolean = false) {
-    let confirmationText;
-
     await expect(this.page.getByText(refundConfig.refundConfirmationText)).toBeVisible();
-    confirmationText = await this.page.getByText(refundConfig.refundReferenceText, { exact: false }).textContent();
+    const confirmationText = await this.page.getByText(refundConfig.refundReferenceText, { exact: false }).textContent();
     const refundReference = confirmationText?.match(new RegExp(`${refundConfig.refundReferenceText}\\s*([A-Z0-9-]+)`))?.[1]?.trim();
     const refundConfirmationText = refundConfig.refundConfirmationText.replace('{refAmount}', remissionRefund ? refundConfig.remissionAmount : refundConfig.totalRefundAmount);
     await expect(this.page.getByText(refundConfirmationText)).toBeVisible();
