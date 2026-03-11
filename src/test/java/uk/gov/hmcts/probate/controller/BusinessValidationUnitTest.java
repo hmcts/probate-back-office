@@ -1414,7 +1414,7 @@ class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
         when(caseDetailsMock.getId()).thenReturn(1000L);
-        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         ResponseEntity<CallbackResponse> response = underTest.setSupplementaryData(callbackRequestMock);
 
         verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
