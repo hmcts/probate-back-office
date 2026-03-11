@@ -27,6 +27,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT;
@@ -66,23 +67,6 @@ class CaveatQueryServiceTest {
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
-
-
-        CaveatData reliantData = CaveatData.builder().deceasedSurname("Reliant").build();
-        List<ReturnedCaveatDetails> firstPage = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
-                new ReturnedCaveatDetails(reliantData, LAST_MODIFIED, DRAFT, 1L)).build();
-        CaveatData robinData = CaveatData.builder().deceasedSurname("Robin").build();
-        List<ReturnedCaveatDetails> secondPage = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
-                new ReturnedCaveatDetails(robinData, LAST_MODIFIED, DRAFT, 1L)).build();
-
-        ReturnedCaveats page1 = new ReturnedCaveats(firstPage, 2);
-        ReturnedCaveats page2 = new ReturnedCaveats(secondPage, 2);
-        ReturnedCaveats emptyPage = new ReturnedCaveats(ImmutableList.of(), 2);
-
-        when(restTemplate.postForObject(any(), any(), any()))
-                .thenReturn(page1)
-                .thenReturn(page2)
-                .thenReturn(emptyPage);
 
         CaveatData caveatData = CaveatData.builder().deceasedSurname("Smith").build();
         List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
@@ -133,6 +117,23 @@ class CaveatQueryServiceTest {
 
     @Test
     void findCaveatWithExpiryDate() {
+        caveatQueryService.dataExtractPaginationSize = 100;
+        CaveatData reliantData = CaveatData.builder().deceasedSurname("Reliant").build();
+        List<ReturnedCaveatDetails> firstPage = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
+                new ReturnedCaveatDetails(reliantData, LAST_MODIFIED, DRAFT, 1L)).build();
+        CaveatData robinData = CaveatData.builder().deceasedSurname("Robin").build();
+        List<ReturnedCaveatDetails> secondPage = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
+                new ReturnedCaveatDetails(robinData, LAST_MODIFIED, DRAFT, 1L)).build();
+
+        ReturnedCaveats page1 = new ReturnedCaveats(firstPage, 2);
+        ReturnedCaveats page2 = new ReturnedCaveats(secondPage, 2);
+        ReturnedCaveats emptyPage = new ReturnedCaveats(ImmutableList.of(), 2);
+
+        when(restTemplate.postForObject(any(), any(), any()))
+                .thenReturn(page1)
+                .thenReturn(page2)
+                .thenReturn(emptyPage);
+
         List<ReturnedCaveatDetails> result = caveatQueryService.findCaveatExpiredCases("2023-10-01");
         assertEquals(2, result.size());
         assertEquals("Reliant", result.get(0).getData().getDeceasedSurname());
