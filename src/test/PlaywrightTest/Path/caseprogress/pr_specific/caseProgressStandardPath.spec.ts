@@ -1,25 +1,25 @@
-import { test } from "../../Fixtures/fixtures.ts";
+import { test } from "../../../Fixtures/fixtures.ts";
 
-import { testConfig } from "../../Configs/config.ts";
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
-import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
-import serviceRequestTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
-import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
-import documentUploadSolTabConfigBilingual from "../../Pages/caseDetails/grantOfProbate/documentUploadSolTabConfigBilingual.json" with { type: "json" };
-import deceasedDetailsConfig from "../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
-import nextStepConfig from "../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
+import { testConfig } from "../../../Configs/config.ts";
+import createCaseConfig from "../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import caseProgressConfig from "../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
+import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
+import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
+import documentUploadSolTabConfigBilingual from "../../../Pages/caseDetails/grantOfProbate/documentUploadSolTabConfigBilingual.json" with { type: "json" };
+import deceasedDetailsConfig from "../../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
+import nextStepConfig from "../../../Pages/nextStep/nextStepConfig.json" with { type: "json" };
 
-test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
-  test("04 BO Case Progress E2E - stop/escalate/issue", async ({
-      basePage,
-      signInPage,
-      createCasePage,
-      solCreateCasePage,
-      cwEventActionsPage,
-      caseProgressPage
+test.describe("Case Progress - standard path", () => {
+  test("Case Progress - standard path", async ({
+     basePage,
+     signInPage,
+     createCasePage,
+     solCreateCasePage,
+     cwEventActionsPage,
+     caseProgressPage
     }, testInfo) => {
-    test.setTimeout(900000);
-    const scenarioName ='Case Progress - stop/escalate/issue';
+    test.setTimeout(600000);
+    const scenarioName ='Case Progress - standard path';
 
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
@@ -28,9 +28,7 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
     await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
     await createCasePage.selectNewCase();
     await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
-    // await I.waitForNavigationToComplete(commonConfig.continueButton, testConfig.CreateCaseContinueDelay);
 
-    /* eslint-disable no-console */
     await basePage.logInfo(scenarioName, 'Initial application entry');
     await solCreateCasePage.applyForProbatePage1();
     await solCreateCasePage.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
@@ -43,8 +41,22 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
       linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
       goToNextStep: true});
 
-    await basePage.logInfo(scenarioName, 'Deceased details');
+    await basePage.logInfo(scenarioName, 'Deceased details without HMRC Letter');
     await solCreateCasePage.deceasedDetailsPage1();
+    await solCreateCasePage.deceasedDetailsPage2();
+    await solCreateCasePage.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionNo);
+    await solCreateCasePage.caseProgressHmrcStopPage(caseProgressConfig);
+    await solCreateCasePage.cyaPage();
+    await caseProgressPage.caseProgressCheckCaseProgressTab({
+      numCompleted: 1,
+      numInProgress: 1,
+      numNotStarted: 0,
+      linkText: 'Add deceased details',
+      linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
+      goToNextStep: true});
+
+    await basePage.logInfo(scenarioName, 'Deceased details');
+    await caseProgressPage.caseProgressResumeDeceasedDetails();
     await solCreateCasePage.deceasedDetailsPage2();
     await solCreateCasePage.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
     await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, 'IHT400');
@@ -59,7 +71,7 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
       linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
       goToNextStep: true});
 
-    await basePage.logInfo(scenarioName, 'Add application details');
+    await basePage.logInfo(scenarioName, 'Grant of probate details');
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2(true, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
     await solCreateCasePage.grantOfProbatePage3();
@@ -103,80 +115,7 @@ test.describe("04 BO Case Progress E2E - stop/escalate/issue", () => {
       numNotStarted: 0,
       signOut: true});
 
-    let nextStepName = "Stop case";
-    await basePage.logInfo(scenarioName, nextStepName, caseRef);
-    // log in as case worker
-    await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    await solCreateCasePage.navigateToCase(caseRef);
-    await cwEventActionsPage.chooseNextStep(nextStepConfig.stopCase);
-    await cwEventActionsPage.caseProgressStopEscalateIssueAddCaseStoppedReason();
-    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-    await signInPage.signOut();
-
-    await basePage.logInfo(scenarioName, 'Check progress tab for Case stopped', caseRef);
-    // log back in as solicitor
-    await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    await solCreateCasePage.navigateToCase(caseRef);
-    await caseProgressPage.caseProgressStopEscalateIssueStoppedTabCheck();
-    await signInPage.signOut();
-
-    nextStepName = "Escalate to registrar";
-    await basePage.logInfo(scenarioName, nextStepName, caseRef);
-    // log in as case worker
-    await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    await solCreateCasePage.navigateToCase(caseRef);
-    await cwEventActionsPage.chooseNextStep(nextStepConfig.registrarEscalation);
-    // await I.caseProgressCaseworkerChooseNextStepAndGo('Escalate to registrar', caseRef);
-    await cwEventActionsPage.caseProgressSelectEscalateReason();
-    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-    await signInPage.signOut();
-
-    await basePage.logInfo(scenarioName, 'Check progress tab for Case escalated', caseRef);
-    // log back in as solicitor
-    await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    await solCreateCasePage.navigateToCase(caseRef);
-    await caseProgressPage.caseProgressStopEscalateIssueEscalatedTabCheck();
-    await signInPage.signOut();
-
-    await basePage.logInfo(scenarioName, 'Stop case', caseRef);
-    // log in as case worker
-    await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    await solCreateCasePage.navigateToCase(caseRef);
-    await cwEventActionsPage.chooseNextStep(nextStepConfig.stopCase);
-    await cwEventActionsPage.caseProgressStopEscalateIssueCaseStopAgainReason();
-    await basePage.caseProgressContinueWithoutChangingAnything();
-    await signInPage.signOut();
-
-    await basePage.logInfo(scenarioName, 'Check progress tab for Case stopped', caseRef);
-    // log back in as solicitor
-    await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    await solCreateCasePage.navigateToCase(caseRef);
-    await caseProgressPage.caseProgressStopEscalateIssueStoppedTabCheck();
-    await signInPage.signOut();
-
-    nextStepName = "Resolve stop";
-    const resolveStop = "Awaiting documentation";
-    await basePage.logInfo(scenarioName, nextStepName, caseRef);
-    // log in as case worker
-    await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-    await solCreateCasePage.navigateToCase(caseRef);
-    await cwEventActionsPage.chooseNextStep(nextStepConfig.resolveStop);
-    await cwEventActionsPage.chooseResolveStop(resolveStop);
-    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
-    await signInPage.signOut();
-
-    await basePage.logInfo(scenarioName, 'Check progress tab for Resolve stop', caseRef);
-    // log back in as solicitor
-    await signInPage.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-    await solCreateCasePage.navigateToCase(caseRef);
-    await caseProgressPage.caseProgressCheckCaseProgressTab({
-      numCompleted: 5,
-      numInProgress: 1,
-      numNotStarted: 0,
-      checkSubmittedDate: true,
-      signOut: true});
-
-    nextStepName = 'Select for QA';
+    let nextStepName = 'Select for QA';
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     // log in as case worker
     await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);

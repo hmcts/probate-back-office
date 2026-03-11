@@ -159,6 +159,8 @@ test.describe("Solicitor - Notice Of Change GOP", () => {
     } else {
       changeOfRepresentativesDetailsConfigAAT.nocTriggeredDate = dateFns.format(new Date(), testConfig.dateFormat);
       await basePage.seeUpdatesOnCase(testInfo, caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', nocApplicantDetailsConfigAAT, false);
+
+      /*---------------Can comment this line until DTSPB-5385 is fixed---------------*/
       await basePage.seeCaseDetails(testInfo, caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesDetailsConfigAAT,'changeOfRepresentative', endState,1, true);
     }
 

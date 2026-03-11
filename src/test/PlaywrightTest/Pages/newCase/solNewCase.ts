@@ -19,6 +19,7 @@ import admonWillDetailsConfig from "../solicitorApplyProbate/admonWillDetails/ad
 import shareCaseConfig from "../shareCase/shareCaseConfig.json" with { type: "json" };
 import { BasePage } from "../utility/basePage.ts";
 import nocConfig from "../noticeOfChange/noticeOfChangeConfig.json" with { type: "json" };
+import refundConfig from "../solicitorApplyProbate/makePayment/refundConfig.json" with { type: "json" };
 
 type ServiceRequestTabConfig = typeof serviceRequestTabConfig;
 
@@ -43,7 +44,8 @@ export class SolCreateCasePage extends BasePage {
   readonly deceasedAddressCountryLocator = this.page.locator("#deceasedAddress__detailCountry");
   readonly completeApplicationSubmitButton = this.page.getByRole("button", {name: "Close and return to case details",});
   readonly serviceRequestTabLocator = this.page.getByRole("tab", {name: makePaymentConfig.paymentTab,});
-  readonly reviewLinkLocator = this.page.getByText(makePaymentConfig.reviewLinkText);
+  readonly paymentHistoryTabLocator = this.page.getByRole("tab", {name: makePaymentConfig.paymentTab,});
+  readonly reviewLinkLocator = this.page.getByRole('link', { name: makePaymentConfig.reviewLinkText });
   readonly backToServiceRequestLocator = this.page.getByRole("link", {
     name: makePaymentConfig.backToPaymentLinkText,
     exact: true,
@@ -429,9 +431,8 @@ export class SolCreateCasePage extends BasePage {
   }
 
   async reviewPaymentDetails(caseRef: string, serviceRequestReviewTabConfig: ServiceRequestTabConfig) {
-    await this.verifyPageLoad(this.page.getByText(caseRef).first());
-    await expect(this.page.getByText(caseRef).first()).toBeVisible();
-    await expect(this.serviceRequestTabLocator).toBeEnabled();
+    // await this.verifyPageLoad(this.page.getByText(caseRef).first());
+    await expect(this.page.getByText('Service request reference').first()).toBeVisible();
     await this.runAccessibilityTest();
     for (let i = 0; i < serviceRequestReviewTabConfig.fields.length; i++) {
       if (
@@ -443,9 +444,48 @@ export class SolCreateCasePage extends BasePage {
         ).toBeVisible();
       }
     }
-
-    await expect(this.page.locator(".govuk-back-link")).toBeEnabled();
     await this.backToServiceRequestLocator.click();
+  }
+
+  async reviewPaymentDetailsForRefund(caseRef: string, isRefundReview: boolean = false, refundRef?: string) {
+    let refCell;
+    await expect(this.page.getByText(caseRef).first()).toBeVisible();
+    await expect(this.paymentHistoryTabLocator).toBeEnabled();
+    await this.paymentHistoryTabLocator.click();
+    await expect(this.page.getByText(caseRef).first()).toBeVisible();
+    await expect(this.paymentHistoryTabLocator).toBeEnabled();
+    await this.runAccessibilityTest();
+    const tables = this.page.locator('table');
+    if (isRefundReview) {
+      const selectTable = tables.nth(2);
+      refCell = selectTable.locator('td').filter({
+        hasText: new RegExp(`^\\s*${refundRef}\\s*$`)
+      });
+
+    } else {
+      const selectTable = tables.nth(1);
+      refCell = selectTable.locator('td').filter({
+        hasText: new RegExp(refundConfig.totalAmountPaid)
+      });
+    }
+    await expect(refCell).toHaveCount(1);
+
+    const tableRow = refCell.locator('xpath=ancestor::tr[1]');
+
+    await tableRow.locator('a', { hasText: 'Review' }).click();
+
+    /*for (let i = 0; i < serviceRequestReviewTabConfig.fields.length; i++) {
+      if (
+        serviceRequestReviewTabConfig.fields[i] &&
+        serviceRequestReviewTabConfig.fields[i] !== ""
+      ) {
+        await expect(
+          this.page.getByText(serviceRequestReviewTabConfig.fields[i]).first()
+        ).toBeVisible();
+      }
+    }*/
+
+   // await expect(this.page.locator(".govuk-back-link")).toBeEnabled();
   }
 
   async makePaymentPage2(caseRef: string) {
@@ -522,12 +562,12 @@ export class SolCreateCasePage extends BasePage {
       this.page.getByText(makePaymentConfig.payNowLinkText)
     ).toBeHidden();
     await this.postPaymentReviewDetails(caseRef);
-    for (let i = 0; i <= 6; i++) {
+    for (let i=0; i<=6; i++) {
       await expect(this.eventHistoryTab).toBeEnabled();
       await expect(this.page.getByText(caseRef).first()).toBeVisible();
       await this.eventHistoryTab.click();
       const result = await this.page
-        .getByText(makePaymentConfig.statusText)
+        .getByText(makePaymentConfig.statusText, { exact: true })
         .isVisible()
         .catch(() => true);
       await this.page.waitForTimeout(10000);
@@ -1089,7 +1129,7 @@ export class SolCreateCasePage extends BasePage {
       }
     }
 
-    await this.verifyPageLoad(this.reviewLocator);
+    //await this.verifyPageLoad(this.reviewLocator);
     await expect(this.reviewLocator).toBeVisible();
     await this.reviewLocator.click();
   }

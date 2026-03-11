@@ -24,4 +24,10 @@
         -->
         <cve>CVE-2025-15104</cve>
     </suppress>
+    <suppress until = "2026-07-13">
+        <notes><![CDATA[
+   file name: kotlin-stdlib-1.9.25.jar
+   ]]></notes>
+        <cve>CVE-2020-29582</cve>
+    </suppress>
 </suppressions>

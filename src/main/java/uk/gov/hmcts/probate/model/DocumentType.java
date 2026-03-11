@@ -71,6 +71,9 @@ public enum DocumentType {
     @JsonProperty("IHT")
     IHT("IHT"),
 
+    @JsonProperty("warning")
+    WARNING("warning"),
+
     @JsonProperty("other")
     OTHER("other"),
 

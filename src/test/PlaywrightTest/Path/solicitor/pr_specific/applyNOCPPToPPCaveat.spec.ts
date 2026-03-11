@@ -135,6 +135,7 @@ test.describe("Solicitor - Apply NOC Caveat", () => {
       await basePage.seeCaseDetails(testInfo, caseRef, postNocCaveatorDetailsTabConfig, postNocCaveatorConfig);
       await basePage.seeUpdatesOnCase(testInfo, caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
       await basePage.seeUpdatesOnCase(testInfo, caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
+      /*---------------Can comment this line until DTSPB-5385 is fixed---------------*/
       await basePage.seeCaseDetails(testInfo, caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesCaveatorDetailsConfigAAT, 'changeOfRepresentative', endState, 90,true);
     }
 
