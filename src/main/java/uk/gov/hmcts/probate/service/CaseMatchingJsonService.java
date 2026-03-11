@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.NotImplementedException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONPointer;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,19 +15,22 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
+@Component
 public class CaseMatchingJsonService {
+    private static final String JSON_BASE = "templates/elasticsearch/caseMatching/json/";
 
-    private static final String ES_BASE = "templates/elasticsearch/caseMatching/json/matching_base.json";
+    private static final String ES_BASE = JSON_BASE + "matching_base.json";
 
-    private static final String DOB_BASE = "templates/elasticsearch/caseMatching/json/deceased_dob_sub_query.json";
-    private static final String DOD_BASE = "templates/elasticsearch/caseMatching/json/deceased_dod_sub_query.json";
+    private static final String DOB_BASE = JSON_BASE + "deceased_dob_sub_query.json";
+    private static final String DOD_BASE = JSON_BASE + "deceased_dod_sub_query.json";
 
-    private static final String ALIAS_NAME_A_BASE = "templates/elasticsearch/caseMatching/json/aliases_sub_query_a.json";
-    private static final String ALIAS_NAME_B_BASE = "templates/elasticsearch/caseMatching/json/aliases_sub_query_b.json";
-    private static final String ALIAS_NAME_ALIAS_A_BASE = "templates/elasticsearch/caseMatching/json/aliases_to_aliases_list_sub_query_a.json";
-    private static final String ALIAS_NAME_ALIAS_B_BASE = "templates/elasticsearch/caseMatching/json/aliases_to_aliases_list_sub_query_b.json";
-    private static final String ALIAS_NAME_SOLS_ALIAS_A_BASE = "templates/elasticsearch/caseMatching/json/aliases_to_aliases_sub_query_a.json";
-    private static final String ALIAS_NAME_SOLS_ALIAS_B_BASE = "templates/elasticsearch/caseMatching/json/aliases_to_aliases_sub_query_b.json";
+    private static final String ALIAS_NAME_A_BASE = JSON_BASE + "aliases_sub_query_a.json";
+    private static final String ALIAS_NAME_B_BASE = JSON_BASE + "aliases_sub_query_b.json";
+    private static final String ALIAS_NAME_ALIAS_A_BASE = JSON_BASE + "aliases_to_aliases_list_sub_query_a.json";
+    private static final String ALIAS_NAME_ALIAS_B_BASE = JSON_BASE + "aliases_to_aliases_list_sub_query_b.json";
+    private static final String ALIAS_NAME_SOLS_ALIAS_A_BASE = JSON_BASE + "aliases_to_aliases_sub_query_a.json";
+    private static final String ALIAS_NAME_SOLS_ALIAS_B_BASE = JSON_BASE + "aliases_to_aliases_sub_query_b.json";
+
 
     private final FileSystemResourceService fileSystemResourceService;
     private final JsonObjectUtils jsonObjectUtils;
@@ -375,6 +378,7 @@ public class CaseMatchingJsonService {
         }
     }
 
+    @Component
     static class JsonObjectUtils {
         private JSONObject findObjectInQuery(
                 final JSONObject queryObject,

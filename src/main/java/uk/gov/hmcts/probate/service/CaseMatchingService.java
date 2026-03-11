@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -12,11 +11,11 @@ import uk.gov.hmcts.probate.service.CaseMatchingJsonService.CaseMatchingJson;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class CaseMatchingService {
 
@@ -34,8 +33,18 @@ public class CaseMatchingService {
     private final CaseMatchBuilderService caseMatchBuilderService;
     private final CaseMatchingJsonService caseMatchingJsonService;
 
-    public List<CaseMatch> findMatches(CaseType caseType, CaseMatchingCriteria criteria) {
+    public CaseMatchingService(
+            final FileSystemResourceService fileSystemResourceService,
+            final ElasticSearchService elasticSearchService,
+            final CaseMatchBuilderService caseMatchBuilderService,
+            final CaseMatchingJsonService caseMatchingJsonService) {
+        this.fileSystemResourceService = Objects.requireNonNull(fileSystemResourceService);
+        this.elasticSearchService = Objects.requireNonNull(elasticSearchService);
+        this.caseMatchBuilderService = Objects.requireNonNull(caseMatchBuilderService);
+        this.caseMatchingJsonService = Objects.requireNonNull(caseMatchingJsonService);
+    }
 
+    MatchedCases oldFindMatches(final CaseType caseType, final CaseMatchingCriteria criteria) {
         String optionalAliasesToNameQuery = criteria.getDeceasedAliases().stream()
                 .map(alias -> getAliasesToNameSubQueryTemplate().replace(":deceasedAliases", alias))
                 .collect(Collectors.joining());
@@ -64,11 +73,12 @@ public class CaseMatchingService {
                 .replace(":optionalDeceasedDateOfDeath", optionalDeceasedDateOfDeath)
                 .replace(":optionalAliasesToNameQuery", optionalAliasesToNameQuery)
                 .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery)
-                .replace(":optionalAliasesToAliasesNameListQuery",optionalAliasesToAliasesNameListQuery);
+                .replace(":optionalAliasesToAliasesNameListQuery", optionalAliasesToAliasesNameListQuery);
 
-        MatchedCases matchedCases = elasticSearchService.runQuery(caseType, stringQuery);
+        return elasticSearchService.runQuery(caseType, stringQuery);
+    }
 
-
+    MatchedCases newFindMatches(final CaseType caseType, final CaseMatchingCriteria criteria) {
         final CaseMatchingJson baseQuery = caseMatchingJsonService.getBaseQuery();
 
         final CaseMatchingJson withForenames = baseQuery.withDeceasedForenames(criteria.getDeceasedForenames());
@@ -91,7 +101,13 @@ public class CaseMatchingService {
 
         final JSONObject jsonQuery = withAliases.stealJson().orElseThrow();
 
-        final MatchedCases matchedCasesJson = elasticSearchService.runJsonQuery(caseType, jsonQuery);
+        return elasticSearchService.runJsonQuery(caseType, jsonQuery);
+    }
+
+    public List<CaseMatch> findMatches(CaseType caseType, CaseMatchingCriteria criteria) {
+
+        final MatchedCases newMatchedCases = newFindMatches(caseType, criteria);
+        final MatchedCases matchedCases = oldFindMatches(caseType, criteria);
 
         String caseIds = matchedCases.getCases().stream()
                 .map(c -> Optional.ofNullable(c.getId())
