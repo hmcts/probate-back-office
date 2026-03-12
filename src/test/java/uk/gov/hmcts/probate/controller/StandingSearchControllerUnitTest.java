@@ -14,7 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
+
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
 import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 
@@ -43,8 +43,6 @@ class StandingSearchControllerUnitTest {
     @Mock
     CcdSupplementaryDataService ccdSupplementaryDataService;
 
-    @Mock
-    WorkAllocationToggleService workAllocationToggleService;
 
     private StandingSearchController standingSearchController;
 
@@ -55,7 +53,7 @@ class StandingSearchControllerUnitTest {
         when(standingSearchDetails.getData()).thenReturn(standingSearchData);
 
         standingSearchController = new StandingSearchController(standingSearchCallbackResponseTransformer,
-                documentGeneratorService, ccdSupplementaryDataService, workAllocationToggleService);
+                documentGeneratorService, ccdSupplementaryDataService);
     }
 
     @Test

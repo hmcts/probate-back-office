@@ -37,7 +37,6 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
-import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
@@ -225,8 +224,7 @@ class BusinessValidationUnitTest {
     private CaseEscalatedService caseEscalatedService;
     @Mock
     private CcdSupplementaryDataService ccdSupplementaryDataService;
-    @Mock
-    WorkAllocationToggleService workAllocationToggleService;
+
 
     private BusinessValidationController underTest;
 
@@ -272,8 +270,7 @@ class BusinessValidationUnitTest {
             businessValidationMessageServiceMock,
             userInfoServiceMock,
             documentTransformerMock,
-            ccdSupplementaryDataService,
-            workAllocationToggleService);
+            ccdSupplementaryDataService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
@@ -1414,7 +1411,6 @@ class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
         when(caseDetailsMock.getId()).thenReturn(1000L);
-        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         ResponseEntity<CallbackResponse> response = underTest.setSupplementaryData(callbackRequestMock);
 
         verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());

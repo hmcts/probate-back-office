@@ -47,7 +47,7 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
-import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
+
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -226,8 +226,7 @@ class BusinessValidationControllerIT {
     private WebApplicationContext webApplicationContext;
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private WorkAllocationToggleService workAllocationToggleService;
+
     private CaseDataBuilder caseDataBuilder;
 
     @MockitoBean
@@ -1503,7 +1502,6 @@ class BusinessValidationControllerIT {
                 .userId("id")
                 .build();
         when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
-        ReflectionTestUtils.setField(workAllocationToggleService, "probateWAEnabled", true);
 
         mockMvc.perform(post("/case/supplementaryData")
                         .content(gopPayload)

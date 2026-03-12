@@ -45,7 +45,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
-import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
+
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
@@ -143,7 +143,6 @@ public class BusinessValidationController {
     private final UserInfoService userInfoService;
     private final DocumentTransformer documentTransformer;
     private final CcdSupplementaryDataService ccdSupplementaryDataService;
-    private final WorkAllocationToggleService workAllocationToggleService;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
@@ -843,11 +842,8 @@ public class BusinessValidationController {
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> setSupplementaryData(@RequestBody final CallbackRequest callbackRequest) {
 
-        if (workAllocationToggleService.isProbateWAEnabled()) {
-            ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
                     callbackRequest.getCaseDetails().getId().toString());
-        }
-
         CallbackResponse callbackResponse = CallbackResponse.builder()
                 .build();
 
