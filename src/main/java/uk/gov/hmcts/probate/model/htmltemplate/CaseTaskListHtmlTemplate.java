@@ -162,14 +162,16 @@ public class CaseTaskListHtmlTemplate {
         + "</gridCol-two-thirds><gridCol-one-third><status-issueGrant/>"
         + CLOSE_GRID_ROW
         + OPEN_ROW
-        + "<p><secText>The grant will be delivered in the post a few days after issuing.</secText></p>"
+        + "<p><secText>The grant will be delivered by post within 10 working days after it has been issued."
+        + "</secText></p>"
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + OPEN_ROW
         + "<p><issueGrantLinkWelsh/></p>"
         + "</gridCol-two-thirds><gridCol-one-third><status-issueGrantWelsh/>"
         + CLOSE_GRID_ROW
         + OPEN_ROW
-        + "<p><secText>Bydd y grant yn cael ei anfon yn y post ychydig ddyddiau ar ôl ei gyhoeddi.</secText></p>"
+        + "<p><secText>Bydd y grant yn cael ei ddanfon drwy'r post o fewn 10 diwrnod gwaith ar ôl iddo gael ei "
+        + "gyhoeddi.</secText></p>"
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + SEPARATOR
         + "</gridCol-two-thirds>\n"

@@ -254,7 +254,7 @@ Anfon dogfennau<br/>
 </div>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
-<p class="govuk-body-s"><font color="#505a5f">The grant will be delivered in the post a few days after issuing.</font></p>
+<p class="govuk-body-s"><font color="#505a5f">The grant will be delivered by post within 10 working days after it has been issued.</font></p>
 </div>
 <div class="govuk-grid-column-one-third">&nbsp;</div>
 </div>
@@ -266,7 +266,7 @@ Anfon dogfennau<br/>
 </div>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
-<p class="govuk-body-s"><font color="#505a5f">Bydd y grant yn cael ei anfon yn y post ychydig ddyddiau ar ôl ei gyhoeddi.</font></p>
+<p class="govuk-body-s"><font color="#505a5f">Bydd y grant yn cael ei ddanfon drwy'r post o fewn 10 diwrnod gwaith ar ôl iddo gael ei gyhoeddi.</font></p>
 </div>
 <div class="govuk-grid-column-one-third">&nbsp;</div>
 </div>
