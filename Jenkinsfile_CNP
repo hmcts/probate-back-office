@@ -258,27 +258,19 @@ withPipeline("java", product, component) {
       sh 'yarn install'
       sh 'yarn test:fullfunctional-cw'
     }
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    publishHTML target: [
-            allowMissing         : true,
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : "target/site/serenity/",
-            reportFiles          : "index.html",
-            reportName           : "Functional Tests Report"
-    ]
   }
 
   afterAlways('functionalTest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-    publishHTML([
-            allowMissing: true,
-            alwaysLinkToLastBuild: true,
-            keepAll: true,
-            reportDir: "./functional-output/reports",
-            reportFiles: 'functional_report.html',
-            reportName: 'Functional Test Report'
-    ])
+      publishHTML([
+              allowMissing         : true,
+              alwaysLinkToLastBuild: true,
+              keepAll              : true,
+              reportDir            : 'functional-output/reports',
+              reportFiles          : 'index.html',
+              reportName           : 'Playwright Test Report',
+              reportTitles         : 'E2E Test Results'
+      ])
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
   }
 
   afterSuccess('functionalTest:aat') {
