@@ -472,6 +472,7 @@ java:
     MANAGE_CASE_URL: https://xui-${SERVICE_FQDN}.preview.platform.hmcts.net
     FRONTEND_URL: http://probate.aat.platform.hmcts.net
     PROBATE_WA_ENABLED: ${PROBATE_WA_ENABLED}
+    PROBATE_GS_ENABLED: ${PROBATE_GS_ENABLED}
 
   keyVaults:
     probate:

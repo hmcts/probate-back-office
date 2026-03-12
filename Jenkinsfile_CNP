@@ -129,6 +129,10 @@ def checkForWAEnableLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
 }
 
+def checkForGSEnableLabel(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:gs").contains("pr-values:gs")
+}
+
 def archiveCoreCaseDataDefinitions(env, branch_name) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
@@ -317,9 +321,13 @@ withPipeline("java", product, component) {
 
   onPR() {
       env.PROBATE_WA_ENABLED = false
+      env.PROBATE_GS_ENABLED = false
       env.ENV='preview'
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.PROBATE_WA_ENABLED = true
+      }
+      if (checkForGSEnableLabel(env.BRANCH_NAME)) {
+          env.PROBATE_GS_ENABLED = true
       }
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
       env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
