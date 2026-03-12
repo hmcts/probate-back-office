@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
@@ -14,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetai
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -37,6 +39,9 @@ class StandingSearchControllerUnitTest {
     @Mock
     private StandingSearchCallbackResponse standingSearchCallbackResponse;
 
+    @Mock
+    CcdSupplementaryDataService ccdSupplementaryDataService;
+
     private StandingSearchController standingSearchController;
 
     @BeforeEach
@@ -46,7 +51,7 @@ class StandingSearchControllerUnitTest {
         when(standingSearchDetails.getData()).thenReturn(standingSearchData);
 
         standingSearchController = new StandingSearchController(standingSearchCallbackResponseTransformer,
-                documentGeneratorService);
+                documentGeneratorService, ccdSupplementaryDataService);
     }
 
     @Test
