@@ -492,7 +492,7 @@ export class SolCreateCasePage extends BasePage {
     await this.verifyPageLoad(this.page.getByText(caseRef).first());
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(this.payNowLinkLocator).toBeVisible();
-    await this.payNowLinkLocator.click({ force: true });
+    await this.payNowLinkLocator.dispatchEvent('click');
     await expect(
       this.page.getByText(makePaymentConfig.page2_waitForText)
     ).toBeVisible();
