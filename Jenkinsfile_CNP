@@ -316,6 +316,7 @@ withPipeline("java", product, component) {
   }
 
   onPR() {
+      env.PROBATE_WA_ENABLED = false
       env.ENV='preview'
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.PROBATE_WA_ENABLED = true
