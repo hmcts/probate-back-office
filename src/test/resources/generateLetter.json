@@ -288,7 +288,8 @@
           }
         }
       ]
-    }
+    },
+    "id": 1
   },
   "boAssembleLetterSendToBulkPrint" : "No",
   "last_modified": null,
