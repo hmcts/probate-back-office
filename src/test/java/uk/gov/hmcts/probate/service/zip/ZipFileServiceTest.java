@@ -160,7 +160,8 @@ class ZipFileServiceTest {
         File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
         doNothing().when(smeeAndFOrdDataExtractStrategy).uploadToBlobStorage(any(File.class));
         zipFileService
-                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate, smeeAndFOrdDataExtractStrategy, false);
+                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
+                        smeeAndFOrdDataExtractStrategy, false);
         Assertions.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
         ZipFile zip = new ZipFile(zipFile);
         Assertions.assertTrue(zip.stream().map(ZipEntry::getName)

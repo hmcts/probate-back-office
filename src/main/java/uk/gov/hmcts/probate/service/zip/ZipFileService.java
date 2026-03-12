@@ -76,7 +76,8 @@ public class ZipFileService {
         ADMON_WILL_GRANT_REISSUE, AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE,
         WELSH_INTESTACY_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE};
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/ManifestFileHeaderRow.csv";
-    private static final String HEADER_ROW_FILE_WITHOUT_COMMENT = "templates/dataExtracts/ManifestFileHeaderRowWithoutComment.csv";
+    private static final String HEADER_ROW_FILE_WITHOUT_COMMENT =
+            "templates/dataExtracts/ManifestFileHeaderRowWithoutComment.csv";
     private static final String ERROR_MESSAGE = "Exception occurred while generating zip file ";
 
     public File generateZipFile(List<ReturnedCaseDetails> cases, File tempFile, String date, DataExtractType type) {
@@ -308,7 +309,8 @@ public class ZipFileService {
         data.append(header);
     }
 
-    private void generateManifestFile(ZipOutputStream zos, List<ZippedManifestData> zippedManifestDataList, boolean shouldIncludeComment)
+    private void generateManifestFile(ZipOutputStream zos, List<ZippedManifestData> zippedManifestDataList,
+                                      boolean shouldIncludeComment)
             throws IOException {
         StringBuilder data = new StringBuilder();
         addHeaderRow(data, shouldIncludeComment);
