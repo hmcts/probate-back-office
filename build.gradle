@@ -370,7 +370,7 @@ tasks.withType(JavaCompile).configureEach {
   options.compilerArgs << '-parameters'
 }
 
-// https://github.com/gradle/gradle/issues/16791
+// https://github.com/gradle/gradle/issues/1679123
 tasks.withType(JavaExec).configureEach {
   javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
