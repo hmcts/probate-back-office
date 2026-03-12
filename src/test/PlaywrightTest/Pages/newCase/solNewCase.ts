@@ -493,6 +493,8 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     await expect(this.payNowLinkLocator).toBeVisible();
     await this.payNowLinkLocator.dispatchEvent('click');
+    // To be deleted after the test is fixed
+    await expect(this.payNowLinkLocator).toBeVisible();
     await expect(
       this.page.getByText(makePaymentConfig.page2_waitForText)
     ).toBeVisible();
