@@ -1,0 +1,25 @@
+[
+  {
+    "email": "probate_ctsc_administrator_1@justice.gov.uk",
+    "id": "dc71e8b6-909d-4aef-b22e-f44a125e3cea",
+    "roleAssignments": [
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "case-allocator",
+        "grantType": "STANDARD",
+        "roleCategory": "CTSC",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "region": "1",
+          "substantive": "N",
+          "jurisdiction": "PROBATE",
+          "primaryLocation": "234946"
+        },
+        "authorisations": [
+          "SKILL:ABA6:PROBATEEXAMINING"
+        ]
+      }
+    ]
+  }
+]
