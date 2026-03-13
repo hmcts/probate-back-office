@@ -27,6 +27,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
@@ -135,7 +136,7 @@ class SmeeAndFordDataExtractServiceTest {
         });
         verify(zipFileService, times(1)).createTempZipFile(anyString());
         verify(zipFileService, times(0))
-                .generateAndUploadZipFile(any(), any(), any(), any());
+                .generateAndUploadZipFile(any(), any(), any(), any(), anyBoolean());
         verify(blobUpload, times(0)).uploadFile(any(), anyString(), anyString());
         verify(notificationService, times(0)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
     }

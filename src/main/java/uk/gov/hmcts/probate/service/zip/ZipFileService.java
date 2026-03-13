@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.zip.ZippedManifestData;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractStrategy;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
@@ -62,6 +63,7 @@ public class ZipFileService {
     private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
     private final FileSystemResourceService fileSystemResourceService;
     private final BlobUpload blobUpload;
+    private final FeatureToggleService featureToggleService;
     private Path secureDir = null;
     private static final String PDF = ".pdf";
     private static final String CSV = ".csv";
@@ -74,7 +76,9 @@ public class ZipFileService {
         ADMON_WILL_GRANT_REISSUE, AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE,
         WELSH_INTESTACY_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE};
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/ManifestFileHeaderRow.csv";
-    private static final String ERROR_MASSAGE = "Exception occurred while generating zip file ";
+    private static final String HEADER_ROW_FILE_WITHOUT_COMMENT =
+            "templates/dataExtracts/ManifestFileHeaderRowWithoutComment.csv";
+    private static final String ERROR_MESSAGE = "Exception occurred while generating zip file ";
 
     public File generateZipFile(List<ReturnedCaseDetails> cases, File tempFile, String date, DataExtractType type) {
         log.info("{} generateZipFile for {} cases", type, cases.size());
@@ -85,7 +89,7 @@ public class ZipFileService {
             zipOut.closeEntry();
             return tempFile;
         } catch (Exception e) {
-            log.error(ERROR_MASSAGE, e);
+            log.error(ERROR_MESSAGE, e);
             throw new ZipFileException(e.getMessage());
         }
     }
@@ -93,7 +97,8 @@ public class ZipFileService {
     public void generateAndUploadZipFile(List<ReturnedCaseDetails> cases,
                                          File tempFile,
                                          String fromDate,
-                                         DataExtractStrategy strategy) {
+                                         DataExtractStrategy strategy,
+                                         boolean shouldIncludeComment) {
         log.info("Smee And Ford generateZipFile for {} cases", cases.size());
 
         List<ZippedManifestData> manifestDataList = new ArrayList<>();
@@ -101,18 +106,18 @@ public class ZipFileService {
             final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
             for (ReturnedCaseDetails returnedCaseDetails : cases) {
                 log.info("Smee And Ford Starting for case {}", returnedCaseDetails.getId());
-                getWillDocuments(zipOut, returnedCaseDetails, manifestDataList);
+                getWillDocuments(zipOut, returnedCaseDetails, manifestDataList, shouldIncludeComment);
                 getGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
                 getReIssueGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
             }
             getSmeeAndFordCaseData(zipOut, cases, fromDate);
-            generateManifestFile(zipOut, manifestDataList);
+            generateManifestFile(zipOut, manifestDataList, shouldIncludeComment);
             zipOut.closeEntry();
             zipOut.close();
             fos.close();
             strategy.uploadToBlobStorage(tempFile);
         } catch (Exception e) {
-            log.error(ERROR_MASSAGE, e);
+            log.error(ERROR_MESSAGE, e);
             throw new ZipFileException(e.getMessage());
         }
     }
@@ -131,9 +136,10 @@ public class ZipFileService {
 
     private void getWillDocuments(final ZipOutputStream zos,
                                   final ReturnedCaseDetails caseDetails,
-                                  List<ZippedManifestData> manifestDataList) {
+                                  List<ZippedManifestData> manifestDataList,
+                                  boolean shouldIncludeComment) {
         getScannedDocuments(zos, caseDetails, manifestDataList);
-        getUploadedWillDocuments(zos, caseDetails, manifestDataList);
+        getUploadedWillDocuments(zos, caseDetails, manifestDataList, shouldIncludeComment);
     }
 
     private void getScannedDocuments(final ZipOutputStream zos,
@@ -148,15 +154,17 @@ public class ZipFileService {
                         final String binaryUrl = doc.getValue().getUrl().getDocumentBinaryUrl();
                         final String documentTypeName = "scanned_" + WILL.getTemplateName()
                                 + "_" + scannedDocIndex.getAndIncrement();
-                        fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF,
-                                manifestDataList);
+                        final String documentSubType = doc.getValue().getSubtype();
+                        fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, documentSubType,
+                                manifestDataList, null);
                     });
         }
     }
 
     private void getUploadedWillDocuments(ZipOutputStream zos,
                                           ReturnedCaseDetails caseDetails,
-                                          List<ZippedManifestData> manifestDataList) {
+                                          List<ZippedManifestData> manifestDataList,
+                                          boolean shouldIncludeComment) {
         AtomicInteger uploadedDocIndex = new AtomicInteger(1);
         if (caseDetails.getData().getBoDocumentsUploaded() != null) {
             caseDetails.getData()
@@ -166,8 +174,13 @@ public class ZipFileService {
                         final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                         final String documentTypeName = "uploaded_" + WILL.getTemplateName()
                                 + "_" + uploadedDocIndex.getAndIncrement();
-                        fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF,
-                                manifestDataList);
+
+                        String documentComment = null;
+                        if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
+                            documentComment = doc.getValue().getComment();
+                        }
+                        fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, null,
+                                manifestDataList, documentComment);
                     });
         }
     }
@@ -182,7 +195,7 @@ public class ZipFileService {
                 .forEach(doc -> {
                     final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                     fetchAndUploadDocument(zos, binaryUrl, caseDetails,
-                            doc.getValue().getDocumentType().getTemplateName(), PDF, manifestDataList);
+                            doc.getValue().getDocumentType().getTemplateName(), PDF, null, manifestDataList, null);
                 });
     }
 
@@ -198,7 +211,8 @@ public class ZipFileService {
                     final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                     final String documentTypeName = doc.getValue().getDocumentType().getTemplateName()
                             + "_" + reIssueGrantDocIndex.getAndIncrement();
-                    fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, manifestDataList);
+                    fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, null,
+                            manifestDataList, null);
                 });
 
     }
@@ -208,7 +222,9 @@ public class ZipFileService {
                                         ReturnedCaseDetails caseDetails,
                                         String documentTypeName,
                                         String docType,
-                                        List<ZippedManifestData> manifestDataList) {
+                                        String documentSubType,
+                                        List<ZippedManifestData> manifestDataList,
+                                        String documentComment) {
         final String documentId = binaryUrl.substring(binaryUrl
                 .indexOf("/documents/") + 11, binaryUrl.lastIndexOf("/"));
         String errorDescription = "";
@@ -217,8 +233,11 @@ public class ZipFileService {
                 .documentId(documentId)
                 .docType(documentTypeName)
                 .docFileType(docType)
-                .subType(caseDetails.getData().getCaseType())
-                .errorDescription(errorDescription).build();
+                .subType(documentSubType)
+                .caseType(caseDetails.getData().getCaseType())
+                .errorDescription(errorDescription)
+                .comment(documentComment)
+                .build();
 
         try {
             ByteArrayResource byteArrayResource =
@@ -233,7 +252,7 @@ public class ZipFileService {
                     + " document id: " + documentId;
             zippedManifestData.setErrorDescription(errorDescription);
             log.info(errorDescription);
-            log.error("Error while adding fie ", e);
+            log.error("Error while adding file ", e);
         }
         manifestDataList.add(zippedManifestData);
     }
@@ -280,15 +299,21 @@ public class ZipFileService {
         zos.closeEntry();
     }
 
-    private void addHeaderRow(StringBuilder data) {
-        String header = fileSystemResourceService.getFileFromResourceAsString(HEADER_ROW_FILE);
+    private void addHeaderRow(StringBuilder data, boolean shouldIncludeComment) {
+        String header = "";
+        if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
+            header = fileSystemResourceService.getFileFromResourceAsString(HEADER_ROW_FILE);
+        } else {
+            header = fileSystemResourceService.getFileFromResourceAsString(HEADER_ROW_FILE_WITHOUT_COMMENT);
+        }
         data.append(header);
     }
 
-    private void generateManifestFile(ZipOutputStream zos, List<ZippedManifestData> zippedManifestDataList)
+    private void generateManifestFile(ZipOutputStream zos, List<ZippedManifestData> zippedManifestDataList,
+                                      boolean shouldIncludeComment)
             throws IOException {
         StringBuilder data = new StringBuilder();
-        addHeaderRow(data);
+        addHeaderRow(data, shouldIncludeComment);
         data.append(NEW_LINE);
 
         for (ZippedManifestData zippedManifestData : zippedManifestDataList) {
@@ -305,6 +330,10 @@ public class ZipFileService {
             data.append(zippedManifestData.getDocumentName());
             data.append(DELIMITER);
             data.append(zippedManifestData.getErrorDescription());
+            if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
+                data.append(DELIMITER);
+                data.append(delimitComment(zippedManifestData.getComment()));
+            }
             data.append(NEW_LINE);
         }
 
@@ -315,5 +344,12 @@ public class ZipFileService {
                 .errorDescription("").build();
         ByteArrayResource byteArrayResource = new ByteArrayResource(data.toString().getBytes(StandardCharsets.UTF_8));
         zipMultipleDocs(zos, byteArrayResource, zippedManifestData.getDocumentName());
+    }
+
+    private String delimitComment(String comment) {
+        if (comment != null) {
+            return comment.replace(",", " ");
+        }
+        return "null";
     }
 }
