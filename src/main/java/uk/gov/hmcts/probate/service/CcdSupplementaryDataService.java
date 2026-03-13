@@ -37,11 +37,13 @@ public class CcdSupplementaryDataService {
     public CcdSupplementaryDataService(AuthTokenGenerator authTokenGenerator,
                                        CoreCaseDataApi coreCaseDataApi,
                                        SupplementaryDataConfiguration supplementaryDataConfiguration,
-                                       SecurityUtils securityUtils) {
+                                       SecurityUtils securityUtils,
+                                       WorkAllocationToggleService workAllocationToggleService) {
         this.authTokenGenerator = authTokenGenerator;
         this.coreCaseDataApi = coreCaseDataApi;
         this.supplementaryDataConfiguration = supplementaryDataConfiguration;
         this.securityUtils = securityUtils;
+        this.workAllocationToggleService = workAllocationToggleService;
     }
 
     public void submitSupplementaryDataToCcd(String caseId) {

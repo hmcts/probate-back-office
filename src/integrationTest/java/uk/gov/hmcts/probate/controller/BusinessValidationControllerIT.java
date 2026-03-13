@@ -48,6 +48,7 @@ import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -70,6 +71,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -255,6 +257,8 @@ class BusinessValidationControllerIT {
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
     @MockitoBean
     private CoreCaseDataApi coreCaseDataApi;
+    @MockitoBean
+    private WorkAllocationToggleService workAllocationToggleService;
 
 
 
@@ -1496,6 +1500,7 @@ class BusinessValidationControllerIT {
     @Test
     void gopSupplementaryDataShouldReturnDataPayloadOkResponseCode() throws Exception {
         String gopPayload = testUtils.getStringFromFile("digitalCase.json");
+        when(workAllocationToggleService.isProbateGSEnabled()).thenReturn(true);
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .serviceAuthorisation("serviceToken")
                 .authorisation("userToken")
@@ -1508,6 +1513,24 @@ class BusinessValidationControllerIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(coreCaseDataApi).submitSupplementaryData(any(), any(), any(), any());
+    }
+
+    @Test
+    void gopSupplementaryDataShouldNotSubmitSupplementaryDataWhenGSDisabled() throws Exception {
+        String gopPayload = testUtils.getStringFromFile("digitalCase.json");
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        when(workAllocationToggleService.isProbateGSEnabled()).thenReturn(false);
+
+        mockMvc.perform(post("/case/supplementaryData")
+                        .content(gopPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        verifyNoInteractions(coreCaseDataApi);
     }
 }
 
