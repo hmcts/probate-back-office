@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,21 +20,34 @@ import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveats;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.probate.model.cases.CaseState;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
+
+import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
 
 @Service
 @RequiredArgsConstructor
@@ -54,12 +68,20 @@ public class CaveatQueryService {
     private static final String AWAITING_CAVEAT_RESOLUTION = "AwaitingCaveatResolution";
     private static final String WARNING_VALIDATION = "WarningValidation";
     private static final String AWAITING_WARNING_RESPONSE = "AwaitingWarningResponse";
+    private static final String EVENT_DESCRIPTOR_CAVEAT_EXPIRED = "Caveat Auto Expired";
+    private static final String[] EXPIRABLE_STATES = {
+        CAVEAT_NOT_MATCHED,
+        AWAITING_CAVEAT_RESOLUTION,
+        WARNING_VALIDATION,
+        AWAITING_WARNING_RESPONSE
+    };
 
     private final RestTemplate restTemplate;
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final SecurityUtils securityUtils;
+    private final CcdClientApi ccdClientApi;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     @Value("${data-extract.pagination.size}")
     protected int dataExtractPaginationSize;
@@ -125,16 +147,72 @@ public class CaveatQueryService {
         return returnedCaveats;
     }
 
+    public void findAndExpireCaveatExpiredCases(String expiryDate) {
+        securityUtils.setSecurityContextUserAsScheduler();
+        SecurityDTO securityDto = securityUtils.getSecurityDTO();
 
-    public List<ReturnedCaveatDetails> findCaveatExpiredCases(String expiryDate) {
+        log.info("Search for expired Caveats for expiryDate: {}", expiryDate);
+
         BoolQueryBuilder query = boolQuery()
                 .filter(rangeQuery(DATA_EXPIRY_DATE).lte(expiryDate))
-                .should(matchQuery(STATE, CAVEAT_NOT_MATCHED))
-                .should(matchQuery(STATE, AWAITING_CAVEAT_RESOLUTION))
-                .should(matchQuery(STATE, WARNING_VALIDATION))
-                .should(matchQuery(STATE, AWAITING_WARNING_RESPONSE))
+                .filter(termsQuery(STATE, EXPIRABLE_STATES))
                 .minimumShouldMatch(1);
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
-        return runQuery(CAVEAT, jsonQuery).getCaveats();
+
+        int from = 0;
+        List<ReturnedCaveatDetails> pageResults;
+
+        List<String> failedCases = new ArrayList<>();
+        do {
+            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder().query(query).sort(SORT_COLUMN, SortOrder.ASC)
+                    .from(from).size(dataExtractPaginationSize);
+            String jsonQuery = sourceBuilder.toString();
+            pageResults = runQuery(CAVEAT, jsonQuery).getCaveats();
+            log.info("Processing {} caveats in current page", pageResults.size());
+
+            for (ReturnedCaveatDetails expiredCaveat : pageResults) {
+                EventId eventIdToStart = getEventIdForCaveatToExpireGivenPreconditionState(expiredCaveat.getState());
+
+                uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData =
+                        uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
+                                .autoClosedExpiry(Boolean.TRUE)
+                                .build();
+
+                updateCaseAsCaseworker(
+                        String.valueOf(expiredCaveat.getId()),
+                        caveatData,
+                        expiredCaveat.getLastModified(),
+                        eventIdToStart,
+                        securityDto,
+                        failedCases
+                );
+            }
+            from += dataExtractPaginationSize;
+        } while (!pageResults.isEmpty());
+
+        if (!failedCases.isEmpty()) {
+            log.error("Caveat autoExpire failed for cases: {}", failedCases);
+        }
+    }
+
+    private EventId getEventIdForCaveatToExpireGivenPreconditionState(CaseState caveatState) {
+        return switch (caveatState) {
+            case CAVEAT_NOT_MATCHED -> CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
+            case CAVEAT_AWAITING_RESOLUTION -> CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
+            case CAVEAT_AWAITING_WARNING_RESPONSE -> CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
+            case CAVEAT_WARNING_VALIDATION -> CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
+            default -> throw new IllegalStateException("Unexpected state for Caveat Auto Expiry: " + caveatState);
+        };
+    }
+
+    private void updateCaseAsCaseworker(String caseId, Object caseData, LocalDateTime lastModified,
+                                        EventId eventIdToStart, SecurityDTO securityDto, List<String> failedCases) {
+        try {
+            ccdClientApi.updateCaseAsCaseworker(CcdCaseType.CAVEAT, caseId, lastModified, caseData, eventIdToStart,
+                            securityDto, EVENT_DESCRIPTOR_CAVEAT_EXPIRED, EVENT_DESCRIPTOR_CAVEAT_EXPIRED);
+            log.info("Caveat autoExpired: {}", caseId);
+        } catch (RuntimeException e) {
+            log.info("Caveat autoExpire failure for case: {}, due to {}", caseId, e.getMessage());
+            failedCases.add(caseId);
+        }
     }
 }

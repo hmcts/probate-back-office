@@ -17,7 +17,9 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveats;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
@@ -27,12 +29,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_NOT_MATCHED;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT;
 
 class CaveatQueryServiceTest {
 
+    private static final String EXPIRY_DATE = "2020-12-31";
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now();
 
     @Mock
@@ -56,9 +62,17 @@ class CaveatQueryServiceTest {
     @InjectMocks
     private CaveatQueryService caveatQueryService;
 
+    @Mock
+    private CcdClientApi ccdClientApi;
+
+    private SecurityDTO securityDTO;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        securityDTO = SecurityDTO.builder().build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
         when(securityUtils.getCaseworkerToken()).thenReturn("Bearer 123");
@@ -67,15 +81,14 @@ class CaveatQueryServiceTest {
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
 
-        CaveatData caveatData = CaveatData.builder()
-                .deceasedSurname("Smith")
-                .build();
+        CaveatData caveatData = CaveatData.builder().deceasedSurname("Smith").build();
         List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
                 new ReturnedCaveatDetails(caveatData, LAST_MODIFIED, DRAFT, 1L))
                 .build();
         ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList, 1);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
+        caveatQueryService.dataExtractPaginationSize = 100;
     }
 
     @Test
@@ -118,8 +131,34 @@ class CaveatQueryServiceTest {
 
     @Test
     void findCaveatWithExpiryDate() {
-        List<ReturnedCaveatDetails> result = caveatQueryService.findCaveatExpiredCases("2023-10-01");
-        assertEquals("Smith", result.getFirst().getData().getDeceasedSurname());
+        CaveatData reliantData = CaveatData.builder().deceasedSurname("Reliant").build();
+        List<ReturnedCaveatDetails> firstPage = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
+                new ReturnedCaveatDetails(reliantData, LAST_MODIFIED, CAVEAT_NOT_MATCHED, 1L)).build();
+        CaveatData robinData = CaveatData.builder().deceasedSurname("Robin").build();
+        List<ReturnedCaveatDetails> secondPage = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
+                new ReturnedCaveatDetails(robinData, LAST_MODIFIED, CAVEAT_NOT_MATCHED, 1L)).build();
+
+        ReturnedCaveats page1 = new ReturnedCaveats(firstPage, 2);
+        ReturnedCaveats page2 = new ReturnedCaveats(secondPage, 2);
+        ReturnedCaveats emptyPage = new ReturnedCaveats(ImmutableList.of(), 2);
+
+        when(restTemplate.postForObject(any(), any(), any()))
+                .thenReturn(page1)
+                .thenReturn(page2)
+                .thenReturn(emptyPage);
+
+        caveatQueryService.findAndExpireCaveatExpiredCases("2023-10-01");
+        verify(ccdClientApi, times(2)).updateCaseAsCaseworker(
+                any(), any(), any(), any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldSkipWhenNoExpiredCaveats() {
+        ReturnedCaveats emptyPage = new ReturnedCaveats(ImmutableList.of(), 0);
+        when(restTemplate.postForObject(any(), any(), any()))
+                .thenReturn(emptyPage);
+        caveatQueryService.findAndExpireCaveatExpiredCases(EXPIRY_DATE);
+        verify(ccdClientApi, never()).updateCaseAsCaseworker(any(), any(), any(), any(), any(), any(), any(), any());
     }
 
 }
