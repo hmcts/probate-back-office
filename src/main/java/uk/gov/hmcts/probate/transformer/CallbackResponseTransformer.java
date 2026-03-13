@@ -2515,29 +2515,8 @@ public class CallbackResponseTransformer {
                 break;
         }
 
-        DynamicRadioListElement selectedValue = null;
-        if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
-            for (CollectionMember<IntestacyAdditionalExecutor> additionalExecutor : existingExecutorList) {
-                if (additionalExecutor.getValue().getSolsApplicantFamilyDetails() != null
-                        && additionalExecutor.getValue().getSolsApplicantFamilyDetails().getRelationship() != null) {
-                    DynamicRadioList relationshipRadioList =
-                            additionalExecutor.getValue().getSolsApplicantFamilyDetails().getRelationship();
-                    if (relationshipRadioList.getValue() != null
-                            && relationshipRadioList.getValue().getCode() != null) {
-                        String code = relationshipRadioList.getValue().getCode();
-                        selectedValue = listItems.stream()
-                                .filter(item -> code.equals(item.getCode()))
-                                .findFirst()
-                                .orElse(null);
-                    }
-                    break;
-                }
-            }
-        }
-
         return DynamicRadioList.builder()
                 .listItems(listItems)
-                .value(selectedValue)
                 .build();
     }
 

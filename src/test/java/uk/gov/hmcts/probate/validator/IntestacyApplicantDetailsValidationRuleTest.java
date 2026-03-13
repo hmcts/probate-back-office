@@ -102,6 +102,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateFailureIfApplicantParentAdoptedOutsideEnglandOrWales() {
+        when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(GRAND_CHILD);
         when(applicantMock.getPrimaryApplicantParentAdoptedIn()).thenReturn(YES);
         when(applicantMock.getPrimaryApplicantParentAdoptionInEnglandOrWales()).thenReturn(NO);
 
@@ -146,6 +147,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateFailureIfApplicantParentIsAdoptedOut() {
+        when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(GRAND_CHILD);
         when(applicantMock.getPrimaryApplicantParentAdoptedIn()).thenReturn(NO);
         when(applicantMock.getPrimaryApplicantParentAdoptedOut()).thenReturn(YES);
 
