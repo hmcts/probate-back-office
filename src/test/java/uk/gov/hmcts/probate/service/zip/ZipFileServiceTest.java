@@ -37,6 +37,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
@@ -161,7 +162,7 @@ class ZipFileServiceTest {
         doNothing().when(smeeAndFOrdDataExtractStrategy).uploadToBlobStorage(any(File.class));
         zipFileService
                 .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
-                        smeeAndFOrdDataExtractStrategy, false);
+                        smeeAndFOrdDataExtractStrategy, anyBoolean());
         Assertions.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
         ZipFile zip = new ZipFile(zipFile);
         Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
