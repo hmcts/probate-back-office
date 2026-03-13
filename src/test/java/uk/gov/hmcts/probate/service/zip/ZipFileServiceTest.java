@@ -40,6 +40,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -267,5 +269,31 @@ class ZipFileServiceTest {
         Files.deleteIfExists(zipFile.toPath());
     }
 
+    @Test
+    void shouldCreateZipWithFeatureToggleTrue() throws IOException {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
+        when(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()).thenReturn(true);
+        zipFileService
+                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
+                        smeeAndFOrdDataExtractStrategy, true);
 
+        verify(featureToggleService, atLeastOnce()).isSmeeAndFordCommentFieldFeatureToggleOn();
+        Assertions.assertTrue(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn());
+        Files.delete(zipFile.toPath());
+    }
+
+    @Test
+    void shouldCreateZipWithFeatureToggleFalse() throws IOException {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
+        when(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()).thenReturn(false);
+        zipFileService
+                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
+                        smeeAndFOrdDataExtractStrategy, false);
+
+        verify(featureToggleService, atMostOnce()).isSmeeAndFordCommentFieldFeatureToggleOn();
+        Assertions.assertFalse(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn());
+        Files.delete(zipFile.toPath());
+    }
 }
