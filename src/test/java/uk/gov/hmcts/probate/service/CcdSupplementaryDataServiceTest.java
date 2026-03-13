@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
 import uk.gov.hmcts.probate.config.SupplementaryDataConfiguration;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -34,7 +34,7 @@ class CcdSupplementaryDataServiceTest {
     @Mock
     private SecurityUtils securityUtils;
 
-    @MockitoBean
+    @Mock
     private WorkAllocationToggleService workAllocationToggleService;
 
     @InjectMocks
