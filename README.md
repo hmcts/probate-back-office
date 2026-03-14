@@ -38,7 +38,7 @@ To build the project execute the following command:
 ## Local development environment (using CFT lib):
 Details of CFT lib here: https://github.com/hmcts/rse-cft-lib/blob/main/README.md
 
-You can run your local development environment (LDE) in two ways:
+You can run your local development environment (LDE) in  2 ways:
 1. AAT support services: You will be utilising AAT instances of support services.
 2. Local support services. You will be running a local dockerised instance of each of the support services.
 
