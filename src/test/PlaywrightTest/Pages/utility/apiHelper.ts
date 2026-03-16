@@ -27,7 +27,7 @@ export const  getAccessToken = async ( idamUrl, email: string,  password: string
   }
 };
 
-export const  getServiceAuthToken = async (url) => {
+export const  getServiceAuthToken = async (url, microservice: string) => {
   try {
     const axiosConfig = {
       headers: {
@@ -37,27 +37,7 @@ export const  getServiceAuthToken = async (url) => {
       timeout: 30000,  // - 30 second timeout
     };
     const body = {
-      microservice: 'probate_backend'
-    };
-    const response = await axios.post(url, body, axiosConfig);
-    return response.data;
-  } catch (error) {
-    console.error('Auth failed:', error);
-    throw error;
-  }
-};
-
-export const  getServiceAuthTokenforLiberata = async (url) => {
-  try {
-    const axiosConfig = {
-      headers: {
-        'accept': '*/*',
-        'Content-Type': 'application/json',
-      },
-      timeout: 30000,  // - 30 second timeout
-    };
-    const body = {
-      microservice: 'ccpay_bubble'
+      microservice: `${microservice}`
     };
     const response = await axios.post(url, body, axiosConfig);
     return response.data;

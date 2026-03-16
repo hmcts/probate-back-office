@@ -26,7 +26,7 @@ import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorA
 import caseProgressConfig from "../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 import refundConfig from "../../../Pages/solicitorApplyProbate/makePayment/refundConfig.json" with { type: "json" };
 import { refundReviewConfig } from "../../../Pages/solicitorApplyProbate/makePayment/refundReviewConfig.ts";
-import {getAccessToken, getServiceAuthToken, getServiceAuthTokenforLiberata} from "../../../Pages/utility/apiHelper.ts";
+import {getAccessToken, getServiceAuthToken} from "../../../Pages/utility/apiHelper.ts";
 
 test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Refunds", () => {
   let caseRef;
@@ -141,7 +141,7 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
         idamUrl = `https://idam-api.${env}.platform.hmcts.net`;
         s2sUrl = `http://rpe-service-auth-provider-${env}.service.core-compute-${env}.internal/testing-support/lease`;
         authToken = await getAccessToken(idamUrl, testConfig.TestEnvCwUser, testConfig.TestEnvCwPassword);
-        serviceAuthToken = await getServiceAuthToken(s2sUrl);
+        serviceAuthToken = await getServiceAuthToken(s2sUrl, 'probate_backend');
         await callback.backdatePayment(env, caseRefApi, authToken, serviceAuthToken, '5');
      })()
    ]);
@@ -211,7 +211,7 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
     await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, refundRef);
     await cwEventActionsPage.verifyAndInitiateProcessRefund(refundConfig.refundStatus4, refundRef, refundReviewConfig.rows, false, true);
 
-    serviceAuthToken = await getServiceAuthTokenforLiberata(s2sUrl);
+    serviceAuthToken = await getServiceAuthToken(s2sUrl, 'ccpay_bubble');
     await callback.refundsApprovalLiberata(env, remissionRefundRef, serviceAuthToken);
     await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, remissionRefundRef);
     await cwEventActionsPage.verifyAndInitiateProcessRefund(refundConfig.refundStatus5, remissionRefundRef, refundReviewConfig.rows, true, true);
