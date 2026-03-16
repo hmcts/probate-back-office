@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -106,7 +107,7 @@ public class ExecutorsTransformer {
         builder.solsIdentifiedNotApplyingExecsCcdCopy(execsNotApplyingNames);
     }
 
-    public List<CollectionMember<AdditionalExecutorApplying>> createCaseworkerApplyingList(CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutorApplying>>  createCaseworkerApplyingList(CaseData caseData) {
 
         // Initialise executor lists
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = getExecsApplying(caseData);
@@ -151,6 +152,12 @@ public class ExecutorsTransformer {
             // Add main solicitor executor list
             execsApplying.addAll(executorListMapperService
                     .mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
+        } else if (DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
+                && caseData.getSolsIntestacyExecutorList() != null
+                && !caseData.getSolsIntestacyExecutorList().isEmpty()) {
+            // Add intestacy solicitor executor list
+            execsApplying.addAll(executorListMapperService
+                    .mapFromSolsIntestacyExecutorListToApplyingExecutors(caseData));
         }
     }
 

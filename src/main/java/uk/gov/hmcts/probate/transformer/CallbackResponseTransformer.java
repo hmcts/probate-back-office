@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
@@ -19,9 +20,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioListElement;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyAdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsApplicantFamilyDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -70,20 +75,31 @@ import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.Constants.CHILD;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
-import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
-import static uk.gov.hmcts.probate.model.Constants.PARENT;
-import static uk.gov.hmcts.probate.model.Constants.SIBLING;
-import static uk.gov.hmcts.probate.model.Constants.WHOLE_SIBLING;
-import static uk.gov.hmcts.probate.model.Constants.HALF_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
+import static uk.gov.hmcts.probate.model.Constants.CHILD;
+import static uk.gov.hmcts.probate.model.Constants.CHILD_LABEL;
+import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
+import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD_LABEL;
+import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_NIECE_OR_NEPHEW;
+import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_NIECE_OR_NEPHEW_LABEL;
+import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_SIBLING_LABEL;
+import static uk.gov.hmcts.probate.model.Constants.PARENT;
+import static uk.gov.hmcts.probate.model.Constants.PARENT_LABEL;
+import static uk.gov.hmcts.probate.model.Constants.SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.HALF_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW_LABEL;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING_LABEL;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -1573,8 +1589,10 @@ public class CallbackResponseTransformer {
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
             .childAlive(caseData.getChildAlive())
+            .isApplicantParentDeceasedChild(caseData.getIsApplicantParentDeceasedChild())
             .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
-            .deceasedAliasNameList(caseData.getDeceasedAliasNameList());
+            .solsIntestacyExecutorList(caseData.getSolsIntestacyExecutorList())
+            .anyLivingWholeBloodSiblings(caseData.getAnyLivingWholeBloodSiblings());
 
         handleDeceasedAliases(
                 builder,
@@ -2030,8 +2048,11 @@ public class CallbackResponseTransformer {
         }
 
         if (!YES.equals(caseData.getOtherExecutorExists())) {
-            builder
-                    .solsAdditionalExecutorList(null);
+            if (DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())) {
+                builder.solsIntestacyExecutorList(null);
+            } else {
+                builder.solsAdditionalExecutorList(null);
+            }
         }
 
         if (caseData.getPrimaryApplicantAliasReason() != null) {
@@ -2427,5 +2448,82 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.primaryApplicantPhoneNumber(null);
         }
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse setupDynamicList(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(),
+                        callbackRequest.getEventId(),
+                        Optional.empty(),
+                        false);
+        final var caseDetails = callbackRequest.getCaseDetails();
+        final var caseDetailsBefore = callbackRequest.getCaseDetailsBefore();
+        String relationshipAfter = caseDetails.getData().getSolsApplicantRelationshipToDeceased();
+        String relationshipBefore = caseDetailsBefore.getData().getSolsApplicantRelationshipToDeceased();
+        String wholeOrHalfSiblingBefore = caseDetailsBefore.getData().getApplicantSameParentsAsDeceased();
+        String wholeOrHalfSiblingAfter = caseDetails.getData().getApplicantSameParentsAsDeceased();
+        List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList = caseDetailsBefore.getData()
+                .getSolsIntestacyExecutorList();
+        log.info("Relationship to deceased before for case {}: {}",caseDetails.getId(), relationshipBefore);
+        final var caseData = caseDetails.getData();
+
+        DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData, existingExecutorList);
+        String  otherExecutorExists = caseData.getOtherExecutorExists();
+
+        if (YES.equalsIgnoreCase(otherExecutorExists) && (!relationshipAfter.equals(relationshipBefore)
+                || (null != wholeOrHalfSiblingBefore && !wholeOrHalfSiblingBefore.equals(wholeOrHalfSiblingAfter)))) {
+            List<CollectionMember<IntestacyAdditionalExecutor>> additionalExecutorList = new ArrayList<>();
+            IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
+                    .solsApplicantFamilyDetails(SolsApplicantFamilyDetails.builder()
+                            .relationship(relationshipList)
+                            .applicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased()).build())
+                    .build();
+            additionalExecutorList.add(new CollectionMember<>(additionalExecutor));
+            responseCaseDataBuilder.solsIntestacyExecutorList(additionalExecutorList);
+        } else if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
+            responseCaseDataBuilder.solsIntestacyExecutorList(existingExecutorList);
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private DynamicRadioList getAppropriateRelationshipRadioList(CaseData caseData,
+                                                                 List<CollectionMember<IntestacyAdditionalExecutor>>
+                                                                         existingExecutorList) {
+        List<DynamicRadioListElement> listItems = new ArrayList<>();
+        String relationship = StringUtils.defaultString(caseData.getSolsApplicantRelationshipToDeceased())
+                .toLowerCase();
+
+        switch (relationship) {
+            case CHILD:
+            case GRAND_CHILD:
+                listItems.add(buildRadioListItem(CHILD, CHILD_LABEL));
+                listItems.add(buildRadioListItem(GRAND_CHILD, GRAND_CHILD_LABEL));
+                break;
+            case PARENT:
+                listItems.add(buildRadioListItem(PARENT, PARENT_LABEL));
+                break;
+            case SIBLING:
+                if (WHOLE_SIBLING.equalsIgnoreCase(caseData.getApplicantSameParentsAsDeceased())) {
+                    listItems.add(buildRadioListItem(WHOLE_BLOOD_SIBLING, WHOLE_BLOOD_SIBLING_LABEL));
+                    listItems.add(buildRadioListItem(WHOLE_BLOOD_NIECE_OR_NEPHEW, WHOLE_BLOOD_NIECE_OR_NEPHEW_LABEL));
+                } else {
+                    listItems.add(buildRadioListItem(HALF_BLOOD_SIBLING, HALF_BLOOD_SIBLING_LABEL));
+                    listItems.add(buildRadioListItem(HALF_BLOOD_NIECE_OR_NEPHEW, HALF_BLOOD_NIECE_OR_NEPHEW_LABEL));
+                }
+                break;
+            default:
+                break;
+        }
+
+        return DynamicRadioList.builder()
+                .listItems(listItems)
+                .build();
+    }
+
+    private DynamicRadioListElement buildRadioListItem(String code, String label) {
+        return DynamicRadioListElement.builder()
+                .code(code)
+                .label(label)
+                .build();
     }
 }
