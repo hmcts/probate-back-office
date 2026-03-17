@@ -149,49 +149,82 @@ public class CaveatQueryService {
 
     public void findAndExpireCaveatExpiredCases(String expiryDate) {
         securityUtils.setSecurityContextUserAsScheduler();
-        SecurityDTO securityDto = securityUtils.getSecurityDTO();
 
         log.info("Search for expired Caveats for expiryDate: {}", expiryDate);
-
-        BoolQueryBuilder query = boolQuery()
-                .filter(rangeQuery(DATA_EXPIRY_DATE).lte(expiryDate))
-                .filter(termsQuery(STATE, EXPIRABLE_STATES))
-                .minimumShouldMatch(1);
-
-        int from = 0;
-        List<ReturnedCaveatDetails> pageResults;
-
+        BoolQueryBuilder query = buildExpiryQuery(expiryDate);
         List<String> failedCases = new ArrayList<>();
-        do {
-            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder().query(query).sort(SORT_COLUMN, SortOrder.ASC)
-                    .from(from).size(dataExtractPaginationSize);
-            String jsonQuery = sourceBuilder.toString();
-            pageResults = runQuery(CAVEAT, jsonQuery).getCaveats();
-            log.info("Processing {} caveats in current page", pageResults.size());
-
-            for (ReturnedCaveatDetails expiredCaveat : pageResults) {
-                EventId eventIdToStart = getEventIdForCaveatToExpireGivenPreconditionState(expiredCaveat.getState());
-
-                uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData =
-                        uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
-                                .autoClosedExpiry(Boolean.TRUE)
-                                .build();
-
-                updateCaseAsCaseworker(
-                        String.valueOf(expiredCaveat.getId()),
-                        caveatData,
-                        expiredCaveat.getLastModified(),
-                        eventIdToStart,
-                        securityDto,
-                        failedCases
-                );
-            }
-            from += dataExtractPaginationSize;
-        } while (!pageResults.isEmpty());
+        processExpiredCaveats(query, failedCases);
 
         if (!failedCases.isEmpty()) {
             log.error("Caveat autoExpire failed for cases: {}", failedCases);
         }
+    }
+
+    private BoolQueryBuilder buildExpiryQuery(String expiryDate) {
+        return boolQuery()
+                .filter(rangeQuery(DATA_EXPIRY_DATE).lte(expiryDate))
+                .filter(termsQuery(STATE, EXPIRABLE_STATES))
+                .minimumShouldMatch(1);
+    }
+
+    private void processExpiredCaveats(BoolQueryBuilder query, List<String> failedCases) {
+        Long[] searchAfterValues = null;
+        List<ReturnedCaveatDetails> pageResults;
+        do {
+            pageResults = fetchPage(query, searchAfterValues);
+            log.info("Processing {} caveats in current page", pageResults.size());
+            processPage(pageResults, failedCases);
+            searchAfterValues = getNextSearchAfter(pageResults);
+        } while (hasMorePages(pageResults));
+    }
+
+    private Long[] getNextSearchAfter(List<ReturnedCaveatDetails> pageResults) {
+        if (pageResults.isEmpty()) {
+            return null;
+        }
+        ReturnedCaveatDetails last = pageResults.get(pageResults.size() - 1);
+        return new Long[]{last.getId()};
+    }
+
+    private boolean hasMorePages(List<ReturnedCaveatDetails> pageResults) {
+        return pageResults.size() == dataExtractPaginationSize;
+    }
+
+    private void processPage(List<ReturnedCaveatDetails> pageResults, List<String> failedCases) {
+        SecurityDTO securityDto = securityUtils.getSecurityDTO();
+
+        for (ReturnedCaveatDetails caveat : pageResults) {
+            expireCaveat(caveat, securityDto, failedCases);
+        }
+    }
+
+    private void expireCaveat(ReturnedCaveatDetails caveat, SecurityDTO securityDto, List<String> failedCases) {
+        EventId eventId = getEventIdForCaveatToExpireGivenPreconditionState(caveat.getState());
+        uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caseData =
+                uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
+                        .autoClosedExpiry(Boolean.TRUE)
+                        .build();
+        updateCaseAsCaseworker(
+                String.valueOf(caveat.getId()),
+                caseData,
+                caveat.getLastModified(),
+                eventId,
+                securityDto,
+                failedCases
+        );
+    }
+
+    private List<ReturnedCaveatDetails> fetchPage(BoolQueryBuilder query, Long[] searchAfterValues) {
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
+                .query(query)
+                .sort(SORT_COLUMN, SortOrder.ASC)
+                .size(dataExtractPaginationSize);
+
+        if (searchAfterValues != null) {
+            sourceBuilder.searchAfter(searchAfterValues);
+        }
+        String jsonQuery = sourceBuilder.toString();
+        return runQuery(CAVEAT, jsonQuery).getCaveats();
     }
 
     private EventId getEventIdForCaveatToExpireGivenPreconditionState(CaseState caveatState) {
