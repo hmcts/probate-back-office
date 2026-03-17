@@ -39,6 +39,7 @@ public class GrantOfRepresentationPersonalisationService {
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
     private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
     private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
+    private static final String PERSONALISATION_UPLOAD_FILE = "uploadFileCheck";
     private static final String PERSONALISATION_CAVEAT_CASE_ID = "caveat_case_id";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
@@ -141,6 +142,7 @@ public class GrantOfRepresentationPersonalisationService {
         personalisation.put(PERSONALISATION_DECEASED_DOD, caseData.getDeceasedDateOfDeathFormatted());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseId.toString());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, caseData.getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_UPLOAD_FILE, caseData.getUploadFileCheck());
         personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
             localDateToWelshStringConverter.convert(caseData.getDeceasedDateOfDeath()));
 
