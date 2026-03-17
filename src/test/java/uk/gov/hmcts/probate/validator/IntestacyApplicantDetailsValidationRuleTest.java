@@ -48,7 +48,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
     private IntestacyApplicantDetailsValidationRule underTest;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         underTest = new IntestacyApplicantDetailsValidationRule(businessValidationMessageService);
         when(ccdDataMock.getApplicant()).thenReturn(applicantMock);
 

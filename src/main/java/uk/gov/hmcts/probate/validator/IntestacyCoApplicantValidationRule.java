@@ -43,42 +43,66 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
                 if (details == null) {
                     continue;
                 }
-                List<String> codes = new ArrayList<>();
-                String coApplicantAdoptedOut = details.getCoApplicantAdoptedOut();
-                String coApplicantAdoptedIn = details.getCoApplicantAdoptedIn();
-                String grandchildParentIsDeceased = details.getGrandchildParentDieBeforeDeceased();
-                String wholeNieceOrNephewParentIsDeceased = details.getWholeNieceOrNephewParentDieBeforeDeceased();
-                String halfNieceOrNephewParentIsDeceased = details.getHalfNieceOrNephewParentDieBeforeDeceased();
                 String relationshipToDeceased = null != details.getRelationship() ? details
                         .getRelationship().getValueCode() : null;
                 boolean isNonParentRelation = isNonParentRelation(relationshipToDeceased);
 
-                if (isAdoptedOutsideEnglandOrWales(isNonParentRelation, relationshipToDeceased, details)) {
-                    codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
-                    codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
-                }
-                if (isNonParentRelation && NO.equalsIgnoreCase(coApplicantAdoptedIn)
-                        && YES.equalsIgnoreCase(coApplicantAdoptedOut)) {
-                    codes.add(ADOPTED_OUT);
-                    codes.add(ADOPTED_OUT_WELSH);
-                }
-                if (isParentNotDeceased(relationshipToDeceased, grandchildParentIsDeceased,
-                        wholeNieceOrNephewParentIsDeceased, halfNieceOrNephewParentIsDeceased)) {
-                    codes.add(PARENT_IS_NOT_DECEASED);
-                    codes.add(PARENT_IS_NOT_DECEASED_WELSH);
-                }
-                if (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
-                        && NO.equalsIgnoreCase(details.getGrandchildParentAdoptedIn())
-                        && YES.equalsIgnoreCase(details.getGrandchildParentAdoptedOut())) {
-                    codes.add(PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
-                    codes.add(PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
-                }
-
-                codes.forEach(code -> errors.add(businessValidationMessageService
-                        .generateError(BUSINESS_ERROR, code)));
+                addAdoptedOutsideEnglandOrWalesErrors(errors, isNonParentRelation, relationshipToDeceased, details);
+                addAdoptedOutErrors(errors, isNonParentRelation, details);
+                addParentNotDeceasedErrors(errors, relationshipToDeceased, details);
+                addParentAdoptedOutsideEnglandOrWalesErrors(errors, relationshipToDeceased, details);
             }
         });
         return errors;
+    }
+
+    private void addAdoptedOutsideEnglandOrWalesErrors(List<FieldErrorResponse> errors,
+                                                       boolean isNonParentRelation,
+                                                       String relationshipToDeceased,
+                                                       SolsApplicantFamilyDetails details) {
+        if (isAdoptedOutsideEnglandOrWales(isNonParentRelation, relationshipToDeceased, details)) {
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    ADOPTED_OUTSIDE_ENGLAND_OR_WALES));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH));
+        }
+    }
+
+    private void addAdoptedOutErrors(List<FieldErrorResponse> errors,
+                                     boolean isNonParentRelation,
+                                     SolsApplicantFamilyDetails details) {
+        if (isNonParentRelation && NO.equalsIgnoreCase(details.getCoApplicantAdoptedIn())
+                && YES.equalsIgnoreCase(details.getCoApplicantAdoptedOut())) {
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, ADOPTED_OUT));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, ADOPTED_OUT_WELSH));
+        }
+    }
+
+    private void addParentNotDeceasedErrors(List<FieldErrorResponse> errors,
+                                            String relationshipToDeceased,
+                                            SolsApplicantFamilyDetails details) {
+        String grandchildParentIsDeceased = details.getGrandchildParentDieBeforeDeceased();
+        String wholeNieceOrNephewParentIsDeceased = details.getWholeNieceOrNephewParentDieBeforeDeceased();
+        String halfNieceOrNephewParentIsDeceased = details.getHalfNieceOrNephewParentDieBeforeDeceased();
+
+        if (isParentNotDeceased(relationshipToDeceased, grandchildParentIsDeceased,
+                wholeNieceOrNephewParentIsDeceased, halfNieceOrNephewParentIsDeceased)) {
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_IS_NOT_DECEASED));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_IS_NOT_DECEASED_WELSH));
+        }
+    }
+
+    private void addParentAdoptedOutsideEnglandOrWalesErrors(List<FieldErrorResponse> errors,
+                                                             String relationshipToDeceased,
+                                                             SolsApplicantFamilyDetails details) {
+        if (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
+                && NO.equalsIgnoreCase(details.getGrandchildParentAdoptedIn())
+                && YES.equalsIgnoreCase(details.getGrandchildParentAdoptedOut())) {
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH));
+        }
     }
 
     private boolean isParentNotDeceased(String relationshipToDeceased, String grandchildParentIsDeceased,

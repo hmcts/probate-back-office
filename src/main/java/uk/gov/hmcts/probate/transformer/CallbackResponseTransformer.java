@@ -960,6 +960,7 @@ public class CallbackResponseTransformer {
     private void clearGrandchildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         clearChildRelatedFields(responseCaseDataBuilder);
         responseCaseDataBuilder.childAlive(null);
+        responseCaseDataBuilder.deceasedSpouseNotApplyingReason(null);
         responseCaseDataBuilder.primaryApplicantParentAdoptedIn(null);
         responseCaseDataBuilder.primaryApplicantParentAdoptedOut(null);
         responseCaseDataBuilder.primaryApplicantParentAdoptionInEnglandOrWales(null);
@@ -2467,7 +2468,7 @@ public class CallbackResponseTransformer {
         log.info("Relationship to deceased before for case {}: {}",caseDetails.getId(), relationshipBefore);
         final var caseData = caseDetails.getData();
 
-        DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData, existingExecutorList);
+        DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData);
         String  otherExecutorExists = caseData.getOtherExecutorExists();
 
         if (YES.equalsIgnoreCase(otherExecutorExists) && (!relationshipAfter.equals(relationshipBefore)
@@ -2486,16 +2487,13 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    private DynamicRadioList getAppropriateRelationshipRadioList(CaseData caseData,
-                                                                 List<CollectionMember<IntestacyAdditionalExecutor>>
-                                                                         existingExecutorList) {
+    private DynamicRadioList getAppropriateRelationshipRadioList(CaseData caseData) {
         List<DynamicRadioListElement> listItems = new ArrayList<>();
         String relationship = StringUtils.defaultString(caseData.getSolsApplicantRelationshipToDeceased())
                 .toLowerCase();
 
         switch (relationship) {
-            case CHILD:
-            case GRAND_CHILD:
+            case CHILD, GRAND_CHILD:
                 listItems.add(buildRadioListItem(CHILD, CHILD_LABEL));
                 listItems.add(buildRadioListItem(GRAND_CHILD, GRAND_CHILD_LABEL));
                 break;

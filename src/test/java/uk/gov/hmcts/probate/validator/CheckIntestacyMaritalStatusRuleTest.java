@@ -31,7 +31,7 @@ class CheckIntestacyMaritalStatusRuleTest {
     private FieldErrorResponse errorWelsh;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         MockitoAnnotations.openMocks(this);
 
         errorEnglish = FieldErrorResponse.builder().message("errorNotPossible").build();
