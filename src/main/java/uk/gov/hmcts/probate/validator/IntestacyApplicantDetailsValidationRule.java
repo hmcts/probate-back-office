@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.Applicant;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
@@ -34,30 +35,25 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
         var applicant = ccdData.getApplicant();
         if (applicant != null) {
             List<String> codes = new ArrayList<>();
+            String relationshipToDeceased = ccdData.getSolsApplicantRelationshipToDeceased();
 
-            if (SIBLING.equalsIgnoreCase(ccdData.getSolsApplicantRelationshipToDeceased()) && NO
+            if (SIBLING.equalsIgnoreCase(relationshipToDeceased) && NO
                     .equalsIgnoreCase(applicant.getAnyLivingWholeBloodSiblings())) {
                 codes.add(SIBLING_NOT_DIED);
                 codes.add(SIBLING_NOT_DIED_WELSH);
             }
 
-            if (GRAND_CHILD.equalsIgnoreCase(ccdData.getSolsApplicantRelationshipToDeceased())
-                    && NO.equalsIgnoreCase(applicant.getChildAlive())) {
+            if (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
+                    && NO.equalsIgnoreCase(applicant.getIsApplicantParentDeceasedChild())) {
                 codes.add(DECEASED_CHILD_DEAD);
                 codes.add(DECEASED_CHILD_DEAD_WELSH);
             }
 
-            if ((YES.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedIn())
-                    && NO.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptionInEnglandOrWales()))
-                    || (YES.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedIn())
-                    && NO.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptionInEnglandOrWales()))) {
+            if (isAdoptedOutsideEnglandOrWales(applicant, relationshipToDeceased)) {
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
             }
-            if ((NO.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedIn())
-                    && YES.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedOut()))
-                    || (NO.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedIn())
-                    && YES.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedOut()))) {
+            if (isAdoptedOut(applicant, relationshipToDeceased)) {
                 codes.add(ADOPTED_OUT);
                 codes.add(ADOPTED_OUT_WELSH);
             }
@@ -66,5 +62,21 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
                     .generateError(BUSINESS_ERROR, code)));
         }
         return errors;
+    }
+
+    private boolean isAdoptedOutsideEnglandOrWales(Applicant applicant, String relationshipToDeceased) {
+        return (YES.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedIn())
+                    && NO.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptionInEnglandOrWales()))
+                || (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
+                    && YES.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedIn())
+                    && NO.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptionInEnglandOrWales()));
+    }
+
+    private boolean isAdoptedOut(Applicant applicant, String relationshipToDeceased) {
+        return (NO.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedIn())
+                    && YES.equalsIgnoreCase(applicant.getPrimaryApplicantAdoptedOut()))
+                || (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
+                    && NO.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedIn())
+                    && YES.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedOut()));
     }
 }

@@ -48,7 +48,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
     private IntestacyApplicantDetailsValidationRule underTest;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         underTest = new IntestacyApplicantDetailsValidationRule(businessValidationMessageService);
         when(ccdDataMock.getApplicant()).thenReturn(applicantMock);
 
@@ -82,7 +82,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
     @Test
     void shouldValidateFailureIfDeceasedChildDead() {
         when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(GRAND_CHILD);
-        when(applicantMock.getChildAlive()).thenReturn(NO);
+        when(applicantMock.getIsApplicantParentDeceasedChild()).thenReturn(NO);
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
 
@@ -102,6 +102,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateFailureIfApplicantParentAdoptedOutsideEnglandOrWales() {
+        when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(GRAND_CHILD);
         when(applicantMock.getPrimaryApplicantParentAdoptedIn()).thenReturn(YES);
         when(applicantMock.getPrimaryApplicantParentAdoptionInEnglandOrWales()).thenReturn(NO);
 
@@ -146,6 +147,7 @@ class IntestacyApplicantDetailsValidationRuleTest {
 
     @Test
     void shouldValidateFailureIfApplicantParentIsAdoptedOut() {
+        when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(GRAND_CHILD);
         when(applicantMock.getPrimaryApplicantParentAdoptedIn()).thenReturn(NO);
         when(applicantMock.getPrimaryApplicantParentAdoptedOut()).thenReturn(YES);
 

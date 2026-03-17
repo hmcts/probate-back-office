@@ -41,7 +41,7 @@ class IntestacyDivorceOrSeparationValidationRuleTest {
     private IntestacyDivorceOrSeparationValidationRule underTest;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         underTest = new IntestacyDivorceOrSeparationValidationRule(businessValidationMessageService);
         when(ccdDataMock.getDeceased()).thenReturn(deceasedMock);
 

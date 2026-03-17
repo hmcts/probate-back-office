@@ -1438,9 +1438,9 @@ class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         ResponseEntity<CallbackResponse> response =
-                underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
+                underTest.clearSiblingFields(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
-                .clearFieldsBasedOnRelationships(callbackRequestMock);
+                .clearSiblingFields(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

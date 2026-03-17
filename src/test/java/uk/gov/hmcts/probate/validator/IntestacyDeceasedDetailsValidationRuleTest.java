@@ -43,7 +43,7 @@ class IntestacyDeceasedDetailsValidationRuleTest {
     private IntestacyDeceasedDetailsValidationRule underTest;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         underTest = new IntestacyDeceasedDetailsValidationRule(businessValidationMessageService);
         when(ccdDataMock.getDeceased()).thenReturn(deceasedMock);
         when(ccdDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(SIBLING);

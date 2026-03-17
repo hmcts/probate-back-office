@@ -13,7 +13,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
@@ -31,16 +30,16 @@ class CheckIntestacyOtherApplicantRuleTest {
     private FieldErrorResponse errorWelsh;
 
     @BeforeEach
-    public void setUp() {
+     void setUp() {
         MockitoAnnotations.openMocks(this);
 
         errorEnglish = FieldErrorResponse.builder().message("errorCannotProceed").build();
         errorWelsh = FieldErrorResponse.builder().message("errorCannotProceedWelsh").build();
 
-        when(businessValidationMessageServiceMock.generateError(eq(BUSINESS_ERROR),
-                eq("errorCannotProceed"))).thenReturn(errorEnglish);
-        when(businessValidationMessageServiceMock.generateError(eq(BUSINESS_ERROR),
-                eq("errorCannotProceedWelsh"))).thenReturn(errorWelsh);
+        when(businessValidationMessageServiceMock.generateError(BUSINESS_ERROR,
+                "errorCannotProceed")).thenReturn(errorEnglish);
+        when(businessValidationMessageServiceMock.generateError(BUSINESS_ERROR,
+                "errorCannotProceedWelsh")).thenReturn(errorWelsh);
 
     }
 

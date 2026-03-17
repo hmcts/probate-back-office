@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Data
 @Builder
 public class Applicant implements Serializable {
-    private final String childAlive;
+    private final String isApplicantParentDeceasedChild;
     private final String primaryApplicantAdoptedIn;
     private final String primaryApplicantParentAdoptedIn;
     private final String primaryApplicantParentAdoptionInEnglandOrWales;

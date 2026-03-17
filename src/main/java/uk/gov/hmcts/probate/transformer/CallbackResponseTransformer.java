@@ -960,6 +960,7 @@ public class CallbackResponseTransformer {
     private void clearGrandchildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         clearChildRelatedFields(responseCaseDataBuilder);
         responseCaseDataBuilder.childAlive(null);
+        responseCaseDataBuilder.deceasedSpouseNotApplyingReason(null);
         responseCaseDataBuilder.primaryApplicantParentAdoptedIn(null);
         responseCaseDataBuilder.primaryApplicantParentAdoptedOut(null);
         responseCaseDataBuilder.primaryApplicantParentAdoptionInEnglandOrWales(null);
@@ -1589,6 +1590,7 @@ public class CallbackResponseTransformer {
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
             .childAlive(caseData.getChildAlive())
+            .isApplicantParentDeceasedChild(caseData.getIsApplicantParentDeceasedChild())
             .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
             .solsIntestacyExecutorList(caseData.getSolsIntestacyExecutorList())
             .anyLivingWholeBloodSiblings(caseData.getAnyLivingWholeBloodSiblings());
@@ -2463,10 +2465,10 @@ public class CallbackResponseTransformer {
         String wholeOrHalfSiblingAfter = caseDetails.getData().getApplicantSameParentsAsDeceased();
         List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList = caseDetailsBefore.getData()
                 .getSolsIntestacyExecutorList();
-        log.info("Relationship to deceased before: {}", relationshipBefore);
+        log.info("Relationship to deceased before for case {}: {}",caseDetails.getId(), relationshipBefore);
         final var caseData = caseDetails.getData();
 
-        DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData, existingExecutorList);
+        DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData);
         String  otherExecutorExists = caseData.getOtherExecutorExists();
 
         if (YES.equalsIgnoreCase(otherExecutorExists) && (!relationshipAfter.equals(relationshipBefore)
@@ -2485,16 +2487,13 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    private DynamicRadioList getAppropriateRelationshipRadioList(CaseData caseData,
-                                                                 List<CollectionMember<IntestacyAdditionalExecutor>>
-                                                                         existingExecutorList) {
+    private DynamicRadioList getAppropriateRelationshipRadioList(CaseData caseData) {
         List<DynamicRadioListElement> listItems = new ArrayList<>();
         String relationship = StringUtils.defaultString(caseData.getSolsApplicantRelationshipToDeceased())
                 .toLowerCase();
 
         switch (relationship) {
-            case CHILD:
-            case GRAND_CHILD:
+            case CHILD, GRAND_CHILD:
                 listItems.add(buildRadioListItem(CHILD, CHILD_LABEL));
                 listItems.add(buildRadioListItem(GRAND_CHILD, GRAND_CHILD_LABEL));
                 break;
@@ -2514,29 +2513,8 @@ public class CallbackResponseTransformer {
                 break;
         }
 
-        DynamicRadioListElement selectedValue = null;
-        if (existingExecutorList != null && !existingExecutorList.isEmpty()) {
-            for (CollectionMember<IntestacyAdditionalExecutor> additionalExecutor : existingExecutorList) {
-                if (additionalExecutor.getValue().getSolsApplicantFamilyDetails() != null
-                        && additionalExecutor.getValue().getSolsApplicantFamilyDetails().getRelationship() != null) {
-                    DynamicRadioList relationshipRadioList =
-                            additionalExecutor.getValue().getSolsApplicantFamilyDetails().getRelationship();
-                    if (relationshipRadioList.getValue() != null
-                            && relationshipRadioList.getValue().getCode() != null) {
-                        String code = relationshipRadioList.getValue().getCode();
-                        selectedValue = listItems.stream()
-                                .filter(item -> code.equals(item.getCode()))
-                                .findFirst()
-                                .orElse(null);
-                    }
-                    break;
-                }
-            }
-        }
-
         return DynamicRadioList.builder()
                 .listItems(listItems)
-                .value(selectedValue)
                 .build();
     }
 
