@@ -149,7 +149,7 @@ class CaveatQueryServiceTest {
                 .thenReturn(emptyPage);
 
         caveatQueryService.findAndExpireCaveatExpiredCases("2023-10-01");
-        verify(ccdClientApi, times(2)).updateCaseAsCaseworker(
+        verify(ccdClientApi).updateCaseAsCaseworker(
                 any(), any(), any(), any(), any(), any(), any(), any());
     }
 
