@@ -186,7 +186,8 @@ public class NotificationService {
 
         List<CollectionMember<UploadDocument>> cwDocumentsUpload = caseData.getCwDocumentsUpload();
         if (cwDocumentsUpload != null && cwDocumentsUpload.size() > 0) {
-            log.info("Got cwDocumentsUpload for case: {}", cwDocumentsUpload);
+            log.info("Got cwDocumentsUpload for case : {}", cwDocumentsUpload);
+            addExpiryDatePersonalisation(personalisation);
             addCwDocumentToPersonalisation(cwDocumentsUpload, personalisation);
         }
 
@@ -227,6 +228,7 @@ public class NotificationService {
         List<CollectionMember<UploadDocument>> cwDocumentsUpload = caseData.getCwDocumentsUpload();
         if (cwDocumentsUpload != null && cwDocumentsUpload.size() > 0) {
             log.info("Got cwDocumentsUpload for case: {}", cwDocumentsUpload);
+            addExpiryDatePersonalisation(personalisation);
             addCwDocumentToPersonalisation(cwDocumentsUpload, personalisation);
         }
 
@@ -239,6 +241,12 @@ public class NotificationService {
         TemplatePreview previewResponse =
                 notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
         return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
+    }
+
+    private void addExpiryDatePersonalisation(Map<String, Object> personalisation) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate expiryDate = LocalDate.now().plusWeeks(26);
+        personalisation.put("expiry_date", expiryDate.format(formatter));
     }
 
     private void addCwDocumentToPersonalisation(
@@ -263,6 +271,7 @@ public class NotificationService {
                             false,
                             new RetentionPeriodDuration(26, ChronoUnit.WEEKS)
                     ));
+
         } catch (NotificationClientException e) {
             log.error("Error Preparing to send email : {} ", e.getMessage());
         }
