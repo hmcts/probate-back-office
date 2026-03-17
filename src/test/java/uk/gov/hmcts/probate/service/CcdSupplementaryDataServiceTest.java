@@ -13,6 +13,8 @@ import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -59,5 +61,25 @@ class CcdSupplementaryDataServiceTest {
         ccdSupplementaryDataService.submitSupplementaryDataToCcd("1234567812345678");
         verify(coreCaseDataApi, never())
                 .submitSupplementaryData(anyString(), anyString(), anyString(), anyMap());
+    }
+
+    @Test
+    void shouldHandleFailureWhenSubmittingSupplementaryData() {
+        SecurityDTO securityDTO = SecurityDTO.builder().authorisation("AUTH").build();
+
+        when(workAllocationToggleService.isProbateGSEnabled()).thenReturn(true);
+        when(supplementaryDataConfiguration.getHmctsId()).thenReturn("PROBATE");
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        when(authTokenGenerator.generate()).thenReturn("AUTH_TOKEN");
+
+        // Force failure
+        when(coreCaseDataApi.submitSupplementaryData(anyString(), anyString(), anyString(), anyMap()))
+                .thenThrow(new RuntimeException("CCD failure"));
+
+        assertDoesNotThrow(() ->
+                ccdSupplementaryDataService.submitSupplementaryDataToCcd("1234567812345678")
+        );
+
+        verify(coreCaseDataApi).submitSupplementaryData(anyString(), anyString(), anyString(), anyMap());
     }
 }

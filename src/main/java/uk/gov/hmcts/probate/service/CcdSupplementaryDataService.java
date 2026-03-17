@@ -47,19 +47,23 @@ public class CcdSupplementaryDataService {
     }
 
     public void submitSupplementaryDataToCcd(String caseId) {
-
         if (workAllocationToggleService.isProbateGSEnabled()) {
-            log.info("Global Search is enabled creating Supplementary data for case id {}", caseId);
-            SecurityDTO securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
-            Map<String, Map<String, Map<String, Object>>> supplementaryDataUpdates = new HashMap<>();
-            supplementaryDataUpdates.put(SUPPLEMENTARY_FIELD,
-                    singletonMap(SET_OPERATION, singletonMap(SERVICE_ID_FIELD,
-                            supplementaryDataConfiguration.getHmctsId())));
+            try {
+                log.info("Global Search is enabled creating Supplementary data for case id {}", caseId);
+                SecurityDTO securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
+                Map<String, Map<String, Map<String, Object>>> supplementaryDataUpdates = new HashMap<>();
+                supplementaryDataUpdates.put(SUPPLEMENTARY_FIELD,
+                        singletonMap(SET_OPERATION, singletonMap(SERVICE_ID_FIELD,
+                                supplementaryDataConfiguration.getHmctsId())));
 
-            coreCaseDataApi.submitSupplementaryData(securityDTO.getAuthorisation(),
-                    authTokenGenerator.generate(),
-                    caseId,
-                    supplementaryDataUpdates);
+                coreCaseDataApi.submitSupplementaryData(securityDTO.getAuthorisation(),
+                        authTokenGenerator.generate(),
+                        caseId,
+                        supplementaryDataUpdates);
+                log.info("Global Search supplementary data added for case id {}", caseId);
+            } catch (Exception ex) {
+                log.error("Failed to submit supplementary data for case id {}", caseId, ex);
+            }
 
         }
     }
