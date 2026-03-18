@@ -3,7 +3,5 @@
   {"CaseTypeID": "WillLodgement", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
-  {"CaseTypeID": "WillLodgement", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "WillLodgement", "UserRole": "TTL_profile", "CRUD": "R"},
-  {"CaseTypeID": "WillLodgement", "UserRole": "GS_profile", "CRUD": "R"}
+  {"CaseTypeID": "WillLodgement", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
 ]
