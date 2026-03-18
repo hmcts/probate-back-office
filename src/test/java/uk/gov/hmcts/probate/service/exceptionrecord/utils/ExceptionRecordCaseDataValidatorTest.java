@@ -33,8 +33,6 @@ class ExceptionRecordCaseDataValidatorTest {
             "Net qualifying value can't be greater than the net amount";
     private static final String DOD_BEFORE_DOB = "Date of death must be after date of birth";
     private static final String DOD_IN_FUTURE = "Date of death cannot be in the future";
-    private static final String DOD_DOB_ERROR = "Date of death validation error";
-
 
     private static final String SCANNED_DOCUMENT_TYPE_VALDIATION_ERROR = "Scan Document Type validation error";
     private static final String INVALID_SCAN_DOC_GOP =
@@ -196,8 +194,8 @@ class ExceptionRecordCaseDataValidatorTest {
     @Test
     void shouldThrowExceptionWhenDeathInFuture() {
         GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
-                .deceasedDateOfBirth(LocalDate.of(2000, 1, 1))
-                .deceasedDateOfDeath(LocalDate.of(2000, 1, 2))
+                .deceasedDateOfBirth(LocalDate.now())
+                .deceasedDateOfDeath(LocalDate.now().plusDays(100))
                 .build();
         OCRMappingException exception = assertThrows(OCRMappingException.class,
                 () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));

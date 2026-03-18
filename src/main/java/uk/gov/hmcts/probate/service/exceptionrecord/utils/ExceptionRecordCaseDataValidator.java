@@ -40,9 +40,9 @@ public class ExceptionRecordCaseDataValidator {
     private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE =
             "Net qualifying value can't be greater than the gross amount";
     private static final String IHT_VALDIATION_ERROR = "IHT Values validation error";
-    private static final String DOD_DOB_ERROR = "Date of death / Date of birth error";
-    private static final String DOD_BEFORE_DOB = "Date of death is before date of birth";
-    private static final String DOD_IN_FUTURE = "Date of death is in the future";
+    private static final String DOD_DOB_ERROR = "Date of death or date of birth error";
+    private static final String DOD_BEFORE_DOB = "Date of death must be after date of birth";
+    private static final String DOD_IN_FUTURE = "Date of death cannot be in the future";
     private static final String INVALID_SCANNED_DOCUMENT_TYPE_ERROR = "Invalid scanned Document Type Error "
             + "for case type '%s': [%s]";
 
@@ -97,13 +97,14 @@ public class ExceptionRecordCaseDataValidator {
 
     public static void validateDateOfDeath(GrantOfRepresentationData caseData) {
         List<String> errorMessages = new ArrayList<>();
-        if (!caseData.getDeceasedDateOfDeath().isAfter(caseData.getDeceasedDateOfBirth())) {
-            errorMessages.add(DOD_BEFORE_DOB);
+        if (caseData.getDeceasedDateOfBirth() != null && caseData.getDeceasedDateOfDeath() != null) {
+            if (!caseData.getDeceasedDateOfDeath().isAfter(caseData.getDeceasedDateOfBirth())) {
+                errorMessages.add(DOD_BEFORE_DOB);
+            }
+            if (caseData.getDeceasedDateOfDeath().isAfter(LocalDate.now())) {
+                errorMessages.add(DOD_IN_FUTURE);
+            }
         }
-        if (caseData.getDeceasedDateOfDeath().isAfter(LocalDate.now())) {
-            errorMessages.add(DOD_IN_FUTURE);
-        }
-
         if (!errorMessages.isEmpty()) {
             throw new OCRMappingException(DOD_DOB_ERROR, errorMessages);
         }
