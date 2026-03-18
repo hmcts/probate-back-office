@@ -203,7 +203,6 @@
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "sibling", "ListElement": "Sibling"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "parent", "ListElement": "Parent"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "other", "ListElement": "Other"},
-  {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "adoptedChild", "ListElement": "Adopted child"},
   {"LiveFrom": "06/01/2017", "ID": "sameParentFixedList", "ListElementCode": "bothParentsSame", "ListElement": "Yes, they are their whole blood sibling"},
   {"LiveFrom": "06/01/2017", "ID": "sameParentFixedList", "ListElementCode": "oneParentsSame", "ListElement": "No, they are their half blood sibling"},
   {"LiveFrom": "06/01/2017", "ID": "coApplicantRelationshipToDeceasedFixedList", "ListElementCode": "partner", "ListElement": "Spouse"},
