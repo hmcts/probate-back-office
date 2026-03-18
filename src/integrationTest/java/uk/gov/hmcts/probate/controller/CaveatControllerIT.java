@@ -29,9 +29,13 @@ import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -42,6 +46,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -85,13 +90,19 @@ class CaveatControllerIT {
     private SecurityUtils securityUtils;
     @MockitoBean
     private AuditEventService auditEventService;
-
+    @MockitoBean
+    private CoreCaseDataApi coreCaseDataApi;
+    @MockitoBean
+    private WorkAllocationToggleService workAllocationToggleService;
+    @MockitoBean
+    private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
     @Autowired
     private WebApplicationContext webApplicationContext;
 
 
     @MockitoSpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
+
 
     @BeforeEach
     public void setUp() throws NotificationClientException, BadRequestException {
@@ -124,6 +135,27 @@ class CaveatControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("data")));
+
+
+    }
+
+    @Test
+    void solsCaveatSupplementaryData_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
+        when(workAllocationToggleService.isProbateGSEnabled()).thenReturn(true);
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        mockMvc.perform(post("/caveat/supplementaryData")
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(coreCaseDataApi).submitSupplementaryData(any(), any(), any(), any());
     }
 
     @Test

@@ -24,6 +24,7 @@ ${dir}/idam-role.sh ccd-import
 ${dir}/idam-role.sh caseworker-caa
 ${dir}/idam-role.sh caseworker-approver
 ${dir}/idam-role.sh TTL_profile
+${dir}/idam-role.sh GS_profile
 
 # User used during the CCD import and ccd-role creation
 ${dir}/idam-create-caseworker.sh "ccd-import" "ccd.docker.default@hmcts.net"

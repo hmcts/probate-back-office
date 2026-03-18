@@ -41,4 +41,5 @@ binFolder=$(dirname "$0")
 (${binFolder}/ccd-add-role.sh caseworker-probate-bulkscan)
 (${binFolder}/ccd-add-role.sh caseworker-approver)
 (${binFolder}/ccd-add-role.sh TTL_profile)
+(${binFolder}/ccd-add-role.sh GS_profile)
 

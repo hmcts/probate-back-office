@@ -12,10 +12,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,6 +43,15 @@ class StandingSearchControllerIT {
     @MockitoBean
     private CoreCaseDataApi coreCaseDataApi;
 
+    @MockitoBean
+    private WorkAllocationToggleService workAllocationToggleService;
+
+    @MockitoBean
+    private SecurityUtils securityUtils;
+
+    @MockitoBean
+    private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
+    
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -54,6 +71,7 @@ class StandingSearchControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
     }
+
 
     @Test
     void standingSetupForDocRemoval() throws Exception {
@@ -76,4 +94,23 @@ class StandingSearchControllerIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void standingSearchSupplementaryDataShouldReturnDataPayloadOkResponseCode() throws Exception {
+        String ssPayload = testUtils.getStringFromFile("standingSearchPayload.json");
+        when(workAllocationToggleService.isProbateGSEnabled()).thenReturn(true);
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+
+        mockMvc.perform(post("/standing-search/supplementaryData")
+                        .content(ssPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(coreCaseDataApi).submitSupplementaryData(any(), any(), any(), any());
+    }
+
 }

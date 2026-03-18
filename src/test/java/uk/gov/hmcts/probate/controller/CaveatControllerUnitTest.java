@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
@@ -94,6 +95,8 @@ class CaveatControllerUnitTest {
     private CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
     @Mock
     private HttpServletRequest httpServletRequestMock;
+    @Mock
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
 
     @BeforeEach
     public void setUp() {
@@ -102,7 +105,8 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDodValidationRule,
             caveatDataTransformer, caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService,
             notificationService, caveatNotificationService, confirmationResponseService, paymentsService, feeService,
-            registrarDirectionService, documentGeneratorService, caveatAcknowledgementValidationRule);
+            registrarDirectionService, documentGeneratorService, caveatAcknowledgementValidationRule,
+                ccdSupplementaryDataService);
     }
 
     @Test
