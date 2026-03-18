@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,11 +57,11 @@ public class CcdSupplementaryDataService {
                         singletonMap(SET_OPERATION, singletonMap(SERVICE_ID_FIELD,
                                 supplementaryDataConfiguration.getHmctsId())));
 
-                coreCaseDataApi.submitSupplementaryData(securityDTO.getAuthorisation(),
+                CaseDetails response = coreCaseDataApi.submitSupplementaryData(securityDTO.getAuthorisation(),
                         authTokenGenerator.generate(),
                         caseId,
                         supplementaryDataUpdates);
-                log.info("Global Search supplementary data added for case id {}", caseId);
+                log.info("Global Search supplementary data added for case id {}. CCD Response: {}", caseId, response);
             } catch (Exception ex) {
                 log.error("Failed to submit supplementary data for case id {}", caseId, ex);
             }
