@@ -1,0 +1,4 @@
+[
+  {"CaseTypeID": "WillLodgement", "UserRole": "TTL_profile", "CRUD": "R"},
+  {"CaseTypeID": "WillLodgement", "UserRole": "GS_profile", "CRUD": "R"}
+]

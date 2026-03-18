@@ -1,0 +1,5 @@
+[
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "WillLodgement", "CaseStateID": "WillLodgementCreated", "UserRole": "GS_profile", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "WillLodgement", "CaseStateID": "WillLodged", "UserRole": "GS_profile", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "WillLodgement", "CaseStateID": "WillWithdrawn", "UserRole": "GS_profile", "CRUD": "CRUD"}
+]
