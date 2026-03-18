@@ -8,6 +8,8 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,9 @@ class ExceptionRecordCaseDataValidatorTest {
             "Net qualifying value can't be greater than the gross amount";
     private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE =
             "Net qualifying value can't be greater than the net amount";
+    private static final String DOD_BEFORE_DOB = "Date of death must be after date of birth";
+    private static final String DOD_IN_FUTURE = "Date of death cannot be in the future";
+    private static final String DOD_DOB_ERROR = "Date of death validation error";
 
 
     private static final String SCANNED_DOCUMENT_TYPE_VALDIATION_ERROR = "Scan Document Type validation error";
@@ -162,4 +167,61 @@ class ExceptionRecordCaseDataValidatorTest {
                 () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE, exception.getWarnings().get(0));
     }
+
+    @Test
+    void shouldThrowExceptionWhenDeathBeforeBirth() {
+        GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
+                .deceasedDateOfBirth(LocalDate.of(2025, 1, 1))
+                .deceasedDateOfDeath(LocalDate.of(1990, 1, 1))
+                .build();
+
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
+                () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
+
+        assertEquals(DOD_BEFORE_DOB, exception.getWarnings().get(0));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeathIsSameAsBirth() {
+        LocalDate date = LocalDate.of(2024, 11, 24);
+        GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
+                .deceasedDateOfBirth(date)
+                .deceasedDateOfDeath(date)
+                .build();
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
+                () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
+        assertEquals(DOD_BEFORE_DOB, exception.getWarnings().get(0));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeathInFuture() {
+        GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
+                .deceasedDateOfBirth(LocalDate.of(2000, 1, 1))
+                .deceasedDateOfDeath(LocalDate.of(2000, 1, 2))
+                .build();
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
+                () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
+        assertEquals(DOD_IN_FUTURE, exception.getWarnings().get(0));
+    }
+
+    @Test
+    void shouldThrowMultipleErrorsForInvalidDates() {
+        GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
+                .deceasedDateOfBirth(LocalDate.now())
+                .deceasedDateOfDeath(LocalDate.now().plusDays(1))
+                .build();
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
+                () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
+        assertEquals(DOD_IN_FUTURE, exception.getWarnings().get(0));
+    }
+
+    @Test
+    void shouldDoNothingForValidDates() {
+        GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
+                .deceasedDateOfBirth(LocalDate.of(1950, 1, 1))
+                .deceasedDateOfDeath(LocalDate.of(2020, 1, 1))
+                .build();
+        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
+    }
+
 }

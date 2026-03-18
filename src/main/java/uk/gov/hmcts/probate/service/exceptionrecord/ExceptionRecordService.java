@@ -130,9 +130,6 @@ public class ExceptionRecordService {
 
             ExceptionRecordOCRFields exceptionRecordOCRFields = erRequest.getOCRFieldsObject();
 
-            List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                    .setDefaultGorValues(exceptionRecordOCRFields, grantType);
-
             List<CollectionMember<String>> autoCaseWarnings = ocrFieldModifierUtils
                     .checkWarnings(exceptionRecordOCRFields);
 
@@ -141,6 +138,11 @@ public class ExceptionRecordService {
                     erGrantOfRepresentationMapper.toCcdData(exceptionRecordOCRFields, grantType);
 
             ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
+
+            ExceptionRecordCaseDataValidator.validateDateOfDeath(grantOfRepresentationData);
+
+            List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                    .setDefaultGorValues(exceptionRecordOCRFields, grantType);
 
             grantOfRepresentationData.setModifiedOCRFieldList(modifiedFields);
 
