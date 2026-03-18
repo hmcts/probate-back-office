@@ -1,0 +1,4 @@
+[
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "TTL", "UserRole": "TTL_profile", "CRUD": "CRU"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "SearchCriteria", "UserRole": "GS_profile", "CRUD": "R"}
+]
