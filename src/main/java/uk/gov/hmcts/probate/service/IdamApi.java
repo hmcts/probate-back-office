@@ -63,4 +63,10 @@ public interface IdamApi {
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
             @RequestParam("query") final String elasticSearchQuery
     );
+
+    @GetMapping("/api/v2/users/{userId}")
+    List<UserDetails> getUser(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+            @RequestParam(value = "userId") String userId
+    );
 }
