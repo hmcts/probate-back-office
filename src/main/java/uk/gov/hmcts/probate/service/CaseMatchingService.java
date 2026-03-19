@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
-import uk.gov.hmcts.probate.service.CaseMatchingJsonService.CaseMatchingJson;
+import uk.gov.hmcts.probate.query.CaseMatchingJson;
 
 import java.util.Collection;
 import java.util.List;
