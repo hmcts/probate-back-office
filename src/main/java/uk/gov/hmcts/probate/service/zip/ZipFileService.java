@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.QuoteMode;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -78,8 +79,6 @@ public class ZipFileService {
         ADMON_WILL_GRANT_REISSUE, AD_COLLIGENDA_BONA_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE,
         WELSH_INTESTACY_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE};
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/ManifestFileHeaderRow.csv";
-    private static final String HEADER_ROW_FILE_WITHOUT_COMMENT =
-            "templates/dataExtracts/ManifestFileHeaderRowWithoutComment.csv";
     private static final String ERROR_MESSAGE = "Exception occurred while generating zip file ";
 
     public File generateZipFile(List<ReturnedCaseDetails> cases, File tempFile, String date, DataExtractType type) {
@@ -305,7 +304,12 @@ public class ZipFileService {
                                       boolean shouldIncludeComment)
             throws IOException {
         StringBuilder data = new StringBuilder();
-        try (final CSVPrinter csvWriter = new CSVPrinter(data, CSVFormat.RFC4180)) {
+        CSVFormat format = CSVFormat.DEFAULT.builder()
+                .setRecordSeparator("\n")
+                .setQuoteMode(QuoteMode.MINIMAL)
+                .build();
+
+        try (final CSVPrinter csvWriter = new CSVPrinter(data, format)) {
             csvWriter.print("Case reference number");
             csvWriter.print("Document id");
             csvWriter.print("Document type");
@@ -327,8 +331,8 @@ public class ZipFileService {
                 csvWriter.print(zippedManifestData.getCaseNumber());
                 csvWriter.print(zippedManifestData.getDocumentId());
                 csvWriter.print(zippedManifestData.getDocType());
-                csvWriter.print(zippedManifestData.getSubType());
                 csvWriter.print(zippedManifestData.getCaseType());
+                csvWriter.print(zippedManifestData.getSubType());
                 csvWriter.print(zippedManifestData.getDocumentName());
                 csvWriter.print(zippedManifestData.getErrorDescription());
                 if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
