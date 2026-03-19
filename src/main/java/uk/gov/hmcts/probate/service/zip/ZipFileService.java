@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.QuoteMode;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -332,7 +333,7 @@ public class ZipFileService {
                 csvWriter.print(zippedManifestData.getDocumentName());
                 csvWriter.print(zippedManifestData.getErrorDescription());
                 if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
-                    csvWriter.print(zippedManifestData.getComment());
+                    csvWriter.print(sanitizeComment(zippedManifestData.getComment()));
                 }
                 csvWriter.println();
             }
@@ -345,5 +346,12 @@ public class ZipFileService {
                 .errorDescription("").build();
         ByteArrayResource byteArrayResource = new ByteArrayResource(data.toString().getBytes(StandardCharsets.UTF_8));
         zipMultipleDocs(zos, byteArrayResource, zippedManifestData.getDocumentName());
+    }
+
+    private static String sanitizeComment(String comment) {
+        if (comment == null) {
+            return "null";
+        }
+        return comment.replaceAll("[\n\r,|;\"']", " ").trim();
     }
 }
