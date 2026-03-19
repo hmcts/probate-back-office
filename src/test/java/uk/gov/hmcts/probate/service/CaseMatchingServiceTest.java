@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
+import uk.gov.hmcts.probate.query.CaseMatchingJson;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -47,7 +48,7 @@ class CaseMatchingServiceTest {
     private CaseMatchingCriteria caseMatchingCriteria;
     @Mock
     private Case caseMock;
-    CaseMatchingJsonService.CaseMatchingJson caseMatchingJsonMock;
+    CaseMatchingJson caseMatchingJsonMock;
 
     @BeforeEach
     public void setUp() {
