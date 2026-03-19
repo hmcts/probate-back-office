@@ -1,18 +1,6 @@
 tags:
   probate-ccd-stack: true
 
-idam-pr:
-  enabled: true
-  releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
-  redirect_uris:
-    Probate:
-      - https://${SERVICE_FQDN}/oauth2/callback
-    XUI:
-      - https://xui-${SERVICE_FQDN}/oauth2/callback
-      - http://xui-${SERVICE_FQDN}/oauth2/callback
-    CCD Admin:
-      - https://admin-web-${SERVICE_FQDN}/oauth2redirect
-
 ccd:
   ccd:
     apiGatewayWeb:
@@ -62,8 +50,6 @@ ccd:
       environment:
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
         IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
-    idam-pr:
-      enabled: true
   ccd-case-print-service:
     enabled: true
     nodejs:
