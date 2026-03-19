@@ -781,3 +781,4 @@ https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client
 7. monitor your definition store pod to ensure the upload has completed - eg. probate-back-office-pr-XXXX-ccd-definition-store-yyyyyyy - look for a line failing the TranslationService at the end... this means its passed upload!
 8. Check your XUI for any new wa XLSX usage - https://xui-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
 9. unset WA_ENABLED if needed or set to false
+
