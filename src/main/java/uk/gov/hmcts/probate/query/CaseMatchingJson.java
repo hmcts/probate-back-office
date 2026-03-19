@@ -17,6 +17,8 @@ public class CaseMatchingJson {
     private final JsonObjectUtils jsonObjectUtils;
     private final AtomicReference<JSONObject> jsonObject;
 
+    private static final String QUERY = "query";
+
     public CaseMatchingJson(
             final JsonObjectUtils jsonObjectUtils,
             final JSONObject queryJson) {
@@ -32,9 +34,9 @@ public class CaseMatchingJson {
         final JSONObject forenameQuery = jsonObjectUtils.findObjectInQuery(
                 query,
                 pointer,
-                "query",
+                QUERY,
                 ":deceasedForenames");
-        forenameQuery.put("query", deceasedForenames);
+        forenameQuery.put(QUERY, deceasedForenames);
     }
 
     private void updateSurname(
@@ -44,9 +46,9 @@ public class CaseMatchingJson {
         final JSONObject surnameQuery = jsonObjectUtils.findObjectInQuery(
                 query,
                 pointer,
-                "query",
+                QUERY,
                 ":deceasedSurname");
-        surnameQuery.put("query", deceasedSurname);
+        surnameQuery.put(QUERY, deceasedSurname);
     }
 
     private void updateFullName(
@@ -56,9 +58,9 @@ public class CaseMatchingJson {
         final JSONObject fullNameQuery = jsonObjectUtils.findObjectInQuery(
                 query,
                 pointer,
-                "query",
+                QUERY,
                 ":deceasedFullName");
-        fullNameQuery.put("query", deceasedFullName);
+        fullNameQuery.put(QUERY, deceasedFullName);
     }
 
     @CheckReturnValue

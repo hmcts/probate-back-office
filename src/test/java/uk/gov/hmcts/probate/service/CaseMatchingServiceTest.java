@@ -48,7 +48,10 @@ class CaseMatchingServiceTest {
     private CaseMatchingCriteria caseMatchingCriteria;
     @Mock
     private Case caseMock;
+    @Mock
     CaseMatchingJson caseMatchingJsonMock;
+    @Mock
+    FeatureToggleService featureToggleServiceMock;
 
     @BeforeEach
     public void setUp() {
@@ -58,7 +61,8 @@ class CaseMatchingServiceTest {
                 fileSystemResourceService,
                 elasticSearchService,
                 caseMatchBuilderService,
-                caseMatchingJsonService);
+                caseMatchingJsonService,
+                featureToggleServiceMock);
 
         // common mock behaviours
         when(elasticSearchService.runQuery(any(CaseType.class), anyString()))
@@ -88,6 +92,9 @@ class CaseMatchingServiceTest {
                 .thenReturn(
                         Optional.of(new JSONObject("{}")),
                         Optional.empty());
+
+        when(featureToggleServiceMock.useJsonLibForCaseMatching())
+                .thenReturn(false);
 
         // mocked input data behaviours
         CaseData caseData = CaseData.builder()

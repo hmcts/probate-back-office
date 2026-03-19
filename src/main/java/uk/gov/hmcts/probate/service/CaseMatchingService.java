@@ -32,16 +32,19 @@ public class CaseMatchingService {
     private final ElasticSearchService elasticSearchService;
     private final CaseMatchBuilderService caseMatchBuilderService;
     private final CaseMatchingJsonService caseMatchingJsonService;
+    private final FeatureToggleService featureToggleService;
 
     public CaseMatchingService(
             final FileSystemResourceService fileSystemResourceService,
             final ElasticSearchService elasticSearchService,
             final CaseMatchBuilderService caseMatchBuilderService,
-            final CaseMatchingJsonService caseMatchingJsonService) {
+            final CaseMatchingJsonService caseMatchingJsonService,
+            final FeatureToggleService featureToggleService) {
         this.fileSystemResourceService = Objects.requireNonNull(fileSystemResourceService);
         this.elasticSearchService = Objects.requireNonNull(elasticSearchService);
         this.caseMatchBuilderService = Objects.requireNonNull(caseMatchBuilderService);
         this.caseMatchingJsonService = Objects.requireNonNull(caseMatchingJsonService);
+        this.featureToggleService = Objects.requireNonNull(featureToggleService);
     }
 
     MatchedCases oldFindMatches(final CaseType caseType, final CaseMatchingCriteria criteria) {
@@ -105,12 +108,12 @@ public class CaseMatchingService {
     }
 
     public List<CaseMatch> findMatches(CaseType caseType, CaseMatchingCriteria criteria) {
-
-        log.info("running new findMatches for case type {}", caseType);
-        final MatchedCases newMatchedCases = newFindMatches(caseType, criteria);
-        log.info("completed new findMatches for case type {}", caseType);
-        final MatchedCases matchedCases = oldFindMatches(caseType, criteria);
-        log.info("completed old findMatches for case type {}", caseType);
+        final MatchedCases matchedCases;
+        if (featureToggleService.useJsonLibForCaseMatching()) {
+            matchedCases = newFindMatches(caseType, criteria);
+        } else {
+            matchedCases = oldFindMatches(caseType, criteria);
+        }
 
         String caseIds = matchedCases.getCases().stream()
                 .map(c -> Optional.ofNullable(c.getId())

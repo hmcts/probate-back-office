@@ -36,7 +36,6 @@ public class JsonObjectUtils {
         if (!(fromPointer instanceof JSONArray)) {
             throw new IllegalStateException("Expected JSON array but got " + fromPointer);
         }
-        final JSONArray array = (JSONArray) fromPointer;
-        return array;
+        return (JSONArray) fromPointer;
     }
 }

@@ -29,6 +29,9 @@ public class CaseMatchingJsonService {
     private static final String ALIAS_NAME_SOLS_ALIAS_A_BASE = JSON_BASE + "aliases_to_aliases_sub_query_a.json";
     private static final String ALIAS_NAME_SOLS_ALIAS_B_BASE = JSON_BASE + "aliases_to_aliases_sub_query_b.json";
 
+    private static final String QUERY = "query";
+    private static final String DECEASED_ALIAS = ":deceasedAlias";
+    private static final String MULTI_MATCH = "/multi_match";
 
     private final FileSystemResourceService fileSystemResourceService;
     private final JsonObjectUtils jsonObjectUtils;
@@ -106,16 +109,16 @@ public class CaseMatchingJsonService {
         final JSONObject forenameMatch = jsonObjectUtils.findObjectInQuery(
                 aliasNameAQuery,
                 new JSONPointer("/bool/must/0/multi_match"),
-                "query",
-                ":deceasedAlias");
-        forenameMatch.put("query", alias);
+                QUERY,
+                DECEASED_ALIAS);
+        forenameMatch.put(QUERY, alias);
 
         final JSONObject surnameMatch = jsonObjectUtils.findObjectInQuery(
                 aliasNameAQuery,
                 new JSONPointer("/bool/must/1/multi_match"),
-                "query",
-                ":deceasedAlias");
-        surnameMatch.put("query", alias);
+                QUERY,
+                DECEASED_ALIAS);
+        surnameMatch.put(QUERY, alias);
 
         return new CaseMatchingJson(jsonObjectUtils, aliasNameAQuery);
     }
@@ -127,16 +130,16 @@ public class CaseMatchingJsonService {
         final JSONObject forenameMatch = jsonObjectUtils.findObjectInQuery(
                 aliasNameBQuery,
                 new JSONPointer("/bool/must/0/multi_match"),
-                "query",
-                ":deceasedAlias");
-        forenameMatch.put("query", alias);
+                QUERY,
+                DECEASED_ALIAS);
+        forenameMatch.put(QUERY, alias);
 
         final JSONObject surnameMatch = jsonObjectUtils.findObjectInQuery(
                 aliasNameBQuery,
                 new JSONPointer("/bool/must/1/multi_match"),
-                "query",
-                ":deceasedAlias");
-        surnameMatch.put("query", alias);
+                QUERY,
+                DECEASED_ALIAS);
+        surnameMatch.put(QUERY, alias);
 
         return new CaseMatchingJson(jsonObjectUtils, aliasNameBQuery);
     }
@@ -148,10 +151,10 @@ public class CaseMatchingJsonService {
 
         final JSONObject match = jsonObjectUtils.findObjectInQuery(
                 aliasNameAliasAQuery,
-                new JSONPointer("/multi_match"),
-                "query",
-                ":deceasedAlias");
-        match.put("query", alias);
+                new JSONPointer(MULTI_MATCH),
+                QUERY,
+                DECEASED_ALIAS);
+        match.put(QUERY, alias);
 
         return new CaseMatchingJson(jsonObjectUtils, aliasNameAliasAQuery);
     }
@@ -163,10 +166,10 @@ public class CaseMatchingJsonService {
 
         final JSONObject match = jsonObjectUtils.findObjectInQuery(
                 aliasNameAliasBQuery,
-                new JSONPointer("/multi_match"),
-                "query",
-                ":deceasedAlias");
-        match.put("query", alias);
+                new JSONPointer(MULTI_MATCH),
+                QUERY,
+                DECEASED_ALIAS);
+        match.put(QUERY, alias);
 
         return new CaseMatchingJson(jsonObjectUtils, aliasNameAliasBQuery);
     }
@@ -178,10 +181,10 @@ public class CaseMatchingJsonService {
 
         final JSONObject match = jsonObjectUtils.findObjectInQuery(
                 aliasNameSolsAliasAQuery,
-                new JSONPointer("/multi_match"),
-                "query",
-                ":deceasedAlias");
-        match.put("query", alias);
+                new JSONPointer(MULTI_MATCH),
+                QUERY,
+                DECEASED_ALIAS);
+        match.put(QUERY, alias);
 
         return new CaseMatchingJson(jsonObjectUtils, aliasNameSolsAliasAQuery);
     }
@@ -193,10 +196,10 @@ public class CaseMatchingJsonService {
 
         final JSONObject match = jsonObjectUtils.findObjectInQuery(
                 aliasNameSolsAliasBQuery,
-                new JSONPointer("/multi_match"),
-                "query",
-                ":deceasedAlias");
-        match.put("query", alias);
+                new JSONPointer(MULTI_MATCH),
+                QUERY,
+                DECEASED_ALIAS);
+        match.put(QUERY, alias);
 
         return new CaseMatchingJson(jsonObjectUtils, aliasNameSolsAliasBQuery);
     }
