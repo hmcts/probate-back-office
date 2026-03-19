@@ -22,7 +22,6 @@ import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.CaseType;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
@@ -84,6 +83,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
@@ -130,6 +130,7 @@ class NotificationServiceIT {
     private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
     private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
+    private static final String PERSONALISATION_UPLOAD_CHECK = "upload_check";
     private static final String PERSONALISATION_CAVEAT_CASE_ID = "caveat_case_id";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
@@ -383,13 +384,11 @@ class NotificationServiceIT {
                 .channelChoice(CHANNEL_CHOICE_PAPERFORM)
                 .primaryApplicantForenames("Fred Smith")
                 .registryLocation("ctsc")
-                .cwDocumentsUpload(List.of(
-                        new CollectionMember<>(UploadDocument.builder()
+                .cwDocumentUpload(UploadDocument.builder()
                                 .documentLink(DocumentLink.builder()
                                         .documentBinaryUrl("http://example.com/test.pdf")
                                         .build())
                                 .build())
-                ))
                 .primaryApplicantEmailAddress("primary@probate-test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
@@ -1315,7 +1314,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
             localDateToWelshStringConverter.convert(personalCaseDataCtsc.getData().getDeceasedDateOfDeath()));
-
+        personalisation.put(PERSONALISATION_UPLOAD_CHECK, personalCaseDataCtsc.getData().getUploadFileCheck());
 
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, null))
             .thenReturn(caveatStoppedCtscCaseData.getData());
@@ -1368,6 +1367,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
             localDateToWelshStringConverter.convert(personalCaseDataCtscBilingual.getData().getDeceasedDateOfDeath()));
+        personalisation.put(PERSONALISATION_UPLOAD_CHECK, personalCaseDataCtscBilingual.getData().getUploadFileCheck());
 
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, null))
             .thenReturn(caveatStoppedCtscCaseData.getData());
@@ -1415,6 +1415,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH,
             localDateToWelshStringConverter.convert(solsCaseDataCtsc.getData().getDeceasedDateOfDeath()));
+        personalisation.put(PERSONALISATION_UPLOAD_CHECK, solsCaseDataCtsc.getData().getUploadFileCheck());
 
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, null))
             .thenReturn(caveatStoppedCtscCaseData.getData());
@@ -1573,6 +1574,8 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtscRequestInformation.getId().toString());
         personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter
             .convert(personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeath()));
+        personalisation.put(PERSONALISATION_UPLOAD_CHECK, personalCaseDataCtscRequestInformation.getData()
+                .getUploadFileCheck());
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
 
@@ -1666,6 +1669,8 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, solsCaseDataCtscRequestInformation.getId().toString());
         personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter
             .convert(solsCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeath()));
+        personalisation.put(PERSONALISATION_UPLOAD_CHECK, solsCaseDataCtscRequestInformation.getData()
+                .getUploadFileCheck());
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
 
@@ -1895,7 +1900,7 @@ class NotificationServiceIT {
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
                 .registryLocation("Bristol")
-                .evidenceHandled(Constants.NO)
+                .evidenceHandled(NO)
                 .build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -1945,7 +1950,7 @@ class NotificationServiceIT {
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
                 .registryLocation("Bristol")
-                .evidenceHandled(Constants.NO)
+                .evidenceHandled(NO)
                 .grantDelayedNotificationDate(LocalDate.of(2020, 12, 31))
                 .build(),
                 LAST_MODIFIED, CASE_ID);
@@ -1962,7 +1967,7 @@ class NotificationServiceIT {
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
                 .registryLocation("Bristol")
-                .evidenceHandled(Constants.NO)
+                .evidenceHandled(NO)
                 .build(),
                 LAST_MODIFIED, CASE_ID);
 
@@ -1980,7 +1985,7 @@ class NotificationServiceIT {
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
                 .registryLocation("Bristol")
-                .evidenceHandled(Constants.NO)
+                .evidenceHandled(NO)
                 .scannedDocuments(new ArrayList())
                 .build(),
                 LAST_MODIFIED, CASE_ID);
@@ -2001,7 +2006,7 @@ class NotificationServiceIT {
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
                 .registryLocation("Bristol")
-                .evidenceHandled(Constants.NO)
+                .evidenceHandled(NO)
                 .scannedDocuments(Arrays.asList(collectionMember))
                 .build(),
                 LAST_MODIFIED, CASE_ID);
@@ -2019,7 +2024,7 @@ class NotificationServiceIT {
                 .applicationType(SOLICITOR)
                 .primaryApplicantEmailAddress("")
                 .registryLocation("Bristol")
-                .evidenceHandled(Constants.NO)
+                .evidenceHandled(NO)
                 .grantAwaitingDocumentationNotificationDate(LocalDate.now())
                 .build(),
                 LAST_MODIFIED, CASE_ID);
@@ -2089,8 +2094,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
         personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter
                 .convert(caseDetails.getData().getDeceasedDateOfDeath()));
-
-
+        personalisation.put(PERSONALISATION_UPLOAD_CHECK, caseDetails.getData().getUploadFileCheck());
 
         verify(notificationClient).sendEmail(
                 eq("sol-application-received"),
@@ -2258,13 +2262,11 @@ class NotificationServiceIT {
                 .deceasedDateOfDeath(LocalDate.of(2022, 12, 12))
                 .boStopDetails("stopDetails")
                 .boStopDetailsDeclarationParagraph("No")
-                .cwDocumentsUpload(List.of(
-                        new CollectionMember<>(UploadDocument.builder()
+                .cwDocumentUpload(UploadDocument.builder()
                                 .documentLink(DocumentLink.builder()
                                         .documentBinaryUrl("http://example.com/test.pdf")
                                         .build())
                                 .build())
-                ))
                 .build(), LAST_MODIFIED, ID);
         when(templatePreviewResponse.getHtml()).thenReturn(Optional.of(expectedHtml));
         when(documentManagementService.getDocumentByBinaryUrl("http://example.com/test.pdf"))

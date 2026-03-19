@@ -340,12 +340,28 @@ public class CallbackResponseTransformer {
                     .expectedResponseDate(null)
                     .documentUploadIssue(null);
         }
+        if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())) {
+            responseCaseDataBuilder.cwDocumentUpload(null)
+                    .cwDocumentUploadedList(addCaseworkerUploadDocument(caseData));
+        }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailRequestInfoNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailRequestInfoNotification());
         }
 
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private List<CollectionMember<UploadDocument>> addCaseworkerUploadDocument(CaseData caseData) {
+        List<CollectionMember<UploadDocument>> currentUploads = caseData.getCwDocumentUploadedList();
+        if (currentUploads == null) {
+            currentUploads = new ArrayList<>();
+        }
+        UploadDocument uploadedDoc = caseData.getCwDocumentUpload();
+        if (uploadedDoc != null) {
+            currentUploads.add(new CollectionMember<>(null, uploadedDoc));
+        }
+        return currentUploads;
     }
 
     public CallbackResponse transformCitizenHubResponse(CallbackRequest callbackRequest) {
@@ -1446,7 +1462,8 @@ public class CallbackResponseTransformer {
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
             .uploadFileCheck(caseData.getUploadFileCheck())
-            .cwDocumentsUpload(caseData.getCwDocumentsUpload());
+            .cwDocumentUpload(caseData.getCwDocumentUpload())
+            .cwDocumentUploadedList(caseData.getCwDocumentUploadedList());
 
         handleDeceasedAliases(
                 builder,
@@ -2237,7 +2254,8 @@ public class CallbackResponseTransformer {
                 .informationNeeded(null)
                 .informationNeededByPost(null)
                 .boStopDetails(null)
-                .boStopDetailsDeclarationParagraph(null);
+                .boStopDetailsDeclarationParagraph(null)
+                .uploadFileCheck(null);
     }
 
     public void defaultInformationRequestSwitch(CallbackRequest callbackRequest,

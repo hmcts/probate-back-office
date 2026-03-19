@@ -640,7 +640,8 @@ public class CaseData extends CaseDataParent {
 
     private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
     private final List<CollectionMember<String>> autoCaseWarnings;
-    private final List<CollectionMember<UploadDocument>> cwDocumentsUpload;
+    private final UploadDocument cwDocumentUpload;
+    private final List<CollectionMember<UploadDocument>> cwDocumentUploadedList;
     private final String uploadFileCheck;
 
     // @Getter(lazy = true)

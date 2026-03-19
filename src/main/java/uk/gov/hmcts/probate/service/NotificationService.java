@@ -57,7 +57,6 @@ import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.RetentionPeriodDuration;
 
-import jakarta.validation.Valid;
 import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
@@ -82,6 +81,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
@@ -175,6 +175,7 @@ public class NotificationService {
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                 registry);
+        personalisation.put("upload_check", caseData.getUploadFileCheck());
 
         if (state == state.CASE_STOPPED_CAVEAT) {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
@@ -184,12 +185,7 @@ public class NotificationService {
         personalisation = updatePersonalisationForSolicitorGrantIssuedEmails(state, caseData, caseDetails.getId(),
                 personalisation);
 
-        List<CollectionMember<UploadDocument>> cwDocumentsUpload = caseData.getCwDocumentsUpload();
-        if (cwDocumentsUpload != null && cwDocumentsUpload.size() > 0) {
-            log.info("Got cwDocumentsUpload for case : {}", cwDocumentsUpload);
-            addExpiryDatePersonalisation(personalisation, caseData);
-            addCwDocumentToPersonalisation(cwDocumentsUpload, personalisation);
-        }
+        addPersonalisationForUploadDocument(caseData, personalisation);
 
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
@@ -223,14 +219,10 @@ public class NotificationService {
         Map<String, Object> personalisation =
                 grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                         registry);
+        personalisation.put("upload_check", caseData.getUploadFileCheck());
 
         updatePersonalisationForSolicitor(caseData, personalisation);
-        List<CollectionMember<UploadDocument>> cwDocumentsUpload = caseData.getCwDocumentsUpload();
-        if (cwDocumentsUpload != null && cwDocumentsUpload.size() > 0) {
-            log.info("Got cwDocumentsUpload for case: {}", cwDocumentsUpload);
-            addExpiryDatePersonalisation(personalisation, caseData);
-            addCwDocumentToPersonalisation(cwDocumentsUpload, personalisation);
-        }
+        addPersonalisationForUploadDocument(caseData, personalisation);
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
@@ -243,25 +235,35 @@ public class NotificationService {
         return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
     }
 
-    private void addExpiryDatePersonalisation(Map<String, Object> personalisation, CaseData caseData) {
+    private void addPersonalisationForUploadDocument(CaseData caseData, Map<String, Object> personalisation) {
+        UploadDocument cwDocumentUpload = caseData.getCwDocumentUpload();
+        if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())
+                && cwDocumentUpload != null) {
+            log.info("Got cwDocumentUpload for case: {}", cwDocumentUpload);
+            addExpiryDatePersonalisation(personalisation);
+            addCwDocumentToPersonalisation(cwDocumentUpload, personalisation);
+        } else if (NO.equalsIgnoreCase(caseData.getUploadFileCheck())) {
+            personalisation.put("link_to_file", " ");
+            personalisation.put("expiry_date", " ");
+        }
+    }
+
+    private void addExpiryDatePersonalisation(Map<String, Object> personalisation) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate expiryDate = LocalDate.now().plusWeeks(26);
-        personalisation.put("uploadFileCheck", caseData.getUploadFileCheck());
         personalisation.put("expiry_date", expiryDate.format(formatter));
     }
 
     private void addCwDocumentToPersonalisation(
-            List<CollectionMember<UploadDocument>> cwDocumentsUpload,
+            UploadDocument cwDocumentUpload,
             Map<String, Object> personalisation) {
-        UploadDocument document = cwDocumentsUpload.getLast().getValue();
-        log.info("Got cwDocumentsUpload for case: {}", document.getDocumentLink());
         try {
-            byte[] fileContents = documentManagementService.getDocumentByBinaryUrl(document.getDocumentLink()
+            byte[] fileContents = documentManagementService.getDocumentByBinaryUrl(cwDocumentUpload.getDocumentLink()
                     .getDocumentBinaryUrl());
             cwPrepareUpload(fileContents, personalisation);
         } catch (IOException e) {
-            log.error("Error reading CW document file   : {}", e.getMessage());
+            log.error("Error reading CW document file  : {}", e.getMessage());
         }
     }
 
