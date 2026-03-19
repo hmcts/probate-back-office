@@ -384,6 +384,7 @@ class NotificationServiceIT {
                 .channelChoice(CHANNEL_CHOICE_PAPERFORM)
                 .primaryApplicantForenames("Fred Smith")
                 .registryLocation("ctsc")
+                .uploadFileCheck(YES)
                 .cwDocumentUpload(UploadDocument.builder()
                                 .documentLink(DocumentLink.builder()
                                         .documentBinaryUrl("http://example.com/test.pdf")

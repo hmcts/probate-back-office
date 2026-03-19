@@ -250,9 +250,9 @@ public class NotificationService {
 
     private void addExpiryDatePersonalisation(Map<String, Object> personalisation) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter expiryFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate expiryDate = LocalDate.now().plusWeeks(26);
-        personalisation.put("expiry_date", expiryDate.format(formatter));
+        personalisation.put("expiry_date", expiryDate.format(expiryFormatter));
     }
 
     private void addCwDocumentToPersonalisation(
