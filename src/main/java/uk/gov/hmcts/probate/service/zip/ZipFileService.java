@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.service.zip;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -299,42 +301,41 @@ public class ZipFileService {
         zos.closeEntry();
     }
 
-    private void addHeaderRow(StringBuilder data, boolean shouldIncludeComment) {
-        String header = "";
-        if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
-            header = fileSystemResourceService.getFileFromResourceAsString(HEADER_ROW_FILE);
-        } else {
-            header = fileSystemResourceService.getFileFromResourceAsString(HEADER_ROW_FILE_WITHOUT_COMMENT);
-        }
-        data.append(header);
-    }
-
     private void generateManifestFile(ZipOutputStream zos, List<ZippedManifestData> zippedManifestDataList,
                                       boolean shouldIncludeComment)
             throws IOException {
         StringBuilder data = new StringBuilder();
-        addHeaderRow(data, shouldIncludeComment);
-        data.append(NEW_LINE);
-
-        for (ZippedManifestData zippedManifestData : zippedManifestDataList) {
-            data.append(zippedManifestData.getCaseNumber());
-            data.append(DELIMITER);
-            data.append(zippedManifestData.getDocumentId());
-            data.append(DELIMITER);
-            data.append(zippedManifestData.getDocType());
-            data.append(DELIMITER);
-            data.append(zippedManifestData.getSubType());
-            data.append(DELIMITER);
-            data.append(zippedManifestData.getCaseType());
-            data.append(DELIMITER);
-            data.append(zippedManifestData.getDocumentName());
-            data.append(DELIMITER);
-            data.append(zippedManifestData.getErrorDescription());
+        try (final CSVPrinter csvWriter = new CSVPrinter(data, CSVFormat.RFC4180)) {
+            csvWriter.print("Case reference number");
+            csvWriter.print("Document id");
+            csvWriter.print("Document type");
             if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
-                data.append(DELIMITER);
-                data.append(delimitComment(zippedManifestData.getComment()));
+                csvWriter.print("Case type");
+                csvWriter.print("Document sub type");
+            } else {
+                csvWriter.print("Document sub type");
+                csvWriter.print("Case type");
             }
-            data.append(NEW_LINE);
+            csvWriter.print("Document file name");
+            csvWriter.print("Error description");
+            if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
+                csvWriter.print("Comment");
+            }
+            csvWriter.println();
+
+            for (ZippedManifestData zippedManifestData : zippedManifestDataList) {
+                csvWriter.print(zippedManifestData.getCaseNumber());
+                csvWriter.print(zippedManifestData.getDocumentId());
+                csvWriter.print(zippedManifestData.getDocType());
+                csvWriter.print(zippedManifestData.getSubType());
+                csvWriter.print(zippedManifestData.getCaseType());
+                csvWriter.print(zippedManifestData.getDocumentName());
+                csvWriter.print(zippedManifestData.getErrorDescription());
+                if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
+                    csvWriter.print(zippedManifestData.getComment());
+                }
+                csvWriter.println();
+            }
         }
 
         ZippedManifestData zippedManifestData = ZippedManifestData.builder()
@@ -344,12 +345,5 @@ public class ZipFileService {
                 .errorDescription("").build();
         ByteArrayResource byteArrayResource = new ByteArrayResource(data.toString().getBytes(StandardCharsets.UTF_8));
         zipMultipleDocs(zos, byteArrayResource, zippedManifestData.getDocumentName());
-    }
-
-    private String delimitComment(String comment) {
-        if (comment != null) {
-            return comment.replace(",", " ");
-        }
-        return "null";
     }
 }
