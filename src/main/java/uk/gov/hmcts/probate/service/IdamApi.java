@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.probate.config.FeignClientConfiguration;
 import uk.gov.hmcts.probate.model.TokenExchangeResponse;
+import uk.gov.hmcts.probate.model.idam.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
@@ -65,8 +66,7 @@ public interface IdamApi {
     );
 
     @GetMapping("/api/v2/users/{userId}")
-    List<UserDetails> getUser(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+    User getUser(
             @RequestParam(value = "userId") String userId
     );
 }
