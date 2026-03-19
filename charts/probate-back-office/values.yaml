@@ -18,7 +18,7 @@ postgresql:
 
 java:
   applicationPort: 4104
-  image: hmctspublic.azurecr.io/probate/back-office:latest
+  image: hmctsprod.azurecr.io/probate/back-office:latest
   aadIdentityName: probate
   ingressHost: probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   autoscaling:
