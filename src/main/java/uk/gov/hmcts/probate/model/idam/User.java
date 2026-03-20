@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @EqualsAndHashCode
 public class User {
     private String email;
