@@ -107,6 +107,10 @@ class ZipFileServiceTest {
         when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/ManifestFileHeaderRow.csv"))
                 .thenReturn("Case reference number|Document id|Document type|"
                         + "Document sub type|Case type|Document file name|Error description");
+        when(fileSystemResourceService.getFileFromResourceAsString(
+                "templates/dataExtracts/ManifestFileHeaderRowWithoutComment.csv"))
+                .thenReturn("Case reference number|Document id|Document type|Document sub type"
+                        + "|Case type|Document file name|Error description");
         when(smeeAndFordPersonalisationService.getSmeeAndFordByteArray(anyList()))
                 .thenReturn(smeeAndFordDataFileByteArray.getByteArray());
     }
