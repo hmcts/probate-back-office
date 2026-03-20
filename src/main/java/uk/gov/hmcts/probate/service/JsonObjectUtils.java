@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONPointer;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.JsonObjectUtilsException;
+import uk.gov.hmcts.probate.exception.JsonObjectUtilsException.Cause;
 
 @Component
 public class JsonObjectUtils {
@@ -14,17 +16,21 @@ public class JsonObjectUtils {
             final String expectValue) {
         final Object fromPointer = queryObject.query(pointer);
         if (!(fromPointer instanceof JSONObject)) {
-            throw new IllegalStateException("Expected JSON object but got " + fromPointer);
+            throw new JsonObjectUtilsException(
+                    "Expected JSON object but got " + fromPointer,
+                    Cause.WRONG_TYPE);
         }
         final JSONObject subObject = (JSONObject) fromPointer;
         if (!subObject.has(expectKey)) {
-            throw new IllegalStateException(
-                    "Expected JSON object with \"" + expectKey + "\" key but got " + subObject);
+            throw new JsonObjectUtilsException(
+                    "Expected JSON object with \"" + expectKey + "\" key but got " + subObject,
+                    Cause.NO_SUBKEY);
         }
         if (!subObject.get(expectKey).equals(expectValue)) {
-            throw new IllegalStateException(
+            throw new JsonObjectUtilsException(
                     "Expected JSON object with \"" + expectKey + "\" key with value \"" + expectValue
-                            + "\" but got " + subObject);
+                            + "\" but got " + subObject,
+                    Cause.MISMATCHED_SUBKEY);
         }
         return subObject;
     }
@@ -34,7 +40,9 @@ public class JsonObjectUtils {
             final JSONPointer pointer) {
         final Object fromPointer = queryObject.query(pointer);
         if (!(fromPointer instanceof JSONArray)) {
-            throw new IllegalStateException("Expected JSON array but got " + fromPointer);
+            throw new JsonObjectUtilsException(
+                    "Expected JSON array but got " + fromPointer,
+                    Cause.WRONG_TYPE);
         }
         return (JSONArray) fromPointer;
     }
