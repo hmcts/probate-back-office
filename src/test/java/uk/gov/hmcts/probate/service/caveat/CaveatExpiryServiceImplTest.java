@@ -15,7 +15,10 @@ import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -69,7 +72,7 @@ class CaveatExpiryServiceImplTest {
                 .thenReturn(firstPage)
                 .thenReturn(secondPage)
                 .thenReturn(List.of());
-        caveatExpiryService.expireCaveats("2023-10-01");
+        caveatExpiryService.expireCaveats(EXPIRY_DATE);
         verify(ccdClientApi).updateCaseAsCaseworker(
                 any(), any(), any(), any(), any(), any(), any(), any());
     }
@@ -143,5 +146,49 @@ class CaveatExpiryServiceImplTest {
                 eq(uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION),
                 any(), any(), any()
         );
+    }
+
+    @Test
+    void shouldHandleRuntimeExceptionDuringCaseUpdate() {
+        CaveatData caveatData = CaveatData.builder().deceasedSurname("Test").build();
+        List<ReturnedCaveatDetails> page = ImmutableList.of(
+                new ReturnedCaveatDetails(
+                        caveatData,
+                        LAST_MODIFIED,
+                        uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_WARNING_VALIDATION,
+                        1L
+                )
+        );
+        when(caveatQueryService.fetchExpiredCaveatsPage(any(), any()))
+                .thenReturn(page)
+                .thenReturn(List.of());
+
+        doThrow(new RuntimeException("Caveat autoExpire failure"))
+                .when(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(), any(), any(), any(), any(), any());
+
+        caveatExpiryService.expireCaveats(EXPIRY_DATE);
+        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(), any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldThrowIllegalStateExceptionForUnknownCaseState() {
+        CaveatData caveatData = CaveatData.builder().deceasedSurname("Test").build();
+        List<ReturnedCaveatDetails> page = ImmutableList.of(
+                new ReturnedCaveatDetails(
+                        caveatData,
+                        LAST_MODIFIED,
+                        uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT,
+                        1L
+                )
+        );
+        when(caveatQueryService.fetchExpiredCaveatsPage(any(), any()))
+                .thenReturn(page)
+                .thenReturn(List.of());
+
+        IllegalStateException ex = assertThrows(
+                IllegalStateException.class,
+                () -> caveatExpiryService.expireCaveats(EXPIRY_DATE)
+        );
+        assertEquals("Unexpected state for Caveat Auto Expiry: DRAFT", ex.getMessage());
     }
 }
