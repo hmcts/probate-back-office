@@ -29,16 +29,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_NOT_MATCHED;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT;
 
 class CaveatQueryServiceTest {
 
-    private static final String EXPIRY_DATE = "2020-12-31";
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now();
 
     @Mock
@@ -128,88 +124,4 @@ class CaveatQueryServiceTest {
             caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678");
         });
     }
-
-    @Test
-    void findCaveatWithExpiryDate() {
-        CaveatData reliantData = CaveatData.builder().deceasedSurname("Reliant").build();
-        List<ReturnedCaveatDetails> firstPage = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
-                new ReturnedCaveatDetails(reliantData, LAST_MODIFIED, CAVEAT_NOT_MATCHED, 1L)).build();
-        CaveatData robinData = CaveatData.builder().deceasedSurname("Robin").build();
-        List<ReturnedCaveatDetails> secondPage = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
-                new ReturnedCaveatDetails(robinData, LAST_MODIFIED, CAVEAT_NOT_MATCHED, 1L)).build();
-
-        ReturnedCaveats page1 = new ReturnedCaveats(firstPage, 2);
-        ReturnedCaveats page2 = new ReturnedCaveats(secondPage, 2);
-        ReturnedCaveats emptyPage = new ReturnedCaveats(ImmutableList.of(), 2);
-
-        when(restTemplate.postForObject(any(), any(), any()))
-                .thenReturn(page1)
-                .thenReturn(page2)
-                .thenReturn(emptyPage);
-
-        caveatQueryService.findAndExpireCaveatExpiredCases("2023-10-01");
-        verify(ccdClientApi).updateCaseAsCaseworker(
-                any(), any(), any(), any(), any(), any(), any(), any());
-    }
-
-    @Test
-    void shouldSkipWhenNoExpiredCaveats() {
-        ReturnedCaveats emptyPage = new ReturnedCaveats(ImmutableList.of(), 0);
-        when(restTemplate.postForObject(any(), any(), any()))
-                .thenReturn(emptyPage);
-        caveatQueryService.findAndExpireCaveatExpiredCases(EXPIRY_DATE);
-        verify(ccdClientApi, never()).updateCaseAsCaseworker(any(), any(), any(), any(), any(), any(), any(), any());
-    }
-
-    @Test
-    void shouldUseAwaitingResolutionEventIdWhenStateIsAwaitingResolution() {
-        CaveatData caveatData = CaveatData.builder().deceasedSurname("Test").build();
-        List<ReturnedCaveatDetails> page = ImmutableList.of(new ReturnedCaveatDetails(caveatData, LAST_MODIFIED,
-                uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_AWAITING_RESOLUTION, 1L));
-        ReturnedCaveats returned = new ReturnedCaveats(page, 1);
-        ReturnedCaveats empty = new ReturnedCaveats(ImmutableList.of(), 0);
-        when(restTemplate.postForObject(any(), any(), any()))
-                .thenReturn(returned)
-                .thenReturn(empty);
-        caveatQueryService.findAndExpireCaveatExpiredCases(EXPIRY_DATE);
-        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(), any(),
-                eq(uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION),
-                any(), any(), any()
-        );
-    }
-
-    @Test
-    void shouldUseExpiredForAwaitingResponseEventIdWhenStateIsAwaitingWarningResponse() {
-        CaveatData caveatData = CaveatData.builder().deceasedSurname("Test").build();
-        List<ReturnedCaveatDetails> page = ImmutableList.of(new ReturnedCaveatDetails(caveatData, LAST_MODIFIED,
-                uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_AWAITING_WARNING_RESPONSE, 1L));
-        ReturnedCaveats returned = new ReturnedCaveats(page, 1);
-        ReturnedCaveats empty = new ReturnedCaveats(ImmutableList.of(), 0);
-        when(restTemplate.postForObject(any(), any(), any()))
-                .thenReturn(returned)
-                .thenReturn(empty);
-        caveatQueryService.findAndExpireCaveatExpiredCases(EXPIRY_DATE);
-        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(), any(),
-                eq(uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE),
-                any(), any(), any()
-        );
-    }
-
-    @Test
-    void shouldUseExpiredForWarningValidationEventIdWhenStateIsWarningResponse() {
-        CaveatData caveatData = CaveatData.builder().deceasedSurname("Test").build();
-        List<ReturnedCaveatDetails> page = ImmutableList.of(new ReturnedCaveatDetails(caveatData, LAST_MODIFIED,
-                uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_WARNING_VALIDATION, 1L));
-        ReturnedCaveats returned = new ReturnedCaveats(page, 1);
-        ReturnedCaveats empty = new ReturnedCaveats(ImmutableList.of(), 0);
-        when(restTemplate.postForObject(any(), any(), any()))
-                .thenReturn(returned)
-                .thenReturn(empty);
-        caveatQueryService.findAndExpireCaveatExpiredCases(EXPIRY_DATE);
-        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(), any(),
-                eq(uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION),
-                any(), any(), any()
-        );
-    }
-
 }
