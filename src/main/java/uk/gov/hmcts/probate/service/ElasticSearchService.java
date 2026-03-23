@@ -28,7 +28,6 @@ public class ElasticSearchService {
     private final HttpHeadersFactory headers;
 
     public MatchedCases runQuery(CaseType caseType, String jsonQuery) {
-        log.info("ElasticSearchService runQuery caseType: {} jsonQuery:\nv\n{}\n^", caseType, jsonQuery);
         log.debug("ElasticSearchService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
@@ -48,6 +47,6 @@ public class ElasticSearchService {
     }
 
     public MatchedCases runJsonQuery(CaseType caseType, JSONObject jsonQuery) {
-        return runQuery(caseType, jsonQuery.toString());
+        return runQuery(caseType, jsonQuery.toString(0));
     }
 }

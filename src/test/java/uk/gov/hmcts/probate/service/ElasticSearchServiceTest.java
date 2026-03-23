@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,7 +23,10 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -71,5 +75,20 @@ class ElasticSearchServiceTest {
 
             MatchedCases matchedCases = elasticSearchService.runQuery(CaseType.LEGACY, "{}");
         });
+    }
+
+    @Test
+    void runJsonQuery() {
+        final JSONObject jsonMock = mock();
+        when(jsonMock.toString(anyInt())).thenReturn("{}");
+
+        final MatchedCases matchedCases = elasticSearchService.runJsonQuery(
+                CaseType.LEGACY,
+                jsonMock);
+
+        assertEquals(1, matchedCases.getCases().size());
+
+        verify(restTemplate).postForObject(any(), any(), eq(MatchedCases.class));
+        verify(jsonMock).toString(anyInt());
     }
 }
