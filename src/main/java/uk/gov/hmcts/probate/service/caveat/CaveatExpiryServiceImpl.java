@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
-import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaveatExpiryService;
@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
-import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
 
 @Slf4j
 @Component
@@ -29,8 +29,8 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
     private static final String EVENT_DESCRIPTOR = "Caveat Auto Expired";
 
     private final CaveatQueryService caveatQueryService;
-    private final SecurityUtils securityUtils;
     private final CcdClientApi ccdClientApi;
+    private final SecurityUtils securityUtils;
     private final int dataExtractPaginationSize = 100;
 
     @Override
@@ -80,13 +80,13 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
         }
     }
 
-    private EventId getEventId(CaseState state) {
-        return switch (state) {
+    private EventId getEventId(CaseState caveatState) {
+        return switch (caveatState) {
             case CAVEAT_NOT_MATCHED -> CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
             case CAVEAT_AWAITING_RESOLUTION -> CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
             case CAVEAT_AWAITING_WARNING_RESPONSE -> CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
             case CAVEAT_WARNING_VALIDATION -> CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
-            default -> throw new IllegalStateException("Unexpected state for Caveat Auto Expiry: " + state);
+            default -> throw new IllegalStateException("Unexpected state for Caveat Auto Expiry: " + caveatState);
         };
     }
 

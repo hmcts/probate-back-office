@@ -56,7 +56,6 @@ public class CaveatQueryService {
     private static final String AWAITING_WARNING_RESPONSE = "AwaitingWarningResponse";
     private static final String CAVEAT_NOT_FOUND_CODE = "caveatNotFound";
     private static final String CAVEAT_NOT_FOUND_CODE_WELSH = "caveatNotFoundWelsh";
-    private static final String SORT_COLUMN = "id";
     private static final String[] EXPIRABLE_STATES = {
         CAVEAT_NOT_MATCHED,
         AWAITING_CAVEAT_RESOLUTION,
@@ -68,10 +67,11 @@ public class CaveatQueryService {
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
-    private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private final SecurityUtils securityUtils;
+    private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     @Value("${data-extract.pagination.size}")
     protected int dataExtractPaginationSize;
+    private static final String SORT_COLUMN = "id";
 
     private static <T> T nonNull(@Nullable T result) {
         Assert.state(result != null, "Entity should be non null in CaveatQueryService");
@@ -119,7 +119,7 @@ public class CaveatQueryService {
     }
 
     private ReturnedCaveats runQuery(CaseType caseType, String jsonQuery) {
-        log.debug("CaveatQueryService runQuery: {}", jsonQuery);
+        log.debug("CaveatQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost()
                         + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
