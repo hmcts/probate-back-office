@@ -59,6 +59,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String REACTIVATE_CASE = "/case/reactivate-case";
     private static final String CASE_WORKER_ESCALATED = "/case/case-worker-escalated";
     private static final String CASE_WORKER_RESOLVED_ESCALATED = "/case/resolve-case-worker-escalated";
+    private static final String CASE_SUPPLEMENTARY_DATA = "/case/supplementaryData";
     private static final String SOLS_CASE_CREATION_PAYLOAD = "solsCaseCreationDefaultPayload.json";
     private static final String SOLS_CASE_CREATE_EVENT_ID = "solicitorCreateApplication";
     private static final String EVENT_PARM = "EVENT_PARM";
