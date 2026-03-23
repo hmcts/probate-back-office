@@ -256,7 +256,7 @@ class DocumentControllerIT {
 
         String willLodgementPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
 
-        mockMvc.perform(post("/caveat//supplementaryData")
+        mockMvc.perform(post("/document//supplementaryData")
                         .header("Authorization", AUTH_TOKEN)
                         .content(willLodgementPayload)
                         .contentType(MediaType.APPLICATION_JSON))
