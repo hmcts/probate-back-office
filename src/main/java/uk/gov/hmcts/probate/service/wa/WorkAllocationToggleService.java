@@ -9,8 +9,15 @@ public class WorkAllocationToggleService {
     @Value("${probate.wa.enabled}")
     private boolean probateWAEnabled;
 
-    public boolean isProbateWAEnabledToggleOn() {
+    public boolean isProbateWAEnabled() {
         return probateWAEnabled;
+    }
+
+    @Value("${probate.gs.enabled}")
+    private boolean probateGSEnabled;
+
+    public boolean isProbateGSEnabled() {
+        return probateGSEnabled;
     }
 
 }
