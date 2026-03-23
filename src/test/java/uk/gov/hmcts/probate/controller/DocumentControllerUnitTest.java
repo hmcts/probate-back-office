@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
@@ -112,6 +113,10 @@ class DocumentControllerUnitTest {
     private FeatureToggleService featureToggleService;
     @Mock
     private DocumentTransformer documentTransformer;
+    @Mock
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
+
+
 
     /// The object under test
     private DocumentController documentController;
@@ -141,7 +146,8 @@ class DocumentControllerUnitTest {
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
-            evidenceUploadService, userInfoService, featureToggleService,documentTransformer);
+            evidenceUploadService, userInfoService, featureToggleService,documentTransformer,ccdSupplementaryDataService
+        );
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
