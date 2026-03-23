@@ -786,4 +786,35 @@ export class CreateCasePage extends BasePage {
         }
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
+
+    async enterStandingSearchPage1(crud: string) {
+        if (crud === 'create') {
+            console.log("placeholder")
+        }
+
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async enterStandingSearchPage2(crud: string, createConfig: CreateGrantOfProbateConfig) {
+        if (crud === 'create') {
+            console.log("placeholder")
+        }
+
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async enterStandingSearchPage3(crud: string, createConfig: CreateGrantOfProbateConfig) {
+        if (crud === 'create') {
+            console.log("placeholder")
+        }
+
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async enterStandingSearchPage4(crud: string) {
+        if (crud === 'create') {
+            console.log("placeholder")
+        }
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
+    }
 };
