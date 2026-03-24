@@ -130,6 +130,9 @@ public class ExceptionRecordService {
 
             ExceptionRecordOCRFields exceptionRecordOCRFields = erRequest.getOCRFieldsObject();
 
+            List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                    .setDefaultGorValues(exceptionRecordOCRFields, grantType);
+
             List<CollectionMember<String>> autoCaseWarnings = ocrFieldModifierUtils
                     .checkWarnings(exceptionRecordOCRFields);
 
@@ -139,17 +142,14 @@ public class ExceptionRecordService {
 
             ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
 
-            ExceptionRecordCaseDataValidator.validateDateOfDeath(grantOfRepresentationData);
-
-            List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
-                    .setDefaultGorValues(exceptionRecordOCRFields, grantType);
-
             grantOfRepresentationData.setModifiedOCRFieldList(modifiedFields);
 
             grantOfRepresentationData.setAutoCaseWarnings(autoCaseWarnings);
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
+
+            ExceptionRecordCaseDataValidator.validateDateOfDeath(grantOfRepresentationData);
 
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");
