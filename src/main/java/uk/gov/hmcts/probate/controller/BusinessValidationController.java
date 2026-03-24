@@ -756,7 +756,7 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest) {
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         Optional<User> user = caseworkerInfo.map(userInfo -> idamApi.getUser(userInfo.getUid()));
-        user.stream().forEach(userInfo -> log.info("user returned {}", userInfo));
+        user.ifPresent(userInfo -> log.info("user returned {}", userInfo));
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
 
