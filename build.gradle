@@ -40,7 +40,7 @@ sonarqube {
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.cpd.exclusions", "**/test/**,**/CallbackResponseTransformer.java,**/ResponseCaseData.java,**/CaseData.java,**/BlobUpload.java" +
-            ",**/BusinessRulesValidationApplication.java,**/model/idam/**"
+            ",**/BusinessRulesValidationApplication.java,**/model/idam/*.java"
   }
 }
 
