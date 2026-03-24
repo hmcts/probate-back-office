@@ -337,6 +337,7 @@ public class ZipFileService {
                 csvWriter.print("Comment");
             }
             csvWriter.println();
+            csvWriter.println();
 
             for (ZippedManifestData zippedManifestData : zippedManifestDataList) {
                 csvWriter.print(zippedManifestData.getCaseNumber());
