@@ -73,7 +73,6 @@
     { "name": "deceasedAddressCounty", "value": "" },
     { "name": "deceasedAddressPostCode", "value": "LA5 6TE" },
     { "name": "deceasedDateOfBirth", "value": "12031950" },
-    { "name": "deceasedDateOfDeath", "value": "01012021" },
     { "name": "deceasedAnyOtherNames", "value": "true" },
     { "name": "deceasedDomicileInEngWales", "value": "true" },
     { "name": "deceasedMartialStatus", "value": "neverMarried" },
