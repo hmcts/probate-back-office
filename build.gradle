@@ -39,8 +39,8 @@ sonarqube {
     property "sonar.host.url", "https://sonar.reform.hmcts.net/"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.cpd.exclusions", "**/test/**,**/CallbackResponseTransformer.java,**/ResponseCaseData.java,**/CaseData.java,**/BlobUpload.java" +
-            ",**/BusinessRulesValidationApplication.java,uk/gov/hmcts/probate/model/idam/AccountStatus.java,uk/gov/hmcts/probate/model/idam/RecordType.java,uk/gov/hmcts/probate/model/idam/User.java"
+    property "sonar.cpd.exclusions", "**/test/**,**/uk/gov/hmcts/probate/model/idam/**,**/CallbackResponseTransformer.java,**/ResponseCaseData.java,**/CaseData.java,**/BlobUpload.java" +
+            ",**/BusinessRulesValidationApplication.java"
   }
 }
 
