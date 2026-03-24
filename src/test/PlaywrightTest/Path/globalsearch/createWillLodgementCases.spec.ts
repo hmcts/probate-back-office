@@ -11,6 +11,7 @@ test.describe("Data Creation for Global Search Testing - Will Lodgement", () => 
         await signInPage.authenticateWithIdamIfAvailable(false);
 
         for(const caseConfig of willLodgementCases){
+            const unique_deceased_user = Date.now().toString();
             let nextStepName = "Create a will lodgement";
             await basePage.logInfo(scenarioName, nextStepName, undefined);
             await createCasePage.selectNewCase();
@@ -24,6 +25,7 @@ test.describe("Data Creation for Global Search Testing - Will Lodgement", () => 
             );
             await createCasePage.enterWillLodgementPage2(
                 "create",
+                unique_deceased_user,
                 caseConfig
             );
             await createCasePage.enterWillLodgementPage3(

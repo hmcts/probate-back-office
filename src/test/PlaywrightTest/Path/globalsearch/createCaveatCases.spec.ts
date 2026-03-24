@@ -10,6 +10,7 @@ test.describe("Data Creation for Global Search Testing - Grant of Representation
         await signInPage.authenticateWithIdamIfAvailable(false);
 
         for(const caseConfig of caveatCases) {
+            const unique_deceased_user = Date.now().toString();
             let nextStepName = "Raise a caveat";
             await basePage.logInfo(scenarioName, nextStepName, undefined);
             await createCasePage.selectNewCase();
@@ -20,6 +21,7 @@ test.describe("Data Creation for Global Search Testing - Grant of Representation
             await createCasePage.enterCaveatPage1("create");
             await createCasePage.enterCaveatPage2(
                 "create",
+                unique_deceased_user,
                 caseConfig
             );
             await createCasePage.enterCaveatPage3(
