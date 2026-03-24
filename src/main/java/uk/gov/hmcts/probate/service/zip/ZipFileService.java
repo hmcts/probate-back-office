@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.zip.SmeeAndFordCommentMode;
 import uk.gov.hmcts.probate.model.zip.ZippedManifestData;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
@@ -98,20 +99,19 @@ public class ZipFileService {
                                          File tempFile,
                                          String fromDate,
                                          DataExtractStrategy strategy,
-                                         boolean shouldIncludeComment) {
+                                         SmeeAndFordCommentMode smeeAndFordCommentMode) {
         log.info("Smee And Ford generateZipFile for {} cases", cases.size());
-
         List<ZippedManifestData> manifestDataList = new ArrayList<>();
         try (final FileOutputStream fos = new FileOutputStream(tempFile);
             final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
             for (ReturnedCaseDetails returnedCaseDetails : cases) {
                 log.info("Smee And Ford Starting for case {}", returnedCaseDetails.getId());
-                getWillDocuments(zipOut, returnedCaseDetails, manifestDataList, shouldIncludeComment);
+                getWillDocuments(zipOut, returnedCaseDetails, manifestDataList, smeeAndFordCommentMode);
                 getGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
                 getReIssueGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
             }
             getSmeeAndFordCaseData(zipOut, cases, fromDate);
-            generateManifestFile(zipOut, manifestDataList, shouldIncludeComment);
+            generateManifestFile(zipOut, manifestDataList, smeeAndFordCommentMode);
             zipOut.closeEntry();
             zipOut.close();
             fos.close();
@@ -137,9 +137,9 @@ public class ZipFileService {
     private void getWillDocuments(final ZipOutputStream zos,
                                   final ReturnedCaseDetails caseDetails,
                                   List<ZippedManifestData> manifestDataList,
-                                  boolean shouldIncludeComment) {
+                                  SmeeAndFordCommentMode smeeAndFordCommentMode) {
         getScannedDocuments(zos, caseDetails, manifestDataList);
-        getUploadedWillDocuments(zos, caseDetails, manifestDataList, shouldIncludeComment);
+        getUploadedWillDocuments(zos, caseDetails, manifestDataList, smeeAndFordCommentMode);
     }
 
     private void getScannedDocuments(final ZipOutputStream zos,
@@ -164,7 +164,7 @@ public class ZipFileService {
     private void getUploadedWillDocuments(ZipOutputStream zos,
                                           ReturnedCaseDetails caseDetails,
                                           List<ZippedManifestData> manifestDataList,
-                                          boolean shouldIncludeComment) {
+                                          SmeeAndFordCommentMode smeeAndFordCommentMode) {
         AtomicInteger uploadedDocIndex = new AtomicInteger(1);
         if (caseDetails.getData().getBoDocumentsUploaded() != null) {
             caseDetails.getData()
@@ -175,10 +175,15 @@ public class ZipFileService {
                         final String documentTypeName = "uploaded_" + WILL.getTemplateName()
                                 + "_" + uploadedDocIndex.getAndIncrement();
 
-                        String documentComment = null;
-                        if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
-                            documentComment = doc.getValue().getComment();
-                        }
+                        String documentComment = switch (smeeAndFordCommentMode) {
+                            case INCLUDE_COMMENT -> {
+                                if (featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
+                                    yield doc.getValue().getComment();
+                                }
+                                yield null;
+                            }
+                            case EXCLUDE_COMMENT -> null;
+                        };
                         fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, null,
                                 manifestDataList, documentComment);
                     });
@@ -300,11 +305,18 @@ public class ZipFileService {
     }
 
     private void generateManifestFile(ZipOutputStream zos, List<ZippedManifestData> zippedManifestDataList,
-                                      boolean shouldIncludeComment)
+                                      SmeeAndFordCommentMode smeeAndFordCommentMode)
             throws IOException {
+
+        boolean isUpdatedSmeeAndFord = switch (smeeAndFordCommentMode) {
+            case INCLUDE_COMMENT -> featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn();
+            case EXCLUDE_COMMENT -> false;
+        };
+
         StringBuilder data = new StringBuilder();
         CSVFormat format = CSVFormat.DEFAULT.builder()
-                .setRecordSeparator("\n")
+                .setDelimiter(DELIMITER)
+                .setRecordSeparator(NEW_LINE)
                 .setQuoteMode(QuoteMode.MINIMAL)
                 .build();
 
@@ -312,7 +324,7 @@ public class ZipFileService {
             csvWriter.print("Case reference number");
             csvWriter.print("Document id");
             csvWriter.print("Document type");
-            if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
+            if (isUpdatedSmeeAndFord) {
                 csvWriter.print("Case type");
                 csvWriter.print("Document sub type");
             } else {
@@ -321,7 +333,7 @@ public class ZipFileService {
             }
             csvWriter.print("Document file name");
             csvWriter.print("Error description");
-            if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
+            if (isUpdatedSmeeAndFord) {
                 csvWriter.print("Comment");
             }
             csvWriter.println();
@@ -334,7 +346,7 @@ public class ZipFileService {
                 csvWriter.print(zippedManifestData.getSubType());
                 csvWriter.print(zippedManifestData.getDocumentName());
                 csvWriter.print(zippedManifestData.getErrorDescription());
-                if (shouldIncludeComment && featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()) {
+                if (isUpdatedSmeeAndFord) {
                     csvWriter.print(sanitizeComment(zippedManifestData.getComment()));
                 }
                 csvWriter.println();

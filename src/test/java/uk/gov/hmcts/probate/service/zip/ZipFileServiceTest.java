@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.zip.SmeeAndFordCommentMode;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractStrategy;
@@ -37,7 +38,6 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
@@ -168,7 +168,7 @@ class ZipFileServiceTest {
         doNothing().when(smeeAndFOrdDataExtractStrategy).uploadToBlobStorage(any(File.class));
         zipFileService
                 .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
-                        smeeAndFOrdDataExtractStrategy, anyBoolean());
+                        smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.INCLUDE_COMMENT);
         Assertions.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
         ZipFile zip = new ZipFile(zipFile);
         Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
@@ -194,7 +194,7 @@ class ZipFileServiceTest {
         File zipFile = new File("");
         Assertions.assertThrows(ZipFileException.class, () ->
                 zipFileService.generateAndUploadZipFile(returnedCaseDetails, zipFile,
-                        todayDate, smeeAndFOrdDataExtractStrategy, false));
+                        todayDate, smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.INCLUDE_COMMENT));
     }
 
     @Test
@@ -280,7 +280,7 @@ class ZipFileServiceTest {
         when(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()).thenReturn(true);
         zipFileService
                 .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
-                        smeeAndFOrdDataExtractStrategy, true);
+                        smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.INCLUDE_COMMENT);
 
         verify(featureToggleService, atLeastOnce()).isSmeeAndFordCommentFieldFeatureToggleOn();
         Assertions.assertTrue(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn());
@@ -294,7 +294,7 @@ class ZipFileServiceTest {
         when(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()).thenReturn(false);
         zipFileService
                 .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
-                        smeeAndFOrdDataExtractStrategy, false);
+                        smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.EXCLUDE_COMMENT);
 
         verify(featureToggleService, atMostOnce()).isSmeeAndFordCommentFieldFeatureToggleOn();
         Assertions.assertFalse(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn());
