@@ -10,10 +10,12 @@ import createWillLodgementConfig from '../createWillLodgement/createWillLodgemen
 import eventSummaryConfig from '../eventSummary/eventSummaryConfig.json' with { type: 'json' };
 import { BasePage } from '../utility/basePage.ts';
 import newCaseConfig from './newCaseConfig.json' with { type: 'json' };
+import createStandingSearchConfig from '../createStandingSearch/createStandingSearchConfig.json' with { type: 'json' };
 
 type CreateGrantOfProbateConfig = typeof createGrantOfProbateConfig | typeof createGrantOfProbateManualProbateManCaseConfig;
 type CreateCaveatConfig = typeof createCaveatConfig;
 type CreateWillLodgementConfig = typeof createWillLodgementConfig;
+type createStandingSearchConfig = typeof createStandingSearchConfig;
 type CaseProgressConfig = typeof caseProgressConfig;
 
 export class CreateCasePage extends BasePage {
@@ -58,6 +60,10 @@ export class CreateCasePage extends BasePage {
     readonly createWillWaitForTextLocator = this.page.getByText(createWillLodgementConfig.page2_waitForText);
     readonly amendWillWaitForTextLocator = this.page.getByText(createWillLodgementConfig.page2_amend_waitForText);
     readonly genderLocator = this.page.locator('#deceasedGender');
+    readonly createStandingSearchPageLocator = this.page.getByText(createStandingSearchConfig.page1_waitForText);
+    readonly createStandingSearchPage2Locator = this.page.getByText(createStandingSearchConfig.page2_waitForText);
+    readonly createStandingSearchPage3Locator = this.page.getByText(createStandingSearchConfig.page3_waitForText);
+    readonly createStandingSearchPage4Locator = this.page.getByText(createStandingSearchConfig.page4_waitForText);
 
     constructor(public readonly page: Page) {
         super(page);
@@ -791,23 +797,85 @@ export class CreateCasePage extends BasePage {
 
     async enterStandingSearchPage1(crud: string) {
         if (crud === 'create') {
-            console.log("placeholder")
+            await expect(this.createStandingSearchPageLocator).toBeVisible();
+            await expect(this.applicationTypeLocator).toBeEnabled();
+            await this.applicationTypeLocator.selectOption({label: createStandingSearchConfig.page1_list1_application_type});
+            await expect(this.registryLocator).toBeVisible();
+            await expect(this.registryLocator).toBeEnabled();
+            await this.registryLocator.selectOption({label: createStandingSearchConfig.page1_list2_registry_location});
         }
 
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async enterStandingSearchPage2(crud: string, createConfig: CreateGrantOfProbateConfig) {
+    async enterStandingSearchPage2(crud: string, createStandingSearchConfig: createStandingSearchConfig) {
         if (crud === 'create') {
-            console.log("placeholder")
+            await expect(this.createStandingSearchPage2Locator).toBeVisible();
+            await this.page.locator('#deceasedForenames').fill(createStandingSearchConfig.page2_forenames);
+            await this.page.locator('#deceasedSurname').fill(createStandingSearchConfig.page2_surname);
+            await this.page.locator('#deceasedDateOfDeath-day').fill(createStandingSearchConfig.page2_dateOfDeath_day);
+            await this.page.locator('#deceasedDateOfDeath-month').fill(createStandingSearchConfig.page2_dateOfDeath_month);
+            await this.page.locator('#deceasedDateOfDeath-year').fill(createStandingSearchConfig.page2_dateOfDeath_year);
+            await this.page.locator(`#deceasedAnyOtherNames_${createStandingSearchConfig.page2_hasAliasYes}`).focus();
+            await this.page.locator(`#deceasedAnyOtherNames_${createStandingSearchConfig.page2_hasAliasYes}`).check();
+
+            let idx = 0;
+            const keys = Object.keys(createStandingSearchConfig);
+            let addNewButtonLocator: Locator;
+            for (let i=0; i < keys.length; i++) {
+                const propName = keys[i];
+                if (idx === 0) {
+                    addNewButtonLocator = this.page.getByRole('button', {name: createStandingSearchConfig.page2_addAliasButton}).first();
+                } else {
+                    addNewButtonLocator = this.page.getByRole('button', {name: createStandingSearchConfig.page2_addAliasButton}).nth(1);
+                }
+
+                if (propName.includes('page2_alias_')) {
+                    await addNewButtonLocator.click();
+                    /*if (!testConfig.TestAutoDelayEnabled) {
+                        await this.page.waitForTimeout(testConfig.ManualDelayShort); // implicit wait needed here
+                    }*/
+                    await expect(this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`)).toBeEnabled();
+                    await this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`).fill(createStandingSearchConfig[propName]);
+                    idx += 1;
+                }
+            }
+
+            await this.postcodeLinkLocator.focus();
+            await this.postcodeLinkLocator.click();
+            /*if (!testConfig.TestAutoDelayEnabled) {
+                await this.page.waitForTimeout(testConfig.ManualDelayShort); // implicit wait needed here
+            }*/
+            await this.page.locator('#deceasedAddress__detailAddressLine1').fill(createStandingSearchConfig.page2_address_line1);
+            await this.page.locator('#deceasedAddress__detailAddressLine2').fill(createStandingSearchConfig.page2_address_line2);
+            await this.page.locator('#deceasedAddress__detailAddressLine3').fill(createStandingSearchConfig.page2_address_line3);
+            await this.page.locator('#deceasedAddress__detailPostTown').fill(createStandingSearchConfig.page2_address_town);
+            await this.page.locator('#deceasedAddress__detailCounty').fill(createStandingSearchConfig.page2_address_county);
+            await this.page.locator('#deceasedAddress__detailPostCode').fill(createStandingSearchConfig.page2_address_postcode);
+            await this.page.locator('#deceasedAddress__detailCountry').fill(createStandingSearchConfig.page2_address_country);
         }
 
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async enterStandingSearchPage3(crud: string, createConfig: CreateGrantOfProbateConfig) {
+    async enterStandingSearchPage3(crud: string, createStandingSearchConfig: createStandingSearchConfig) {
         if (crud === 'create') {
-            console.log("placeholder")
+            await expect(this.createStandingSearchPage3Locator).toBeVisible();
+            await this.page.locator('#applicantForenames').fill(createStandingSearchConfig.page3_applicant_forenames);
+            await this.page.locator('#applicantSurname').fill(createStandingSearchConfig.page3_applicant_surname);
+            await this.page.locator('#applicantEmailAddress').fill(createStandingSearchConfig.page3_applicant_email);
+            await this.postcodeLinkLocator.focus();
+            await this.postcodeLinkLocator.click();
+            /*if (!testConfig.TestAutoDelayEnabled) {
+                await this.page.waitForTimeout(testConfig.ManualDelayShort); // implicit wait needed here
+            }*/
+            await this.page.locator('#applicantAddress__detailAddressLine1').fill(createStandingSearchConfig.page3_address_line1);
+            await this.page.locator('#applicantAddress__detailAddressLine2').fill(createStandingSearchConfig.page3_address_line2);
+            await this.page.locator('#applicantAddress__detailAddressLine3').fill(createStandingSearchConfig.page3_address_line3);
+            await this.page.locator('#applicantAddress__detailPostTown').fill(createStandingSearchConfig.page3_address_town);
+            await this.page.locator('#applicantAddress__detailCounty').fill(createStandingSearchConfig.page3_address_county);
+            await this.page.locator('#applicantAddress__detailPostCode').fill(createStandingSearchConfig.page3_address_postcode);
+            await this.page.locator('#applicantAddress__detailCountry').fill(createStandingSearchConfig.page3_address_country);
         }
 
         await this.waitForNavigationToComplete(commonConfig.continueButton);
@@ -815,7 +883,8 @@ export class CreateCasePage extends BasePage {
 
     async enterStandingSearchPage4(crud: string) {
         if (crud === 'create') {
-            console.log("placeholder")
+            await expect(this.createStandingSearchPage4Locator).toBeVisible();
+            await this.page.locator('#numberOfCopies').fill(createStandingSearchConfig.page4_extra_copies_amount);
         }
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }

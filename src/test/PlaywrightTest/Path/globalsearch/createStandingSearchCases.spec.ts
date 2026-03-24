@@ -17,8 +17,8 @@ test.describe("Data Creation for Global Search Testing - Standing Search", () =>
                 await basePage.logInfo(scenarioName, nextStepName, undefined);
                 await createCasePage.selectNewCase();
                 await createCasePage.selectCaseTypeOptions(
-                    createCaseConfig.standingSearchCase,
-                    createCaseConfig.createStandingSearch
+                    createCaseConfig.list2_text_stan_search,
+                    createCaseConfig.list3_text_stan_search
                 );
                 await createCasePage.enterStandingSearchPage1("create");
                 await createCasePage.enterStandingSearchPage2(
