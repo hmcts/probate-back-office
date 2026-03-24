@@ -17,21 +17,21 @@ import java.util.Optional;
 public class CaseMatchingJsonService {
     private static final String JSON_BASE = "templates/elasticsearch/caseMatching/json/";
 
-    private static final String ES_BASE = JSON_BASE + "matching_base.json";
+    static final String ES_BASE = JSON_BASE + "matching_base.json";
 
-    private static final String DOB_BASE = JSON_BASE + "deceased_dob_sub_query.json";
-    private static final String DOD_BASE = JSON_BASE + "deceased_dod_sub_query.json";
+    static final String DOB_BASE = JSON_BASE + "deceased_dob_sub_query.json";
+    static final String DOD_BASE = JSON_BASE + "deceased_dod_sub_query.json";
 
-    private static final String ALIAS_NAME_A_BASE = JSON_BASE + "aliases_sub_query_a.json";
-    private static final String ALIAS_NAME_B_BASE = JSON_BASE + "aliases_sub_query_b.json";
-    private static final String ALIAS_NAME_ALIAS_A_BASE = JSON_BASE + "aliases_to_aliases_list_sub_query_a.json";
-    private static final String ALIAS_NAME_ALIAS_B_BASE = JSON_BASE + "aliases_to_aliases_list_sub_query_b.json";
-    private static final String ALIAS_NAME_SOLS_ALIAS_A_BASE = JSON_BASE + "aliases_to_aliases_sub_query_a.json";
-    private static final String ALIAS_NAME_SOLS_ALIAS_B_BASE = JSON_BASE + "aliases_to_aliases_sub_query_b.json";
+    static final String ALIAS_NAME_A_BASE = JSON_BASE + "aliases_sub_query_a.json";
+    static final String ALIAS_NAME_B_BASE = JSON_BASE + "aliases_sub_query_b.json";
+    static final String ALIAS_NAME_ALIAS_A_BASE = JSON_BASE + "aliases_to_aliases_list_sub_query_a.json";
+    static final String ALIAS_NAME_ALIAS_B_BASE = JSON_BASE + "aliases_to_aliases_list_sub_query_b.json";
+    static final String ALIAS_NAME_SOLS_ALIAS_A_BASE = JSON_BASE + "aliases_to_aliases_sub_query_a.json";
+    static final String ALIAS_NAME_SOLS_ALIAS_B_BASE = JSON_BASE + "aliases_to_aliases_sub_query_b.json";
 
-    private static final String QUERY = "query";
-    private static final String DECEASED_ALIAS = ":deceasedAlias";
-    private static final String MULTI_MATCH = "/multi_match";
+    static final String QUERY = "query";
+    static final String DECEASED_ALIAS = ":deceasedAlias";
+    static final String MULTI_MATCH = "/multi_match";
 
     private final FileSystemResourceService fileSystemResourceService;
     private final JsonObjectUtils jsonObjectUtils;
@@ -204,7 +204,7 @@ public class CaseMatchingJsonService {
         return new CaseMatchingJson(jsonObjectUtils, aliasNameSolsAliasBQuery);
     }
 
-    List<CaseMatchingJson> getAliasSubquerires(final String alias) {
+    List<CaseMatchingJson> getAliasSubqueries(final String alias) {
         final CaseMatchingJson aliasNameA = getAliasNameASubquery(alias);
         final CaseMatchingJson aliasNameB = getAliasNameBSubquery(alias);
         final CaseMatchingJson aliasNameAliasA = getAliasNameAliasASubquery(alias);
@@ -224,7 +224,7 @@ public class CaseMatchingJsonService {
     public List<CaseMatchingJson> getAliasesSubqueries(final List<String> aliases) {
         final List<CaseMatchingJson> collected = new ArrayList<>();
         for (String alias : aliases) {
-            collected.addAll(getAliasSubquerires(alias));
+            collected.addAll(getAliasSubqueries(alias));
         }
         return List.copyOf(collected);
     }

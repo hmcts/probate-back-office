@@ -302,6 +302,7 @@ dependencies {
   testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: versions.fortifyClientVersion, classifier: 'all'
   testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.23.0'
+  testImplementation group: 'com.spotify', name: 'hamcrest-optional', version: '1.3.2'
 
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeImplementation sourceSets.main.runtimeClasspath
