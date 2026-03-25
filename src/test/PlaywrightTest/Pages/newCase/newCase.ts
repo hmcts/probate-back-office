@@ -120,10 +120,11 @@ export class CreateCasePage extends BasePage {
     }
 
     async enterCaveatPage2(crud: string, unique_deceased_user: string = Date.now().toString(), createCaveatCaseConfig: CreateCaveatConfig = createCaveatConfig) {
+        const unique_deceased_identifier = createCaveatCaseConfig === createCaveatConfig ? unique_deceased_user : "";
         if (crud === 'create') {
             await expect(this.createCaveatPage2Locator).toBeVisible();
-            await this.page.locator('#deceasedForenames').fill(createCaveatCaseConfig.page2_forenames+unique_deceased_user);
-            await this.page.locator('#deceasedSurname').fill(createCaveatCaseConfig.page2_surname+unique_deceased_user);
+            await this.page.locator('#deceasedForenames').fill(createCaveatCaseConfig.page2_forenames+unique_deceased_identifier);
+            await this.page.locator('#deceasedSurname').fill(createCaveatCaseConfig.page2_surname+unique_deceased_identifier);
             await this.page.locator('#deceasedDateOfDeath-day').fill(createCaveatCaseConfig.page2_dateOfDeath_day);
             await this.page.locator('#deceasedDateOfDeath-month').fill(createCaveatCaseConfig.page2_dateOfDeath_month);
             await this.page.locator('#deceasedDateOfDeath-year').fill(createCaveatCaseConfig.page2_dateOfDeath_year);
@@ -168,8 +169,8 @@ export class CreateCasePage extends BasePage {
 
         if (crud === 'update') {
             await expect(this.amendCaveatPage2Locator).toBeVisible();
-            await this.page.locator('#deceasedForenames').fill(createCaveatCaseConfig.page2_forenames_update+unique_deceased_user);
-            await this.page.locator('#deceasedSurname').fill(createCaveatCaseConfig.page2_surname_update+unique_deceased_user);
+            await this.page.locator('#deceasedForenames').fill(createCaveatCaseConfig.page2_forenames_update+unique_deceased_identifier);
+            await this.page.locator('#deceasedSurname').fill(createCaveatCaseConfig.page2_surname_update+unique_deceased_identifier);
         }
 
         await this.waitForNavigationToComplete(commonConfig.continueButton);
@@ -592,6 +593,8 @@ export class CreateCasePage extends BasePage {
     }
 
     async enterWillLodgementPage2(crud: string, unique_deceased_user: string = Date.now().toString(), createWillLodgementCaseConfig: CreateWillLodgementConfig = createWillLodgementConfig) {
+        const unique_deceased_identifier = createWillLodgementCaseConfig === createWillLodgementConfig ? unique_deceased_user : "";
+        const _unique_deceased_identifier = createWillLodgementCaseConfig === createWillLodgementConfig ? ("_"+unique_deceased_user) : "";
         if (crud === 'create') {
             await expect(this.createWillWaitForTextLocator).toBeVisible();
 
@@ -600,14 +603,14 @@ export class CreateCasePage extends BasePage {
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
             }*/
-            await this.page.locator('#deceasedForenames').fill(createWillLodgementCaseConfig.page2_forenames + '_' + unique_deceased_user);
+            await this.page.locator('#deceasedForenames').fill(createWillLodgementCaseConfig.page2_forenames + _unique_deceased_identifier);
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
             }*/
 
-            await this.page.locator('#deceasedSurname').fill(createWillLodgementCaseConfig.page2_surname + '_' + unique_deceased_user);
+            await this.page.locator('#deceasedSurname').fill(createWillLodgementCaseConfig.page2_surname + _unique_deceased_identifier);
             await this.genderLocator.selectOption({label: createWillLodgementCaseConfig.page2_gender});
             await this.page.locator('#deceasedDateOfBirth-day').fill(createWillLodgementCaseConfig.page2_dateOfBirth_day);
             await this.page.locator('#deceasedDateOfBirth-month').fill(createWillLodgementCaseConfig.page2_dateOfBirth_month);
@@ -646,7 +649,7 @@ export class CreateCasePage extends BasePage {
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
             }*/
-            await this.page.locator('#deceasedFullAliasNameList_0_FullAliasName').fill(createWillLodgementCaseConfig.page2_alias_1 + '_' + unique_deceased_user);
+            await this.page.locator('#deceasedFullAliasNameList_0_FullAliasName').fill(createWillLodgementCaseConfig.page2_alias_1 + _unique_deceased_identifier);
 
             await this.pcLocator2.click();
             await this.page.locator('#deceasedAddress__detailAddressLine1').fill(createWillLodgementCaseConfig.address_line1);
@@ -667,20 +670,20 @@ export class CreateCasePage extends BasePage {
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
             }*/
-            await this.page.locator('#deceasedForenames').fill(createWillLodgementCaseConfig.page2_forenames + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
+            await this.page.locator('#deceasedForenames').fill(createWillLodgementCaseConfig.page2_forenames + _unique_deceased_identifier + ' UPDATED' + unique_deceased_identifier);
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }*/
 
-            await this.page.locator('#deceasedSurname').fill(createWillLodgementCaseConfig.page2_surname + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
+            await this.page.locator('#deceasedSurname').fill(createWillLodgementCaseConfig.page2_surname + _unique_deceased_identifier + ' UPDATED' + unique_deceased_identifier);
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }*/
-            await this.page.locator('#deceasedFullAliasNameList_0_FullAliasName').fill(createWillLodgementCaseConfig.page2_alias_1 + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
+            await this.page.locator('#deceasedFullAliasNameList_0_FullAliasName').fill(createWillLodgementCaseConfig.page2_alias_1 + _unique_deceased_identifier + ' UPDATED' + unique_deceased_identifier);
             await this.page.locator('#deceasedDateOfDeath-day').fill(createWillLodgementCaseConfig.page2_dateOfDeath_day_update);
             await this.page.locator('#deceasedDateOfDeath-month').fill(createWillLodgementCaseConfig.page2_dateOfDeath_month_update);
             await this.page.locator('#deceasedDateOfDeath-year').fill(createWillLodgementCaseConfig.page2_dateOfDeath_year_update);
