@@ -113,6 +113,10 @@ public class NotificationService {
     private static final String AD_COLLIGENDA_BONA_CASE_TYPE = "adColligendaBona";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
+    private static final String PERSONALISATION_UPLOAD_CHECK = "upload_check";
+    private static final String PERSONALISATION_LINK_FILE = "link_to_file";
+    private static final String PERSONALISATION_EXPIRY_DATE = "expiry_date";
+    private static final String PERSONALISATION_EXPIRY_DATE_WELSH = "expiry_date_cy";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
 
@@ -150,7 +154,7 @@ public class NotificationService {
     private Long grantAwaitingDocumentationNotificationPeriodDays;
     @Value("${notifications.grantDelayedNotificationReleaseDate}")
     private String grantDelayedNotificationReleaseDate;
-    @Value("upload_doc.expiry_weeks")
+    @Value("${upload_doc.expiry_weeks}")
     private String expiryWeeks;
 
     public Document sendEmail(State state, CaseDetails caseDetails)
@@ -221,7 +225,7 @@ public class NotificationService {
         Map<String, Object> personalisation =
                 grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                         registry);
-        personalisation.put("upload_check", caseData.getUploadFileCheck());
+        personalisation.put(PERSONALISATION_UPLOAD_CHECK, caseData.getUploadFileCheck());
 
         updatePersonalisationForSolicitor(caseData, personalisation);
         addPersonalisationForUploadDocument(caseData, personalisation, caseDetails.getId().toString());
@@ -243,19 +247,20 @@ public class NotificationService {
         if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())
                 && cwDocumentUpload != null) {
             log.info("Got cwDocumentUpload for case: {}", caseReference);
-            addExpiryDatePersonalisation(personalisation);
+            addExpiryDatePersonalisation(caseData, personalisation);
             addCwDocumentToPersonalisation(cwDocumentUpload, personalisation, caseReference);
         } else if (NO.equalsIgnoreCase(caseData.getUploadFileCheck())) {
-            personalisation.put("link_to_file", " ");
-            personalisation.put("expiry_date", " ");
+            personalisation.put(PERSONALISATION_LINK_FILE, " ");
+            personalisation.put(PERSONALISATION_EXPIRY_DATE, " ");
+            personalisation.put(PERSONALISATION_EXPIRY_DATE_WELSH, " ");
         }
     }
 
-    private void addExpiryDatePersonalisation(Map<String, Object> personalisation) {
-
-        DateTimeFormatter expiryFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private void addExpiryDatePersonalisation(CaseData caseData, Map<String, Object> personalisation) {
         LocalDate expiryDate = LocalDate.now().plusWeeks(Long.parseLong(expiryWeeks));
-        personalisation.put("expiry_date", expiryDate.format(expiryFormatter));
+        String expiryDateFormatted = caseData.convertDate(expiryDate);
+        personalisation.put(PERSONALISATION_EXPIRY_DATE, expiryDateFormatted);
+        personalisation.put(PERSONALISATION_EXPIRY_DATE_WELSH, localDateToWelshStringConverter.convert(expiryDate));
     }
 
     private void addCwDocumentToPersonalisation(
@@ -275,7 +280,7 @@ public class NotificationService {
 
     private void cwPrepareUpload(byte[] fileContents, Map<String, Object> personalisation, String caseReference) {
         try {
-            personalisation.put("link_to_file",
+            personalisation.put(PERSONALISATION_LINK_FILE,
                     NotificationClient.prepareUpload(
                             fileContents,
                             false,
