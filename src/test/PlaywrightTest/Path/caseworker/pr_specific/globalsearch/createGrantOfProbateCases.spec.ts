@@ -1,9 +1,9 @@
-import { test } from "../../Fixtures/fixtures.ts";
+import { test } from "../../../../Fixtures/fixtures.ts";
 
-import { testConfig } from "../../Configs/config.ts";
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
-import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
-import grantOfProbateCases from "../../Pages/globalSearchGrantOfProbateCases/grantOfProbateCasesConfig.json" with {type: "json"};
+import { testConfig } from "../../../../Configs/config.ts";
+import createCaseConfig from "../../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import caseProgressConfig from "../../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
+import grantOfProbateCases from "../../../../Pages/globalSearchGrantOfProbateCases/grantOfProbateCasesConfig.json" with {type: "json"};
 
 test.describe("Data Creation for Global Search Testing - Grant of Representation", () => {
     test("Data Creation for Global Search Testing - Grant of Representation @chromium", async ({ basePage, signInPage, createCasePage }) => {

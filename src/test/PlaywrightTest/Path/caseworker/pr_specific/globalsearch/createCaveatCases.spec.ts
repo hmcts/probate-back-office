@@ -1,6 +1,6 @@
-import { test } from "../../Fixtures/fixtures.ts";
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
-import caveatCases from "../../Pages/globalSearchCaveatCases/caveatCasesConfig.json" with {type: "json"};
+import { test } from "../../../../Fixtures/fixtures.ts";
+import createCaseConfig from "../../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import caveatCases from "../../../../Pages/globalSearchCaveatCases/caveatCasesConfig.json" with {type: "json"};
 
 test.describe("Data Creation for Global Search Testing - Caveat", () => {
     test("Data Creation for Global Search Testing - Caveat @chromium", async ({ basePage, signInPage, createCasePage }) => {

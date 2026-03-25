@@ -1,6 +1,6 @@
-import { test } from "../../Fixtures/fixtures.ts";
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
-import willLodgementCases from "../../Pages/globalSearchWillLodgementCases/willLodgementCasesConfig.json" with {type: "json"};
+import { test } from "../../../../Fixtures/fixtures.ts";
+import createCaseConfig from "../../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import willLodgementCases from "../../../../Pages/globalSearchWillLodgementCases/willLodgementCasesConfig.json" with {type: "json"};
 
 
 test.describe("Data Creation for Global Search Testing - Will Lodgement", () => {

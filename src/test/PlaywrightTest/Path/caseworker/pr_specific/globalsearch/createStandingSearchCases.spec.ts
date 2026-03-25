@@ -1,8 +1,8 @@
-import { test } from "../../Fixtures/fixtures.ts";
+import { test } from "../../../../Fixtures/fixtures.ts";
 
-import { testConfig } from "../../Configs/config.ts";
-import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
-import standingSearchCases from "../../Pages/globalSearchStandingSearchCases/standingSearchCasesConfig.json" with {type: "json"};
+import { testConfig } from "../../../../Configs/config.ts";
+import createCaseConfig from "../../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
+import standingSearchCases from "../../../../Pages/globalSearchStandingSearchCases/standingSearchCasesConfig.json" with {type: "json"};
 
 test.describe("Data Creation for Global Search Testing - Standing Search", () => {
     test("Data Creation for Global Search Testing  - Standing Search @chromium", async ({ basePage, signInPage, createCasePage }) => {
