@@ -1,18 +1,6 @@
 tags:
   probate-ccd-stack: true
 
-idam-pr:
-  enabled: true
-  releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
-  redirect_uris:
-    Probate:
-      - https://${SERVICE_FQDN}/oauth2/callback
-    XUI:
-      - https://xui-${SERVICE_FQDN}/oauth2/callback
-      - http://xui-${SERVICE_FQDN}/oauth2/callback
-    CCD Admin:
-      - https://admin-web-${SERVICE_FQDN}/oauth2redirect
-
 ccd:
   ccd:
     apiGatewayWeb:
@@ -56,14 +44,12 @@ ccd:
         - name: "pr-${CHANGE_ID}-probatemandb"
   ccd-admin-web:
     nodejs:
-      image: hmctspublic.azurecr.io/ccd/admin-web:latest
+      image: hmctsprod.azurecr.io/ccd/admin-web:latest
       ingressHost: admin-web-${SERVICE_FQDN}
       keyVaults: []
       environment:
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
         IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
-    idam-pr:
-      enabled: true
   ccd-case-print-service:
     enabled: true
     nodejs:
@@ -177,7 +163,7 @@ ccd:
     elasticsearch:
       host: ${SERVICE_NAME}-es-master
       port: 9200
-    image: hmctspublic.azurecr.io/ccd/logstash
+    image: hmctsprod.azurecr.io/ccd/logstash
     imageTag: "ccd-probate-logstash-latest"
     extraEnvs:
       - name: DATA_STORE_URL
@@ -216,7 +202,7 @@ ccd:
     livenessProbe:
       initialDelaySeconds: 90
   ccd-user-profile-importer:
-    image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
+    image: hmctsprod.azurecr.io/ccd/user-profile-importer:latest
     users:
       - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
       - probatesolicitorpreprod@gmail.com|PROBATE|GrantOfRepresentation|open
@@ -226,7 +212,7 @@ xui-webapp:
   nodejs:
     imagePullPolicy: Always
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
-    image: hmctspublic.azurecr.io/xui/webapp:latest
+    image: hmctsprod.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
     devcpuRequests: 500m
     devmemoryRequests: 512Mi
@@ -271,7 +257,7 @@ aac-manage-case-assignment:
     disableKeyVaults: true
     imagePullPolicy: Always
     releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
-    image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
+    image: hmctsprod.azurecr.io/aac/manage-case-assignment:latest
     ingressHost: aac-${SERVICE_FQDN}
     environment:
       IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
