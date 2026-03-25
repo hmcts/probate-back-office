@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
@@ -188,6 +189,7 @@ class NotificationServiceTest {
         Map<String, Registry> registriesMap = new HashMap<>();
         registriesMap.put("ctsc", registry);
         when(registriesPropertiesMock.getRegistries()).thenReturn(registriesMap);
+        ReflectionTestUtils.setField(notificationService, "expiryWeeks", "26");
     }
 
     @AfterEach

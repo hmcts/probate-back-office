@@ -1461,8 +1461,6 @@ public class CallbackResponseTransformer {
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
-            .uploadFileCheck(caseData.getUploadFileCheck())
-            .cwDocumentUpload(caseData.getCwDocumentUpload())
             .cwDocumentUploadedList(caseData.getCwDocumentUploadedList());
 
         handleDeceasedAliases(
@@ -2254,8 +2252,7 @@ public class CallbackResponseTransformer {
                 .informationNeeded(null)
                 .informationNeededByPost(null)
                 .boStopDetails(null)
-                .boStopDetailsDeclarationParagraph(null)
-                .uploadFileCheck(null);
+                .boStopDetailsDeclarationParagraph(null);
     }
 
     public void defaultInformationRequestSwitch(CallbackRequest callbackRequest,

@@ -150,6 +150,8 @@ public class NotificationService {
     private Long grantAwaitingDocumentationNotificationPeriodDays;
     @Value("${notifications.grantDelayedNotificationReleaseDate}")
     private String grantDelayedNotificationReleaseDate;
+    @Value("upload_doc.expiry_weeks")
+    private String expiryWeeks;
 
     public Document sendEmail(State state, CaseDetails caseDetails)
         throws NotificationClientException {
@@ -185,7 +187,7 @@ public class NotificationService {
         personalisation = updatePersonalisationForSolicitorGrantIssuedEmails(state, caseData, caseDetails.getId(),
                 personalisation);
 
-        addPersonalisationForUploadDocument(caseData, personalisation);
+        addPersonalisationForUploadDocument(caseData, personalisation, caseDetails.getId().toString());
 
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
@@ -222,7 +224,7 @@ public class NotificationService {
         personalisation.put("upload_check", caseData.getUploadFileCheck());
 
         updatePersonalisationForSolicitor(caseData, personalisation);
-        addPersonalisationForUploadDocument(caseData, personalisation);
+        addPersonalisationForUploadDocument(caseData, personalisation, caseDetails.getId().toString());
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
@@ -235,13 +237,14 @@ public class NotificationService {
         return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
     }
 
-    private void addPersonalisationForUploadDocument(CaseData caseData, Map<String, Object> personalisation) {
+    private void addPersonalisationForUploadDocument(CaseData caseData, Map<String, Object> personalisation,
+                                                     String caseReference) {
         UploadDocument cwDocumentUpload = caseData.getCwDocumentUpload();
         if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())
                 && cwDocumentUpload != null) {
-            log.info("Got cwDocumentUpload for case: {}", cwDocumentUpload);
+            log.info("Got cwDocumentUpload for case: {}", caseReference);
             addExpiryDatePersonalisation(personalisation);
-            addCwDocumentToPersonalisation(cwDocumentUpload, personalisation);
+            addCwDocumentToPersonalisation(cwDocumentUpload, personalisation, caseReference);
         } else if (NO.equalsIgnoreCase(caseData.getUploadFileCheck())) {
             personalisation.put("link_to_file", " ");
             personalisation.put("expiry_date", " ");
@@ -251,33 +254,41 @@ public class NotificationService {
     private void addExpiryDatePersonalisation(Map<String, Object> personalisation) {
 
         DateTimeFormatter expiryFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate expiryDate = LocalDate.now().plusWeeks(26);
+        LocalDate expiryDate = LocalDate.now().plusWeeks(Long.parseLong(expiryWeeks));
         personalisation.put("expiry_date", expiryDate.format(expiryFormatter));
     }
 
     private void addCwDocumentToPersonalisation(
             UploadDocument cwDocumentUpload,
-            Map<String, Object> personalisation) {
+            Map<String, Object> personalisation, String caseReference) {
         try {
             byte[] fileContents = documentManagementService.getDocumentByBinaryUrl(cwDocumentUpload.getDocumentLink()
                     .getDocumentBinaryUrl());
-            cwPrepareUpload(fileContents, personalisation);
+            cwPrepareUpload(fileContents, personalisation, caseReference);
         } catch (IOException e) {
             log.error("Error reading CW document file  : {}", e.getMessage());
+            final String message = MessageFormat.format("Unable reading CW document file for case : {} ",
+                    caseReference);
+            throw new BusinessValidationException(message, e.getMessage());
         }
     }
 
-    private void cwPrepareUpload(byte[] fileContents, Map<String, Object> personalisation) {
+    private void cwPrepareUpload(byte[] fileContents, Map<String, Object> personalisation, String caseReference) {
         try {
             personalisation.put("link_to_file",
                     NotificationClient.prepareUpload(
                             fileContents,
                             false,
-                            new RetentionPeriodDuration(26, ChronoUnit.WEEKS)
+                            new RetentionPeriodDuration(Integer.parseInt(expiryWeeks), ChronoUnit.WEEKS)
                     ));
 
         } catch (NotificationClientException e) {
             log.error("Error Preparing to send email : {} ", e.getMessage());
+            final String message = MessageFormat.format(
+                    "Unable prepare to send email for case : {} ",
+                    caseReference);
+            throw new BusinessValidationException(message, e.getMessage());
+
         }
     }
 
