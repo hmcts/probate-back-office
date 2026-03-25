@@ -181,7 +181,7 @@ public class NotificationService {
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                 registry);
-        personalisation.put("upload_check", caseData.getUploadFileCheck());
+        personalisation.put(PERSONALISATION_UPLOAD_CHECK, caseData.getUploadFileCheck());
 
         if (state == state.CASE_STOPPED_CAVEAT) {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
