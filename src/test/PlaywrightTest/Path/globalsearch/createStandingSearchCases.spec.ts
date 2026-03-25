@@ -9,12 +9,12 @@ test.describe("Data Creation for Global Search Testing - Standing Search", () =>
         const scenarioName = "Data Creation for Global Search Testing  - Standing Search";
             
         if (testConfig.TestBackOfficeUrl.includes("demo") || testConfig.TestBackOfficeUrl.includes("aat") ) {
-            await basePage.logInfo(scenarioName, "Login as Caseworker", undefined);
+            await basePage.logInfo(scenarioName, "Login as Caseworker");
             await signInPage.authenticateWithIdamIfAvailable(false);
 
             for(const caseConfig of standingSearchCases) {
                 let nextStepName = "Create a standing search";
-                await basePage.logInfo(scenarioName, nextStepName, undefined);
+                await basePage.logInfo(scenarioName, nextStepName);
                 await createCasePage.selectNewCase();
                 await createCasePage.selectCaseTypeOptions(
                     createCaseConfig.list2_text_stan_search,

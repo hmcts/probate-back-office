@@ -2,16 +2,16 @@ import { test } from "../../Fixtures/fixtures.ts";
 import createCaseConfig from "../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 import caveatCases from "../../Pages/globalSearchCaveatCases/caveatCasesConfig.json" with {type: "json"};
 
-test.describe("Data Creation for Global Search Testing - Grant of Representation", () => {
+test.describe("Data Creation for Global Search Testing - Caveat", () => {
     test("Data Creation for Global Search Testing - Caveat @chromium", async ({ basePage, signInPage, createCasePage }) => {
-        const scenarioName = "Data Creation for Global Search Testing - Grant of Representation";
+        const scenarioName = "Data Creation for Global Search Testing - Caveat";
 
-        await basePage.logInfo(scenarioName, "Login as Caseworker", undefined);
+        await basePage.logInfo(scenarioName, "Login as Caseworker");
         await signInPage.authenticateWithIdamIfAvailable(false);
 
         for(const caseConfig of caveatCases) {
             let nextStepName = "Raise a caveat";
-            await basePage.logInfo(scenarioName, nextStepName, undefined);
+            await basePage.logInfo(scenarioName, nextStepName);
             await createCasePage.selectNewCase();
             await createCasePage.selectCaseTypeOptions(
                 createCaseConfig.list2_text_caveat,

@@ -7,12 +7,12 @@ test.describe("Data Creation for Global Search Testing - Will Lodgement", () => 
     test("Data Creation for Global Search Testing - Will Lodgement", async ({ basePage, signInPage, createCasePage }) => {
         const scenarioName = "Data Creation for Global Search Testing - Will Lodgement";
         // 1. Sign in
-        await basePage.logInfo(scenarioName, "Login as Caseworker", undefined);
+        await basePage.logInfo(scenarioName, "Login as Caseworker");
         await signInPage.authenticateWithIdamIfAvailable(false);
 
         for(const caseConfig of willLodgementCases){
             let nextStepName = "Create a will lodgement";
-            await basePage.logInfo(scenarioName, nextStepName, undefined);
+            await basePage.logInfo(scenarioName, nextStepName);
             await createCasePage.selectNewCase();
             await createCasePage.selectCaseTypeOptions(
                 createCaseConfig.list2_text_will,
