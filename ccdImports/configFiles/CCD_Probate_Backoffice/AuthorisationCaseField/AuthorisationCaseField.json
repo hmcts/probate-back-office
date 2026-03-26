@@ -4069,8 +4069,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "informationNeededByPostSwitch", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "emailPreview", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boDocumentsUploaded", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "cwDocumentUpload", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "cwDocumentUploadedList", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsLegalStatementUpload", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsExecutorAliasNames", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "probateDocumentsGenerated", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
