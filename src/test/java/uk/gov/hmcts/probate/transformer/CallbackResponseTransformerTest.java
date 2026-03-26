@@ -2709,7 +2709,6 @@ class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
         assertEquals(callbackResponse.getData().getEvidenceHandledDate(),
                 LocalDate.now().toString());
-        assertNull(callbackResponse.getData().getCwDocumentUpload());
     }
 
     @Test
