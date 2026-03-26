@@ -341,7 +341,7 @@ public class CallbackResponseTransformer {
                     .documentUploadIssue(null);
         }
         if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())) {
-            responseCaseDataBuilder.cwDocumentUpload(null)
+            responseCaseDataBuilder
                     .cwDocumentUploadedList(addCaseworkerUploadDocument(caseData));
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
