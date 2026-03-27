@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.CaseType;
 
-import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 
@@ -13,11 +12,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import static org.bouncycastle.util.Longs.valueOf;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.matchers.JUnitMatchers.hasItem;
+import static org.junit.matchers.JUnitMatchers.hasItems;
 
 class ExceptionRecordCaseDataValidatorTest {
 
@@ -176,19 +177,17 @@ class ExceptionRecordCaseDataValidatorTest {
         OCRMappingException exception = assertThrows(OCRMappingException.class,
                 () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
 
-        assertEquals(DOD_BEFORE_DOB, exception.getWarnings().get(0));
+        assertThat(exception.getWarnings(), hasItem(DOD_BEFORE_DOB));
     }
 
     @Test
-    void shouldThrowExceptionWhenDeathIsSameAsBirth() {
+    void shouldNotThrowExceptionWhenDeathIsSameAsBirth() {
         LocalDate date = LocalDate.of(2024, 11, 24);
         GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
                 .deceasedDateOfBirth(date)
                 .deceasedDateOfDeath(date)
                 .build();
-        OCRMappingException exception = assertThrows(OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
-        assertEquals(DOD_BEFORE_DOB, exception.getWarnings().get(0));
+        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
     }
 
     @Test
@@ -199,18 +198,18 @@ class ExceptionRecordCaseDataValidatorTest {
                 .build();
         OCRMappingException exception = assertThrows(OCRMappingException.class,
                 () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
-        assertEquals(DOD_IN_FUTURE, exception.getWarnings().get(0));
+        assertThat(exception.getWarnings(), hasItem(DOD_IN_FUTURE));
     }
 
     @Test
     void shouldThrowMultipleErrorsForInvalidDates() {
         GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
-                .deceasedDateOfBirth(LocalDate.now())
-                .deceasedDateOfDeath(LocalDate.now().plusDays(1))
+                .deceasedDateOfBirth(LocalDate.now().plusDays(20))
+                .deceasedDateOfDeath(LocalDate.now().plusDays(10))
                 .build();
         OCRMappingException exception = assertThrows(OCRMappingException.class,
                 () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
-        assertEquals(DOD_IN_FUTURE, exception.getWarnings().get(0));
+        assertThat(exception.getWarnings(), hasItems(DOD_IN_FUTURE, DOD_BEFORE_DOB));
     }
 
     @Test
