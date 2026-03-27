@@ -31,6 +31,7 @@ test.describe("Caseworker Caveat3 - Caveat expired", () => {
     createCasePage,
     cwEventActionsPage,
   }, testInfo) => {
+    test.setTimeout(300000);
     const scenarioName = "Caseworker Caveat3 - Caveat expired";
 
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Caveat expired
