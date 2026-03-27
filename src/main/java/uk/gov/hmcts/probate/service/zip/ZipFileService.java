@@ -344,7 +344,7 @@ public class ZipFileService {
                 csvWriter.print(zippedManifestData.getDocumentId());
                 csvWriter.print(zippedManifestData.getDocType());
                 csvWriter.print(zippedManifestData.getCaseType());
-                csvWriter.print(zippedManifestData.getSubType());
+                csvWriter.print(getSafeDocumentSubType(zippedManifestData.getSubType()));
                 csvWriter.print(zippedManifestData.getDocumentName());
                 csvWriter.print(zippedManifestData.getErrorDescription());
                 if (isUpdatedSmeeAndFord) {
@@ -361,6 +361,10 @@ public class ZipFileService {
                 .errorDescription("").build();
         ByteArrayResource byteArrayResource = new ByteArrayResource(data.toString().getBytes(StandardCharsets.UTF_8));
         zipMultipleDocs(zos, byteArrayResource, zippedManifestData.getDocumentName());
+    }
+
+    private static String getSafeDocumentSubType(String subType) {
+        return (subType == null || subType.isEmpty()) ? "null" : subType;
     }
 
     private static String sanitizeComment(String comment) {
