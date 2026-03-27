@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.matchers.JUnitMatchers.hasItem;
 import static org.junit.matchers.JUnitMatchers.hasItems;
+import static uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptionRecordCaseDataValidator.DOD_BEFORE_DOB;
+import static uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptionRecordCaseDataValidator.DOD_IN_FUTURE;
 
 class ExceptionRecordCaseDataValidatorTest {
 
@@ -32,8 +34,6 @@ class ExceptionRecordCaseDataValidatorTest {
             "Net qualifying value can't be greater than the gross amount";
     private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE =
             "Net qualifying value can't be greater than the net amount";
-    private static final String DOD_BEFORE_DOB = "Date of death must be after date of birth";
-    private static final String DOD_IN_FUTURE = "Date of death cannot be in the future";
 
     private static final String SCANNED_DOCUMENT_TYPE_VALDIATION_ERROR = "Scan Document Type validation error";
     private static final String INVALID_SCAN_DOC_GOP =
