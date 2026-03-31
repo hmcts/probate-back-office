@@ -36,9 +36,11 @@ trap 'set +e; [[ -n "${XVFB_PID:-}" ]] && kill "$XVFB_PID" >/dev/null 2>&1' EXIT
 set +e
 yarn test:functional-chromium
 TEST_STATUS=$?
-# set -e
+set -e
 
-echo "Full e2e tests completed with status: $TEST_STATUS"
+if [ $TEST_STATUS -ne 0 ]; then
+    echo "TEST_FAILED" > ./functional-output/test-status.txt
+fi
 
 # Exit with the tests' status (fails pipeline if tests failed)
 exit $TEST_STATUS

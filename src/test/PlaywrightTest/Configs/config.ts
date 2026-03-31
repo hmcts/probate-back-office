@@ -30,9 +30,9 @@ export const testConfig = {
   TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === "true",
   TestForCrossBrowser: process.env.TESTS_FOR_CROSS_BROWSER === "true",
   // only used when running locally, not in pipeline (where autodelay is on) - other than case matching
-  ManualDelayShort: 250,
-  ManualDelayMedium: 500,
-  ManualDelayLong: 750,
+  ManualDelayShort: 25000,
+  ManualDelayMedium: 50000,
+  ManualDelayLong: 75000,
   // if auto delay enabled, is running in pipeline, not locally from individual test path run via package.json script
   SignOutDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === "true" ? 2000 : 0,
   SignInDelayDefault: process.env.E2E_AUTO_DELAY_ENABLED === "true" ? 2000 : 0,
