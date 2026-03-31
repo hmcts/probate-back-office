@@ -34,3 +34,15 @@ No connection string provided
 Action:
 Please provide connection string: https://go.microsoft.com/fwlink/?linkid=2153358
 
+2026-03-31 18:50:34.965+01:00 INFO  c.m.a.a.i.c.ConfigurationBuilder - Some telemetry may be sampled out because a default sampling configuration was added in version 3.4.0 to reduce the default billing cost. You can set the sampling configuration explicitly: https://learn.microsoft.com/azure/azure-monitor/app/java-standalone-config#sampling
+2026-03-31 18:50:37.114+01:00 ERROR c.m.applicationinsights.agent - 
+*************************
+Application Insights Java Agent 3.7.7 startup failed (PID 16978)
+*************************
+
+Description:
+No connection string provided
+
+Action:
+Please provide connection string: https://go.microsoft.com/fwlink/?linkid=2153358
+
