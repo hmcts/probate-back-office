@@ -344,11 +344,11 @@ public class ZipFileService {
                 csvWriter.print(zippedManifestData.getDocumentId());
                 csvWriter.print(zippedManifestData.getDocType());
                 csvWriter.print(zippedManifestData.getCaseType());
-                csvWriter.print(getSafeDocumentSubType(zippedManifestData.getSubType()));
+                csvWriter.print(getSafeDocumentSubType(zippedManifestData.getSubType(), isUpdatedSmeeAndFord));
                 csvWriter.print(zippedManifestData.getDocumentName());
                 csvWriter.print(zippedManifestData.getErrorDescription());
                 if (isUpdatedSmeeAndFord) {
-                    csvWriter.print(sanitizeComment(zippedManifestData.getComment()));
+                    csvWriter.print(sanitiseComment(zippedManifestData.getComment()));
                 }
                 csvWriter.println();
             }
@@ -363,11 +363,15 @@ public class ZipFileService {
         zipMultipleDocs(zos, byteArrayResource, zippedManifestData.getDocumentName());
     }
 
-    private static String getSafeDocumentSubType(String subType) {
-        return (subType == null || subType.isEmpty()) ? "null" : subType;
+    //Sending only the subType to S&F because NFI receive 'original' pre DTSPB-5156 changes - avoid ruining their ingest
+    private static String getSafeDocumentSubType(String subType, boolean isUpdatedSmeeAndFord) {
+        if (isUpdatedSmeeAndFord) {
+            return (subType == null || subType.isEmpty()) ? "null" : subType;
+        }
+        return "null";
     }
 
-    private static String sanitizeComment(String comment) {
+    private static String sanitiseComment(String comment) {
         if (comment == null) {
             return "null";
         }
