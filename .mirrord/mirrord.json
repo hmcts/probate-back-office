@@ -1,0 +1,20 @@
+{
+  "feature": {
+    "network": {
+      "incoming": "mirror",
+      "outgoing": true
+    },
+    "fs": "read",
+    "env": true
+  },
+  "target": {
+    "path": {
+      "pod": "probate-back-office-pr-3716-java-65cd795445-n9kr9"
+    },
+    "namespace": "probate"
+  },
+  "agent": {
+    "namespace": "probate"
+  }
+
+}
