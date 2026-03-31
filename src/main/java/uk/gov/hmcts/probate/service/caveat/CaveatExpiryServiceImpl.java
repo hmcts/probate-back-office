@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.caveat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.ConcurrentDataUpdateException;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -11,15 +12,21 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaveatExpiryService;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CaseState;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
+import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
 @Slf4j
 @Component
@@ -30,8 +37,16 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
 
     private final CaveatQueryService caveatQueryService;
     private final CcdClientApi ccdClientApi;
+    private final CoreCaseDataApi coreCaseDataApi;
     private final SecurityUtils securityUtils;
+    private final Clock clock;
     private final int dataExtractPaginationSize = 100;
+    private static final Set<String> ALLOWED_EXPIRY_EVENTS = Set.of(
+            CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION.getName(),
+            CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED.getName(),
+            CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION.getName(),
+            CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE.getName()
+    );
 
     @Override
     public void expireCaveats(String expiryDate) {
@@ -56,11 +71,29 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
     }
 
     private void expireCaveat(ReturnedCaveatDetails caveat, SecurityDTO securityDTO, List<String> failedCases) {
-        EventId eventId = getEventId(caveat.getState());
+        EventId eventId = getEventIdForCaveatToExpireGivenPreconditionState(caveat.getState());
         uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caseData =
                 uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
                         .autoClosedExpiry(Boolean.TRUE)
                         .build();
+        StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                PROBATE.name(),
+                "Caveat",
+                caveat.getId().toString(),
+                eventId.getName()
+        );
+        String actualEventId = startEventResponse.getEventId();
+        LocalDateTime actualLastModified = startEventResponse.getCaseDetails().getLastModified();
+        boolean modifiedWithinLast24Hours = actualLastModified.isAfter(LocalDateTime.now(clock).minusDays(1));
+
+        if (!ALLOWED_EXPIRY_EVENTS.contains(actualEventId) || modifiedWithinLast24Hours) {
+            throw new ConcurrentDataUpdateException(String.format("caveatId: %s not updated due to different "
+                            + "eventId. actualEventId: %s, lastModified: %s",
+                    caveat.getId(), actualEventId, actualLastModified));
+        }
         try {
             ccdClientApi.updateCaseAsCaseworker(
                     CcdCaseType.CAVEAT,
@@ -80,7 +113,7 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
         }
     }
 
-    private EventId getEventId(CaseState caveatState) {
+    private EventId getEventIdForCaveatToExpireGivenPreconditionState(CaseState caveatState) {
         return switch (caveatState) {
             case CAVEAT_NOT_MATCHED -> CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
             case CAVEAT_AWAITING_RESOLUTION -> CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;

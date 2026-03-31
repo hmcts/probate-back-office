@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.caveat;
 
 import com.google.common.collect.ImmutableList;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,11 +9,17 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -23,6 +30,7 @@ import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_NOT_MATCHED;
 
 @ExtendWith(SpringExtension.class)
@@ -41,7 +49,35 @@ class CaveatExpiryServiceImplTest {
     private CcdClientApi ccdClientApi;
 
     @Mock
+    private CoreCaseDataApi coreCaseDataApi;
+
+    @Mock
     private SecurityUtils securityUtils;
+
+    @Mock
+    private SecurityDTO securityDTO;
+
+    @Mock
+    private Clock clock;
+
+    private LocalDateTime now;
+    private LocalDateTime lastModifiedOlder;
+    private LocalDateTime lastModifiedRecent;
+
+    @BeforeEach
+    void setup() {
+        now = LocalDateTime.now();
+        lastModifiedOlder = now.minusDays(3L);
+        lastModifiedRecent = now.minusHours(10L);
+
+        when(clock.instant()).thenReturn(Clock.systemDefaultZone().instant());
+        when(clock.getZone()).thenReturn(ZoneId.systemDefault());
+
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityDTO.getAuthorisation()).thenReturn("auth");
+        when(securityDTO.getServiceAuthorisation()).thenReturn("someServiceAuth");
+        when(securityDTO.getUserId()).thenReturn("userId");
+    }
 
     @Test
     void shouldExpireCaveats() {
@@ -54,6 +90,16 @@ class CaveatExpiryServiceImplTest {
         when(caveatQueryService.fetchExpiredCaveatsPage(any(), any()))
                 .thenReturn(page)
                 .thenReturn(List.of());
+        StartEventResponse mockStartEventResponse = StartEventResponse.builder()
+                .eventId(CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED.getName())
+                .caseDetails(CaseDetails.builder()
+                        .id(1L)
+                        .lastModified(LocalDateTime.now().minusDays(2))
+                        .build())
+                .build();
+        when(coreCaseDataApi.startEventForCaseWorker(
+                any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(mockStartEventResponse);
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
         verify(securityUtils).setSecurityContextUserAsScheduler();
         verify(ccdClientApi).updateCaseAsCaseworker(
@@ -72,6 +118,18 @@ class CaveatExpiryServiceImplTest {
                 .thenReturn(firstPage)
                 .thenReturn(secondPage)
                 .thenReturn(List.of());
+
+        StartEventResponse mockStartEventResponse = StartEventResponse.builder()
+                .eventId(CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED.getName())
+                .caseDetails(CaseDetails.builder()
+                        .id(1L)
+                        .lastModified(LocalDateTime.now().minusDays(2))
+                        .build())
+                .build();
+        when(coreCaseDataApi.startEventForCaseWorker(
+                any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(mockStartEventResponse);
+
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
         verify(ccdClientApi).updateCaseAsCaseworker(
                 any(), any(), any(), any(), any(), any(), any(), any());
@@ -99,6 +157,16 @@ class CaveatExpiryServiceImplTest {
         when(caveatQueryService.fetchExpiredCaveatsPage(any(), any()))
                 .thenReturn(page)
                 .thenReturn(List.of());
+        StartEventResponse mockStartEventResponse = StartEventResponse.builder()
+                .eventId(CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED.getName())
+                .caseDetails(CaseDetails.builder()
+                        .id(1L)
+                        .lastModified(LocalDateTime.now().minusDays(2))
+                        .build())
+                .build();
+        when(coreCaseDataApi.startEventForCaseWorker(
+                any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(mockStartEventResponse);
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
         verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(), any(),
                 eq(uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION),
@@ -120,6 +188,16 @@ class CaveatExpiryServiceImplTest {
         when(caveatQueryService.fetchExpiredCaveatsPage(any(), any()))
                 .thenReturn(returned)
                 .thenReturn(List.of());
+        StartEventResponse mockStartEventResponse = StartEventResponse.builder()
+                .eventId(CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED.getName())
+                .caseDetails(CaseDetails.builder()
+                        .id(1L)
+                        .lastModified(LocalDateTime.now().minusDays(2))
+                        .build())
+                .build();
+        when(coreCaseDataApi.startEventForCaseWorker(
+                any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(mockStartEventResponse);
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
         verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(), any(),
                 eq(uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE),
@@ -141,6 +219,16 @@ class CaveatExpiryServiceImplTest {
         when(caveatQueryService.fetchExpiredCaveatsPage(any(), any()))
                 .thenReturn(page)
                 .thenReturn(List.of());
+        StartEventResponse mockStartEventResponse = StartEventResponse.builder()
+                .eventId(CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED.getName())
+                .caseDetails(CaseDetails.builder()
+                        .id(1L)
+                        .lastModified(LocalDateTime.now().minusDays(2))
+                        .build())
+                .build();
+        when(coreCaseDataApi.startEventForCaseWorker(
+                any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(mockStartEventResponse);
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
         verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(), any(),
                 eq(uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION),
@@ -165,7 +253,16 @@ class CaveatExpiryServiceImplTest {
 
         doThrow(new RuntimeException("Caveat autoExpire failure"))
                 .when(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(), any(), any(), any(), any(), any());
-
+        StartEventResponse mockStartEventResponse = StartEventResponse.builder()
+                .eventId(CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED.getName())
+                .caseDetails(CaseDetails.builder()
+                        .id(1L)
+                        .lastModified(LocalDateTime.now().minusDays(2))
+                        .build())
+                .build();
+        when(coreCaseDataApi.startEventForCaseWorker(
+                any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn(mockStartEventResponse);
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
         verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(), any(), any(), any(), any(), any());
     }
