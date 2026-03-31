@@ -364,14 +364,14 @@ public class ZipFileService {
     }
 
     //Sending only the subType to S&F because NFI receive 'original' pre DTSPB-5156 changes - avoid ruining their ingest
-    private static String getSafeDocumentSubType(String subType, boolean isUpdatedSmeeAndFord) {
+    private String getSafeDocumentSubType(String subType, boolean isUpdatedSmeeAndFord) {
         if (isUpdatedSmeeAndFord) {
             return (subType == null || subType.isEmpty()) ? "null" : subType;
         }
         return "null";
     }
 
-    private static String sanitiseComment(String comment) {
+    private String sanitiseComment(String comment) {
         if (comment == null) {
             return "null";
         }
