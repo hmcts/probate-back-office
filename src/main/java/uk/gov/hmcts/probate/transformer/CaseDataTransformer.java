@@ -215,4 +215,11 @@ public class CaseDataTransformer {
         final var caseData = callbackRequest.getCaseDetails().getData();
         caseData.setChannelChoice(PAPERFORM);
     }
+
+    public void clearDeceasedAliasesWhenUpdatingDeceasedDetails(CaseDetails caseDetails) {
+        if (NO.equals(caseDetails.getData().getDeceasedAnyOtherNames())
+                && caseDetails.getData().getSolsDeceasedAliasNamesList() != null) {
+            caseDetails.getData().clearSolsDeceasedAliasNamesList();
+        }
+    }
 }
