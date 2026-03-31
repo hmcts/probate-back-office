@@ -46,7 +46,7 @@ public class ExceptionRecordCaseDataValidator {
     static final String DOD_IN_FUTURE = "Date of death cannot be in the future";
     private static final String INVALID_SCANNED_DOCUMENT_TYPE_ERROR = "Invalid scanned Document Type Error "
             + "for case type '%s': [%s]";
-    private static final Clock clock = Clock.systemUTC();
+    private final Clock clock = Clock.systemDefaultZone();
 
     private static final Map<String, List<CaseType>> allowScannedDocumentTypes =
             Map.of(DOC_TYPE_WILL, singletonList(CaseType.GRANT_OF_REPRESENTATION),
@@ -60,11 +60,11 @@ public class ExceptionRecordCaseDataValidator {
                     DOC_TYPE_FORM, List.of(CaseType.GRANT_OF_REPRESENTATION, CaseType.CAVEAT)
             );
 
+    ExceptionRecordCaseDataValidator() {
 
-    private ExceptionRecordCaseDataValidator() {
     }
 
-    public static void validateIhtValues(GrantOfRepresentationData caseData) {
+    public void validateIhtValues(GrantOfRepresentationData caseData) {
         List<String> errorMessages = new ArrayList<>();
         if (caseData.getIhtNetValue() != null && caseData.getIhtGrossValue() != null) {
             if (caseData.getIhtNetValue().compareTo(caseData.getIhtGrossValue()) > 0) {
@@ -97,7 +97,7 @@ public class ExceptionRecordCaseDataValidator {
         }
     }
 
-    public static void validateDateOfDeath(GrantOfRepresentationData caseData) {
+    public void validateDateOfDeath(GrantOfRepresentationData caseData) {
         List<String> errorMessages = new ArrayList<>();
         if (caseData.getDeceasedDateOfDeath() != null) {
             if (!caseData.getDeceasedDateOfDeath().isBefore(LocalDate.now(clock))) {
@@ -114,7 +114,7 @@ public class ExceptionRecordCaseDataValidator {
         }
     }
 
-    public static void validateInputScannedDocumentTypes(List<InputScannedDoc>
+    public void validateInputScannedDocumentTypes(List<InputScannedDoc>
                                                             scannedDocuments,CaseType caseType) {
 
         List<String> disallowedDocTypesFound =

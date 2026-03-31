@@ -52,9 +52,11 @@ class ExceptionRecordCaseDataValidatorTest {
     private static final InputScannedDoc inputScannedDocInvalid = new InputScannedDoc("invalid",
             "",null,"","",null,null);
 
+    private ExceptionRecordCaseDataValidator exceptionRecordCaseDataValidator;
+
     @BeforeEach
     public void setUp() {
-
+        exceptionRecordCaseDataValidator = new ExceptionRecordCaseDataValidator();
     }
 
     @Test
@@ -64,7 +66,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtNetValue(HIGHER_VALUE)
                 .build();
         OCRMappingException exception = assertThrows(OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+                () -> exceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_PROBATE_NET_GREATER_THAN_GROSS, exception.getWarnings().get(0));
     }
 
@@ -75,7 +77,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateNetValue(HIGHER_VALUE)
                 .build();
         OCRMappingException exception = assertThrows(OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+                () -> exceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_ESTATE_NET_GREATER_THAN_GROSS, exception.getWarnings().get(0));
     }
 
@@ -87,7 +89,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateGrossValue(HIGHER_VALUE)
                 .ihtNetValue(LOWER_VALUE)
                 .build();
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+        assertDoesNotThrow(() -> exceptionRecordCaseDataValidator.validateIhtValues(casedata));
     }
 
 
@@ -96,12 +98,12 @@ class ExceptionRecordCaseDataValidatorTest {
 
         List<InputScannedDoc> inputScannedDocWillList = new ArrayList<>(1);
         inputScannedDocWillList.add(inputScannedDocWill);
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator
+        assertDoesNotThrow(() -> exceptionRecordCaseDataValidator
                 .validateInputScannedDocumentTypes(inputScannedDocWillList, CaseType.GRANT_OF_REPRESENTATION));
 
         List<InputScannedDoc> inputScannedDocCherishedList = new ArrayList<>(1);
         inputScannedDocCherishedList.add(inputScannedDocCherished);
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator
+        assertDoesNotThrow(() -> exceptionRecordCaseDataValidator
                 .validateInputScannedDocumentTypes(inputScannedDocCherishedList, CaseType.CAVEAT));
     }
 
@@ -110,7 +112,7 @@ class ExceptionRecordCaseDataValidatorTest {
         List<InputScannedDoc> invalidInputScannedDocWillList = new ArrayList<>(2);
         invalidInputScannedDocWillList.add(inputScannedDocWill);
         invalidInputScannedDocWillList.add(inputScannedDocInvalid);
-        OCRMappingException exception = assertThrows(OCRMappingException.class, () -> ExceptionRecordCaseDataValidator
+        OCRMappingException exception = assertThrows(OCRMappingException.class, () -> exceptionRecordCaseDataValidator
                         .validateInputScannedDocumentTypes(invalidInputScannedDocWillList,
                                 CaseType.GRANT_OF_REPRESENTATION));
         assertEquals(INVALID_SCAN_DOC_GOP, exception.getWarnings().get(0));
@@ -122,7 +124,7 @@ class ExceptionRecordCaseDataValidatorTest {
         invalidInputScannedDocWillList.add(inputScannedDocWill);
         invalidInputScannedDocWillList.add(inputScannedDocInvalid);
         OCRMappingException exception = assertThrows(
-                OCRMappingException.class, () -> ExceptionRecordCaseDataValidator
+                OCRMappingException.class, () -> exceptionRecordCaseDataValidator
                         .validateInputScannedDocumentTypes(invalidInputScannedDocWillList, CaseType.CAVEAT));
         assertEquals(INVALID_SCAN_DOC_CAVEAT, exception.getWarnings().get(0));
     }
@@ -133,7 +135,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateNetValue(HIGHER_VALUE)
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+        assertDoesNotThrow(() -> exceptionRecordCaseDataValidator.validateIhtValues(casedata));
     }
 
     @Test
@@ -142,7 +144,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateNetValue(HIGHER_VALUE)
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+        assertDoesNotThrow(() -> exceptionRecordCaseDataValidator.validateIhtValues(casedata));
     }
 
     @Test
@@ -152,7 +154,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
         OCRMappingException exception = assertThrows(OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+                () -> exceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE, exception.getWarnings().get(0));
     }
 
@@ -163,7 +165,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
         OCRMappingException exception = assertThrows(OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+                () -> exceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE, exception.getWarnings().get(0));
     }
 
@@ -175,7 +177,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .build();
 
         OCRMappingException exception = assertThrows(OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
+                () -> exceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
 
         assertThat(exception.getWarnings(), hasItem(DOD_BEFORE_DOB));
     }
@@ -187,7 +189,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .deceasedDateOfBirth(date)
                 .deceasedDateOfDeath(date)
                 .build();
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
+        assertDoesNotThrow(() -> exceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
     }
 
     @Test
@@ -197,7 +199,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .deceasedDateOfDeath(LocalDate.now().plusDays(100))
                 .build();
         OCRMappingException exception = assertThrows(OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
+                () -> exceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
         assertThat(exception.getWarnings(), hasItem(DOD_IN_FUTURE));
     }
 
@@ -208,7 +210,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .deceasedDateOfDeath(LocalDate.now().plusDays(10))
                 .build();
         OCRMappingException exception = assertThrows(OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
+                () -> exceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
         assertThat(exception.getWarnings(), hasItems(DOD_IN_FUTURE, DOD_BEFORE_DOB));
     }
 
@@ -218,7 +220,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .deceasedDateOfBirth(LocalDate.of(1950, 1, 1))
                 .deceasedDateOfDeath(LocalDate.of(2020, 1, 1))
                 .build();
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
+        assertDoesNotThrow(() -> exceptionRecordCaseDataValidator.validateDateOfDeath(casedata));
     }
 
 }

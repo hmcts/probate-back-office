@@ -30,7 +30,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveatMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordGrantOfRepresentationMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper;
-import uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor;
+import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptionRecordCaseDataValidator;
 import uk.gov.hmcts.probate.service.ocr.OCRFieldModifierUtils;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
@@ -93,8 +93,8 @@ class ExceptionRecordServiceTest {
     @Mock
     private OCRFieldModifierUtils ocrFieldModifierUtils;
 
-    @InjectMocks
-    private OCRFieldExtractor ocrFieldExtractor;
+    @Mock
+    private ExceptionRecordCaseDataValidator exceptionRecordCaseDataValidator;
 
     private TestUtils testUtils = new TestUtils();
 
@@ -143,6 +143,15 @@ class ExceptionRecordServiceTest {
     @BeforeEach
     public void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
+
+        Mockito.doNothing().when(exceptionRecordCaseDataValidator)
+                .validateInputScannedDocumentTypes(Mockito.any(), Mockito.any());
+
+        Mockito.doNothing().when(exceptionRecordCaseDataValidator)
+                .validateIhtValues(Mockito.any());
+
+        Mockito.doNothing().when(exceptionRecordCaseDataValidator)
+                .validateDateOfDeath(Mockito.any());
 
         exceptionRecordPayloadPA8A =
             testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
