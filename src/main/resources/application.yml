@@ -16,7 +16,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,data-extract
+        include: health,info,data-extract,env
       base-path: /
   endpoint:
     health:
