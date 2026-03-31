@@ -22,8 +22,7 @@ management:
     health:
       show-details: always
     env:
-      show-details: always
-      enabled: true
+      show-values: always
   health:
     db:
       enabled: false
