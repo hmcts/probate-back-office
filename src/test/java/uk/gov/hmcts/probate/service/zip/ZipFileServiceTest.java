@@ -19,6 +19,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.zip.SmeeAndFordCommentMode;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractStrategy;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
@@ -38,6 +40,8 @@ import java.util.zip.ZipEntry;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -61,6 +65,9 @@ class ZipFileServiceTest {
     @Mock
     private BlobUpload blobUpload;
 
+    @Mock
+    private FeatureToggleService featureToggleService;
+
     private ZipFileService zipFileService;
 
     @Mock
@@ -75,7 +82,7 @@ class ZipFileServiceTest {
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
         zipFileService = new ZipFileService(documentManagementService, smeeAndFordPersonalisationService,
-                fileSystemResourceService, blobUpload);
+                fileSystemResourceService, blobUpload, featureToggleService);
 
         returnedCaseDetails.add(getNewCaseData(1234567812345678L));
         returnedCaseDetails.add(getNewCaseData(1234567812345610L));
@@ -100,6 +107,10 @@ class ZipFileServiceTest {
         when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/ManifestFileHeaderRow.csv"))
                 .thenReturn("Case reference number|Document id|Document type|"
                         + "Document sub type|Case type|Document file name|Error description");
+        when(fileSystemResourceService.getFileFromResourceAsString(
+                "templates/dataExtracts/ManifestFileHeaderRowWithoutComment.csv"))
+                .thenReturn("Case reference number|Document id|Document type|Document sub type"
+                        + "|Case type|Document file name|Error description");
         when(smeeAndFordPersonalisationService.getSmeeAndFordByteArray(anyList()))
                 .thenReturn(smeeAndFordDataFileByteArray.getByteArray());
     }
@@ -156,7 +167,8 @@ class ZipFileServiceTest {
         File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
         doNothing().when(smeeAndFOrdDataExtractStrategy).uploadToBlobStorage(any(File.class));
         zipFileService
-                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate, smeeAndFOrdDataExtractStrategy);
+                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
+                        smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.INCLUDE_COMMENT);
         Assertions.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
         ZipFile zip = new ZipFile(zipFile);
         Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
@@ -182,7 +194,7 @@ class ZipFileServiceTest {
         File zipFile = new File("");
         Assertions.assertThrows(ZipFileException.class, () ->
                 zipFileService.generateAndUploadZipFile(returnedCaseDetails, zipFile,
-                        todayDate, smeeAndFOrdDataExtractStrategy));
+                        todayDate, smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.INCLUDE_COMMENT));
     }
 
     @Test
@@ -259,5 +271,33 @@ class ZipFileServiceTest {
         verifyNoInteractions(blobUpload);
 
         Files.deleteIfExists(zipFile.toPath());
+    }
+
+    @Test
+    void shouldCreateZipWithFeatureToggleTrue() throws IOException {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
+        when(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()).thenReturn(true);
+        zipFileService
+                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
+                        smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.INCLUDE_COMMENT);
+
+        verify(featureToggleService, atLeastOnce()).isSmeeAndFordCommentFieldFeatureToggleOn();
+        Assertions.assertTrue(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn());
+        Files.delete(zipFile.toPath());
+    }
+
+    @Test
+    void shouldCreateZipWithFeatureToggleFalse() throws IOException {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
+        when(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()).thenReturn(false);
+        zipFileService
+                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
+                        smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.EXCLUDE_COMMENT);
+
+        verify(featureToggleService, atMostOnce()).isSmeeAndFordCommentFieldFeatureToggleOn();
+        Assertions.assertFalse(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn());
+        Files.delete(zipFile.toPath());
     }
 }
