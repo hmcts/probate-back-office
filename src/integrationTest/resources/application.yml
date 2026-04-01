@@ -263,6 +263,7 @@ notifications:
           grantRaised: "sol-grant-raised-welsh"
           grantRaisedPaperFormBulkScan: "sol-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "sols-caveat-raised-welsh"
+          caveatRaisedSols: "solicitor-caveat-raised-welsh"
           requestInformation: "sols-request-information-welsh"
           redeclarationSot: "sols-redeclaration-sot-welsh"
           grantDelayed: "sols-grantDelayed-welsh"
