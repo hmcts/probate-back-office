@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +14,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -27,7 +32,9 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -59,8 +66,15 @@ class TaskListControllerIT {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    private CaseData.CaseDataBuilder caseDataBuilder;
+    private static final Long ID = 1234567890123456L;
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final String CASE_CLOSED_STATE = "BOCaseClosed";
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     @BeforeEach
     public void setup() {
+        OBJECT_MAPPER.registerModule(new JavaTimeModule());
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
@@ -92,5 +106,24 @@ class TaskListControllerIT {
         verify(caseDataTransformer).transformCaseDataForEvidenceHandled(any());
         verify(caseDataTransformer).transformIhtFormCaseDataByDeceasedDOD(any());
         verify(caseDataTransformer).setApplicationSubmittedDateForPA(any());
+    }
+
+    @Test
+    void taskListUpdateCaseClosedShouldTransformEvidenceHandledNo() throws Exception {
+
+        caseDataBuilder = CaseData.builder().evidenceHandled(NO);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        caseDetails.setState(CASE_CLOSED_STATE);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post("/tasklist/updateCaseClosed")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value(CASE_CLOSED_STATE))
+                .andExpect(content().string(containsString("data")));
+        verify(caseDataTransformer).transformCaseDataForCaseCloseEvidenceHandled(any());
     }
 }
