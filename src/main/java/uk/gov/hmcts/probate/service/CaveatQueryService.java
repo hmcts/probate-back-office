@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +34,7 @@ import java.util.Locale;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
 
 @Service
@@ -47,13 +49,19 @@ public class CaveatQueryService {
     private static final String REFERENCE = "reference";
     private static final String PA_APP_CREATED = "PAAppCreated";
     private static final String STATE = "state";
-    private static final String CAVEAT_NOT_FOUND_CODE = "caveatNotFound";
-    private static final String CAVEAT_NOT_FOUND_CODE_WELSH = "caveatNotFoundWelsh";
     private static final String DATA_EXPIRY_DATE = "data.expiryDate";
     private static final String CAVEAT_NOT_MATCHED = "CaveatNotMatched";
     private static final String AWAITING_CAVEAT_RESOLUTION = "AwaitingCaveatResolution";
     private static final String WARNING_VALIDATION = "WarningValidation";
     private static final String AWAITING_WARNING_RESPONSE = "AwaitingWarningResponse";
+    private static final String CAVEAT_NOT_FOUND_CODE = "caveatNotFound";
+    private static final String CAVEAT_NOT_FOUND_CODE_WELSH = "caveatNotFoundWelsh";
+    private static final String[] EXPIRABLE_STATES = {
+        CAVEAT_NOT_MATCHED,
+        AWAITING_CAVEAT_RESOLUTION,
+        WARNING_VALIDATION,
+        AWAITING_WARNING_RESPONSE
+    };
 
     private final RestTemplate restTemplate;
     private final HttpHeadersFactory headers;
@@ -91,16 +99,34 @@ public class CaveatQueryService {
         return foundCaveats.getCaveats().getFirst().getData();
     }
 
+    public List<ReturnedCaveatDetails> fetchExpiredCaveatsPage(String expiryDate, Long[] searchAfterValues) {
+        BoolQueryBuilder query = buildExpiryQuery(expiryDate);
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
+                .query(query)
+                .sort(SORT_COLUMN, SortOrder.ASC)
+                .size(dataExtractPaginationSize)
+                .fetchSource(new String[]{"reference"}, null);
+        if (searchAfterValues != null) {
+            sourceBuilder.searchAfter(searchAfterValues);
+        }
+        String jsonQuery = sourceBuilder.toString();
+        return runQuery(CAVEAT, jsonQuery).getCaveats();
+    }
+
+    private BoolQueryBuilder buildExpiryQuery(String expiryDate) {
+        return boolQuery()
+                .filter(rangeQuery(DATA_EXPIRY_DATE).lte(expiryDate))
+                .filter(termsQuery(STATE, EXPIRABLE_STATES));
+    }
 
     private ReturnedCaveats runQuery(CaseType caseType, String jsonQuery) {
         log.debug("CaveatQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
-            .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
-            .queryParam(CASE_TYPE_ID, caseType.getCode())
-            .build().encode().toUri();
+                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost()
+                        + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
+                .queryParam(CASE_TYPE_ID, caseType.getCode()).build().encode().toUri();
 
-        HttpHeaders tokenHeaders = null;
-        HttpEntity<String> entity;
+        HttpHeaders tokenHeaders;
         try {
             tokenHeaders = headers.getAuthorizationHeaders();
         } catch (Exception e) {
@@ -108,33 +134,16 @@ public class CaveatQueryService {
             tokenHeaders.add(SERVICE_AUTH, BEARER + serviceAuthTokenGenerator.generate());
             tokenHeaders.add(AUTHORIZATION, securityUtils.getCaseworkerToken());
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
-        } finally {
-            entity = new HttpEntity<>(jsonQuery, tokenHeaders);
-            log.info("Data search - caveat cases: " + entity.getBody());
         }
 
-        ReturnedCaveats returnedCaveats;
+        HttpEntity<String> entity = new HttpEntity<>(jsonQuery, tokenHeaders);
+        log.info("Data search - caveat cases: {}", entity.getBody());
         try {
-            returnedCaveats = nonNull(restTemplate.postForObject(uri, entity, ReturnedCaveats.class));
+            return nonNull(restTemplate.postForObject(uri, entity, ReturnedCaveats.class));
         } catch (HttpClientErrorException e) {
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         } catch (IllegalStateException e) {
             throw new ClientDataException(e.getMessage());
         }
-
-        return returnedCaveats;
-    }
-
-
-    public List<ReturnedCaveatDetails> findCaveatExpiredCases(String expiryDate) {
-        BoolQueryBuilder query = boolQuery()
-                .filter(rangeQuery(DATA_EXPIRY_DATE).lte(expiryDate))
-                .should(matchQuery(STATE, CAVEAT_NOT_MATCHED))
-                .should(matchQuery(STATE, AWAITING_CAVEAT_RESOLUTION))
-                .should(matchQuery(STATE, WARNING_VALIDATION))
-                .should(matchQuery(STATE, AWAITING_WARNING_RESPONSE))
-                .minimumShouldMatch(1);
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
-        return runQuery(CAVEAT, jsonQuery).getCaveats();
     }
 }
