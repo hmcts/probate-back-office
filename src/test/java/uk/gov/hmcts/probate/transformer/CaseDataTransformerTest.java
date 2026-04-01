@@ -29,6 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_CLOSED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 class CaseDataTransformerTest {
@@ -105,6 +106,14 @@ class CaseDataTransformerTest {
         caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequestMock);
 
         verify(resetCaseDataTransformer).resetExecutorLists(caseDataMock);
+    }
+
+    @Test
+    void transformCaseDataForCaseCloseEvidenceHandled() {
+        when(caseDetailsMock.getState()).thenReturn(BO_CASE_CLOSED_NAME);
+
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandled(callbackRequestMock);
+        verify(evidenceHandledTransformer).updateEvidenceHandledToYes(caseDataMock);
     }
 
     @Test

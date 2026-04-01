@@ -124,4 +124,16 @@ class EvidenceHandledTransformerTest {
         evidenceHandledTransformer.updateEvidenceHandled(caseData);
         assertNull(caseData.getEvidenceHandled());
     }
+
+    @Test
+    void shouldSetEvidenceHandledYes() {
+        caseDataBuilder
+                .applicationType(ApplicationType.PERSONAL)
+                .caseType(INTESTACY.getName())
+                .primaryApplicantNotRequiredToSendDocuments(YES);
+        CaseData caseData = caseDataBuilder.build();
+
+        evidenceHandledTransformer.updateEvidenceHandledToYes(caseData);
+        assertEquals(YES, caseData.getEvidenceHandled());
+    }
 }
