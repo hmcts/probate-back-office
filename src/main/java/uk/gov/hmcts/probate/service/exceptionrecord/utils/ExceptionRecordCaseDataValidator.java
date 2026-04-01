@@ -8,6 +8,8 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,8 +41,12 @@ public class ExceptionRecordCaseDataValidator {
     private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE =
             "Net qualifying value can't be greater than the gross amount";
     private static final String IHT_VALDIATION_ERROR = "IHT Values validation error";
+    private static final String DOD_DOB_ERROR = "Date of death or date of birth error";
+    static final String DOD_BEFORE_DOB = "Date of death must be after date of birth";
+    static final String DOD_IN_FUTURE = "Date of death cannot be in the future";
     private static final String INVALID_SCANNED_DOCUMENT_TYPE_ERROR = "Invalid scanned Document Type Error "
             + "for case type '%s': [%s]";
+    private final Clock clock = Clock.systemDefaultZone();
 
     private static final Map<String, List<CaseType>> allowScannedDocumentTypes =
             Map.of(DOC_TYPE_WILL, singletonList(CaseType.GRANT_OF_REPRESENTATION),
@@ -54,11 +60,11 @@ public class ExceptionRecordCaseDataValidator {
                     DOC_TYPE_FORM, List.of(CaseType.GRANT_OF_REPRESENTATION, CaseType.CAVEAT)
             );
 
+    ExceptionRecordCaseDataValidator() {
 
-    private ExceptionRecordCaseDataValidator() {
     }
 
-    public static void validateIhtValues(GrantOfRepresentationData caseData) {
+    public void validateIhtValues(GrantOfRepresentationData caseData) {
         List<String> errorMessages = new ArrayList<>();
         if (caseData.getIhtNetValue() != null && caseData.getIhtGrossValue() != null) {
             if (caseData.getIhtNetValue().compareTo(caseData.getIhtGrossValue()) > 0) {
@@ -91,8 +97,24 @@ public class ExceptionRecordCaseDataValidator {
         }
     }
 
+    public void validateDateOfDeath(GrantOfRepresentationData caseData) {
+        List<String> errorMessages = new ArrayList<>();
+        if (caseData.getDeceasedDateOfDeath() != null) {
+            if (!caseData.getDeceasedDateOfDeath().isBefore(LocalDate.now(clock))) {
+                errorMessages.add(DOD_IN_FUTURE);
+            }
+            if (caseData.getDeceasedDateOfBirth() != null) {
+                if (caseData.getDeceasedDateOfDeath().isBefore(caseData.getDeceasedDateOfBirth())) {
+                    errorMessages.add(DOD_BEFORE_DOB);
+                }
+            }
+        }
+        if (!errorMessages.isEmpty()) {
+            throw new OCRMappingException(DOD_DOB_ERROR, errorMessages);
+        }
+    }
 
-    public static void validateInputScannedDocumentTypes(List<InputScannedDoc>
+    public void validateInputScannedDocumentTypes(List<InputScannedDoc>
                                                             scannedDocuments,CaseType caseType) {
 
         List<String> disallowedDocTypesFound =
