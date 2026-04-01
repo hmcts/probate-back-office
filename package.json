@@ -135,7 +135,7 @@
     "sonarqube-scanner": "^4.3.0",
     "superagent-proxy": "^3.0.0",
     "supertest": "^7.0.0",
-    "typescript": "^5.6.2",
+    "typescript": "^6.0.0",
     "typescript-eslint": "^8.8.0",
     "unirest": "^0.6.0",
     "uuid": "^11.0.0",
