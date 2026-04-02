@@ -119,6 +119,7 @@ public class NotificationService {
     private static final String PERSONALISATION_EXPIRY_DATE_WELSH = "expiry_date_cy";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
+    private static final int MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024;
 
     private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
@@ -181,7 +182,6 @@ public class NotificationService {
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                 registry);
-        personalisation.put(PERSONALISATION_UPLOAD_CHECK, caseData.getUploadFileCheck());
 
         if (state == state.CASE_STOPPED_CAVEAT) {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
@@ -225,7 +225,6 @@ public class NotificationService {
         Map<String, Object> personalisation =
                 grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                         registry);
-        personalisation.put(PERSONALISATION_UPLOAD_CHECK, caseData.getUploadFileCheck());
 
         updatePersonalisationForSolicitor(caseData, personalisation);
         addPersonalisationForUploadDocument(caseData, personalisation, caseDetails.getId().toString());
@@ -243,6 +242,7 @@ public class NotificationService {
 
     private void addPersonalisationForUploadDocument(CaseData caseData, Map<String, Object> personalisation,
                                                      String caseReference) {
+        personalisation.put(PERSONALISATION_UPLOAD_CHECK, caseData.getUploadFileCheck());
         UploadDocument cwDocumentUpload = caseData.getCwDocumentUpload();
         if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())
                 && cwDocumentUpload != null) {
@@ -272,13 +272,21 @@ public class NotificationService {
             cwPrepareUpload(fileContents, personalisation, caseReference);
         } catch (IOException e) {
             log.error("Error reading CW document file  : {}", e.getMessage());
-            final String message = MessageFormat.format("Unable reading CW document file for case : {} ",
+            final String message = MessageFormat.format(
+                    "A system error occurred while preparing to send an email for case: {0}. Please raise an "
+                            + "incident with the support team and provide this case reference.",
                     caseReference);
             throw new BusinessValidationException(message, e.getMessage());
         }
     }
 
     private void cwPrepareUpload(byte[] fileContents, Map<String, Object> personalisation, String caseReference) {
+        if (fileContents.length > MAX_FILE_SIZE_BYTES) {
+            throw new BusinessValidationException(
+                    "The file you are trying to upload is too large. Please upload a file smaller than 2 MB.",
+                    "File size: " + fileContents.length
+            );
+        }
         try {
             personalisation.put(PERSONALISATION_LINK_FILE,
                     NotificationClient.prepareUpload(

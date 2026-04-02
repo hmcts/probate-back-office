@@ -328,6 +328,50 @@ class NotificationServiceTest {
     }
 
     @Test
+    void shouldThrowBusinessValidationExceptionWhenCwDocumentFileSizeExceeds2MB() throws IOException,
+            NotificationClientException {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "FirstName");
+        when(grantOfRepresentationPersonalisationServiceMock.getPersonalisation((CaseDetails) any(), any()))
+                .thenReturn(personalisation);
+        final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
+                Map.of(),
+                List.of());
+
+        when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
+                .thenReturn(mockResult);
+        when(notificationClientServiceMock.sendEmail(any(), any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        byte[] largeFile = new byte[2 * 1024 * 1024 + 1];
+        when(documentManagementServiceMock.getDocumentByBinaryUrl("http://example.com/test.pdf"))
+                .thenReturn(largeFile);
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedDateOfDeath(LocalDate.now())
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
+                .primaryApplicantForenames("Fred Smith")
+                .registryLocation("ctsc")
+                .uploadFileCheck(YES)
+                .languagePreferenceWelsh("No")
+                .cwDocumentUpload(UploadDocument.builder()
+                        .documentLink(DocumentLink.builder()
+                                .documentBinaryUrl("http://example.com/test.pdf")
+                                .build())
+                        .build())
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        BusinessValidationException exception = assertThrows(BusinessValidationException.class, () ->
+                notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails)
+        );
+
+        assertEquals("The file you are trying to upload is too large. Please upload a file smaller than 2 MB.",
+                exception.getUserMessage());
+    }
+
+    @Test
     void returnsSentEmailDocumentWithUploadCheckNo() throws NotificationClientException, IOException {
         HashMap<String, Object> personalisation = new HashMap<>();
         personalisation.put("applicant_name", "FirstName");
