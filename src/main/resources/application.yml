@@ -16,13 +16,12 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,data-extract,env
+        include: health,info,data-extract
       base-path: /
   endpoint:
     health:
       show-details: always
-    env:
-      show-values: always
+      enabled: true
   health:
     db:
       enabled: false
