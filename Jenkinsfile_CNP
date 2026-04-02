@@ -262,27 +262,19 @@ withPipeline("java", product, component) {
       sh 'yarn install'
       sh 'yarn test:fullfunctional-cw'
     }
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    publishHTML target: [
-            allowMissing         : true,
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : "target/site/serenity/",
-            reportFiles          : "index.html",
-            reportName           : "Functional Tests Report"
-    ]
   }
 
   afterAlways('functionalTest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-    publishHTML([
-            allowMissing: true,
-            alwaysLinkToLastBuild: true,
-            keepAll: true,
-            reportDir: "./functional-output/reports",
-            reportFiles: 'functional_report.html',
-            reportName: 'Functional Test Report'
-    ])
+      publishHTML([
+              allowMissing         : true,
+              alwaysLinkToLastBuild: true,
+              keepAll              : true,
+              reportDir            : 'functional-output/reports',
+              reportFiles          : 'index.html',
+              reportName           : 'Playwright Test Report',
+              reportTitles         : 'E2E Test Results'
+      ])
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
   }
 
   afterSuccess('functionalTest:aat') {
@@ -367,9 +359,9 @@ withPipeline("java", product, component) {
     env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
 
     sh """
- docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DEF_URL/health
- docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_PRO_URL/health
- docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
+ docker run --rm --interactive hmctsprod.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DEF_URL/health
+ docker run --rm --interactive hmctsprod.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_PRO_URL/health
+ docker run --rm --interactive hmctsprod.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
  """
   }
 

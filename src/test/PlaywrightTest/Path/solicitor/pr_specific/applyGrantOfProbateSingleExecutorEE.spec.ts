@@ -1,4 +1,8 @@
-import { test } from "../../../Fixtures/fixtures.ts";
+import dotenv from "dotenv";
+dotenv.config();
+
+import { test } from '../../../Fixtures/index.ts';
+import { testConfig } from "../../../Configs/config.ts";
 
 import createCaseConfig from "../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 
@@ -20,16 +24,23 @@ import historyTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/h
 import serviceRequestTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig.json" with { type: "json" };
 import serviceRequestReviewTabConfig from "../../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 import caseProgressConfig from "../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
+import refundConfig from "../../../Pages/solicitorApplyProbate/makePayment/refundConfig.json" with { type: "json" };
+import { refundReviewConfig } from "../../../Pages/solicitorApplyProbate/makePayment/refundReviewConfig.ts";
+import {getAccessToken, getServiceAuthToken} from "../../../Pages/utility/apiHelper.ts";
 
 test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Refunds", () => {
   let caseRef;
-  test("Solicitor - Apply Grant of probate Single Executor for Excepted Estates", async ({
+  let caseRefApi;
+  let env: string, serviceAuthToken: string, s2sUrl: string, authToken: string, idamUrl: string;
+
+ test("Solicitor - Apply Grant of probate Single Executor for Excepted Estates", async ({
       basePage,
       signInPage,
       createCasePage,
       solCreateCasePage,
-      cwEventActionsPage
-  }, testInfo) => {
+      cwEventActionsPage,
+      callback
+    }, testInfo) => {
     test.setTimeout(300000);
     const scenarioName = 'Solicitor - Apply Grant of probate Single Executor for Excepted Estates';
     const isSolicitorNamedExecutor = true;
@@ -116,11 +127,97 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
     await solCreateCasePage.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
     await solCreateCasePage.makePaymentPage2(caseRef);
     await solCreateCasePage.viewPaymentStatus(testInfo, caseRef);
-
     await solCreateCasePage.seeEndState(endState);
+
+    caseRefApi = await basePage.getCaseRefFromUrlNoHyphen();
     await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
     await basePage.seeCaseDetails(testInfo, caseRef, copiesTabConfig, completeApplicationConfig);
     await basePage.seeCaseDetails(testInfo, caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
+    await signInPage.signOut();
+
+    await Promise.all([
+      (async () => {
+        env = await basePage.getEnv();
+        idamUrl = `https://idam-api.${env}.platform.hmcts.net`;
+        s2sUrl = `http://rpe-service-auth-provider-${env}.service.core-compute-${env}.internal/testing-support/lease`;
+        authToken = await getAccessToken(idamUrl, testConfig.TestEnvCwUser, testConfig.TestEnvCwPassword);
+        serviceAuthToken = await getServiceAuthToken(s2sUrl, 'probate_backend');
+        await callback.backdatePayment(env, caseRefApi, authToken, serviceAuthToken, '5');
+     })()
+   ]);
   });
+
+  test("Add Remission for HWF and Approve Refund", async ({
+      basePage,
+      signInPage,
+      solCreateCasePage,
+      callback,
+      cwEventActionsPage
+    }) => {
+    const scenarioName = 'Add Remission for HWF and Approve Refund';
+    // caseRef = '1772-4480-5153-5727';
+    // let remissionRefundRef = 'RF-1772-4481-7720-5544';
+    const nextStepName = 'Add Remission';
+
+    // log in as requestor case worker
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
+    await solCreateCasePage.navigateToCase(caseRef);
+    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef);
+
+    await basePage.logInfo(scenarioName, 'Initiate refund request for remission');
+    const remissionRefundRef = await cwEventActionsPage.addRemissionAndRefund(caseRef);
+    await solCreateCasePage.navigateToCase(caseRef);
+    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef);
+
+    await basePage.logInfo(scenarioName, 'Initiate refund request');
+    const refundRef = await cwEventActionsPage.issueRefundRequest(caseRef);
+    await signInPage.signOut();
+
+    //log in as team leader
+    await basePage.logInfo(scenarioName, 'Approve remission refund request as a team leader');
+    await signInPage.authenticateWithIdamIfAvailable('superUser');
+    await solCreateCasePage.navigateToCase(caseRef);
+    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, remissionRefundRef);
+    await cwEventActionsPage.verifyAndInitiateProcessRefund('Initiated', remissionRefundRef, refundReviewConfig.rows, true);
+    //await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, remissionRefundRef);
+    await cwEventActionsPage.submitRefundProcess(caseRef, refundConfig.refundProcessApprove, true);
+    await cwEventActionsPage.verifyRefundConfirmation(refundConfig.refundApprovedConfirmationText);
+    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, remissionRefundRef);
+    await cwEventActionsPage.verifyAndInitiateProcessRefund(refundConfig.refundStatus2, remissionRefundRef, refundReviewConfig.rows, true);
+
+    await basePage.logInfo(scenarioName, 'Return the refund request to caseworker as a team leader');
+    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, refundRef);
+    await cwEventActionsPage.verifyAndInitiateProcessRefund('Initiated', refundRef, refundReviewConfig.rows);
+    await cwEventActionsPage.submitRefundProcess(caseRef, refundConfig.refundProcessReturnToCw);
+    await cwEventActionsPage.verifyRefundConfirmation(refundConfig.refundReturnToCwConfirmationText);
+    await signInPage.signOut();
+
+    await basePage.logInfo(scenarioName, 'Respond to refund request as a requestor caseworker');
+    await signInPage.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
+    await solCreateCasePage.navigateToCase(caseRef);
+    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, refundRef);
+    await cwEventActionsPage.verifyAndInitiateProcessRefund(refundConfig.refundStatus3, refundRef, refundReviewConfig.rows);
+    await cwEventActionsPage.submitRefundProcess(caseRef, 'changeRefundDetails');
+    await signInPage.signOut();
+
+    await basePage.logInfo(scenarioName, 'Reject refund request as team leader');
+    await signInPage.authenticateWithIdamIfAvailable('superUser');
+    await solCreateCasePage.navigateToCase(caseRef);
+    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, refundRef);
+    await cwEventActionsPage.verifyAndInitiateProcessRefund('Initiated', refundRef, refundReviewConfig.rows, false, true);
+    await cwEventActionsPage.submitRefundProcess(caseRef, refundConfig.refundProcessReject, false, true);
+    await cwEventActionsPage.verifyRefundConfirmation(refundConfig.refundRejectedText);
+    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, refundRef);
+    await cwEventActionsPage.verifyAndInitiateProcessRefund(refundConfig.refundStatus4, refundRef, refundReviewConfig.rows, false, true);
+
+    serviceAuthToken = await getServiceAuthToken(s2sUrl, 'ccpay_bubble');
+    await callback.refundsApprovalLiberata(env, remissionRefundRef, serviceAuthToken);
+    await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, remissionRefundRef);
+    await cwEventActionsPage.verifyAndInitiateProcessRefund(refundConfig.refundStatus5, remissionRefundRef, refundReviewConfig.rows, true, true);
+    await signInPage.signOut();
+
+  });
+
 
 });
