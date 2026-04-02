@@ -1444,7 +1444,9 @@ public class CallbackResponseTransformer {
             .executorsNamed(caseData.getExecutorsNamed())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
-            .evidenceHandledDate(caseData.getEvidenceHandledDate());
+            .evidenceHandledDate(caseData.getEvidenceHandledDate())
+            .uploadFileCheck(caseData.getUploadFileCheck())
+            .cwDocumentsUpload(caseData.getCwDocumentsUpload());
 
         handleDeceasedAliases(
                 builder,
