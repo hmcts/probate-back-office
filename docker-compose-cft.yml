@@ -3,7 +3,7 @@ version: '3'
 
 services:
   ccd-api-gateway:
-    image: hmctspublic.azurecr.io/ccd/api-gateway-web:latest
+    image: hmctsprod.azurecr.io/ccd/api-gateway-web:latest
     environment:
       IDAM_BASE_URL: http://sidam-api:5000
       IDAM_USER_URL: http://sidam-api:5000
@@ -28,7 +28,7 @@ services:
       - 3453:3453
 
   service-auth-provider-api:
-    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
+    image: hmctsprod.azurecr.io/rpe/service-auth-provider:latest
     healthcheck:
       interval: 10s
       timeout: 10s
@@ -62,7 +62,7 @@ services:
       - 4502:8080
 
   dm-store:
-    image: hmctspublic.azurecr.io/dm/store:latest
+    image: hmctsprod.azurecr.io/dm/store:latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx256m
       - SERVER_PORT=8080
@@ -97,7 +97,7 @@ services:
       - azure-storage-emulator-azurite
 
   pdf-service-api:
-    image: hmctspublic.azurecr.io/cmc/pdf-service:latest
+    image: hmctsprod.azurecr.io/cmc/pdf-service:latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx256m -Djavx.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
       - AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY=fake-key
@@ -112,7 +112,7 @@ services:
       - 5500:5500
 
   fees-api:
-    image: hmctspublic.azurecr.io/fees-register/api
+    image: hmctsprod.azurecr.io/fees-register/api
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
       SPRING_DATASOURCE_URL: "jdbc:postgresql://shared-database:5432/fees_register"
@@ -129,7 +129,7 @@ services:
       # - shared-database
 
   payments-api:
-    image: hmctspublic.azurecr.io/payment/api:latest
+    image: hmctsprod.azurecr.io/payment/api:latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
       - auth.provider.service.client.baseUrl=http://service-auth-provider-api:8080
@@ -204,7 +204,7 @@ services:
       - 8383:8080
 
   idam-web-public:
-    image: "hmctspublic.azurecr.io/idam/web-public:stable"
+    image: "hmctsprod.azurecr.io/idam/web-public:stable"
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
       STRATEGIC_SERVICE_URL: http://localhost:5000
@@ -216,7 +216,7 @@ services:
       - 3501:8080
 
   probate-frontend:
-    image: hmctspublic.azurecr.io/probate/frontend:latest
+    image: hmctsprod.azurecr.io/probate/frontend:latest
     environment:
       - IDAM_API_URL=http://sidam-api:5000
       - IDAM_S2S_URL=http://service-auth-provider-api:8080
@@ -237,7 +237,7 @@ services:
 
 
   probate-orchestrator:
-    image: hmctspublic.azurecr.io/probate/orchestrator-service:latest
+    image: hmctsprod.azurecr.io/probate/orchestrator-service:latest
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
       AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
@@ -252,7 +252,7 @@ services:
       - service-auth-provider-api
 
   probate-submit-service:
-    image: hmctspublic.azurecr.io/probate/submit-service:latest
+    image: hmctsprod.azurecr.io/probate/submit-service:latest
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
       AUTH_IDAM_CLIENT_BASEURL: http://localhost:5000
@@ -262,7 +262,7 @@ services:
       - 8181:8181
 
   probate-business-service:
-    image: hmctspublic.azurecr.io/probate/business-service:latest
+    image: hmctsprod.azurecr.io/probate/business-service:latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
       - SERVER_PORT=8081
@@ -283,7 +283,7 @@ services:
       - esdata1:/usr/share/wiremock/data
 
   send-letter-service:
-    image: hmctspublic.azurecr.io/rpe/send-letter-service
+    image: hmctsprod.azurecr.io/rpe/send-letter-service
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
       - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
