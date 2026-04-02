@@ -16,6 +16,9 @@
         -->
         <cve>CVE-2025-7962</cve>
     </suppress>
+    <suppress>
+        <cve>CVE-2025-67735</cve>
+    </suppress>
     <suppress until = "2026-07-13">
         <!--
             Nu Html Checker (validator.nu) contains a restriction bypass that allows remote attackers to make the server
