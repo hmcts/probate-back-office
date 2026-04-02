@@ -213,7 +213,21 @@ spring:
     username:  ${probate.postgresql.user}
     password:  ${probate.postgresql.password}
     driverClassName: org.postgresql.Driver
-
+  security:
+    oauth2:
+      client:
+        provider:
+          idam-service:
+            token-uri: ${IDAM_SERVICE_HOST:http://localhost:5000}/o/token
+        registration:
+          idam-service:
+            authorization-grant-type: client_credentials
+            client-id: ${IDAM_CLIENT_NAME:ccd_gateway}
+            client-secret: ${auth.provider.client.secret:ccd_gateway_secret}
+            client-authentication-method: client_secret_post
+            redirect-uri: ${auth.provider.client.redirect:http://localhost:3451/oauth2redirect}
+            scope:
+              - view-user
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
@@ -238,6 +252,11 @@ idam:
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
     microservice: probate_backend
     services-allowed-to-payment-update: ${SERVICES_ALLOWED_TO_PAYMENT_UPDATE:payment_app}
+  oidc:
+    client-credentials:
+      registration-reference: idam-service
+      endpoint-regex: /api/v2/users/*
+
 
 extract:
   templates:
