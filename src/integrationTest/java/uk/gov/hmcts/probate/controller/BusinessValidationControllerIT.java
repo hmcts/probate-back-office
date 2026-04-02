@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -46,9 +47,12 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
+
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.math.BigDecimal;
@@ -67,6 +71,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -223,6 +228,7 @@ class BusinessValidationControllerIT {
     private WebApplicationContext webApplicationContext;
     @Autowired
     private MockMvc mockMvc;
+
     private CaseDataBuilder caseDataBuilder;
 
     @MockitoBean
@@ -249,6 +255,10 @@ class BusinessValidationControllerIT {
     private AuditEventService auditEventService;
     @MockitoBean
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
+    @MockitoBean
+    private CoreCaseDataApi coreCaseDataApi;
+    @MockitoBean
+    private WorkAllocationToggleService workAllocationToggleService;
 
 
 
@@ -1441,7 +1451,7 @@ class BusinessValidationControllerIT {
                 .andExpect(jsonPath("$.data.probateNotificationsGenerated[-1].value.DocumentFileName")
                         .value(document.getDocumentFileName()));
     }
-  
+
     @Test
     void shouldSendEmailWhenRegistarEscalation() throws Exception {
         final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -1485,6 +1495,42 @@ class BusinessValidationControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.schemaVersion").doesNotExist())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void gopSupplementaryDataShouldReturnDataPayloadOkResponseCode() throws Exception {
+        String gopPayload = testUtils.getStringFromFile("digitalCase.json");
+        when(workAllocationToggleService.isProbateGSEnabled()).thenReturn(true);
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+
+        mockMvc.perform(post("/case/supplementaryData")
+                        .content(gopPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(coreCaseDataApi).submitSupplementaryData(any(), any(), any(), any());
+    }
+
+    @Test
+    void gopSupplementaryDataShouldNotSubmitSupplementaryDataWhenGSDisabled() throws Exception {
+        String gopPayload = testUtils.getStringFromFile("digitalCase.json");
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        when(workAllocationToggleService.isProbateGSEnabled()).thenReturn(false);
+
+        mockMvc.perform(post("/case/supplementaryData")
+                        .content(gopPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        verifyNoInteractions(coreCaseDataApi);
     }
 }
 
