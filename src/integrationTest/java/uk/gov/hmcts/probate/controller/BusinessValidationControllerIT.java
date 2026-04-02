@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jakarta.servlet.ServletException;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,6 +63,7 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
@@ -173,6 +175,7 @@ class BusinessValidationControllerIT {
     private static final String CASE_WORKER_RESOLVED_ESCALATED = "/case/resolve-case-worker-escalated";
     private static final String PREPARE_FOR_NOC = "/case/prepare-case-for-noc";
     private static final String UNIQUE_CODE = "/case/validate-unique-code";
+    private static final String MIGRATE_CASE = "/case/migrateCase";
     private static final String ROLLBACK = "/case/rollback";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
@@ -1325,6 +1328,30 @@ class BusinessValidationControllerIT {
     }
 
     @Test
+    void shouldMigrateCase() throws Exception {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventService.getLatestAuditEventByName(any(), any(), any(), any()))
+                .thenReturn(Optional.ofNullable(AuditEvent.builder()
+                        .stateId("BOPostGrantIssued")
+                        .createdDate(LocalDateTime.now())
+                        .build()));
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        assertThrows(ServletException.class, () ->
+                mockMvc.perform(post(MIGRATE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(content().string(CoreMatchers.containsString(
+                                "No audit event found for migration")))
+        );
+    }
+
+    @Test
     void shouldValidateRollback() throws Exception {
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .serviceAuthorisation("serviceToken")
@@ -1441,7 +1468,7 @@ class BusinessValidationControllerIT {
                 .andExpect(jsonPath("$.data.probateNotificationsGenerated[-1].value.DocumentFileName")
                         .value(document.getDocumentFileName()));
     }
-  
+
     @Test
     void shouldSendEmailWhenRegistarEscalation() throws Exception {
         final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
