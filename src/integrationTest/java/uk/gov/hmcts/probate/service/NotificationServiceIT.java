@@ -235,6 +235,7 @@ class NotificationServiceIT {
     private CaveatDetails caveatRaisedCtscCaseData;
     private CaveatDetails caveatRaisedCtscCaseDataBilingual;
     private CaveatDetails solicitorCaveatRaisedCaseData;
+    private CaveatDetails solicitorCaveatRaisedCaseDataWelsh;
     private CaveatData caveatData;
     private CallbackRequest callbackRequest;
     private CaveatDetails caveatStoppedCtscCaseData;
@@ -526,6 +527,16 @@ class NotificationServiceIT {
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .expiryDate(LocalDate.of(2019, 01, 01))
             .build(), LAST_MODIFIED, ID);
+
+        solicitorCaveatRaisedCaseDataWelsh = new CaveatDetails(CaveatData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("ctsc")
+                .caveatorEmailAddress("solicitor@probate-test.com")
+                .solsSolicitorAppReference("SOLSREF")
+                .languagePreferenceWelsh("Yes")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .expiryDate(LocalDate.of(2019, 01, 01))
+                .build(), LAST_MODIFIED, ID);
 
         caveatStoppedCtscCaseData = new CaveatDetails(CaveatData.builder()
             .applicationSubmittedDate(LocalDate.of(2019, 01, 01))
@@ -1250,6 +1261,22 @@ class NotificationServiceIT {
             eq("1"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+
+    @Test
+    void sendSolsCaveatRaisedCtscEmailWelsh()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, solicitorCaveatRaisedCaseDataWelsh);
+
+        verify(notificationClient).sendEmail(
+                anyString(),
+                anyString(),
+                any(),
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), any());
     }
 
     @Test
