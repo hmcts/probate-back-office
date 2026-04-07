@@ -1,6 +1,7 @@
 {
   "paymentLinkText": "Make payment",
   "paymentTab": "Service Request",
+  "paymentHistoryTab": "Payment History",
   "payNowLinkText": "Pay now",
   "reviewLinkText": "Review",
   "backToPaymentLinkText": "Back",

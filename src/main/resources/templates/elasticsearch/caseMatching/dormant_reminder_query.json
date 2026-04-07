@@ -15,7 +15,15 @@
             "state": "Dormant"
           }
         }
-      ]
+      ],
+      "must_not": {
+          "terms": {
+            "data.boCaseStopReasonList.value.caseStopReason.keyword": [
+              "CaveatMatch",
+              "Permanent Caveat"
+            ]
+          }
+      }
     }
   },
   "size": %s,
