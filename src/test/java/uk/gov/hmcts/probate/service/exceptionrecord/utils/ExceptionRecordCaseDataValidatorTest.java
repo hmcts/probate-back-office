@@ -8,7 +8,10 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +59,8 @@ class ExceptionRecordCaseDataValidatorTest {
 
     @BeforeEach
     public void setUp() {
-        exceptionRecordCaseDataValidator = new ExceptionRecordCaseDataValidator();
+        Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+        exceptionRecordCaseDataValidator = new ExceptionRecordCaseDataValidator(clock);
     }
 
     @Test

@@ -46,7 +46,7 @@ public class ExceptionRecordCaseDataValidator {
     static final String DOD_IN_FUTURE = "Date of death cannot be in the future";
     private static final String INVALID_SCANNED_DOCUMENT_TYPE_ERROR = "Invalid scanned Document Type Error "
             + "for case type '%s': [%s]";
-    private final Clock clock = Clock.systemDefaultZone();
+    private final Clock clock;
 
     private static final Map<String, List<CaseType>> allowScannedDocumentTypes =
             Map.of(DOC_TYPE_WILL, singletonList(CaseType.GRANT_OF_REPRESENTATION),
@@ -60,8 +60,8 @@ public class ExceptionRecordCaseDataValidator {
                     DOC_TYPE_FORM, List.of(CaseType.GRANT_OF_REPRESENTATION, CaseType.CAVEAT)
             );
 
-    ExceptionRecordCaseDataValidator() {
-
+    ExceptionRecordCaseDataValidator(Clock clock) {
+        this.clock = clock;
     }
 
     public void validateIhtValues(GrantOfRepresentationData caseData) {
