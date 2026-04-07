@@ -32,7 +32,6 @@ if [ -z "$USER_TOKEN_ENV" ]; then
 fi
 
 if [ -z "$SERVICE_TOKEN_ENV" ]; then
-then
   export SERVICE_TOKEN_ENV=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
 fi
 
