@@ -8,6 +8,9 @@ dir=$(dirname ${0})
 # User used during the CCD import and ccd-role creation
 ${dir}/idam-create-caseworker.sh "ccd-import" "ccd.docker.default@hmcts.net"
 
+export USER_TOKEN_ENV=$(${binFolder}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Pa55word11})
+export SERVICE_TOKEN_ENV=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
+
 ${dir}/ccd-add-role.sh "prd-aac-system"
 
 ${dir}/ccd-add-role.sh payment
