@@ -11,6 +11,8 @@
 role=$1
 classification=${2:-PUBLIC}
 
+sleep 5
+
 if [ -z "$role" ]
   then
     echo "Usage: ./ccd-add-role.sh role [classification]"
@@ -52,3 +54,9 @@ curl --insecure --fail --show-error --silent --output /dev/null -X PUT \
     "role": "'${role}'",
     "security_classification": "'${classification}'"
   }'
+
+echo "${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/api/user-role"
+echo "${userToken}"
+echo "${serviceToken}"
+echo "${role}"
+echo "${classification}"
