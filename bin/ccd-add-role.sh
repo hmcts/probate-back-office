@@ -39,7 +39,6 @@ fi
 ccdUrl=${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}
 
 echo "Creating CCD role: ${role}"
-}
 
 curl --insecure --fail --show-error --silent --output /dev/null -X PUT \
   ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/api/user-role \
