@@ -45,7 +45,7 @@ public class TaskListController {
 
     @PostMapping(path = "/updateCaseClosed", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateCaseClosed(@RequestBody CallbackRequest request) {
-        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandled(request);
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledYes(request);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request, caseworkerInfo));
     }

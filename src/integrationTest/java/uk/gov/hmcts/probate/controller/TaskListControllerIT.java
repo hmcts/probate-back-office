@@ -124,6 +124,6 @@ class TaskListControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value(CASE_CLOSED_STATE))
                 .andExpect(content().string(containsString("data")));
-        verify(caseDataTransformer).transformCaseDataForCaseCloseEvidenceHandled(any());
+        verify(caseDataTransformer).transformCaseDataForCaseCloseEvidenceHandledYes(any());
     }
 }

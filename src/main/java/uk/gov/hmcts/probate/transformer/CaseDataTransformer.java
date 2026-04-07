@@ -108,9 +108,15 @@ public class CaseDataTransformer {
         }
     }
 
-    public void transformCaseDataForCaseCloseEvidenceHandled(CallbackRequest callbackRequest) {
+    public void transformCaseDataForCaseCloseEvidenceHandledYes(CallbackRequest callbackRequest) {
         if (BO_CASE_CLOSED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
             evidenceHandledTransformer.updateEvidenceHandledToYes(callbackRequest.getCaseDetails().getData());
+        }
+    }
+
+    public void transformCaseDataForCaseCloseEvidenceHandledNo(CallbackRequest callbackRequest) {
+        if (BO_CASE_CLOSED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
+            evidenceHandledTransformer.updateEvidenceHandledToNo(callbackRequest.getCaseDetails().getData());
         }
     }
 

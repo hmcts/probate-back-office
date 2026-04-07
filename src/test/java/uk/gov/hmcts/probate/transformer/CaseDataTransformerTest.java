@@ -109,11 +109,19 @@ class CaseDataTransformerTest {
     }
 
     @Test
-    void transformCaseDataForCaseCloseEvidenceHandled() {
+    void transformCaseDataForCaseCloseEvidenceHandledYes() {
         when(caseDetailsMock.getState()).thenReturn(BO_CASE_CLOSED_NAME);
 
-        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandled(callbackRequestMock);
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledYes(callbackRequestMock);
         verify(evidenceHandledTransformer).updateEvidenceHandledToYes(caseDataMock);
+    }
+
+    @Test
+    void transformCaseDataForCaseCloseEvidenceHandledNo() {
+        when(caseDetailsMock.getState()).thenReturn(BO_CASE_CLOSED_NAME);
+
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledNo(callbackRequestMock);
+        verify(evidenceHandledTransformer).updateEvidenceHandledToNo(caseDataMock);
     }
 
     @Test
