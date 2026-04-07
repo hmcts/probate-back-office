@@ -35,7 +35,6 @@ wa:
   enabled: true
   camunda-bpm:
     java:
-      image: hmctsprivate.azurecr.io/camunda/bpm:latest
       devcpuRequests: 500m
       devmemoryRequests: 1Gi
       devcpuLimits: 2
