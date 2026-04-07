@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -54,8 +53,7 @@ public class ExceptionRecordController {
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
     private final ObjectMapper objectMapper;
-    @Autowired
-    ExceptionRecordService erService;
+    private final ExceptionRecordService erService;
 
     @Operation(summary = "Transforms OCR data to case data",
         description = "Will return errors if the transformation is unsuccessful.")
