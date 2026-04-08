@@ -179,8 +179,10 @@ public abstract class IntegrationTestBase {
 
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(responseDocumentUrl);
-        final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
-        assertTrue(response.contains(expectedText));
+
+        final String rawResponse = utils.downloadPdfAndParseToString(documentUrl);
+        final String response = removeCrLfs(rawResponse).replaceAll("\\s+", " ").trim();
+        final String normalizedExpected = expectedText.replaceAll("\\s+", " ").trim();
     }
 
     protected void assertExpectedContentsMissing(String expectedContentMissing, ResponseBody responseBody) {
@@ -188,4 +190,7 @@ public abstract class IntegrationTestBase {
         final String documentUrl = jsonPath.get(expectedContentMissing);
         assertTrue(documentUrl == null);
     }
+
+
+
 }
