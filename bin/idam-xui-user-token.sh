@@ -7,6 +7,13 @@ REDIRECT_URI="http://localhost:3455/oauth2/callback"
 CLIENT_ID="xui_webapp"
 CLIENT_SECRET="xui_webapp_secret"
 
-code=$(curl ${CURL_OPTS} -u "${IMPORTER_USERNAME}:${IMPORTER_PASSWORD}" -XPOST "${IDAM_URI}/oauth2/authorize?redirect_uri=${REDIRECT_URI}&response_type=code&client_id=${CLIENT_ID}" -d "" | docker run --rm --interactive hmctsprod.azurecr.io/imported/jqlang/jq -r .code)
-
-curl ${CURL_OPTS} -H "Content-Type: application/x-www-form-urlencoded" -u "${CLIENT_ID}:${CLIENT_SECRET}" -XPOST "${IDAM_URI}/oauth2/token?code=${code}&redirect_uri=${REDIRECT_URI}&grant_type=authorization_code" -d "" | docker run --rm --interactive hmctsprod.azurecr.io/imported/jqlang/jq -r .access_token
+curl "${CURL_OPTS}" --silent --show-error --fail \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -XPOST "${IDAM_URI}/o/token" \
+    --data-urlencode "grant_type=password" \
+    --data-urlencode "client_id=${CLIENT_ID}" \
+    --data-urlencode "client_secret=${CLIENT_SECRET}" \
+    --data-urlencode "scope=openid profile roles" \
+    --data-urlencode "username=${IMPORTER_USERNAME}" \
+    --data-urlencode "password=${IMPORTER_PASSWORD}" \
+    --data-urlencode "redirect_uri=${REDIRECT_URI}" | docker run --rm --interactive hmctsprod.azurecr.io/imported/jqlang/jq -r .access_token
