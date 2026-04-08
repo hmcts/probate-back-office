@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -206,26 +205,20 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    @Test
+    // ... existing code ...
     void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOBWelsh() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
+        replacements.put("SENT_ON_KEY", "Sent on: " + utils.formatDate(LocalDate.now()).replace("th ", " "));
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         replacements.put(EXPIRY_DATE_WELSH_KEY, utils.convertToWelsh(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
 
-        String expectedText = removeCrLfs(getJsonFromFile(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_NO_DOB_WELSH));
-        for (Map.Entry<String, String> entry : replacements.entrySet()) {
-            expectedText = expectedText.replace(entry.getKey(), entry.getValue());
-        }
-
-        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        final String documentUrl = jsonPath.get(EMAIL_NOTIFICATION_URL);
-        final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
-
-        System.out.println("EXPECTED TEXT:\n[" + expectedText + "]");
-        System.out.println("ACTUAL TEXT:\n[" + response + "]");
-
-        assertTrue(response.contains(expectedText));
+        assertExpectedContentsWithExpectedReplacement(
+                DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_NO_DOB_WELSH,
+                EMAIL_NOTIFICATION_URL,
+                responseBody,
+                replacements
+        );
     }
 
     @Test
