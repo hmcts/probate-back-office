@@ -211,7 +211,6 @@ withPipeline("java", product, component) {
   env.CASE_DOCUMENT_AM_URL='http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
   pipelineConf = config;
 
-  }
 
   enableAksStagingDeployment()
   disableLegacyDeployment()
