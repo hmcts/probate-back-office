@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.service.ocr.OCRFieldModifierUtils;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
@@ -95,6 +96,9 @@ class ExceptionRecordServiceTest {
     @Mock
     private ExceptionRecordCaseDataValidator exceptionRecordCaseDataValidator;
 
+    @Mock
+    private CaveatsExpiryValidationRule caveatExpiryRule;
+
     private TestUtils testUtils = new TestUtils();
 
     private ExceptionRecordRequest erRequestCaveat;
@@ -143,8 +147,9 @@ class ExceptionRecordServiceTest {
     public void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
 
+        List<CaveatsExpiryValidationRule> validationRules = List.of(caveatExpiryRule);
         erService = new ExceptionRecordService(
-                Collections.emptyList(),
+                validationRules,
                 eventValidationService,
                 caveatNotificationService,
                 erCaveatMapper,
@@ -280,6 +285,7 @@ class ExceptionRecordServiceTest {
             .thenReturn(caveatCallbackResponse);
         when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
             .thenReturn(caveatCallbackResponse);
+        when(caveatExpiryRule.validate(any())).thenReturn(Collections.emptyList());
         ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
         when(responseCaseveatData.getScannedDocuments()).thenReturn(Arrays.asList(
             new CollectionMember(null, null)));
@@ -307,6 +313,7 @@ class ExceptionRecordServiceTest {
             .thenReturn(caveatCallbackResponse);
         when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
             .thenReturn(caveatCallbackResponse);
+        when(caveatExpiryRule.validate(any())).thenReturn(Collections.emptyList());
         ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
         when(responseCaseveatData.getScannedDocuments()).thenReturn(Arrays.asList(
             new CollectionMember(null, null)));
@@ -334,6 +341,7 @@ class ExceptionRecordServiceTest {
                     .thenReturn(caveatCallbackResponse);
             when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
                     .thenReturn(caveatCallbackResponse);
+            when(caveatExpiryRule.validate(any())).thenReturn(Collections.emptyList());
             ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
             ScannedDocument scannedDocument = ScannedDocument.builder().build();
             when(responseCaseveatData.getScannedDocuments())
@@ -358,6 +366,7 @@ class ExceptionRecordServiceTest {
                     .thenReturn(caveatCallbackResponse);
             when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
                     .thenReturn(caveatCallbackResponse);
+            when(caveatExpiryRule.validate(any())).thenReturn(Collections.emptyList());
             ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
             ScannedDocument scannedDocument = ScannedDocument.builder().build();
             when(responseCaseveatData.getScannedDocuments())
