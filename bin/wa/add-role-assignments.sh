@@ -7,7 +7,7 @@ dir=$(dirname ${0})
 #${dir}/utils/add-system-user-case-allocator-role.sh
 #${dir}/utils/add-hearing-system-user.sh
 
-jq -c '(.[])' preview-am-role-assignments.json | while read user; do
+jq -c '(.[])' ${dir}/wa/preview-am-role-assignments.json | while read user; do
   email=$(jq -r '.email' <<< $user)
   idamId=$(jq -r '.id' <<< $user)
   password=Monday01
