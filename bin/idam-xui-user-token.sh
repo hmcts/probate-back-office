@@ -1,7 +1,7 @@
 #!/bin/sh
 
-IMPORTER_USERNAME=${1:-ccd.docker.default@hmcts.net}
-IMPORTER_PASSWORD=${2:-Pa55word11}
+IMPORTER_USERNAME=${1}
+IMPORTER_PASSWORD=${2}
 IDAM_URI="http://localhost:5000"
 REDIRECT_URI="http://localhost:3455/oauth2/callback"
 CLIENT_ID="xui_webapp"

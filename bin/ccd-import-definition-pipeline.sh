@@ -10,7 +10,7 @@ echo filepath =$filepath
 
 if [ -z "${USER_TOKEN:-}" ]; then
   echo Get User token
-  userToken=$(${dir}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Pa55word11})
+  userToken=$(${dir}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME} ${CCD_CONFIGURER_IMPORTER_PASSWORD})
 else
   echo Use cache User token
   userToken=${USER_TOKEN}
