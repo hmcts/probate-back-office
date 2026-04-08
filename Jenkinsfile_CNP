@@ -211,10 +211,6 @@ withPipeline("java", product, component) {
   env.CASE_DOCUMENT_AM_URL='http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
   pipelineConf = config;
 
-  onPR{
-    if (checkForWAEnableLabel(env.BRANCH_NAME)) {
-      env.ROLE_ASSIGNMENT_URL="https://am-role-assignment-service-prl-ccd-definitions-pr-${CHANGE_ID}.preview.platform.hmcts.net"
-    }
   }
 
   enableAksStagingDeployment()
@@ -268,19 +264,19 @@ withPipeline("java", product, component) {
       sh 'yarn test:fullfunctional-cw'
     }
 
-    onPR {
-      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
-        sh """
-          ./bin/wa/add-role-assignments.sh
-        """
-        env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
-        println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
-        sh 'chmod -R +x ./bin'
-        uploadDmnDiagrams()
-        uploadBpmnDiagram()
-        setupRoleAssignments()
-      }
-    }
+//    onPR {
+//      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
+//        sh """
+//          ./bin/wa/add-role-assignments.sh
+//        """
+//        env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+//        println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
+//        sh 'chmod -R +x ./bin'
+//        uploadDmnDiagrams()
+//        uploadBpmnDiagram()
+//        setupRoleAssignments()
+//      }
+//    }
 
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
@@ -296,7 +292,11 @@ withPipeline("java", product, component) {
 
   afterSuccess('akschartsinstall') {
     onPR {
-      for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "pr-values:wa") ) {
+      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
+        env.ROLE_ASSIGNMENT_URL = "https://am-role-assignment-service-prl-ccd-definitions-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+        sh """
+          ./bin/wa/add-role-assignments.sh
+        """
         env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
         println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
         sh 'chmod -R +x ./bin'
