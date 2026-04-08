@@ -6,7 +6,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -67,7 +66,7 @@ class ExceptionRecordServiceTest {
     private static final String EXCEPTION_RECORD_GOR_EVENT_ID = "caseCreated";
     @Mock
     CaveatNotificationService caveatNotificationService;
-    @InjectMocks
+
     private ExceptionRecordService erService;
 
     @Mock
@@ -143,6 +142,19 @@ class ExceptionRecordServiceTest {
     @BeforeEach
     public void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
+
+        erService = new ExceptionRecordService(
+                Collections.emptyList(),
+                eventValidationService,
+                caveatNotificationService,
+                erCaveatMapper,
+                erGrantOfRepresentationMapper,
+                documentMapper,
+                caveatTransformer,
+                grantOfProbatetransformer,
+                ocrFieldModifierUtils,
+                exceptionRecordCaseDataValidator
+        );
 
         Mockito.doNothing().when(exceptionRecordCaseDataValidator)
                 .validateInputScannedDocumentTypes(Mockito.any(), Mockito.any());
