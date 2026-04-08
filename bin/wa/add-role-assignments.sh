@@ -23,7 +23,7 @@ jq -c '(.[])' ${dir}/preview-am-role-assignments.json | while read user; do
     authorisations=$(jq -r '.authorisations | tostring' <<< $assignment)
 
     echo "Creating '${roleName}' assignment for user ${email}"
-    ${dir}/utils/organisational-role-assignment.sh $email $password $classification $roleName $attributes $roleCategory $authorisations $grantType
+    ${dir}/organisational-role-assignment.sh $email $password $classification $roleName $attributes $roleCategory $authorisations $grantType
   done
   echo
 done
