@@ -110,7 +110,7 @@
     "chai-string": "^1.6.0",
     "date-fns": "^2.21.3",
     "dotenv": "^17.2.0",
-    "eslint": "^9.11.1",
+    "eslint": "^10.0.0",
     "eslint-plugin-playwright": "^1.6.2",
     "husky": "^8.0.0",
     "istanbul": "^0.4.5",
