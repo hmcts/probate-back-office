@@ -5,14 +5,14 @@
     "roleAssignments": [
       {
         "roleType": "ORGANISATION",
-        "roleName": "case-allocator",
+        "roleName": "ctsc",
         "grantType": "STANDARD",
         "roleCategory": "CTSC",
         "classification": "PUBLIC",
         "readOnly": false,
         "attributes": {
           "region": "1",
-          "substantive": "N",
+          "substantive": "Y",
           "jurisdiction": "PROBATE",
           "primaryLocation": "234946"
         },
