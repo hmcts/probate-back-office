@@ -292,7 +292,7 @@ withPipeline("java", product, component) {
   afterSuccess('akschartsinstall') {
     onPR {
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
-        env.ROLE_ASSIGNMENT_URL = "https://am-role-assignment-service-prl-ccd-definitions-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+        env.ROLE_ASSIGNMENT_URL = "https://am-role-assignment-service-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
         sh """
           ./bin/wa/add-role-assignments.sh
         """
