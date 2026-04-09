@@ -8,5 +8,6 @@ set -eu
 ## Returns a valid IDAM user id for the given token.
 
 USER_TOKEN=${1}
+IDAM_API_BASE_URL=https://idam-api.aat.platform.hmcts.net
 
 curl --silent --show-error -X GET "${IDAM_API_BASE_URL}/details" -H "accept: application/json" -H "authorization: Bearer ${USER_TOKEN}" | jq -r .id
