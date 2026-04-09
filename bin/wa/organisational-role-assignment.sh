@@ -23,7 +23,7 @@ BASEDIR=$(dirname "$0")
 USER_TOKEN=$(./bin/utils/idam-lease-user-token.sh $USERNAME $PASSWORD)
 USER_ID=$(./bin/utils/idam-user-id.sh $USER_TOKEN)
 SERVICE_TOKEN=$(./bin/utils/idam-lease-service-token.sh probate_backoffice \
-  $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${PRL_S2S_SECRET:-AAAAAAAAAAAAAAAC}))
+  $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${S2S_SECRET:-AAAAAAAAAAAAAAAC}))
 
 echo -e "\nCreating role assignment: \n User: ${USER_ID}\n Role name: ${ROLE_NAME}\n ROLE_CLASSIFICATION: ${ROLE_CLASSIFICATION}\n"
 

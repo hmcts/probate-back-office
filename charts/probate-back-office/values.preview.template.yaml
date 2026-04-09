@@ -114,6 +114,7 @@ ccd:
         am:
           secrets:
             - role-assignment-service-LD-SDK-KEY
+      ingressHost: am-role-assignment-service-${SERVICE_FQDN}
       environment:
         ROLE_ASSIGNMENT_DB_HOST: '{{ .Values.global.postgresHostname }}'
         ROLE_ASSIGNMENT_DB_NAME: "{{ .Values.global.databaseNamePrefix }}role-assignment"
