@@ -48,6 +48,7 @@ import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
+import uk.gov.hmcts.probate.validator.AttorneyAppointedExecutorValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
@@ -139,6 +140,7 @@ public class BusinessValidationController {
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
     private final DocumentTransformer documentTransformer;
+    private final AttorneyAppointedExecutorValidationRule attorneyAppointedExecutorValidationRule;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
@@ -247,6 +249,7 @@ public class BusinessValidationController {
 
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         zeroApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        attorneyAppointedExecutorValidationRule.validate(callbackRequest.getCaseDetails());
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {

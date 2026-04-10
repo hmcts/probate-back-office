@@ -44,6 +44,7 @@ import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
+import uk.gov.hmcts.probate.validator.AttorneyAppointedExecutorValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
@@ -216,6 +217,8 @@ class BusinessValidationUnitTest {
     private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     @Mock
     private DocumentTransformer documentTransformerMock;
+    @Mock
+    private AttorneyAppointedExecutorValidationRule attorneyAppointedExecutorValidationRule;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -262,7 +265,8 @@ class BusinessValidationUnitTest {
             zeroApplyingExecutorsValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
-            documentTransformerMock);
+            documentTransformerMock,
+            attorneyAppointedExecutorValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
