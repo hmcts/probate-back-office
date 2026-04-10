@@ -30,4 +30,7 @@
    ]]></notes>
         <cve>CVE-2020-29582</cve>
     </suppress>
+    <suppress>
+        <cve>CVE-2025-67735</cve>
+    </suppress>
 </suppressions>

@@ -108,6 +108,7 @@ ccd:
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
   am-role-assignment-service:
     java:
+      image: hmctsprod.azurecr.io/am/role-assignment-service:pr-2689
       disableKeyVaults: true
       keyVaults:
         am:
@@ -369,3 +370,19 @@ java:
           alias: SCHEDULER_CASEWORKER_USERNAME
         - name: schedulerCaseWorkerPass
           alias: SCHEDULER_CASEWORKER_PASSWORD
+
+postgresql:
+  enabled: true
+  flexibleserver: "probate-preview"
+  setup:
+    databases:
+      - name: "pr-${CHANGE_ID}-data-store"
+      - name: "pr-${CHANGE_ID}-definition-store"
+      - name: "pr-${CHANGE_ID}-user-profile"
+      - name: "pr-${CHANGE_ID}-role-assignment"
+      - name: "pr-${CHANGE_ID}-probatemandb"
+      - name: "pr-${CHANGE_ID}-camunda"
+      - name: "pr-${CHANGE_ID}-cft_task_db"
+      - name: "pr-${CHANGE_ID}-wa_workflow_api"
+      - name: "pr-${CHANGE_ID}-wa-case-event-handler"
+      - name: "pr-${CHANGE_ID}-org-role-mapping"
