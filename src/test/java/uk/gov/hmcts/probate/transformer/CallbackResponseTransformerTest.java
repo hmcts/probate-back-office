@@ -2686,7 +2686,12 @@ class CallbackResponseTransformerTest {
                 .informationNeededByPost(NO)
                 .citizenResponseCheckbox(YES)
                 .expectedResponseDate("some date")
-                .documentUploadIssue(YES);
+                .documentUploadIssue(YES)
+                .uploadFileCheck(YES)
+                .cwDocumentUpload(UploadDocument.builder()
+                        .documentLink(documentLinkMock)
+                        .documentType(SENT_EMAIL)
+                        .build());
 
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
