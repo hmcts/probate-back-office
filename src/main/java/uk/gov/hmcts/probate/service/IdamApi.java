@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.probate.config.FeignClientConfiguration;
 import uk.gov.hmcts.probate.model.TokenExchangeResponse;
+import uk.gov.hmcts.probate.model.idam.User;
 import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
@@ -62,5 +63,10 @@ public interface IdamApi {
     List<UserDetails> searchUsers(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
             @RequestParam("query") final String elasticSearchQuery
+    );
+
+    @GetMapping("/api/v2/users/{userId}")
+    User getUser(
+            @RequestParam(value = "userId") String userId
     );
 }

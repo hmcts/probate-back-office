@@ -38,10 +38,11 @@ import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.PrepareNocService;
-import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
+import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -249,6 +250,8 @@ class BusinessValidationControllerIT {
     private AuditEventService auditEventService;
     @MockitoBean
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
+    @MockitoBean
+    private IdamApi idamApi;
 
 
 
