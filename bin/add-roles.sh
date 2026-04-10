@@ -4,6 +4,9 @@ set -eu
 
 dir=$(dirname ${0})
 
+export USER_TOKEN_ENV=$(${binFolder}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Pa55word11})
+export SERVICE_TOKEN_ENV=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
+
 ${dir}/idam-role.sh caseworker
 ${dir}/idam-role.sh caseworker-probate
 ${dir}/idam-role.sh caseworker-probate-issuer
