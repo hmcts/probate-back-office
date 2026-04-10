@@ -27,14 +27,16 @@ esac
 
 binFolder=$(dirname "$0")
 
-if [ -z "$USER_TOKEN_ENV" ]; then
-  echo "User token not present, regenerating..."
-  export USER_TOKEN_ENV=$(${binFolder}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Pa55word11})
+if [ -z "${USER_TOKEN:-}" ]; then
+  userToken=$(${binFolder}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME} ${CCD_CONFIGURER_IMPORTER_PASSWORD})
+else
+  userToken=${USER_TOKEN}
 fi
 
-if [ -z "$SERVICE_TOKEN_ENV" ]; then
-  echo "Service token not present, regenerating..."
-  export SERVICE_TOKEN_ENV=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
+if [ -z "${SERVICE_TOKEN:-}" ]; then
+  serviceToken=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
+else
+  serviceToken=${SERVICE_TOKEN}
 fi
 
 ccdUrl=${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}
