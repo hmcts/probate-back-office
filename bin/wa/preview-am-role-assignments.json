@@ -11,10 +11,10 @@
         "classification": "PUBLIC",
         "readOnly": false,
         "attributes": {
-          "region": "1",
+          "workTypes": "applications,review_case,stopped_applications,decision_making_work",
           "substantive": "Y",
           "jurisdiction": "PROBATE",
-          "primaryLocation": "234946"
+          "caseType": "GrantOfRepresentation"
         },
         "authorisations": [
           "SKILL:ABA6:PROBATEEXAMINING"
