@@ -88,7 +88,8 @@ public class DormantReminderNotification implements NotificationStrategy {
                 && referenceDate != null
                 && STATE_DORMANT.equals(cd.getState())
                 && isValidLastMofifiedDateForDormant(cd)
-                && !CaseStopReasonHelper.isCaveatStop(cd);
+                && !CaseStopReasonHelper.isCaveatStop(cd)
+                && !isBoImportedStateBeforeDormant(cd.getId().toString());
 
     }
 
@@ -99,5 +100,9 @@ public class DormantReminderNotification implements NotificationStrategy {
                 .map(lastModifiedDateForDormant -> !lastModifiedDateForDormant
                         .isAfter(referenceDate.plusDays(1).atStartOfDay()))
                 .orElse(false);
+    }
+
+    private boolean isBoImportedStateBeforeDormant(String caseReference) {
+        return notificationService.isBoImportedStateBeforeDormant(caseReference);
     }
 }

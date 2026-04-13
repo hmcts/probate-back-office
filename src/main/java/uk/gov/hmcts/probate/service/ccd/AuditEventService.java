@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.ccd;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEventsResponse;
 
@@ -36,5 +37,17 @@ public class AuditEventService {
         return auditEventsResponse.getAuditEvents().stream()
                 .filter(auditEvent -> stateName.contains(auditEvent.getStateId()))
                 .max(Comparator.comparing(AuditEvent::getCreatedDate));
+    }
+
+    public Optional<AuditEvent> getPreviousAuditEventOfByEventId(String caseId, EventId eventId,
+                                                           String userToken, String authToken) {
+        log.info("Getting latest audit event for caseId: {}", caseId);
+        AuditEventsResponse auditEventsResponse
+                = caseDataApi.getAuditEvents(userToken, authToken, false, caseId);
+        return auditEventsResponse.getAuditEvents().stream()
+                .sorted(Comparator.comparing(AuditEvent::getCreatedDate).reversed())
+                .dropWhile(e -> !"makeCaseDormant".equals(e.getId()))
+                .skip(1)
+                .findFirst();
     }
 }

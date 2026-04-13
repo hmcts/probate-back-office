@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -32,7 +33,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
@@ -49,8 +54,8 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.BulkPrint;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -64,8 +69,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -80,6 +85,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_IMPORTED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PAYMENT_FAILED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_PENDING;
 import static uk.gov.service.notify.NotificationClient.prepareUpload;
@@ -126,6 +132,7 @@ public class NotificationService {
     private final CaveatPersonalisationService caveatPersonalisationService;
     private final SentEmailPersonalisationService sentEmailPersonalisationService;
     private final TemplateService templateService;
+    private final AuditEventService auditEventService;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final NotificationClientService notificationClientService;
     private final DocumentManagementService documentManagementService;
@@ -137,6 +144,7 @@ public class NotificationService {
     private final EmailValidationService emailValidationService;
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
     private final Clock clock;
+    private final SecurityUtils securityUtils;
 
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -1222,6 +1230,22 @@ public class NotificationService {
             .filter(Objects::nonNull)
             .map(ExecutorApplying::getApplyingExecutorName)
             .toList();
+    }
+
+    public boolean isBoImportedStateBeforeDormant(String caseReference) {
+        log.info("looking up previous state for caseReference {} " + caseReference);
+        SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+        Optional<AuditEvent> previousEvnet = auditEventService.getPreviousAuditEventOfByEventId(caseReference,
+                 EventId.MAKE_CASE_DORMANT, securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation());
+        if (previousEvnet.isPresent()) {
+            AuditEvent evnet = previousEvnet.get();
+            log.info("The previous state of case {} is in {} CreatedDate: {}",
+                    caseReference, evnet.getStateId(), evnet.getCreatedDate());
+            return evnet.getStateId().equals(STATE_BO_CASE_IMPORTED);
+        } else {
+            log.info("No previous state found for case {}", caseReference);
+            return false;
+        }
     }
 
     public Document sendPostGrantIssuedNotification(final CaseDetails caseDetails) {

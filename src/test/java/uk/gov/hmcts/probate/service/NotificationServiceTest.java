@@ -20,7 +20,9 @@ import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.NotificationService.CommonNotificationResult;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
@@ -106,6 +108,9 @@ class NotificationServiceTest {
     private SentEmailPersonalisationService sentEmailPersonalisationServiceMock;
     @Mock
     private TemplateService templateServiceMock;
+
+    @Mock
+    private AuditEventService auditEventServiceMock;
     @Mock
     private AuthTokenGenerator serviceAuthTokenGeneratorMock;
     @Mock
@@ -128,6 +133,9 @@ class NotificationServiceTest {
     private LocalDateToWelshStringConverter localDateToWelshStringConverterMock;
     @Mock
     private Clock clockMock;
+
+    @Mock
+    private SecurityUtils securityUtils;
 
     private NotificationService notificationService;
 
@@ -154,6 +162,7 @@ class NotificationServiceTest {
                 caveatPersonalisationServiceMock,
                 sentEmailPersonalisationServiceMock,
                 templateServiceMock,
+                auditEventServiceMock,
                 serviceAuthTokenGeneratorMock,
                 notificationClientServiceMock,
                 documentManagementServiceMock,
@@ -164,7 +173,8 @@ class NotificationServiceTest {
                 objectMapperMock,
                 emailValidationServiceMock,
                 localDateToWelshStringConverterMock,
-                clockMock);
+                clockMock,
+                securityUtils);
 
         when(clockMock.instant()).thenReturn(Instant.now());
         when(clockMock.getZone()).thenReturn(ZoneId.of("Europe/London"));
