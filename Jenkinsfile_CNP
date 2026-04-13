@@ -294,9 +294,9 @@ withPipeline("java", product, component) {
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.ROLE_ASSIGNMENT_URL = "https://am-role-assignment-service-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
 
-       /* sh """
+       sh """
           ./bin/wa/add-role-assignments.sh
-        """*/
+        """
 
         env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
         println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
