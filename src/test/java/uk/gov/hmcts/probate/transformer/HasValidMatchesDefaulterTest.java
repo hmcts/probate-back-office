@@ -24,7 +24,7 @@ class HasValidMatchesDefaulterTest {
     void returnsYesWhenValidMatchExists() {
         CaseMatch validMatch = CaseMatch.builder()
                 .id("someId")
-                .type("GrantOfRepresentation")
+                .type("Grant of Representation")
                 .valid(YES)
                 .build();
         CollectionMember<CaseMatch> member = new CollectionMember<>(null, validMatch);
@@ -38,7 +38,7 @@ class HasValidMatchesDefaulterTest {
     void returnsNoWhenNoValidMatchExists() {
         CaseMatch nonMatch = CaseMatch.builder()
                 .id("someId")
-                .type("GrantOfRepresentation")
+                .type("Grant of Representation")
                 .valid(NO)
                 .build();
         CollectionMember<CaseMatch> member = new CollectionMember<>(null, nonMatch);
@@ -60,7 +60,7 @@ class HasValidMatchesDefaulterTest {
     void returnsNoWhenTypeIsNotValid() {
         CaseMatch invalidMatch = CaseMatch.builder()
                 .id("someId")
-                .type("WillLodgement")
+                .type("Will Lodgement")
                 .valid(YES)
                 .build();
         CollectionMember<CaseMatch> member = new CollectionMember<>(null, invalidMatch);
