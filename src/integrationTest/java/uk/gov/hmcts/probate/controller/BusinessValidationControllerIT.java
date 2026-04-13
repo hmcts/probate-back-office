@@ -1494,7 +1494,7 @@ class BusinessValidationControllerIT {
     void shouldDefaultHasValidMatchToYes() throws Exception {
         CaseMatch validMatch = CaseMatch.builder()
                 .id("someId")
-                .type("GrantOfRepresentation")
+                .type("Grant of Representation")
                 .valid("Yes")
                 .build();
         caseDataBuilder.caseMatches(List.of(new CollectionMember<>(null, validMatch)));
