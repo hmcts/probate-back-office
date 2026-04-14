@@ -11,14 +11,27 @@
         "classification": "PUBLIC",
         "readOnly": false,
         "attributes": {
-          "workTypes": "applications,review_case,stopped_applications,decision_making_work",
+          "workTypes": "applications, review_case, stopped_applications, decision_making_work",
           "substantive": "Y",
           "jurisdiction": "PROBATE",
-          "caseType": "GrantOfRepresentation"
+          "primaryLocation": "356855"
         },
         "authorisations": [
-          "SKILL:ABA6:PROBATEEXAMINING"
+          "SKILL:ABA6:ProbateExamining",
+          "SKILL:ABA6:ProbateQA"
         ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "hmcts-ctsc",
+        "grantType": "BASIC",
+        "roleCategory": "CTSC",
+        "classification": "PRIVATE",
+        "readOnly": true,
+        "attributes": {
+          "substantive": "N"
+        },
+        "authorisations": []
       }
     ]
   }
