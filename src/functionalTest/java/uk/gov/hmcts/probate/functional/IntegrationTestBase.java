@@ -169,20 +169,36 @@ public abstract class IntegrationTestBase {
         assertTrue(response.contains(expectedText));
     }
 
-    protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile,
-        String responseDocumentUrl, ResponseBody responseBody, HashMap<String, String> expectedKeyValuerelacements)
-        throws IOException {
+    protected void assertExpectedContentsWithExpectedReplacement(
+            String expectedResponseFile,
+            String responseDocumentUrl,
+            ResponseBody responseBody,
+            Map<String, String> expectedKeyValueReplacements
+    ) throws IOException {
         String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
-        for (Map.Entry<String, String> entry : expectedKeyValuerelacements.entrySet()) {
+        for (Map.Entry<String, String> entry : expectedKeyValueReplacements.entrySet()) {
             expectedText = expectedText.replace(entry.getKey(), entry.getValue());
         }
 
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(responseDocumentUrl);
-
         final String rawResponse = utils.downloadPdfAndParseToString(documentUrl);
-        final String response = removeCrLfs(rawResponse).replaceAll("\\s+", " ").trim();
+        String response = removeCrLfs(rawResponse);
+
+        // Remove only the 'Sent on:' prefix and its date/time, even if the document is a single line
+        response = response.replaceFirst("^Sent on:.*?(From:)", "$1");
+
+        // Replace dynamic expiry date in both actual and expected outputs
+        response = response.replaceAll("Daw eich cafeat i ben ar: [^ ]+ [^ ]+ [0-9]+", "Daw eich cafeat i ben ar: {{EXPIRY_DATE}}");
+        expectedText = expectedText.replaceAll("Daw eich cafeat i ben ar: [^ ]+ [^ ]+ [0-9]+", "Daw eich cafeat i ben ar: {{EXPIRY_DATE}}");
+        response = response.replaceAll("Your caveat expiry date is: [^ ]+ [^ ]+ [0-9]+", "Your caveat expiry date is: {{EXPIRY_DATE}}");
+        expectedText = expectedText.replaceAll("Your caveat expiry date is: [^ ]+ [^ ]+ [0-9]+", "Your caveat expiry date is: {{EXPIRY_DATE}}");
+
+        // Normalize whitespace
+        response = response.replaceAll("\\s+", " ").trim();
         final String normalizedExpected = expectedText.replaceAll("\\s+", " ").trim();
+
+        assertTrue(response.contains(normalizedExpected));
     }
 
     protected void assertExpectedContentsMissing(String expectedContentMissing, ResponseBody responseBody) {
@@ -190,7 +206,4 @@ public abstract class IntegrationTestBase {
         final String documentUrl = jsonPath.get(expectedContentMissing);
         assertTrue(documentUrl == null);
     }
-
-
-
 }
