@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 class AttorneyAppointedExecutorValidationRuleTest {
 
@@ -73,7 +74,7 @@ class AttorneyAppointedExecutorValidationRuleTest {
     @Test
     void shouldThrowExceptionWhenAppointExecYesAndPowerOfAttorneyExists() {
         caseDataMock = CaseData.builder()
-                .appointExec("YES")
+                .appointExec(YES)
                 .additionalExecutorsNotApplying(powerOfAttorneyList)
                 .build();
 
