@@ -29,6 +29,9 @@ public class HasValidMatchesDefaulter {
     }
 
     private boolean isValidMatch(CaseMatch match) {
-        return YES.equalsIgnoreCase(match.getValid()) && VALID_CASE_TYPE_LIST.contains(match.getType());
+        return match != null
+                && YES.equalsIgnoreCase(match.getValid())
+                && match.getType() != null
+                && VALID_CASE_TYPE_LIST.contains(match.getType());
     }
 }
