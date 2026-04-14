@@ -49,6 +49,7 @@ public class CaveatQueryService {
     private static final String REFERENCE = "reference";
     private static final String PA_APP_CREATED = "PAAppCreated";
     private static final String STATE = "state";
+    private static final String STATE_KEYWORD = "state.keyword";
     private static final String DATA_EXPIRY_DATE = "data.expiryDate";
     private static final String CAVEAT_NOT_MATCHED = "CaveatNotMatched";
     private static final String AWAITING_CAVEAT_RESOLUTION = "AwaitingCaveatResolution";
@@ -71,7 +72,7 @@ public class CaveatQueryService {
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     @Value("${data-extract.pagination.size}")
     protected int dataExtractPaginationSize;
-    private static final String SORT_COLUMN = "id";
+    private static final String SORT_COLUMN = "reference.keyword";
 
     private static <T> T nonNull(@Nullable T result) {
         Assert.state(result != null, "Entity should be non null in CaveatQueryService");
@@ -104,8 +105,7 @@ public class CaveatQueryService {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
                 .query(query)
                 .sort(SORT_COLUMN, SortOrder.ASC)
-                .size(dataExtractPaginationSize)
-                .fetchSource(new String[]{"reference"}, null);
+                .size(dataExtractPaginationSize);
         if (searchAfterValues != null) {
             sourceBuilder.searchAfter(searchAfterValues);
         }
@@ -116,7 +116,7 @@ public class CaveatQueryService {
     private BoolQueryBuilder buildExpiryQuery(String expiryDate) {
         return boolQuery()
                 .filter(rangeQuery(DATA_EXPIRY_DATE).lte(expiryDate))
-                .filter(termsQuery(STATE, EXPIRABLE_STATES));
+                .filter(termsQuery(STATE_KEYWORD, EXPIRABLE_STATES));
     }
 
     private ReturnedCaveats runQuery(CaseType caseType, String jsonQuery) {
