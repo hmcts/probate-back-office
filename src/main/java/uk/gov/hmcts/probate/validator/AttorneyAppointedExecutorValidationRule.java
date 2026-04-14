@@ -26,7 +26,7 @@ public class AttorneyAppointedExecutorValidationRule {
     private static final String ATTORNEY_APPOINTED_EXECUTOR_WELSH = "AttorneyAppointedExecWelsh";
     private static final String POWER_OF_ATTORNEY = "PowerOfAttorney";
     private static final String ATTORNEY_APPOINTED_ERROR_MESSAGE =
-            "Cannot have an executor and then appoint another as an attorney for case id ";
+            "An attorney cannot be added as an executor when an executor has already been appointed. For case id ";
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     public void validate(CaseDetails caseDetails) {

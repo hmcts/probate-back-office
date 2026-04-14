@@ -42,9 +42,9 @@ class AttorneyAppointedExecutorValidationRuleTest {
     private static final String ATTORNEY_APPOINTED_EXECUTOR = "AttorneyAppointedExec";
     private static final String ATTORNEY_APPOINTED_EXECUTOR_WELSH = "AttorneyAppointedExecWelsh";
     private static final String ATTORNEY_APPOINTED_EXECUTOR_MESSAGE =
-            "Cannot have an executor and then appoint another as an attorney";
+            "An attorney cannot be added as an executor when an executor has already been appointed";
     private static final String ATTORNEY_APPOINTED_EXECUTOR_WELSH_MESSAGE =
-            "Ni all gael ysgutor ac yna penodi un arall yn atwrnai";
+            "Ni ellir ychwanegu atwrnai fel ysgutor pan fydd ysgutor eisoes wedi'i benodi";
 
     @BeforeEach
     void setup() {
@@ -93,7 +93,8 @@ class AttorneyAppointedExecutorValidationRuleTest {
         );
 
         assertThat(exception.getMessage(),
-                containsString("Cannot have an executor and then appoint another as an attorney for case id 1"));
+                containsString("An attorney cannot be added as an executor when an executor has already "
+                        + "been appointed. For case id 1"));
     }
 
     @Test
