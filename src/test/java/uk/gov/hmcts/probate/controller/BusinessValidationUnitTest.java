@@ -378,6 +378,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        verify(attorneyAppointedExecutorValidationRule, times(1)).validate(caseDetailsMock);
     }
 
     @Test
@@ -399,6 +400,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        verify(attorneyAppointedExecutorValidationRule, times(1)).validate(caseDetailsMock);
     }
 
     @Test

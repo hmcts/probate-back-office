@@ -13,6 +13,9 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Component
@@ -34,7 +37,7 @@ public class AttorneyAppointedExecutorValidationRule {
         String userMessageWelsh = businessValidationMessageRetriever.getMessage(
                 ATTORNEY_APPOINTED_EXECUTOR_WELSH, args, Locale.UK);
 
-        if ("YES".equals(caseData.getAppointExec())
+        if (YES.equals(caseData.getAppointExec())
                 && hasPowerOfAttorneyReason(caseData.getAdditionalExecutorsNotApplying())) {
             throw new BusinessValidationException(userMessage, ATTORNEY_APPOINTED_ERROR_MESSAGE + caseDetails.getId(),
                     userMessageWelsh);
@@ -42,18 +45,14 @@ public class AttorneyAppointedExecutorValidationRule {
     }
 
     private boolean hasPowerOfAttorneyReason(List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying) {
-
-        if (!CollectionUtils.isEmpty(execsNotApplying)) {
-            for (CollectionMember<AdditionalExecutorNotApplying> eachExecNotApplying : execsNotApplying) {
-                if (eachExecNotApplying != null && eachExecNotApplying.getValue() != null) {
-                    AdditionalExecutorNotApplying exec = eachExecNotApplying.getValue();
-                    if (POWER_OF_ATTORNEY.equalsIgnoreCase(exec.getNotApplyingExecutorReason())) {
-                        return true;
-                    }
-                }
-            }
+        if (CollectionUtils.isEmpty(execsNotApplying)) {
+            return false;
         }
-        return false;
+        return execsNotApplying.stream()
+                .filter(Objects::nonNull)
+                .map(CollectionMember::getValue)
+                .filter(Objects::nonNull)
+                .map(AdditionalExecutorNotApplying::getNotApplyingExecutorReason)
+                .anyMatch(POWER_OF_ATTORNEY::equalsIgnoreCase);
     }
-
 }
