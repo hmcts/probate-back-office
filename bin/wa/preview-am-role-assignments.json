@@ -6,7 +6,7 @@
       {
         "roleType": "ORGANISATION",
         "roleName": "ctsc",
-        "grantType": "BASIC",
+        "grantType": "STANDARD",
         "roleCategory": "CTSC",
         "classification": "PUBLIC",
         "readOnly": false,
