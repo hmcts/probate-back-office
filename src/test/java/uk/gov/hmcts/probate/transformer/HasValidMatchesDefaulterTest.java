@@ -69,5 +69,18 @@ class HasValidMatchesDefaulterTest {
                 .build();
         assertEquals(NO, hasValidMatchesDefaulter.defaultHasValidMatches(caseData));
     }
+
+    @Test
+    void returnsNoWhenTypeIsNull() {
+        CaseMatch invalidMatch = CaseMatch.builder()
+                .id("someId")
+                .type(null)
+                .build();
+        CollectionMember<CaseMatch> member = new CollectionMember<>(null, invalidMatch);
+        CaseData caseData = CaseData.builder()
+                .caseMatches(List.of(member))
+                .build();
+        assertEquals(NO, hasValidMatchesDefaulter.defaultHasValidMatches(caseData));
+    }
 }
 
