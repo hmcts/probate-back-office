@@ -205,7 +205,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    // ... existing code ...
     void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOBWelsh() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
@@ -214,10 +213,10 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         replacements.put(EXPIRY_DATE_WELSH_KEY, utils.convertToWelsh(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
 
         assertExpectedContentsWithExpectedReplacement(
-                DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_NO_DOB_WELSH,
-                EMAIL_NOTIFICATION_URL,
-                responseBody,
-                replacements
+            DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_NO_DOB_WELSH,
+            EMAIL_NOTIFICATION_URL,
+            responseBody,
+            replacements
         );
     }
 
