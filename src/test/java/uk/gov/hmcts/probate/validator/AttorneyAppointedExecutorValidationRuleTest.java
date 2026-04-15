@@ -44,7 +44,7 @@ class AttorneyAppointedExecutorValidationRuleTest {
     private static final String ATTORNEY_APPOINTED_EXECUTOR_MESSAGE =
             "An attorney cannot be added as an executor when an executor has already been appointed";
     private static final String ATTORNEY_APPOINTED_EXECUTOR_WELSH_MESSAGE =
-            "Ni ellir ychwanegu atwrnai fel ysgutor pan fydd ysgutor eisoes wedi'i benodi";
+            "Maent wedi penodi neu'n dymuno penodi unigolyn arall i weithredu fel eu hatwrnai";
 
     @BeforeEach
     void setup() {
