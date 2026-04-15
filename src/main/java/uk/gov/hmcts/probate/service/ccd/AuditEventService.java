@@ -41,12 +41,12 @@ public class AuditEventService {
 
     public Optional<AuditEvent> getPreviousAuditEventOfByEventId(String caseId, EventId eventId,
                                                            String userToken, String authToken) {
-        log.info("Getting latest audit event for caseId: {}", caseId);
+        log.info("Getting previous audit event for caseId with {} eventId: {}", caseId, eventId.getName());
         AuditEventsResponse auditEventsResponse
                 = caseDataApi.getAuditEvents(userToken, authToken, false, caseId);
         return auditEventsResponse.getAuditEvents().stream()
                 .sorted(Comparator.comparing(AuditEvent::getCreatedDate).reversed())
-                .dropWhile(e -> !"makeCaseDormant".equals(e.getId()))
+                .dropWhile(e -> !eventId.getName().equals(e.getId()))
                 .skip(1)
                 .findFirst();
     }

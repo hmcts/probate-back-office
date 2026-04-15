@@ -17,9 +17,12 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.NotificationService.CommonNotificationResult;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
@@ -48,6 +51,7 @@ import uk.gov.service.notify.TemplatePreview;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,6 +79,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_IMPORTED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_PENDING;
 
 
 class NotificationServiceTest {
@@ -1507,4 +1513,51 @@ class NotificationServiceTest {
         verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
         assertThat(result, nullValue());
     }
+
+    @Test
+    void isBoImportedStateBeforeDormantReturnsTrueWhenPreviousStateIsBoCaseImported() {
+        String caseReference = "12345";
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        AuditEvent auditEvent = AuditEvent.builder()
+                .stateId(STATE_BO_CASE_IMPORTED)
+                .createdDate(LocalDateTime.now())
+                .build();
+
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(eq(caseReference), eq(EventId.MAKE_CASE_DORMANT),
+                eq(securityDTO.getAuthorisation()), eq(securityDTO.getServiceAuthorisation())))
+                .thenReturn(Optional.of(auditEvent));
+
+        boolean result = notificationService.isBoImportedStateBeforeDormant(caseReference);
+
+        assertEquals(true, result);
+    }
+
+    @Test
+    void isBoImportedStateBeforeDormantReturnsFalseWhenPreviousStateIsNotBoCaseImported() {
+        String caseReference = "12345";
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        AuditEvent auditEvent = AuditEvent.builder()
+                .stateId(STATE_PENDING)
+                .createdDate(LocalDateTime.now())
+                .build();
+
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(eq(caseReference), eq(EventId.MAKE_CASE_DORMANT),
+                eq(securityDTO.getAuthorisation()), eq(securityDTO.getServiceAuthorisation())))
+                .thenReturn(Optional.of(auditEvent));
+
+        boolean result = notificationService.isBoImportedStateBeforeDormant(caseReference);
+
+        assertEquals(false, result);
+    }
+
 }

@@ -1235,10 +1235,10 @@ public class NotificationService {
     public boolean isBoImportedStateBeforeDormant(String caseReference) {
         log.info("looking up previous state for caseReference {} " + caseReference);
         SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-        Optional<AuditEvent> previousEvnet = auditEventService.getPreviousAuditEventOfByEventId(caseReference,
+        Optional<AuditEvent> previousEvent = auditEventService.getPreviousAuditEventOfByEventId(caseReference,
                  EventId.MAKE_CASE_DORMANT, securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation());
-        if (previousEvnet.isPresent()) {
-            AuditEvent evnet = previousEvnet.get();
+        if (previousEvent.isPresent()) {
+            AuditEvent evnet = previousEvent.get();
             log.info("The previous state of case {} is in {} CreatedDate: {}",
                     caseReference, evnet.getStateId(), evnet.getCreatedDate());
             return evnet.getStateId().equals(STATE_BO_CASE_IMPORTED);
