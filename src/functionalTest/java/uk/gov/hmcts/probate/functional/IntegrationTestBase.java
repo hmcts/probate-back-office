@@ -198,7 +198,9 @@ public abstract class IntegrationTestBase {
         response = response.replaceAll("\\s+", " ").trim();
         final String normalizedExpected = expectedText.replaceAll("\\s+", " ").trim();
 
-        assertTrue(response.contains(normalizedExpected));
+        // Assertion with message
+        assertTrue(response.contains(expectedText),
+            "Actual response does not contain expected content.\nExpected: [" + expectedText + "]\nActual: [" + response + "]");
     }
 
     protected void assertExpectedContentsMissing(String expectedContentMissing, ResponseBody responseBody) {
