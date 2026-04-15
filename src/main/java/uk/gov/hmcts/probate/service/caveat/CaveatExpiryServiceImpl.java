@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.caveat;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.ConcurrentDataUpdateException;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
@@ -40,7 +41,8 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
     private final CoreCaseDataApi coreCaseDataApi;
     private final SecurityUtils securityUtils;
     private final Clock clock;
-    private final int dataExtractPaginationSize = 100;
+    @Value("${data-extract.pagination.size}")
+    protected int dataExtractPaginationSize;
     private static final Set<String> ALLOWED_EXPIRY_EVENTS = Set.of(
             CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION.getName(),
             CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED.getName(),
