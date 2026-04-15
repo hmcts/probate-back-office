@@ -1,0 +1,38 @@
+[
+  {
+    "email": "probate_ctsc_administrator_1@justice.gov.uk",
+    "id": "dc71e8b6-909d-4aef-b22e-f44a125e3cea",
+    "roleAssignments": [
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "ctsc",
+        "grantType": "STANDARD",
+        "roleCategory": "CTSC",
+        "classification": "PUBLIC",
+        "readOnly": false,
+        "attributes": {
+          "workTypes": "applications, review_case, stopped_applications, decision_making_work",
+          "substantive": "Y",
+          "jurisdiction": "PROBATE",
+          "primaryLocation": "356855"
+        },
+        "authorisations": [
+          "SKILL:ABA6:ProbateExamining",
+          "SKILL:ABA6:ProbateQA"
+        ]
+      },
+      {
+        "roleType": "ORGANISATION",
+        "roleName": "hmcts-ctsc",
+        "grantType": "BASIC",
+        "roleCategory": "CTSC",
+        "classification": "PRIVATE",
+        "readOnly": true,
+        "attributes": {
+          "substantive": "N"
+        },
+        "authorisations": []
+      }
+    ]
+  }
+]

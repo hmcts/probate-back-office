@@ -45,8 +45,8 @@ echo "Creating CCD role: ${role}"
 
 curl --insecure --fail --show-error --silent --output /dev/null -X PUT \
   ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/api/user-role \
-  -H "Authorization: Bearer ${userToken}" \
-  -H "ServiceAuthorization: Bearer ${serviceToken}" \
+  -H "Authorization: Bearer ${USER_TOKEN_ENV}" \
+  -H "ServiceAuthorization: Bearer ${SERVICE_TOKEN_ENV}" \
   -H "Content-Type: application/json" \
   -d '{
     "role": "'${role}'",
