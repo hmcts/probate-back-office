@@ -36,6 +36,39 @@ class CaseStopReasonHelperTest {
     }
 
     @Test
+    void returnsTrueWhenMatchingApplicationStopReasonDormantWarningPresent() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("boCaseStopReasonList", List.of(
+                Map.of("value", Map.of("caseStopReason", "MatchingApplication"))
+        ));
+        CaseDetails caseDetails = CaseDetails.builder().data(data).build();
+
+        assertTrue(CaseStopReasonHelper.isCaveatStopDormantWarning(caseDetails));
+    }
+
+    @Test
+    void returnsTrueWhenCaveatMatchStopReasonDormantWarningPresent() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("boCaseStopReasonList", List.of(
+                Map.of("value", Map.of("caseStopReason", "CaveatMatch"))
+        ));
+        CaseDetails caseDetails = CaseDetails.builder().data(data).build();
+
+        assertTrue(CaseStopReasonHelper.isCaveatStopDormantWarning(caseDetails));
+    }
+
+    @Test
+    void returnsTrueWhenPermanentCaveatStopReasonDormantWarningPresent() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("boCaseStopReasonList", List.of(
+                Map.of("value", Map.of("caseStopReason", "Permanent Caveat"))
+        ));
+        CaseDetails caseDetails = CaseDetails.builder().data(data).build();
+
+        assertTrue(CaseStopReasonHelper.isCaveatStopDormantWarning(caseDetails));
+    }
+
+    @Test
     void returnsFalseWhenNoCaveatStopReasonPresent() {
         Map<String, Object> data = new HashMap<>();
         data.put("boCaseStopReasonList", List.of(

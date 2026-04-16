@@ -12,16 +12,27 @@ public class CaseStopReasonHelper {
 
     private static final String CASE_STOP_REASON_LIST = "boCaseStopReasonList";
     private static final String STOP_REASON_FIELD_NAME = "caseStopReason";
-    private static final List<String> CAVEAT_STOP_REASONS = List.of("CaveatMatch", "Permanent Caveat");
+    private static final List<String> CAVEAT_STOP_REASONS =
+            List.of("CaveatMatch", "Permanent Caveat");
+    private static final List<String> CAVEAT_STOP_REASONS_DORMANT_WARNING =
+            List.of("CaveatMatch", "Permanent Caveat", "MatchingApplication");
 
-    public static boolean isCaveatStop(CaseDetails caseDetails) {
+    private static boolean hasStopReason(CaseDetails caseDetails, List<String> validReasons) {
         Object raw = caseDetails.getData().get(CASE_STOP_REASON_LIST);
         if (!(raw instanceof List<?> reasons)) {
             return false;
         }
         return reasons.stream()
                 .map(CaseStopReasonHelper::extractCaseStopReason)
-                .anyMatch(reason -> reason != null && CAVEAT_STOP_REASONS.contains(reason));
+                .anyMatch(reason -> reason != null && validReasons.contains(reason));
+    }
+
+    public static boolean isCaveatStop(CaseDetails caseDetails) {
+        return hasStopReason(caseDetails, CAVEAT_STOP_REASONS);
+    }
+
+    public static boolean isCaveatStopDormantWarning(CaseDetails caseDetails) {
+        return hasStopReason(caseDetails, CAVEAT_STOP_REASONS_DORMANT_WARNING);
     }
 
     public static String extractCaseStopReason(Object item) {
