@@ -158,10 +158,10 @@ am-org-role-mapping-service:
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
       AMQP_SHARED_ACCESS_KEY_NAME: RootManageSharedAccessKey
       AMQP_HOST: "probate-sb-preview.servicebus.windows.net"
-      CRD_SUBSCRIPTION_NAME: "{{ .Release.Name}}-asb-crd-topic"
-      JRD_SUBSCRIPTION_NAME: "{{ .Release.Name}}-asb-jrd-topic"
-      CRD_TOPIC_NAME: "{{ .Release.Name}}-asb-crd-topic"
-      JRD_TOPIC_NAME: "{{ .Release.Name}}-asb-jrd-topic"
+      CRD_SUBSCRIPTION_NAME: "{{ .Release.Name}}-crd-topic"
+      JRD_SUBSCRIPTION_NAME: "{{ .Release.Name}}-jrd-topic"
+      CRD_TOPIC_NAME: "{{ .Release.Name}}-crd-topic"
+      JRD_TOPIC_NAME: "{{ .Release.Name}}-jrd-topic"
       AMQP_CRD_SHARED_ACCESS_KEY_VALUE: "$(SB_ACCESS_KEY)"
       AMQP_JRD_SHARED_ACCESS_KEY_VALUE: "$(SB_ACCESS_KEY)"
       ORG_ROLE_MAPPING_DB_HOST: '{{ tpl .Values.global.postgresHost $}}'
