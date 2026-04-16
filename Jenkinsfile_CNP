@@ -175,7 +175,7 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
                   excludedFilenamePatterns = "*-gs.json"
               }
           }
-          sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
+          sh "./build-preview-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
       } else {
           sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
       }
