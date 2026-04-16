@@ -135,23 +135,23 @@ def checkForGSEnableLabel(branch_name) {
 
 def archiveCoreCaseDataDefinitions(env, branch_name) {
   dir("${WORKSPACE}/bin") {
-    // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
-    if("preview" == env){
-      shutterOption = "false"
-    } else if("demo" == env){
-      shutterOption = "false"
-    } else if("aat" == env){
-      //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
-      shutterOption = "false"
-    } else if("prod" == env){
-      //WARNING, CHANGING THIS WILL SHUTTER PROD
-      shutterOption = "false"
-    } else {
-      shutterOption = "false"
-    }
+      // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
+      if ("preview" == env) {
+          shutterOption = "false"
+      } else if ("demo" == env) {
+          shutterOption = "false"
+      } else if ("aat" == env) {
+          //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
+          shutterOption = "false"
+      } else if ("prod" == env) {
+          //WARNING, CHANGING THIS WILL SHUTTER PROD
+          shutterOption = "false"
+      } else {
+          shutterOption = "false"
+      }
 
-   // excludedFilenamePatterns="*-wa.json"
-   /* if ("preview" == env) {
+      // excludedFilenamePatterns="*-wa.json"
+      /* if ("preview" == env) {
       if (checkForWAEnableLabel(branch_name)) {
         sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
       } else {
@@ -163,23 +163,23 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
     }
   }*/
 
-    excludedFilenamePatterns=""
-    if ("preview" == env) {
-        if (!checkForWAEnableLabel(branch_name)) {
-            excludedFilenamePatterns = "*-wa.json"
-        }
-        if (!checkForGSEnableLabel(branch_name)) {
-            if (excludedFilenamePatterns) {
-                excludedFilenamePatterns = "${excludedFilenamePatterns},*-gs.json"
-            } else {
-                excludedFilenamePatterns = "*-gs.json"
-            }
-        }
-        sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
-    }
-    else {
-        sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
-    }
+      excludedFilenamePatterns = ""
+      if ("preview" == env) {
+          if (!checkForWAEnableLabel(branch_name)) {
+              excludedFilenamePatterns = "*-wa.json"
+          }
+          if (!checkForGSEnableLabel(branch_name)) {
+              if (excludedFilenamePatterns) {
+                  excludedFilenamePatterns = "${excludedFilenamePatterns},*-gs.json"
+              } else {
+                  excludedFilenamePatterns = "*-gs.json"
+              }
+          }
+          sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
+      } else {
+          sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
+      }
+  }
 
 
   dir("${WORKSPACE}/build") {
