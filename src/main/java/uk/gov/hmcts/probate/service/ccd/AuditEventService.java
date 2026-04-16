@@ -41,7 +41,7 @@ public class AuditEventService {
 
     public Optional<AuditEvent> getPreviousAuditEventOfByEventId(String caseId, EventId eventId,
                                                            String userToken, String authToken) {
-        log.info("Getting previous audit event for caseId with {} eventId: {}", caseId, eventId.getName());
+        log.info("Getting previous audit event for eventId: {} with caseId {} ", eventId.getName(), caseId);
         AuditEventsResponse auditEventsResponse
                 = caseDataApi.getAuditEvents(userToken, authToken, false, caseId);
         return auditEventsResponse.getAuditEvents().stream()
