@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
@@ -15,32 +15,47 @@ import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.NoDocumentsRequiredCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.CaseExtraDecorator;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCoversheetPDFDecorator;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
+import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP_WELSH;
 
 class SolicitorCoversheetPDFDecoratorTest {
 
-    @InjectMocks
     private SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator;
 
     @Mock
@@ -49,7 +64,7 @@ class SolicitorCoversheetPDFDecoratorTest {
     private PA14FormBusinessRule pa14FormBusinessRuleMock;
     @Mock
     private PA15FormBusinessRule pa15FormBusinessRuleMock;
-    @Mock
+
     private NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     @Mock
     private PA16FormBusinessRule pa16FormBusinessRuleMock;
@@ -70,10 +85,40 @@ class SolicitorCoversheetPDFDecoratorTest {
     @Mock
     private CaseData caseDataMock;
 
+    private ObjectMapper objectMapper;
+
+    private CaseData.CaseDataBuilder caseDataBuilder;
+
+    private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingList;
+    @Mock
+    private CollectionMember<AdditionalExecutorNotApplying> additionalExecutorsNotApplyingRenounced1;
+
+    @Mock
+    private AdditionalExecutorNotApplying additionalExecutorNotApplyingRenounced1;
+
     @BeforeEach
     public void setup() {
         openMocks(this);
         setBusinessRuleMocksApplicable(false);
+        objectMapper = new ObjectMapper();
+        notApplyingExecutorsMapper = new NotApplyingExecutorsMapper();
+        caseExtraDecorator = new CaseExtraDecorator(objectMapper);
+        solicitorCoversheetPDFDecorator = new SolicitorCoversheetPDFDecorator(
+                caseExtraDecorator,
+                pa14FormBusinessRuleMock,
+                pa15FormBusinessRuleMock,
+                pa16FormBusinessRuleMock,
+                pa17FormBusinessRuleMock,
+                ihtEstate207BusinessRuleMock,
+                dispenseNoticeSupportDocsRuleMock,
+                authenticatedTranslationBusinessRuleMock,
+                admonWillRenunicationRuleMock,
+                notApplyingExecutorsMapper,
+                tcResolutionLodgedWithApplicationRuleMock,
+                noDocumentsRequiredBusinessRule
+        );
+        caseDataBuilder = CaseData.builder();
+        additionalExecutorsNotApplyingList = new ArrayList<>();
     }
 
     private void setBusinessRuleMocksApplicable(boolean isApplicable) {
@@ -97,159 +142,147 @@ class SolicitorCoversheetPDFDecoratorTest {
     @Test
     void shouldProvideNoDocumentsRequiredDecoration() {
         when(noDocumentsRequiredBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
-        String extra = "{\"documentsNotRequired\": \"Yes\"}";
-        final NoDocumentsRequiredCaseExtra noDocumentsRequiredCaseExtra = NoDocumentsRequiredCaseExtra.builder()
-                .documentsNotRequired("Yes").build();
-        when(caseExtraDecorator.decorate(any(NoDocumentsRequiredCaseExtra.class)))
-            .thenReturn(extra);
-        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
-
+        String extra = "{\"documentsNotRequired\":\"Yes\"}";
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
-
+        assertNotNull(json);
         assertEquals(extra, json);
-        verify(noDocumentsRequiredBusinessRule).isApplicable(caseDataMock);
-        verify(caseExtraDecorator).decorate(eq(noDocumentsRequiredCaseExtra));
-        verify(caseExtraDecorator).combineDecorations(any(),eq(extra));
     }
 
     @Test
     void shouldProvidePA14Decoration() {
-        when(pa14FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        String extra = "{\"showPa14Form\":\"Yes\",\"pa14FormUrl\":\"PA14FormURL\","
-            + "\"pa14FormText\":\"PA14FormTEXT\"}";
-        when(caseExtraDecorator.decorate(any(PA14FormCaseExtra.class))).thenReturn(extra);
-        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
-        List<AdditionalExecutorNotApplying> all = new ArrayList<>();
-        all.add(AdditionalExecutorNotApplying.builder().build());
-        when(notApplyingExecutorsMapper
-            .getAllExecutorsNotApplying(caseDataMock, "MentallyIncapable"))
-            .thenReturn(all);
 
-        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
+        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason())
+                .thenReturn(REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE);
+        when(additionalExecutorsNotApplyingRenounced1.getValue()).thenReturn(additionalExecutorNotApplyingRenounced1);
 
-        assertEquals(extra, json);
+        additionalExecutorsNotApplyingList = new ArrayList<>();
+        additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingRenounced1);
+        final CaseData caseData = caseDataBuilder.additionalExecutorsNotApplying(
+                additionalExecutorsNotApplyingList).build();
+        when(pa14FormBusinessRuleMock.isApplicable(caseData)).thenReturn(true);
+        String json = solicitorCoversheetPDFDecorator.decorate(caseData);
+        assertNotNull(json);
+        assertTrue(json.contains("Executor One"));
+        assertTrue(json.contains(PA14_FORM_URL));
+        assertTrue(json.contains(PA14_FORM_TEXT));
+        assertTrue(json.contains(PA14_FORM_TEXT_WELSH));
     }
 
     @Test
     void shouldProvidePA15Decoration() {
-        when(pa15FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        String extra = "{\"showPa15Form\":\"Yes\",\"pa15FormUrl\":\"PA15FormURL\","
-            + "\"pa15FormText\":\"PA15FormTEXT\"}";
-        when(caseExtraDecorator.decorate(any(PA15FormCaseExtra.class))).thenReturn(extra);
-        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
-        List<AdditionalExecutorNotApplying> all = new ArrayList<>();
-        all.add(AdditionalExecutorNotApplying.builder().build());
-        when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseDataMock, "Renunciation"))
-            .thenReturn(all);
+        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
+        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason())
+                .thenReturn(REASON_FOR_NOT_APPLYING_RENUNCIATION);
+        when(additionalExecutorsNotApplyingRenounced1.getValue()).thenReturn(additionalExecutorNotApplyingRenounced1);
 
-        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
-
-        assertEquals(extra, json);
+        additionalExecutorsNotApplyingList = new ArrayList<>();
+        additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingRenounced1);
+        final CaseData caseData = caseDataBuilder.additionalExecutorsNotApplying(
+                additionalExecutorsNotApplyingList).build();
+        when(pa15FormBusinessRuleMock.isApplicable(caseData)).thenReturn(true);
+        String json = solicitorCoversheetPDFDecorator.decorate(caseData);
+        assertNotNull(json);
+        assertTrue(json.contains("Executor One"));
+        assertTrue(json.contains(PA15_FORM_URL));
+        assertTrue(json.contains(PA15_FORM_TEXT));
+        assertTrue(json.contains(PA15_FORM_TEXT_WELSH));
     }
 
     @Test
     void shouldProvidePA16Decoration() {
         when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        String extra = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
-            + "\"pa16FormText\":\"PA16FormTEXT\"}";
-        when(caseExtraDecorator.decorate(any(PA16FormCaseExtra.class))).thenReturn(extra);
-        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
-
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
-        assertEquals(extra, json);
-        verify(pa16FormBusinessRuleMock).isApplicable(caseDataMock);
+        assertNotNull(json);
+        assertTrue(json.contains(PA16_FORM_TEXT));
+        assertTrue(json.contains(PA16_FORM_TEXT));
+        assertTrue(json.contains(PA16_FORM_TEXT_WELSH));
     }
 
     @Test
     void shouldProvideAdditionalDecorationPA17() {
         when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        String extra = "{\"showPa17Form\":\"Yes\",\"pa17FormUrl\":\"PA17FormURL\","
-            + "\"pa17FormText\":\"PA17FormTEXT\"}";
-        when(caseExtraDecorator.decorate(any(PA17FormCaseExtra.class))).thenReturn(extra);
-        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
-
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
-        assertEquals(extra, json);
+        assertNotNull(json);
+        assertTrue(json.contains(PA17_FORM_TEXT));
+        assertTrue(json.contains(PA17_FORM_TEXT));
+        assertTrue(json.contains(PA17_FORM_TEXT_WELSH));
     }
 
     @Test
     void shouldProvideIhtEstate207Decoration() {
-        when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        String extra = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\", \"showIhtEstate\":\"Yes\"}";
-        when(caseExtraDecorator.decorate(any(IhtEstate207CaseExtra.class))).thenReturn(extra);
-        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
-
+        when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock))
+                .thenReturn(true);
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
-        assertEquals(extra, json);
+        assertNotNull(json);
+        assertTrue(json.contains(IHT_ESTATE_207_TEXT));
+        assertTrue(json.contains(IHT_ESTATE_207_TEXT_WELSH));
     }
 
     @Test
     void shouldProvideAdmonWillRenunciationDecoration() {
         when(admonWillRenunicationRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        String extra = "{\"showAdmonWillRenunciation\": \"Yes\","
-            + "\"pa15FormUrl\":\"PA15FormURL\", \"admonWillRenunciationText\":\"admonWillRenunciationText\""
-            + "\"pa17FormUrl\":\"PA17FormURL\", \"pa15FormText\":\"PA15\", \"pa17FormText\":\"PA17\"}";
-        when(caseExtraDecorator.decorate(any()))
-            .thenReturn(extra);
-        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
-        assertEquals(extra, json);
+        assertNotNull(json);
+        assertTrue(json.contains(ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT));
+        assertTrue(json.contains(ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT_WELSH));
+        assertTrue(json.contains(ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT));
+        assertTrue(json.contains(ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT_WELSH));
     }
 
     @Test
     void shouldProvideTcResolutionLodgedWithApplicationDecoration() {
         when(tcResolutionLodgedWithApplicationRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        String extra = "{\"tcResolutionLodgedWithAppText\":\"a certified copy of the resolution\"}";
-        when(caseExtraDecorator.decorate(any())).thenReturn(extra);
-        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
-
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
-        assertEquals(extra, json);
+        assertNotNull(json);
+        assertTrue(json.contains(TC_RESOLUTION_LODGED_WITH_APP));
+        assertTrue(json.contains(TC_RESOLUTION_LODGED_WITH_APP_WELSH));
     }
 
     @Test
     void shouldProvideAllDecorations() {
-        when(pa15FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        when(dispenseNoticeSupportDocsRuleMock.isApplicable(caseDataMock)).thenReturn(true);
-        String extraPA15 = "extraPA15";
-        String extraPA16 = "extraPA16";
-        String extraPA17 = "extraPA17";
-        when(caseExtraDecorator.decorate(any(PA15FormCaseExtra.class)))
-            .thenReturn(extraPA15);
-        when(caseExtraDecorator.decorate(any(PA16FormCaseExtra.class)))
-            .thenReturn(extraPA16);
-        when(caseExtraDecorator.decorate(any(PA17FormCaseExtra.class)))
-            .thenReturn(extraPA17);
-        String extraIht = "extraIht";
-        when(caseExtraDecorator.decorate(any(IhtEstate207CaseExtra.class)))
-            .thenReturn(extraIht);
-        when(caseExtraDecorator.combineDecorations("", extraIht)).thenReturn(extraIht);
-        String extraAuthTrans = "extraAuthTrans";
-        when(caseExtraDecorator.decorate(any(AuthenticatedTranslationCaseExtra.class)))
-            .thenReturn(extraAuthTrans);
-        String extraDispenseNoticeDocs = "extraDispenseNotice";
-        when(caseExtraDecorator.decorate(any(DispenseNoticeCaseExtra.class)))
-            .thenReturn(extraDispenseNoticeDocs);
-        String extra1 = "extraPA15";
-        String extra2 = "extraPA15, extraPA16";
-        String extra3 = "extraPA15, extraPA16, extraPA17";
-        String extra4 = "extraPA15, extraPA16, extraPA17, extraIht";
-        String extra5 = "extraPA15, extraPA16, extraPA17, extraIht, extraAuthTrans";
-        String extra6 = "extraPA15, extraPA16, extraPA17, extraIht, extraDispenseNotice";
-        when(caseExtraDecorator.combineDecorations(any(), any()))
-            .thenReturn(extra1, extra2, extra3, extra4, extra5, extra6);
-        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
+        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason())
+                .thenReturn(REASON_FOR_NOT_APPLYING_RENUNCIATION);
+        when(additionalExecutorsNotApplyingRenounced1.getValue()).thenReturn(additionalExecutorNotApplyingRenounced1);
 
-        assertEquals(extra6, json);
+        additionalExecutorsNotApplyingList = new ArrayList<>();
+        additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingRenounced1);
+        final CaseData caseData = caseDataBuilder.additionalExecutorsNotApplying(
+                additionalExecutorsNotApplyingList).build();
+        when(pa15FormBusinessRuleMock.isApplicable(caseData)).thenReturn(true);
+        when(pa16FormBusinessRuleMock.isApplicable(caseData)).thenReturn(true);
+        when(pa17FormBusinessRuleMock.isApplicable(caseData)).thenReturn(true);
+        when(ihtEstate207BusinessRuleMock.isApplicable(caseData)).thenReturn(true);
+        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseData)).thenReturn(true);
+        when(dispenseNoticeSupportDocsRuleMock.isApplicable(caseData)).thenReturn(true);
+
+        String json = solicitorCoversheetPDFDecorator.decorate(caseData);
+
+        assertNotNull(json);
+        assertTrue(json.contains("Executor One"));
+        assertTrue(json.contains(PA15_FORM_URL));
+        assertTrue(json.contains(PA15_FORM_TEXT));
+        assertTrue(json.contains(PA15_FORM_TEXT_WELSH));
+        assertTrue(json.contains(PA16_FORM_TEXT));
+        assertTrue(json.contains(PA16_FORM_TEXT));
+        assertTrue(json.contains(PA16_FORM_TEXT_WELSH));
+        assertTrue(json.contains(PA17_FORM_TEXT));
+        assertTrue(json.contains(PA17_FORM_TEXT));
+        assertTrue(json.contains(PA17_FORM_TEXT_WELSH));
+        assertTrue(json.contains(IHT_ESTATE_207_TEXT));
+        assertTrue(json.contains(IHT_ESTATE_207_TEXT_WELSH));
+        assertTrue(json.contains(AUTHENTICATED_TRANSLATION_WILL_TEXT));
+        assertTrue(json.contains(AUTHENTICATED_TRANSLATION_WILL_TEXT_WELSH));
+        assertTrue(json.contains(DISPENSE_NOTICE_SUPPORT_TEXT));
+        assertTrue(json.contains(DISPENSE_NOTICE_SUPPORT_TEXT_WELSH));
+        assertTrue(json.contains(AUTHENTICATED_TRANSLATION_WILL_TEXT));
+        assertTrue(json.contains(AUTHENTICATED_TRANSLATION_WILL_TEXT_WELSH));
     }
 }
