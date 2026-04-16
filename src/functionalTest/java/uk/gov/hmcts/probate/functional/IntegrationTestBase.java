@@ -189,18 +189,33 @@ public abstract class IntegrationTestBase {
         response = response.replaceFirst("^Sent on:.*?(From:)", "$1");
 
         // Replace dynamic expiry date in both actual and expected outputs
-        response = response.replaceAll("Daw eich cafeat i ben ar: [^ ]+ [^ ]+ [0-9]+", "Daw eich cafeat i ben ar: {{EXPIRY_DATE}}");
-        expectedText = expectedText.replaceAll("Daw eich cafeat i ben ar: [^ ]+ [^ ]+ [0-9]+", "Daw eich cafeat i ben ar: {{EXPIRY_DATE}}");
-        response = response.replaceAll("Your caveat expiry date is: [^ ]+ [^ ]+ [0-9]+", "Your caveat expiry date is: {{EXPIRY_DATE}}");
-        expectedText = expectedText.replaceAll("Your caveat expiry date is: [^ ]+ [^ ]+ [0-9]+", "Your caveat expiry date is: {{EXPIRY_DATE}}");
+        response = response.replaceAll(
+            "Daw eich cafeat i ben ar: [^ ]+ [^ ]+ [0-9]+",
+            "Daw eich cafeat i ben ar: {{EXPIRY_DATE}}"
+        );
+        expectedText = expectedText.replaceAll(
+            "Daw eich cafeat i ben ar: [^ ]+ [^ ]+ [0-9]+",
+            "Daw eich cafeat i ben ar: {{EXPIRY_DATE}}"
+        );
+        response = response.replaceAll(
+            "Your caveat expiry date is: [^ ]+ [^ ]+ [0-9]+",
+            "Your caveat expiry date is: {{EXPIRY_DATE}}"
+        );
+        expectedText = expectedText.replaceAll(
+            "Your caveat expiry date is: [^ ]+ [^ ]+ [0-9]+",
+            "Your caveat expiry date is: {{EXPIRY_DATE}}"
+        );
 
         // Normalize whitespace
         response = response.replaceAll("\\s+", " ").trim();
         final String normalizedExpected = expectedText.replaceAll("\\s+", " ").trim();
 
         // Assertion with message
-        assertTrue(response.contains(expectedText),
-            "Actual response does not contain expected content.\nExpected: [" + expectedText + "]\nActual: [" + response + "]");
+        assertTrue(
+            response.contains(expectedText),
+            "Actual response does not contain expected content.\nExpected: ["
+                + expectedText + "]\nActual: [" + response + "]"
+        );
     }
 
     protected void assertExpectedContentsMissing(String expectedContentMissing, ResponseBody responseBody) {
