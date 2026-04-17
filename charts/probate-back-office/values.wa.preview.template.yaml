@@ -156,6 +156,7 @@ am-org-role-mapping-service:
     devmemoryLimits: 4Gi
     environment:
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+      ROLE_ASSIGNMENT_APP_URL: http://${SERVICE_NAME}-am-role-assignment-service
       AMQP_SHARED_ACCESS_KEY_NAME: RootManageSharedAccessKey
       AMQP_HOST: "probate-sb-preview.servicebus.windows.net"
       CRD_SUBSCRIPTION_NAME: "{{ .Release.Name}}-crd-topic"
