@@ -17,9 +17,9 @@ import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -39,6 +39,9 @@ public abstract class IntegrationTestBase {
     private String solCcdServiceUrl;
     public static String evidenceManagementUrl;
     private static final long ES_DELAY = 20000L;
+    private static final String EXPIRY_DATE_WELSH_PATTERN = "Daw eich cafeat i ben ar: [^ ]+ [^ ]+ [0-9]+";
+    private static final String EXPIRY_DATE_ENGLISH_PATTERN = "Your caveat expiry date is: [^ ]+ [^ ]+ [0-9]+";
+    private static final String EXPIRY_DATE_PLACEHOLDER = "Your caveat expiry date is: {{EXPIRY_DATE}}";
 
     @Autowired
     public void solCcdServiceUrl(@Value("${sol.ccd.service.base.url}") String solCcdServiceUrl) {
@@ -87,6 +90,20 @@ public abstract class IntegrationTestBase {
 
     protected String removeCrLfs(String text) {
         return removeLineFeeds(removeCarriageReturns(text));
+    }
+
+    private String normalizePdfText(String text) {
+        String normalizedText = text;
+
+        // Remove only the 'Sent on:' prefix and its date/time, even if the document is a single line
+        normalizedText = normalizedText.replaceFirst("^Sent on:.*?(From:)", "$1");
+
+        // Replace dynamic expiry date patterns
+        normalizedText = normalizedText.replaceAll(EXPIRY_DATE_WELSH_PATTERN, EXPIRY_DATE_PLACEHOLDER);
+        normalizedText = normalizedText.replaceAll(EXPIRY_DATE_ENGLISH_PATTERN, EXPIRY_DATE_PLACEHOLDER);
+
+        // Normalize whitespace
+        return normalizedText.replaceAll("\\s+", " ").trim();
     }
 
     protected String getJsonFromFile(String jsonFileName) throws IOException {
@@ -161,12 +178,18 @@ public abstract class IntegrationTestBase {
 
     protected void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl,
                                           ResponseBody responseBody) throws IOException {
-        final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
+        String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
 
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(responseDocumentUrl);
-        final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
-        assertTrue(response.contains(expectedText));
+        String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
+
+        response = normalizePdfText(response);
+        expectedText = normalizePdfText(expectedText);
+
+        assertTrue(response.contains(expectedText),
+            "Actual response does not contain expected content.\nExpected: ["
+                + expectedText + "]\nActual: [" + response + "]");
     }
 
     protected void assertExpectedContentsWithExpectedReplacement(
@@ -185,30 +208,8 @@ public abstract class IntegrationTestBase {
         final String rawResponse = utils.downloadPdfAndParseToString(documentUrl);
         String response = removeCrLfs(rawResponse);
 
-        // Remove only the 'Sent on:' prefix and its date/time, even if the document is a single line
-        response = response.replaceFirst("^Sent on:.*?(From:)", "$1");
-
-        // Replace dynamic expiry date in both actual and expected outputs
-        response = response.replaceAll(
-            "Daw eich cafeat i ben ar: [^ ]+ [^ ]+ [0-9]+",
-            "Daw eich cafeat i ben ar: {{EXPIRY_DATE}}"
-        );
-        expectedText = expectedText.replaceAll(
-            "Daw eich cafeat i ben ar: [^ ]+ [^ ]+ [0-9]+",
-            "Daw eich cafeat i ben ar: {{EXPIRY_DATE}}"
-        );
-        response = response.replaceAll(
-            "Your caveat expiry date is: [^ ]+ [^ ]+ [0-9]+",
-            "Your caveat expiry date is: {{EXPIRY_DATE}}"
-        );
-        expectedText = expectedText.replaceAll(
-            "Your caveat expiry date is: [^ ]+ [^ ]+ [0-9]+",
-            "Your caveat expiry date is: {{EXPIRY_DATE}}"
-        );
-
-        // Normalize whitespace
-        response = response.replaceAll("\\s+", " ").trim();
-        final String normalizedExpected = expectedText.replaceAll("\\s+", " ").trim();
+        response = normalizePdfText(response);
+        expectedText = normalizePdfText(expectedText);
 
         // Assertion with message
         assertTrue(
