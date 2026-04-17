@@ -208,7 +208,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOBWelsh() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
-        replacements.put("SENT_ON_KEY", "Sent on: " + utils.formatDate(LocalDate.now()).replace("th ", " "));
+
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         replacements.put(EXPIRY_DATE_WELSH_KEY, utils.convertToWelsh(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
 
