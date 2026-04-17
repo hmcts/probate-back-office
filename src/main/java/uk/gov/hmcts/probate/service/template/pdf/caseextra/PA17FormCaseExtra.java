@@ -16,5 +16,6 @@ public class PA17FormCaseExtra {
     private final String pa17FormUrl;
     @JsonProperty(value = "pa17FormText")
     private final String pa17FormText;
-
+    @JsonProperty(value = "pa17FormTextWelsh")
+    private final String pa17FormTextWelsh;
 }
