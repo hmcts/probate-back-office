@@ -24,11 +24,11 @@ class HasValidMatchesDefaulterTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "Grant of Representation",
-            "Caveat",
-            "Legacy CAVEAT",
-            "Legacy LEGACY APPLICATION",
-            "Legacy LEGACY GRANT"
+        "Grant of Representation",
+        "Caveat",
+        "Legacy CAVEAT",
+        "Legacy LEGACY APPLICATION",
+        "Legacy LEGACY GRANT"
     })
     void returnsYesWhenValidMatchExists(String caseType) {
         CaseMatch validMatch = CaseMatch.builder()
@@ -95,4 +95,3 @@ class HasValidMatchesDefaulterTest {
         assertEquals(NO, hasValidMatchesDefaulter.defaultHasValidMatches(caseData));
     }
 }
-
