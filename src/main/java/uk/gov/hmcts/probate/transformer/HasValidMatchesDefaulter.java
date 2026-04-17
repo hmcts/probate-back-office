@@ -15,7 +15,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 public class HasValidMatchesDefaulter {
     private static final List<String> VALID_CASE_TYPE_LIST = List.of(
             "Grant of Representation",
-            "Caveats",
+            "Caveat",
             "Legacy CAVEAT",
             "Legacy LEGACY APPLICATION",
             "Legacy LEGACY GRANT");
