@@ -30,6 +30,10 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_NOT_MATCHED;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_AWAITING_RESOLUTION;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_AWAITING_WARNING_RESPONSE;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.CAVEAT_WARNING_VALIDATION;
 import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
 @Slf4j
@@ -46,10 +50,10 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
     @Value("${data-extract.pagination.size}")
     protected int dataExtractPaginationSize;
     private static final Set<String> ALLOWED_EXPIRY_STATES = Set.of(
-            CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION.getName(),
-            CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED.getName(),
-            CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION.getName(),
-            CAVEAT_EXPIRED_FOR_AWAITING_WARNING_RESPONSE.getName()
+            CAVEAT_NOT_MATCHED.getName(),
+            CAVEAT_AWAITING_RESOLUTION.getName(),
+            CAVEAT_AWAITING_WARNING_RESPONSE.getName(),
+            CAVEAT_WARNING_VALIDATION.getName()
     );
 
     @Override
@@ -59,15 +63,17 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
         List<String> failedCases = new ArrayList<>();
         Long[] searchAfter = null;
         List<ReturnedCaveatDetails> pageResults;
-        do {
-            pageResults = caveatQueryService.fetchExpiredCaveatsPage(expiryDate, searchAfter);
-            log.info("Processing {} caveats in current page", pageResults.size());
-            SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-            for (ReturnedCaveatDetails caveat : pageResults) {
-                expireCaveat(caveat, securityDTO, failedCases);
-            }
-            searchAfter = getNextSearchAfter(pageResults);
-        } while (hasMorePages(pageResults));
+        if (dataExtractPaginationSize > 0) {
+            do {
+                pageResults = caveatQueryService.fetchExpiredCaveatsPage(expiryDate, searchAfter);
+                log.info("Processing {} caveats in current page", pageResults.size());
+                SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+                for (ReturnedCaveatDetails caveat : pageResults) {
+                    expireCaveat(caveat, securityDTO, failedCases);
+                }
+                searchAfter = getNextSearchAfter(pageResults);
+            } while (hasMorePages(pageResults));
+        }
 
         if (!failedCases.isEmpty()) {
             log.error("Caveat autoExpire failed for cases: {}", failedCases);
@@ -122,7 +128,7 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
         if (!ALLOWED_EXPIRY_STATES.contains(state)) {
             throw new ConcurrentDataUpdateException(
                     String.format(
-                            "caveatId: %s not updated due to different eventId. actualEventId: %s, lastModified: %s",
+                            "caveatId: %s not updated due to different state. actualEventId: %s, lastModified: %s",
                             caveatId,
                             startEventResponse.getEventId(),
                             startEventResponse.getCaseDetails().getLastModified()
