@@ -150,12 +150,27 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
       shutterOption = "false"
     }
 
-    excludedFilenamePatterns="*-wa.json"
+    excludedFilenamePatterns=""
     if ("preview" == env) {
-      if (checkForWAEnableLabel(branch_name)) {
-        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      if (!checkForWAEnableLabel(branch_name)) {
+          excludedFilenamePatterns = "*-wa.json"
+      }
+      if (!checkForGSEnableLabel(branch_name)) {
+          if (excludedFilenamePatterns) {
+              excludedFilenamePatterns = "${excludedFilenamePatterns},*-gs.json"
+          } else {
+              excludedFilenamePatterns = "*-gs.json"
+          }
+      }
+        if (!checkForWAEnableLabel(branch_name) && !checkForGSEnableLabel(branch_name)) {
+            // both disabled
+            sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+        } else {
+            // at least one enabled - pass exclusions
+            sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+        }
       } else {
-        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+          sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
       }
     }
     else {
