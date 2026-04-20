@@ -123,9 +123,9 @@ ccd:
         LAUNCH_DARKLY_ENV: pr
         LD_SDK_KEY: ${LD_SDK_AM_KEY}
         LOGBACK_CONFIGURATION_DEBUG: true
-    logging:
-      level:
-        root: DEBUG
+      logging:
+        level:
+          root: DEBUG
   ccd-definition-store-api:
     java:
       autoscaling:
