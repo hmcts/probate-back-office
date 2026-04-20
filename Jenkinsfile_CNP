@@ -170,10 +170,6 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
             sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
         }
       } else {
-          sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
-      }
-    }
-    else {
       sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
     }
   }
