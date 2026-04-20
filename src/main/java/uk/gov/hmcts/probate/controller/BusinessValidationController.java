@@ -295,6 +295,7 @@ public class BusinessValidationController {
 
         validateTitleAndClearingPage(callbackRequest);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        attorneyAppointedExecutorValidationRule.validate(callbackRequest.getCaseDetails());
 
         caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequest);
         CallbackResponse response = callbackResponseTransformer.transformForSolicitorExecutorNames(callbackRequest);
