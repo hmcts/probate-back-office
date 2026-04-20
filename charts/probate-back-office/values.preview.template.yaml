@@ -123,6 +123,7 @@ ccd:
         LAUNCH_DARKLY_ENV: pr
         LD_SDK_KEY: ${LD_SDK_AM_KEY}
         LOGBACK_CONFIGURATION_DEBUG: true
+        APPLICATION_LOGGING_LEVEL: DEBUG
       logging:
         level:
           root: DEBUG
