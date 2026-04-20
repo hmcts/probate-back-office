@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -38,21 +39,21 @@ public class AttorneyAppointedExecutorValidationRule {
                 ATTORNEY_APPOINTED_EXECUTOR_WELSH, args, Locale.UK);
 
         if (YES.equals(caseData.getAppointExec())
-                && hasPowerOfAttorneyReason(caseData.getAdditionalExecutorsNotApplying())) {
+                && hasPowerOfAttorneyReason(caseData.getSolsAdditionalExecutorList())) {
             throw new BusinessValidationException(userMessage, ATTORNEY_APPOINTED_ERROR_MESSAGE + caseDetails.getId(),
                     userMessageWelsh);
         }
     }
 
-    private boolean hasPowerOfAttorneyReason(List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying) {
-        if (CollectionUtils.isEmpty(execsNotApplying)) {
+    private boolean hasPowerOfAttorneyReason(List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList) {
+        if (CollectionUtils.isEmpty(solsAdditionalExecutorList)) {
             return false;
         }
-        return execsNotApplying.stream()
+        return solsAdditionalExecutorList.stream()
                 .filter(Objects::nonNull)
                 .map(CollectionMember::getValue)
                 .filter(Objects::nonNull)
-                .map(AdditionalExecutorNotApplying::getNotApplyingExecutorReason)
+                .map(AdditionalExecutor::getAdditionalExecReasonNotApplying)
                 .anyMatch(POWER_OF_ATTORNEY::equalsIgnoreCase);
     }
 }

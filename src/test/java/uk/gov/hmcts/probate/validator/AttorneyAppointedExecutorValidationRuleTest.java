@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -35,9 +36,9 @@ class AttorneyAppointedExecutorValidationRuleTest {
 
     private CaseData caseDataMock;
 
-    private List<CollectionMember<AdditionalExecutorNotApplying>> powerOfAttorneyList;
-    private List<CollectionMember<AdditionalExecutorNotApplying>> nonPowerOfAttorneyList;
-    private List<CollectionMember<AdditionalExecutorNotApplying>> emptyList;
+    private List<CollectionMember<AdditionalExecutor>> powerOfAttorneyList;
+    private List<CollectionMember<AdditionalExecutor>> nonPowerOfAttorneyList;
+    private List<CollectionMember<AdditionalExecutor>> emptyList;
 
     private static final String ATTORNEY_APPOINTED_EXECUTOR = "AttorneyAppointedExec";
     private static final String ATTORNEY_APPOINTED_EXECUTOR_WELSH = "AttorneyAppointedExecWelsh";
@@ -53,18 +54,20 @@ class AttorneyAppointedExecutorValidationRuleTest {
         powerOfAttorneyList = List.of(
                 new CollectionMember<>(
                         "1",
-                        AdditionalExecutorNotApplying.builder()
-                                .notApplyingExecutorName("Ron Swanson")
-                                .notApplyingExecutorReason("PowerOfAttorney")
+                        AdditionalExecutor.builder()
+                                .additionalExecForenames("Swanson")
+                                .additionalExecLastname("Swanson")
+                                .additionalExecReasonNotApplying("PowerOfAttorney")
                                 .build()
                 )
         );
         nonPowerOfAttorneyList = List.of(
                 new CollectionMember<>(
                         "1",
-                        AdditionalExecutorNotApplying.builder()
-                                .notApplyingExecutorName("Ronald McDonald")
-                                .notApplyingExecutorReason("Renunciation")
+                        AdditionalExecutor.builder()
+                                .additionalExecForenames("Ronald")
+                                .additionalExecLastname("McDonald")
+                                .additionalExecReasonNotApplying("Renunciation")
                                 .build()
                 )
         );
@@ -75,7 +78,7 @@ class AttorneyAppointedExecutorValidationRuleTest {
     void shouldThrowExceptionWhenAppointExecYesAndPowerOfAttorneyExists() {
         caseDataMock = CaseData.builder()
                 .appointExec(YES)
-                .additionalExecutorsNotApplying(powerOfAttorneyList)
+                .solsAdditionalExecutorList(powerOfAttorneyList)
                 .build();
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -101,7 +104,7 @@ class AttorneyAppointedExecutorValidationRuleTest {
     void shouldNotThrowWhenAppointExecYesButNoPowerOfAttorneyReason() {
         caseDataMock = CaseData.builder()
                 .appointExec("YES")
-                .additionalExecutorsNotApplying(nonPowerOfAttorneyList)
+                .solsAdditionalExecutorList(nonPowerOfAttorneyList)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         assertDoesNotThrow(() -> attorneyAppointedExecutorValidationRule.validate(caseDetailsMock));
@@ -111,7 +114,7 @@ class AttorneyAppointedExecutorValidationRuleTest {
     void shouldNotThrowWhenAppointExecNoEvenIfPowerOfAttorneyExists() {
         caseDataMock = CaseData.builder()
                 .appointExec("NO")
-                .additionalExecutorsNotApplying(powerOfAttorneyList)
+                .solsAdditionalExecutorList(powerOfAttorneyList)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         assertDoesNotThrow(() -> attorneyAppointedExecutorValidationRule.validate(caseDetailsMock));
@@ -121,7 +124,7 @@ class AttorneyAppointedExecutorValidationRuleTest {
     void shouldNotThrowWhenListIsEmpty() {
         caseDataMock = CaseData.builder()
                 .appointExec("YES")
-                .additionalExecutorsNotApplying(emptyList)
+                .solsAdditionalExecutorList(emptyList)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         assertDoesNotThrow(() -> attorneyAppointedExecutorValidationRule.validate(caseDetailsMock));
@@ -131,7 +134,7 @@ class AttorneyAppointedExecutorValidationRuleTest {
     void shouldNotThrowWhenListIsNull() {
         caseDataMock = CaseData.builder()
                 .appointExec("YES")
-                .additionalExecutorsNotApplying(null)
+                .solsAdditionalExecutorList(null)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         assertDoesNotThrow(() -> attorneyAppointedExecutorValidationRule.validate(caseDetailsMock));
