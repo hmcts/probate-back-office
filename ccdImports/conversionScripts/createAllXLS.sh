@@ -18,7 +18,7 @@ gsEnabledVar=${PROBATE_GS_ENABLED:-false}
 
 append_exclusion() {
   if [ -z "$extraExclusions" ]; then
-    extraExclusions="$1"
+    extraExclusions=",$1"
   else
     extraExclusions="${extraExclusions},$1"
   fi
@@ -29,7 +29,7 @@ echo "[INFO] Initial extraExclusions: $extraExclusions"
 # WA flag
 if [[ "${waEnabledVar}" != true ]]; then
   echo "[INFO] WA feature is DISABLED adding *-wa.json to exclusions"
-  append_exclusion ",*-wa.json"
+  append_exclusion "*-wa.json"
 else
   echo "[INFO] WA feature is ENABLED no exclusion added"
 fi
@@ -37,7 +37,7 @@ fi
 # GS flag
 if [[ "${gsEnabledVar}" != true ]]; then
   echo "[INFO] GS feature is DISABLED adding *-gs.json to exclusions"
-  append_exclusion ",*-gs.json"
+  append_exclusion "*-gs.json"
 else
   echo "[INFO] GS feature is ENABLED no exclusion added"
 fi
