@@ -82,17 +82,17 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
 
     private void expireCaveat(ReturnedCaveatDetails caveat, SecurityDTO securityDTO, List<String> failedCases) {
         EventId eventId = getEventIdForCaveatToExpireGivenPreconditionState(caveat.getState());
-        StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
-                securityDTO.getAuthorisation(),
-                securityDTO.getServiceAuthorisation(),
-                securityDTO.getUserId(),
-                PROBATE.name(),
-                "Caveat",
-                caveat.getId().toString(),
-                eventId.getName()
-        );
 
         try {
+            StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
+                    securityDTO.getAuthorisation(),
+                    securityDTO.getServiceAuthorisation(),
+                    securityDTO.getUserId(),
+                    PROBATE.name(),
+                    "Caveat",
+                    caveat.getId().toString(),
+                    eventId.getName()
+            );
             validateStateForExpiry(startEventResponse, caveat.getId());
             checkExpiryDate(startEventResponse, caveat.getId());
 
