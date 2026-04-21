@@ -780,3 +780,27 @@ https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client
 7. monitor your definition store pod to ensure the upload has completed - eg. probate-back-office-pr-XXXX-ccd-definition-store-yyyyyyy - look for a line failing the TranslationService at the end... this means its passed upload!
 8. Check your XUI for any new wa XLSX usage - https://xui-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
 9. unset WA_ENABLED if needed or set to false
+
+##Local GS Enablement
+###Build and import XLSX for local
+1. export PROBATE_GS_ENABLED=true
+2. echo $PROBATE_GS_ENABLED
+3. ./ccdImports/conversionScripts/createAllXLS.sh
+4. ./ccdImports/conversionScripts/importAllXLS.sh
+8. Check your XUI for any new gs XLSX usage - https://localhost:3000
+9. unset PROBATE_GS_ENABLED if needed or set to false
+
+
+1. ##Preview Global Search Enablement
+2. Ensure that you have enable_keep_helm and pr-values:gs added as github labels on your PR
+3. The build will use the flag to include any gs functionality in the build. ie all .json files with a ***-gs/json extension for building the XLSX, and any code toggled behind the PROBATE_GS_ENABLED env var
+   ###Build and import XLSX for preview
+1. export PROBATE_GS_ENABLED=true
+2. echo $PROBATE_GS_ENABLED
+3. run ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-pr-XXXX-java probate-back-office-pr-XXXX-aac-manage-case-assignment
+4. goto to the ccd-web-admin page for yoru pr eg: https://admin-web-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
+5. click import definitions
+6. load your locally generated XLSX file from the root jsonToXLS folder
+7. monitor your definition store pod to ensure the upload has completed - eg. probate-back-office-pr-XXXX-ccd-definition-store-yyyyyyy - look for a line failing the TranslationService at the end... this means its passed upload!
+8. Check your XUI for any new gs XLSX usage - https://xui-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
+9. unset PROBATE_GS_ENABLED if needed or set to false
