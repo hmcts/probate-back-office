@@ -3,7 +3,7 @@ plugins {
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.springframework.boot' version '3.5.13'
   id 'uk.gov.hmcts.java' version '0.12.68'
-  id 'com.github.ben-manes.versions' version '0.53.0'
+  id 'com.github.ben-manes.versions' version '0.54.0'
   id 'com.gorylenko.gradle-git-properties' version '2.5.7'
   id 'info.solidsoft.pitest' version '1.15.0'
   id 'jacoco'
@@ -287,6 +287,7 @@ dependencies {
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
   implementation group: 'org.jsoup', name: 'jsoup', version: versions.jsoup
+  implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.10.0'
 
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '6.0.0-RELEASE'
