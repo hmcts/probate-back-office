@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.CaseType;
@@ -15,43 +15,89 @@ import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
+import uk.gov.hmcts.probate.query.CaseMatchingJson;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
 class CaseMatchingServiceTest {
 
-    @InjectMocks
     private CaseMatchingService caseMatchingService;
 
     @Mock
-    private ElasticSearchService elasticSearchService;
-
+    FileSystemResourceService fileSystemResourceService;
     @Mock
-    private CaseMatchBuilderService caseMatchBuilderService;
+    ElasticSearchService elasticSearchService;
+    @Mock
+    CaseMatchBuilderService caseMatchBuilderService;
+    @Mock
+    CaseMatchingJsonService caseMatchingJsonService;
 
     @Mock
     private CaseMatchingCriteria caseMatchingCriteria;
-
-    @Mock
-    private FileSystemResourceService fileSystemResourceService;
-
     @Mock
     private Case caseMock;
+    @Mock
+    CaseMatchingJson caseMatchingJsonMock;
+    @Mock
+    FeatureToggleService featureToggleServiceMock;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
+        caseMatchingService = new CaseMatchingService(
+                fileSystemResourceService,
+                elasticSearchService,
+                caseMatchBuilderService,
+                caseMatchingJsonService,
+                featureToggleServiceMock);
+
+        // common mock behaviours
+        when(elasticSearchService.runQuery(any(CaseType.class), anyString()))
+                .thenReturn(new MatchedCases(Collections.singletonList(caseMock)));
+
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString()))
+                .thenReturn("template");
+
+        caseMatchingJsonMock = mock();
+        when(caseMatchingJsonService.getBaseQuery())
+                .thenReturn(caseMatchingJsonMock);
+
+        when(caseMatchingJsonMock.withDeceasedForenames(anyString()))
+                .thenReturn(caseMatchingJsonMock);
+        when(caseMatchingJsonMock.withDeceasedSurname(anyString()))
+                .thenReturn(caseMatchingJsonMock);
+        when(caseMatchingJsonMock.withDeceasedFullname(anyString()))
+                .thenReturn(caseMatchingJsonMock);
+        when(caseMatchingJsonMock.withDateOfBirth(any()))
+                .thenReturn(caseMatchingJsonMock);
+        when(caseMatchingJsonMock.withDateOfDeath(any()))
+                .thenReturn(caseMatchingJsonMock);
+        when(caseMatchingJsonMock.withAliases(any()))
+                .thenReturn(caseMatchingJsonMock);
+
+        when(caseMatchingJsonMock.stealJson())
+                .thenReturn(
+                        Optional.of(new JSONObject("{}")),
+                        Optional.empty());
+
+        when(featureToggleServiceMock.useJsonLibForCaseMatching())
+                .thenReturn(false);
+
+        // mocked input data behaviours
         CaseData caseData = CaseData.builder()
                 .deceasedForenames("names")
                 .deceasedSurname("surname")
@@ -69,21 +115,84 @@ class CaseMatchingServiceTest {
 
         when(caseMock.getData()).thenReturn(caseData);
         when(caseMock.getId()).thenReturn(1L);
-        when(elasticSearchService.runQuery(any(CaseType.class), anyString()))
-                .thenReturn(new MatchedCases(Collections.singletonList(caseMock)));
-
-        when(fileSystemResourceService.getFileFromResourceAsString(anyString()))
-                .thenReturn("template");
     }
 
     @Test
-    void findMatches() {
+    void findMatchesOld() {
         CaseMatch caseMatch = CaseMatch.builder()
                 .caseLink(CaseLink.builder().caseReference("1").build())
                 .fullName("names surname")
                 .dod("2000-01-01")
                 .postcode("SW12 0FA")
                 .build();
+
+        when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
+
+        List<CaseMatch> caseMatches = caseMatchingService.findMatches(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
+
+        assertEquals(1, caseMatches.size());
+        assertEquals("1", caseMatches.get(0).getCaseLink().getCaseReference());
+        assertEquals("names surname", caseMatches.get(0).getFullName());
+        assertEquals("2000-01-01", caseMatches.get(0).getDod());
+        assertEquals("SW12 0FA", caseMatches.get(0).getPostcode());
+        assertNull(caseMatches.get(0).getValid());
+        assertNull(caseMatches.get(0).getComment());
+    }
+
+    @Test
+    void findMatchesNew() {
+        CaseMatch caseMatch = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("1").build())
+                .fullName("names surname")
+                .dod("2000-01-01")
+                .postcode("SW12 0FA")
+                .build();
+
+        when(featureToggleServiceMock.useJsonLibForCaseMatching())
+                .thenReturn(true);
+
+        final CaseMatchingJson baseQueryMock = mock();
+        final CaseMatchingJson withForenamesMock = mock();
+        final CaseMatchingJson withSurnameMock = mock();
+        final CaseMatchingJson withFullNameMock = mock();
+
+        final Optional<CaseMatchingJson> birthMock = mock();
+        final CaseMatchingJson withDateOfBirthMock = mock();
+
+        final Optional<CaseMatchingJson> deathMock = mock();
+        final CaseMatchingJson withDateOfDeathMock = mock();
+
+        final List<CaseMatchingJson> aliasesMock = mock();
+        final CaseMatchingJson withAliasesMock = mock();
+
+        final JSONObject queryMock = mock();
+
+        when(caseMatchingJsonService.getBaseQuery())
+                .thenReturn(baseQueryMock);
+        when(caseMatchingJsonService.getDateOfBirthSubquery(any()))
+                .thenReturn(birthMock);
+        when(caseMatchingJsonService.getDateOfDeathSubquery(any()))
+                .thenReturn(deathMock);
+        when(caseMatchingJsonService.getAliasesSubqueries(any()))
+                .thenReturn(aliasesMock);
+
+        when(baseQueryMock.withDeceasedForenames(any()))
+                .thenReturn(withForenamesMock);
+        when(withForenamesMock.withDeceasedSurname(any()))
+                .thenReturn(withSurnameMock);
+        when(withSurnameMock.withDeceasedFullname(any()))
+                .thenReturn(withFullNameMock);
+        when(withFullNameMock.withDateOfBirth(birthMock))
+                .thenReturn(withDateOfBirthMock);
+        when(withDateOfBirthMock.withDateOfDeath(deathMock))
+                .thenReturn(withDateOfDeathMock);
+        when(withDateOfDeathMock.withAliases(aliasesMock))
+                .thenReturn(withAliasesMock);
+        when(withAliasesMock.stealJson())
+                .thenReturn(Optional.of(queryMock));
+
+        when(elasticSearchService.runJsonQuery(any(), eq(queryMock)))
+                .thenReturn(new MatchedCases(Collections.singletonList(caseMock)));
 
         when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
 
