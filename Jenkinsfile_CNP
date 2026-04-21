@@ -125,6 +125,10 @@ def checkForEnableCWNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "cw-nightly").contains("cw-nightly")
 }
 
+def checkForGSEnableLabel(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:gs").contains("pr-values:gs")
+}
+
 def checkForWAEnableLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
 }
@@ -146,17 +150,32 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
       shutterOption = "false"
     }
 
-    excludedFilenamePatterns="*-wa.json"
-    if ("preview" == env) {
-      if (checkForWAEnableLabel(branch_name)) {
-        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      def gsEnabled = checkForGSEnableLabel(branch_name)
+      def waEnabled = checkForWAEnableLabel(branch_name)
+
+      excludedFilenamePatterns=""
+      if ("preview" == env) {
+          if (!waEnabled) {
+              excludedFilenamePatterns = "*-wa.json"
+          }
+          if (!gsEnabled) {
+              if (excludedFilenamePatterns) {
+                  excludedFilenamePatterns = "${excludedFilenamePatterns},*-gs.json"
+              } else {
+                  excludedFilenamePatterns = "*-gs.json"
+              }
+          }
+          if (gsEnabled && waEnabled) {
+              // both enabled no exclusions passed
+              sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+          } else {
+              // at least one enabled - pass exclusions
+              sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+          }
       } else {
-        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+          excludedFilenamePatterns = "*-wa.json,*-gs.json"
+          sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
       }
-    }
-    else {
-      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
-    }
   }
 
   dir("${WORKSPACE}/build") {
@@ -311,6 +330,9 @@ withPipeline("java", product, component) {
       env.ENV='preview'
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.PROBATE_WA_ENABLED = true
+      }
+      if (checkForGSEnableLabel(env.BRANCH_NAME)) {
+          env.PROBATE_GS_ENABLED = true
       }
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
       env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
