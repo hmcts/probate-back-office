@@ -107,8 +107,8 @@ ccd:
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
   am-role-assignment-service:
-    image: hmctsprod.azurecr.io/am/role-assignment-service:latest
     java:
+      image: hmctsprod.azurecr.io/am/role-assignment-service:latest
       disableKeyVaults: true
       keyVaults:
         am:
