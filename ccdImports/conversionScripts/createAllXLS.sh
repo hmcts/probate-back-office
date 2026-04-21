@@ -5,18 +5,38 @@ set -eu
 conversionFolder=$(dirname "$0")
 configFolder=${conversionFolder}/../configFiles
 shutterOption=${2:-false}
-extraExclusions=${3:-",*-wa.json"}
+extraExclusions=${3:-""}
 
 waEnabledVar=${PROBATE_WA_ENABLED:-false}
-if [ ${waEnabledVar} == true ]; then
-  extraExclusions=""
+gsEnabledVar=${PROBATE_GS_ENABLED:-false}
+
+append_exclusion() {
+  if [ -z "$extraExclusions" ]; then
+    extraExclusions=",$1"
+  else
+    extraExclusions="${extraExclusions},$1"
+  fi
+}
+
+echo "[INFO] Initial extraExclusions: $extraExclusions"
+
+# WA flag
+if [[ "${waEnabledVar}" != true ]]; then
+  echo "[INFO] WA feature is DISABLED adding *-wa.json to exclusions"
+  append_exclusion "*-wa.json"
+else
+  echo "[INFO] WA feature is ENABLED no exclusion added"
 fi
 
-if [ -z "$1" ]
-  then
-    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
-    exit 1
+# GS flag
+if [[ "${gsEnabledVar}" != true ]]; then
+  echo "[INFO] GS feature is DISABLED adding *-gs.json to exclusions"
+  append_exclusion "*-gs.json"
+else
+  echo "[INFO] GS feature is ENABLED no exclusion added"
 fi
+
+echo "[INFO] Final extraExclusions: $extraExclusions"
 
 if [ ${shutterOption} == true ]; then
   echo Creating shuttered CCD Definition
