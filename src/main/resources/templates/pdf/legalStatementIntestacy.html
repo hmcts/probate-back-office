@@ -44,6 +44,7 @@
 </head>
 <body>
 <table>
+    {% set multipleExecutors = case_details.case_data.executorsApplyingLegalStatement|length > 1 %}
     <thead>
     <tr>
         <td colspan="2" class="sequence">
@@ -276,16 +277,23 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>The applicant believes that all the information stated in the legal statement is true. {% if case_details.case_data.solsSolicitorFirmName!= null and case_details.case_data.solsSolicitorFirmName!= "" %}They have authorised {{case_details.case_data.solsSolicitorFirmName}} to sign a statement of truth on their behalf.{% endif %}</p>
+            <p>The {% if (multipleExecutors) %}applicants believe{% else %}applicant believes{% endif %} that all the information stated in the legal statement is true. {% if case_details.case_data.solsSolicitorFirmName!= null and case_details.case_data.solsSolicitorFirmName!= "" %}They have authorised {{case_details.case_data.solsSolicitorFirmName}} to sign a statement of truth on their behalf.{% endif %}</p>
             <p>This statement is based on the information given in your application. It will be stored as a public record.</p>
-            <p>I, {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} of
-                {% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null and case_details.case_data.primaryApplicantAddress.AddressLine2 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine2 }},{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.AddressLine3 != null and case_details.case_data.primaryApplicantAddress.AddressLine3 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine3 }},{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{ case_details.case_data.primaryApplicantAddress.PostTown }},{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }},{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
+            <p>{% if (multipleExecutors) %}We{% else %}I{% endif %},
+                {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplyingLegalStatement %}
+                {{ executor.value.applyingExecutorName }}
+                {% if executor.value.applyingExecutorOtherNames != null and executor.value.applyingExecutorOtherNames != "" %}otherwise known as {{ executor.value.applyingExecutorOtherNames }}{% endif %}
+                of
+                {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.AddressLine3 != null and executor.value.applyingExecutorAddress.AddressLine3 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine3 }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.PostTown != null and executor.value.applyingExecutorAddress.PostTown != "" %}{{ executor.value.applyingExecutorAddress.PostTown }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }},{% endif %}
+                {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
+                {% if (countApplying < (case_details.case_data.executorsApplyingLegalStatement|length)) %} and {% endif %}
+                {% set countApplying = countApplying + 1 %}
+                {% endfor %}
                 make the following statement:</p>
         </td>
     </tr>
