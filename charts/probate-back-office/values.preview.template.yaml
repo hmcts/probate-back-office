@@ -47,10 +47,10 @@ ccd:
       image: hmctsprod.azurecr.io/ccd/admin-web:latest
       ingressHost: admin-web-${SERVICE_FQDN}
       keyVaults: []
-      devcpuRequests: 10m
-      devcpuLimits: 50m
-      devmemoryRequests: 300Mi
-      devmemoryLimits: 512Mi
+      #devcpuRequests: 10m
+      #devcpuLimits: 50m
+      #devmemoryRequests: 300Mi
+      #devmemoryLimits: 512Mi
       environment:
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
         IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
@@ -66,17 +66,17 @@ ccd:
         IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
       ingressHost:
         ccd-case-print-service-${SERVICE_FQDN}
-      devcpuRequests: 10m
-      devcpuLimits: 50m
-      devmemoryRequests: 250Mi
-      devmemoryLimits: 400Mi
+      #devcpuRequests: 10m
+      #devcpuLimits: 50m
+      #devmemoryRequests: 250Mi
+      #devmemoryLimits: 400Mi
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
-      devcpuRequests: 10m
-      devcpuLimits: 50m
-      devmemoryRequests: 200Mi
-      devmemoryLimits: 300Mi
+      #devcpuRequests: 10m
+      #devcpuLimits: 50m
+      #devmemoryRequests: 200Mi
+      #devmemoryLimits: 300Mi
       environment:
         ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
         IDAM_SERVICE_KEY: ${API_GATEWAY_S2S_KEY}
@@ -121,10 +121,10 @@ ccd:
   am-role-assignment-service:
     java:
       disableKeyVaults: true
-      devcpuRequests: 10m
-      devcpuLimits: 100m
-      devmemoryRequests: 800Mi
-      devmemoryLimits: 1Gi
+      #devcpuRequests: 10m
+      #devcpuLimits: 100m
+      #devmemoryRequests: 800Mi
+      #devmemoryLimits: 1Gi
       keyVaults:
         am:
           secrets:
