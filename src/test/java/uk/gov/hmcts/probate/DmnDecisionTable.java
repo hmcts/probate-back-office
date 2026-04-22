@@ -5,21 +5,21 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum DmnDecisionTable {
 
     WA_TASK_COMPLETION_PROBATE(
-            "wa-task-completion-probate",
+            "wa-task-completion-probate-grantofrepresentation",
             "dmn/wa-task-completion-probate.dmn"),
-    WA_TASK_TYPES_PROBATE("wa-task-types-probate",
+    WA_TASK_TYPES_PROBATE("wa-task-types-probate-grantofrepresentation",
             "dmn/wa-task-types-probate.dmn"),
     WA_TASK_CANCELLATION_PROBATE(
-            "wa-task-cancellation-probate",
+            "wa-task-cancellation-probate-grantofrepresentation",
             "dmn/wa-task-cancellation-probate.dmn"),
     WA_TASK_CONFIGURATION_PROBATE(
-            "wa-task-configuration-probate",
+            "wa-task-configuration-probate-grantofrepresentation",
             "dmn/wa-task-configuration-probate.dmn"),
     WA_TASK_INITIATION_PROBATE(
-            "wa-task-initiation-probate",
+            "wa-task-initiation-probate-grantofrepresentation",
             "dmn/wa-task-initiation-probate.dmn"),
     WA_TASK_PERMISSIONS_PROBATE(
-            "wa-task-permissions-probate",
+            "wa-task-permissions-probate-grantofrepresentation",
             "dmn/wa-task-permissions-probate.dmn");
 
     @JsonValue
