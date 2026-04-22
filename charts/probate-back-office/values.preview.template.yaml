@@ -206,8 +206,8 @@ ccd:
         value: http://${SERVICE_NAME}-es-master:9200
       - name: ES_URL
         value: http://${SERVICE_NAME}-es-master:9200
-    devcpuRequests: 50m
-    devcpuLimits: 300m
+    devcpuRequests: 500m
+    devcpuLimits: 700m
     devmemoryRequests: 1.1Gi
     devmemoryLimits: 1.5Gi
     configTpl:
@@ -277,8 +277,8 @@ aac-manage-case-assignment:
     releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
     image: hmctsprod.azurecr.io/aac/manage-case-assignment:latest
     ingressHost: aac-${SERVICE_FQDN}
-    devcpuRequests: 10m
-    devcpuLimits: 100m
+    devcpuRequests: 150m
+    devcpuLimits: 250m
     devmemoryRequests: 550Mi
     devmemoryLimits: 768Mi
     environment:
