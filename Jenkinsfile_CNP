@@ -150,30 +150,22 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
       shutterOption = "false"
     }
 
-      def gsEnabled = checkForGSEnableLabel(branch_name)
-      def waEnabled = checkForWAEnableLabel(branch_name)
-
       excludedFilenamePatterns=""
-      if ("preview" == env) {
-          if (!waEnabled) {
-              excludedFilenamePatterns = "*-wa.json"
-          }
-          if (!gsEnabled) {
-              if (excludedFilenamePatterns) {
-                  excludedFilenamePatterns = "${excludedFilenamePatterns},*-gs.json"
-              } else {
-                  excludedFilenamePatterns = "*-gs.json"
-              }
-          }
-          if (gsEnabled && waEnabled) {
-              // both enabled no exclusions passed
-              sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+
+      if (env.PROBATE_WA_ENABLED != true) {
+          excludedFilenamePatterns = "*-wa.json"
+      }
+      if (env.PROBATE_GS_ENABLED != true) {
+          if (excludedFilenamePatterns) {
+              excludedFilenamePatterns = "${excludedFilenamePatterns},*-gs.json"
           } else {
-              // at least one enabled - pass exclusions
-              sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+              excludedFilenamePatterns = "*-gs.json"
           }
+      }
+
+      if ("preview" == env) {
+          sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
       } else {
-          excludedFilenamePatterns = "*-wa.json,*-gs.json"
           sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
       }
   }
