@@ -91,10 +91,10 @@ ccd:
       imagePullPolicy: Always
       autoscaling:
         maxReplicas: 2
-      #devcpuRequests: 50m
-      #devcpuLimits: 500m
-      #devmemoryRequests: 1Gi
-      #devmemoryLimits: 2Gi
+      devcpuRequests: 50m
+      devcpuLimits: 500m
+      devmemoryRequests: 1Gi
+      devmemoryLimits: 2Gi
       environment:
         DATA_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
