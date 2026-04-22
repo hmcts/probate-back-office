@@ -312,7 +312,7 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     void verifySoTDomiciledInEnglandAndWales() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
         assertThat(response, containsString("Main Applicant of Test, Test, A1 2BC, UK make the following"
-                + " statement:The person who diedDe Ceased, of Test, Test, Test, A1 2BC, was born on"
+                + " statement:The person who diedDe Ceased of Test, Test, Test, A1 2BC, was born on"
                 + " 23/01/1998 and died on 23/01/2020, domiciled in England and Wales."));
     }
 
@@ -377,7 +377,7 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
                 GENERATE_LEGAL_STATEMENT);
         assertThat(response, containsString(
-                "The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
+                "The person who diedDeceased Name of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
                         + " BA5 2PA, United Kingdom was born on 12/01/2020 and died on 14/01/2020, "
                         + "domiciled in England and Wales. The will appoints an executor."));
     }
@@ -387,7 +387,7 @@ class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument("solicitorPayloadPartnersInFirm.json",
                 GENERATE_LEGAL_STATEMENT);
         assertThat(response, containsString(
-                "The person who diedDeceased Name, of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
+                "The person who diedDeceased Name of Chapter Of Wells, Wells Cathedral, Wells, Somerset,"
                         + " BA5 2PA, United Kingdom was born on 12/01/2020 and died on 14/01/2020, "
                         + "domiciled in England and Wales. The will appoints an executor."));
     }
