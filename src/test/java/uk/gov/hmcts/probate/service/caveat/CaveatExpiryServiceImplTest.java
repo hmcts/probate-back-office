@@ -27,6 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
@@ -72,7 +73,7 @@ class CaveatExpiryServiceImplTest {
         when(securityDTO.getAuthorisation()).thenReturn("auth");
         when(securityDTO.getServiceAuthorisation()).thenReturn("serviceAuth");
         when(securityDTO.getUserId()).thenReturn("userId");
-        ReflectionTestUtils.setField(caveatExpiryService, "dataExtractPaginationSize", 100);
+        ReflectionTestUtils.setField(caveatExpiryService, "dataExtractPaginationSize", 1);
     }
 
     @Test
@@ -102,7 +103,7 @@ class CaveatExpiryServiceImplTest {
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
 
         verify(securityUtils).setSecurityContextUserAsScheduler();
-        verify(coreCaseDataApi).submitEventForCaseWorker(
+        verify(coreCaseDataApi, times(2)).submitEventForCaseWorker(
                 any(), any(), any(), any(), any(), any(), eq(false), any()
         );
     }
