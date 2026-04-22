@@ -19,6 +19,7 @@ import static uk.gov.hmcts.probate.model.Constants.CHILD;
 import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_NOT_APPLYING_REASON;
@@ -253,6 +254,8 @@ public class ExecutorListMapperService {
                                             .getCoApplicantAdoptionInEnglandOrWales())
                                     .halfBloodNieceOrNephewAdoptedOut(solsApplicantFamilyDetails
                                             .getCoApplicantAdoptedOut());
+                            break;
+                        case PARENT:
                             break;
                         default:
                             throw new IllegalArgumentException(
