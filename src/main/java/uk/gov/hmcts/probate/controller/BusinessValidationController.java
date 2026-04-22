@@ -472,6 +472,7 @@ public class BusinessValidationController {
         log.info("resolve-case-worker-escalated started for case: {}", callbackRequest.getCaseDetails().getId());
 
         caseEscalatedService.setResolveCaseWorkerEscalatedDate(callbackRequest.getCaseDetails());
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledYes(callbackRequest);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer
                 .resolveCaseWorkerEscalationState(callbackRequest, caseworkerInfo);
@@ -497,6 +498,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("superuser change state  started for case: {}", callbackRequest.getCaseDetails().getId());
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledYes(callbackRequest);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
