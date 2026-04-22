@@ -307,8 +307,8 @@ aac-manage-case-assignment:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-  devcpuRequests: 15m
-  devcpuLimits: 150m
+  devcpuRequests: 150m
+  devcpuLimits: 250m
   devmemoryRequests: 700Mi
   devmemoryLimits: 900Mi
   environment:
