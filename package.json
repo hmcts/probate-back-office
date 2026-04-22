@@ -144,8 +144,11 @@
     "when": "^3.7.7"
   },
   "resolutions": {
-    "yargs-parser": "^22.0.0",
-    "http-cache-semantics": "^4.2.0"
+    "diff": "^8.0.4",
+    "flatted": "^3.4.2",
+    "http-cache-semantics": "^4.2.0",
+    "serialize-javascript": "^7.0.5",
+    "yargs-parser": "^22.0.0"
   },
   "packageManager": "yarn@4.12.0",
   "license": "MIT"
