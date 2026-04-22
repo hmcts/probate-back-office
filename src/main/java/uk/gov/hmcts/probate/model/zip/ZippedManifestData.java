@@ -13,6 +13,7 @@ public class ZippedManifestData {
     private final String subType;
     private final String caseType;
     private String errorDescription;
+    private final String comment;
 
     public String getDocumentName() {
         return this.caseNumber + "_" + this.docType
