@@ -103,6 +103,7 @@ class CaveatExpiryServiceImplTest {
         caveatExpiryService.expireCaveats(EXPIRY_DATE);
 
         verify(securityUtils).setSecurityContextUserAsScheduler();
+        verify(caveatQueryService, times(3)).fetchExpiredCaveatsPage(any(), any());
         verify(coreCaseDataApi, times(2)).submitEventForCaseWorker(
                 any(), any(), any(), any(), any(), any(), eq(false), any()
         );
