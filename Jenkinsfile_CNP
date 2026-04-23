@@ -323,6 +323,8 @@ withPipeline("java", product, component) {
 
   onMaster() {
     env.ENV='aat'
+    env.PROBATE_WA_ENABLED = false
+    env.PROBATE_GS_ENABLED = false
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 
