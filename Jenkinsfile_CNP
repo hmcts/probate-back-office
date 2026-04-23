@@ -174,7 +174,7 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
   }
 
   dir("${WORKSPACE}/build") {
-    if("preview" == env){
+    if("preview" == targetEnv){
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Backoffice.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Caveat.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Legacy_Cases.xlsx"
@@ -190,7 +190,7 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
       steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Will_Lodgement.xlsx"
     }
   }
-  }
+}
 
 /**
  * Imports CCD definitions into specified environment. Import XLSX file is archived when process completed.
