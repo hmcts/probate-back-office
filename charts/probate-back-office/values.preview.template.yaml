@@ -121,8 +121,8 @@ ccd:
   am-role-assignment-service:
     java:
       disableKeyVaults: true
-      devcpuRequests: 20m # if 10m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
-      devcpuLimits: 200m
+      devcpuRequests: 30m # if 10m/20 is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 30m to make sure the pod can be up and running.
+      devcpuLimits: 300m
       devmemoryRequests: 800Mi
       devmemoryLimits: 1Gi
       keyVaults:
