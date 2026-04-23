@@ -153,6 +153,12 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
     excludedFilenamePatterns="*-wa.json"
     echo "Executing Preview Environment Script"
     if ("preview" == env) {
+      if (env.PROBATE_WA_ENABLED == "true")  {
+          echo "PROBATE_WA_ENABLED = True"
+      }
+      if (env.PROBATE_WA_ENABLED == "false")  {
+          echo "PROBATE_WA_ENABLED = False"
+      }
       if (checkForWAEnableLabel(branch_name)) {
         sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
       } else {
@@ -338,16 +344,19 @@ withPipeline("java", product, component) {
   onIthc() {
       env.ENV='ithc'
       env.PROBATE_WA_ENABLED = false
+      env.PROBATE_GS_ENABLED = false
   }
 
   onDemo() {
     env.ENV='demo'
     env.PROBATE_WA_ENABLED = false
+    env.PROBATE_GS_ENABLED = false
   }
 
   onPerftest() {
     env.ENV='perftest'
     env.PROBATE_WA_ENABLED = false
+    env.PROBATE_GS_ENABLED = false
   }
 
   before('smoketest:preview') {
