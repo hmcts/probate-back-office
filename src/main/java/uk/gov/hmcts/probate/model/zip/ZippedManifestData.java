@@ -31,9 +31,6 @@ public class ZippedManifestData {
     }
 
     private String formatSubType(String subType) {
-        if (subType == null) {
-            return "";
-        }
         String sanitised = NON_ALPHANUMERIC.matcher(subType.trim().toLowerCase()).replaceAll("_");
         return LEADING_TRAILING_UNDERSCORE.matcher(sanitised).replaceAll("");
     }
