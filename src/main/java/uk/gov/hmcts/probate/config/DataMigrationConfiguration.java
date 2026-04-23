@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import uk.gov.hmcts.probate.service.migration.CaveatMigrationHandler;
 import uk.gov.hmcts.probate.service.migration.Dtspb5005CaveatRollback;
 import uk.gov.hmcts.probate.service.migration.Dtspb5005GorRollback;
+import uk.gov.hmcts.probate.service.migration.Dtspb5472GorRollback;
 import uk.gov.hmcts.probate.service.migration.GorMigrationHandler;
 
 import java.util.Map;
@@ -14,9 +15,11 @@ public class DataMigrationConfiguration {
 
     @Bean
     public Map<String, GorMigrationHandler> gorMigrationHandlers(
-            final Dtspb5005GorRollback dtspb5005GorRollback) {
+            final Dtspb5005GorRollback dtspb5005GorRollback,
+            final Dtspb5472GorRollback dtspb5472GorRollback) {
         return Map.of(
-                "DTSPB-5005_rollback", dtspb5005GorRollback);
+                "DTSPB-5005_rollback", dtspb5005GorRollback,
+                "DTSPB-5472_rollback", dtspb5472GorRollback);
     }
 
     @Bean
