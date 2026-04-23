@@ -133,32 +133,35 @@ def checkForWAEnableLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
 }
 
-def archiveCoreCaseDataDefinitions(env, branch_name) {
+def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
-    if("preview" == env){
+    if("preview" == targetEnv){
       shutterOption = "false"
-    } else if("demo" == env){
+    } else if("demo" == targetEnv){
       shutterOption = "false"
-    } else if("aat" == env){
+    } else if("aat" == targetEnv){
       //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
       shutterOption = "false"
-    } else if("prod" == env){
+    } else if("prod" == targetEnv){
       //WARNING, CHANGING THIS WILL SHUTTER PROD
       shutterOption = "false"
     } else {
       shutterOption = "false"
     }
 
-    excludedFilenamePatterns="*-wa.json"
+    excludedFilenamePatterns=""
     echo "Executing Preview Environment Script"
-    if ("preview" == env) {
-      if (env.PROBATE_WA_ENABLED == "true")  {
-          echo "PROBATE_WA_ENABLED = True"
-      }
-      if (env.PROBATE_WA_ENABLED == "false")  {
-          echo "PROBATE_WA_ENABLED = False"
-      }
+    if (env.PROBATE_WA_ENABLED == "true")  {
+        echo "PROBATE_WA_ENABLED = True, files with *-wa extension will not be excluded"
+    }
+    if (env.PROBATE_WA_ENABLED == "false")  {
+        echo "PROBATE_WA_ENABLED = False, files with *-wa extension will be excluded"
+        excludedFilenamePatterns = ",*-wa.json"
+    }
+
+
+    if ("preview" == targetEnv) {
       if (checkForWAEnableLabel(branch_name)) {
         sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
       } else {
@@ -166,7 +169,7 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
       }
     }
     else {
-      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
+      sh "./build-release-ccd-definitions.sh ${targetEnv} ${shutterOption} ${excludedFilenamePatterns}"
     }
   }
 
