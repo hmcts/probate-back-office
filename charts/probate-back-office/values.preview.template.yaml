@@ -66,17 +66,17 @@ ccd:
         IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
       ingressHost:
         ccd-case-print-service-${SERVICE_FQDN}
-      #devcpuRequests: 10m
-      #devcpuLimits: 50m
-      #devmemoryRequests: 250Mi
-      #devmemoryLimits: 400Mi
+      devcpuRequests: 10m
+      devcpuLimits: 50m
+      devmemoryRequests: 250Mi
+      devmemoryLimits: 400Mi
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
-      #devcpuRequests: 10m
-      #devcpuLimits: 50m
-      #devmemoryRequests: 200Mi
-      #devmemoryLimits: 300Mi
+      devcpuRequests: 10m
+      devcpuLimits: 50m
+      devmemoryRequests: 200Mi
+      devmemoryLimits: 300Mi
       environment:
         ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
         IDAM_SERVICE_KEY: ${API_GATEWAY_S2S_KEY}
