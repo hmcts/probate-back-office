@@ -150,6 +150,7 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
       shutterOption = "false"
     }
 
+    def patterns = []
     excludedFilenamePatterns=""
     echo "Executing Preview Environment Script"
     if (env.PROBATE_WA_ENABLED == "true")  {
@@ -157,16 +158,20 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
     }
     if (env.PROBATE_WA_ENABLED == "false")  {
         echo "PROBATE_WA_ENABLED = False, files with *-wa extension will be excluded"
-        excludedFilenamePatterns = ",*-wa.json"
+        patterns << "*-wa.json"
+    }
+    if (env.PROBATE_GS_ENABLED == "true") {
+        echo "PROBATE_GS_ENABLED = True, GS Files not excluded"
+    } else {
+        echo "PROBATE_GS_ENABLED = False, excluding *-gs.json"
+        patterns << "*-gs.json"
     }
 
+    def excludedFilenamePatterns = patterns.join(",")
+    echo "Final excludedFilenamePatterns = ${excludedFilenamePatterns}"
 
     if ("preview" == targetEnv) {
-      if (checkForWAEnableLabel(branch_name)) {
-        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
-      } else {
-        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
-      }
+      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
     }
     else {
       sh "./build-release-ccd-definitions.sh ${targetEnv} ${shutterOption} ${excludedFilenamePatterns}"
