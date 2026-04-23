@@ -641,6 +641,7 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
     private final List<CollectionMember<String>> autoCaseWarnings;
 
+    private String primaryApplicantAdoptedIn;
     /**
      * This is only intended for use during migrations and should not be persisted into the case record.
      */
@@ -794,5 +795,9 @@ public class CaseData extends CaseDataParent {
 
     public void clearSolsDeceasedAliasNamesList() {
         getSolsDeceasedAliasNamesList().clear();
+    }
+
+    public void clearPrimaryApplicantAdoptedIn() {
+        setPrimaryApplicantAdoptedIn(null);
     }
 }
