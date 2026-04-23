@@ -323,21 +323,31 @@ withPipeline("java", product, component) {
         echo "Disabling Work Allocation feature"
       }
       echo "PROBATE_WA_ENABLED=${env.PROBATE_WA_ENABLED}"
-
+      if (checkForGSEnableLabel(env.BRANCH_NAME)) {
+          env.PROBATE_GS_ENABLED = true
+          echo "Enabling Global Search"
+      } else {
+          env.PROBATE_GS_ENABLED = false
+          echo "Disabling Global Search"
+      }
+      echo "PROBATE_GS_ENABLED=${env.PROBATE_GS_ENABLED}"
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
       env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
   }
 
   onIthc() {
       env.ENV='ithc'
+      env.PROBATE_WA_ENABLED = false
   }
 
   onDemo() {
     env.ENV='demo'
+    env.PROBATE_WA_ENABLED = false
   }
 
   onPerftest() {
     env.ENV='perftest'
+    env.PROBATE_WA_ENABLED = false
   }
 
   before('smoketest:preview') {
