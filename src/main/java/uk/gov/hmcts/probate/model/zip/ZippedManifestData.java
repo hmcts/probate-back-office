@@ -19,6 +19,7 @@ public class ZippedManifestData {
 
     private static final Pattern NON_ALPHANUMERIC = Pattern.compile("[^a-z0-9]++");
     private static final Pattern LEADING_TRAILING_UNDERSCORE = Pattern.compile("(^_++)|(_++$)");
+
     public String getDocumentName() {
         return this.caseNumber + "_" + this.docType
                 + (this.subType != null ? "_" + formatSubType(this.subType) : "")
