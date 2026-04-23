@@ -150,24 +150,18 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
       shutterOption = "false"
     }
 
-      excludedFilenamePatterns=""
-
-      if (env.PROBATE_WA_ENABLED != true) {
-          excludedFilenamePatterns = "*-wa.json"
-      }
-      if (env.PROBATE_GS_ENABLED != true) {
-          if (excludedFilenamePatterns) {
-              excludedFilenamePatterns = "${excludedFilenamePatterns},*-gs.json"
-          } else {
-              excludedFilenamePatterns = "*-gs.json"
-          }
-      }
-
-      if ("preview" == env) {
-          sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+    excludedFilenamePatterns="*-wa.json"
+    echo "Executing Preview Environment Script"
+    if ("preview" == env) {
+      if (checkForWAEnableLabel(branch_name)) {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
       } else {
-          sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
       }
+    }
+    else {
+      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
+    }
   }
 
   dir("${WORKSPACE}/build") {
@@ -322,21 +316,11 @@ withPipeline("java", product, component) {
       env.ENV='preview'
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.PROBATE_WA_ENABLED = true
-        echo "Enabling Work Allocation"
       } else {
         env.PROBATE_WA_ENABLED = false
-        echo "Disabling Work Allocation"
+        echo "Disabling Work Allocation feature"
       }
-      echo "PROBATE_WA_ENABLED = ${env.PROBATE_WA_ENABLED}"
-
-      if (checkForGSEnableLabel(env.BRANCH_NAME)) {
-          env.PROBATE_GS_ENABLED = true
-          echo "Enabling Global Search"
-      } else {
-          env.PROBATE_GS_ENABLED = false
-          echo "Disabling Global Search"
-      }
-      echo "PROBATE_GS_ENABLED = ${env.PROBATE_GS_ENABLED}"
+      echo "PROBATE_WA_ENABLED=${env.PROBATE_WA_ENABLED}"
 
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
       env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
