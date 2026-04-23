@@ -73,10 +73,6 @@ ccd:
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
-      devcpuRequests: 30m # if 10m/20m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
-      devcpuLimits: 300m
-      devmemoryRequests: 200Mi
-      devmemoryLimits: 300Mi
       environment:
         ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
         IDAM_SERVICE_KEY: ${API_GATEWAY_S2S_KEY}
@@ -86,6 +82,10 @@ ccd:
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
       keyVaults: []
+      devcpuRequests: 40m # if 10m/20m/40m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
+      devcpuLimits: 400m
+      devmemoryRequests: 250Mi
+      devmemoryLimits: 512Mi
   ccd-data-store-api:
     java:
       imagePullPolicy: Always
