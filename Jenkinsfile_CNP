@@ -227,6 +227,11 @@ withPipeline("java", product, component) {
   env.CASE_DOCUMENT_AM_URL='http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
   pipelineConf = config;
 
+  config.additionalEnvVars = [
+          PROBATE_WA_ENABLED: "${env.PROBATE_WA_ENABLED}",
+          PROBATE_GS_ENABLED: "${env.PROBATE_GS_ENABLED}"
+  ]
+
   enableAksStagingDeployment()
   disableLegacyDeployment()
   loadVaultSecrets(secrets)
