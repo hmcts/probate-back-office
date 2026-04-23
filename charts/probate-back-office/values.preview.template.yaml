@@ -151,8 +151,8 @@ ccd:
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
-      devcpuRequests: 25m # if 15m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 25m to make sure the pod can be up and running.
-      devcpuLimits: 250m
+      devcpuRequests: 30m # if 15m/25m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 30m to make sure the pod can be up and running.
+      devcpuLimits: 3000m
       devmemoryRequests: 650Mi
       devmemoryLimits: 800Mi
   ccd-user-profile-api:
