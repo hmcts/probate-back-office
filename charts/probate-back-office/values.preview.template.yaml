@@ -66,14 +66,14 @@ ccd:
         IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
       ingressHost:
         ccd-case-print-service-${SERVICE_FQDN}
-      devcpuRequests: 10m
+      devcpuRequests: 20m # if 10m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
       devcpuLimits: 50m
       devmemoryRequests: 250Mi
       devmemoryLimits: 400Mi
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
-      devcpuRequests: 10m
+      devcpuRequests: 20m # if 10m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
       devcpuLimits: 50m
       devmemoryRequests: 200Mi
       devmemoryLimits: 300Mi
