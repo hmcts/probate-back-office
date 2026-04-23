@@ -236,7 +236,7 @@ export class SolCreateCasePage extends BasePage {
   readonly caseListHeadingLocator = this.page.getByRole('heading', { name: nocConfig.nocWaitForText });
   readonly cyaPageLocator = this.page.getByText("Check your answers");
   readonly goButtonLocator = this.page.getByRole("button", { name: "Go" });
-  readonly shareCaseUser = this.page.getByText(testConfig.TestEnvProfUserSAC);
+  readonly addNewLocator = this.page.getByRole("button", { name: "Add new" }).first();
 
   constructor(public readonly page: Page) {
     super(page);
@@ -1149,20 +1149,188 @@ export class SolCreateCasePage extends BasePage {
     await this.primaryApplicantPostcode.fill(intestacyDetailsConfig.address_postcode);
     await this.primaryApplicantCountry.fill(intestacyDetailsConfig.address_country);
     await this.primaryApplicantPhoneNumber.fill(intestacyDetailsConfig.applicant_phone);
-    await this.primaryApplicantEmail.fill(intestacyDetailsConfig.applicant_email);
+    // await this.primaryApplicantEmail.fill(intestacyDetailsConfig.applicant_email);
     await this.languageLocator.focus();
     await this.languageLocator.click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
-  async intestacyDetailsPage2() {
+  async intestacyDetailsPage2(applicantRelationship: string, isJoint?: boolean, isMarried?: boolean, isWholeBloodSibling: boolean = false) {
     // await this.verifyPageLoad(this.page.locator('#solsMinorityInterest'));
     await expect(this.page.locator('#solsMinorityInterest')).toBeEnabled();
     await this.runAccessibilityTest();
-    await this.page.locator(`#solsApplicantRelationshipToDeceased-${intestacyDetailsConfig.page2_child}`).click();
-    await this.page.locator(`#solsApplicantSiblings_${intestacyDetailsConfig.optionNo}`).click();
-    await this.page.locator(`#deceasedMaritalStatus-${intestacyDetailsConfig.page2_maritalstatus}`).click();
+    await this.page.locator(`[id = "solsApplicantRelationshipToDeceased-${applicantRelationship}" i]`).click();
+    if (isMarried) {
+      await this.page.locator('#deceasedMaritalStatus-marriedCivilPartnership').click();
+    } else {
+      await this.page.locator('#deceasedMaritalStatus-divorcedCivilPartnership').click();
+      await expect(this.page.locator('#dateOfDivorcedCPJudicially-day')).toBeEnabled();
+      await this.page.locator('#dateOfDivorcedCPJudicially-day').fill(intestacyDetailsConfig.divorced_day);
+      await this.page.locator('#dateOfDivorcedCPJudicially-month').fill(intestacyDetailsConfig.divorced_month);
+      await this.page.locator('#dateOfDivorcedCPJudicially-year').fill(intestacyDetailsConfig.divorced_year);
+      await expect(this.page.locator(`#deceasedDivorcedInEnglandOrWales_${intestacyDetailsConfig.optionYes}`)).toBeEnabled();
+      await this.page.locator(`#deceasedDivorcedInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
+    }
     await this.page.locator(`#solsMinorityInterest_${intestacyDetailsConfig.optionNo}`).click();
+    if (applicantRelationship === intestacyDetailsConfig.page2_child || applicantRelationship === intestacyDetailsConfig.coApplicantRelationshipChild) {
+      await expect(this.page.getByText(intestacyDetailsConfig.page2_adoptionText)).toBeVisible();
+      await this.page.locator(`#primaryApplicantAdoptedIn_${intestacyDetailsConfig.optionYes}`).click();
+      await expect(this.page.locator('#primaryApplicantAdoptionInEnglandOrWales').getByText(intestacyDetailsConfig.page2_adoptionPlaceText)).toBeVisible();
+      await this.page.locator(`#primaryApplicantAdoptionInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
+      if (isMarried) {
+        await expect(this.page.getByText(intestacyDetailsConfig.page2_spouseRenouncedText)).toBeVisible();
+        await this.page.locator(`#solsSpouseOrCivilRenouncing_${intestacyDetailsConfig.optionYes}`).click();
+      }
+      if (applicantRelationship === intestacyDetailsConfig.coApplicantRelationshipChild) {
+        await expect(this.page.getByText(intestacyDetailsConfig.grandchild_parent_deceasedText)).toBeVisible();
+        await this.page.locator(`#isApplicantParentDeceasedChild_${intestacyDetailsConfig.optionYes}`).click();
+        await expect(this.page.getByText(intestacyDetailsConfig.grandchild_parent_adoptionText)).toBeVisible();
+        await this.page.locator(`#primaryApplicantParentAdoptedIn_${intestacyDetailsConfig.optionNo}`).click();
+        await expect(this.page.getByText(intestacyDetailsConfig.grandchild_parent_adoptedOutText)).toBeVisible();
+        await this.page.locator(`#primaryApplicantParentAdoptedOut_${intestacyDetailsConfig.optionNo}`).click();
+      }
+    } else if (applicantRelationship === intestacyDetailsConfig.applicantRelationshipParent ||
+               applicantRelationship === intestacyDetailsConfig.applicantRelationshipSiblings) {
+        await expect(this.page.getByText(intestacyDetailsConfig.surviving_children_grandchildrenText)).toBeVisible();
+        await this.page.locator(`#deceasedAnyLivingDescendants_${intestacyDetailsConfig.optionNo}`).click();
+        await expect(this.page.getByText(intestacyDetailsConfig.deceased_adoptionText)).toBeVisible();
+        await this.page.locator(`#deceasedAdoptedIn_${intestacyDetailsConfig.optionYes}`).click();
+        await expect(this.page. locator('#deceasedAdoptionInEnglandOrWales')
+          .getByText(intestacyDetailsConfig.page2_adoptionPlaceText))
+          .toBeVisible();
+        await this.page.locator(`#deceasedAdoptionInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
+        if (applicantRelationship === intestacyDetailsConfig.applicantRelationshipSiblings) {
+          await expect(this.page.getByText(intestacyDetailsConfig.surviving_parentsText)).toBeVisible();
+          await this.page.locator(`#deceasedAnyLivingParents_${intestacyDetailsConfig.optionNo}`).click()
+          await expect(this.page.getByText(intestacyDetailsConfig.siblingType_Text)).toBeVisible();
+          if (isWholeBloodSibling) {
+            await this.page.locator('#applicantSameParentsAsDeceased').selectOption(intestacyDetailsConfig.whole_Blood_Sibling_Type);
+          } else {
+            await this.page.locator('#applicantSameParentsAsDeceased').selectOption(intestacyDetailsConfig.half_Blood_Sibling_Type);
+            await expect(this.page.getByText(intestacyDetailsConfig.surviving_wholeBloodSiblings_Text)).toBeVisible();
+            await this.page.locator(`#anyLivingWholeBloodSiblings_${intestacyDetailsConfig.optionNo}`).click();
+          }
+          await expect(this.page.getByText(intestacyDetailsConfig.page2_adoptionText)).toBeVisible();
+          await this.page.locator(`#primaryApplicantAdoptedIn_${intestacyDetailsConfig.optionNo}`).click();
+          await expect(this.page.getByText(intestacyDetailsConfig.page2_adoptedOutText)).toBeVisible();
+          await this.page.locator(`#primaryApplicantAdoptedOut_${intestacyDetailsConfig.optionNo}`).click();
+        }
+    }
+
+    if (isJoint) {
+      await this.page.locator(`#otherExecutorExists_${intestacyDetailsConfig.optionYes}`).click();
+    } else {
+      await this.page.locator(`#otherExecutorExists_${intestacyDetailsConfig.optionNo}`).click();
+    }
+
+    // await this.page.locator(`#solsApplicantSiblings_${intestacyDetailsConfig.optionNo}`).click();
+    // await this.page.locator(`#deceasedMaritalStatus-${intestacyDetailsConfig.page2_maritalstatus}`).click();
+    // await this.page.locator(`#solsMinorityInterest_${intestacyDetailsConfig.optionNo}`).click();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async intestacyCoapplicantPage(applicantRelationship: string, coApplicantCount: number, isWholeBloodSiblings: boolean) {
+    let coApplicantRelationship;
+    let coApplicantNieceOrNephewRelationship;
+
+    if (applicantRelationship === intestacyDetailsConfig.page2_child) {
+      coApplicantRelationship = intestacyDetailsConfig.coApplicantRelationshipChild;
+    } else if (applicantRelationship === intestacyDetailsConfig.applicantRelationshipSiblings) {
+      if (isWholeBloodSiblings) {
+        coApplicantRelationship = intestacyDetailsConfig.whole_blood_sibling_coApplicant;
+        coApplicantNieceOrNephewRelationship = intestacyDetailsConfig.whole_blood_niece_coApplicant;
+      } else {
+        coApplicantRelationship = intestacyDetailsConfig.half_blood_sibling_coApplicant;
+        coApplicantNieceOrNephewRelationship = intestacyDetailsConfig.half_blood_niece_coApplicant;
+      }
+    }
+
+    await expect(this.page.getByText(intestacyDetailsConfig.coapplicantPageHeading).first()).toBeVisible();
+    await this.page.locator('#solsIntestacyExecutorList_0_additionalExecForenames').fill(intestacyDetailsConfig.coapplicant_firstname);
+    await this.page.locator('#solsIntestacyExecutorList_0_additionalExecLastname').fill(intestacyDetailsConfig.coapplicant_lastname);
+    await this.page.locator(intestacyDetailsConfig.UKpostcodeLink).click();
+    await this.page.locator('#solsIntestacyExecutorList_0_additionalExecAddress__detailAddressLine1').fill(intestacyDetailsConfig.address_line1);
+    await this.page.locator('#solsIntestacyExecutorList_0_additionalExecAddress__detailAddressLine2').fill(intestacyDetailsConfig.address_line2);
+    await this.page.locator('#solsIntestacyExecutorList_0_additionalExecAddress__detailAddressLine3').fill(intestacyDetailsConfig.address_line3);
+    await this.page.locator('#solsIntestacyExecutorList_0_additionalExecAddress__detailPostTown').fill(intestacyDetailsConfig.address_town);
+    await this.page.locator('#solsIntestacyExecutorList_0_additionalExecAddress__detailCounty').fill(intestacyDetailsConfig.address_county);
+    await this.page.locator('#solsIntestacyExecutorList_0_additionalExecAddress__detailPostCode').fill(intestacyDetailsConfig.address_postcode);
+    await this.page.locator('#solsIntestacyExecutorList_0_additionalExecAddress__detailCountry').fill(intestacyDetailsConfig.address_country);
+    if (applicantRelationship === intestacyDetailsConfig.applicantRelationshipSiblings) {
+      await expect(this.page.locator(`[id = "solsIntestacyExecutorList_0_solsApplicantFamilyDetails_relationship_${coApplicantRelationship}" i]`)).toBeVisible();
+      await this.page.locator(`[id = "solsIntestacyExecutorList_0_solsApplicantFamilyDetails_relationship_${coApplicantRelationship}" i]`).click();
+    } else {
+      await expect(this.page.locator(`[id = "solsIntestacyExecutorList_0_solsApplicantFamilyDetails_relationship_${applicantRelationship}" i]`)).toBeVisible();
+      await this.page.locator(`[id = "solsIntestacyExecutorList_0_solsApplicantFamilyDetails_relationship_${applicantRelationship}" i]`).click();
+    }
+    if (applicantRelationship !== intestacyDetailsConfig.applicantRelationshipParent) {
+      await this.page.locator(`#solsIntestacyExecutorList_0_solsApplicantFamilyDetails_coApplicantAdoptedIn_${intestacyDetailsConfig.optionNo}`).click();
+      await expect(this.page.locator(`#solsIntestacyExecutorList_0_solsApplicantFamilyDetails_coApplicantAdoptedOut_${intestacyDetailsConfig.optionNo}`)).toBeVisible();
+      await this.page.locator(`#solsIntestacyExecutorList_0_solsApplicantFamilyDetails_coApplicantAdoptedOut_${intestacyDetailsConfig.optionNo}`).click();
+    }
+
+    if (coApplicantCount > 1) {
+      for (let i = 1; i <= (coApplicantCount - 1); i++) {
+        await expect(this.addNewLocator).toBeEnabled();
+        await this.addNewLocator.click();
+        await expect(this.page.getByText(`Co-applicant ${i+1}`)).toBeVisible();
+
+        await this.page.locator(`#solsIntestacyExecutorList_${i}_additionalExecForenames`).fill(intestacyDetailsConfig [`coapplicant${i+1}_firstname`]);
+        await this.page.locator(`#solsIntestacyExecutorList_${i}_additionalExecLastname`).fill(intestacyDetailsConfig.coapplicant_lastname);
+        await this.page.locator(intestacyDetailsConfig.UKpostcodeLink).click();
+        await this.page.locator(`#solsIntestacyExecutorList_${i}_additionalExecAddress__detailAddressLine1`).fill(intestacyDetailsConfig.address_line1);
+        await this.page.locator(`#solsIntestacyExecutorList_${i}_additionalExecAddress__detailAddressLine2`).fill(intestacyDetailsConfig.address_line2);
+        await this.page.locator(`#solsIntestacyExecutorList_${i}_additionalExecAddress__detailAddressLine3`).fill(intestacyDetailsConfig.address_line3);
+        await this.page.locator(`#solsIntestacyExecutorList_${i}_additionalExecAddress__detailPostTown`).fill(intestacyDetailsConfig.address_town);
+        await this.page.locator(`#solsIntestacyExecutorList_${i}_additionalExecAddress__detailCounty`).fill(intestacyDetailsConfig.address_county);
+        await this.page.locator(`#solsIntestacyExecutorList_${i}_additionalExecAddress__detailPostCode`).fill(intestacyDetailsConfig.address_postcode);
+        await this.page.locator(`#solsIntestacyExecutorList_${i}_additionalExecAddress__detailCountry`).fill(intestacyDetailsConfig.address_country);
+
+        if (applicantRelationship === intestacyDetailsConfig.applicantRelationshipSiblings) {
+          await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_relationship_${coApplicantNieceOrNephewRelationship}`)).toBeVisible();
+          await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_relationship_${coApplicantNieceOrNephewRelationship}`).click();
+          if(isWholeBloodSiblings) {
+            await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_wholeNieceOrNephewParentDieBeforeDeceased`)
+              .getByText(intestacyDetailsConfig.niece_surviving_parentsText))
+              .toBeVisible();
+            await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_wholeNieceOrNephewParentDieBeforeDeceased_${intestacyDetailsConfig.optionYes}`).click();
+          } else {
+            await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_halfNieceOrNephewParentDieBeforeDeceased`)
+              .getByText(intestacyDetailsConfig.halfNiece_surviving_parentsText))
+              .toBeVisible();
+            await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_halfNieceOrNephewParentDieBeforeDeceased_${intestacyDetailsConfig.optionYes}`).click();
+          }
+
+        } else {
+          await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_relationship_${coApplicantRelationship}`)).toBeVisible();
+          await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_relationship_${coApplicantRelationship}`).click();
+        }
+
+        if (i === 1) {
+          await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_coApplicantAdoptedIn_${intestacyDetailsConfig.optionNo}`).click();
+          await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_coApplicantAdoptedOut_${intestacyDetailsConfig.optionNo}`)).toBeVisible();
+          await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_coApplicantAdoptedOut_${intestacyDetailsConfig.optionNo}`).click();
+        } else {
+          await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_coApplicantAdoptedIn_${intestacyDetailsConfig.optionYes}`).click();
+          await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_coApplicantAdoptionInEnglandOrWales_${intestacyDetailsConfig.optionYes}`)).toBeVisible();
+          await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_coApplicantAdoptionInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
+        }
+
+        if (coApplicantRelationship === intestacyDetailsConfig.coApplicantRelationshipChild) {
+          await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_${coApplicantRelationship}ParentDieBeforeDeceased_${intestacyDetailsConfig.optionYes}`)).toBeVisible();
+          await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_${coApplicantRelationship}ParentDieBeforeDeceased_${intestacyDetailsConfig.optionYes}`).click();
+          if (i === 1) {
+            await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_${coApplicantRelationship}ParentAdoptedIn_${intestacyDetailsConfig.optionYes}`).click();
+            await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_${coApplicantRelationship}ParentAdoptionInEnglandOrWales_${intestacyDetailsConfig.optionYes}`)).toBeVisible();
+            await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_${coApplicantRelationship}ParentAdoptionInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
+          } else {
+            await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_${coApplicantRelationship}ParentAdoptedIn_${intestacyDetailsConfig.optionNo}`).click();
+            await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_grandchildParentAdoptedOut_${intestacyDetailsConfig.optionNo}`)).toBeVisible();
+            await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_grandchildParentAdoptedOut_${intestacyDetailsConfig.optionNo}`).click();
+          }
+        }
+      }
+    }
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
@@ -1171,7 +1339,12 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.page.locator('#furtherEvidenceForApplication')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator('#furtherEvidenceForApplication').fill(intestacyDetailsConfig.page3_applicationNotes);
+
+    await expect(this.page.locator('#solsAdditionalInfo')).toBeEnabled();
+    await this.runAccessibilityTest();
+    await this.page.locator('#solsAdditionalInfo').fill(intestacyDetailsConfig.page3_applicationNotes);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
+    // await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async intestacyDetailsPage4() {

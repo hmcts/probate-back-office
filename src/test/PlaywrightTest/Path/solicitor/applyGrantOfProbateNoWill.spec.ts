@@ -74,9 +74,10 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy)", () => 
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.intestacyDetailsPage1();
-    await solCreateCasePage.intestacyDetailsPage2();
+    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.page2_child, true, true);
+    await solCreateCasePage.intestacyCoapplicantPage(intestacyDetailsConfig.page2_child, 3);
     await solCreateCasePage.intestacyDetailsPage3();
-    await solCreateCasePage.intestacyDetailsPage4();
+    // await solCreateCasePage.intestacyDetailsPage4();
     await solCreateCasePage.cyaPage();
 
     await solCreateCasePage.seeEndState(endState);
