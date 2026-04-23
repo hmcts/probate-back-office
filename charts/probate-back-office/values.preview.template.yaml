@@ -47,10 +47,10 @@ ccd:
       image: hmctsprod.azurecr.io/ccd/admin-web:latest
       ingressHost: admin-web-${SERVICE_FQDN}
       keyVaults: []
-      #devcpuRequests: 10m
-      #devcpuLimits: 50m
-      #devmemoryRequests: 300Mi
-      #devmemoryLimits: 512Mi
+      devcpuRequests: 20m # if 10m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
+      devcpuLimits: 2000m
+      devmemoryRequests: 300Mi
+      devmemoryLimits: 512Mi
       environment:
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
         IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
@@ -66,7 +66,7 @@ ccd:
         IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
       ingressHost:
         ccd-case-print-service-${SERVICE_FQDN}
-      devcpuRequests: 30m # if 10m/20m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
+      devcpuRequests: 30m # if 10m/20m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 30m to make sure the pod can be up and running.
       devcpuLimits: 300m
       devmemoryRequests: 250Mi
       devmemoryLimits: 400Mi
@@ -82,7 +82,7 @@ ccd:
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
       keyVaults: []
-      devcpuRequests: 40m # if 10m/20m/40m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
+      devcpuRequests: 40m # if 10m/20m/30m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 40m to make sure the pod can be up and running.
       devcpuLimits: 400m
       devmemoryRequests: 250Mi
       devmemoryLimits: 512Mi
@@ -121,10 +121,10 @@ ccd:
   am-role-assignment-service:
     java:
       disableKeyVaults: true
-      #devcpuRequests: 10m
-      #devcpuLimits: 100m
-      #devmemoryRequests: 800Mi
-      #devmemoryLimits: 1Gi
+      devcpuRequests: 20m # if 10m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
+      devcpuLimits: 200m
+      devmemoryRequests: 800Mi
+      devmemoryLimits: 1Gi
       keyVaults:
         am:
           secrets:
@@ -151,10 +151,10 @@ ccd:
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
-      #devcpuRequests: 15m
-      #devcpuLimits: 150m
-      #devmemoryRequests: 650Mi
-      #devmemoryLimits: 800Mi
+      devcpuRequests: 25m # if 15m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 25m to make sure the pod can be up and running.
+      devcpuLimits: 250m
+      devmemoryRequests: 650Mi
+      devmemoryLimits: 800Mi
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
