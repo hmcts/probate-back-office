@@ -18,7 +18,8 @@ def secrets = [
                 secret('idamUserId', 'IDAM_USER_ID'),
                 secret('probateIdamSecret', 'IDAM_SECRET'),
                 secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
-                secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
+                secret('probate-bo-govNotifyApiKey', 'PROBATE_NOTIFY_KEY_PRIMARY'),
+                secret('probate-bo-govNotifyApiKey-secondary', 'PROBATE_NOTIFY_KEY_SECONDARY'),
                 secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
                 secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
                 secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
@@ -94,7 +95,8 @@ def secrets = [
                 secret('idam-mca-system-user-password', 'BEFTA_IDAM_CAA_PASSWORD'),
                 secret('idam-noc-approver-username', 'BEFTA_IDAM_NOC_APPROVER_USERNAME'),
                 secret('idam-noc-approver-password', 'BEFTA_IDAM_NOC_APPROVER_PASSWORD'),
-                secret('aac-manage-case-s2s-secret', 'MANAGE_CASE_S2S_KEY')
+                secret('aac-manage-case-s2s-secret', 'MANAGE_CASE_S2S_KEY'),
+                secret('notify-mca-api-key-secret', 'NOTIFY_MCA_API_KEY')
         ],
         'am-${env}': [
                 secret('role-assignment-service-LD-SDK-KEY', 'LD_SDK_AM_KEY')
