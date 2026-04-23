@@ -322,9 +322,13 @@ withPipeline("java", product, component) {
       env.ENV='preview'
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.PROBATE_WA_ENABLED = true
+      } else {
+          env.PROBATE_WA_ENABLED = "false"
       }
       if (checkForGSEnableLabel(env.BRANCH_NAME)) {
           env.PROBATE_GS_ENABLED = true
+      } else {
+          env.PROBATE_GS_ENABLED = "false"
       }
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
       env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
