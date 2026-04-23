@@ -46,7 +46,7 @@
   </decision>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram>
-      <dmndi:DMNShape dmnElementRef="wa-task-completion-probate">
+      <dmndi:DMNShape dmnElementRef="wa-task-completion-probate-grantofrepresentation">
         <dc:Bounds height="80" width="180" x="160" y="80" />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>

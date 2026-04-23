@@ -75,7 +75,7 @@
   </decision>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="DMNDiagram_1ifewa3">
-      <dmndi:DMNShape id="DMNShape_0ijg0or" dmnElementRef="wa-task-configuration-probate">
+      <dmndi:DMNShape id="DMNShape_0ijg0or" dmnElementRef="wa-task-configuration-probate-grantofrepresentation">
         <dc:Bounds height="80" width="180" x="150" y="80" />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>
