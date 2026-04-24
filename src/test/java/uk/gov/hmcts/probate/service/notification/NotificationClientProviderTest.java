@@ -8,7 +8,8 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.service.notify.NotificationClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class NotificationClientProviderTest {
 
