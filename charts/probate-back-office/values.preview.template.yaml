@@ -225,8 +225,8 @@ xui-webapp:
     ingressHost: xui-${SERVICE_FQDN}
     devcpuRequests: 20m
     devcpuLimits: 200m
-    devmemoryRequests: 250Mi
-    devmemoryLimits: 512Mi
+    devmemoryRequests: 512Mi #timeout happens when 256Mi is used, so increase it to 512Mi to make sure the pod can be up and running.
+    devmemoryLimits: 800Mi
     environment:
       HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
