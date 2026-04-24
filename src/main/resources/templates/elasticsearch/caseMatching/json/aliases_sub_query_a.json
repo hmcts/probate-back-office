@@ -1,0 +1,24 @@
+{
+  "bool": {
+    "must": [
+      {
+        "multi_match": {
+          "query": ":deceasedAlias",
+          "boost": 2,
+          "fields": [
+            "data.deceasedForenames"
+          ]
+        }
+      },
+      {
+        "multi_match": {
+          "query": ":deceasedAlias",
+          "boost": 2,
+          "fields": [
+            "data.deceasedSurname"
+          ]
+        }
+      }
+    ]
+  }
+}

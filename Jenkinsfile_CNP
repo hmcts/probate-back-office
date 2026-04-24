@@ -30,10 +30,10 @@ def secrets = [
                 secret('probatemandb-POSTGRES-PORT', 'PROBATE_POSTGRESQL_PORT_VAL'),
                 secret('probatemandb-POSTGRES-DATABASE', 'PROBATE_POSTGRESQL_DATABASE_VAL'),
                 secret('cwUserId', 'CW_USER_ID'),
-                secret('cwUserEmail', 'CW_SUPERUSER_EMAIL'),
-                secret('cwUserPass', 'CW_SUPERUSER_PASSWORD'),
-                secret('cwSuperuserEmail', 'CW_USER_EMAIL'),
-                secret('cwSuperuserPass', 'CW_USER_PASSWORD'),
+                secret('cwUserEmail', 'CW_USER_EMAIL'),
+                secret('cwUserPass', 'CW_USER_PASSWORD'),
+                secret('cwSuperuserEmail', 'CW_SUPERUSER_EMAIL'),
+                secret('cwSuperuserPass', 'CW_SUPERUSER_PASSWORD'),
                 secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
                 secret('solicitorUserPass', 'SOL_USER_PASSWORD'),
                 secret('solicitor2UserEmail', 'SOL2_USER_EMAIL'),
@@ -125,7 +125,11 @@ def checkForEnableCWNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "cw-nightly").contains("cw-nightly")
 }
 
-def archiveCoreCaseDataDefinitions(env) {
+def checkForWAEnableLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
+}
+
+def archiveCoreCaseDataDefinitions(env, branch_name) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
     if("preview" == env){
@@ -142,12 +146,16 @@ def archiveCoreCaseDataDefinitions(env) {
       shutterOption = "false"
     }
 
+    excludedFilenamePatterns="*-wa.json"
     if ("preview" == env) {
-      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      if (checkForWAEnableLabel(branch_name)) {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
+      } else {
+        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
+      }
     }
-
-      else {
-      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption}"
+    else {
+      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
     }
   }
 
@@ -250,27 +258,19 @@ withPipeline("java", product, component) {
       sh 'yarn install'
       sh 'yarn test:fullfunctional-cw'
     }
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    publishHTML target: [
-            allowMissing         : true,
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : "target/site/serenity/",
-            reportFiles          : "index.html",
-            reportName           : "Functional Tests Report"
-    ]
   }
 
   afterAlways('functionalTest:preview') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-    publishHTML([
-            allowMissing: true,
-            alwaysLinkToLastBuild: true,
-            keepAll: true,
-            reportDir: "./functional-output/reports",
-            reportFiles: 'functional_report.html',
-            reportName: 'Functional Test Report'
-    ])
+      publishHTML([
+              allowMissing         : true,
+              alwaysLinkToLastBuild: true,
+              keepAll              : true,
+              reportDir            : 'functional-output/reports',
+              reportFiles          : 'index.html',
+              reportName           : 'Playwright Test Report',
+              reportTitles         : 'E2E Test Results'
+      ])
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
   }
 
   afterSuccess('functionalTest:aat') {
@@ -293,7 +293,7 @@ withPipeline("java", product, component) {
       echo "CCD definition upload for environment: ${env.ENV}"
       withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
         withTeamSecrets(pipelineConf, env.ENV) {
-          archiveCoreCaseDataDefinitions(env.ENV)
+          archiveCoreCaseDataDefinitions(env.ENV, env.BRANCH_NAME)
           uploadCoreCaseDataDefinitions(env.ENV)
         }
       }
@@ -309,6 +309,9 @@ withPipeline("java", product, component) {
 
   onPR() {
       env.ENV='preview'
+      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
+        env.PROBATE_WA_ENABLED = true
+      }
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
       env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
   }
@@ -331,7 +334,7 @@ withPipeline("java", product, component) {
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
       ./bin/add-ccd-roles.sh
     """
-    archiveCoreCaseDataDefinitions('preview')
+    archiveCoreCaseDataDefinitions('preview', env.BRANCH_NAME)
     uploadCoreCaseDataDefinitions('preview')
 
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
@@ -346,9 +349,9 @@ withPipeline("java", product, component) {
     env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
 
     sh """
- docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DEF_URL/health
- docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_PRO_URL/health
- docker run --rm --interactive hmctspublic.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
+ docker run --rm --interactive hmctsprod.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DEF_URL/health
+ docker run --rm --interactive hmctsprod.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_PRO_URL/health
+ docker run --rm --interactive hmctsprod.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
  """
   }
 
