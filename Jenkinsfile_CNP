@@ -331,6 +331,9 @@ withPipeline("java", product, component) {
   onPR() {
       echo "Executing On PR"
       env.ENV='preview'
+      env.PROBATE_WA_ENABLED = false
+      env.PROBATE_GS_ENABLED = false
+
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.PROBATE_WA_ENABLED = true
         echo "Enabling Work Allocation Feature"
