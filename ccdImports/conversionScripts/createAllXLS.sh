@@ -8,6 +8,9 @@ configFolder=${conversionFolder}/../configFiles
 #   $1 = CCD_DEF_CASE_SERVICE_BASE_URL
 #   $2 = CCD_DEF_AAC_URL
 #   $3 = shutterOption (true|false), optional, defaults to false
+#   $4 = extraExclusions (optional, comma-separated patterns) Additional exclusions are appended based on feature flags:
+#        - WA disabled → adds "*-wa.json"
+#        - GS disabled → adds "*-gs.json"
 caseServiceUrl="${1-}"
 aacUrl="${2-}"
 shutterOption="${3:-false}"
@@ -15,6 +18,11 @@ extraExclusions="${4:-}"
 
 waEnabledVar=${PROBATE_WA_ENABLED:-false}
 gsEnabledVar=${PROBATE_GS_ENABLED:-false}
+
+if [ -z "$caseServiceUrl" ] || [ -z "$aacUrl" ]; then
+    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
+    exit 1
+fi
 
 append_exclusion() {
   if [ -z "$extraExclusions" ]; then
@@ -43,10 +51,6 @@ fi
 
 echo "[INFO] Final extraExclusions: $extraExclusions"
 
-if [ -z "$caseServiceUrl" ] || [ -z "$aacUrl" ]; then
-    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
-    exit 1
-fi
 
 if [ ${shutterOption} == true ]; then
   echo Creating shuttered CCD Definition
