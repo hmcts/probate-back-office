@@ -76,6 +76,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boWithdrawApplicationForCaseMatchingIssueGrant", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boWithdrawApplicationForCaseMatchingExamining", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "scheduledUpdateGrantDelayNotificationSent", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "scheduledUpdateGrantAwaitingDocsNotificationSent", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "attachScannedDocs", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
