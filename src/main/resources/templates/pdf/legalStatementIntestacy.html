@@ -159,7 +159,7 @@
     </tr>
 
     <tr>
-        <td colspan="2" valign="top" style="font-weight: bold">Pobl yn gwneud cais am lythyrau gweinyddu</td>
+        <td colspan="2" valign="top" style="font-weight: bold">{% if (multipleExecutors) %}Pobl{% else %}Ceisydd{% endif %} yn gwneud cais am lythyrau gweinyddu</td>
     </tr>
     <tr>
         <td colspan="2">
@@ -177,7 +177,7 @@
                 {{ executor.value.applyingExecutorName }}
                 yw
                 {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
-                gŵr, gwraig neu bartner sifil
+                gyn-briod neu’n bartner sifil
                 {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
                 plentyn
                 {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
@@ -191,7 +191,7 @@
                 {% else %}
                 Fi yw
                 {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
-                gŵr, gwraig neu bartner sifil
+                gyn-briod neu’n bartner sifil
                 {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
                 plentyn
                 {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
@@ -397,7 +397,7 @@
     </tr>
 
     <tr>
-        <td colspan="2" valign="top" style="font-weight: bold">People applying for letters of administration</td>
+        <td colspan="2" valign="top" style="font-weight: bold">{% if (multipleExecutors) %}People{% else %}Applicant{% endif %} applying for letters of administration</td>
     </tr>
     <tr>
         <td colspan="2">
@@ -634,7 +634,7 @@
     </tr>
 
     <tr>
-        <td colspan="2" valign="top" style="font-weight: bold">People applying for letters of administration</td>
+        <td colspan="2" valign="top" style="font-weight: bold">{% if (multipleExecutors) %}People{% else %}Applicant{% endif %} applying for letters of administration</td>
     </tr>
     <tr>
         <td colspan="2">
