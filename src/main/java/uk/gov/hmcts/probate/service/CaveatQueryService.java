@@ -109,10 +109,10 @@ public class CaveatQueryService {
                                 "type", "date",
                                 "script", Map.of(
                                         "source",
-                                        "if (doc['data.expiryDate.keyword'].size() != 0) { " +
-                                                "emit(java.time.LocalDate.parse(doc['data.expiryDate.keyword'].value)" +
-                                                ".atStartOfDay(java.time.ZoneOffset.UTC));" +
-                                                " }"
+                                        "if (doc['data.expiryDate.keyword'].size() != 0) { "
+                                                + "emit(java.time.LocalDate.parse(doc['data.expiryDate.keyword'].value)"
+                                                + ".atStartOfDay(java.time.ZoneOffset.UTC));"
+                                                + " }"
                                 )
                         )
                 ))
