@@ -117,7 +117,7 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
                 caseDataContent
             );
             log.info("Caveat autoExpired: {}", caveat.getId());
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             log.info("Caveat autoExpire failure for case: {}, due to {}", caveat.getId(), e.getMessage());
             failedCases.add(String.valueOf(caveat.getId()));
         }
@@ -188,6 +188,6 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
     }
 
     private boolean hasMorePages(List<ReturnedCaveatDetails> pageResults) {
-        return pageResults.size() == dataExtractPaginationSize;
+        return pageResults.size() >= dataExtractPaginationSize;
     }
 }
