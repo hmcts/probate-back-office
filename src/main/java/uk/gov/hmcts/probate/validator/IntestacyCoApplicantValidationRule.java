@@ -30,8 +30,8 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
     public static final String ADOPTED_OUT_WELSH = "coApplicantAdoptedOutWelsh";
     public static final String PARENT_IS_NOT_DECEASED = "parentIsNotDeceased";
     public static final String PARENT_IS_NOT_DECEASED_WELSH = "parentIsNotDeceasedWelsh";
-    public static final String PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES = "coApplicantParentAdoptedOut";
-    public static final String PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "coApplicantParentAdoptedOutWelsh";
+    public static final String PARENT_ADOPTED_OUT = "coApplicantParentAdoptedOut";
+    public static final String PARENT_ADOPTED_OUT_WELSH = "coApplicantParentAdoptedOutWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -50,7 +50,7 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
                 addAdoptedOutsideEnglandOrWalesErrors(errors, isNonParentRelation, relationshipToDeceased, details);
                 addAdoptedOutErrors(errors, isNonParentRelation, details);
                 addParentNotDeceasedErrors(errors, relationshipToDeceased, details);
-                addParentAdoptedOutsideEnglandOrWalesErrors(errors, relationshipToDeceased, details);
+                addParentAdoptedOutErrors(errors, relationshipToDeceased, details);
             }
         });
         return errors;
@@ -92,16 +92,14 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
         }
     }
 
-    private void addParentAdoptedOutsideEnglandOrWalesErrors(List<FieldErrorResponse> errors,
-                                                             String relationshipToDeceased,
-                                                             SolsApplicantFamilyDetails details) {
+    private void addParentAdoptedOutErrors(List<FieldErrorResponse> errors, String relationshipToDeceased,
+                                           SolsApplicantFamilyDetails details) {
+
         if (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
                 && NO.equalsIgnoreCase(details.getGrandchildParentAdoptedIn())
                 && YES.equalsIgnoreCase(details.getGrandchildParentAdoptedOut())) {
-            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
-                    PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES));
-            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
-                    PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_ADOPTED_OUT));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_ADOPTED_OUT_WELSH));
         }
     }
 
