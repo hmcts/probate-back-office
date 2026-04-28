@@ -44,13 +44,13 @@ else
 fi
 
 # Build extraExclusions as a comma-separated string from the patterns array.
-# - If patterns is empty - extraExclusions remains an empty string ("")
+# - If patterns is empty - extraExclusions remains an unchanged
 # - If patterns has values - join them with commas and prefix with a leading comma
 #   e.g. ["*-wa.json","*-gs.json"] - ",*-wa.json,*-gs.json"
 if [ ${#patterns[@]} -gt 0 ]; then
-  extraExclusions=",$(IFS=,; printf "%s" "${patterns[*]}")"
+  joined=",$(IFS=,; printf "%s" "${patterns[*]}")"
+  extraExclusions="${extraExclusions}${joined}"
 fi
-
 
 echo "[INFO] Final extraExclusions: $extraExclusions"
 
