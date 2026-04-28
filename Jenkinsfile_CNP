@@ -151,12 +151,11 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
     }
 
     def patterns = []
-    excludedFilenamePatterns=""
+
     echo "Executing Preview Environment Script"
     if (env.PROBATE_WA_ENABLED == "true")  {
         echo "PROBATE_WA_ENABLED = True, files with *-wa extension will not be excluded"
-    }
-    if (env.PROBATE_WA_ENABLED == "false")  {
+    } else {
         echo "PROBATE_WA_ENABLED = False, files with *-wa extension will be excluded"
         patterns << "*-wa.json"
     }
