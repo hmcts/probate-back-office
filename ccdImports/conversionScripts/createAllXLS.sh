@@ -24,19 +24,13 @@ if [ -z "$caseServiceUrl" ] || [ -z "$aacUrl" ]; then
     exit 1
 fi
 
-append_exclusion() {
-  if [ -z "$extraExclusions" ]; then
-    extraExclusions=",$1"
-  else
-    extraExclusions="${extraExclusions},$1"
-  fi
-}
+patterns=()
 
 echo "[INFO] Initial extraExclusions: $extraExclusions"
 # WA flag
 if [[ "${waEnabledVar}" != true ]]; then
   echo "[INFO] WA feature is DISABLED adding *-wa.json to exclusions"
-  append_exclusion "*-wa.json"
+  patterns+=("*-wa.json")
 else
   echo "[INFO] WA feature is ENABLED no exclusion added"
 fi
@@ -44,10 +38,20 @@ fi
 # GS flag
 if [[ "${gsEnabledVar}" != true ]]; then
   echo "[INFO] GS feature is DISABLED adding *-gs.json to exclusions"
-  append_exclusion "*-gs.json"
+  patterns+=("*-gs.json")
 else
   echo "[INFO] GS feature is ENABLED no exclusion added"
 fi
+
+# Build extraExclusions as a comma-separated string from the patterns array.
+# - If patterns is empty - extraExclusions remains an empty string ("")
+# - If patterns has values - join them with commas and prefix with a leading comma
+#   e.g. ["*-wa.json","*-gs.json"] - ",*-wa.json,*-gs.json"
+extraExclusions=""
+if [ ${#patterns[@]} -gt 0 ]; then
+  extraExclusions=",$(IFS=,; printf "%s" "${patterns[*]}")"
+fi
+
 
 echo "[INFO] Final extraExclusions: $extraExclusions"
 
