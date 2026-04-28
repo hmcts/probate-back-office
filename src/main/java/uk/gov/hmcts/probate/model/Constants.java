@@ -74,6 +74,7 @@ public final class Constants {
     public static final String PARENT = "parent";
     public static final String SOLS_APPLICANT_PARENT = "Parent";
     public static final String SIBLING = "sibling";
+    public static final String SOLS_APPLICANT_SIBLING = "Sibling";
     public static final String WHOLE_SIBLING = "bothParentsSame";
     public static final String HALF_SIBLING = "oneParentsSame";
     public static final String WHOLE_BLOOD_SIBLING = "wholeBloodSibling";

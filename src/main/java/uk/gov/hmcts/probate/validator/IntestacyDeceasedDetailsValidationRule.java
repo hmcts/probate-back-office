@@ -12,7 +12,7 @@ import java.util.List;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.SOLS_APPLICANT_PARENT;
-import static uk.gov.hmcts.probate.model.Constants.SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.SOLS_APPLICANT_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -36,7 +36,7 @@ public class IntestacyDeceasedDetailsValidationRule implements ValidationRule {
             List<String> codes = new ArrayList<>();
 
             String relationship = ccdData.getSolsApplicantRelationshipToDeceased();
-            boolean isSibling = SIBLING.equalsIgnoreCase(relationship);
+            boolean isSibling = SOLS_APPLICANT_SIBLING.equalsIgnoreCase(relationship);
             boolean isSiblingOrParent = isSibling || SOLS_APPLICANT_PARENT.equalsIgnoreCase(relationship);
 
             if (isSiblingOrParent && YES.equalsIgnoreCase(deceased.getDeceasedAnyLivingDescendants())) {
