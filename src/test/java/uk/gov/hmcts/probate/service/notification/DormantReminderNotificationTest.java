@@ -179,7 +179,7 @@ class DormantReminderNotificationTest {
     }
 
     @Test
-    void acceptsShouldReturnFalseWhenisBoImportedState() {
+    void acceptsShouldReturnFalseWhenisBoImportedState()  throws NotificationClientException {
         when(caseDetails.getState()).thenReturn("12345");
         when(notificationService.isBoImportedStateBeforeDormant(caseDetails.getId().toString())).thenReturn(true);
         underTest.setReferenceDate(LocalDate.of(2023, 10, 01));
@@ -192,7 +192,7 @@ class DormantReminderNotificationTest {
     }
 
     @Test
-    void acceptsShouldReturnTrueWhenisNotBoImportedState() {
+    void acceptsShouldReturnTrueWhenisNotBoImportedState()  throws NotificationClientException {
         when(caseDetails.getState()).thenReturn("12345");
         when(notificationService.isBoImportedStateBeforeDormant(caseDetails.getId().toString())).thenReturn(false);
         underTest.setReferenceDate(LocalDate.of(2023, 10, 01));

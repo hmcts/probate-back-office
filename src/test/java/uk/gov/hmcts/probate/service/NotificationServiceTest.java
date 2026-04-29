@@ -1515,7 +1515,8 @@ class NotificationServiceTest {
     }
 
     @Test
-    void isBoImportedStateBeforeDormantReturnsTrueWhenPreviousStateIsBoCaseImported() {
+    void isBoImportedStateBeforeDormantReturnsTrueWhenPreviousStateIsBoCaseImported()
+            throws NotificationClientException {
         String caseReference = "12345";
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .serviceAuthorisation("serviceToken")
@@ -1538,7 +1539,8 @@ class NotificationServiceTest {
     }
 
     @Test
-    void isBoImportedStateBeforeDormantReturnsFalseWhenPreviousStateIsNotBoCaseImported() {
+    void isBoImportedStateBeforeDormantReturnsFalseWhenPreviousStateIsNotBoCaseImported()
+            throws NotificationClientException {
         String caseReference = "12345";
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .serviceAuthorisation("serviceToken")

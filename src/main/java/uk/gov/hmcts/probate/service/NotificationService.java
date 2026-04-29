@@ -1232,19 +1232,19 @@ public class NotificationService {
             .toList();
     }
 
-    public boolean isBoImportedStateBeforeDormant(String caseReference) {
+    public boolean isBoImportedStateBeforeDormant(String caseReference)
+            throws NotificationClientException {
         log.info("looking up previous state for caseReference {}", caseReference);
         SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
         Optional<AuditEvent> previousEvent = auditEventService.getPreviousAuditEventOfByEventId(caseReference,
                  EventId.MAKE_CASE_DORMANT, securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation());
         if (previousEvent.isPresent()) {
-            AuditEvent evnet = previousEvent.get();
+            AuditEvent auditEvent = previousEvent.get();
             log.info("The previous state of case {} is {} at event CreatedDate: {}",
-                    caseReference, evnet.getStateId(), evnet.getCreatedDate());
-            return evnet.getStateId().equals(STATE_BO_CASE_IMPORTED);
+                    caseReference, auditEvent.getStateId(), auditEvent.getCreatedDate());
+            return auditEvent.getStateId().equals(STATE_BO_CASE_IMPORTED);
         } else {
-            log.info("No previous state found for case {}", caseReference);
-            return false;
+            throw new NotificationClientException("No previous state found for case ID: " + caseReference);
         }
     }
 

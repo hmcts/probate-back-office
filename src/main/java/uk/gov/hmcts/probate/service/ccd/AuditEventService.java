@@ -44,6 +44,7 @@ public class AuditEventService {
         log.info("Getting previous audit event for eventId: {} with caseId {} ", eventId.getName(), caseId);
         AuditEventsResponse auditEventsResponse
                 = caseDataApi.getAuditEvents(userToken, authToken, false, caseId);
+        List<AuditEvent> auditEvents = auditEventsResponse.getAuditEvents();
         return auditEventsResponse.getAuditEvents().stream()
                 .sorted(Comparator.comparing(AuditEvent::getCreatedDate).reversed())
                 .dropWhile(e -> !eventId.getName().equals(e.getId()))
