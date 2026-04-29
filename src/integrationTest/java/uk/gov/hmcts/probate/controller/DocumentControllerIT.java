@@ -906,6 +906,38 @@ class DocumentControllerIT {
     }
 
     @Test
+    void shouldUpdateLastEvidenceAddedCasePrintedDateCaseworker() throws Exception {
+        String payload = testUtils.getStringFromFile("digitalCase.json");
+        payload =  payload.replaceFirst("\"state\": \"SolAppCreatedDeceasedDtls\"",
+                "\"state\": \"CasePrinted\"");
+        mockMvc.perform(post("/document/evidenceAdded")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")))
+                .andReturn();
+        verify(evidenceUploadService)
+                .updateLastEvidenceAddedDate(any(CaseDetails.class));
+    }
+
+    @Test
+    void shouldUpdateLastEvidenceAddedCaseClosedDateCaseworker() throws Exception {
+        String payload = testUtils.getStringFromFile("digitalCase.json");
+        payload =  payload.replaceFirst("\"state\": \"SolAppCreatedDeceasedDtls\"",
+                "\"state\": \"BOCaseClosed\"");
+        mockMvc.perform(post("/document/evidenceAdded")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")))
+                .andReturn();
+        verify(evidenceUploadService)
+                .updateLastEvidenceAddedDate(any(CaseDetails.class));
+    }
+
+    @Test
     void shouldUpdateLastEvidenceAddedDateRobotOngoing() throws Exception {
         String payload = testUtils.getStringFromFile("digitalCase.json");
         mockMvc.perform(post("/document/evidenceAddedRPARobot")

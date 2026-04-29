@@ -371,7 +371,7 @@ public class DocumentController {
             log.warn("evidenceAdded fails to generate or upload notification pdf for case: {}",
                     callbackRequest.getCaseDetails().getId(), e);
         }
-
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledNo(callbackRequest);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
