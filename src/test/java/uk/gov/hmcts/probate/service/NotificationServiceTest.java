@@ -1529,8 +1529,8 @@ class NotificationServiceTest {
                 .build();
 
         when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
-        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(eq(caseReference), eq(EventId.MAKE_CASE_DORMANT),
-                eq(securityDTO.getAuthorisation()), eq(securityDTO.getServiceAuthorisation())))
+        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(caseReference, EventId.MAKE_CASE_DORMANT,
+                securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation()))
                 .thenReturn(Optional.of(auditEvent));
 
         boolean result = notificationService.isBoImportedStateBeforeDormant(caseReference);
@@ -1553,8 +1553,8 @@ class NotificationServiceTest {
                 .build();
 
         when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
-        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(eq(caseReference), eq(EventId.MAKE_CASE_DORMANT),
-                eq(securityDTO.getAuthorisation()), eq(securityDTO.getServiceAuthorisation())))
+        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(caseReference, EventId.MAKE_CASE_DORMANT,
+                securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation()))
                 .thenReturn(Optional.of(auditEvent));
 
         boolean result = notificationService.isBoImportedStateBeforeDormant(caseReference);
