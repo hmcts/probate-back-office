@@ -20,6 +20,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.JU
 @RequiredArgsConstructor
 public class IntestacyDivorceOrSeparationDateValidationRule implements ValidationRule {
     public static final String INVALID_DIVORCE_OR_SEPARATION_DATE = "invalidDivorceOrSeparationDate";
+    public static final String INVALID_DIVORCE_OR_SEPARATION_DATE_WELSH = "invalidDivorceOrSeparationDateWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -48,6 +49,8 @@ public class IntestacyDivorceOrSeparationDateValidationRule implements Validatio
                 if (invalid) {
                     errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                             INVALID_DIVORCE_OR_SEPARATION_DATE));
+                    errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                            INVALID_DIVORCE_OR_SEPARATION_DATE_WELSH));
                 }
             }
         }

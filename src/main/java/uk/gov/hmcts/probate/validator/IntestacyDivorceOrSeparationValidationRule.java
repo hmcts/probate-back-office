@@ -25,6 +25,7 @@ public class IntestacyDivorceOrSeparationValidationRule implements ValidationRul
     public static final String SEPARATED_OUTSIDE_ENGLAND_OR_WALES = "separatedOutsideEnglandOrWales";
     public static final String SEPARATED_OUTSIDE_ENGLAND_OR_WALES_WELSH = "separatedOutsideEnglandOrWalesWelsh";
     public static final String INVALID_DIVORCE_OR_SEPARATION_DATE = "invalidDivorceOrSeparationDate";
+    public static final String INVALID_DIVORCE_OR_SEPARATION_DATE_WELSH = "invalidDivorceOrSeparationDateWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -60,6 +61,7 @@ public class IntestacyDivorceOrSeparationValidationRule implements ValidationRul
 
                 if (invalid) {
                     codes.add(INVALID_DIVORCE_OR_SEPARATION_DATE);
+                    codes.add(INVALID_DIVORCE_OR_SEPARATION_DATE_WELSH);
                 }
             }
 
