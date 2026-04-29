@@ -48,8 +48,7 @@ public class OrganisationsRetrievalService {
                     responseEntity.toString());
             return Objects.requireNonNull(responseEntity.getBody());
         } catch (Exception e) {
-            log.error("SAC: Exception when looking up org for case {} authToken {} for exception {}",
-                caseId, new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
+            log.error("SAC: Exception when looking up org for case {}: {}", caseId, e.getMessage());
         }
         log.info("SAC: no OrganisationEntityResponse for caseId {}", caseId);
         return null;
