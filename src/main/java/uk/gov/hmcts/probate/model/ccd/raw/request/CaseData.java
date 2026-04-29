@@ -787,5 +787,9 @@ public class CaseData extends CaseDataParent {
         getSolsAdditionalExecutorList().clear();
     }
 
+    public void clearSolsDeceasedAliasNamesList() {
+        getSolsDeceasedAliasNamesList().clear();
+    }
+
     private final String caseNameHmctsInternal;
 }

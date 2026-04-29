@@ -10,4 +10,5 @@ import lombok.Data;
 public class TCResolutionLodgedWithAppCaseExtra {
     private final String showTcResolutionLodgedWithApp;
     private final String tcResolutionLodgedWithAppText;
+    private final String tcResolutionLodgedWithAppTextWelsh;
 }

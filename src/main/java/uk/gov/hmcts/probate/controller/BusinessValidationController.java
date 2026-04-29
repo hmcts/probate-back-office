@@ -223,10 +223,12 @@ public class BusinessValidationController {
         BindingResult bindingResult,
         HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
+        CaseDetails details = callbackRequest.getCaseDetails();
         caseDataTransformer.transformFormCaseData(callbackRequest);
+        caseDataTransformer.clearDeceasedAliasesWhenUpdatingDeceasedDetails(details);
         validateForPayloadErrors(callbackRequest, bindingResult);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
-        CaseDetails details = callbackRequest.getCaseDetails();
+
         if (response.getErrors().isEmpty()) {
             if (YES.equals(details.getData().getHmrcLetterId()) || null == details.getData().getHmrcLetterId()) {
                 Optional<String> newState =
