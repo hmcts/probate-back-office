@@ -1562,4 +1562,54 @@ class NotificationServiceTest {
         assertEquals(false, result);
     }
 
+    @Test
+    void shouldThrowWhenPreviousStateEvent()
+            throws NotificationClientException {
+        String caseReference = "12345";
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        AuditEvent auditEvent = AuditEvent.builder()
+                .stateId(STATE_PENDING)
+                .createdDate(LocalDateTime.now())
+                .build();
+
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(caseReference, EventId.MAKE_CASE_DORMANT,
+                securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation()))
+                .thenReturn(Optional.empty());
+
+        assertThrows(NotificationClientException.class, () -> {
+            notificationService.isBoImportedStateBeforeDormant(caseReference);
+        });
+    }
+
+    @Test
+    void exceptionMessageIncludesCaseReferenceWhenNoPreviousStateFound()
+            throws NotificationClientException {
+        String caseReference = "12345";
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        AuditEvent auditEvent = AuditEvent.builder()
+                .stateId(STATE_PENDING)
+                .createdDate(LocalDateTime.now())
+                .build();
+
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(caseReference, EventId.MAKE_CASE_DORMANT,
+                securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation()))
+                .thenReturn(Optional.empty());
+
+        NotificationClientException exception = assertThrows(NotificationClientException.class, () -> {
+            notificationService.isBoImportedStateBeforeDormant(caseReference);
+        });
+
+        assertEquals("No previous state found for case ID: " + caseReference, exception.getMessage());
+    }
+
 }
