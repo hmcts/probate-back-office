@@ -63,6 +63,7 @@ import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationDateValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationValidationRule;
 import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
@@ -147,6 +148,7 @@ public class BusinessValidationController {
     private final IntestacyDeceasedDetailsValidationRule intestacyDeceasedDetailsValidationRule;
     private final IntestacyApplicantDetailsValidationRule intestacyApplicantDetailsValidationRule;
     private final IntestacyDivorceOrSeparationValidationRule intestacyDivorceOrSeparationValidationRule;
+    private final IntestacyDivorceOrSeparationDateValidationRule intestacyDivorceOrSeparationDateValidationRule;
     private final IntestacyCoApplicantValidationRule intestacyCoApplicantValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
@@ -756,7 +758,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         var rules = new ValidationRule[]{checkIntestacyOtherApplicantRule, checkIntestacyMaritalStatusRule,
             intestacyDeceasedDetailsValidationRule, intestacyApplicantDetailsValidationRule,
-            intestacyDivorceOrSeparationValidationRule};
+            intestacyDivorceOrSeparationValidationRule, intestacyDivorceOrSeparationDateValidationRule};
         final List<ValidationRule> intestacyApplicantValidations = Arrays.asList(rules);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
                 intestacyApplicantValidations);

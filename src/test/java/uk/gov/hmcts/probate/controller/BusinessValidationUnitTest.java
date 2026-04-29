@@ -60,6 +60,7 @@ import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationDateValidationRule;
 import uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationValidationRule;
 import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
@@ -234,6 +235,8 @@ class BusinessValidationUnitTest {
     private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     @Mock
     private DocumentTransformer documentTransformerMock;
+    @Mock
+    private IntestacyDivorceOrSeparationDateValidationRule intestacyDivorceOrSeparationDateValidationRule;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -283,6 +286,7 @@ class BusinessValidationUnitTest {
             intestacyDeceasedDetailsValidationRule,
             intestacyApplicantDetailsValidationRule,
             intestacyDivorceOrSeparationValidationRule,
+            intestacyDivorceOrSeparationDateValidationRule,
             intestacyCoApplicantValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
