@@ -152,6 +152,8 @@ public class CCDDataTransformer {
             .dateOfDivorcedCPJudicially(caseData.getDateOfDivorcedCPJudicially())
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .address(caseData.getDeceasedAddress())
+            .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
+            .deceasedAnyLivingDescendants(caseData.getDeceasedAnyLivingDescendants())
             .build();
     }
 

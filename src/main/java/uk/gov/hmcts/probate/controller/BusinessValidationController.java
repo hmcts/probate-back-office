@@ -772,6 +772,7 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest,
             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
+        numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         var rules = new ValidationRule[]{intestacyCoApplicantValidationRule};
         final List<ValidationRule> intestacyCoApplicantValidations = Arrays.asList(rules);
 

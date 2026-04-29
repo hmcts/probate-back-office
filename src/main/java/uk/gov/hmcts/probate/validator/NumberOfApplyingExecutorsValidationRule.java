@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
+import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +24,7 @@ public class NumberOfApplyingExecutorsValidationRule {
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final int MAX_EXECUTORS = 4;
     private final ExecutorsTransformer executorsTransformer;
+    private final ExecutorListMapperService executorListMapperService;
 
     public void validate(CaseDetails caseDetails) {
         String[] args = {caseDetails.getId().toString()};
@@ -34,6 +36,10 @@ public class NumberOfApplyingExecutorsValidationRule {
             executorsTransformer.createCaseworkerApplyingList(caseDetails.getData());
         execsApplying = executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
             caseDetails.getData());
+        if (caseDetails.getData().isPrimaryApplicantApplying()) {
+            execsApplying.add(0, executorListMapperService
+                    .mapFromPrimaryApplicantToApplyingExecutor(caseDetails.getData()));
+        }
         String execsApplyingNames = FormattingService.createExecsApplyingNames(execsApplying);
 
         List<String> executors = Arrays.asList(execsApplyingNames.split(","));
