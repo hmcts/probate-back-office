@@ -267,6 +267,7 @@ public class NotificationController {
                         callbackRequest.getCaseDetails().getId(), e);
             }
         }
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledNo(callbackRequest);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
         CallbackResponse response = callbackResponseTransformer
                 .transformCaseForAttachScannedDocs(callbackRequest, document, caseworkerInfo);

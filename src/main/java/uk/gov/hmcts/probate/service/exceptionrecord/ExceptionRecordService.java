@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.exceptionrecord;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
@@ -52,38 +51,42 @@ public class ExceptionRecordService {
 
     private static final String CAVEAT_EXTEND_CASE_REFERENCE_KEY = "caseReference";
 
-    @Autowired
-    List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry;
+    private final List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry;
+    private final EventValidationService eventValidationService;
+    private final CaveatNotificationService caveatNotificationService;
+    private final ExceptionRecordCaveatMapper erCaveatMapper;
+    private final ExceptionRecordGrantOfRepresentationMapper erGrantOfRepresentationMapper;
+    private final ScannedDocumentMapper documentMapper;
+    private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
+    private final CallbackResponseTransformer grantOfRepresentationTransformer;
+    private final OCRFieldModifierUtils ocrFieldModifierUtils;
+    private final ExceptionRecordCaseDataValidator exceptionRecordCaseDataValidator;
 
-    @Autowired
-    EventValidationService eventValidationService;
-
-    @Autowired
-    CaveatNotificationService caveatNotificationService;
-
-    @Autowired
-    ExceptionRecordCaveatMapper erCaveatMapper;
-
-    @Autowired
-    ExceptionRecordGrantOfRepresentationMapper erGrantOfRepresentationMapper;
-
-    @Autowired
-    ScannedDocumentMapper documentMapper;
-
-    @Autowired
-    CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
-
-    @Autowired
-    CallbackResponseTransformer grantOfRepresentationTransformer;
-
-    @Autowired
-    OCRFieldModifierUtils ocrFieldModifierUtils;
+    public ExceptionRecordService(List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry,
+                                  EventValidationService eventValidationService,
+                                  CaveatNotificationService caveatNotificationService,
+                                  ExceptionRecordCaveatMapper erCaveatMapper,
+                                  ExceptionRecordGrantOfRepresentationMapper erGrantOfRepresentationMapper,
+                                  ScannedDocumentMapper documentMapper,
+                                  CaveatCallbackResponseTransformer caveatCallbackResponseTransformer,
+                                  CallbackResponseTransformer grantOfRepresentationTransformer,
+                                  OCRFieldModifierUtils ocrFieldModifierUtils,
+                                  ExceptionRecordCaseDataValidator exceptionRecordCaseDataValidator) {
+        this.validationRuleCaveatsExpiry = validationRuleCaveatsExpiry;
+        this.eventValidationService = eventValidationService;
+        this.caveatNotificationService = caveatNotificationService;
+        this.erCaveatMapper = erCaveatMapper;
+        this.erGrantOfRepresentationMapper = erGrantOfRepresentationMapper;
+        this.documentMapper = documentMapper;
+        this.caveatCallbackResponseTransformer = caveatCallbackResponseTransformer;
+        this.grantOfRepresentationTransformer = grantOfRepresentationTransformer;
+        this.ocrFieldModifierUtils = ocrFieldModifierUtils;
+        this.exceptionRecordCaseDataValidator = exceptionRecordCaseDataValidator;
+    }
 
     public SuccessfulTransformationResponse createCaveatCaseFromExceptionRecord(
         ExceptionRecordRequest erRequest,
         List<String> warnings) {
-
-        List<String> errors = new ArrayList<String>();
 
         try {
             log.info("About to map Caveat OCR fields to CCD for case: {}", erRequest.getExceptionRecordId());
@@ -96,7 +99,7 @@ public class ExceptionRecordService {
 
             // Add scanned documents
             log.info("About to map Caveat Scanned Documents to CCD.");
-            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+            exceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
                     erRequest.getScannedDocuments(), CaseType.CAVEAT);
             caveatData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
@@ -140,7 +143,7 @@ public class ExceptionRecordService {
             GrantOfRepresentationData grantOfRepresentationData =
                     erGrantOfRepresentationMapper.toCcdData(exceptionRecordOCRFields, grantType);
 
-            ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
+            exceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
 
             grantOfRepresentationData.setModifiedOCRFieldList(modifiedFields);
 
@@ -149,9 +152,11 @@ public class ExceptionRecordService {
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
+            exceptionRecordCaseDataValidator.validateDateOfDeath(grantOfRepresentationData);
+
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");
-            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+            exceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
                     erRequest.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
@@ -225,7 +230,7 @@ public class ExceptionRecordService {
             log.info("Mapping Caveat Scanned Documents to case.");
             uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = caveatDetails.getData();
             int originalScannedNumber = caveatCallbackRequest.getCaseDetails().getData().getScannedDocuments().size();
-            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+            exceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
                     erRequest.getScannedDocuments(), CaseType.CAVEAT);
             caveatCallbackRequest.getCaseDetails().getData().setScannedDocuments(
                     mergeScannedDocuments(
