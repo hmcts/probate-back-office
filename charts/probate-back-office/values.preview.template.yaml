@@ -277,7 +277,7 @@ aac-manage-case-assignment:
       MANAGE_CASE_S2S_KEY: ${MANAGE_CASE_S2S_KEY}
       IDAM_NOC_APPROVER_USERNAME: ${BEFTA_IDAM_NOC_APPROVER_USERNAME}
       IDAM_NOC_APPROVER_PASSWORD: ${BEFTA_IDAM_NOC_APPROVER_PASSWORD}
-      NOTIFY_MCA_API_KEY: ${PROBATE_BO_NOTIFY_KEY}
+      NOTIFY_MCA_API_KEY: ${NOTIFY_MCA_API_KEY}
       NOTIFY_EMAIL_TEMPLATE_ID: 85f22924-7b45-4fc6-9954-c08a8833f6a0
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
     autoscaling:
@@ -310,7 +310,9 @@ java:
         - name: s2s-probate-backend
           alias: idam.s2s-auth.totp_secret
         - name: probate-bo-govNotifyApiKey
-          alias: notifications.govNotifyApiKey
+          alias: notifications.govNotifyApiKeyPrimary
+        - name: probate-bo-govNotifyApiKey-secondary
+          alias: notifications.govNotifyApiKeySecondary
         - name: authTokenEmail
           alias: auth.provider.client.email
         - name: authTokenPassword

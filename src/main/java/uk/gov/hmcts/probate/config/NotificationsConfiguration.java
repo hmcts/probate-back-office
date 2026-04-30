@@ -12,7 +12,12 @@ import uk.gov.service.notify.NotificationClient;
 @EnableAsync
 public class NotificationsConfiguration {
     @Bean
-    public NotificationClient notificationClient(NotificationsProperties notificationsProperties) {
-        return new NotificationClient(notificationsProperties.getGovNotifyApiKey());
+    public NotificationClient primaryNotificationClient(NotificationsProperties properties) {
+        return new NotificationClient(properties.getGovNotifyApiKeyPrimary());
+    }
+
+    @Bean
+    public NotificationClient secondaryNotificationClient(NotificationsProperties properties) {
+        return new NotificationClient(properties.getGovNotifyApiKeySecondary());
     }
 }

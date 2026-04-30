@@ -64,7 +64,9 @@ java:
         - name: s2s-probate-backend
           alias: idam.s2s-auth.totp_secret
         - name: probate-bo-govNotifyApiKey
-          alias: notifications.govNotifyApiKey
+          alias: notifications.govNotifyApiKeyPrimary
+        - name: probate-bo-govNotifyApiKey-secondary
+          alias: notifications.govNotifyApiKeySecondary
         - name: authTokenEmail
           alias: auth.provider.client.email
         - name: authTokenPassword
