@@ -56,7 +56,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boSelectForQA)", true)
-                                .expectedValue(WORK_TYPE, "routine_work", true)
+                                .expectedValue(WORK_TYPE, "decision_making_work", true)
                                 .build()
                 ),
                 Arguments.of(
