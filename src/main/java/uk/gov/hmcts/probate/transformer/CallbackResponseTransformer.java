@@ -2474,8 +2474,8 @@ public class CallbackResponseTransformer {
 
         if (YES.equalsIgnoreCase(otherExecutorExistsAfter) && (!relationshipAfter.equals(relationshipBefore)
                 || (null != wholeOrHalfSiblingBefore && !wholeOrHalfSiblingBefore.equals(wholeOrHalfSiblingAfter))
-                || (NO.equalsIgnoreCase(otherExecutorExistsBefore) && YES.equalsIgnoreCase(otherExecutorExistsAfter))
-                )) {
+                || (NO.equalsIgnoreCase(otherExecutorExistsBefore)
+                && YES.equalsIgnoreCase(otherExecutorExistsAfter)))) {
             List<CollectionMember<IntestacyAdditionalExecutor>> additionalExecutorList = new ArrayList<>();
             IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
                     .solsApplicantFamilyDetails(SolsApplicantFamilyDetails.builder()
