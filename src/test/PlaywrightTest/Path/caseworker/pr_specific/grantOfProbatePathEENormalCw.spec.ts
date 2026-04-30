@@ -211,6 +211,29 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
       endState
     );
 
+    nextStepName = "Request information";
+    await basePage.logInfo(scenarioName, nextStepName, caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepName);
+    await cwEventActionsPage.requestInformationPage1(nextStepName);
+    await cwEventActionsPage.requestInformationPage2(nextStepName, documentUploadConfig);
+    await cwEventActionsPage.requestInformationPage3(nextStepName);
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+    endState = "Case stopped";
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      historyTabConfig,
+      eventSummaryConfig,
+      nextStepName,
+      endState
+    );
+    await basePage.seeCaseDetails(
+      testInfo,
+      caseRef,
+      documentUploadTabConfig,
+      documentUploadConfig
+    );
+
     nextStepName = "Resolve stop";
     const resolveStop = "Ready to issue";
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
