@@ -2463,16 +2463,19 @@ public class CallbackResponseTransformer {
         String relationshipBefore = caseDetailsBefore.getData().getSolsApplicantRelationshipToDeceased();
         String wholeOrHalfSiblingBefore = caseDetailsBefore.getData().getApplicantSameParentsAsDeceased();
         String wholeOrHalfSiblingAfter = caseDetails.getData().getApplicantSameParentsAsDeceased();
+        String otherExecutorExistsBefore = caseDetailsBefore.getData().getOtherExecutorExists();
+        String otherExecutorExistsAfter = caseDetails.getData().getOtherExecutorExists();
         List<CollectionMember<IntestacyAdditionalExecutor>> existingExecutorList = caseDetailsBefore.getData()
                 .getSolsIntestacyExecutorList();
         log.info("Relationship to deceased before for case {}: {}",caseDetails.getId(), relationshipBefore);
         final var caseData = caseDetails.getData();
 
         DynamicRadioList relationshipList = getAppropriateRelationshipRadioList(caseData);
-        String  otherExecutorExists = caseData.getOtherExecutorExists();
 
-        if (YES.equalsIgnoreCase(otherExecutorExists) && (!relationshipAfter.equals(relationshipBefore)
-                || (null != wholeOrHalfSiblingBefore && !wholeOrHalfSiblingBefore.equals(wholeOrHalfSiblingAfter)))) {
+        if (YES.equalsIgnoreCase(otherExecutorExistsAfter) && (!relationshipAfter.equals(relationshipBefore)
+                || (null != wholeOrHalfSiblingBefore && !wholeOrHalfSiblingBefore.equals(wholeOrHalfSiblingAfter))
+                || (NO.equalsIgnoreCase(otherExecutorExistsBefore) && YES.equalsIgnoreCase(otherExecutorExistsAfter))
+                )) {
             List<CollectionMember<IntestacyAdditionalExecutor>> additionalExecutorList = new ArrayList<>();
             IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
                     .solsApplicantFamilyDetails(SolsApplicantFamilyDetails.builder()
