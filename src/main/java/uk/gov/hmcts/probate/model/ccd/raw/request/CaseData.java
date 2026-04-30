@@ -641,6 +641,11 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
     private final List<CollectionMember<String>> autoCaseWarnings;
 
+    /**
+     * This is only intended for use during migrations and should not be persisted into the case record.
+     */
+    private final String migrationCallbackMetadata;
+
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
 
