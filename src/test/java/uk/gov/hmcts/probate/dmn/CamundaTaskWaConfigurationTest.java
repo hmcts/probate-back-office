@@ -109,39 +109,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
 
-        //resultsMatch(dmnDecisionTableResult.getResultList(), expectation);
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
-    }
-
-    private void resultsMatch(List<Map<String, Object>> results, List<Map<String, Object>> expectation) {
-        assertThat(results.size(), is(expectation.size()));
-
-        for (int index = 0; index < expectation.size(); index++) {
-            if (DUE_DATE_ORIGIN.equals(expectation.get(index).get("name"))) {
-                assertEquals(
-                        expectation.get(index).get("canReconfigure"),
-                        results.get(index).get("canReconfigure")
-                );
-                assertTrue(validNow(
-                        ZonedDateTime.parse(expectation.get(index).get("value").toString()),
-                        ZonedDateTime.parse(results.get(index).get("value").toString())
-                ));
-
-            } else if (PRIORITY_DATE_ORIGIN_REF.equals(expectation.get(index).get("name"))) {
-                assertEquals(
-                        expectation.get(index).get("canReconfigure"),
-                        results.get(index).get("canReconfigure")
-                );
-                assertTrue(LocalDate.parse(expectation.get(index).get("value").toString()).isEqual(
-                        LocalDate.parse(results.get(index).get("value").toString()))
-                        || LocalDate.parse(expectation.get(index).get("value").toString()).isAfter(
-                        LocalDate.parse(results.get(index).get("value").toString()))
-                );
-
-            } else {
-                assertThat(results.get(index), is(expectation.get(index)));
-            }
-        }
     }
 
     private boolean validNow(ZonedDateTime expected, ZonedDateTime result) {
