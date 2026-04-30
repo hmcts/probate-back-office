@@ -120,10 +120,12 @@ public class SolicitorLegalStatementPDFDecorator {
                             "WELSH"));
                 }
             }
-            decoration = caseExtraDecorator.decorate(IntestacyMultipleApplicantsCaseExtra.builder()
-                    .englishCoApplicantDescriptions(englishDescriptions)
-                    .welshCoApplicantDescriptions(welshDescriptions)
-                    .build());
+
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                    caseExtraDecorator.decorate(IntestacyMultipleApplicantsCaseExtra.builder()
+                            .englishCoApplicantDescriptions(englishDescriptions)
+                            .welshCoApplicantDescriptions(welshDescriptions)
+                            .build()));
         }
         return decoration;
     }
