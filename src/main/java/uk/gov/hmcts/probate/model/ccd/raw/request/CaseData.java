@@ -790,4 +790,6 @@ public class CaseData extends CaseDataParent {
     public void clearSolsDeceasedAliasNamesList() {
         getSolsDeceasedAliasNamesList().clear();
     }
+
+    private final String caseNameHmctsInternal;
 }

@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -147,6 +148,9 @@ class DocumentControllerIT {
     @MockitoBean
     private FeatureToggleService featureToggleService;
 
+    @MockitoBean
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
+
     @BeforeEach
     public void setUp() throws NotificationClientException {
         final Document document = Document.builder()
@@ -245,6 +249,23 @@ class DocumentControllerIT {
 
         doReturn("serviceAuth").when(securityUtils).generateServiceToken();
     }
+
+
+    @Test
+    void solsWillLodgementSupplementaryData_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+
+        String willLodgementPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
+
+        mockMvc.perform(post("/document/supplementaryData")
+                        .header("Authorization", AUTH_TOKEN)
+                        .content(willLodgementPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+
+    }
+
 
     @Test
     void generateGrantDraftGrantOfRepresentation() throws Exception {
