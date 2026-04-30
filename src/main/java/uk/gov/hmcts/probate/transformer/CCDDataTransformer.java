@@ -154,6 +154,8 @@ public class CCDDataTransformer {
             .address(caseData.getDeceasedAddress())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
             .deceasedAnyLivingDescendants(caseData.getDeceasedAnyLivingDescendants())
+            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
+            .anyLivingWholeBloodSiblings(caseData.getAnyLivingWholeBloodSiblings())
             .build();
     }
 

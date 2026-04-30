@@ -69,6 +69,10 @@ public final class Constants {
     public static final String PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD = "adoptedChild";
     public static final String CHILD = "child";
     public static final String SOLICITOR_SPOUSE = "SpouseOrCivil";
+    public static final String SOLICITOR_CHILD = "Child";
+    public static final String SOLICITOR_GRANDCHILD = "Grandchild";
+    public static final String SOLICITOR_PARENT = "Parent";
+    public static final String SOLICITOR_SIBLING = "Sibling";
     public static final String SPOUSE = "partner";
     public static final String GRAND_CHILD = "grandchild";
     public static final String PARENT = "parent";
@@ -79,6 +83,22 @@ public final class Constants {
     public static final String WHOLE_BLOOD_NIECE_OR_NEPHEW = "wholeBloodNieceOrNephew";
     public static final String HALF_BLOOD_SIBLING = "halfBloodSibling";
     public static final String HALF_BLOOD_NIECE_OR_NEPHEW = "halfBloodNieceOrNephew";
+
+    public static final String LS_SPOUSE = "husband, wife or civil partner";
+    public static final String LS_WHOLE_SIBLING = "whole blood sibling";
+    public static final String LS_HALF_SIBLING = "half blood sibling";
+    public static final String LS_WHOLE_NIECE_NEPHEW = "niece or nephew";
+    public static final String LS_HALF_NIECE_NEPHEW = "half-niece or half-nephew";
+
+    public static final String WELSH_CHILD = "plentyn";
+    public static final String WELSH_SPOUSE = "gyn-briod neu’n bartner sifil";
+    public static final String WELSH_GRANDCHILD = "wyr/wyres";
+    public static final String WELSH_PARENT = "rhiant";
+    public static final String WELSH_SIBLING = "brawd/chwaer";
+    public static final String WELSH_WHOLE_BLOOD_SIBLING = "brawd neu chwaer gwaed cyfan";
+    public static final String WELSH_HALF_BLOOD_SIBLING = "hanner brawd/chwaer";
+    public static final String WELSH_WHOLE_BLOOD_NIECE_OR_NEPHEW = "nith neu nai";
+    public static final String WELSH_HALF_BLOOD_NIECE_OR_NEPHEW = "hanner nith neu hanner nai";
 
     public static final String CHILD_LABEL = "They are the deceased’s child";
     public static final String GRAND_CHILD_LABEL = "They are the deceased’s grandchild";

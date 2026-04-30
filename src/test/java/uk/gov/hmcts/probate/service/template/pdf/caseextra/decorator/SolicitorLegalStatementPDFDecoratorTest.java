@@ -6,8 +6,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.businessrule.IhtEstateNotCompletedBusinessRule;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.ApplicantFamilyDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstateConfirmCaseExtra;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,5 +45,41 @@ class SolicitorLegalStatementPDFDecoratorTest {
         when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
         String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
         assertEquals("", actual);
+    }
+
+    @Test
+    void shouldDecorateWithEnglishAndWelshDescriptionsWhenExecutorsPresent() {
+        when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
+        List<CollectionMember<AdditionalExecutorApplying>> executors = new ArrayList<>();
+
+        AdditionalExecutorApplying executor1 = AdditionalExecutorApplying.builder()
+                .applyingExecutorName("John Doe")
+                .applicantFamilyDetails(ApplicantFamilyDetails.builder()
+                        .relationshipToDeceased("child").build())
+                .build();
+        executors.add(new CollectionMember<>("1", executor1));
+        AdditionalExecutorApplying executor2 = AdditionalExecutorApplying.builder()
+                .applyingExecutorName("John Doe1")
+                .applicantFamilyDetails(ApplicantFamilyDetails.builder()
+                        .relationshipToDeceased("grandchild").build())
+                .build();
+        executors.add(new CollectionMember<>("1", executor1));
+        executors.add(new CollectionMember<>("2", executor2));
+        when(caseExtraDecorator.decorate(any())).thenReturn("decoratedJson");
+
+        String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
+
+        assertEquals("decoratedJson", actual);
+    }
+
+    @Test
+    void shouldDecorateWithEmptyDescriptionsWhenExecutorsListIsNull() {
+        when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
+        when(caseDataMock.getExecutorsApplyingLegalStatement()).thenReturn(null);
+        when(caseExtraDecorator.decorate(any())).thenReturn("decoratedJson");
+
+        String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
+
+        assertEquals("decoratedJson", actual);
     }
 }

@@ -152,7 +152,7 @@
     <tr>
         <td colspan="2">
             <p>Mae swm gros yr ystad sy’n cael ei drosglwyddo o dan y grant yn {% if case_extras != null %}&#163;{{ case_extras.grossValue }} ac mae swm net yr ystad yn &#163;{{ case_extras.netValue }}.</p>
-            {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
+            {% if case_extras.showIhtEstate == "Yes" %}<p>{% if (multipleExecutors) %}Rydym yn{% else %}Rwy’n{% endif %} cadarnhau bod yr ystad yn ystad eithriedig</p>{% endif %}
             {% endif %}
             <p>Hyd eithaf ein gwybodaeth a’n cred, nid oedd unrhyw dir wedi’i freinio yn {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} a setlwyd cyn marwolaeth {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} ac a oedd dal yn dir a setlwyd er gwaethaf y farwolaeth honno.</p>
         </td>
@@ -172,38 +172,25 @@
                 {% endif %}
             </p>
             <p>
-                {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
                 {% if multipleExecutors %}
-                {{ executor.value.applyingExecutorName }}
-                yw
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
-                gyn-briod neu’n bartner sifil
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
-                plentyn
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
-                wyr/wyres
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
-                rhiant
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
-                brawd/chwaer
-                {% endif %}
-                o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
+                    {% for welshDescription in case_extras.welshCoApplicantDescriptions %}
+                        {{ welshDescription }} of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.<br />
+                    {% endfor %}
                 {% else %}
-                Fi yw
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
-                gyn-briod neu’n bartner sifil
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
-                plentyn
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
-                wyr/wyres
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
-                rhiant
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
-                brawd/chwaer
+                    Fi yw
+                    {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
+                    gyn-briod neu’n bartner sifil
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
+                    plentyn
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
+                    wyr/wyres
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
+                    rhiant
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
+                    brawd/chwaer
+                    {% endif %}
+                    o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
                 {% endif %}
-                o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
-                {% endif %}
-                {% endfor %}
             </p>
             <p>
                 {% if case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership"
@@ -241,14 +228,18 @@
             <p>{% if (multipleExecutors) %}Rydym yn{% else %}Rwy’n{% endif %} awdurdodi {{ case_details.case_data.solsSolicitorFirmName }}, fel y cwmni a enwebwyd {% if (multipleExecutors) %}gennym{% else %}gennyf{% endif %}, i gyflwyno’r cais hwn ar {% if (multipleExecutors) %}ein{% else %}fy{% endif %} rhan.</p>
         </td>
     </tr>
+    {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
+    {% if executor.id != "solicitor" %}
     <tr>
         <td>
             <p>Enw:</p>
         </td>
         <td>
-            <p>{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (ceisydd)</p>
+            <p>{% if loop.index == 0 %}{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (ceisydd){% else %}{{ executor.value.applyingExecutorName }} (ceisydd){% endif %}</p>
         </td>
     </tr>
+    {% endif %}
+    {% endfor %}
     <tr>
         <td>
             <p>Llofnod:</p>
@@ -390,7 +381,7 @@
     <tr>
         <td colspan="2">
             <p>The gross estate passing under the grant amounts to {% if case_extras != null %}&#163;{{ case_extras.grossValue }} and the net estate amounts to &#163;{{ case_extras.netValue }}.</p>
-                {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
+                {% if case_extras.showIhtEstate == "Yes" %}<p>{% if (multipleExecutors) %}We{% else %}I{% endif %} confirm that the estate is an excepted estate</p>{% endif %}
             {% endif %}
             <p>To the best of {% if (multipleExecutors) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
@@ -410,38 +401,25 @@
                 {% endif %}
             </p>
             <p>
-                {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
                 {% if multipleExecutors %}
-                {{ executor.value.applyingExecutorName }}
-                is the
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
-                husband, wife or civil partner
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
-                child
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
-                grandchild
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
-                parent
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
-                sibling
-                {% endif %}
-                of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
+                    {% for englishDescription in case_extras.englishCoApplicantDescriptions %}
+                        {{ englishDescription }} of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.<br />
+                    {% endfor %}
                 {% else %}
-                I am the
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
-                husband, wife or civil partner
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
-                child
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
-                grandchild
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
-                parent
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
-                sibling
+                    I am the
+                    {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
+                    husband, wife or civil partner
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
+                    child
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
+                    grandchild
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
+                    parent
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
+                    sibling
+                    {% endif %}
+                    of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
                 {% endif %}
-                of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
-                {% endif %}
-                {% endfor %}
             </p>
             <p>{% if case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" and case_details.case_data.solsApplicantRelationshipToDeceased != "SpouseOrCivil" %}
                 {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}'s husband, wife or civil partner is renouncing their right to apply now and in the future.
@@ -478,12 +456,14 @@
                 submit this application on {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf.</p>
         </td>
     </tr>
+    {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
+    {% if executor.id != "solicitor" %}
     <tr>
         <td>
             <p>Name:</p>
         </td>
         <td>
-            <p>{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (applicant)</p>
+            <p>{% if loop.index == 0 %}{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (applicant){% else %}{{ executor.value.applyingExecutorName }} (applicant){% endif %}</p>
         </td>
     </tr>
     <tr>
@@ -502,6 +482,8 @@
             <p>..................................................</p>
         </td>
     </tr>
+    {% endif %}
+    {% endfor %}
     <tr>
         <td>
             <p>Name:</p>
@@ -627,7 +609,7 @@
     <tr>
         <td colspan="2">
             <p>The gross estate passing under the grant amounts to {% if case_extras != null %}&#163;{{ case_extras.grossValue }} and the net estate amounts to &#163;{{ case_extras.netValue }}.</p>
-            {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
+            {% if case_extras.showIhtEstate == "Yes" %}<p>{% if (multipleExecutors) %}We{% else %}I{% endif %} confirm that the estate is an excepted estate</p>{% endif %}
             {% endif %}
             <p>To the best of {% if (multipleExecutors) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
@@ -647,38 +629,25 @@
                 {% endif %}
             </p>
             <p>
-                {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
                 {% if multipleExecutors %}
-                {{ executor.value.applyingExecutorName }}
-                is the
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
-                husband, wife or civil partner
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
-                child
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
-                grandchild
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
-                parent
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
-                sibling
-                {% endif %}
-                of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.<br />
+                    {% for englishDescription in case_extras.englishCoApplicantDescriptions %}
+                        {{ englishDescription }} of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.<br />
+                    {% endfor %}
                 {% else %}
-                I am the
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
-                husband, wife or civil partner
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
-                child
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
-                grandchild
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
-                parent
-                {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
-                sibling
+                    I am the
+                    {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}
+                    husband, wife or civil partner
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Child" %}
+                    child
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Grandchild" %}
+                    grandchild
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
+                    parent
+                    {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
+                    sibling
+                    {% endif %}
+                    of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
                 {% endif %}
-                of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
-                {% endif %}
-                {% endfor %}
             </p>
             <p>
                 {% if case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership"
@@ -724,7 +693,7 @@
             <p>Name:</p>
         </td>
         <td>
-            <p>{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (applicant)</p>
+            <p>{% if loop.index == 0 %}{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (applicant){% else %}{{ executor.value.applyingExecutorName }} (applicant){% endif %}</p>
         </td>
     </tr>
     <tr>
