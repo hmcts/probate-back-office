@@ -3,9 +3,11 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.Applicant;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
+import uk.gov.hmcts.probate.model.ccd.ExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
@@ -48,6 +50,7 @@ public class CCDDataTransformer {
             .solsSolicitorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason())
             .solicitor(buildSolicitorDetails(caseData))
             .deceased(buildDeceasedDetails(caseData))
+            .applicant(buildApplicantDetails(caseData))
             .iht(buildInheritanceTaxDetails(caseData))
             .fee(buildFeeDetails(caseData))
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
@@ -60,14 +63,18 @@ public class CCDDataTransformer {
             .originalWillSignedDate(caseData.getOriginalWillSignedDate())
             .codicilAddedDateList(getCodicilAddedDates(caseData))
             .deceasedDateOfDeath(caseData.getDeceasedDateOfDeath())
+            .deceasedMaritalStatus(caseData.getDeceasedMaritalStatus())
             .solsCoversheetDocument(caseData.getSolsCoversheetDocument())
             .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
+            .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
             .solsApplicantSiblings(caseData.getSolsApplicantSiblings())
             .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
             .titleAndClearingType(caseData.getTitleAndClearingType())
             .englishWill(caseData.getEnglishWill())
             .dispenseWithNotice(caseData.getDispenseWithNotice())
             .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs())
+            .otherExecutorExists(caseData.getOtherExecutorExists())
+            .caseworkerExecutorsList(getAllCaseworkerExecutors(caseData))
             .channelChoice(caseData.getChannelChoice());
 
         if (caseData.getApplicationType() != null) {
@@ -77,6 +84,23 @@ public class CCDDataTransformer {
 
         return dataBuilder
             .build();
+    }
+
+    private List<ExecutorApplying> getAllCaseworkerExecutors(CaseData caseData) {
+        List<ExecutorApplying> executors = new ArrayList<>();
+        if (caseData.getAdditionalExecutorsApplying() != null) {
+            executors.addAll(caseData.getAdditionalExecutorsApplying().stream()
+                .map(CollectionMember::getValue)
+                .map(executor -> ExecutorApplying.builder()
+                    .applying(true)
+                    .address(executor.getApplyingExecutorAddress())
+                    .forename(executor.getApplyingExecutorFirstName())
+                    .lastname(executor.getApplyingExecutorLastName())
+                    .applicantFamilyDetails(executor.getApplicantFamilyDetails())
+                    .build())
+                .toList());
+        }
+        return executors;
     }
 
     private boolean determineHasUploadedLegalStatement(CaseData data) {
@@ -121,8 +145,32 @@ public class CCDDataTransformer {
             .lastname(caseData.getDeceasedSurname())
             .dateOfBirth((caseData.getDeceasedDateOfBirth()))
             .dateOfDeath((caseData.getDeceasedDateOfDeath()))
+            .deceasedMaritalStatus(caseData.getDeceasedMaritalStatus())
+            .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
+            .deceasedAdoptedIn(caseData.getDeceasedAdoptedIn())
+            .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
+            .dateOfDivorcedCPJudicially(caseData.getDateOfDivorcedCPJudicially())
+            .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .address(caseData.getDeceasedAddress())
+            .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
+            .deceasedAnyLivingDescendants(caseData.getDeceasedAnyLivingDescendants())
+            .applicantSameParentsAsDeceased(caseData.getApplicantSameParentsAsDeceased())
+            .anyLivingWholeBloodSiblings(caseData.getAnyLivingWholeBloodSiblings())
             .build();
+    }
+
+    private Applicant buildApplicantDetails(CaseData caseData) {
+        return Applicant.builder()
+                .isApplicantParentDeceasedChild(caseData.getIsApplicantParentDeceasedChild())
+                .primaryApplicantAdoptedIn(caseData.getPrimaryApplicantAdoptedIn())
+                .primaryApplicantParentAdoptedIn((caseData.getPrimaryApplicantParentAdoptedIn()))
+                .primaryApplicantParentAdoptionInEnglandOrWales(
+                        caseData.getPrimaryApplicantParentAdoptionInEnglandOrWales())
+                .primaryApplicantParentAdoptedOut(caseData.getPrimaryApplicantParentAdoptedOut())
+                .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
+                .primaryApplicantAdoptedOut(caseData.getPrimaryApplicantAdoptedOut())
+                .anyLivingWholeBloodSiblings(caseData.getWholeBloodSiblingsDiedBeforeDeceased())
+                .build();
     }
 
     private InheritanceTax buildInheritanceTaxDetails(CaseData caseData) {
@@ -181,6 +229,18 @@ public class CCDDataTransformer {
                     .lastname(executor.getAdditionalExecLastname())
                     .build())
                 .collect(Collectors.toList()));
+        }
+        if (caseData.getSolsIntestacyExecutorList() != null) {
+            executors.addAll(caseData.getSolsIntestacyExecutorList().stream()
+                .map(CollectionMember::getValue)
+                .map(executor -> Executor.builder()
+                    .applying(true)
+                    .address(executor.getAdditionalExecAddress())
+                    .forename(executor.getAdditionalExecForenames())
+                    .lastname(executor.getAdditionalExecLastname())
+                    .applicantFamilyDetails(executor.getSolsApplicantFamilyDetails())
+                    .build())
+                .toList());
         }
 
         if (caseData.getAdditionalExecutorsTrustCorpList() != null) {
