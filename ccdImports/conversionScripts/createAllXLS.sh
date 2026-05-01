@@ -19,6 +19,16 @@ extraExclusions="${4:-}"
 waEnabledVar=${PROBATE_WA_ENABLED:-false}
 gsEnabledVar=${PROBATE_GS_ENABLED:-false}
 
+# GS flag
+if [[ "${gsEnabledVar}" != true ]]; then
+  echo "[INFO] GS feature is DISABLED adding *-gs.json to exclusions"
+  append_exclusion "*-gs.json"
+else
+  echo "[INFO] GS feature is ENABLED no exclusion added"
+fi
+
+echo "[INFO] Final extraExclusions: $extraExclusions"
+
 if [ -z "$caseServiceUrl" ] || [ -z "$aacUrl" ]; then
     echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
     exit 1
