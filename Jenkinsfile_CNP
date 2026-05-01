@@ -125,42 +125,60 @@ def checkForEnableCWNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "cw-nightly").contains("cw-nightly")
 }
 
+def checkForGSEnableLabel(branch_name) {
+    return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:gs").contains("pr-values:gs")
+}
+
 def checkForWAEnableLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:wa").contains("pr-values:wa")
 }
 
-def archiveCoreCaseDataDefinitions(env, branch_name) {
+def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
   dir("${WORKSPACE}/bin") {
     // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
-    if("preview" == env){
+    if("preview" == targetEnv){
       shutterOption = "false"
-    } else if("demo" == env){
+    } else if("demo" == targetEnv){
       shutterOption = "false"
-    } else if("aat" == env){
+    } else if("aat" == targetEnv){
       //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
       shutterOption = "false"
-    } else if("prod" == env){
+    } else if("prod" == targetEnv){
       //WARNING, CHANGING THIS WILL SHUTTER PROD
       shutterOption = "false"
     } else {
       shutterOption = "false"
     }
 
-    excludedFilenamePatterns="*-wa.json"
-    if ("preview" == env) {
-      if (checkForWAEnableLabel(branch_name)) {
-        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
-      } else {
-        sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
-      }
+    def patterns = []
+
+    echo "Executing Preview Environment Script"
+    if (env.PROBATE_WA_ENABLED == "true")  {
+        echo "PROBATE_WA_ENABLED = True, files with *-wa extension will not be excluded"
+    } else {
+        echo "PROBATE_WA_ENABLED = False, files with *-wa extension will be excluded"
+        patterns << "*-wa.json"
+    }
+    if (env.PROBATE_GS_ENABLED == "true") {
+        echo "PROBATE_GS_ENABLED = True, GS Files not excluded"
+    } else {
+        echo "PROBATE_GS_ENABLED = False, excluding *-gs.json"
+        patterns << "*-gs.json"
+    }
+
+    def excludedFilenamePatterns = patterns.join(",")
+    echo "Final excludedFilenamePatterns = ${excludedFilenamePatterns}"
+
+    if ("preview" == targetEnv) {
+      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption} ${excludedFilenamePatterns}"
     }
     else {
-      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption} ${excludedFilenamePatterns}"
+      sh "./build-release-ccd-definitions.sh ${targetEnv} ${shutterOption} ${excludedFilenamePatterns}"
     }
   }
 
   dir("${WORKSPACE}/build") {
-    if("preview" == env){
+    if("preview" == targetEnv){
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Backoffice.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Caveat.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Legacy_Cases.xlsx"
@@ -168,15 +186,15 @@ def archiveCoreCaseDataDefinitions(env, branch_name) {
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Standing_Search.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Will_Lodgement.xlsx"
     } else {
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Backoffice.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Caveat.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Cases.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Search.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Standing_Search.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Will_Lodgement.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Backoffice.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Caveat.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Legacy_Cases.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Legacy_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Standing_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Will_Lodgement.xlsx"
     }
   }
-  }
+}
 
 /**
  * Imports CCD definitions into specified environment. Import XLSX file is archived when process completed.
@@ -304,28 +322,50 @@ withPipeline("java", product, component) {
 
   onMaster() {
     env.ENV='aat'
+    env.PROBATE_WA_ENABLED = false
+    env.PROBATE_GS_ENABLED = false
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 
   onPR() {
+      echo "Executing On PR"
       env.ENV='preview'
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.PROBATE_WA_ENABLED = true
+        echo "Enabling Work Allocation Feature"
+      } else {
+        env.PROBATE_WA_ENABLED = false
+        echo "Disabling Work Allocation feature"
       }
+      echo "PROBATE_WA_ENABLED=${env.PROBATE_WA_ENABLED}"
+      if (checkForGSEnableLabel(env.BRANCH_NAME)) {
+          env.PROBATE_GS_ENABLED = true
+          echo "Enabling Global Search"
+      } else {
+          env.PROBATE_GS_ENABLED = false
+          echo "Disabling Global Search"
+      }
+      echo "PROBATE_GS_ENABLED=${env.PROBATE_GS_ENABLED}"
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
       env.CCD_ADMIN_URL="https://admin-web-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
   }
 
   onIthc() {
       env.ENV='ithc'
+      env.PROBATE_WA_ENABLED = false
+      env.PROBATE_GS_ENABLED = false
   }
 
   onDemo() {
     env.ENV='demo'
+    env.PROBATE_WA_ENABLED = false
+    env.PROBATE_GS_ENABLED = false
   }
 
   onPerftest() {
     env.ENV='perftest'
+    env.PROBATE_WA_ENABLED = false
+    env.PROBATE_GS_ENABLED = false
   }
 
   before('smoketest:preview') {
