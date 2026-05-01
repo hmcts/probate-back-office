@@ -23,12 +23,14 @@ import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_NOT_APPLYING_REASON;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_APPLICANTS;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_ID;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.getNonTrustPtnrTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
 
@@ -297,7 +299,7 @@ public class ExecutorListMapperService {
                                     .applyingExecutorFirstName(applExecFNames)
                                     .applyingExecutorLastName(applExecLName)
                                     .applyingExecutorName(applExecName)
-                                    .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                                    .applyingExecutorType(EXECUTOR_TYPE_APPLICANTS)
                                     .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
                                     .build());
                 })
@@ -413,6 +415,8 @@ public class ExecutorListMapperService {
         } else if (NO.equals(caseData.getSolsSolicitorIsExec()) && YES.equals(caseData.getSolsSolicitorIsApplying())
             && getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
             executorType = EXECUTOR_TYPE_TRUST_CORP;
+        } else if (GRANT_TYPE_INTESTACY.equalsIgnoreCase(caseData.getSolsWillType())) {
+            executorType = EXECUTOR_TYPE_APPLICANTS;
         } else {
             executorType = EXECUTOR_TYPE_NAMED;
         }
