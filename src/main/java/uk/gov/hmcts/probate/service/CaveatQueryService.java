@@ -104,18 +104,6 @@ public class CaveatQueryService {
     public List<ReturnedCaveatDetails> fetchExpiredCaveatsPage(String expiryDate, Long[] searchAfterValues) {
         BoolQueryBuilder query = buildExpiryQuery(expiryDate);
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
-                .runtimeMappings(Map.of(
-                        "expiryDateParsed", Map.of(
-                                "type", "date",
-                                "script", Map.of(
-                                        "source",
-                                        "if (doc['data.expiryDate.keyword'].size() != 0) { "
-                                                + "emit(java.time.LocalDate.parse(doc['data.expiryDate.keyword'].value)"
-                                                + ".atStartOfDay(java.time.ZoneOffset.UTC));"
-                                                + " }"
-                                )
-                        )
-                ))
                 .query(query)
                 .sort(SORT_COLUMN, SortOrder.ASC)
                 .size(dataExtractPaginationSize);
@@ -128,7 +116,7 @@ public class CaveatQueryService {
 
     private BoolQueryBuilder buildExpiryQuery(String expiryDate) {
         return boolQuery()
-                .filter(rangeQuery("expiryDateParsed").lte(expiryDate + "T23:59:59Z"))
+                .filter(rangeQuery(DATA_EXPIRY_DATE).lte(expiryDate))
                 .filter(termsQuery(STATE_KEYWORD, EXPIRABLE_STATES));
     }
 
