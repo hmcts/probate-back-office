@@ -781,8 +781,8 @@ https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client
 8. Check your XUI for any new wa XLSX usage - https://xui-probate-back-office-pr-XXXX.preview.platform.hmcts.net/
 9. unset WA_ENABLED if needed or set to false
 
-##Local GS Enablement
-###Build and import XLSX for local
+## Local GS Enablement
+### Build and import XLSX for local
 1. export PROBATE_GS_ENABLED=true
 2. echo $PROBATE_GS_ENABLED
 3. ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104 aac-manage-case-assignment-aat.service.core-compute-aat.internal
@@ -791,11 +791,11 @@ https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client
 6. unset PROBATE_GS_ENABLED if needed or set to false
 
 
-##Preview Global Search Enablement
+## Preview Global Search Enablement
 1. Ensure that you have enable_keep_helm and pr-values:gs added as github labels on your PR
 2. The build will use the flag to include any gs functionality in the build. ie all .json files with a ***-gs/json extension for building the XLSX, and any code toggled behind the PROBATE_GS_ENABLED env var
 
-###Build and import XLSX for preview
+### Build and import XLSX for preview
 1. export PROBATE_GS_ENABLED=true
 2. echo $PROBATE_GS_ENABLED
 3. run ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-pr-XXXX-java probate-back-office-pr-XXXX-aac-manage-case-assignment
