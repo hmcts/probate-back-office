@@ -47,6 +47,10 @@ ccd:
       image: hmctsprod.azurecr.io/ccd/admin-web:latest
       ingressHost: admin-web-${SERVICE_FQDN}
       keyVaults: []
+      devcpuRequests: 20m # if 10m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
+      devcpuLimits: 2000m
+      devmemoryRequests: 300Mi
+      devmemoryLimits: 512Mi
       environment:
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
         IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
@@ -62,6 +66,10 @@ ccd:
         IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
       ingressHost:
         ccd-case-print-service-${SERVICE_FQDN}
+      devcpuRequests: 30m # if 10m/20m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 30m to make sure the pod can be up and running.
+      devcpuLimits: 300m
+      devmemoryRequests: 250Mi
+      devmemoryLimits: 400Mi
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
@@ -74,14 +82,18 @@ ccd:
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
       keyVaults: []
+      devcpuRequests: 40m # if 10m/20m/30m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 40m to make sure the pod can be up and running.
+      devcpuLimits: 400m
+      devmemoryRequests: 250Mi
+      devmemoryLimits: 512Mi
   ccd-data-store-api:
     java:
       imagePullPolicy: Always
-      devcpuRequests: 1
       autoscaling:
         maxReplicas: 2
-      devmemoryRequests: 2Gi
-      devcpuLimits: 2
+      devcpuRequests: 50m
+      devcpuLimits: 500m
+      devmemoryRequests: 1Gi
       devmemoryLimits: 2Gi
       environment:
         DATA_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
@@ -135,6 +147,10 @@ ccd:
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
+      devcpuRequests: 250m
+      devcpuLimits: 512m
+      devmemoryRequests: 800Mi
+      devmemoryLimits: 1Gi
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
@@ -186,13 +202,10 @@ ccd:
         value: http://${SERVICE_NAME}-es-master:9200
       - name: ES_URL
         value: http://${SERVICE_NAME}-es-master:9200
-    resources:
-      requests:
-        cpu: "500m"
-        memory: "1024Mi"
-      limits:
-        cpu: "2500m"
-        memory: "1024Mi"
+    devcpuRequests: 500m
+    devcpuLimits: 700m
+    devmemoryRequests: 1.1Gi
+    devmemoryLimits: 1.5Gi
     configTpl:
       xpack.monitoring.enabled: "false"
       db.url: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
@@ -214,10 +227,10 @@ xui-webapp:
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
     image: hmctsprod.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
-    devcpuRequests: 500m
-    devmemoryRequests: 512Mi
-    devcpuLimits: 1
-    devmemoryLimits: 1Gi
+    devcpuRequests: 20m
+    devcpuLimits: 200m
+    devmemoryRequests: 512Mi #timeout happens when 256Mi is used, so increase it to 512Mi to make sure the pod can be up and running.
+    devmemoryLimits: 800Mi
     environment:
       HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
@@ -260,6 +273,10 @@ aac-manage-case-assignment:
     releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
     image: hmctsprod.azurecr.io/aac/manage-case-assignment:latest
     ingressHost: aac-${SERVICE_FQDN}
+    devcpuRequests: 150m
+    devcpuLimits: 250m
+    devmemoryRequests: 550Mi
+    devmemoryLimits: 768Mi
     environment:
       IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
       IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
@@ -286,7 +303,10 @@ aac-manage-case-assignment:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-  devmemoryLimits: 1.5Gi
+  devcpuRequests: 150m
+  devcpuLimits: 250m
+  devmemoryRequests: 700Mi
+  devmemoryLimits: 900Mi
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
