@@ -398,8 +398,10 @@ withPipeline("java", product, component) {
 
 def uploadDmnDiagrams() {
   dir("${WORKSPACE}/bin") {
-    tenantId = "back-office"
-    product = "back-office"
+//    tenantId = "back-office"
+    tenantId = "probate"
+//    product = "back-office"
+    product = "probate"
     sh "./wa/import-dmn-diagram.sh ${WORKSPACE} ${env} ${tenantId} ${product}"
   }
 }
