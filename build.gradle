@@ -265,6 +265,8 @@ dependencies {
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
 
+  implementation group: 'joda-time', name: 'joda-time', version: '2.12.7'
+
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '7.13.4'
 
   implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.6'

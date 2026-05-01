@@ -68,8 +68,10 @@ public class CaseSearchService {
         ofNullable(criteria.getDeceasedForenames())
                 .filter(s -> !s.isEmpty())
                 .ifPresent(s -> {
-                    fuzzy.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(Fuzziness.TWO).operator(AND));
-                    strict.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(Fuzziness.ZERO).boost(2).operator(AND));
+                    fuzzy.must(multiMatchQuery(s, DECEASED_FORENAMES)
+                            .fuzziness(Fuzziness.TWO).operator(AND));
+                    strict.must(multiMatchQuery(s, DECEASED_FORENAMES)
+                            .fuzziness(Fuzziness.ZERO).boost(2).operator(AND));
                 });
 
         ofNullable(criteria.getDeceasedSurname())
@@ -82,8 +84,10 @@ public class CaseSearchService {
         ofNullable(criteria.getDeceasedFullName())
                 .filter(s -> !s.isEmpty())
                 .ifPresent(s -> {
-                    fuzzy.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(Fuzziness.TWO).operator(AND));
-                    strict.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(Fuzziness.ZERO).boost(2).operator(AND));
+                    fuzzy.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST)
+                            .fuzziness(Fuzziness.TWO).operator(AND));
+                    strict.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST)
+                            .fuzziness(Fuzziness.ZERO).boost(2).operator(AND));
                 });
 
         ofNullable(criteria.getDeceasedDateOfBirthRaw())
