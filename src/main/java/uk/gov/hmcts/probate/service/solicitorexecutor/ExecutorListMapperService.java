@@ -273,7 +273,7 @@ public class ExecutorListMapperService {
                                     .applyingExecutorLastName(applExecLName)
                                     .applyingExecutorName(applExecName)
                                     .applicantFamilyDetails(applicantFamilyDetails)
-                                    .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                                    .applyingExecutorType(EXECUTOR_TYPE_APPLICANTS)
                                     .build());
                 })
                 .collect(Collectors.toList());
@@ -299,7 +299,7 @@ public class ExecutorListMapperService {
                                     .applyingExecutorFirstName(applExecFNames)
                                     .applyingExecutorLastName(applExecLName)
                                     .applyingExecutorName(applExecName)
-                                    .applyingExecutorType(EXECUTOR_TYPE_APPLICANTS)
+                                    .applyingExecutorType(EXECUTOR_TYPE_NAMED)
                                     .applyingExecutorOtherNames(exec.getValue().getAdditionalExecAliasNameOnWill())
                                     .build());
                 })
