@@ -186,12 +186,12 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Standing_Search.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Will_Lodgement.xlsx"
     } else {
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Backoffice.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Caveat.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Cases.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Search.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Standing_Search.xlsx"
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Will_Lodgement.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Backoffice.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Caveat.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Legacy_Cases.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Legacy_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Standing_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${targetEnv}/CCD_Probate_Will_Lodgement.xlsx"
     }
   }
 }
