@@ -27,26 +27,14 @@ esac
 
 binFolder=$(dirname "$0")
 
-if [ -z "${USER_TOKEN:-}" ]; then
-  userToken=$(${binFolder}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME} ${CCD_CONFIGURER_IMPORTER_PASSWORD})
-else
-  userToken=${USER_TOKEN}
-fi
-
-if [ -z "${SERVICE_TOKEN:-}" ]; then
-  serviceToken=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
-else
-  serviceToken=${SERVICE_TOKEN}
-fi
-
 ccdUrl=${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}
 
 echo "Creating CCD role: ${role}"
 
 curl --insecure --fail --show-error --silent --output /dev/null -X PUT \
   ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/api/user-role \
-  -H "Authorization: Bearer ${userToken}" \
-  -H "ServiceAuthorization: Bearer ${serviceToken}" \
+  -H "Authorization: Bearer ${USER_TOKEN_ENV}" \
+  -H "ServiceAuthorization: Bearer ${SERVICE_TOKEN_ENV}" \
   -H "Content-Type: application/json" \
   -d '{
     "role": "'${role}'",
