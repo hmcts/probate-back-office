@@ -147,6 +147,10 @@ ccd:
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
+      devcpuRequests: 250m
+      devcpuLimits: 512m
+      devmemoryRequests: 800Mi
+      devmemoryLimits: 1Gi
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
