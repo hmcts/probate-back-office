@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -114,5 +115,61 @@ class DormantWarningNotificationTest {
                 .lastModified(before)
                 .build();
         assertTrue(underTest.accepts().test(beforeCase));
+    }
+
+    @Test
+    void acceptsReturnsWithOtherStopReasonTrue() {
+        LocalDateTime before = LocalDateTime.of(2025,5,23,23,59);
+        CaseDetails beforeCase = CaseDetails.builder()
+                .state(STATE_BO_CASE_STOPPED)
+                .data(Map.of(LAST_MODIFIED_DATE_FOR_DORMANT, before,
+                        "boCaseStopReasonList", List.of(
+                        Map.of("value", Map.of("caseStopReason", "Other"))
+                )))
+                .lastModified(before)
+                .build();
+        assertTrue(underTest.accepts().test(beforeCase));
+    }
+
+    @Test
+    void acceptsReturnsWithPermanentCaveatStopReasonFalse() {
+        LocalDateTime before = LocalDateTime.of(2025,5,23,23,59);
+        CaseDetails beforeCase = CaseDetails.builder()
+                .state(STATE_BO_CASE_STOPPED)
+                .data(Map.of(LAST_MODIFIED_DATE_FOR_DORMANT, before,
+                        "boCaseStopReasonList", List.of(
+                                Map.of("value", Map.of("caseStopReason", "Permanent Caveat"))
+                        )))
+                .lastModified(before)
+                .build();
+        assertFalse(underTest.accepts().test(beforeCase));
+    }
+
+    @Test
+    void acceptsReturnsWithCaveatMatchStopReasonFalse() {
+        LocalDateTime before = LocalDateTime.of(2025,5,23,23,59);
+        CaseDetails beforeCase = CaseDetails.builder()
+                .state(STATE_BO_CASE_STOPPED)
+                .data(Map.of(LAST_MODIFIED_DATE_FOR_DORMANT, before,
+                        "boCaseStopReasonList", List.of(
+                                Map.of("value", Map.of("caseStopReason", "CaveatMatch"))
+                        )))
+                .lastModified(before)
+                .build();
+        assertFalse(underTest.accepts().test(beforeCase));
+    }
+
+    @Test
+    void acceptsReturnsWithMatchingApplicationStopReasonFalse() {
+        LocalDateTime before = LocalDateTime.of(2025,5,23,23,59);
+        CaseDetails beforeCase = CaseDetails.builder()
+                .state(STATE_BO_CASE_STOPPED)
+                .data(Map.of(LAST_MODIFIED_DATE_FOR_DORMANT, before,
+                        "boCaseStopReasonList", List.of(
+                                Map.of("value", Map.of("caseStopReason", "MatchingApplication"))
+                        )))
+                .lastModified(before)
+                .build();
+        assertFalse(underTest.accepts().test(beforeCase));
     }
 }

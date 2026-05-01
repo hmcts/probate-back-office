@@ -7,6 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -18,17 +20,21 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationC
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_CLOSED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 class CaseDataTransformerTest {
@@ -114,6 +120,22 @@ class CaseDataTransformerTest {
         caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequestMock);
 
         verify(resetCaseDataTransformer).resetExecutorLists(caseDataMock);
+    }
+
+    @Test
+    void transformCaseDataForCaseCloseEvidenceHandledYes() {
+        when(caseDetailsMock.getState()).thenReturn(BO_CASE_CLOSED_NAME);
+
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledYes(callbackRequestMock);
+        verify(evidenceHandledTransformer).updateEvidenceHandledToYes(caseDataMock);
+    }
+
+    @Test
+    void transformCaseDataForCaseCloseEvidenceHandledNo() {
+        when(caseDetailsMock.getState()).thenReturn(BO_CASE_CLOSED_NAME);
+
+        caseDataTransformer.transformCaseDataForCaseCloseEvidenceHandledNo(callbackRequestMock);
+        verify(evidenceHandledTransformer).updateEvidenceHandledToNo(caseDataMock);
     }
 
     @Test
@@ -343,4 +365,27 @@ class CaseDataTransformerTest {
                 caseDetailsMock.getData().getApplicationSubmittedDate());
     }
 
+    @Test
+    void shouldClearDeceasedAliasListWhenThereAreNoOtherNames() {
+        List<CollectionMember<AliasName>> deceasedAliasNamesList = new ArrayList<>();
+        deceasedAliasNamesList.add(new CollectionMember<>("1", AliasName.builder().build()));
+        caseDataMock = CaseData.builder()
+                .solsDeceasedAliasNamesList(deceasedAliasNamesList).deceasedAnyOtherNames(NO).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        caseDataTransformer.clearDeceasedAliasesWhenUpdatingDeceasedDetails(caseDetailsMock);
+        assertTrue(caseDetailsMock.getData().getSolsDeceasedAliasNamesList().isEmpty());
+    }
+
+    @Test
+    void shouldNotClearDeceasedAliasListWhenThereAreOtherNames() {
+        List<CollectionMember<AliasName>> deceasedAliasNamesList = new ArrayList<>();
+        deceasedAliasNamesList.add(new CollectionMember<>("1", AliasName.builder().build()));
+        caseDataMock = CaseData.builder()
+                .solsDeceasedAliasNamesList(deceasedAliasNamesList).deceasedAnyOtherNames(YES).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        caseDataTransformer.clearDeceasedAliasesWhenUpdatingDeceasedDetails(caseDetailsMock);
+        assertEquals(deceasedAliasNamesList, caseDetailsMock.getData().getSolsDeceasedAliasNamesList());
+    }
 }

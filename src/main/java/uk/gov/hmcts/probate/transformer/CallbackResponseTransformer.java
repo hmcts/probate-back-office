@@ -128,6 +128,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_CLOSED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -257,7 +258,9 @@ public class CallbackResponseTransformer {
         final CaseDetails cd = callbackRequest.getCaseDetails();
         // set here to ensure tasklist html is correctly generated
         cd.setState(newState.orElse(null));
-
+        if (BO_CASE_CLOSED_NAME.equals(cd.getState())) {
+            cd.getData().setEvidenceHandled(YES);
+        }
         ResponseCaseData responseCaseData =
                 getResponseCaseData(cd,
                         callbackRequest.getEventId(),
