@@ -238,8 +238,6 @@
             <p>{% if loop.index == 0 %}{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (ceisydd){% else %}{{ executor.value.applyingExecutorName }} (ceisydd){% endif %}</p>
         </td>
     </tr>
-    {% endif %}
-    {% endfor %}
     <tr>
         <td>
             <p>Llofnod:</p>
@@ -256,6 +254,8 @@
             <p>..................................................</p>
         </td>
     </tr>
+    {% endif %}
+    {% endfor %}
     <tr>
         <td>
             <p>Enw:</p>
