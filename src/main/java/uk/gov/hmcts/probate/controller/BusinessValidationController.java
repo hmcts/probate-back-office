@@ -835,6 +835,17 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
     }
 
+    @PostMapping(
+            path = "/checkCaseMatches",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> checkCaseMatches(@RequestBody CallbackRequest callbackRequest,
+                                                             final HttpServletRequest httpRequest) {
+        logRequest(httpRequest.getRequestURI(), callbackRequest);
+        return ResponseEntity.ok(callbackResponseTransformer
+                .transformForIssueGrant(callbackRequest, Optional.empty()));
+    }
+
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
