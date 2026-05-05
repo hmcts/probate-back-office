@@ -335,7 +335,6 @@ withPipeline("java", product, component) {
       ./bin/add-ccd-roles.sh
     """
     archiveCoreCaseDataDefinitions('preview', env.BRANCH_NAME)
-    uploadCoreCaseDataDefinitions('preview')
 
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
     env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
@@ -353,6 +352,7 @@ withPipeline("java", product, component) {
  docker run --rm --interactive hmctsprod.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_PRO_URL/health
  docker run --rm --interactive hmctsprod.azurecr.io/imported/curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
  """
+    uploadCoreCaseDataDefinitions('preview')
   }
 
   before('functionalTest:preview') {
