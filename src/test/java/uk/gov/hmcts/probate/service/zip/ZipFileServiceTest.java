@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.zip.SmeeAndFordCommentMode;
+import uk.gov.hmcts.probate.model.zip.ZippedManifestData;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractStrategy;
@@ -299,5 +300,18 @@ class ZipFileServiceTest {
         verify(featureToggleService, atMostOnce()).isSmeeAndFordCommentFieldFeatureToggleOn();
         Assertions.assertFalse(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn());
         Files.delete(zipFile.toPath());
+    }
+
+    @Test
+    void shouldFormatOriginalWillSubtypeForDocumentName() {
+        ZippedManifestData data = ZippedManifestData.builder()
+            .caseNumber("123456789")
+            .docType("scanned_will")
+            .docFileType(".pdf")
+            .subType("Original Will")
+            .build();
+        String docName = data.getDocumentName();
+        Assertions.assertTrue(docName.contains("original_will"),
+            "Expected document name to contain 'original_will', but got: " + docName);
     }
 }
