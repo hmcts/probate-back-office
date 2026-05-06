@@ -12,6 +12,7 @@ public class NotificationClientProvider {
     private final NotificationClient primaryNotificationClient;
     private final NotificationClient secondaryNotificationClient;
     private final FeatureToggleService featureToggleService;
+    private volatile Boolean lastUsePrimary = null;
 
     public NotificationClientProvider(
             @Qualifier("primaryNotificationClient") NotificationClient primaryNotificationClient,
@@ -25,7 +26,10 @@ public class NotificationClientProvider {
 
     public NotificationClient getClient() {
         boolean usePrimary = featureToggleService.usePrimaryNotifyKey();
-        log.debug("Using GOV.UK Notify client slot: {}", usePrimary ? "primary" : "secondary");
+        if (lastUsePrimary == null || lastUsePrimary != usePrimary) {
+            log.info("Using GOV.UK Notify client slot: {}", usePrimary ? "primary" : "secondary");
+            lastUsePrimary = usePrimary;
+        }
         return usePrimary ? primaryNotificationClient : secondaryNotificationClient;
     }
 }

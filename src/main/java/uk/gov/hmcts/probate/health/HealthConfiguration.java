@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
-import uk.gov.hmcts.probate.service.notification.NotificationClientProvider;
 
 @RequiredArgsConstructor
 @Configuration
@@ -19,7 +18,6 @@ public class HealthConfiguration {
     private final RestTemplate restTemplate;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FeeServiceConfiguration feeServiceConfiguration;
-    private final NotificationClientProvider notificationClientProvider;
 
     @Value("${idam.service.host}")
     private String idamServiceHost;
