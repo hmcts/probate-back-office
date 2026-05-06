@@ -22,6 +22,7 @@ public class FeatureToggleService {
     private static final String UNSUBMITTED_APPLICATION_TOGGLE = "probate-cron-unsubmitted-application";
     private static final String DECLARATION_NOT_SIGNED_TOGGLE = "probate-cron-declaration-not-signed";
     private static final String NFI_DATA_EXTRACT_TOGGLE = "probate-nfi-data-extract";
+    private static final String SMEE_AND_FORD_COMMENT_FIELD_TOGGLE = "probate-smee-ford-comment-field";
     private static final String USE_JSON_LIB_FOR_CASE_MATCHING = "probate-use-json-lib-for-case-matching";
 
     @Autowired
@@ -112,6 +113,11 @@ public class FeatureToggleService {
                 NFI_DATA_EXTRACT_TOGGLE, false);
     }
 
+    public boolean isSmeeAndFordCommentFieldFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                SMEE_AND_FORD_COMMENT_FIELD_TOGGLE, false);
+    }
+      
     public boolean useJsonLibForCaseMatching() {
         return this.isFeatureToggleOn(
                 USE_JSON_LIB_FOR_CASE_MATCHING, false);
