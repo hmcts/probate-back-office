@@ -1229,7 +1229,7 @@ export class SolCreateCasePage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
-  async intestacyCoapplicantPage(applicantRelationship: string, coApplicantCount: number, isWholeBloodSiblings: boolean) {
+  async intestacyCoapplicantPage(applicantRelationship: string, coApplicantCount: number, isWholeBloodSiblings?: boolean) {
     let coApplicantRelationship;
     let coApplicantNieceOrNephewRelationship;
 
