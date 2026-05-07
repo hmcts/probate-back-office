@@ -36,7 +36,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.ADOPTED_OUT;
 import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.ADOPTED_OUTSIDE_ENGLAND_OR_WALES;
 import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.PARENT_IS_NOT_DECEASED;
-import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES;
+import static uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule.PARENT_ADOPTED_OUT;
 
 @ExtendWith(SpringExtension.class)
 class IntestacyCoApplicantValidationRuleTest {
@@ -71,8 +71,8 @@ class IntestacyCoApplicantValidationRuleTest {
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_IS_NOT_DECEASED))
                 .thenReturn(FieldErrorResponse.builder().code(PARENT_IS_NOT_DECEASED).build());
 
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES))
-                .thenReturn(FieldErrorResponse.builder().code(PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES).build());
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_ADOPTED_OUT))
+                .thenReturn(FieldErrorResponse.builder().code(PARENT_ADOPTED_OUT).build());
 
     }
 
@@ -258,7 +258,7 @@ class IntestacyCoApplicantValidationRuleTest {
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
 
-        assertEquals(PARENT_ADOPTED_OUTSIDE_ENGLAND_OR_WALES, validationErrors.getFirst().getCode());
+        assertEquals(PARENT_ADOPTED_OUT, validationErrors.getFirst().getCode());
     }
 
     @Test

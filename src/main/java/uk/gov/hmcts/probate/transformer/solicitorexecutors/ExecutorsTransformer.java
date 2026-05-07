@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -152,8 +151,7 @@ public class ExecutorsTransformer {
             // Add main solicitor executor list
             execsApplying.addAll(executorListMapperService
                     .mapFromSolsAdditionalExecutorListToApplyingExecutors(caseData));
-        } else if (DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
-                && caseData.getSolsIntestacyExecutorList() != null
+        } else if (caseData.getSolsIntestacyExecutorList() != null
                 && !caseData.getSolsIntestacyExecutorList().isEmpty()) {
             // Add intestacy solicitor executor list
             execsApplying.addAll(executorListMapperService
@@ -220,6 +218,7 @@ public class ExecutorsTransformer {
     // Clear the solicitor executor lists (on solicitor completion)
     public void clearSolicitorExecutorLists(CaseData caseData) {
         Optional.ofNullable(caseData.getSolsAdditionalExecutorList()).ifPresent(List::clear);
+        Optional.ofNullable(caseData.getSolsIntestacyExecutorList()).ifPresent(List::clear);
         Optional.ofNullable(caseData.getAdditionalExecutorsTrustCorpList()).ifPresent(List::clear);
         Optional.ofNullable(caseData.getOtherPartnersApplyingAsExecutors()).ifPresent(List::clear);
         Optional.ofNullable(caseData.getDispenseWithNoticeOtherExecsList()).ifPresent(List::clear);

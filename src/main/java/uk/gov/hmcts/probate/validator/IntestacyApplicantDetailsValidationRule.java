@@ -25,6 +25,8 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
     public static final String DECEASED_CHILD_DEAD_WELSH = "deceasedChildDeadWelsh";
     public static final String ADOPTED_OUT = "adoptedOut";
     public static final String ADOPTED_OUT_WELSH = "adoptedOutWelsh";
+    public static final String PARENT_ADOPTED_OUT = "parentAdoptedOut";
+    public static final String PARENT_ADOPTED_OUT_WELSH = "parentAdoptedOutWelsh";
     public static final String SIBLING_NOT_DIED = "siblingNotDied";
     public static final String SIBLING_NOT_DIED_WELSH = "siblingNotDiedWelsh";
 
@@ -57,11 +59,21 @@ public class IntestacyApplicantDetailsValidationRule implements ValidationRule {
                 codes.add(ADOPTED_OUT);
                 codes.add(ADOPTED_OUT_WELSH);
             }
+            if (isParentAdoptedOut(applicant, relationshipToDeceased)) {
+                codes.add(PARENT_ADOPTED_OUT);
+                codes.add(PARENT_ADOPTED_OUT_WELSH);
+            }
 
             codes.forEach(code -> errors.add(businessValidationMessageService
                     .generateError(BUSINESS_ERROR, code)));
         }
         return errors;
+    }
+
+    private boolean isParentAdoptedOut(Applicant applicant, String relationshipToDeceased) {
+        return GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
+                && NO.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedIn())
+                && YES.equalsIgnoreCase(applicant.getPrimaryApplicantParentAdoptedOut());
     }
 
     private boolean isAdoptedOutsideEnglandOrWales(Applicant applicant, String relationshipToDeceased) {

@@ -39,6 +39,7 @@ import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_APPLICANTS;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.DIRECTOR;
@@ -309,7 +310,7 @@ class ExecutorListMapperServiceTest {
 
         assertEquals(1, result.size());
         AdditionalExecutorApplying applying = result.getFirst().getValue();
-        assertEquals(EXECUTOR_TYPE_NAMED, applying.getApplyingExecutorType());
+        assertEquals(EXECUTOR_TYPE_APPLICANTS, applying.getApplyingExecutorType());
         assertEquals(coApplicantRelationship, applying.getApplicantFamilyDetails().getRelationshipToDeceased());
     }
 
