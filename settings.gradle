@@ -1,10 +1,18 @@
 pluginManagement {
     repositories {
-        maven {
-            url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1'
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "hmctsLib"
+                    url = uri("https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1")
+                }
+            }
+            filter {
+                includeGroupByRegex("com\\.github\\.hmcts(\\..*)?")
+            }
         }
+
         gradlePluginPortal()
     }
 }
-
 rootProject.name = 'back-office'
