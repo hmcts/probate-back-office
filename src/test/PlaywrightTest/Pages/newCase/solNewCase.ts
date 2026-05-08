@@ -1149,7 +1149,6 @@ export class SolCreateCasePage extends BasePage {
     await this.primaryApplicantPostcode.fill(intestacyDetailsConfig.address_postcode);
     await this.primaryApplicantCountry.fill(intestacyDetailsConfig.address_country);
     await this.primaryApplicantPhoneNumber.fill(intestacyDetailsConfig.applicant_phone);
-    // await this.primaryApplicantEmail.fill(intestacyDetailsConfig.applicant_email);
     await this.languageLocator.focus();
     await this.languageLocator.click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
@@ -1223,9 +1222,6 @@ export class SolCreateCasePage extends BasePage {
       await this.page.locator(`#otherExecutorExists_${intestacyDetailsConfig.optionNo}`).click();
     }
 
-    // await this.page.locator(`#solsApplicantSiblings_${intestacyDetailsConfig.optionNo}`).click();
-    // await this.page.locator(`#deceasedMaritalStatus-${intestacyDetailsConfig.page2_maritalstatus}`).click();
-    // await this.page.locator(`#solsMinorityInterest_${intestacyDetailsConfig.optionNo}`).click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
@@ -1344,7 +1340,6 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     await this.page.locator('#solsAdditionalInfo').fill(intestacyDetailsConfig.page3_applicationNotes);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
-    // await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
   async intestacyDetailsPage4() {
