@@ -18,8 +18,9 @@ import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.JU
 
 @Component
 @RequiredArgsConstructor
-public class IntestacyDivorceOrSeparationDateValidationRule implements CaseworkerAmendAndCreateValidationRule {
+public class IntestacyDivorceOrSeparationDateValidationRule implements ValidationRule {
     public static final String INVALID_DIVORCE_OR_SEPARATION_DATE = "invalidDivorceOrSeparationDate";
+    public static final String INVALID_DIVORCE_OR_SEPARATION_DATE_WELSH = "invalidDivorceOrSeparationDateWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -42,11 +43,14 @@ public class IntestacyDivorceOrSeparationDateValidationRule implements Caseworke
                         || JUDICIALLY_SEPARATED_VALUE.equals(deceasedMaritalStatus))
                         && (divorceOrSeparationLocalDate.isAfter(dod)
                         || !divorceOrSeparationLocalDate.isAfter(dob)
-                        || divorceOrSeparationLocalDate.isAfter(applicationSubmittedDate));
+                        || divorceOrSeparationLocalDate.isAfter(applicationSubmittedDate)
+                        || divorceOrSeparationLocalDate.isAfter(LocalDate.now()));
 
                 if (invalid) {
                     errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                             INVALID_DIVORCE_OR_SEPARATION_DATE));
+                    errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                            INVALID_DIVORCE_OR_SEPARATION_DATE_WELSH));
                 }
             }
         }

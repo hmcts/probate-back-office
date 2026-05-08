@@ -13,6 +13,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.HALF_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -26,6 +27,8 @@ public class IntestacyDeceasedDetailsValidationRule implements ValidationRule {
     public static final String LIVING_DESCENDANTS_WELSH = "livingDescendantsWelsh";
     public static final String LIVING_PARENTS = "livingParents";
     public static final String LIVING_PARENTS_WELSH = "livingParentsWelsh";
+    public static final String LIVING_WHOLE_SIBLING = "livingWholeBloodSiblings";
+    public static final String LIVING_WHOLE_SIBLING_WELSH = "livingWholeBloodSiblingsWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -43,6 +46,11 @@ public class IntestacyDeceasedDetailsValidationRule implements ValidationRule {
                 codes.add(LIVING_DESCENDANTS);
                 codes.add(LIVING_DESCENDANTS_WELSH);
             }
+            if (isSiblingOrParent && NO.equalsIgnoreCase(deceased.getDeceasedAdoptedIn())
+                    && YES.equalsIgnoreCase(deceased.getDeceasedAdoptedOut())) {
+                codes.add(DECEASED_ADOPTED_OUT);
+                codes.add(DECEASED_ADOPTED_OUT_WELSH);
+            }
             if (isSibling && YES.equalsIgnoreCase(deceased.getDeceasedAnyLivingParents())) {
                 codes.add(LIVING_PARENTS);
                 codes.add(LIVING_PARENTS_WELSH);
@@ -52,10 +60,10 @@ public class IntestacyDeceasedDetailsValidationRule implements ValidationRule {
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES);
                 codes.add(ADOPTED_OUTSIDE_ENGLAND_OR_WALES_WELSH);
             }
-            if (isSiblingOrParent && NO.equalsIgnoreCase(deceased.getDeceasedAdoptedIn())
-                    && YES.equalsIgnoreCase(deceased.getDeceasedAdoptedOut())) {
-                codes.add(DECEASED_ADOPTED_OUT);
-                codes.add(DECEASED_ADOPTED_OUT_WELSH);
+            if (isSibling && HALF_SIBLING.equalsIgnoreCase(deceased.getApplicantSameParentsAsDeceased())
+                    && YES.equalsIgnoreCase(deceased.getAnyLivingWholeBloodSiblings())) {
+                codes.add(LIVING_WHOLE_SIBLING);
+                codes.add(LIVING_WHOLE_SIBLING_WELSH);
             }
             codes.forEach(code -> errors.add(businessValidationMessageService
                     .generateError(BUSINESS_ERROR, code)));
