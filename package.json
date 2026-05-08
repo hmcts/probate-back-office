@@ -105,7 +105,6 @@
     "@hmcts/playwright-common": "^1.1.2",
     "@playwright/test": "^1.59.1",
     "@types/node": "^24.12.2",
-    "axios": "^1.15.2",
     "chai": "^4.5.0",
     "chai-http": "^4.3.0",
     "chai-string": "^1.6.0",
@@ -140,6 +139,7 @@
     "when": "^3.7.8"
   },
   "resolutions": {
+    "axios": "^1.16.0",
     "diff": "^9.0.0",
     "flatted": "^3.4.2",
     "get-uri": "^6.0.5",
