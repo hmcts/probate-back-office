@@ -133,7 +133,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<CallbackResponse> handle(RuntimeException exception) {
-        log.error("RuntimeException: {}", exception.getMessage() , exception);
+        log.error("RuntimeException: {}", exception.getMessage(), exception);
 
         List<String> errors = List.of("A system error occurred. Please try again later.");
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
