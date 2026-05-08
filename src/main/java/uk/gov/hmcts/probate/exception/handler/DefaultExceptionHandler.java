@@ -68,7 +68,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BusinessValidationException.class)
     public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
-        log.warn(exception.getMessage());
+        log.warn("--->>>>>>>>>>>"+exception.getMessage());
         List<String> userMessages = new ArrayList<>();
         userMessages.add(exception.getUserMessage());
         if (exception.getAdditionalMessages() != null) {
@@ -103,7 +103,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = SocketException.class)
     public ResponseEntity<CallbackResponse> handle(SocketException exception) {
-        log.warn(exception.getMessage());
+        log.warn("SocketException>>>???????"+exception.getMessage());
         List<String> userMessages = new ArrayList<>();
         userMessages.add(exception.getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()
@@ -131,4 +131,12 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.ok(callbackResponse);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<CallbackResponse> handle(RuntimeException exception) {
+        log.error("RuntimeException: {}", exception.getMessage() , exception);
+
+        List<String> errors = List.of("A system error occurred. Please try again later.");
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
+        return ResponseEntity.ok(callbackResponse);
+    }
 }

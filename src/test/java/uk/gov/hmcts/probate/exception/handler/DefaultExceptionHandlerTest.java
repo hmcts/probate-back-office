@@ -192,4 +192,16 @@ class DefaultExceptionHandlerTest {
         assertEquals(EXCEPTION_MESSAGE, response.getBody().getErrors().get(0),
                 "Expected error to be extracted from exception");
     }
+
+    @Test
+    void shouldHandleRuntimeExceptionWithGenericErrorMessage() {
+        RuntimeException runtimeException = new RuntimeException("Unexpected error occurred");
+
+        ResponseEntity<CallbackResponse> response = underTest.handle(runtimeException);
+
+        assertEquals(OK, response.getStatusCode());
+        assertEquals(1, response.getBody().getErrors().size());
+        assertEquals("A system error occurred. Please try again later.", response.getBody().getErrors().get(0));
+    }
+
 }
