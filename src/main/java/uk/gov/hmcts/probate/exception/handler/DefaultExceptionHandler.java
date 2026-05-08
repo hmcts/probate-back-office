@@ -68,7 +68,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BusinessValidationException.class)
     public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
-        log.warn("--->>>>>>>>>>>"+exception.getMessage());
+        log.warn(exception.getMessage());
         List<String> userMessages = new ArrayList<>();
         userMessages.add(exception.getUserMessage());
         if (exception.getAdditionalMessages() != null) {
@@ -103,7 +103,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = SocketException.class)
     public ResponseEntity<CallbackResponse> handle(SocketException exception) {
-        log.warn("SocketException>>>???????"+exception.getMessage());
+        log.warn(exception.getMessage());
         List<String> userMessages = new ArrayList<>();
         userMessages.add(exception.getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()
