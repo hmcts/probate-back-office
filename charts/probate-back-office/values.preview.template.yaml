@@ -49,8 +49,8 @@ ccd:
       keyVaults: []
       devcpuRequests: 20m # if 10m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
       devcpuLimits: 2000m
-      devmemoryRequests: 300Mi
-      devmemoryLimits: 512Mi
+      devmemoryRequests: 500Mi
+      devmemoryLimits: 1Gi
       environment:
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
         IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
@@ -68,8 +68,8 @@ ccd:
         ccd-case-print-service-${SERVICE_FQDN}
       devcpuRequests: 30m # if 10m/20m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 30m to make sure the pod can be up and running.
       devcpuLimits: 300m
-      devmemoryRequests: 250Mi
-      devmemoryLimits: 400Mi
+      devmemoryRequests: 400Mi
+      devmemoryLimits: 800Mi
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
@@ -134,8 +134,8 @@ ccd:
         LD_SDK_KEY: ${LD_SDK_AM_KEY}
     devcpuRequests: 250m
     devcpuLimits: 512m
-    devmemoryRequests: 800Mi
-    devmemoryLimits: 1Gi
+    devmemoryRequests: 1Gi
+    devmemoryLimits: 2Gi
   ccd-definition-store-api:
     java:
       autoscaling:
@@ -153,8 +153,8 @@ ccd:
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
       devcpuRequests: 250m
       devcpuLimits: 512m
-      devmemoryRequests: 800Mi
-      devmemoryLimits: 1Gi
+      devmemoryRequests: 1Gi
+      devmemoryLimits: 2Gi
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
@@ -162,6 +162,10 @@ ccd:
         USER_PROFILE_DB_HOST: '{{ .Values.global.postgresHostname }}'
       keyVaults: []
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
+      devcpuRequests: 250m
+      devcpuLimits: 512m
+      devmemoryRequests: 800Mi
+      devmemoryLimits: 1.2Gi
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
@@ -309,8 +313,8 @@ java:
   ingressHost: ${SERVICE_FQDN}
   devcpuRequests: 150m
   devcpuLimits: 250m
-  devmemoryRequests: 700Mi
-  devmemoryLimits: 900Mi
+  devmemoryRequests: 1Gi
+  devmemoryLimits: 1.5Gi
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
