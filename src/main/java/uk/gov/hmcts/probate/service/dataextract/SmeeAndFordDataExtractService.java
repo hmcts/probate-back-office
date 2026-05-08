@@ -31,6 +31,9 @@ public class SmeeAndFordDataExtractService {
     @Value("${feature.blobstorage.smeeandford.enabled}")
     public boolean featureBlobStorageSmeeAndFord;
 
+    @Value("${feature.smeeandford.email.enabled:false}")
+    public boolean featureSmeeAndFordEmailEnabled;
+
     public void performSmeeAndFordExtractForDateRange(String fromDate, String toDate) {
         if (fromDate.equals(toDate)) {
             performSmeeAndFordExtractForDate(fromDate);
@@ -66,7 +69,12 @@ public class SmeeAndFordDataExtractService {
                     log.info("Zip file uploaded on blob store");
                     Files.deleteIfExists(tempFile.toPath());
                 }
-                notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
+                if (featureSmeeAndFordEmailEnabled) {
+                    log.info("Smee & Ford email feature enabled, sending notification email.");
+                    notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
+                } else {
+                    log.info("Smee & Ford email feature disabled, not sending notification email.");
+                }
             } catch (NotificationClientException e) {
                 log.warn("NotificationService exception sending email to Smee And Ford", e);
                 throw new ClientException(HttpStatus.BAD_GATEWAY.value(),
