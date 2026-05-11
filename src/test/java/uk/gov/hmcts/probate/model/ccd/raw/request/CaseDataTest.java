@@ -28,8 +28,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.AssertionsKt.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -1034,5 +1036,102 @@ class CaseDataTest {
 
         Assertions.assertTrue(caseData.getSolsDeceasedAliasNamesList().isEmpty());
         assertEquals(NO, caseData.getDeceasedAnyOtherNames());
+    }
+
+    @Test
+    void shouldResetExecutorsApplyingAgreedFlags() {
+        AdditionalExecutorApplying executor1 = AdditionalExecutorApplying.builder()
+                .applyingExecutorAgreed(YES)
+                .build();
+
+        AdditionalExecutorApplying executor2 = AdditionalExecutorApplying.builder()
+                .applyingExecutorAgreed(NO)
+                .build();
+
+        CaseData caseData = CaseData.builder()
+                .additionalExecutorsApplying(List.of(
+                        new CollectionMember<>(executor1),
+                        new CollectionMember<>(executor2)
+                ))
+                .build();
+
+        caseData.resetExecutorsApplyingAgreedFlags();
+
+        assertNull(executor1.getApplyingExecutorAgreed());
+        assertNull(executor2.getApplyingExecutorAgreed());
+    }
+
+    @Test
+    void shouldReturnTrueWhenHasDataChangedIsYes() {
+        CaseData caseData = CaseData.builder()
+                .hasDataChanged(YES)
+                .build();
+
+        assertTrue(caseData.hasDataChanged());
+    }
+
+    @Test
+    void shouldReturnFalseWhenHasDataChangedIsNo() {
+        CaseData caseData = CaseData.builder()
+                .hasDataChanged(NO)
+                .build();
+
+        assertFalse(caseData.hasDataChanged());
+    }
+
+    @Test
+    void shouldReturnFalseWhenHasDataChangedIsNull() {
+        CaseData caseData = CaseData.builder().build();
+
+        assertFalse(caseData.hasDataChanged());
+    }
+
+    @Test
+    void shouldReturnTrueWhenAtLeastOneExecutorHasInvitationId() {
+        AdditionalExecutorApplying executor1 = AdditionalExecutorApplying.builder()
+                .applyingExecutorInvitationId(null)
+                .build();
+
+        AdditionalExecutorApplying executor2 = AdditionalExecutorApplying.builder()
+                .applyingExecutorInvitationId("invite-id")
+                .build();
+
+        CaseData caseData = CaseData.builder()
+                .additionalExecutorsApplying(List.of(
+                        new CollectionMember<>(executor1),
+                        new CollectionMember<>(executor2)
+                ))
+                .build();
+
+        assertTrue(caseData.inviteSent());
+    }
+
+    @Test
+    void shouldReturnFalseWhenNoExecutorsHaveInvitationId() {
+        AdditionalExecutorApplying executor1 = AdditionalExecutorApplying.builder()
+                .applyingExecutorInvitationId(null)
+                .build();
+
+        AdditionalExecutorApplying executor2 = AdditionalExecutorApplying.builder()
+                .applyingExecutorInvitationId(null)
+                .build();
+
+        CaseData caseData = CaseData.builder()
+                .additionalExecutorsApplying(List.of(
+                        new CollectionMember<>(executor1),
+                        new CollectionMember<>(executor2)
+                ))
+                .build();
+
+        assertFalse(caseData.inviteSent());
+    }
+
+    @Test
+    void shouldReturnFalseWhenAdditionalExecutorsApplyingIsEmpty() {
+        CaseData caseData = CaseData.builder()
+                .additionalExecutorsApplying(List.of())
+                .build();
+
+        assertFalse(caseData.inviteSent());
     }
 }
