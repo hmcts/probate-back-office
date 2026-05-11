@@ -756,9 +756,6 @@ feature:
   blobstorage:
     smeeandford:
       enabled: ${BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED:true}
-  smeeandford:
-    email:
-      enabled: ${SMEEANDFORD_EMAIL_FEATURE_ENABLED:true}
 
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy}
