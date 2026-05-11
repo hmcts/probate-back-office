@@ -259,12 +259,10 @@ public class ZipFileService {
             log.error("Failed to fetchAndUploadDocument. "
                             + "Case reference: {}, "
                             + "Document name: {}, "
-                            + "CDAM id: {}, "
-                            + "Exception: {}",
+                            + "CDAM id: {}, ",
                     caseDetails.getId().toString(),
                     zippedManifestData.getDocumentName(),
                     documentId,
-                    e.getMessage(),
                     e
             );
         }
