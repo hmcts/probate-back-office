@@ -641,6 +641,9 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<ModifiedOCRField>> modifiedOCRFieldList;
     private final List<CollectionMember<String>> autoCaseWarnings;
 
+    private final String hasDataChanged;
+    private final String eventDescription;
+
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
 
@@ -789,5 +792,19 @@ public class CaseData extends CaseDataParent {
 
     public void clearSolsDeceasedAliasNamesList() {
         getSolsDeceasedAliasNamesList().clear();
+    }
+
+    public void resetExecutorsApplyingAgreedFlags() {
+        getAdditionalExecutorsApplying().forEach(executorsApplying ->
+                executorsApplying.getValue().setApplyingExecutorAgreed(null));
+    }
+
+    public boolean hasDataChanged() {
+        return YES.equals(getHasDataChanged());
+    }
+
+    public boolean inviteSent() {
+        return getAdditionalExecutorsApplying().stream()
+                .anyMatch(e -> e.getValue().getApplyingExecutorInvitationId() != null);
     }
 }

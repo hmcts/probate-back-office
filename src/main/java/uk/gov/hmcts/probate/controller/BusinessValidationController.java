@@ -40,6 +40,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.UpdateDraftService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
@@ -138,6 +139,7 @@ public class BusinessValidationController {
     private final ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
     private final UserInfoService userInfoService;
+    private final UpdateDraftService updateDraftService;
     private final DocumentTransformer documentTransformer;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
@@ -833,6 +835,13 @@ public class BusinessValidationController {
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo));
+    }
+
+    @PostMapping(path = "/update-draft", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> updateDraft(@RequestBody CallbackRequest callbackRequest) {
+        updateDraftService.update(callbackRequest);
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest, Optional.empty()));
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {

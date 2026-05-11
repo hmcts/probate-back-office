@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.NotificationService.RegistrarEscalationException;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.UpdateDraftService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
@@ -216,6 +217,8 @@ class BusinessValidationUnitTest {
     private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     @Mock
     private DocumentTransformer documentTransformerMock;
+    @Mock
+    private UpdateDraftService updateDraftServiceMock;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -262,6 +265,7 @@ class BusinessValidationUnitTest {
             zeroApplyingExecutorsValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
+            updateDraftServiceMock,
             documentTransformerMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
@@ -1285,7 +1289,7 @@ class BusinessValidationUnitTest {
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
                 () -> assertThat(notificationsGenerated, empty()));
     }
-  
+
     @Test
     void shouldAttemptToEmailCaseworkerWhenEscalateToRegistrarFails() throws RegistrarEscalationException {
 
@@ -1394,5 +1398,21 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(notificationService, times(1))
                 .sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetailsMock);
+    }
+
+    @Test
+    void shouldUpdateDraft() throws NotificationClientException {
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, Optional.empty()))
+                .thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response = underTest
+                .updateDraft(callbackRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(updateDraftServiceMock, times(1))
+                .update(callbackRequestMock);
     }
 }
