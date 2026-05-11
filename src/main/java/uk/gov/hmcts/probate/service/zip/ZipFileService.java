@@ -256,8 +256,17 @@ public class ZipFileService {
             errorDescription = "Exception adding file from case id: " + caseDetails.getId().toString()
                     + " document id: " + documentId;
             zippedManifestData.setErrorDescription(errorDescription);
-            log.info(errorDescription);
-            log.error("Error while adding file ", e);
+            log.error("Failed to fetchAndUploadDocument. "
+                            + "Case reference: {}, "
+                            + "Document name: {}, "
+                            + "CDAM id: {}, "
+                            + "Exception: {}",
+                    caseDetails.getId().toString(),
+                    zippedManifestData.getDocumentName(),
+                    documentId,
+                    e.getMessage(),
+                    e
+            );
         }
         manifestDataList.add(zippedManifestData);
     }
