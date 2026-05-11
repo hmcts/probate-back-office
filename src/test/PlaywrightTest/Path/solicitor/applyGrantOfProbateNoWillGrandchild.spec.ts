@@ -74,7 +74,7 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Grandc
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.intestacyDetailsPage1();
-    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.coApplicantRelationshipChild, {
+    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.applicantRelationshipGrandchild, {
       isMarried: true
     });
     await solCreateCasePage.intestacyDetailsPage3();

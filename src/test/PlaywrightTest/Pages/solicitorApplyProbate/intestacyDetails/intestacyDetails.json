@@ -2,7 +2,7 @@
   "page2_maritalstatus": "judicially",
   "page2_maritalstatus_display": "Judicially separated",
   "page2_child": "child",
-  "coApplicantRelationshipChild": "grandchild",
+  "applicantRelationshipGrandchild": "grandchild",
   "applicantRelationshipParent": "parent",
   "applicantRelationshipSiblings": "sibling",
   "page2_adoptionText": "Was the applicant adopted in to the family?",

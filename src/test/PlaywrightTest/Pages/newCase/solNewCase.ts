@@ -1177,7 +1177,7 @@ export class SolCreateCasePage extends BasePage {
       await this.page.locator(`#deceasedDivorcedInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
     }
     await this.page.locator(`#solsMinorityInterest_${intestacyDetailsConfig.optionNo}`).click();
-    if (applicantRelationship === intestacyDetailsConfig.page2_child || applicantRelationship === intestacyDetailsConfig.coApplicantRelationshipChild) {
+    if (applicantRelationship === intestacyDetailsConfig.page2_child || applicantRelationship === intestacyDetailsConfig.applicantRelationshipGrandchild) {
       await expect(this.page.getByText(intestacyDetailsConfig.page2_adoptionText)).toBeVisible();
       await this.page.locator(`#primaryApplicantAdoptedIn_${intestacyDetailsConfig.optionYes}`).click();
       await expect(this.page.locator('#primaryApplicantAdoptionInEnglandOrWales').getByText(intestacyDetailsConfig.page2_adoptionPlaceText)).toBeVisible();
@@ -1186,7 +1186,7 @@ export class SolCreateCasePage extends BasePage {
         await expect(this.page.getByText(intestacyDetailsConfig.page2_spouseRenouncedText)).toBeVisible();
         await this.page.locator(`#solsSpouseOrCivilRenouncing_${intestacyDetailsConfig.optionYes}`).click();
       }
-      if (applicantRelationship === intestacyDetailsConfig.coApplicantRelationshipChild) {
+      if (applicantRelationship === intestacyDetailsConfig.applicantRelationshipGrandchild) {
         await expect(this.page.getByText(intestacyDetailsConfig.grandchild_parent_deceasedText)).toBeVisible();
         await this.page.locator(`#isApplicantParentDeceasedChild_${intestacyDetailsConfig.optionYes}`).click();
         await expect(this.page.getByText(intestacyDetailsConfig.grandchild_parent_adoptionText)).toBeVisible();
@@ -1236,7 +1236,7 @@ export class SolCreateCasePage extends BasePage {
     let coApplicantNieceOrNephewRelationship;
 
     if (applicantRelationship === intestacyDetailsConfig.page2_child) {
-      coApplicantRelationship = intestacyDetailsConfig.coApplicantRelationshipChild;
+      coApplicantRelationship = intestacyDetailsConfig.applicantRelationshipGrandchild;
     } else if (applicantRelationship === intestacyDetailsConfig.applicantRelationshipSiblings) {
       if (isWholeBloodSiblings) {
         coApplicantRelationship = intestacyDetailsConfig.whole_blood_sibling_coApplicant;
@@ -1318,7 +1318,7 @@ export class SolCreateCasePage extends BasePage {
           await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_coApplicantAdoptionInEnglandOrWales_${intestacyDetailsConfig.optionYes}`).click();
         }
 
-        if (coApplicantRelationship === intestacyDetailsConfig.coApplicantRelationshipChild) {
+        if (coApplicantRelationship === intestacyDetailsConfig.applicantRelationshipGrandchild) {
           await expect(this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_${coApplicantRelationship}ParentDieBeforeDeceased_${intestacyDetailsConfig.optionYes}`)).toBeVisible();
           await this.page.locator(`#solsIntestacyExecutorList_${i}_solsApplicantFamilyDetails_${coApplicantRelationship}ParentDieBeforeDeceased_${intestacyDetailsConfig.optionYes}`).click();
           if (i === 1) {
