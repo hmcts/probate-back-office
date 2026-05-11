@@ -26,7 +26,7 @@
     "test:functional-firefox": "yarn playwright install firefox && BROWSER_NAME=FirefoxTests yarn playwright test --project=firefox ",
     "test:functional-ipadPro11": "yarn playwright install webkit && BROWSER_NAME=iPadPro11Tests yarn playwright test --project=iPadPro11 ",
     "test:functional-galaxyS4": "yarn playwright install chromium && BROWSER_NAME=GalaxyS4Tests yarn playwright test --project=GalaxyS4 ",
-    "test:fullfunctional-cw": "E2E_TEST_PATH='./paths/caseworker/*.js' ./bin/run-e2e-tests.sh",
+    "test:fullfunctional-cw": "yarn playwright install chromium && yarn playwright test **/caseworker/*.spec.ts --project=chromium --workers=3",
     "test:fullfunctional-nightly": "yarn playwright install chromium && yarn playwright install firefox && yarn playwright install webkit && yarn playwright test --project=chromium --project=webkit --project=firefox",
     "test:crossbrowser": "./bin/run-crossbrowser-tests.sh",
     "dev-scripts-comment": "Developer scripts for running/debugging a single test locally are specified below.",
