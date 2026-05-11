@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.zip.SmeeAndFordCommentMode;
 import uk.gov.hmcts.probate.service.CaseQueryService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
@@ -28,11 +29,9 @@ public class SmeeAndFordDataExtractService {
     private final NotificationService notificationService;
     private final ZipFileService zipFileService;
     private final SmeeAndFordDataExtractStrategy smeeAndFordDataExtractStrategy;
+    private final FeatureToggleService featureToggleService;
     @Value("${feature.blobstorage.smeeandford.enabled}")
     public boolean featureBlobStorageSmeeAndFord;
-
-    @Value("${feature.smeeandford.email.enabled:false}")
-    public boolean featureSmeeAndFordEmailEnabled;
 
     public void performSmeeAndFordExtractForDateRange(String fromDate, String toDate) {
         if (fromDate.equals(toDate)) {
@@ -69,11 +68,12 @@ public class SmeeAndFordDataExtractService {
                     log.info("Zip file uploaded on blob store");
                     Files.deleteIfExists(tempFile.toPath());
                 }
-                if (featureSmeeAndFordEmailEnabled) {
-                    log.info("Smee & Ford email feature enabled, sending notification email.");
+                boolean isSmeeAndFordEmailEnabled = featureToggleService.isSmeeAndFordEmailFeatureToggleOn();
+                log.info("Smee & Ford email LaunchDarkly feature enabled is {}", isSmeeAndFordEmailEnabled);
+                if (isSmeeAndFordEmailEnabled) {
                     notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
                 } else {
-                    log.info("Smee & Ford email feature disabled, not sending notification email.");
+                    log.info("Skipping Smee & Ford email notification because LaunchDarkly feature disabled.");
                 }
             } catch (NotificationClientException e) {
                 log.warn("NotificationService exception sending email to Smee And Ford", e);
