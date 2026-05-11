@@ -54,9 +54,8 @@ class SmeeAndFordDataExtractServiceTest {
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
 
-    // ...existing code...
-
     private AutoCloseable mocks;
+
     @BeforeEach
     public void setup() throws Exception {
         mocks = MockitoAnnotations.openMocks(this);
