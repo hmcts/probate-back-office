@@ -74,7 +74,10 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Whole 
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.intestacyDetailsPage1();
-    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.applicantRelationshipSiblings, true, false, true);
+    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.applicantRelationshipSiblings, {
+      isJoint: true,
+      isWholeBloodSibling: true
+    });
     await solCreateCasePage.intestacyCoapplicantPage(intestacyDetailsConfig.applicantRelationshipSiblings, 3, true);
     await solCreateCasePage.intestacyDetailsPage3();
     // await solCreateCasePage.intestacyDetailsPage4();

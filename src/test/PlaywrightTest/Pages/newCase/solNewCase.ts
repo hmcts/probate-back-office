@@ -23,6 +23,12 @@ import refundConfig from "../solicitorApplyProbate/makePayment/refundConfig.json
 
 type ServiceRequestTabConfig = typeof serviceRequestTabConfig;
 
+interface intestacyRelationshipOptions {
+  isJoint?: boolean;
+  isMarried?: boolean;
+  isWholeBloodSibling?: boolean;
+}
+
 export class SolCreateCasePage extends BasePage {
   readonly deceasedForenameLocator = this.page.locator("#deceasedForenames");
   readonly deceasedSurnameLocator = this.page.locator("#deceasedSurname");
@@ -1154,8 +1160,8 @@ export class SolCreateCasePage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
-  async intestacyDetailsPage2(applicantRelationship: string, isJoint?: boolean, isMarried?: boolean, isWholeBloodSibling: boolean = false) {
-    // await this.verifyPageLoad(this.page.locator('#solsMinorityInterest'));
+  async intestacyDetailsPage2(applicantRelationship: string, options: intestacyRelationshipOptions = {}) {
+    const { isJoint = false, isMarried = false, isWholeBloodSibling = false } = options;
     await expect(this.page.locator('#solsMinorityInterest')).toBeEnabled();
     await this.runAccessibilityTest();
     await this.page.locator(`[id = "solsApplicantRelationshipToDeceased-${applicantRelationship}" i]`).click();

@@ -29,7 +29,7 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Parent
     cwEventActionsPage
   }, testInfo) => {
     test.setTimeout(300000);
-    const scenarioName = 'Solicitor - Apply Grant of probate - No Will (Intestacy)';
+    const scenarioName = 'Solicitor - Apply Grant of probate - No Will (Intestacy) - Parent journey';
     const willType = 'NoWill';
 
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
@@ -74,7 +74,9 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Parent
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.intestacyDetailsPage1();
-    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.applicantRelationshipParent, true, false);
+    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.applicantRelationshipParent, {
+      isJoint: true
+    });
     await solCreateCasePage.intestacyCoapplicantPage(intestacyDetailsConfig.applicantRelationshipParent, 1);
     await solCreateCasePage.intestacyDetailsPage3();
     // await solCreateCasePage.intestacyDetailsPage4();
