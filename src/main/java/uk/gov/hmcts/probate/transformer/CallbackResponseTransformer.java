@@ -106,6 +106,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_CLOSED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -156,6 +157,7 @@ public class CallbackResponseTransformer {
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
+    private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -234,7 +236,9 @@ public class CallbackResponseTransformer {
         final CaseDetails cd = callbackRequest.getCaseDetails();
         // set here to ensure tasklist html is correctly generated
         cd.setState(newState.orElse(null));
-
+        if (BO_CASE_CLOSED_NAME.equals(cd.getState())) {
+            cd.getData().setEvidenceHandled(YES);
+        }
         ResponseCaseData responseCaseData =
                 getResponseCaseData(cd,
                         callbackRequest.getEventId(),
@@ -2277,5 +2281,19 @@ public class CallbackResponseTransformer {
                 .orgPolicyReference(null)
                 .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
                 .build();
+    }
+
+    public CallbackResponse transformForIssueGrant(CallbackRequest callbackRequest,
+                                                   Optional<UserInfo> caseworkerInfo) {
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(caseDetails,
+                        callbackRequest.getEventId(),
+                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        false);
+        responseCaseDataBuilder.hasValidMatches(
+                hasValidMatchesDefaulter.defaultHasValidMatches(caseDetails.getData())
+        );
+        return transformResponse(responseCaseDataBuilder.build());
     }
 }
