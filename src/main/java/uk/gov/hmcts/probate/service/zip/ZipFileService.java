@@ -259,8 +259,8 @@ public class ZipFileService {
             log.error("Failed to fetchAndUploadDocument. "
                             + "Case reference: {}, "
                             + "Document name: {}, "
-                            + "CDAM id: {}, ",
-                    caseDetails.getId().toString(),
+                            + "CDAM id: {} ",
+                    caseDetails.getId(),
                     zippedManifestData.getDocumentName(),
                     documentId,
                     e
