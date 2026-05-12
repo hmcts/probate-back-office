@@ -271,7 +271,7 @@ public class NotificationService {
                     .getDocumentBinaryUrl());
             cwPrepareUpload(fileContents, personalisation, caseReference);
         } catch (IOException e) {
-            log.error("Error reading CW document file  : {}", e.getMessage());
+            log.error("Error reading CW document file", e);
             final String message = MessageFormat.format(
                     "A system error occurred while preparing to send an email for case: {0}. Please raise an "
                             + "incident with the support team and provide this case reference.",

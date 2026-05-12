@@ -1599,34 +1599,6 @@ class NotificationServiceIT {
     void shouldSendEmailForRequestInformationPostPACtsc()
             throws NotificationClientException, BadRequestException, IOException {
 
-        HashMap<String, String> personalisation = new HashMap<>();
-
-        personalisation.put(PERSONALISATION_APPLICANT_NAME,
-                personalCaseDataCtscRequestInformation.getData().getPrimaryApplicantFullName());
-        personalisation.put(PERSONALISATION_DECEASED_NAME,
-                personalCaseDataCtscRequestInformation.getData().getDeceasedFullName());
-        personalisation
-                .put(PERSONALISATION_SOLICITOR_NAME, personalCaseDataCtscRequestInformation.getData().getSolsSOTName());
-        personalisation
-                .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, null);
-        personalisation
-                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, null);
-        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
-                personalCaseDataCtscRequestInformation.getData().getSolsSolicitorAppReference());
-        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
-        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
-                personalCaseDataCtscRequestInformation.getData().getBoStopDetailsDeclarationParagraph());
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS,
-                personalCaseDataCtscRequestInformation.getData().getBoStopDetails());
-        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID,
-                personalCaseDataCtscRequestInformation.getData().getBoCaseStopCaveatId());
-        personalisation.put(PERSONALISATION_DECEASED_DOD,
-                personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeathFormatted());
-        personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtscRequestInformation.getId().toString());
-        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter
-                .convert(personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeath()));
-
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
         when(documentManagementService.getDocumentByBinaryUrl("http://example.com/test.pdf"))
                 .thenReturn(new byte[] {1, 2, 3});

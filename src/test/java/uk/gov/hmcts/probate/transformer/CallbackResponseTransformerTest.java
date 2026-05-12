@@ -2711,6 +2711,9 @@ class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
         assertEquals(callbackResponse.getData().getEvidenceHandledDate(),
                 LocalDate.now().toString());
+        List<CollectionMember<UploadDocument>> uploadedDocs = callbackResponse.getData().getCwDocumentUploadedList();
+        assertNotNull(uploadedDocs);
+        assertEquals(1, uploadedDocs.size());
     }
 
     @Test
