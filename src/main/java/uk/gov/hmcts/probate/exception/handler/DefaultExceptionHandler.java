@@ -135,7 +135,8 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<CallbackResponse> handle(RuntimeException exception) {
         log.error("RuntimeException: {}", exception.getMessage(), exception);
 
-        List<String> errors = List.of("A system error occurred. Please try again later.");
+        List<String> errors = List.of("A system error occurred within a probate callback. "
+                + "If this persists an incident may need to be raised.");
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
         return ResponseEntity.ok(callbackResponse);
     }

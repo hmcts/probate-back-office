@@ -201,7 +201,8 @@ class DefaultExceptionHandlerTest {
 
         assertEquals(OK, response.getStatusCode());
         assertEquals(1, response.getBody().getErrors().size());
-        assertEquals("A system error occurred. Please try again later.", response.getBody().getErrors().get(0));
+        assertEquals("A system error occurred within a probate callback. "
+                + "If this persists an incident may need to be raised.", response.getBody().getErrors().get(0));
     }
 
 }
