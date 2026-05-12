@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -133,9 +134,10 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<CallbackResponse> handle(RuntimeException exception) {
-        log.error("RuntimeException: {}", exception.getMessage(), exception);
-
+        String errorId = UUID.randomUUID().toString();
+        log.error("Unhandled RuntimeException [ID: {}]: {}", errorId, exception.getMessage(), exception);
         List<String> errors = List.of("A system error occurred within a probate callback. "
+                + "(Error ID: " + errorId + "). "
                 + "If this persists an incident may need to be raised.");
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
         return ResponseEntity.ok(callbackResponse);

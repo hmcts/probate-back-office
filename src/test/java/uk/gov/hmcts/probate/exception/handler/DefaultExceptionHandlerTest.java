@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 
 import java.util.Arrays;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -201,8 +202,9 @@ class DefaultExceptionHandlerTest {
 
         assertEquals(OK, response.getStatusCode());
         assertEquals(1, response.getBody().getErrors().size());
-        assertEquals("A system error occurred within a probate callback. "
-                + "If this persists an incident may need to be raised.", response.getBody().getErrors().get(0));
+        assertTrue(response.getBody().getErrors().get(0).contains(
+                "A system error occurred within a probate callback."));
+        assertTrue(response.getBody().getErrors().get(0).contains("Error ID:"));
     }
 
 }
