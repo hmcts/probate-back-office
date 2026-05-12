@@ -20,8 +20,8 @@ import serviceRequestTabConfig from "../../Pages/caseDetails/solicitorApplyProba
 import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
-test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy)", () => {
-  test("Solicitor - Apply Grant of probate - No Will (Intestacy) @firefox", async ({
+test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Whole Blood Siblings", () => {
+  test("Solicitor - Apply Grant of probate - No Will (Intestacy) - Whole Blood Siblings @firefox", async ({
     basePage,
     signInPage,
     createCasePage,
@@ -74,11 +74,11 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy)", () => 
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.intestacyDetailsPage1();
-    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.page2_child, {
+    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.applicantRelationshipSiblings, {
       isJoint: true,
-      isMarried: true
+      isWholeBloodSibling: true
     });
-    await solCreateCasePage.intestacyCoapplicantPage(intestacyDetailsConfig.page2_child, 3);
+    await solCreateCasePage.intestacyCoapplicantPage(intestacyDetailsConfig.applicantRelationshipSiblings, 3, true);
     await solCreateCasePage.intestacyDetailsPage3();
     // await solCreateCasePage.intestacyDetailsPage4();
     await solCreateCasePage.cyaPage();

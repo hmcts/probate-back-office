@@ -20,8 +20,8 @@ import serviceRequestTabConfig from "../../Pages/caseDetails/solicitorApplyProba
 import serviceRequestReviewTabConfig from "../../Pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig.json" with { type: "json" };
 import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
-test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy)", () => {
-  test("Solicitor - Apply Grant of probate - No Will (Intestacy) @firefox", async ({
+test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy) - Grandchild journey", () => {
+  test("Solicitor - Apply Grant of probate - No Will (Intestacy) - Grandchild journey @firefox", async ({
     basePage,
     signInPage,
     createCasePage,
@@ -29,7 +29,7 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy)", () => 
     cwEventActionsPage
   }, testInfo) => {
     test.setTimeout(300000);
-    const scenarioName = 'Solicitor - Apply Grant of probate - No Will (Intestacy)';
+    const scenarioName = 'Solicitor - Apply Grant of probate - No Will (Intestacy) - Grandchild journey';
     const willType = 'NoWill';
 
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
@@ -74,11 +74,9 @@ test.describe("Solicitor - Apply Grant of probate - No Will (Intestacy)", () => 
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.intestacyDetailsPage1();
-    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.page2_child, {
-      isJoint: true,
+    await solCreateCasePage.intestacyDetailsPage2(intestacyDetailsConfig.applicantRelationshipGrandchild, {
       isMarried: true
     });
-    await solCreateCasePage.intestacyCoapplicantPage(intestacyDetailsConfig.page2_child, 3);
     await solCreateCasePage.intestacyDetailsPage3();
     // await solCreateCasePage.intestacyDetailsPage4();
     await solCreateCasePage.cyaPage();
