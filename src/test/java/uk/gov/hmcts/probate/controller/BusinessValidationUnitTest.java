@@ -1285,7 +1285,7 @@ class BusinessValidationUnitTest {
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
                 () -> assertThat(notificationsGenerated, empty()));
     }
-  
+
     @Test
     void shouldAttemptToEmailCaseworkerWhenEscalateToRegistrarFails() throws RegistrarEscalationException {
 
@@ -1394,5 +1394,13 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(notificationService, times(1))
                 .sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetailsMock);
+    }
+
+    @Test
+    void shouldTransformForIssueGrant() {
+        ResponseEntity<CallbackResponse> response = underTest
+                .checkCaseMatches(callbackRequestMock, httpServletRequest);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(callbackResponseTransformerMock).transformForIssueGrant(any(), any());
     }
 }
