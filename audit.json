@@ -107,6 +107,7 @@
   "10049_Non-Storable Content_http://probate-back-office-aat.service.core-compute-aat.internal/transform-scanned-data_POST": "IGNORE",
   "10049_Non-Storable Content_http://probate-back-office-aat.service.core-compute-aat.internal/update-case_POST": "IGNORE",
   "10049_Non-Storable Content_http://probate-back-office-aat.service.core-compute-aat.internal/template/documents_POST": "IGNORE",
+  "10049_Non-Storable Content_http://probate-back-office-aat.service.core-compute-aat.internal/standing-search/create_POST": "IGNORE",
   "10049_Storable and Cacheable Content_http://probate-back-office-aat.service.core-compute-aat.internal/v3/api-docs_GET": "IGNORE",
   "10112_Session Management Response Identified_http://probate-back-office-aat.service.core-compute-aat.internal/template/case-details/pa_GET": "IGNORE",
   "10112_Session Management Response Identified_http://probate-back-office-aat.service.core-compute-aat.internal/template/case-details/sol_GET": "IGNORE",
