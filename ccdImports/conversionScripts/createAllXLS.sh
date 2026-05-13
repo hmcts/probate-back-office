@@ -31,8 +31,10 @@ echo "[INFO] Initial extraExclusions: $extraExclusions"
 if [[ "${waEnabledVar}" != true ]]; then
   echo "[INFO] WA feature is DISABLED adding *-wa.json to exclusions"
   patterns+=("*-wa.json")
+  CCD_DEF_PUBLISH="N"
 else
   echo "[INFO] WA feature is ENABLED no exclusion added"
+  CCD_DEF_PUBLISH="Y"
 fi
 
 # GS flag
@@ -66,6 +68,7 @@ echo excludedFilenamePatterns = $excludedFilenamePatterns
 
 export CCD_DEF_CASE_SERVICE_BASE_URL="${caseServiceUrl}"
 export CCD_DEF_AAC_URL="${aacUrl}"
+export CCD_DEF_PUBLISH="${CCD_DEF_PUBLISH}"
 
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,$CCD_DEF_AAC_URL
 
