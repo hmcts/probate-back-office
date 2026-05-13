@@ -201,7 +201,7 @@ class DefaultExceptionHandlerTest {
         ResponseEntity<CallbackResponse> response = underTest.handle(runtimeException);
 
         assertEquals(OK, response.getStatusCode());
-        assertEquals(1, response.getBody().getErrors().size());
+        assertEquals(2, response.getBody().getErrors().size());
         assertTrue(response.getBody().getErrors().get(0).contains(
                 "A system error occurred within a probate callback."));
         assertTrue(response.getBody().getErrors().get(0).contains("Error ID:"));

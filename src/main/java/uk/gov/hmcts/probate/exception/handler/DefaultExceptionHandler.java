@@ -138,7 +138,10 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("Unhandled RuntimeException [ID: {}]: {}", errorId, exception.getMessage(), exception);
         List<String> errors = List.of("A system error occurred within a probate callback. "
                 + "(Error ID: " + errorId + "). "
-                + "If this persists an incident may need to be raised.");
+                + "If this persists, an incident may need to be raised.",
+                "Profwyd gwall system o fewn  galwad yn ôl profiant. "
+                        + "(Dynodydd Gwall: " + errorId + "). "
+                        + "Os bydd hyn yn parhau, mae’n bosib y bydd angen codi achos.");
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
         return ResponseEntity.ok(callbackResponse);
     }
