@@ -2,7 +2,7 @@ plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.springframework.boot' version '3.5.14'
-  id 'uk.gov.hmcts.java' version '0.12.68'
+  id 'uk.gov.hmcts.java' version '0.12.70'
   id 'com.github.ben-manes.versions' version '0.54.0'
   id 'com.gorylenko.gradle-git-properties' version '2.5.7'
   id 'info.solidsoft.pitest' version '1.15.0'
@@ -366,6 +366,19 @@ dependencies {
 configurations.configureEach {
   exclude group: 'commons-logging', module: 'commons-logging'
   exclude group: 'com.vaadin.external.google', module: 'android-json'
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        eachDependency { DependencyResolveDetails details ->
+            if (details.requested.group == 'tools.jackson.core' && details.requested.name == 'jackson-core' && details.requested.version == '3.0.1') {
+                details.useVersion '3.1.0'
+            }
+            if (details.requested.group == 'tools.jackson.core' && details.requested.name == 'jackson-databind' && details.requested.version == '3.0.1') {
+                details.useVersion '3.1.0'
+            }
+        }
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
