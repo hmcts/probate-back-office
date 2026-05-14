@@ -116,8 +116,8 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
 // Configure branches to sync with master branch
-// diable sync branch to demo and ithc
-def branchesToSync = ['perftest']
+// disable sync branch to all lower envs
+def branchesToSync = []
 def githubApi = new GithubAPI(this) as Object
 
 def checkForEnableNightlyLabel(branch_name) {
