@@ -5236,6 +5236,32 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldClearPPChildFieldsWhenRelationshipChangedFromChild() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SOLICITOR_PARENT)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .primaryApplicantAdoptedIn(YES)
+                .primaryApplicantAdoptionInEnglandOrWales(YES);
+
+        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(SOLICITOR_CHILD);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+    }
+
+
+    @Test
     void shouldClearFewPPSiblingFieldsWhenRelationshipChangedFromSibling() {
         caseDataBuilder.solsApplicantRelationshipToDeceased(SOLICITOR_PARENT)
                 .solsWillType(GRANT_TYPE_INTESTACY)
@@ -5244,6 +5270,8 @@ class CallbackResponseTransformerTest {
                 .deceasedAdoptionInEnglandOrWales(YES)
                 .applicantSameParentsAsDeceased(HALF_SIBLING)
                 .deceasedAnyLivingParents(NO)
+                .primaryApplicantAdoptedIn(YES)
+                .primaryApplicantAdoptionInEnglandOrWales(YES)
                 .anyLivingWholeBloodSiblings(NO);
 
         caseDataBuilderBefore.solsApplicantRelationshipToDeceased(SOLICITOR_SIBLING);
@@ -5261,6 +5289,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
 
         assertNull(callbackResponse.getData().getApplicantSameParentsAsDeceased());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
         assertNull(callbackResponse.getData().getDeceasedAnyLivingParents());
         assertNotNull(callbackResponse.getData().getDeceasedAnyLivingDescendants());
         assertNotNull(callbackResponse.getData().getDeceasedAdoptedIn());
