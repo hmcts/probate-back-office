@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.transformer;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,7 +17,6 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
-
 
 @ExtendWith(MockitoExtension.class)
 class CaveatDataTransformerTest {
@@ -76,7 +74,6 @@ class CaveatDataTransformerTest {
 
     @Test
     void shouldTransformSolsCaveats() {
-        when(caveatDataMock.getExpiryDate()).thenReturn(EXPIRY_DATE);
         when(caveatDataMock.getCaveatorEmailAddress()).thenReturn(CAVEATOR_EMAIL);
         when(caveatDataMock.getRegistryLocation()).thenReturn(REGISTRY_LOCATION);
         when(caveatDataMock.getSolsSolicitorAppReference()).thenReturn(SOL_APP_REF);
