@@ -1,10 +1,8 @@
 package uk.gov.hmcts.probate.model.ccd.caveat.request;
 
-import uk.gov.hmcts.probate.model.LanguagePreference;
-
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.DateFormatterService;
