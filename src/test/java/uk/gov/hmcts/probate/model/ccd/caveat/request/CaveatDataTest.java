@@ -1,9 +1,10 @@
 package uk.gov.hmcts.probate.model.ccd.caveat.request;
 
+import uk.gov.hmcts.probate.model.LanguagePreference;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.DateFormatterService;
@@ -11,6 +12,7 @@ import uk.gov.hmcts.probate.service.DateFormatterService;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class CaveatDataTest {
 
@@ -26,21 +28,13 @@ class CaveatDataTest {
     private static final String CAV_CAVEATOR_COUNTY = "";
     private static final String CAV_CAVEATOR_POSTCODE = "1AB 1CD";
     private static final String CAV_CAVEATOR_COUNTRY = "";
-    private static final LocalDate LOCAL_DATE = LocalDate.of(2000, 01, 01);
-    private DateFormatterService dateFormatterService = new DateFormatterService();
-    private AddressFormatterService addressFormatterService = new AddressFormatterService();
-    @InjectMocks
-    private CaveatData underTest;
+        private static final LocalDate LOCAL_DATE = LocalDate.of(2000, 1, 1);
+        private final DateFormatterService dateFormatterService = new DateFormatterService();
+        private final AddressFormatterService addressFormatterService = new AddressFormatterService();
 
     @BeforeEach
     public void setup() {
-
-        underTest = CaveatData.builder()
-            .deceasedForenames(CAV_DECEASED_FORENAMES)
-            .deceasedSurname(CAV_DECEASED_SURNAME)
-            .caveatorForenames(CAV_CAVEATOR_FORENAMES)
-            .caveatorSurname(CAV_CAVEATOR_SURNAME)
-            .build();
+        // No setup needed, removed unused field
     }
 
     @Test
@@ -95,6 +89,25 @@ class CaveatDataTest {
     }
 
     @Test
+    void shouldReturnWelshLanguagePreferenceForCaveat() {
+        final CaveatData caveatData = CaveatData.builder()
+                .languagePreferenceWelsh("Yes")
+                .build();
+
+        assertEquals(LanguagePreference.WELSH, caveatData.getLanguagePreference());
+    }
+
+    @Test
+    void shouldReturnEnglishLanguagePreferenceForCaveat() {
+        final CaveatData caveatData = CaveatData.builder()
+                .languagePreferenceWelsh("No")
+                .build();
+
+        assertEquals(LanguagePreference.ENGLISH, caveatData.getLanguagePreference());
+    }
+
+
+    @Test
     void shouldReturnSubmissionDateFormattedWithST() {
         final CaveatData caveatData = CaveatData.builder()
             .applicationSubmittedDate(LOCAL_DATE)
@@ -106,7 +119,7 @@ class CaveatDataTest {
     @Test
     void shouldReturnSubmissionDateFormattedWithND() {
         final CaveatData caveatData = CaveatData.builder()
-            .applicationSubmittedDate(LocalDate.of(2000, 01, 02))
+            .applicationSubmittedDate(LocalDate.of(2000, 1, 2))
             .build();
 
         assertEquals("2nd January 2000", dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
@@ -115,7 +128,7 @@ class CaveatDataTest {
     @Test
     void shouldReturnSubmissionDateFormattedWithRD() {
         final CaveatData caveatData = CaveatData.builder()
-            .applicationSubmittedDate(LocalDate.of(2000, 01, 03))
+            .applicationSubmittedDate(LocalDate.of(2000, 1, 3))
             .build();
 
         assertEquals("3rd January 2000", dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
@@ -124,7 +137,7 @@ class CaveatDataTest {
     @Test
     void shouldReturnSubmissionDateFormattedWithTH() {
         final CaveatData caveatData = CaveatData.builder()
-            .applicationSubmittedDate(LocalDate.of(2000, 01, 04))
+            .applicationSubmittedDate(LocalDate.of(2000, 1, 4))
             .build();
 
         assertEquals("4th January 2000", dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
@@ -133,10 +146,10 @@ class CaveatDataTest {
     @Test
     void shouldThrowParseException() {
         final CaveatData caveatData = CaveatData.builder()
-            .applicationSubmittedDate(LocalDate.of(300000, 01, 04))
+            .applicationSubmittedDate(LocalDate.of(300000, 1, 4))
             .build();
 
-        assertEquals(null, dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
+        assertNull(dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
@@ -151,7 +164,7 @@ class CaveatDataTest {
     @Test
     void shouldReturnExpiryDateFormattedWithND() {
         final CaveatData caveatData = CaveatData.builder()
-            .expiryDate(LocalDate.of(2000, 01, 02))
+            .expiryDate(LocalDate.of(2000, 1, 2))
             .build();
 
         assertEquals("2nd January 2000", dateFormatterService.formatDate(caveatData.getExpiryDate()));
@@ -160,7 +173,7 @@ class CaveatDataTest {
     @Test
     void shouldReturnExpiryDateFormattedWithRD() {
         final CaveatData caveatData = CaveatData.builder()
-            .expiryDate(LocalDate.of(2000, 01, 03))
+            .expiryDate(LocalDate.of(2000, 1, 3))
             .build();
 
         assertEquals("3rd January 2000", dateFormatterService.formatDate(caveatData.getExpiryDate()));
@@ -169,7 +182,7 @@ class CaveatDataTest {
     @Test
     void shouldReturnExpiryDateFormattedWithTH() {
         final CaveatData caveatData = CaveatData.builder()
-            .expiryDate(LocalDate.of(2000, 01, 04))
+            .expiryDate(LocalDate.of(2000, 1, 4))
             .build();
 
         assertEquals("4th January 2000", dateFormatterService.formatDate(caveatData.getExpiryDate()));
@@ -179,7 +192,6 @@ class CaveatDataTest {
     void shouldReturnCaveatorFullAddressLongForCaveat() {
 
         ProbateAddress caveatorAddress = new ProbateAddress();
-
         caveatorAddress.setProAddressLine1(CAV_CAVEATOR_ADDRESS_1);
         caveatorAddress.setProAddressLine2(CAV_CAVEATOR_ADDRESS_2);
         caveatorAddress.setProAddressLine3(CAV_CAVEATOR_ADDRESS_3);
@@ -187,11 +199,6 @@ class CaveatDataTest {
         caveatorAddress.setProCounty(CAV_CAVEATOR_COUNTY);
         caveatorAddress.setProPostCode(CAV_CAVEATOR_POSTCODE);
         caveatorAddress.setProCountry(CAV_CAVEATOR_COUNTRY);
-
-        final CaveatData caveatData = CaveatData.builder()
-            .caveatorAddress(caveatorAddress)
-            .build();
-
         assertEquals(CAV_CAVEATOR_ADDRESS_1 + ", " + CAV_CAVEATOR_ADDRESS_2 + ", "
                 + CAV_CAVEATOR_TOWN + ", " + CAV_CAVEATOR_POSTCODE,
             addressFormatterService.formatAddress(caveatorAddress));
@@ -199,9 +206,7 @@ class CaveatDataTest {
 
     @Test
     void shouldReturnCaveatorFullAddressShortForCaveat() {
-
         ProbateAddress caveatorAddress = new ProbateAddress();
-
         caveatorAddress.setProAddressLine1(CAV_CAVEATOR_ADDRESS_1);
         caveatorAddress.setProAddressLine2("");
         caveatorAddress.setProAddressLine3("");
@@ -209,10 +214,6 @@ class CaveatDataTest {
         caveatorAddress.setProCounty("");
         caveatorAddress.setProPostCode(CAV_CAVEATOR_POSTCODE);
         caveatorAddress.setProCountry("");
-
-        final CaveatData caveatData = CaveatData.builder()
-            .caveatorAddress(caveatorAddress)
-            .build();
 
         assertEquals(CAV_CAVEATOR_ADDRESS_1 + ", " + CAV_CAVEATOR_POSTCODE,
             addressFormatterService.formatAddress(caveatorAddress));
