@@ -30,4 +30,15 @@
    ]]></notes>
         <cve>CVE-2020-29582</cve>
     </suppress>
+    <suppress until = "2026-07-13">
+        <!--
+           The scanner is doing a version-range match on the CVE's CPE, and your tool is matching the fasterxml:jackson-core:3.0.1 CPE
+           broadly across both your 3.x JARs and your 2.x JARs. NVD uses CPEs that apply to a range of versions, which requires its own
+           version comparison logic — and this is commonly a source of false positives when version schemes change or when a product changes its namespace.
+        -->
+        <cve>CVE-2026-29062</cve>
+    </suppress>
+    <suppress until = "2026-07-13">
+        <cve>CVE-2025-21199</cve>
+    </suppress>
 </suppressions>

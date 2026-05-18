@@ -166,7 +166,7 @@ def versions = [
         elasticSearchVersion            : '9.2.8',
         fortifyClientVersion            : '1.4.10',
         hmctsJavaLogging                : '8.0.0',
-        jacksonDatabind                 : '2.18.3',
+        jacksonDatabind                 : '2.17.1',
         jsoup                           : '1.22.2',
         lifeEventsClientVersion         : '1.5.3',
         lombok                          : '1.18.46',
