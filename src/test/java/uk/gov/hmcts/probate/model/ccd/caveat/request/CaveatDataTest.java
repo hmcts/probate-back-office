@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.model.ccd.caveat.request;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
@@ -26,14 +25,9 @@ class CaveatDataTest {
     private static final String CAV_CAVEATOR_COUNTY = "";
     private static final String CAV_CAVEATOR_POSTCODE = "1AB 1CD";
     private static final String CAV_CAVEATOR_COUNTRY = "";
-        private static final LocalDate LOCAL_DATE = LocalDate.of(2000, 1, 1);
-        private final DateFormatterService dateFormatterService = new DateFormatterService();
-        private final AddressFormatterService addressFormatterService = new AddressFormatterService();
-
-    @BeforeEach
-    public void setup() {
-        // No setup needed, removed unused field
-    }
+    private static final LocalDate LOCAL_DATE = LocalDate.of(2000, 1, 1);
+    private final DateFormatterService dateFormatterService = new DateFormatterService();
+    private final AddressFormatterService addressFormatterService = new AddressFormatterService();
 
     @Test
     void shouldReturnDeceasedFullNameForCaveat() {
@@ -89,8 +83,8 @@ class CaveatDataTest {
     @Test
     void shouldReturnWelshLanguagePreferenceForCaveat() {
         final CaveatData caveatData = CaveatData.builder()
-                .languagePreferenceWelsh("Yes")
-                .build();
+            .languagePreferenceWelsh("Yes")
+            .build();
 
         assertEquals(LanguagePreference.WELSH, caveatData.getLanguagePreference());
     }
@@ -98,8 +92,8 @@ class CaveatDataTest {
     @Test
     void shouldReturnEnglishLanguagePreferenceForCaveat() {
         final CaveatData caveatData = CaveatData.builder()
-                .languagePreferenceWelsh("No")
-                .build();
+            .languagePreferenceWelsh("No")
+            .build();
 
         assertEquals(LanguagePreference.ENGLISH, caveatData.getLanguagePreference());
     }
