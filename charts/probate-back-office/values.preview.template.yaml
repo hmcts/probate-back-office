@@ -172,7 +172,7 @@ ccd:
       devcpuRequests: 250m
       devcpuLimits: 512m
       devmemoryRequests: 800Mi
-      devmemoryLimits: 1.3Gi
+      devmemoryLimits: 1.2G
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
@@ -220,8 +220,8 @@ ccd:
         value: http://${SERVICE_NAME}-es-master:9200
     devcpuRequests: 500m
     devcpuLimits: 700m
-    devmemoryRequests: 1.1Gi
-    devmemoryLimits: 1.5Gi
+    devmemoryRequests: 1.1G
+    devmemoryLimits: 1.5G
     configTpl:
       xpack.monitoring.enabled: "false"
       db.url: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
@@ -322,7 +322,7 @@ java:
   devcpuRequests: 150m
   devcpuLimits: 250m
   devmemoryRequests: 1Gi
-  devmemoryLimits: 1.5Gi
+  devmemoryLimits: 1.5G
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
