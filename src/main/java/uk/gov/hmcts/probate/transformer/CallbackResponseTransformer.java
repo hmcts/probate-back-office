@@ -882,7 +882,7 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.caseType(caseType);
         }
         if (GRANT_TYPE_INTESTACY.equalsIgnoreCase(callbackRequest.getCaseDetails().getData().getSolsWillType())) {
-            clearPPFieldsBasedOnRelationships(responseCaseDataBuilder, callbackRequest);
+            clearPPOrPAFieldsBasedOnRelationships(responseCaseDataBuilder, callbackRequest);
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -927,14 +927,7 @@ public class CallbackResponseTransformer {
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(),false);
 
-        if (notEqual(callbackRequest.getCaseDetailsBefore().getData().getPrimaryApplicantAdoptedIn(),
-                callbackRequest.getCaseDetails().getData().getPrimaryApplicantAdoptedIn())) {
-            if (YES.equalsIgnoreCase(callbackRequest.getCaseDetailsBefore().getData().getPrimaryApplicantAdoptedIn())) {
-                responseCaseDataBuilder.primaryApplicantAdoptionInEnglandOrWales(null);
-            } else {
-                responseCaseDataBuilder.primaryApplicantAdoptedOut(null);
-            }
-        }
+        clearPPOrPAFieldsBasedOnRelationships(responseCaseDataBuilder, callbackRequest);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -1033,22 +1026,32 @@ public class CallbackResponseTransformer {
     }
 
     private static final Map<String, BiConsumer<ResponseCaseDataBuilder<?, ?>, String>> CLEAR_RELATIONSHIP = Map.of(
-            SOLICITOR_GRANDCHILD,  CallbackResponseTransformer::clearPPGrandchildRelatedFields,
-            SOLICITOR_PARENT, CallbackResponseTransformer::clearPPParentRelatedFields,
-            SOLICITOR_SIBLING, CallbackResponseTransformer::clearPPSiblingRelatedFields,
-            SOLICITOR_CHILD, CallbackResponseTransformer::clearPPChildRelatedFields
+            SOLICITOR_GRANDCHILD, CallbackResponseTransformer::clearPPOrPAGrandchildRelatedFields,
+            SOLICITOR_PARENT, CallbackResponseTransformer::clearPPOrPAParentRelatedFields,
+            SOLICITOR_SIBLING, CallbackResponseTransformer::clearPPOrPASiblingRelatedFields,
+            SOLICITOR_CHILD, CallbackResponseTransformer::clearPPOrPAChildRelatedFields,
+            GRAND_CHILD, CallbackResponseTransformer::clearPPOrPAGrandchildRelatedFields,
+            PARENT, CallbackResponseTransformer::clearPPOrPAParentRelatedFields,
+            SIBLING, CallbackResponseTransformer::clearPPOrPASiblingRelatedFields,
+            CHILD, CallbackResponseTransformer::clearPPOrPAChildRelatedFields
     );
 
-    private void clearPPFieldsBasedOnRelationships(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+    private void clearPPOrPAFieldsBasedOnRelationships(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
                                                               CallbackRequest callbackRequest) {
         var caseDataBefore = callbackRequest.getCaseDetailsBefore().getData();
         var caseDataAfter = callbackRequest.getCaseDetails().getData();
+        ApplicationType applicationType = caseDataAfter.getApplicationType();
+        String relationshipBefore = SOLICITOR.equals(applicationType)
+                ? caseDataBefore.getSolsApplicantRelationshipToDeceased()
+                : caseDataBefore.getPrimaryApplicantRelationshipToDeceased();
+        String relationshipAfter = SOLICITOR.equals(applicationType)
+                ? caseDataAfter.getSolsApplicantRelationshipToDeceased()
+                : caseDataAfter.getPrimaryApplicantRelationshipToDeceased();
 
-        if (notEqual(caseDataBefore.getSolsApplicantRelationshipToDeceased(),
-                caseDataAfter.getSolsApplicantRelationshipToDeceased())) {
-            CLEAR_RELATIONSHIP.getOrDefault(caseDataBefore.getSolsApplicantRelationshipToDeceased(),
+        if (notEqual(relationshipBefore, relationshipAfter)) {
+            CLEAR_RELATIONSHIP.getOrDefault(relationshipBefore,
                             (b,a) -> { })
-                    .accept(responseCaseDataBuilder, caseDataAfter.getSolsApplicantRelationshipToDeceased());
+                    .accept(responseCaseDataBuilder, relationshipAfter);
         }
         if (notEqual(caseDataBefore.getApplicantSameParentsAsDeceased(),
                 caseDataAfter.getApplicantSameParentsAsDeceased())) {
@@ -1086,7 +1089,7 @@ public class CallbackResponseTransformer {
         return null != before && !before.equalsIgnoreCase(after);
     }
 
-    private static void clearPPChildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+    private static void clearPPOrPAChildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
                                                   String relationshipAfter) {
         if (SOLICITOR_PARENT.equalsIgnoreCase(relationshipAfter)) {
             responseCaseDataBuilder.primaryApplicantAdoptedIn(null)
@@ -1095,7 +1098,7 @@ public class CallbackResponseTransformer {
         }
     }
 
-    private static void clearPPParentRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+    private static void clearPPOrPAParentRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
                                                    String relationshipAfter) {
         if (!SOLICITOR_SIBLING.equalsIgnoreCase(relationshipAfter)) {
             responseCaseDataBuilder.deceasedAnyLivingDescendants(null)
@@ -1105,7 +1108,7 @@ public class CallbackResponseTransformer {
         }
     }
 
-    private static void clearPPSiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+    private static void clearPPOrPASiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
                                                     String relationshipAfter) {
         if (!SOLICITOR_PARENT.equalsIgnoreCase(relationshipAfter)) {
             responseCaseDataBuilder.deceasedAnyLivingDescendants(null)
@@ -1122,7 +1125,7 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder.anyLivingWholeBloodSiblings(null);
     }
 
-    private static void clearPPGrandchildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+    private static void clearPPOrPAGrandchildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
                                                        String relationshipAfter) {
         if (SOLICITOR_PARENT.equalsIgnoreCase(relationshipAfter)) {
             responseCaseDataBuilder.primaryApplicantAdoptedIn(null)
