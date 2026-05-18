@@ -190,6 +190,7 @@ ccd:
         value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
     persistence:
       enabled: false
+    clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
   logstash:
     elasticsearch:
       host: ${SERVICE_NAME}-es-master
