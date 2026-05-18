@@ -25,6 +25,9 @@ am-org-role-mapping-service:
 servicebus:
   enabled: false
 
+ccd-message-publisher:
+  enabled: false
+
 java:
   applicationPort: 4104
   image: hmctsprod.azurecr.io/probate/back-office:latest
