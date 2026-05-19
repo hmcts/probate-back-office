@@ -11,11 +11,11 @@ configFolder=${conversionFolder}/../configFiles
 #   $4 = extraExclusions (optional, comma-separated patterns) Additional exclusions are appended based on feature flags:
 #        - WA disabled → adds "*-wa.json"
 #        - GS disabled → adds "*-gs.json"
+# Note: CCD_DEF_PUBLISH is derived automatically from PROBATE_WA_ENABLED env var
 caseServiceUrl="${1-}"
 aacUrl="${2-}"
 shutterOption="${3:-false}"
 extraExclusions="${4:-}"
-publishEnabled="${5:-false}"
 
 waEnabledVar=${PROBATE_WA_ENABLED:-false}
 gsEnabledVar=${PROBATE_GS_ENABLED:-false}
