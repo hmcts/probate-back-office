@@ -589,6 +589,8 @@ class CallbackResponseTransformerTest {
     private SecurityDTO securityDTO;
     @Mock
     private AuditEventService auditEventService;
+    @Mock
+    private HasValidMatchesDefaulter hasValidMatchesDefaulter;
 
     @BeforeEach
     public void setup() {
@@ -5856,5 +5858,14 @@ class CallbackResponseTransformerTest {
                 "Expected dec alias present"));
 
         assertAll(assertions);
+    }
+
+    @Test
+    void testDefaultHasValidMatches() {
+        when(hasValidMatchesDefaulter.defaultHasValidMatches(caseDataBuilder.build())).thenReturn(YES);
+        CallbackResponse callbackResponse = underTest.transformForIssueGrant(callbackRequestMock, Optional.empty());
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getHasValidMatches());
     }
 }

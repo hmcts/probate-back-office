@@ -447,10 +447,13 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
-  async issueGrant(caseRef: string) {
+  async issueGrant(caseRef: string, continueWithValidMatchWarning: boolean = true) {
     await this.verifyPageLoad(this.issueGrantHeadingLocator);
     await expect(this.issueGrantHeadingLocator).toBeVisible();
     await expect(this.page.getByText(caseRef)).toBeVisible();
+    if (continueWithValidMatchWarning) {
+      await this.waitForNavigationToComplete(commonConfig.continueButton);
+    }
     await expect(this.bulkPrintLocator).toBeEnabled();
     await this.bulkPrintLocator.click();
     await expect(this.emailGrantIssueNotificationLocator).toBeEnabled();
