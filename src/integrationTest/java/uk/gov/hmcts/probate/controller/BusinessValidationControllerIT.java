@@ -1554,7 +1554,6 @@ class BusinessValidationControllerIT {
         when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
         verifyNoInteractions(coreCaseDataApi);
     }
-}
 
     @Test
     void shouldDefaultHasValidMatchToNo() throws Exception {
