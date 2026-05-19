@@ -53,6 +53,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApp
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.RetentionPeriodDuration;
 
