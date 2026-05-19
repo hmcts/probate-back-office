@@ -111,6 +111,7 @@ class CaveatDataTransformerTest {
         assertEquals(APP_SUBMITTED_DATE, caveatData.getApplicationSubmittedDate());
         assertEquals("", caveatData.getSolsPaymentMethods());
         assertEquals("", caveatData.getSolsFeeAccountNumber());
+        assertNull(caveatData.getLanguagePreferenceWelsh());
     }
 
     @Test
@@ -123,5 +124,6 @@ class CaveatDataTransformerTest {
         assertNull(caveatData.getApplicationSubmittedDate());
         assertEquals("", caveatData.getSolsPaymentMethods());
         assertEquals("", caveatData.getSolsFeeAccountNumber());
+        assertNull(caveatData.getLanguagePreferenceWelsh());
     }
 }
