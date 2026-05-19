@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 
 import java.util.Arrays;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -192,4 +193,18 @@ class DefaultExceptionHandlerTest {
         assertEquals(EXCEPTION_MESSAGE, response.getBody().getErrors().get(0),
                 "Expected error to be extracted from exception");
     }
+
+    @Test
+    void shouldHandleRuntimeExceptionWithGenericErrorMessage() {
+        RuntimeException runtimeException = new RuntimeException("Unexpected error occurred");
+
+        ResponseEntity<CallbackResponse> response = underTest.handle(runtimeException);
+
+        assertEquals(OK, response.getStatusCode());
+        assertEquals(2, response.getBody().getErrors().size());
+        assertTrue(response.getBody().getErrors().get(0).contains(
+                "A system error occurred within a probate callback."));
+        assertTrue(response.getBody().getErrors().get(0).contains("Error ID:"));
+    }
+
 }
