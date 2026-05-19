@@ -42,7 +42,7 @@ public class CaveatDataTransformer {
             .applicationSubmittedDate(getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails()
                 .getLastModified()))
             .caveatorEmailAddress(notNullWrapper(caveatData.getCaveatorEmailAddress()))
-            .languagePreferenceWelsh(notNullWrapper(caveatData.getLanguagePreferenceWelsh()))
+            .languagePreferenceWelsh((caveatData.getLanguagePreferenceWelsh()))
             .solsPaymentMethods(notNullWrapper(caveatData.getSolsPaymentMethods()))
             .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber()))
             .solsPBANumber(caveatData.getSolsPBANumber())
