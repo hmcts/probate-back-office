@@ -246,7 +246,9 @@ notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-05-08"
   grantAwaitingDocumentationNotificationPeriodDays: 35
-  govNotifyApiKey: ${PROBATE_NOTIFY_KEY:dummykey}
+  govNotifyApiKeyPrimary: ${PROBATE_NOTIFY_KEY_PRIMARY:dummykey_primary}
+  govNotifyApiKeySecondary: ${PROBATE_NOTIFY_KEY_SECONDARY:dummykey_secondary}
+  govNotifyBaseUrl: https://api.notifications.service.gov.uk
   stop:
     reasons:
       english:

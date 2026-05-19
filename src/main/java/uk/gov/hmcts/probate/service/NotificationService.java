@@ -52,7 +52,6 @@ import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
-import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.RetentionPeriodDuration;
@@ -124,7 +123,6 @@ public class NotificationService {
     private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
     private final RegistriesProperties registriesProperties;
-    private final NotificationClient notificationClient;
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
     private final EventValidationService eventValidationService;

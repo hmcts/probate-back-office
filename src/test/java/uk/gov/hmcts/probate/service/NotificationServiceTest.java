@@ -42,7 +42,6 @@ import uk.gov.hmcts.probate.validator.PersonalisationValidationRule.Personalisat
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
-import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
@@ -92,8 +91,6 @@ class NotificationServiceTest {
     private NotificationTemplates notificationTemplatesMock;
     @Mock
     private RegistriesProperties registriesPropertiesMock;
-    @Mock
-    private NotificationClient notificationClientMock;
     @Mock
     private MarkdownTransformationService markdownTransformationServiceMock;
     @Mock
@@ -158,7 +155,6 @@ class NotificationServiceTest {
                 emailAddressesMock,
                 notificationTemplatesMock,
                 registriesPropertiesMock,
-                notificationClientMock,
                 markdownTransformationServiceMock,
                 pdfManagementServiceMock,
                 eventValidationServiceMock,
@@ -836,7 +832,7 @@ class NotificationServiceTest {
                 () -> assertThat(captured, hasKey("grant_issued_date_cy")),
                 () -> assertThat(result, sameInstance(documentMock)));
     }
-  
+
     @Test
     void shouldSendRegistrarEscalatedForPP() throws NotificationClientException, RegistrarEscalationException {
         final String applEmail = "abc@gmail.com";
@@ -1028,7 +1024,7 @@ class NotificationServiceTest {
                 () -> assertThat(captured, hasKey("applicant_name")),
                 () -> assertThat(result, sameInstance(documentMock)));
     }
-  
+
     @Test
     void shouldReturnNullIfRegistrarEscalatedDocumentGenThrows()
             throws NotificationClientException, RegistrarEscalationException {
@@ -1193,7 +1189,7 @@ class NotificationServiceTest {
 
         verify(pdfManagementServiceMock, never()).generateAndUpload(any(SentEmail.class), any());
     }
-  
+
     @Test
     void shouldReturnNullWhenPostGrantIssuedPdfUploadFails() throws NotificationClientException {
         final String applEmail = "abc@gmail.com";
@@ -1555,7 +1551,7 @@ class NotificationServiceTest {
 
         assertEquals(expected, actual, "when instant is 0130 UTC but not in BST, time should be 01:30");
     }
-  
+
     @Test
     void shouldReturnNullForRegistrarEscalatedWhenApplEmailNull()
             throws NotificationClientException, RegistrarEscalationException {
