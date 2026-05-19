@@ -186,6 +186,7 @@ public class CallbackResponseTransformer {
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
+    private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -2552,6 +2553,20 @@ public class CallbackResponseTransformer {
                 .orgPolicyReference(null)
                 .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
                 .build();
+    }
+
+    public CallbackResponse transformForIssueGrant(CallbackRequest callbackRequest,
+                                                   Optional<UserInfo> caseworkerInfo) {
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(caseDetails,
+                        callbackRequest.getEventId(),
+                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        false);
+        responseCaseDataBuilder.hasValidMatches(
+                hasValidMatchesDefaulter.defaultHasValidMatches(caseDetails.getData())
+        );
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse clearSiblingFields(CallbackRequest callbackRequest) {
