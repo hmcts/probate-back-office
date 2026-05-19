@@ -22,6 +22,9 @@ binFolder=$(dirname "$0")
 (${binFolder}/idam-create-caseworker.sh citizen testusername@test.com)
 (${binFolder}/idam-create-caseworker.sh caseworker,caseworker-probate,caseworker-probate-charity ProbateCharity@gmail.com)
 
+export USER_TOKEN_ENV=$(${binFolder}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Pa55word11})
+export SERVICE_TOKEN_ENV=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
+
 (${binFolder}/ccd-add-role.sh payment)
 (${binFolder}/ccd-add-role.sh citizen)
 (${binFolder}/ccd-add-role.sh caseworker)

@@ -42,6 +42,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
+import uk.gov.hmcts.probate.service.notification.NotificationClientProvider;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -192,7 +193,10 @@ class NotificationServiceIT {
     @MockitoBean
     private UserInfoService userInfoService;
 
-    @MockitoSpyBean
+    @MockitoBean
+    private NotificationClientProvider notificationClientProvider;
+
+    @MockitoSpyBean(name = "primaryNotificationClient")
     private NotificationClient notificationClient;
 
     private CaseDetails personalCaseDataOxford;
@@ -245,7 +249,7 @@ class NotificationServiceIT {
     private RegistriesProperties registriesPropertiesMock;
 
     @BeforeEach
-    public void setUp() throws NotificationClientException, IOException {
+    void setUp() throws NotificationClientException, IOException {
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("emailResponseFrom@probate-test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
         when(documentManagementService.getDocument(any())).thenReturn(DOC_BYTES);
@@ -668,6 +672,8 @@ class NotificationServiceIT {
         when(caveatQueryServiceMock.findCaveatById(eq(CaseType.CAVEAT), any())).thenReturn(caveatData);
 
         when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn("1st January 2019");
+
+        when(notificationClientProvider.getClient()).thenReturn(notificationClient);
     }
 
     @Test

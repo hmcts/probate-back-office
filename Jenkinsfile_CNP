@@ -18,7 +18,8 @@ def secrets = [
                 secret('idamUserId', 'IDAM_USER_ID'),
                 secret('probateIdamSecret', 'IDAM_SECRET'),
                 secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
-                secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
+                secret('probate-bo-govNotifyApiKey', 'PROBATE_NOTIFY_KEY_PRIMARY'),
+                secret('probate-bo-govNotifyApiKey-secondary', 'PROBATE_NOTIFY_KEY_SECONDARY'),
                 secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
                 secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
                 secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
@@ -81,6 +82,8 @@ def secrets = [
                 secret('microservicekey-ccd-admin', 'ADMIN_S2S_KEY')
         ],
         'ccd-${env}'      : [
+                secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET'),
+                secret('ccd-admin-web-oauth2-client-secret', 'ADMIN_WEB_IDAM_SECRET'),
                 secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET'),
                 secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
                 secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
@@ -94,7 +97,8 @@ def secrets = [
                 secret('idam-mca-system-user-password', 'BEFTA_IDAM_CAA_PASSWORD'),
                 secret('idam-noc-approver-username', 'BEFTA_IDAM_NOC_APPROVER_USERNAME'),
                 secret('idam-noc-approver-password', 'BEFTA_IDAM_NOC_APPROVER_PASSWORD'),
-                secret('aac-manage-case-s2s-secret', 'MANAGE_CASE_S2S_KEY')
+                secret('aac-manage-case-s2s-secret', 'MANAGE_CASE_S2S_KEY'),
+                secret('notify-mca-api-key-secret', 'NOTIFY_MCA_API_KEY')
         ],
         'am-${env}': [
                 secret('role-assignment-service-LD-SDK-KEY', 'LD_SDK_AM_KEY')
@@ -114,8 +118,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
 // Configure branches to sync with master branch
-// diable sync branch to demo and ithc
-def branchesToSync = ['perftest']
+// disable sync branch to all lower envs
+def branchesToSync = []
+def githubApi = new GithubAPI(this) as Object
 
 def checkForEnableNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
@@ -226,6 +231,7 @@ withPipeline("java", product, component) {
   env.CASE_DOCUMENT_AM_URL='http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
   pipelineConf = config;
 
+
   enableAksStagingDeployment()
   disableLegacyDeployment()
   loadVaultSecrets(secrets)
@@ -275,6 +281,32 @@ withPipeline("java", product, component) {
       env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
       sh 'yarn install'
       sh 'yarn test:fullfunctional-cw'
+    }
+
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "target/site/serenity/",
+            reportFiles          : "index.html",
+            reportName           : "Functional Tests Report"
+    ]
+
+  }
+
+  afterSuccess('akschartsinstall') {
+    onPR {
+      if (checkForWAEnableLabel(env.BRANCH_NAME)) {
+        env.ROLE_ASSIGNMENT_URL = "https://am-role-assignment-service-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+
+        env.CAMUNDA_BASE_URL = "https://camunda-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+        println """After akschartsinstall upload DNM and BPMN diagrams""".stripIndent()
+        sh 'chmod -R +x ./bin'
+        uploadDmnDiagrams()
+        uploadBpmnDiagram()
+        setupRoleAssignments()
+      }
     }
   }
 
@@ -332,6 +364,7 @@ withPipeline("java", product, component) {
       env.ENV='preview'
       if (checkForWAEnableLabel(env.BRANCH_NAME)) {
         env.PROBATE_WA_ENABLED = true
+        setCommonEnvVariables()
         echo "Enabling Work Allocation Feature"
       } else {
         env.PROBATE_WA_ENABLED = false
@@ -373,7 +406,6 @@ withPipeline("java", product, component) {
     sh """
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
       ./bin/add-ccd-roles.sh
-      ./bin/add-ccd-roles-prl.sh
     """
     archiveCoreCaseDataDefinitions('preview', env.BRANCH_NAME)
     uploadCoreCaseDataDefinitions('preview')
@@ -404,4 +436,37 @@ withPipeline("java", product, component) {
     env.SERVICES_CORECASEDATA_BASEURL = "http://ccd-data-store-api-aat.service.core-compute-aat.internal"
   }
 }
+
+
+def uploadDmnDiagrams() {
+  dir("${WORKSPACE}/bin") {
+    tenantId = "back-office"
+    product = "back-office"
+    sh "./wa/import-dmn-diagram.sh ${WORKSPACE} ${env} ${tenantId} ${product}"
+  }
+}
+
+def uploadBpmnDiagram() {
+  dir("${WORKSPACE}/bin") {
+    bpmnBranch = "master"
+    sh """
+      ./wa/pull-latest-camunda-wa-files.sh ${bpmnBranch}
+      ./wa/import-wa-bpmn-diagram.sh .
+    """
+  }
+}
+
+def setupRoleAssignments() {
+  dir("${WORKSPACE}/bin") {
+    sh "./wa/setup-role-assignments.sh"
+  }
+}
+
+def setCommonEnvVariables() {
+  env.IDAM_API_URL_BASE = "https://idam-api.aat.platform.hmcts.net"
+  // need to check whether below variables are required
+  env.S2S_URL_BASE = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+  env.BEFTA_S2S_CLIENT_ID = "ccd_data"
+}
+
 

@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -192,6 +193,8 @@ class BusinessValidationControllerIT {
     private static final String MOVE_TO_POST_GRANT_ISSUED = "/case/moveToPostGrantIssued";
     private static final String ESCALATE_TO_REGISTRAR = "/case/case-escalated";
     private static final String SOLICITOR_SUBMIT_CASE = "/case/setCaseSubmissionDate";
+    private static final String CHECK_CASE_MATCHES = "/case/checkCaseMatches";
+
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -1498,6 +1501,25 @@ class BusinessValidationControllerIT {
     }
 
     @Test
+    void shouldDefaultHasValidMatchToYes() throws Exception {
+        CaseMatch validMatch = CaseMatch.builder()
+                .id("someId")
+                .type("Grant of Representation")
+                .valid("Yes")
+                .build();
+        caseDataBuilder.caseMatches(List.of(new CollectionMember<>(null, validMatch)));
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CHECK_CASE_MATCHES).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.data.hasValidMatches").value(YES));
+    }
+
+    @Test
     void gopSupplementaryDataShouldReturnDataPayloadOkResponseCode() throws Exception {
         String gopPayload = testUtils.getStringFromFile("digitalCase.json");
         when(workAllocationToggleService.isProbateGSEnabled()).thenReturn(true);
@@ -1534,3 +1556,17 @@ class BusinessValidationControllerIT {
     }
 }
 
+    @Test
+    void shouldDefaultHasValidMatchToNo() throws Exception {
+        caseDataBuilder.caseMatches(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CHECK_CASE_MATCHES).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.data.hasValidMatches").value(NO));
+    }
+}
