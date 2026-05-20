@@ -442,6 +442,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final LocalDate firstStopReminderSentDate;
     private String issueEarlySwitch;
     private String hasValidMatches;
+    private final List<CollectionMember<UploadDocument>> cwDocumentUploadedList;
     private final String otherWholeBloodSiblings;
     private final String wholeBloodSiblingsDiedBeforeDeceased;
     private final String wholeBloodNiecesAndNephewsSurvived;

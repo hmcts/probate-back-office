@@ -367,12 +367,28 @@ public class CallbackResponseTransformer {
                     .expectedResponseDate(null)
                     .documentUploadIssue(null);
         }
+        if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())) {
+            responseCaseDataBuilder
+                    .cwDocumentUploadedList(addCaseworkerUploadDocument(caseData));
+        }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailRequestInfoNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailRequestInfoNotification());
         }
 
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private List<CollectionMember<UploadDocument>> addCaseworkerUploadDocument(CaseData caseData) {
+        List<CollectionMember<UploadDocument>> currentUploads = caseData.getCwDocumentUploadedList();
+        if (currentUploads == null) {
+            currentUploads = new ArrayList<>();
+        }
+        UploadDocument uploadedDoc = caseData.getCwDocumentUpload();
+        if (uploadedDoc != null) {
+            currentUploads.add(new CollectionMember<>(null, uploadedDoc));
+        }
+        return currentUploads;
     }
 
     public CallbackResponse transformCitizenHubResponse(CallbackRequest callbackRequest) {
@@ -1569,6 +1585,7 @@ public class CallbackResponseTransformer {
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
+            .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
             .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown())
             .grandchildParentOtherChildren(caseData.getGrandchildParentOtherChildren())
             .grandchildParentChildrenOverEighteen(caseData.getGrandchildParentChildrenOverEighteen())
