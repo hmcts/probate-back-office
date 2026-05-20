@@ -172,7 +172,7 @@ ccd:
       devcpuRequests: 250m
       devcpuLimits: 512m
       devmemoryRequests: 800Mi
-      devmemoryLimits: 1.2Gi
+      devmemoryLimits: 1.2G
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
@@ -190,6 +190,7 @@ ccd:
         value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
     persistence:
       enabled: false
+    clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
   logstash:
     elasticsearch:
       host: ${SERVICE_NAME}-es-master
@@ -219,8 +220,8 @@ ccd:
         value: http://${SERVICE_NAME}-es-master:9200
     devcpuRequests: 500m
     devcpuLimits: 700m
-    devmemoryRequests: 1.1Gi
-    devmemoryLimits: 1.5Gi
+    devmemoryRequests: 1.1G
+    devmemoryLimits: 1.5G
     configTpl:
       xpack.monitoring.enabled: "false"
       db.url: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
@@ -309,7 +310,7 @@ aac-manage-case-assignment:
       MANAGE_CASE_S2S_KEY: ${MANAGE_CASE_S2S_KEY}
       IDAM_NOC_APPROVER_USERNAME: ${BEFTA_IDAM_NOC_APPROVER_USERNAME}
       IDAM_NOC_APPROVER_PASSWORD: ${BEFTA_IDAM_NOC_APPROVER_PASSWORD}
-      NOTIFY_MCA_API_KEY: ${PROBATE_BO_NOTIFY_KEY}
+      NOTIFY_MCA_API_KEY: ${NOTIFY_MCA_API_KEY}
       NOTIFY_EMAIL_TEMPLATE_ID: 85f22924-7b45-4fc6-9954-c08a8833f6a0
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
     autoscaling:
@@ -321,7 +322,7 @@ java:
   devcpuRequests: 150m
   devcpuLimits: 250m
   devmemoryRequests: 1Gi
-  devmemoryLimits: 1.5Gi
+  devmemoryLimits: 1.5G
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
@@ -345,7 +346,9 @@ java:
         - name: s2s-probate-backend
           alias: idam.s2s-auth.totp_secret
         - name: probate-bo-govNotifyApiKey
-          alias: notifications.govNotifyApiKey
+          alias: notifications.govNotifyApiKeyPrimary
+        - name: probate-bo-govNotifyApiKey-secondary
+          alias: notifications.govNotifyApiKeySecondary
         - name: authTokenEmail
           alias: auth.provider.client.email
         - name: authTokenPassword
