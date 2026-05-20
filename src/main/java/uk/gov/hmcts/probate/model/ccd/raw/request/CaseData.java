@@ -644,6 +644,11 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<UploadDocument>> cwDocumentUploadedList;
     private final String uploadFileCheck;
 
+    /**
+     * This is only intended for use during migrations and should not be persisted into the case record.
+     */
+    private final String migrationCallbackMetadata;
+
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
 
