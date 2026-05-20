@@ -163,7 +163,7 @@ def versions = [
         commonsIO                       : '2.22.0',
         commonsValidator                : '1.10.1',
         documentClient                  : '1.59.2',
-        elasticSearchVersion            : '7.17.29',
+        elasticSearchVersion            : '9.1.2',
         fortifyClientVersion            : '1.4.10',
         hmctsJavaLogging                : '8.0.0',
         jacksonDatabind                 : '2.17.1',
@@ -267,7 +267,7 @@ dependencies {
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   implementation group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.2.0'
 
-  implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
+  implementation group: 'co.elastic.clients', name: 'elasticsearch-java',  version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '7.13.4'

@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,10 +20,15 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
@@ -45,7 +51,7 @@ class CaseSearchServiceTest {
     private Case caseMock;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
 
         CaseData caseData = CaseData.builder()
                 .deceasedForenames("names")
@@ -72,12 +78,12 @@ class CaseSearchServiceTest {
         List<CaseMatch> cases = caseSearchService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
 
         assertEquals(1, cases.size());
-        assertEquals("1", cases.get(0).getCaseLink().getCaseReference());
-        assertEquals("names surname", cases.get(0).getFullName());
-        assertEquals("2000-01-01", cases.get(0).getDod());
-        assertEquals("SW12 0FA", cases.get(0).getPostcode());
-        assertNull(cases.get(0).getValid());
-        assertNull(cases.get(0).getComment());
+        assertEquals("1", cases.getFirst().getCaseLink().getCaseReference());
+        assertEquals("names surname", cases.getFirst().getFullName());
+        assertEquals("2000-01-01", cases.getFirst().getDod());
+        assertEquals("SW12 0FA", cases.getFirst().getPostcode());
+        assertNull(cases.getFirst().getValid());
+        assertNull(cases.getFirst().getComment());
     }
 
     @Test
@@ -98,12 +104,12 @@ class CaseSearchServiceTest {
         List<CaseMatch> cases = caseSearchService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
 
         assertEquals(1, cases.size());
-        assertEquals("1", cases.get(0).getCaseLink().getCaseReference());
-        assertEquals("names surname", cases.get(0).getFullName());
-        assertEquals("2000-01-01", cases.get(0).getDod());
-        assertEquals("SW12 0FA", cases.get(0).getPostcode());
-        assertNull(cases.get(0).getValid());
-        assertNull(cases.get(0).getComment());
+        assertEquals("1", cases.getFirst().getCaseLink().getCaseReference());
+        assertEquals("names surname", cases.getFirst().getFullName());
+        assertEquals("2000-01-01", cases.getFirst().getDod());
+        assertEquals("SW12 0FA", cases.getFirst().getPostcode());
+        assertNull(cases.getFirst().getValid());
+        assertNull(cases.getFirst().getComment());
     }
 
     @Test
@@ -123,12 +129,54 @@ class CaseSearchServiceTest {
         List<CaseMatch> cases = caseSearchService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
 
         assertEquals(1, cases.size());
-        assertEquals("1", cases.get(0).getCaseLink().getCaseReference());
-        assertEquals("names surname", cases.get(0).getFullName());
-        assertEquals("2000-01-01", cases.get(0).getDod());
-        assertEquals("SW12 0FA", cases.get(0).getPostcode());
-        assertEquals("record1", cases.get(0).getRecordId());
-        assertNull(cases.get(0).getValid());
-        assertNull(cases.get(0).getComment());
+        assertEquals("1", cases.getFirst().getCaseLink().getCaseReference());
+        assertEquals("names surname", cases.getFirst().getFullName());
+        assertEquals("2000-01-01", cases.getFirst().getDod());
+        assertEquals("SW12 0FA", cases.getFirst().getPostcode());
+        assertEquals("record1", cases.getFirst().getRecordId());
+        assertNull(cases.getFirst().getValid());
+        assertNull(cases.getFirst().getComment());
+    }
+
+    @Test
+    void findCasesBuildsFuzzyAndStrictNameQueries() {
+        when(caseMatchingCriteria.getDeceasedForenames()).thenReturn("John");
+        when(caseMatchingCriteria.getDeceasedSurname()).thenReturn("Smith");
+        when(caseMatchingCriteria.getDeceasedFullName()).thenReturn("John Smith");
+
+        CaseMatch caseMatch = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("1").build())
+                .build();
+
+        when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
+
+        caseSearchService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
+
+        ArgumentCaptor<String> queryCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(elasticSearchService).runQuery(
+                eq(GRANT_OF_REPRESENTATION),
+                queryCaptor.capture()
+        );
+
+        String query = queryCaptor.getValue();
+
+        assertAll(
+            () -> assertThat(query, containsString("\"multi_match\"")),
+            () -> assertThat(query, containsString("\"query\":\"John\"")),
+            () -> assertThat(query, containsString("\"data.deceasedForenames")),
+            () -> assertThat(query, containsString("\"query\":\"Smith\"")),
+            () -> assertThat(query, containsString("\"data.deceasedSurname")),
+            () -> assertThat(query, containsString("\"query\":\"John Smith\"")),
+            () -> assertThat(query, containsString("\"data.solsDeceasedAliasNamesList.*")),
+            () -> assertThat(query, containsString("\"operator\":\"AND\"")),
+            () -> assertThat(query, containsString("\"fuzziness\":\"2\"")),
+            () -> assertThat(query, containsString("\"fuzziness\":\"0\"")),
+            () -> assertThat(query, containsString("\"boost\":2.0")),
+            () -> assertThat(query, containsString("\"minimum_should_match\":\"1\"")),
+            () -> assertThat(query, containsString("\"must_not\"")),
+            () -> assertThat(query, containsString("\"data.imported_to_ccd\"")),
+            () -> assertThat(query, containsString("\"Y\""))
+        );
     }
 }

@@ -152,6 +152,7 @@ ccd:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 50000
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
+        ELASTIC_SEARCH_SCHEME: http
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
       devcpuRequests: 500m
@@ -172,18 +173,18 @@ ccd:
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
-    imageTag: "7.17.1"
+    image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
+    imageTag: "9.2.3"
+    createCert: false
+    protocol: http
     replicas: 1
     minimumMasterNodes: 1
     antiAffinity: "soft"
     esJavaOpts: "-Xmx512m -Xms512m"
-    extraEnvs:
-      - name: discovery.type
-        value: single-node
-      - name: cluster.initial_master_nodes
-        value: ""
-      - name: action.auto_create_index
-        value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
+    esConfig:
+      elasticsearch.yml: |
+        action.auto_create_index: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
+        xpack.security.enabled: false
     persistence:
       enabled: false
     clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
@@ -191,8 +192,8 @@ ccd:
     elasticsearch:
       host: ${SERVICE_NAME}-es-master
       port: 9200
-    image: hmctsprod.azurecr.io/ccd/logstash
-    imageTag: "ccd-probate-logstash-latest"
+    image: hmctsprod.azurecr.io/imported/elastic/logstash
+    imageTag: "9.2.4"
     extraEnvs:
       - name: DATA_STORE_URL
         value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
