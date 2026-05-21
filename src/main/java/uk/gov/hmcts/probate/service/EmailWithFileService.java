@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
+import uk.gov.hmcts.probate.service.notification.NotificationClientProvider;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.RetentionPeriodDuration;
@@ -25,7 +26,7 @@ import uk.gov.service.notify.SendEmailResponse;
 @Component
 public class EmailWithFileService {
 
-    private final NotificationClient notificationClient;
+    private final NotificationClientProvider notificationClientProvider;
 
     private final EmailAddresses emailAddresses;
 
@@ -75,7 +76,7 @@ public class EmailWithFileService {
         final String[] emails = StringUtils.split(emailsStr, ";");
         for (final String email : emails) {
             try {
-                final SendEmailResponse response = notificationClient.sendEmail(templateId,
+                final SendEmailResponse response = notificationClientProvider.getClient().sendEmail(templateId,
                     email,
                     personalisation,
                     null,
