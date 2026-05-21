@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -19,6 +21,8 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
@@ -48,6 +52,7 @@ import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
+import java.io.IOException;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -81,6 +86,11 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_IMPORTED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_PENDING;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 
 
 class NotificationServiceTest {
@@ -90,8 +100,6 @@ class NotificationServiceTest {
     private NotificationTemplates notificationTemplatesMock;
     @Mock
     private RegistriesProperties registriesPropertiesMock;
-    @Mock
-    private NotificationClient notificationClientMock;
     @Mock
     private MarkdownTransformationService markdownTransformationServiceMock;
     @Mock
@@ -122,6 +130,8 @@ class NotificationServiceTest {
     @Mock
     private NotificationClientService notificationClientServiceMock;
     @Mock
+    private NotificationClient notificationClient;
+    @Mock
     private DocumentManagementService documentManagementServiceMock;
     @Mock
     private PersonalisationValidationRule personalisationValidationRuleMock;
@@ -139,6 +149,8 @@ class NotificationServiceTest {
     private LocalDateToWelshStringConverter localDateToWelshStringConverterMock;
     @Mock
     private Clock clockMock;
+    @Mock
+    private SendEmailResponse sendEmailResponse;
 
     @Mock
     private SecurityUtils securityUtils;
@@ -147,6 +159,8 @@ class NotificationServiceTest {
 
     private AutoCloseable closeableMocks;
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
+    private static final Long ID = 1L;
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
     @BeforeEach
     void setUp() {
@@ -156,7 +170,6 @@ class NotificationServiceTest {
                 emailAddressesMock,
                 notificationTemplatesMock,
                 registriesPropertiesMock,
-                notificationClientMock,
                 markdownTransformationServiceMock,
                 pdfManagementServiceMock,
                 eventValidationServiceMock,
@@ -184,6 +197,12 @@ class NotificationServiceTest {
 
         when(clockMock.instant()).thenReturn(Instant.now());
         when(clockMock.getZone()).thenReturn(ZoneId.of("Europe/London"));
+        Registry registry = mock(Registry.class);
+        when(registry.getEmailReplyToId()).thenReturn("replyToId");
+        Map<String, Registry> registriesMap = new HashMap<>();
+        registriesMap.put("ctsc", registry);
+        when(registriesPropertiesMock.getRegistries()).thenReturn(registriesMap);
+        ReflectionTestUtils.setField(notificationService, "expiryWeeks", "26");
     }
 
     @AfterEach
@@ -282,6 +301,130 @@ class NotificationServiceTest {
     }
 
     @Test
+    void returnsSentEmailDocumentWithUploadCheckYes() throws NotificationClientException, IOException {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "FirstName");
+        when(grantOfRepresentationPersonalisationServiceMock.getPersonalisation((CaseDetails) any(), any()))
+                .thenReturn(personalisation);
+        final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
+                Map.of(),
+                List.of());
+
+        when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
+                .thenReturn(mockResult);
+        when(notificationClientServiceMock.sendEmail(any(), any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        when(documentManagementServiceMock.getDocumentByBinaryUrl("http://example.com/test.pdf"))
+                .thenReturn(new byte[] {1, 2, 3});
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedDateOfDeath(LocalDate.now())
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
+                .primaryApplicantForenames("Fred Smith")
+                .registryLocation("ctsc")
+                .uploadFileCheck(YES)
+                .languagePreferenceWelsh("No")
+                .cwDocumentUpload(UploadDocument.builder()
+                        .documentLink(DocumentLink.builder()
+                                .documentBinaryUrl("http://example.com/test.pdf")
+                                .build())
+                        .build())
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails);
+
+        verify(notificationClientServiceMock).sendEmail(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldThrowBusinessValidationExceptionWhenCwDocumentFileSizeExceeds2MB() throws IOException,
+            NotificationClientException {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "FirstName");
+        when(grantOfRepresentationPersonalisationServiceMock.getPersonalisation((CaseDetails) any(), any()))
+                .thenReturn(personalisation);
+        final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
+                Map.of(),
+                List.of());
+
+        when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
+                .thenReturn(mockResult);
+        when(notificationClientServiceMock.sendEmail(any(), any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        byte[] largeFile = new byte[2 * 1024 * 1024 + 1];
+        when(documentManagementServiceMock.getDocumentByBinaryUrl("http://example.com/test.pdf"))
+                .thenReturn(largeFile);
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedDateOfDeath(LocalDate.now())
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
+                .primaryApplicantForenames("Fred Smith")
+                .registryLocation("ctsc")
+                .uploadFileCheck(YES)
+                .languagePreferenceWelsh("No")
+                .cwDocumentUpload(UploadDocument.builder()
+                        .documentLink(DocumentLink.builder()
+                                .documentBinaryUrl("http://example.com/test.pdf")
+                                .build())
+                        .build())
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        BusinessValidationException exception = assertThrows(BusinessValidationException.class, () ->
+                notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails)
+        );
+
+        assertEquals("The file you are trying to upload is too large. Please upload a file smaller than 2 MB.",
+                exception.getUserMessage());
+    }
+
+    @Test
+    void returnsSentEmailDocumentWithUploadCheckNo() throws NotificationClientException, IOException {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "FirstName");
+        when(grantOfRepresentationPersonalisationServiceMock.getPersonalisation((CaseDetails) any(), any()))
+                .thenReturn(personalisation);
+        final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
+                Map.of(),
+                List.of());
+
+        when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
+                .thenReturn(mockResult);
+        when(notificationClientServiceMock.sendEmail(any(), any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        when(documentManagementServiceMock.getDocumentByBinaryUrl("http://example.com/test.pdf"))
+                .thenReturn(new byte[] {1, 2, 3});
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedDateOfDeath(LocalDate.now())
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
+                .primaryApplicantForenames("Fred Smith")
+                .registryLocation("ctsc")
+                .uploadFileCheck(NO)
+                .languagePreferenceWelsh("No")
+                .cwDocumentUpload(UploadDocument.builder()
+                        .documentLink(DocumentLink.builder()
+                                .documentBinaryUrl("http://example.com/test.pdf")
+                                .build())
+                        .build())
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails);
+
+        verify(notificationClientServiceMock).sendEmail(any(), any(), any(), any(), any());
+    }
+
+    @Test
     void shouldUpdatePersonalisationWithSolicitorName() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
@@ -321,7 +464,7 @@ class NotificationServiceTest {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
-        when(caseData.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getApplicationType()).thenReturn(PERSONAL);
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
         when(caseData.getSolsSOTForenames()).thenReturn("John");
         when(caseData.getSolsSOTSurname()).thenReturn("Doe");
@@ -352,7 +495,7 @@ class NotificationServiceTest {
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
                 mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("applicationType", ApplicationType.PERSONAL);
+        data.put("applicationType", PERSONAL);
         data.put("languagePreference", LanguagePreference.ENGLISH);
         when(caseDetails.getData()).thenReturn(data);
         when(pdfManagementServiceMock.generateDocmosisDocumentAndUpload(any(), eq(DocumentType.DORMANT_REMINDER)))
@@ -374,7 +517,7 @@ class NotificationServiceTest {
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
                 mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("applicationType", ApplicationType.PERSONAL);
+        data.put("applicationType", PERSONAL);
         data.put("languagePreferenceWelsh", "Yes");
         when(caseDetails.getData()).thenReturn(data);
 
@@ -450,11 +593,11 @@ class NotificationServiceTest {
         CaseData caseData = mock(CaseData.class);
         when(caseDetails.getId()).thenReturn(12345L);
         when(caseDetails.getData()).thenReturn(caseData);
-        when(caseData.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getApplicationType()).thenReturn(PERSONAL);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
         when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
         when(templateServiceMock.getStopResponseReceivedTemplateId(
-                ApplicationType.PERSONAL, LanguagePreference.ENGLISH)).thenReturn("template-id");
+                PERSONAL, LanguagePreference.ENGLISH)).thenReturn("template-id");
         when(grantOfRepresentationPersonalisationServiceMock.getStopResponseReceivedPersonalisation(
                 12345L, "Solicitor Name"))
                 .thenReturn(Map.of("key", "value"));
@@ -706,7 +849,7 @@ class NotificationServiceTest {
                 () -> assertThat(captured, hasKey("grant_issued_date_cy")),
                 () -> assertThat(result, sameInstance(documentMock)));
     }
-  
+
     @Test
     void shouldSendRegistrarEscalatedForPP() throws NotificationClientException, RegistrarEscalationException {
         final String applEmail = "abc@gmail.com";
@@ -792,7 +935,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
         when(caseData.getPrimaryApplicantFullName())
@@ -859,7 +1002,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
         when(caseData.getPrimaryApplicantFullName())
@@ -898,7 +1041,7 @@ class NotificationServiceTest {
                 () -> assertThat(captured, hasKey("applicant_name")),
                 () -> assertThat(result, sameInstance(documentMock)));
     }
-  
+
     @Test
     void shouldReturnNullIfRegistrarEscalatedDocumentGenThrows()
             throws NotificationClientException, RegistrarEscalationException {
@@ -919,7 +1062,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
         when(caseData.getPrimaryApplicantFullName())
@@ -977,7 +1120,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
         when(caseData.getPrimaryApplicantFullName())
@@ -1063,7 +1206,7 @@ class NotificationServiceTest {
 
         verify(pdfManagementServiceMock, never()).generateAndUpload(any(SentEmail.class), any());
     }
-  
+
     @Test
     void shouldReturnNullWhenPostGrantIssuedPdfUploadFails() throws NotificationClientException {
         final String applEmail = "abc@gmail.com";
@@ -1086,7 +1229,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
         when(caseData.getPrimaryApplicantFullName())
@@ -1425,7 +1568,7 @@ class NotificationServiceTest {
 
         assertEquals(expected, actual, "when instant is 0130 UTC but not in BST, time should be 01:30");
     }
-  
+
     @Test
     void shouldReturnNullForRegistrarEscalatedWhenApplEmailNull()
             throws NotificationClientException, RegistrarEscalationException {
@@ -1438,7 +1581,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
 
@@ -1460,7 +1603,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
 
@@ -1482,7 +1625,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
 
@@ -1504,7 +1647,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
 
