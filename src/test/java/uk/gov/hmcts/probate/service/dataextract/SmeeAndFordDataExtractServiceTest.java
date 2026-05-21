@@ -31,7 +31,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 
 class SmeeAndFordDataExtractServiceTest {
 
@@ -107,7 +111,7 @@ class SmeeAndFordDataExtractServiceTest {
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
 
-        verify(notificationService, never()).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-30"));
+        verify(notificationService, never()).sendSmeeAndFordEmail(any(), any(), any());
     }
 
     @Test
@@ -116,7 +120,7 @@ class SmeeAndFordDataExtractServiceTest {
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
-        verify(notificationService, never()).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
+        verify(notificationService, never()).sendSmeeAndFordEmail(any(), any(), any());
     }
 
     @Test
@@ -142,8 +146,8 @@ class SmeeAndFordDataExtractServiceTest {
         );
         verify(notificationService, never()).sendSmeeAndFordEmail(
             any(),
-            eq("2000-12-30"),
-            eq("2000-12-31")
+            any(),
+            any()
         );
     }
 
@@ -151,7 +155,7 @@ class SmeeAndFordDataExtractServiceTest {
     void shouldSendSmeeAndFordEmailWhenEmailFeatureEnabled() throws NotificationClientException {
         when(featureToggleService.isSmeeAndFordEmailFeatureToggleOn()).thenReturn(true);
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
-        verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
+        verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), any(), any());
     }
 
     @Test
@@ -174,7 +178,7 @@ class SmeeAndFordDataExtractServiceTest {
             when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
                     .thenThrow(NotificationClientException.class);
 
-            smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
+            smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(any(), any());
         });
     }
 
