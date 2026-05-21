@@ -215,7 +215,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await cwEventActionsPage.requestInformationPage1(nextStepName);
-    await cwEventActionsPage.requestInformationPage2(nextStepName, documentUploadConfig);
+    await cwEventActionsPage.requestInformationPage2(nextStepName);
     await cwEventActionsPage.requestInformationPage3(nextStepName);
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
     endState = "Case stopped";
