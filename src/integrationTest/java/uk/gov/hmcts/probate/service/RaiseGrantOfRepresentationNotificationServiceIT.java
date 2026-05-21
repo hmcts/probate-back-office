@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
+import uk.gov.hmcts.probate.service.notification.NotificationClientProvider;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -83,7 +84,9 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
     private ServiceAuthTokenGenerator tokenGenerator;
     @MockitoBean
     private DocumentManagementService documentManagementService;
-    @MockitoSpyBean
+    @MockitoBean
+    private NotificationClientProvider notificationClientProvider;
+    @MockitoSpyBean(name = "primaryNotificationClient")
     private NotificationClient notificationClient;
     private CallbackRequest callbackRequest;
 
@@ -99,6 +102,7 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
         SendLetterResponse letterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), any(), any()))
             .thenReturn(letterResponse);
+        when(notificationClientProvider.getClient()).thenReturn(notificationClient);
     }
 
     @Disabled
