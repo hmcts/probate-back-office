@@ -157,6 +157,7 @@ public class CallbackResponseTransformer {
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
+    private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -343,12 +344,28 @@ public class CallbackResponseTransformer {
                     .expectedResponseDate(null)
                     .documentUploadIssue(null);
         }
+        if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())) {
+            responseCaseDataBuilder
+                    .cwDocumentUploadedList(addCaseworkerUploadDocument(caseData));
+        }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailRequestInfoNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailRequestInfoNotification());
         }
 
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private List<CollectionMember<UploadDocument>> addCaseworkerUploadDocument(CaseData caseData) {
+        List<CollectionMember<UploadDocument>> currentUploads = caseData.getCwDocumentUploadedList();
+        if (currentUploads == null) {
+            currentUploads = new ArrayList<>();
+        }
+        UploadDocument uploadedDoc = caseData.getCwDocumentUpload();
+        if (uploadedDoc != null) {
+            currentUploads.add(new CollectionMember<>(null, uploadedDoc));
+        }
+        return currentUploads;
     }
 
     public CallbackResponse transformCitizenHubResponse(CallbackRequest callbackRequest) {
@@ -1447,7 +1464,8 @@ public class CallbackResponseTransformer {
             .executorsNamed(caseData.getExecutorsNamed())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
-            .evidenceHandledDate(caseData.getEvidenceHandledDate());
+            .evidenceHandledDate(caseData.getEvidenceHandledDate())
+            .cwDocumentUploadedList(caseData.getCwDocumentUploadedList());
 
         handleDeceasedAliases(
                 builder,
@@ -2263,5 +2281,19 @@ public class CallbackResponseTransformer {
                 .orgPolicyReference(null)
                 .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
                 .build();
+    }
+
+    public CallbackResponse transformForIssueGrant(CallbackRequest callbackRequest,
+                                                   Optional<UserInfo> caseworkerInfo) {
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(caseDetails,
+                        callbackRequest.getEventId(),
+                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        false);
+        responseCaseDataBuilder.hasValidMatches(
+                hasValidMatchesDefaulter.defaultHasValidMatches(caseDetails.getData())
+        );
+        return transformResponse(responseCaseDataBuilder.build());
     }
 }

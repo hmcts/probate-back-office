@@ -16,6 +16,18 @@ elastic:
 postgresql:
   enabled: false
 
+wa:
+  enabled: false
+
+am-org-role-mapping-service:
+  enabled: false
+
+servicebus:
+  enabled: false
+
+ccd-message-publisher:
+  enabled: false
+
 java:
   applicationPort: 4104
   image: hmctsprod.azurecr.io/probate/back-office:latest
@@ -54,6 +66,7 @@ java:
     BACK_OFFICE_BASEURL: http://probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     MANAGE_CASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
     FRONTEND_URL: https://probate.{{ .Values.global.environment }}.platform.hmcts.net
+    CCD_SERVICEBUS_DESTINATION: ccd-case-events-{{ .Values.global.environment }}
   keyVaults:
     probate:
       secrets:
@@ -64,7 +77,9 @@ java:
         - name: s2s-probate-backend
           alias: idam.s2s-auth.totp_secret
         - name: probate-bo-govNotifyApiKey
-          alias: notifications.govNotifyApiKey
+          alias: notifications.govNotifyApiKeyPrimary
+        - name: probate-bo-govNotifyApiKey-secondary
+          alias: notifications.govNotifyApiKeySecondary
         - name: authTokenEmail
           alias: auth.provider.client.email
         - name: authTokenPassword

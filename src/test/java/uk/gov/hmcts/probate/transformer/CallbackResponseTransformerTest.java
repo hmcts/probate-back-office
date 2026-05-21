@@ -589,6 +589,8 @@ class CallbackResponseTransformerTest {
     private SecurityDTO securityDTO;
     @Mock
     private AuditEventService auditEventService;
+    @Mock
+    private HasValidMatchesDefaulter hasValidMatchesDefaulter;
 
     @BeforeEach
     public void setup() {
@@ -2686,7 +2688,12 @@ class CallbackResponseTransformerTest {
                 .informationNeededByPost(NO)
                 .citizenResponseCheckbox(YES)
                 .expectedResponseDate("some date")
-                .documentUploadIssue(YES);
+                .documentUploadIssue(YES)
+                .uploadFileCheck(YES)
+                .cwDocumentUpload(UploadDocument.builder()
+                        .documentLink(documentLinkMock)
+                        .documentType(SENT_EMAIL)
+                        .build());
 
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
@@ -2704,6 +2711,9 @@ class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
         assertEquals(callbackResponse.getData().getEvidenceHandledDate(),
                 LocalDate.now().toString());
+        List<CollectionMember<UploadDocument>> uploadedDocs = callbackResponse.getData().getCwDocumentUploadedList();
+        assertNotNull(uploadedDocs);
+        assertEquals(1, uploadedDocs.size());
     }
 
     @Test
@@ -5856,5 +5866,14 @@ class CallbackResponseTransformerTest {
                 "Expected dec alias present"));
 
         assertAll(assertions);
+    }
+
+    @Test
+    void testDefaultHasValidMatches() {
+        when(hasValidMatchesDefaulter.defaultHasValidMatches(caseDataBuilder.build())).thenReturn(YES);
+        CallbackResponse callbackResponse = underTest.transformForIssueGrant(callbackRequestMock, Optional.empty());
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getHasValidMatches());
     }
 }
