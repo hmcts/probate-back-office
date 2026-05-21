@@ -262,6 +262,47 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
+  async requestInformationPage1(eventName) {
+    await this.verifyPageLoad(this.page.getByRole("heading", { name: eventName }), 10_000);
+    await expect(this.page.locator('#informationNeeded-Yes')).toBeEnabled();
+    await this.page.locator('#informationNeeded-Yes').click();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async requestInformationPage2(eventName, documentConfig) {
+    await this.verifyPageLoad(this.page.getByRole("heading", { name: eventName }), 10_000);
+    await expect(this.page.locator('#boStopDetails')).toBeEnabled();
+    await this.page.locator('#boStopDetails').fill(eventName);
+    await expect(this.page.locator('#boStopDetailsDeclarationParagraph_Yes')).toBeEnabled();
+    await this.page.locator('#boStopDetailsDeclarationParagraph_Yes').click();
+    await this.page.locator('#uploadFileCheck_Yes').click();
+    await this.uploadDocumentByCaseworker(documentConfig)
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
+  }
+
+  async requestInformationPage3(eventName) {
+    await this.verifyPageLoad(this.page.getByRole("heading", { name: eventName }), 10_000);
+    await expect(this.page.getByText('Email preview')).toBeVisible();
+    await this.waitForNavigationToComplete(commonConfig.submitButton);
+  }
+
+  async uploadDocumentByCaseworker(documentConfig: DocumentUploadConfig) {
+    await expect(
+      this.page.locator('#cwDocumentUpload_DocumentType')
+    ).toBeVisible();
+    await this.page
+      .locator('#cwDocumentUpload_DocumentType')
+      .selectOption(documentUploadConfig.documentType[0]);
+    await this.page
+      .locator('#cwDocumentUpload_Comment')
+      .fill(documentUploadConfig.comment);
+    await this.page
+      .locator('#cwDocumentUpload_DocumentLink')
+      .setInputFiles(`${documentUploadConfig.fileToUploadUrl}`);
+    await this.waitForUploadToBeCompleted();
+
+  }
+
   async uploadDocument(caseRef: string, documentUploadConfig: DocumentUploadConfig) {
     await this.verifyPageLoad(this.page.getByRole("heading", { name: documentUploadConfig.waitForText }), 10_000);
     await expect(
