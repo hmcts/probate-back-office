@@ -187,6 +187,7 @@ ccd:
         xpack.security.enabled: false
     persistence:
       enabled: false
+    clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
   logstash:
     image: hmctsprod.azurecr.io/imported/elastic/logstash
     imageTag: "9.2.4"
