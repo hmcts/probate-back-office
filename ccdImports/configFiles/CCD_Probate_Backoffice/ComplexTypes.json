@@ -217,7 +217,5 @@
   {"LiveFrom": "01/01/2017", "ID": "citizenHubResponse", "ListElementCode": "citizenResponse", "FieldType": "TextArea", "ElementLabel": "Citizen's response", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "citizenHubResponse", "ListElementCode": "submittedDate", "FieldType": "DateTime", "ElementLabel": "Submitted Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "fieldName", "FieldType": "Text", "ElementLabel": "OCR Field", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "originalValue", "FieldType": "Text", "ElementLabel": "Original Value", "SecurityClassification": "Public"},
-  {"LiveFrom": "16/11/2022", "ID": "CaseManagementLocation", "ListElementCode": "region", "FieldType": "Text", "ElementLabel": " ", "SecurityClassification": "Public", "Searchable": "N"},
-  {"LiveFrom": "16/11/2021", "ID": "CaseManagementLocation", "ListElementCode": "baseLocation", "FieldType": "Text", "ElementLabel": " ", "SecurityClassification": "Public", "Searchable": "N"}
+  {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "originalValue", "FieldType": "Text", "ElementLabel": "Original Value", "SecurityClassification": "Public"}
 ]
