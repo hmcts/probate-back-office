@@ -428,6 +428,7 @@ xui-webapp:
       REDISCLOUD_URL: http://dummyrediscloudurl
       UV_THREADPOOL_SIZE: 128
       PROTOCOL: http
+      SERVICES_ROLE_ASSIGNMENT_MAPPING_API: http://${SERVICE_NAME}-am-org-role-mapping-service
     keyVaults:
       rpx:
         resourceGroup: rpx
