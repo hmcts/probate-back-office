@@ -36,6 +36,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -196,5 +197,15 @@ class CaveatControllerUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(caveatCallbackResponseTransformer, times(1))
                 .transformResponseWithNoChanges(caveatCallbackRequest);
+    }
+
+    @Test
+    void shouldSetSupplementaryData() {
+        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getId()).thenReturn(1000L);
+        ResponseEntity<CaveatCallbackResponse> response = underTest.setCaveatSupplementaryData(caveatCallbackRequest);
+
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
