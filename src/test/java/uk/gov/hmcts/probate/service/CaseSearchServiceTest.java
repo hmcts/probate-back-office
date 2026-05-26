@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +21,6 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -162,21 +161,19 @@ class CaseSearchServiceTest {
         String query = queryCaptor.getValue();
 
         assertAll(
-            () -> assertThat(query, containsString("\"multi_match\"")),
-            () -> assertThat(query, containsString("\"query\":\"John\"")),
-            () -> assertThat(query, containsString("\"data.deceasedForenames")),
-            () -> assertThat(query, containsString("\"query\":\"Smith\"")),
-            () -> assertThat(query, containsString("\"data.deceasedSurname")),
-            () -> assertThat(query, containsString("\"query\":\"John Smith\"")),
-            () -> assertThat(query, containsString("\"data.solsDeceasedAliasNamesList.*")),
-            () -> assertThat(query, containsString("\"operator\":\"AND\"")),
-            () -> assertThat(query, containsString("\"fuzziness\":\"2\"")),
-            () -> assertThat(query, containsString("\"fuzziness\":\"0\"")),
-            () -> assertThat(query, containsString("\"boost\":2.0")),
-            () -> assertThat(query, containsString("\"minimum_should_match\":\"1\"")),
-            () -> assertThat(query, containsString("\"must_not\"")),
-            () -> assertThat(query, containsString("\"data.imported_to_ccd\"")),
-            () -> assertThat(query, containsString("\"Y\""))
+            () -> assertEquals("1", JsonPath.read(query, "$.query.bool.minimum_should_match").toString()),
+            () -> assertEquals("Y", JsonPath.read(
+                    query, "$.query.bool.filter[0].bool.must_not[0].match['data.imported_to_ccd'].query")),
+            () -> assertEquals("John", JsonPath.read(query,
+                    "$.query.bool.should[0].bool.must[0].multi_match.query")),
+            () -> assertEquals("2", JsonPath.read(query,
+                    "$.query.bool.should[0].bool.must[0].multi_match.fuzziness").toString()),
+            () -> assertEquals("Smith", JsonPath.read(query,
+                    "$.query.bool.should[0].bool.must[1].multi_match.query")),
+            () -> assertEquals("John Smith", JsonPath.read(query,
+                    "$.query.bool.should[0].bool.should[0].multi_match.query")),
+            () -> assertEquals(2.0, JsonPath.read(query,
+                    "$.query.bool.should[1].bool.must[0].multi_match.boost"))
         );
     }
 }
