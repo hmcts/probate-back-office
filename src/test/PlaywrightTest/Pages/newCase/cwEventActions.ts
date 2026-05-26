@@ -269,14 +269,14 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
-  async requestInformationPage2(eventName, documentConfig) {
+  async requestInformationPage2(eventName, ) {
     await this.verifyPageLoad(this.page.getByRole("heading", { name: eventName }), 10_000);
     await expect(this.page.locator('#boStopDetails')).toBeEnabled();
     await this.page.locator('#boStopDetails').fill(eventName);
     await expect(this.page.locator('#boStopDetailsDeclarationParagraph_Yes')).toBeEnabled();
     await this.page.locator('#boStopDetailsDeclarationParagraph_Yes').click();
     await this.page.locator('#uploadFileCheck_Yes').click();
-    await this.uploadDocumentByCaseworker(documentConfig)
+    await this.uploadDocumentByCaseworker();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
@@ -286,7 +286,7 @@ export class CwEventActionsPage extends BasePage {
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
-  async uploadDocumentByCaseworker(documentConfig: DocumentUploadConfig) {
+  async uploadDocumentByCaseworker() {
     await expect(
       this.page.locator('#cwDocumentUpload_DocumentType')
     ).toBeVisible();
