@@ -44,4 +44,18 @@
     <suppress until = "2026-07-13">
         <cve>CVE-2026-33117</cve>
     </suppress>
+    <suppress until = "2026-07-13">
+        <!--
+          opentelemetry-semconv-1.32.0.jar is a classic case of a false positive caused by matching text names (opentelemetry) rather than the actual language ecosystem.
+          Both CVE-2026-39883 and CVE-2026-39882 are vulnerabilities that exclusively exist in OpenTelemetry-Go (the Golang implementation of the OpenTelemetry SDK).
+       -->
+        <cve>CVE-2026-39882</cve>
+    </suppress>
+    <suppress until = "2026-07-13">
+        <!--
+         opentelemetry-semconv-1.32.0.jar is a classic case of a false positive caused by matching text names (opentelemetry) rather than the actual language ecosystem.
+         Both CVE-2026-39883 and CVE-2026-39882 are vulnerabilities that exclusively exist in OpenTelemetry-Go (the Golang implementation of the OpenTelemetry SDK).
+      -->
+        <cve>CVE-2026-39883</cve>
+    </suppress>
 </suppressions>
