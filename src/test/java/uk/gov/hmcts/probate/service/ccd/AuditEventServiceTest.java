@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEventsResponse;
 
@@ -16,6 +17,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_IMPORTED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_DORMANT;
 
 @ExtendWith(SpringExtension.class)
 class AuditEventServiceTest {
@@ -135,5 +138,43 @@ class AuditEventServiceTest {
                 = auditEventService.getLatestAuditEventByState(CASE_ID, List.of(STATE_NAME), USER_TOKEN, SERVICE_TOKEN);
 
         assertThat(actualAuditEvent).isEmpty();
+    }
+
+
+    @Test
+    void shouldGetPreviousAuditEventOfByEventId() {
+        AuditEvent expectedAuditEvent = buildAuditEvent("boImportGrant", STATE_BO_CASE_IMPORTED,
+                LOCAL_DATE_TIME.minusMinutes(2));
+
+        List<AuditEvent> auditEventList = List.of(
+                buildAuditEvent("makeCaseDormant", STATE_DORMANT, LOCAL_DATE_TIME.minusMinutes(1)),
+                expectedAuditEvent,
+                buildAuditEvent(EVENT_NAME, STATE_NAME, LOCAL_DATE_TIME.minusMinutes(3)));
+
+        when(auditEventsResponse.getAuditEvents()).thenReturn(auditEventList);
+        Optional<AuditEvent> previousAuditEvent
+                = auditEventService.getPreviousAuditEventOfByEventId(CASE_ID,
+                EventId.MAKE_CASE_DORMANT, USER_TOKEN, SERVICE_TOKEN);
+
+        assertThat(previousAuditEvent).isPresent().contains(expectedAuditEvent);
+    }
+
+    @Test
+    void shouldGetPreviousAuditEventWithExtraEventOfByEventId() {
+        AuditEvent expectedAuditEvent = buildAuditEvent("attachScannedDocs", STATE_BO_CASE_IMPORTED,
+                LOCAL_DATE_TIME.minusMinutes(2));
+
+        List<AuditEvent> auditEventList = List.of(
+                buildAuditEvent("makeCaseDormant", STATE_DORMANT, LOCAL_DATE_TIME.minusMinutes(1)),
+                expectedAuditEvent,
+                buildAuditEvent("boImportGrant", STATE_BO_CASE_IMPORTED, LOCAL_DATE_TIME.minusMinutes(3))
+                );
+
+        when(auditEventsResponse.getAuditEvents()).thenReturn(auditEventList);
+        Optional<AuditEvent> previousAuditEvent
+                = auditEventService.getPreviousAuditEventOfByEventId(CASE_ID,
+                EventId.MAKE_CASE_DORMANT, USER_TOKEN, SERVICE_TOKEN);
+
+        assertThat(previousAuditEvent).isPresent().contains(expectedAuditEvent);
     }
 }
