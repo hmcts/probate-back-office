@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -85,7 +86,7 @@ public class CaveatController {
     @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CaveatCallbackResponse> setCaveatSupplementaryData(
-            @RequestBody final CaveatCallbackRequest caveatCallbackRequest) {
+            @Valid @RequestBody final CaveatCallbackRequest caveatCallbackRequest) {
         ccdSupplementaryDataService.submitSupplementaryDataToCcd(
                 caveatCallbackRequest.getCaseDetails().getId().toString());
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()

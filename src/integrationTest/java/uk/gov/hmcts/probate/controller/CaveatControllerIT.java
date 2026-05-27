@@ -44,9 +44,12 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+
+
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -156,6 +159,37 @@ class CaveatControllerIT {
                 .andExpect(status().isOk());
 
         verify(coreCaseDataApi).submitSupplementaryData(any(), any(), any(), any());
+    }
+
+    @Test
+    void caveatSupplementaryData_shouldReturnBadRequestWhenCaseDetailsMissing() throws Exception {
+
+        String payload = "{}";
+
+        mockMvc.perform(post("/case/supplementaryData")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(coreCaseDataApi);
+    }
+
+    @Test
+    void caveatSupplementaryData_shouldReturnBadRequestWhenCaseIdMissing() throws Exception {
+
+        String payload = """
+        {
+          "case_details": {
+            "id": null
+          }
+        }   """;
+
+        mockMvc.perform(post("/case/supplementaryData")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(coreCaseDataApi);
     }
 
     @Test
