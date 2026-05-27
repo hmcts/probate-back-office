@@ -1556,6 +1556,37 @@ class BusinessValidationControllerIT {
     }
 
     @Test
+    void gopSupplementaryDatashouldReturnBadRequestWhenCaseDetailsMissing() throws Exception {
+
+        String payload = "{}";
+
+        mockMvc.perform(post("/case/supplementaryData")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(coreCaseDataApi);
+    }
+
+    @Test
+    void gopSupplementaryDatashouldReturnBadRequestWhenCaseIdMissing() throws Exception {
+
+        String payload = """
+        {
+          "case_details": {
+            "id": null
+          }
+        }   """;
+
+        mockMvc.perform(post("/case/supplementaryData")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(coreCaseDataApi);
+    }
+
+    @Test
     void shouldDefaultHasValidMatchToNo() throws Exception {
         caseDataBuilder.caseMatches(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);

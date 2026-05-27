@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -208,9 +209,13 @@ public class BusinessValidationController {
     public ResponseEntity<AfterSubmitCallbackResponse> solicitorAccess(
         @RequestHeader(value = "Authorization") String authToken,
         @RequestParam(value = "caseTypeId") String caseTypeId,
+        @RequestParam(value = "supplementaryData", required = false, defaultValue = "false")
+        boolean supplementaryData,
         @RequestBody CallbackRequest request) {
         assignCaseAccessService.assignCaseAccess(authToken, request.getCaseDetails().getId().toString(), caseTypeId);
-        ccdSupplementaryDataService.submitSupplementaryDataToCcd(request.getCaseDetails().getId().toString());
+        if (supplementaryData) {
+            ccdSupplementaryDataService.submitSupplementaryDataToCcd(request.getCaseDetails().getId().toString());
+        }
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
@@ -852,7 +857,8 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> setSupplementaryData(@RequestBody final CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> setSupplementaryData(
+            @Valid @RequestBody final CallbackRequest callbackRequest) {
 
         ccdSupplementaryDataService.submitSupplementaryDataToCcd(
                     callbackRequest.getCaseDetails().getId().toString());

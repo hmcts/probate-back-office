@@ -325,7 +325,7 @@ class BusinessValidationUnitTest {
         when(caseDetailsMock.getId()).thenReturn(1000L);
 
         ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess(AUTH_TOKEN,
-                "GrantOfRepresentation", callbackRequestMock);
+                "GrantOfRepresentation", true,callbackRequestMock);
 
         verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
