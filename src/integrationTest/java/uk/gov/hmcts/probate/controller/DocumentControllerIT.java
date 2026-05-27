@@ -45,6 +45,7 @@ import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClient;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -60,10 +61,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
+
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -150,6 +153,9 @@ class DocumentControllerIT {
 
     @MockitoBean
     private CcdSupplementaryDataService ccdSupplementaryDataService;
+
+    @MockitoBean
+    private CoreCaseDataApi coreCaseDataApi;
 
     @BeforeEach
     public void setUp() throws NotificationClientException {
@@ -262,10 +268,40 @@ class DocumentControllerIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
-
+        verifyNoInteractions(coreCaseDataApi);
 
     }
 
+    @Test
+    void standingSearchSupplementaryData_shouldReturnBadRequestWhenCaseDetailsMissing() throws Exception {
+
+        String payload = "{}";
+
+        mockMvc.perform(post("/document/supplementaryData")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(coreCaseDataApi);
+    }
+
+    @Test
+    void standingSearchSupplementaryData_shouldReturnBadRequestWhenCaseIdMissing() throws Exception {
+
+        String payload = """
+        {
+          "case_details": {
+            "id": null
+          }
+        }   """;
+
+        mockMvc.perform(post("/document/supplementaryData")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(coreCaseDataApi);
+    }
 
     @Test
     void generateGrantDraftGrantOfRepresentation() throws Exception {

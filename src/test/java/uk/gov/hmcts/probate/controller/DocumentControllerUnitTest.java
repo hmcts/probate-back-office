@@ -59,14 +59,18 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 @ExtendWith(SpringExtension.class)
@@ -478,5 +482,35 @@ class DocumentControllerUnitTest {
                 any(),
                 any());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSubmitSupplementaryData() {
+        WillLodgementCallbackRequest callbackRequest = mock(WillLodgementCallbackRequest.class);
+        WillLodgementDetails caseDetailsMock = mock(WillLodgementDetails.class);
+
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        when(caseDetailsMock.getId()).thenReturn(1000L);
+        ResponseEntity<WillLodgementCallbackResponse> response = documentController
+                .setWillLodgementSupplementaryData(callbackRequest);
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCaseDetailsIsNull() {
+        WillLodgementCallbackRequest callbackRequest = mock(WillLodgementCallbackRequest.class);
+
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(null);
+        assertThrows(
+                NullPointerException.class,
+                () -> documentController.setWillLodgementSupplementaryData(callbackRequest)
+        );
+        verifyNoInteractions(ccdSupplementaryDataService);
     }
 }

@@ -576,7 +576,7 @@ public class DocumentController {
     @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<WillLodgementCallbackResponse> setWillLodgementSupplementaryData(
-            @RequestBody final WillLodgementCallbackRequest willLodgementCallbackRequest) {
+           @Valid @RequestBody final WillLodgementCallbackRequest willLodgementCallbackRequest) {
         ccdSupplementaryDataService.submitSupplementaryDataToCcd(
                 willLodgementCallbackRequest.getCaseDetails().getId().toString());
         WillLodgementCallbackResponse willLodgementCallbackResponse = WillLodgementCallbackResponse.builder().build();

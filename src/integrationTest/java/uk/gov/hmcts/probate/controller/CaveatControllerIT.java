@@ -166,7 +166,7 @@ class CaveatControllerIT {
 
         String payload = "{}";
 
-        mockMvc.perform(post("/case/supplementaryData")
+        mockMvc.perform(post("/caveat/supplementaryData")
                         .content(payload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -184,7 +184,7 @@ class CaveatControllerIT {
           }
         }   """;
 
-        mockMvc.perform(post("/case/supplementaryData")
+        mockMvc.perform(post("/caveat/supplementaryData")
                         .content(payload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());

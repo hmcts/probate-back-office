@@ -1556,7 +1556,7 @@ class BusinessValidationControllerIT {
     }
 
     @Test
-    void gopSupplementaryDatashouldReturnBadRequestWhenCaseDetailsMissing() throws Exception {
+    void gopSupplementaryData_shouldReturnBadRequestWhenCaseDetailsMissing() throws Exception {
 
         String payload = "{}";
 
@@ -1569,7 +1569,7 @@ class BusinessValidationControllerIT {
     }
 
     @Test
-    void gopSupplementaryDatashouldReturnBadRequestWhenCaseIdMissing() throws Exception {
+    void gopSupplementaryData_shouldReturnBadRequestWhenCaseIdMissing() throws Exception {
 
         String payload = """
         {

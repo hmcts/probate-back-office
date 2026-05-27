@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class StandingSearchController {
     @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<StandingSearchCallbackResponse> setSupplementaryData(
-            @RequestBody StandingSearchCallbackRequest callbackRequest) {
+            @Valid @RequestBody StandingSearchCallbackRequest callbackRequest) {
 
         ccdSupplementaryDataService.submitSupplementaryDataToCcd(
                 callbackRequest.getCaseDetails().getId().toString());
