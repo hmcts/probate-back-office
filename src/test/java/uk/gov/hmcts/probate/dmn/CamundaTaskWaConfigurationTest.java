@@ -60,8 +60,8 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .expectedValue("caseCategory", "caseData.caseManagementCategory", true)
                                 .expectedValue(CASE_NAME, "caseData.caseName", true)
                                 .expectedValue(REGION, "caseData.region", true)
-                                .expectedValue(ROLE_CATEGORY, "caseData.roleCategory", true)
-                                .expectedValue(LOCATION, "caseData.registryLocation", true)
+                                .expectedValue(ROLE_CATEGORY, "CTSC", true)
+                                .expectedValue(LOCATION, "caseData.caseManagementLocation.baseLocation", true)
                                 .build()
                 ),
                 Arguments.of(

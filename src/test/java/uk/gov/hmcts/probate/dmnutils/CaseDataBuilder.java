@@ -37,7 +37,10 @@ public class CaseDataBuilder {
         caseData.put("caseName", "someCaseName");
         caseData.put("region", "someRegion");
         caseData.put("roleCategory", "someRoleCategory");
-        caseData.put("location", "someLocation");
+        caseData.put("location", Map.of(
+                "region", "some other region",
+                "baseLocation", "some other location"
+        ));
         return new CaseDataBuilder(caseData);
     }
 

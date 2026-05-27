@@ -150,7 +150,7 @@
           <text>"roleCategory"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0alvihy">
-          <text>"caseData.roleCategory"</text>
+          <text>"CTSC"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0y8wh5m">
           <text>true</text>
@@ -167,7 +167,7 @@
           <text>"location"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_08tqtmv">
-          <text>"caseData.registryLocation"</text>
+          <text>"caseData.caseManagementLocation.baseLocation"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_08oiise">
           <text>true</text>
