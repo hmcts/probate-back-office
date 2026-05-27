@@ -30,6 +30,7 @@ import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DESCRIPTION;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.LOCATION;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGION;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.WORK_TYPE;
@@ -60,6 +61,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .expectedValue(CASE_NAME, "caseData.caseName", true)
                                 .expectedValue(REGION, "caseData.region", true)
                                 .expectedValue(ROLE_CATEGORY, "caseData.roleCategory", true)
+                                .expectedValue(LOCATION, "caseData.registryLocation", true)
                                 .build()
                 ),
                 Arguments.of(
@@ -91,7 +93,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(8, logic.getRules().size());
+        assertEquals(9, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

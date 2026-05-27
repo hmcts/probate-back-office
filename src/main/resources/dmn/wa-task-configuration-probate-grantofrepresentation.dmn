@@ -156,6 +156,23 @@
           <text>true</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_140oil7">
+        <inputEntry id="UnaryTests_121ra98">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bs4y2i">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13i06we">
+          <text>"location"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08tqtmv">
+          <text>"caseData.registryLocation"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08oiise">
+          <text>true</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
