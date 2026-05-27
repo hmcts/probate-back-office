@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.notification;
 
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.NotificationType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -17,6 +18,7 @@ import java.util.function.Predicate;
 import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_REMINDER;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_DORMANT;
 
+@Slf4j
 @Service
 public class DormantReminderNotification implements NotificationStrategy {
     private static final String DORMANT_REMINDER_EVENT_DESCRIPTION = "Dormant 12-month Reminder (AN) sent";
@@ -82,13 +84,14 @@ public class DormantReminderNotification implements NotificationStrategy {
     }
 
     @Override
-    public Predicate<CaseDetails> accepts() {
+    public Predicate<CaseDetails> accepts()  {
         return cd -> cd != null
                 && cd.getData() != null
                 && referenceDate != null
                 && STATE_DORMANT.equals(cd.getState())
                 && isValidLastMofifiedDateForDormant(cd)
-                && !CaseStopReasonHelper.isCaveatStop(cd);
+                && !CaseStopReasonHelper.isCaveatStop(cd)
+                && !isBoImportedStateBeforeDormant(cd.getId().toString());
 
     }
 
@@ -99,5 +102,14 @@ public class DormantReminderNotification implements NotificationStrategy {
                 .map(lastModifiedDateForDormant -> !lastModifiedDateForDormant
                         .isAfter(referenceDate.plusDays(1).atStartOfDay()))
                 .orElse(false);
+    }
+
+    private boolean isBoImportedStateBeforeDormant(String caseReference) {
+        try {
+            return notificationService.isBoImportedStateBeforeDormant(caseReference);
+        } catch (Exception e) {
+            log.warn("isBoImportedStateBeforeDormant:", e.getMessage());
+        }
+        return false;
     }
 }
