@@ -28,6 +28,18 @@ public class CaseDataBuilder {
         return new CaseDataBuilder(caseData);
     }
 
+    public static CaseDataBuilder defaultWaCase() {
+        Map<String,Object> caseData = new HashMap<>();
+        caseData.put("caseNameHmctsInternal", "Joe Blogs");
+        caseData.put("isUrgent", "No");
+        caseData.put("dueDate", LocalDate.now());
+        caseData.put("caseCategory", "someCaseCategory");
+        caseData.put("caseName", "someCaseName");
+        caseData.put("region", "someRegion");
+        caseData.put("roleCategory", "someRoleCategory");
+        return new CaseDataBuilder(caseData);
+    }
+
     public static CaseDataBuilder customCase(final String resourcePath) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
         Map<String,Object> caseData = objectMapper.readValue(getFile(resourcePath), MAP_TYPE);
