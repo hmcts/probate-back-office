@@ -177,7 +177,7 @@ def versions = [
         restAssured                     : '5.5.7',
         sendLetterClientVersion         : '5.1.1',
         serenity                        : '5.3.10',
-        serviceAuthVersion              : '5.3.3',
+        serviceAuthVersion              : '5.3.4',
         springBootVersion               : '3.5.14',
         springCloud                     : '4.3.0',
         springDocOpenUi                 : '2.8.17',
