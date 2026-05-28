@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.NotificationType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -23,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.NotificationType.FIRST_REDEC_REMINDER;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_REDEC_NOTIFICATION_SENT;
 
 class FirstRedecReminderNotificationTest {
@@ -59,6 +62,62 @@ class FirstRedecReminderNotificationTest {
     @AfterEach
     void tearDown() throws Exception {
         closeableMocks.close();
+    }
+
+    @Test
+    void returnsCorrectQueryTemplatePath() {
+        String result = underTest.getQueryTemplate();
+
+        assertEquals("templates/elasticsearch/caseMatching/first_redec_reminder_query.json", result);
+    }
+
+    @Test
+    void matchesTypeShouldReturnTrueWhenTypeIsHseReminder() {
+        boolean result = underTest.matchesType(FIRST_REDEC_REMINDER);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void returnsEventSummary() {
+        String result = underTest.getEventSummary();
+
+        assertEquals("Send First Redec Reminder", result);
+    }
+
+    @Test
+    void returnsEventDescription() {
+        String result = underTest.getEventDescription();
+
+        assertEquals("Send First Redec Reminder", result);
+    }
+
+    @Test
+    void returnsFailureEventDescription() {
+        String result = underTest.getFailureEventDescription();
+
+        assertEquals("Failed to send first Redec reminder", result);
+    }
+
+    @Test
+    void returnsFailureEventSummary() {
+        String result = underTest.getFailureEventSummary();
+
+        assertEquals("Failed to send first Redec reminder", result);
+    }
+
+    @Test
+    void returnsEventId() {
+        EventId result = underTest.getEventId();
+
+        assertEquals(EventId.AUTO_NOTIFICATION_FIRST_STOP_REMINDER, result);
+    }
+
+    @Test
+    void returnsNotificationType() {
+        NotificationType result = underTest.getType();
+
+        assertEquals(FIRST_REDEC_REMINDER, result);
     }
 
     @Test
