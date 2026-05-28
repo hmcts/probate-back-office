@@ -25,6 +25,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_MANAGEMENT_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DESCRIPTION;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_ADMON;
@@ -57,7 +58,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boSelectForQA)", true)
                                 .expectedValue(WORK_TYPE, "decision_making_work", true)
-                                .expectedValue("caseManagementCategory", "gop", true)
+                                .expectedValue(CASE_MANAGEMENT_CATEGORY, "caseData.caseManagementCategory.value.code", true)
                                 .expectedValue(CASE_NAME, "caseData.caseName", true)
                                 .expectedValue(REGION, "caseData.region", true)
                                 .expectedValue(ROLE_CATEGORY, "CTSC", true)
