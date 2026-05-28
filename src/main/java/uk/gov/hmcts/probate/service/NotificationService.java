@@ -1000,7 +1000,7 @@ public class NotificationService {
         SendEmailResponse response =
                 notificationClientService.sendEmail(templateId, emailAddress,
                         personalisation, caseDetails.getId().toString());
-        log.info("Redec Reminder email reference response: {} isFirstStopReminder: {}", response.getReference(),
+        log.info("Redec Reminder email reference response: {} isFirstRedecReminder: {}", response.getReference(),
                 isFirstStopReminder);
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }

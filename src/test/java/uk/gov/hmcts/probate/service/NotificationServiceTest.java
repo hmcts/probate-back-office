@@ -71,6 +71,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -1639,5 +1640,99 @@ class NotificationServiceTest {
 
         verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
         assertThat(result, nullValue());
+    }
+
+    @Test
+    void sendRedecReminderEmailSuccessfullySendsEmail() throws NotificationClientException {
+        final Document documentMock = mock(Document.class);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(Map.of("applicationType", "SOLICITOR",
+                "solsSolicitorEmail", "abc@gmail.com"));
+        when(notificationClientServiceMock.sendEmail(anyString(), anyString(), any(), anyString()))
+                .thenReturn(mock(SendEmailResponse.class));
+        when(templateServiceMock.getRedecReminderTemplateId(any(), any(), eq(true)))
+                .thenReturn("template-id");
+        when(automatedNotificationPersonalisationServiceMock.getRedecReminderPersonalisation(any(), any()))
+                .thenReturn(Map.of("personalisationKey", "personalisationValue"));
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenReturn(documentMock);
+        final Document result = notificationService.sendRedecReminderEmail(caseDetails, true);
+
+        assertNotNull(result);
+        verify(notificationClientServiceMock).sendEmail(eq("template-id"), eq("abc@gmail.com"), any(),
+                eq("12345"));
+        verify(pdfManagementServiceMock, times(1))
+                .generateAndUpload(any(SentEmail.class), any());
+    }
+
+    @Test
+    void notSendRedecReminderEmailWhenCaseDataIsNull() throws NotificationClientException {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(null);
+
+        final Document result = notificationService.sendRedecReminderEmail(caseDetails,false);
+
+        verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
+        assertThat(result, nullValue());
+
+    }
+
+    @Test
+    void sendRedecReminderEmailThrowsExceptionWhenEmailAddressIsMissing() throws NotificationClientException {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(Map.of("applicationType", "SOLICITOR"));
+        when(notificationClientServiceMock.sendEmail(anyString(), anyString(), any(), anyString()))
+                .thenReturn(mock(SendEmailResponse.class));
+        when(automatedNotificationPersonalisationServiceMock.getRedecReminderPersonalisation(any(), any()))
+                .thenReturn(Map.of("personalisationKey", "personalisationValue"));
+
+        NotificationClientException exception = assertThrows(NotificationClientException.class,
+                () -> notificationService.sendRedecReminderEmail(caseDetails, true));
+
+        assertEquals("sendRedecReminderEmail address not found for case ID: 12345", exception.getMessage());
+    }
+
+    @Test
+    void sendRedecReminderEmailUsesCorrectTemplateForFirstStopReminder() throws NotificationClientException {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(Map.of("applicationType", "SOLICITOR",
+                "solsSolicitorEmail", "abc@gmail.com"));
+        when(templateServiceMock.getRedecReminderTemplateId(any(), any(), eq(true)))
+                .thenReturn("first-redec-template-id");
+        when(notificationClientServiceMock.sendEmail(anyString(), anyString(), any(), anyString()))
+                .thenReturn(mock(SendEmailResponse.class));
+
+        notificationService.sendRedecReminderEmail(caseDetails, true);
+
+        verify(templateServiceMock).getRedecReminderTemplateId(any(), any(), eq(true));
+        verify(notificationClientServiceMock).sendEmail(eq("first-redec-template-id"),
+                anyString(), any(), eq("12345"));
+    }
+
+    @Test
+    void sendRedecReminderEmailUsesCorrectTemplateForSecondStopReminder() throws NotificationClientException {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(Map.of("applicationType", "SOLICITOR",
+                "solsSolicitorEmail", "abc@gmail.com"));
+        when(templateServiceMock.getRedecReminderTemplateId(any(), any(), eq(false)))
+                .thenReturn("second-redec-template-id");
+        when(notificationClientServiceMock.sendEmail(anyString(), anyString(), any(), anyString()))
+                .thenReturn(mock(SendEmailResponse.class));
+
+        notificationService.sendRedecReminderEmail(caseDetails, false);
+
+        verify(templateServiceMock).getRedecReminderTemplateId(any(), any(), eq(false));
+        verify(notificationClientServiceMock).sendEmail(eq("second-redec-template-id"),
+                anyString(), any(), eq("12345"));
     }
 }
