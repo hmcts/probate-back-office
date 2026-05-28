@@ -112,6 +112,18 @@ public class AutomatedNotificationPersonalisationService {
         return personalisation;
     }
 
+    public Map<String, Object> getRedecReminderPersonalisation(CaseDetails caseDetails,
+                                                                  ApplicationType applicationType) {
+        Map<String, Object> redecPersonalisation = getPersonalisation(caseDetails,applicationType);
+        redecPersonalisation.put(PERSONALISATION_CASE_STOP_REASONS,
+                stopReasonService.getStopReasonDescription(
+                        LanguagePreference.ENGLISH,"redecNotificationSent"));
+        redecPersonalisation.put(PERSONALISATION_CASE_STOP_REASONS_WELSH,
+                stopReasonService.getStopReasonDescription(
+                        LanguagePreference.WELSH,"redecNotificationSent"));
+        return redecPersonalisation;
+    }
+
     public Map<String, Object> getPersonalisation(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
                                                   ApplicationType applicationType) {
         log.info("Building personalisation for caseId={}, applicationType={}", caseDetails.getId(), applicationType);
