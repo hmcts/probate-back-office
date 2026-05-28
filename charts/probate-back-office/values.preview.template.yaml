@@ -143,10 +143,6 @@ ccd:
       autoscaling:
         maxReplicas: 2
       imagePullPolicy: Always
-      devmemoryRequests: 1Gi
-      devcpuRequests: 1000m
-      devmemoryLimits: 2Gi
-      devcpuLimits: 2000m
       environment:
         DEFINITION_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
@@ -158,8 +154,8 @@ ccd:
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
-      devcpuRequests: 250m
-      devcpuLimits: 512m
+      devcpuRequests: 500m
+      devcpuLimits: 1000m
       devmemoryRequests: 1Gi
       devmemoryLimits: 2Gi
   ccd-user-profile-api:
