@@ -99,7 +99,7 @@
           <text>"caseCategory"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_09iaklr">
-          <text>"caseData.caseManagementCategory.value.code"</text>
+          <text>"caseData.caseType"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bv2xzf">
           <text>true</text>

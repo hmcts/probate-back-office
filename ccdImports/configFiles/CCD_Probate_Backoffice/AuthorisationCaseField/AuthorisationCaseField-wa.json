@@ -1,7 +1,7 @@
 [
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandledDate", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseManagementCategory", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseName", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "region", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "roleCategory", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
