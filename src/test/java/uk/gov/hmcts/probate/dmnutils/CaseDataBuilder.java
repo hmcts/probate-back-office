@@ -39,13 +39,12 @@ public class CaseDataBuilder {
                 "value", Map.of("code", "refusalOfHumanRights", "label", "Refusal of a human rights claim"),
                 "list_items", List.of(Map.of("code", "refusalOfHumanRights", "label", refusalOfEuLabel))
         ));
-        caseData.put("caseName", "someCaseName");
+        caseData.put("caseType", "someCaseType");
+        caseData.put("deceasedForenames", "someDeceasedForenames");
+        caseData.put("deceasedSurname", "someDeceasedSurname");
         caseData.put("region", "someRegion");
         caseData.put("roleCategory", "someRoleCategory");
-        caseData.put("caseManagementLocation", Map.of(
-                "region", "some other region",
-                "baseLocation", "some other location"
-        ));
+        caseData.put("registryLocation", "someRegistryLocation");
         return new CaseDataBuilder(caseData);
     }
 

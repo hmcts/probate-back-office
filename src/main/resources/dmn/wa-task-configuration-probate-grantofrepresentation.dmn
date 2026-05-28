@@ -99,7 +99,7 @@
           <text>"caseManagementCategory"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_09iaklr">
-          <text>caseData.caseManagementCategory.value.code</text>
+          <text>caseData.caseType</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bv2xzf">
           <text>true</text>
@@ -116,7 +116,7 @@
           <text>"caseName"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0d5o0tk">
-          <text>caseData.caseName</text>
+          <text>caseData.deceasedForenames + " " + caseData.deceasedSurname</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15scpg9">
           <text>true</text>
@@ -133,7 +133,7 @@
           <text>"region"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1duwa2u">
-          <text>caseData.region</text>
+          <text>"someRegion"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gcz5d0">
           <text>true</text>
@@ -167,7 +167,7 @@
           <text>"location"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_08tqtmv">
-          <text>caseData.caseManagementLocation.baseLocation</text>
+          <text>caseData.registryLocation</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_08oiise">
           <text>true</text>

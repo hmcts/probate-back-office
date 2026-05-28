@@ -59,11 +59,11 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         + "/trigger/boSelectForQA)", true)
                                 .expectedValue(WORK_TYPE, "decision_making_work", true)
                                 .expectedValue(CASE_MANAGEMENT_CATEGORY,
-                                        "refusalOfHumanRights", true)
-                                .expectedValue(CASE_NAME, "someCaseName", true)
+                                        "someCaseType", true)
+                                .expectedValue(CASE_NAME, "someDeceasedForenames someDeceasedSurname", true)
                                 .expectedValue(REGION, "someRegion", true)
                                 .expectedValue(ROLE_CATEGORY, "CTSC", true)
-                                .expectedValue(LOCATION, "some other location", true)
+                                .expectedValue(LOCATION, "someRegistryLocation", true)
                                 .build()
                 ),
                 Arguments.of(
