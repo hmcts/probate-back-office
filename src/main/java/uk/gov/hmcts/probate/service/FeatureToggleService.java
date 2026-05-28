@@ -23,7 +23,7 @@ public class FeatureToggleService {
     private static final String DECLARATION_NOT_SIGNED_TOGGLE = "probate-cron-declaration-not-signed";
     private static final String NFI_DATA_EXTRACT_TOGGLE = "probate-nfi-data-extract";
     private static final String SMEE_AND_FORD_COMMENT_FIELD_TOGGLE = "probate-smee-ford-comment-field";
-    private static final String SMEE_AND_FORD_EMAIL_TOGGLE = "probate-smee-ford-email";
+    private static final String DISABLE_SMEE_AND_FORD_EMAIL_TOGGLE = "probate-disable-smee-ford-email";
     private static final String USE_JSON_LIB_FOR_CASE_MATCHING = "probate-use-json-lib-for-case-matching";
     private static final String USE_PRIMARY_NOTIFY_KEY = "probate-use-primary-notify-key";
 
@@ -120,9 +120,9 @@ public class FeatureToggleService {
                 SMEE_AND_FORD_COMMENT_FIELD_TOGGLE, false);
     }
 
-    public boolean isSmeeAndFordEmailFeatureToggleOn() {
+    public boolean isProbateDisableSmeeAndFordEmailFeatureEnabled() {
         return this.isFeatureToggleOn(
-                SMEE_AND_FORD_EMAIL_TOGGLE, false);
+                DISABLE_SMEE_AND_FORD_EMAIL_TOGGLE, false);
     }
 
     public boolean useJsonLibForCaseMatching() {
