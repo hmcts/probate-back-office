@@ -96,7 +96,7 @@
           <text>"ExamineDigitalCaseProbate"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1me1na3">
-          <text>"caseCategory"</text>
+          <text>"caseManagementCategory"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_09iaklr">
           <text>"gop"</text>
