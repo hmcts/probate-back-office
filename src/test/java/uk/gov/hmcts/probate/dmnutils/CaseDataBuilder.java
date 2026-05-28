@@ -35,14 +35,14 @@ public class CaseDataBuilder {
         caseData.put("isUrgent", "No");
         caseData.put("dueDate", LocalDate.now());
         String refusalOfEuLabel = "Refusal of a human rights claim";
-        caseData.put("caseCategory", Map.of(
+        caseData.put("caseManagementCategory", Map.of(
                 "value", Map.of("code", "refusalOfHumanRights", "label", "Refusal of a human rights claim"),
                 "list_items", List.of(Map.of("code", "refusalOfHumanRights", "label", refusalOfEuLabel))
         ));
         caseData.put("caseName", "someCaseName");
         caseData.put("region", "someRegion");
         caseData.put("roleCategory", "someRoleCategory");
-        caseData.put("location", Map.of(
+        caseData.put("caseManagementLocation", Map.of(
                 "region", "some other region",
                 "baseLocation", "some other location"
         ));
