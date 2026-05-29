@@ -48,6 +48,7 @@ public class AutomatedNotificationPersonalisationService {
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_DISPLAY_SINGLE_STOP_REASON = "display-single-stop-reason";
     private static final String PERSONALISATION_DISPLAY_MULTIPLE_STOP_REASONS = "display-multiple-stop-reasons";
+    private static final String REDEC_NOTIFICATION_SENT_STOP_REASON_CODE = "redecNotificationSent";
     private static final String TODAY = "today";
     private static final String TODAY_WELSH = "today_welsh";
     private static final String CASE_ID_STRING = "<CASE_ID>";
@@ -117,10 +118,10 @@ public class AutomatedNotificationPersonalisationService {
         Map<String, Object> redecPersonalisation = getPersonalisation(caseDetails,applicationType);
         redecPersonalisation.put(PERSONALISATION_CASE_STOP_REASONS,
                 stopReasonService.getStopReasonDescription(
-                        LanguagePreference.ENGLISH,"redecNotificationSent"));
+                        LanguagePreference.ENGLISH,REDEC_NOTIFICATION_SENT_STOP_REASON_CODE));
         redecPersonalisation.put(PERSONALISATION_CASE_STOP_REASONS_WELSH,
                 stopReasonService.getStopReasonDescription(
-                        LanguagePreference.WELSH,"redecNotificationSent"));
+                        LanguagePreference.WELSH,REDEC_NOTIFICATION_SENT_STOP_REASON_CODE));
         return redecPersonalisation;
     }
 

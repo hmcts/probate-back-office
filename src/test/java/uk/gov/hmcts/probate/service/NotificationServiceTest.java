@@ -1751,6 +1751,7 @@ class NotificationServiceTest {
         verify(notificationClientServiceMock).sendEmail(eq("second-redec-template-id"),
                 anyString(), any(), eq("12345"));
     }
+
     void isBoImportedStateBeforeDormantReturnsTrueWhenPreviousStateIsBoCaseImported()
             throws NotificationClientException {
         String caseReference = "12345";
