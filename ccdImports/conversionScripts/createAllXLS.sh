@@ -11,6 +11,7 @@ configFolder=${conversionFolder}/../configFiles
 #   $4 = extraExclusions (optional, comma-separated patterns) Additional exclusions are appended based on feature flags:
 #        - WA disabled → adds "*-wa.json"
 #        - GS disabled → adds "*-gs.json"
+# Note: CCD_DEF_PUBLISH is derived automatically from PROBATE_WA_ENABLED env var
 caseServiceUrl="${1-}"
 aacUrl="${2-}"
 shutterOption="${3:-false}"
@@ -31,8 +32,10 @@ echo "[INFO] Initial extraExclusions: $extraExclusions"
 if [[ "${waEnabledVar}" != true ]]; then
   echo "[INFO] WA feature is DISABLED adding *-wa.json to exclusions"
   patterns+=("*-wa.json")
+  publishEnabled="N"
 else
   echo "[INFO] WA feature is ENABLED no exclusion added"
+  publishEnabled="Y"
 fi
 
 # GS flag
@@ -66,6 +69,7 @@ echo excludedFilenamePatterns = $excludedFilenamePatterns
 
 export CCD_DEF_CASE_SERVICE_BASE_URL="${caseServiceUrl}"
 export CCD_DEF_AAC_URL="${aacUrl}"
+export CCD_DEF_PUBLISH="${publishEnabled}"
 
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,$CCD_DEF_AAC_URL
 
