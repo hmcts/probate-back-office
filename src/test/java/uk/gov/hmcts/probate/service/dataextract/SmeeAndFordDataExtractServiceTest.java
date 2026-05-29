@@ -206,7 +206,7 @@ class SmeeAndFordDataExtractServiceTest {
             when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
                     .thenThrow(NotificationClientException.class);
 
-            smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(any(), any());
+            smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
         });
     }
 
