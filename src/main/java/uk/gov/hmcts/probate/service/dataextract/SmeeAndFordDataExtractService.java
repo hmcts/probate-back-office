@@ -68,10 +68,15 @@ public class SmeeAndFordDataExtractService {
                     log.info("Zip file uploaded on blob store");
                     Files.deleteIfExists(tempFile.toPath());
                 }
-                boolean isSmeeAndFordEmailDisabled = featureToggleService.isProbateDisableSmeeAndFordEmailFeatureEnabled();
-                log.info("LaunchDarkly flag probate-disable-smee-ford-email is enabled: {}", isSmeeAndFordEmailDisabled);
+                boolean isSmeeAndFordEmailDisabled =
+                    featureToggleService.isProbateDisableSmeeAndFordEmailFeatureEnabled();
+                log.info(
+                    "LaunchDarkly flag probate-disable-smee-ford-email is enabled: {}",
+                    isSmeeAndFordEmailDisabled
+                );
                 if (isSmeeAndFordEmailDisabled) {
-                    log.info("Skipping Smee & Ford email notification because probate-disable-smee-ford-email flag in LaunchDarkly feature is true.");
+                    log.info("Skipping Smee & Ford email notification because "
+                        + "probate-disable-smee-ford-email flag in LaunchDarkly feature is true.");
                 } else {
                     notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
 
