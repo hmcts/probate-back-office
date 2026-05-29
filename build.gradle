@@ -4,7 +4,7 @@ plugins {
   id 'org.springframework.boot' version '3.5.14'
   id 'uk.gov.hmcts.java' version '0.12.68'
   id 'com.github.ben-manes.versions' version '0.54.0'
-  id 'com.gorylenko.gradle-git-properties' version '3.0.2'
+  id 'com.gorylenko.gradle-git-properties' version '3.0.3'
   id 'info.solidsoft.pitest' version '1.15.0'
   id 'jacoco'
   id 'project-report'
@@ -177,7 +177,7 @@ def versions = [
         restAssured                     : '5.5.7',
         sendLetterClientVersion         : '5.1.1',
         serenity                        : '5.3.10',
-        serviceAuthVersion              : '5.3.3',
+        serviceAuthVersion              : '5.3.4',
         springBootVersion               : '3.5.14',
         springCloud                     : '4.3.0',
         springDocOpenUi                 : '2.8.17',
