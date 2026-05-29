@@ -28,7 +28,11 @@ class FeatureToggleServiceTest {
 
     @Test
     void shouldUseSmeeAndFordEmailLaunchDarklyFlagWithFalseDefault() {
-        when(ldClient.boolVariation(eq("probate-disable-smee-ford-email"), any(LDContext.class), eq(false))).thenReturn(true);
+        when(ldClient.boolVariation(
+            eq("probate-disable-smee-ford-email"),
+            any(LDContext.class),
+            eq(false)
+        )).thenReturn(true);
 
         assertTrue(featureToggleService.isProbateDisableSmeeAndFordEmailFeatureEnabled());
 
