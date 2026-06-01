@@ -136,6 +136,7 @@ public class TaskStateRenderer {
     private static final String LIST_ITEM_START = "<li>";
     private static final String LIST_ITEM_END = "</li>";
     private static final String CASE_ID_STRING = "<CASE_ID>";
+    private static final String CASE_TYPE_STRING = "<CASE_TYPE>";
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private static final Locale welshLocale = new Locale("cy", "GB");
     private static final DateTimeFormatter welshDateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy", welshLocale);
@@ -281,7 +282,7 @@ public class TaskStateRenderer {
                                                   TaskListState currState,
                                                   String caseId) {
         String linkUrlTemplate = SOLICITOR_CREATE_SERVICE_REQUEST_URL_TEMPLATE
-                .replaceFirst("<CASE_TYPE>", GRANT_OF_REPRESENTATION.getCode());
+                .replaceFirst(CASE_TYPE_STRING, GRANT_OF_REPRESENTATION.getCode());
         return currState == TaskListState.TL_STATE_CREATE_SERVICE_REQUEST
                 && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
                 ? LinkRenderer.render(
@@ -293,7 +294,7 @@ public class TaskStateRenderer {
                                                        TaskListState currState,
                                                        String caseId) {
         String linkUrlTemplate = SOLICITOR_CREATE_SERVICE_REQUEST_URL_TEMPLATE
-            .replaceFirst("<CASE_TYPE>", GRANT_OF_REPRESENTATION.getCode());
+            .replaceFirst(CASE_TYPE_STRING, GRANT_OF_REPRESENTATION.getCode());
         return currState == TaskListState.TL_STATE_CREATE_SERVICE_REQUEST
                 && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
                 ? LinkRenderer.render(
@@ -305,7 +306,7 @@ public class TaskStateRenderer {
                                            String willType) {
         String linkUrlTemplate = getLinkUrlTemplate(currState, willType);
         if (linkUrlTemplate != null) {
-            linkUrlTemplate = linkUrlTemplate.replaceFirst("<CASE_TYPE>", GRANT_OF_REPRESENTATION.getCode());
+            linkUrlTemplate = linkUrlTemplate.replaceFirst(CASE_TYPE_STRING, GRANT_OF_REPRESENTATION.getCode());
         }
         return linkUrlTemplate != null
                 && (currState == TaskListState.TL_STATE_MAKE_PAYMENT
@@ -319,7 +320,7 @@ public class TaskStateRenderer {
                                            String willType) {
         String linkUrlTemplate = getLinkUrlTemplate(currState, willType);
         if (linkUrlTemplate != null) {
-            linkUrlTemplate = linkUrlTemplate.replaceFirst("<CASE_TYPE>", GRANT_OF_REPRESENTATION.getCode());
+            linkUrlTemplate = linkUrlTemplate.replaceFirst(CASE_TYPE_STRING, GRANT_OF_REPRESENTATION.getCode());
         }
         return linkUrlTemplate != null
                 && (currState == TaskListState.TL_STATE_MAKE_PAYMENT
@@ -480,7 +481,7 @@ public class TaskStateRenderer {
 
         String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
         if (linkUrlTemplate != null) {
-            linkUrlTemplate = linkUrlTemplate.replaceFirst("<CASE_TYPE>", GRANT_OF_REPRESENTATION.getCode());
+            linkUrlTemplate = linkUrlTemplate.replaceFirst(CASE_TYPE_STRING, GRANT_OF_REPRESENTATION.getCode());
         }
         String coversheetUrl = details.getData().getSolsCoversheetDocument() == null ? "#" : details
             .getData().getSolsCoversheetDocument().getDocumentBinaryUrl();

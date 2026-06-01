@@ -123,7 +123,7 @@ public class NextStepsController {
         BindingResult bindingResult,
         HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
         caseServiceRequestValidationRule.validate(callbackRequest.getCaseDetails());

@@ -71,6 +71,8 @@ public class CaveatController {
     private final CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
     private final CaseServiceRequestValidationRule caseServiceRequestValidationRule;
 
+    private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
+
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
         @Validated({CaveatsEmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
@@ -178,7 +180,7 @@ public class CaveatController {
             HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
-            log.error("Case Id: {} ERROR: {}", caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error(DEFAULT_LOG_ERROR, caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
@@ -198,7 +200,7 @@ public class CaveatController {
         BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            log.error("Case Id: {} ERROR: {}", caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error(DEFAULT_LOG_ERROR, caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
@@ -222,7 +224,7 @@ public class CaveatController {
             @RequestBody CaveatCallbackRequest callbackRequest,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
         caseServiceRequestValidationRule.validate(callbackRequest.getCaseDetails());
