@@ -163,6 +163,8 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
     } else {
         echo "PROBATE_WA_ENABLED = False, files with *-wa extension will be excluded"
         patterns << "*-wa.json"
+        patterns << "*-wa-shutter.json"
+        patterns << "*-wa-unshutter.json"
     }
     if (env.PROBATE_GS_ENABLED == "true") {
         echo "PROBATE_GS_ENABLED = True, GS Files not excluded"
