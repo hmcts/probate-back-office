@@ -89,6 +89,7 @@ import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATI
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.DECEASED_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.REVIEW_OR_SUBMIT_URL_TEMPLATE;
+import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.SOLICITOR_CREATE_SERVICE_REQUEST_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_COVERSHEET_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_SERVICE_REQUEST_URL_TEMPLATE;
@@ -109,6 +110,8 @@ public class TaskStateRenderer {
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
     private static final String REVIEW_OR_SUBMIT_TEXT_WELSH
             = "Adolygwch a llofnodwch y datganiad cyfreithiol a chyflwynwch y cais";
+    private static final String CREATE_SERVICE_REQUEST_TEXT = "Create service request";
+    private static final String CREATE_SERVICE_REQUEST_TEXT_WELSH = "Create service request welsh";
     private static final String MAKE_PAYMENT_TEXT = "Make payment";
     private static final String MAKE_PAYMENT_TEXT_WELSH = "Gwneud taliad";
     private static final String NO_PAYMENT_REQUIRED_TEXT = "</p><p><secText>No payment is required.</secText>";
@@ -167,6 +170,9 @@ public class TaskStateRenderer {
         final TaskState rvwState = getTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT,
                 solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
                 details.getData().getHmrcLetterId());
+        final TaskState serviceRequestState = getTaskState(currState, TaskListState.TL_STATE_CREATE_SERVICE_REQUEST,
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
+                details.getData().getHmrcLetterId());
         final TaskState paymentState = getPaymentTaskState(currState, TaskListState.TL_STATE_PAYMENT_ATTEMPTED);
         final TaskState sendDocsState = getTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS,
                 solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
@@ -215,6 +221,12 @@ public class TaskStateRenderer {
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
                 .replaceFirst("<reviewAndSubmitDateWelsh/>", renderSubmitDateWelsh(submitDate))
                 .replaceFirst("<reviewAndSubmitDateWelsh/>", renderSubmitDate(submitDate))
+                .replaceFirst("<createServiceRequestLink/>",
+                        renderServiceRequestLinkOrText(serviceRequestState, currState, caseIdStr))
+                .replaceFirst("<createServiceRequestLinkWelsh/>",
+                        renderServiceRequestLinkOrTextWelsh(serviceRequestState, currState, caseIdStr))
+                .replaceFirst("<status-createServiceRequest/>", renderTaskStateTag(serviceRequestState))
+                .replaceFirst("<status-createServiceRequestWelsh/>", renderTaskStateTagWelsh(serviceRequestState))
                 .replaceFirst("<paymentTabLink/>", renderPaymentLinkOrText(paymentState, currState, caseIdStr,
                         willType))
                 .replaceFirst("<paymentTabLinkWelsh/>", renderPaymentLinkOrTextWelsh(paymentState, currState, caseIdStr,
@@ -263,6 +275,30 @@ public class TaskStateRenderer {
             taskState = TaskState.NOT_AVAILABLE;
         }
         return taskState;
+    }
+
+    private String renderServiceRequestLinkOrText(TaskState currTaskState,
+                                                  TaskListState currState,
+                                                  String caseId) {
+        String linkUrlTemplate = SOLICITOR_CREATE_SERVICE_REQUEST_URL_TEMPLATE
+                .replaceFirst("<CASE_TYPE>", GRANT_OF_REPRESENTATION.getCode());
+        return currState == TaskListState.TL_STATE_CREATE_SERVICE_REQUEST
+                && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
+                ? LinkRenderer.render(
+                    CREATE_SERVICE_REQUEST_TEXT, linkUrlTemplate.replaceFirst(CASE_ID_STRING, caseId))
+                : CREATE_SERVICE_REQUEST_TEXT;
+    }
+
+    private String renderServiceRequestLinkOrTextWelsh(TaskState currTaskState,
+                                                       TaskListState currState,
+                                                       String caseId) {
+        String linkUrlTemplate = SOLICITOR_CREATE_SERVICE_REQUEST_URL_TEMPLATE
+            .replaceFirst("<CASE_TYPE>", GRANT_OF_REPRESENTATION.getCode());
+        return currState == TaskListState.TL_STATE_CREATE_SERVICE_REQUEST
+                && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
+                ? LinkRenderer.render(
+                    CREATE_SERVICE_REQUEST_TEXT_WELSH, linkUrlTemplate.replaceFirst(CASE_ID_STRING, caseId))
+                : CREATE_SERVICE_REQUEST_TEXT_WELSH;
     }
 
     private String renderPaymentLinkOrText(TaskState currTaskState, TaskListState currState, String caseId,
@@ -326,6 +362,11 @@ public class TaskStateRenderer {
 
         if (currState == TaskListState.TL_STATE_ADD_DECEASED_DETAILS
                 && renderState == TaskListState.TL_STATE_ADD_DECEASED_DETAILS && NO.equals(hmrcLetterId)) {
+            return TaskState.IN_PROGRESS;
+        }
+
+        if (currState == TaskListState.TL_STATE_CREATE_SERVICE_REQUEST
+                && renderState == TaskListState.TL_STATE_CREATE_SERVICE_REQUEST) {
             return TaskState.IN_PROGRESS;
         }
 

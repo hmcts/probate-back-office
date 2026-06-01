@@ -24,17 +24,18 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
+import uk.gov.hmcts.probate.validator.CaseServiceRequestValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatAcknowledgementValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatDodValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -94,6 +95,8 @@ class CaveatControllerUnitTest {
     private CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
     @Mock
     private HttpServletRequest httpServletRequestMock;
+    @Mock
+    private CaseServiceRequestValidationRule caseServiceRequestValidationRuleMock;
 
     @BeforeEach
     public void setUp() {
@@ -102,11 +105,12 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDodValidationRule,
             caveatDataTransformer, caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService,
             notificationService, caveatNotificationService, confirmationResponseService, paymentsService, feeService,
-            registrarDirectionService, documentGeneratorService, caveatAcknowledgementValidationRule);
+            registrarDirectionService, documentGeneratorService, caveatAcknowledgementValidationRule,
+            caseServiceRequestValidationRuleMock);
     }
 
     @Test
-    void shouldValidateWithNoErrors() throws NotificationClientException {
+    void shouldValidateWithNoErrors() {
         when(feeService.getCaveatFeesData()).thenReturn(feeResponseMock);
         when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
         when(serviceRequestTransformer.buildServiceRequest(caveatDetailsMock, feeResponseMock))
@@ -190,6 +194,23 @@ class CaveatControllerUnitTest {
                 caveatCallbackRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(caveatCallbackResponseTransformer, times(1))
+                .transformResponseWithNoChanges(caveatCallbackRequest);
+    }
+
+    @Test
+    void shouldValidateServiceRequestAndTransform() {
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
+        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        doNothing().when(caseServiceRequestValidationRuleMock).validate(caveatDetailsMock);
+
+        ResponseEntity<CaveatCallbackResponse> response = underTest.checkServiceRequest(
+                caveatCallbackRequest,  bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(caseServiceRequestValidationRuleMock, times(1))
+                .validate(caveatDetailsMock);
         verify(caveatCallbackResponseTransformer, times(1))
                 .transformResponseWithNoChanges(caveatCallbackRequest);
     }

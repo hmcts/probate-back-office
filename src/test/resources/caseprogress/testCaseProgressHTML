@@ -2,6 +2,8 @@
 <div><addDeceasedLink/></div>
 <div><addAppLink/></div>
 <div><rvwLink/></div>
+<div><createServiceRequestLink/></div>
+<div><createServiceRequestLinkWelsh/></div>
 <div><paymentTabLink/></div>
 <div><paymentHintText/></div>
 <div><sendDocsLink/></div>
@@ -18,6 +20,8 @@
 <p><status-reviewAndSubmit/></p>
 <p><status-reviewAndSubmitWelsh/></p>
 <p><reviewAndSubmitDate/></p>
+<p><status-createServiceRequest/></p>
+<p><status-createServiceRequestWelsh/></p>
 <p><status-paymentMade/></p>
 <p><status-paymentMadeWelsh/></p>
 <p><status-sendDocuments/></p>

@@ -1117,7 +1117,7 @@ class CallbackResponseTransformerTest {
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                SENTEMAIL, coversheetMock, USER_ID);
+                SENTEMAIL, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1138,7 +1138,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                SENTEMAIL, coversheetMock, USER_ID);
+                SENTEMAIL, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1156,7 +1156,7 @@ class CallbackResponseTransformerTest {
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                SENTEMAIL, coversheetMock, USER_ID);
+                SENTEMAIL, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1179,7 +1179,7 @@ class CallbackResponseTransformerTest {
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-               SENTEMAIL, coversheetMock, USER_ID);
+               SENTEMAIL, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1200,7 +1200,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                SENTEMAIL, coversheetMock, USER_ID);
+                SENTEMAIL, coversheetMock);
 
         assertEquals("2.0.0", callbackResponse.getData().getSchemaVersion());
     }
@@ -1213,7 +1213,7 @@ class CallbackResponseTransformerTest {
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                SENTEMAIL, coversheetMock, USER_ID);
+                SENTEMAIL, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1235,7 +1235,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                SENTEMAIL, coversheetMock, USER_ID);
+                SENTEMAIL, coversheetMock);
 
         assertNull(callbackResponse.getData().getDeceasedDateOfBirth());
     }
@@ -1247,7 +1247,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                SENTEMAIL, coversheetMock, USER_ID);
+                SENTEMAIL, coversheetMock);
 
         assertNull(callbackResponse.getData().getDeceasedDateOfDeath());
     }
@@ -1259,7 +1259,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            SENTEMAIL, coversheetMock, USER_ID);
+            SENTEMAIL, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1282,7 +1282,7 @@ class CallbackResponseTransformerTest {
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.ZERO);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                SENTEMAIL, coversheetMock, USER_ID);
+                SENTEMAIL, coversheetMock);
         assertAll(
                 () -> assertEquals(BigDecimal.ZERO.toString(), callbackResponse.getData().getTotalFee()),
                 () -> assertEquals(CallbackResponseTransformer.dateTimeFormatter.format(LocalDate.now()),
@@ -4479,7 +4479,7 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldBeNullSafeForSentEmailAndCoversheet() {
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-            feesResponse, null, null, USER_ID);
+            feesResponse, null, null);
 
         assertThat(callbackResponse.getData().getProbateNotificationsGenerated(), is(empty()));
         assertNull(callbackResponse.getData().getSolsCoversheetDocument());
@@ -4489,7 +4489,7 @@ class CallbackResponseTransformerTest {
     void shouldTransformCaseForSentEmailAndCoversheet() {
         when(coversheetMock.getDocumentLink()).thenReturn(documentLinkMock);
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, SENTEMAIL, coversheetMock, USER_ID);
+                feesResponse, SENTEMAIL, coversheetMock);
 
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
         assertEquals(SENTEMAIL,
@@ -5875,5 +5875,13 @@ class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getHasValidMatches());
+    }
+
+    @Test
+    void testTransformForCreateServiceRequest() {
+        CallbackResponse callbackResponse = underTest.transformForCreateServiceRequest(callbackRequestMock, USER_ID);
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(USER_ID, callbackResponse.getData().getApplicationSubmittedBy());
     }
 }

@@ -106,7 +106,7 @@ class TaskStateRendererTest {
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingList;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         openMocks(this);
         CaseDataBuilder caseDataBuilder = CaseData.builder()
             .escalatedDate(LocalDate.of(2020, 1, 1));
@@ -131,6 +131,8 @@ class TaskStateRendererTest {
                 + "<div>Add deceased details</div>\n"
                 + "<div>Add application details</div>\n"
                 + "<div>Review and sign legal statement and submit application</div>\n"
+                + "<div>Create service request</div>\n"
+                + "<div>Create service request welsh</div>\n"
                 + "<div>Make payment</div>\n"
                 + "<div></div>\n"
                 + "<div></div>\n"
@@ -159,6 +161,8 @@ class TaskStateRendererTest {
                 + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p><strong>Submitted on 01 Nov 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">"
                 + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
                 + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p><strong>Authenticated on "
                 + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -182,6 +186,8 @@ class TaskStateRendererTest {
             + "\" class=\"govuk-link\">Add deceased details</a></div>\n"
             + "<div>Add application details</div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
+            + "<div>Create service request</div>\n"
+            + "<div>Create service request welsh</div>\n"
             + "<div>Make payment</div>\n"
             + "<div></div>\n"
             + "<div></div>\n"
@@ -218,6 +224,8 @@ class TaskStateRendererTest {
             + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n"
                 + "<p></p>\n"
                 + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Authenticated on "
             + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -242,6 +250,8 @@ class TaskStateRendererTest {
                 + "\" class=\"govuk-link\">Add deceased details</a></div>\n"
                 + "<div>Add application details</div>\n"
                 + "<div>Review and sign legal statement and submit application</div>\n"
+                + "<div>Create service request</div>\n"
+                + "<div>Create service request welsh</div>\n"
                 + "<div>Make payment</div>\n"
                 + "<div></div>\n"
                 + "<div></div>\n"
@@ -275,7 +285,7 @@ class TaskStateRendererTest {
                 + "<p></p>\n"
                 + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p><strong>Submitted on 01 Nov 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">"
-                + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n"
+                + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n"
                 + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p><strong>Authenticated on "
                 + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -303,6 +313,8 @@ class TaskStateRendererTest {
                 .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
+            + "<div>Create service request</div>\n"
+            + "<div>Create service request welsh</div>\n"
             + "<div>Make payment</div>\n"
             + "<div></div>\n"
             + "<div></div>\n"
@@ -315,49 +327,51 @@ class TaskStateRendererTest {
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
-                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+            + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
-                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+            + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" "
-                + "title=\"YN MYND RHAGDDO\" /></p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" "
+            + "title=\"YN MYND RHAGDDO\" /></p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" "
-                + "title=\"YN MYND RHAGDDO\" /></p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" "
+            + "title=\"YN MYND RHAGDDO\" /></p>\n</p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Submitted on 01 Nov 2020</strong></p></div>"
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
-                + "<p></p>\n"
-                + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Authenticated on 10 Oct 2020</strong></p></div>"
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -365,9 +379,9 @@ class TaskStateRendererTest {
             + "<p></p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
-                + "<p></p>\n"
-                + "<p></p>\n"
-                + "<p></p>\n";
+            + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n";
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                 testHtml, (long) 9999, "WillLeft", "Yes",
@@ -387,6 +401,8 @@ class TaskStateRendererTest {
                 .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
+            + "<div>Create service request</div>\n"
+            + "<div>Create service request welsh</div>\n"
             + "<div>Make payment</div>\n"
             + "<div></div>\n"
             + "<div></div>\n"
@@ -399,41 +415,43 @@ class TaskStateRendererTest {
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
-                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+            + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
-                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+            + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
-                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+            + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
-                + "<p></p>\n"
+            + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>"
             + "Submitted on 01 Nov 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
-                + "<p></p>\n"
-                + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Authenticated "
             + "on 10 Oct 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -458,6 +476,8 @@ class TaskStateRendererTest {
                 .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
+            + "<div>Create service request</div>\n"
+            + "<div>Create service request welsh</div>\n"
             + "<div>Make payment</div>\n"
             + "<div></div>\n"
             + "<div></div>\n"
@@ -470,41 +490,43 @@ class TaskStateRendererTest {
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
-                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+            + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
-                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+            + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
-                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+            + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
-                + "<p></p>\n"
+            + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Submitted on "
             + "01 Nov 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
-                + "<p></p>\n"
-                + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>"
             + "Authenticated on 10 Oct 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -529,6 +551,8 @@ class TaskStateRendererTest {
                 .replaceFirst("<CASE_TYPE>", "GrantOfRepresentation")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
+            + "<div>Create service request</div>\n"
+            + "<div>Create service request welsh</div>\n"
             + "<div>Make payment</div>\n"
             + "<div></div>\n"
             + "<div></div>\n"
@@ -541,41 +565,43 @@ class TaskStateRendererTest {
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" "
-                + "title=\"CWBLHAWYD\" /></p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" "
+            + "title=\"CWBLHAWYD\" /></p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
-                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+            + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
             + "</p>\n"
-                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
-                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+            + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+            + TaskState.CODE_BRANCH
+            + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+            + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
-                + "<p></p>\n"
+            + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Submitted on "
             + "01 Nov 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
-                + "<p></p>\n"
-                + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
+            + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Authenticated "
             + "on 10 Oct 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -622,7 +648,7 @@ class TaskStateRendererTest {
             .build();
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString("caseprogress/gop/solicitorCaseProgressSendDocumentsWithPA17Form");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
         when(pa17FormBusinessRule.isApplicable(caseData)).thenReturn(true);
         when(sendDocumentsRenderer.getPA17FormText()).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals\" "
@@ -669,7 +695,7 @@ class TaskStateRendererTest {
 
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString("caseprogress/gop/solicitorCaseProgressSendDocumentsWithPA14Form");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
         when(pa15FormBusinessRule.isApplicable(caseData)).thenReturn(true);
         List<AdditionalExecutorNotApplying> all = new ArrayList<>();
         AdditionalExecutorNotApplying single =
@@ -722,7 +748,7 @@ class TaskStateRendererTest {
 
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString("caseprogress/gop/solicitorCaseProgressSendDocumentsWithPA15Form");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
         when(pa15FormBusinessRule.isApplicable(caseData)).thenReturn(true);
         List<AdditionalExecutorNotApplying> all = new ArrayList<>();
         AdditionalExecutorNotApplying single =
@@ -767,7 +793,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsWillHasCodicils");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -797,7 +823,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsIHT217");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -827,7 +853,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
                 .getFileFromResourceAsString(
                         "caseprogress/gop/solicitorCaseProgressSendDocumentsIHT400");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
                 testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -855,7 +881,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
                 .getFileFromResourceAsString(
                         "caseprogress/intestacy/solicitorCaseProgressSendDocuments");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
                 testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -884,7 +910,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/intestacy/solicitorCaseProgressSendDocumentsIntestacyNoDocs");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -912,7 +938,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/intestacy/solicitorCaseProgressSendDocumentsWithPA16Form");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         when(pa16FormBusinessRule.isApplicable(caseData)).thenReturn(true);
         when(sendDocumentsRenderer.getPA16FormText()).thenReturn("<a href=\"https://www.gov"
@@ -952,7 +978,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/intestacy/solicitorCaseProgressSendDocumentsNoPA16Form");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         when(pa16FormBusinessRule.isApplicable(caseData)).thenReturn(false);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -983,7 +1009,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsIHTEstate207");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         when(ihtEstate207BusinessRule.isApplicable(any(CaseData.class))).thenReturn(true);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -1015,7 +1041,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
                 .getFileFromResourceAsString(
                         "caseprogress/gop/solicitorCaseProgressAuthenticateDocumentsSend");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS,
                 testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -1046,7 +1072,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
                 .getFileFromResourceAsString(
                         "caseprogress/gop/solicitorCaseProgressSendDocumentsState");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
                 testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -1076,7 +1102,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsIHTEstate400421");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -1105,7 +1131,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsIHTEstateCompletedNo");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -1135,7 +1161,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/intestacy/solicitorCaseProgressSendDocumentsIHT217");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -1164,7 +1190,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/admonwill/solicitorCaseProgressSendDocuments");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
         when(admonWillRenunicationRule.isApplicable(caseData)).thenReturn(true);
         when(sendDocumentsRenderer.getAdmonWillRenunciationText()).thenReturn("if applicable, send us the appropriate"
             + " renunciation form <a href=\"https://www.gov.uk/government/publications/form-pa15-give-up-probate-"
@@ -1208,7 +1234,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/admonwill/solicitorCaseProgressSendDocumentsWillHasCodicils");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -1238,7 +1264,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/admonwill/solicitorCaseProgressSendDocumentsIHT217");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
@@ -1268,7 +1294,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsCopyOfResolution");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
 
         when(tcResolutionLodgedWithApplicationRule.isApplicable(any(CaseData.class))).thenReturn(true);
 
@@ -1300,7 +1326,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsWithAuthenticatedTranslationOfWill");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
         when(pa17FormBusinessRule.isApplicable(caseData)).thenReturn(false);
         when(authenticatedTranslationBusinessRule.isApplicable(caseData)).thenReturn(true);
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
@@ -1333,7 +1359,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsWithDispenseNoticeSupportDocs");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
         when(dispenseNoticeSupportDocsRule.isApplicable(caseData)).thenReturn(true);
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -1358,7 +1384,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
                 .getFileFromResourceAsString(
                         "caseprogress/gop/PaymentNotStarted");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_MAKE_PAYMENT,
                 testHtml, (long) 9999, "WillLeft", "No",
                 LocalDate.of(2020,10,10),
@@ -1371,7 +1397,7 @@ class TaskStateRendererTest {
         String expectedHtml = fileSystemResourceService
                 .getFileFromResourceAsString(
                         "caseprogress/gop/PaymentInProgress");
-        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_PAYMENT_ATTEMPTED,
                 testHtml, (long) 9999, "WillLeft", "No",
                 LocalDate.of(2020,10,10),
@@ -1379,4 +1405,16 @@ class TaskStateRendererTest {
         assertEquals(expectedHtml, result);
     }
 
+    @Test
+    void shouldRenderCorrectServiceRequestStateInProgress() {
+        String expectedHtml = fileSystemResourceService
+                .getFileFromResourceAsString(
+                        "caseprogress/gop/ServiceRequestInProgress");
+        expectedHtml = expectedHtml.replace("<BRANCH/>", TaskState.CODE_BRANCH);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_CREATE_SERVICE_REQUEST,
+                testHtml, (long) 9999, "WillLeft", "No",
+                LocalDate.of(2020,10,10),
+                LocalDate.of(2020,11, 1), caseDetails);
+        assertEquals(expectedHtml, result);
+    }
 }

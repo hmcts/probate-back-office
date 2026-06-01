@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.tasklist;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.HeadingRenderer;
@@ -29,15 +30,16 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
 
     public String renderHtml(CaseDetails details) {
         final String paymentTaken = details.getData().getPaymentTaken();
+        final boolean serviceRequestCreated = StringUtils.hasText(details.getData().getApplicationSubmittedBy());
         final String state = details.getState();
-        final TaskListState tlState = TaskListState.mapCaseState(state, paymentTaken);
+        final TaskListState tlState = TaskListState.mapCaseState(state, paymentTaken, serviceRequestCreated);
         if (tlState == TaskListState.TL_STATE_NOT_APPLICABLE) {
             return "";
         }
         final CaseData caseData = details.getData();
         final String submitDate = caseData.getApplicationSubmittedDate();
         final LocalDate submitLocalDate =
-                submitDate == null || submitDate.equals("") ? null : LocalDate.parse(submitDate);
+                submitDate == null || submitDate.isEmpty() ? null : LocalDate.parse(submitDate);
         final LocalDate authDate = caseData.getAuthenticatedDate();
         String willType = caseData.getSolsWillType();
         // switch statement inside rendering requires not null, default to gop

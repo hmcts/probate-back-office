@@ -36,5 +36,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOGrantIssuedRegistrarEscalation", "Name": "Registrar escalation(Grant Issued)", "Description": "Registrar escalation", "DisplayOrder": 35},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOPostGrantIssuedRegistrarEscalation", "Name": "Registrar escalation(Post Grant Issued)", "Description": "Registrar escalation", "DisplayOrder": 36},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseWorkerEscalation", "Name": "SME Referral", "Description": "SME Referral", "DisplayOrder": 37},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Stopped", "Name": "Stopped", "Description": "Stopped", "DisplayOrder": 38}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Stopped", "Name": "Stopped", "Description": "Stopped", "DisplayOrder": 38},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "AwaitingPayment", "Name": "Awaiting Payment", "Description": "Awaiting Payment", "DisplayOrder": 39}
 ]

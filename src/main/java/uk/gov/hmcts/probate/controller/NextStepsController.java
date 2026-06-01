@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
+import uk.gov.hmcts.probate.validator.CaseServiceRequestValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,6 +62,7 @@ public class NextStepsController {
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final PDFManagementService pdfManagementService;
     private final NotificationService notificationService;
+    private final CaseServiceRequestValidationRule caseServiceRequestValidationRule;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -92,7 +94,6 @@ public class NextStepsController {
                 ccdData.getIht().getNetValueInPounds(),
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
-            String userId = request.getHeader("user-id");
             Document sentEmail = null;
             Document coversheet = null;
             if (BigDecimal.ZERO.compareTo(feesResponse.getTotalAmount()) == 0) {
@@ -107,10 +108,28 @@ public class NextStepsController {
                         .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
             }
             callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, sentEmail, coversheet, userId);
+                        feesResponse, sentEmail, coversheet);
         }
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    @PostMapping(path = "/case-service-request-check",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> checkServiceRequest(
+        @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class})
+        @RequestBody CallbackRequest callbackRequest,
+        BindingResult bindingResult,
+        HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException("Invalid payload", bindingResult);
+        }
+        caseServiceRequestValidationRule.validate(callbackRequest.getCaseDetails());
+        String userId = request.getHeader("user-id");
+        return ResponseEntity.ok(
+                callbackResponseTransformer.transformForCreateServiceRequest(callbackRequest, userId));
     }
 
     @PostMapping(path = "/confirmation", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})

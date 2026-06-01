@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
+import uk.gov.hmcts.probate.validator.CaseServiceRequestValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatAcknowledgementValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
@@ -68,6 +69,7 @@ public class CaveatController {
     private final RegistrarDirectionService registrarDirectionService;
     private final DocumentGeneratorService documentGeneratorService;
     private final CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
+    private final CaseServiceRequestValidationRule caseServiceRequestValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -210,6 +212,21 @@ public class CaveatController {
             .getNextStepsConfirmation(caveatData, caveatCallbackRequest.getCaseDetails().getId());
 
         return ResponseEntity.ok(afterSubmitCallbackResponse);
+    }
+
+    @PostMapping(path = "/case-service-request-check",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> checkServiceRequest(
+            @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class, CaveatCompletedGroup.class})
+            @RequestBody CaveatCallbackRequest callbackRequest,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException("Invalid payload", bindingResult);
+        }
+        caseServiceRequestValidationRule.validate(callbackRequest.getCaseDetails());
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
     }
 
     @PostMapping(path = "/validate-extend")

@@ -74,13 +74,21 @@ public class CaseTaskListHtmlTemplate {
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + SEPARATOR
         + OPEN_ROW
+        + "<p><createServiceRequestLink/></p>"
+        + "<p><createServiceRequestLinkWelsh/></p>"
+        + CLOSE_COL1_OPEN_COL2
+        + "<status-createServiceRequest/>"
+        + "<status-createServiceRequestWelsh/>"
+        + CLOSE_GRID_ROW
+        + SEPARATOR
+        + OPEN_ROW
         + "<p><paymentTabLink/></p>"
         + "<p><paymentTabLinkWelsh/></p>"
         + "<p><secText><paymentHintText/></secText></p>"
         + "<p><secText><paymentHintTextWelsh/></secText></p>"
         + CLOSE_COL1_OPEN_COL2
         + "<status-paymentMade/>"
-                + "<status-paymentMadeWelsh/>"
+        + "<status-paymentMadeWelsh/>"
         + CLOSE_GRID_ROW
         + SEPARATOR
         + "<sendDocs/>"

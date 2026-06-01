@@ -772,7 +772,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                                          Document sentEmail, Document coversheet, String userId) {
+                                                          Document sentEmail, Document coversheet) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -800,11 +800,16 @@ public class CallbackResponseTransformer {
             .totalFee(totalFee)
             .applicationSubmittedDate(applicationSubmittedDate)
             .boDocumentsUploaded(addLegalStatementDocument(callbackRequest))
-            .applicationSubmittedBy(userId)
             .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
             .build();
+        return transformResponse(responseCaseData);
+    }
 
-
+    public CallbackResponse transformForCreateServiceRequest(CallbackRequest callbackRequest, String userId) {
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), Optional.empty(),false)
+                .applicationSubmittedBy(userId)
+                .build();
         return transformResponse(responseCaseData);
     }
 

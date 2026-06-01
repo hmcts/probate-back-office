@@ -82,8 +82,7 @@ class DefaultTaskListRendererTest {
     private static final String SOLICITOR_SURNAME = "Crouch";
     private static final String SOLICITOR_JOB_TITLE = "Lawyer";
     private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
-
-    private static final String SERVICE_REQUEST_REFERENCE = "Service Request Ref";
+    private static final String USER_ID = "User-ID";
 
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
             new CollectionMember<>(null,
@@ -452,7 +451,8 @@ class DefaultTaskListRendererTest {
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
                 .totalFee(TOTAL_FEE)
-                .scannedDocuments(SCANNED_DOCUMENTS_LIST);
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST)
+                .applicationSubmittedBy(USER_ID);
     }
 
     @Test
@@ -510,15 +510,21 @@ class DefaultTaskListRendererTest {
                 + " class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, "
                 + "change any details, then sign and submit your application.</font></p>"
                 + "</div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-                    + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-                    + "<p class=\"govuk-body-s\"><rvwLinkWelsh/></p></div><div "
-                    + "class=\"govuk-grid-column-one-third\"><status-reviewAndSubmitWelsh/></div></div>\n"
-                    + "<reviewAndSubmitDateWelsh/>"
-                    + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
-                    + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">Cynhyrchwyd y datganiad cyfreithiol.  "
-                    + "Gallwch adolygu, newid unrhyw fanylion, llofnodi a chyflwyno eich cais.</font></p>"
-                    + "</div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-                    + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p class=\"govuk-body-s\"><rvwLinkWelsh/></p></div><div "
+                + "class=\"govuk-grid-column-one-third\"><status-reviewAndSubmitWelsh/></div></div>\n"
+                + "<reviewAndSubmitDateWelsh/>"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">Cynhyrchwyd y datganiad cyfreithiol.  "
+                + "Gallwch adolygu, newid unrhyw fanylion, llofnodi a chyflwyno eich cais.</font></p>"
+                + "</div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
+                + "<createServiceRequestLink/></p><p class=\"govuk-body-s\"><createServiceRequestLinkWelsh/></p>"
+                + "</div><div class=\"govuk-grid-column-one-third\"><status-createServiceRequest/>"
+                + "<status-createServiceRequestWelsh/></div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
                 + "\n"
                 + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
                 + "<paymentTabLink/></p><p class=\"govuk-body-s\"><paymentTabLinkWelsh/></p>"
@@ -698,6 +704,12 @@ class DefaultTaskListRendererTest {
                 + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">Cynhyrchwyd y datganiad cyfreithiol.  "
                 + "Gallwch adolygu, newid unrhyw fanylion, llofnodi a chyflwyno eich cais.</font></p>"
                 + "</div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
+                + "\n"
+                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
+                + "<createServiceRequestLink/></p><p class=\"govuk-body-s\"><createServiceRequestLinkWelsh/></p>"
+                + "</div><div class=\"govuk-grid-column-one-third\"><status-createServiceRequest/>"
+                + "<status-createServiceRequestWelsh/></div></div>\n"
                 + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
                 + "\n"
                 + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"

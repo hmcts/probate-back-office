@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentServiceResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentsResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -54,6 +55,7 @@ public class PaymentsService {
     private static final String PAYMENT_SUMMARY = "Service request payment details updated on case";
     private static final String PAYMENT_COMMENT = "Service request payment status ";
     private static final String SRP_STATUS_PAID = "Paid";
+    private static final String SERVICE_NAME = "Probate";
     private final ServiceRequestClient serviceRequestClient;
     private final SecurityUtils securityUtils;
     private final CcdClientApi ccdClientApi;
@@ -269,5 +271,13 @@ public class PaymentsService {
 
     private String getPaymentTakenStatus(String paymentTaken, String serviceRequestStatus) {
         return YES.equals(paymentTaken) ? YES : isSuccessfulPayment(serviceRequestStatus) ? YES : NO;
+    }
+
+    public PaymentsResponse retrievePayments(String caseId) {
+        SecurityDTO securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
+        PaymentsResponse response = serviceRequestClient.retrievePayments(securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(), SERVICE_NAME, caseId);
+        log.info("Retrieved Payments for caseId: {}", caseId);
+        return response;
     }
 }

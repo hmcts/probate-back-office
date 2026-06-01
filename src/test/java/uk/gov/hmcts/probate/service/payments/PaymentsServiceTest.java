@@ -15,7 +15,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.payments.PaymentDto;
 import uk.gov.hmcts.probate.model.payments.PaymentServiceResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentsResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestPaymentResponseDto;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
@@ -44,6 +46,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -76,20 +79,22 @@ class PaymentsServiceTest {
     @Mock
     private ObjectMapper objectMapper;
 
+    private SecurityDTO securityDTO;
+
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
+        securityDTO = SecurityDTO.builder()
+                .userId("userId")
+                .authorisation("auth")
+                .serviceAuthorisation("serviceAuth")
+                .build();
     }
 
     @Test
     void shouldCreateServiceRequest() {
         PaymentServiceResponse  paymentServiceResponse = new PaymentServiceResponse("abcdef123456");
         ServiceRequestDto serviceDto = ServiceRequestDto.builder().build();
-        SecurityDTO securityDTO = SecurityDTO.builder()
-                .userId("userId")
-                .authorisation("auth")
-                .serviceAuthorisation("serviceAuth")
-                .build();
         when(securityUtilsMock.getSecurityDTO()).thenReturn(securityDTO);
         when(serviceRequestClient.createServiceRequest(any(), any(), any()))
                 .thenReturn(paymentServiceResponse);
@@ -464,5 +469,18 @@ class PaymentsServiceTest {
                         .build())
                 .build();
         return responseDto;
+    }
+
+    @Test
+    void shouldRetrievePayments() {
+        String caseId = "1661448513999408";
+        PaymentsResponse paymentsResponse = mock(PaymentsResponse.class);
+        when(paymentsResponse.getPayments()).thenReturn(List.of(PaymentDto.builder().status("success").build()));
+        when(serviceRequestClient.retrievePayments(any(), any(), any(), any())).thenReturn(paymentsResponse);
+        when(securityUtilsMock.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+
+        PaymentsResponse response = paymentsService.retrievePayments(caseId);
+
+        assertEquals(paymentsResponse, response);
     }
 }

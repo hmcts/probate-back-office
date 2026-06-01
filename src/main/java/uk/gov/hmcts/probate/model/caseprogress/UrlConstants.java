@@ -24,6 +24,10 @@ public class UrlConstants {
 
     public static final String TL_COVERSHEET_URL_TEMPLATE = "<DOCUMENT_LINK>";
 
+    public static final String SOLICITOR_CREATE_SERVICE_REQUEST_URL_TEMPLATE = URL_PREFIX
+        + "<CASE_ID>/trigger/solicitorCreateServiceRequest"
+        + "/solicitorCreateServiceRequestsolicitorCreateServiceRequestPage1";
+
     public static final String TL_SERVICE_REQUEST_URL_TEMPLATE = URL_PREFIX + "<CASE_ID>#Service%20Request";
 
     private UrlConstants() {
