@@ -107,7 +107,7 @@ class SmeeAndFordDataExtractServiceTest {
 
     @Test
     void shouldExtractForDate() throws NotificationClientException {
-        when(featureToggleService.isProbateDisableSmeeAndFordEmailFeatureEnabled()).thenReturn(false);
+        when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(false);
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
 
@@ -116,7 +116,7 @@ class SmeeAndFordDataExtractServiceTest {
 
     @Test
     void shouldExtractForDateRange() throws NotificationClientException {
-        when(featureToggleService.isProbateDisableSmeeAndFordEmailFeatureEnabled()).thenReturn(false);
+        when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(false);
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
@@ -131,7 +131,7 @@ class SmeeAndFordDataExtractServiceTest {
             ".zip"
         );
         smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
-        when(featureToggleService.isProbateDisableSmeeAndFordEmailFeatureEnabled()).thenReturn(false);
+        when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(false);
         when(zipFileService.createTempZipFile("Probate_Docs_2000-12-30")).thenReturn(tempFile);
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
@@ -159,7 +159,7 @@ class SmeeAndFordDataExtractServiceTest {
                 ".zip"
         );
         smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
-        when(featureToggleService.isProbateDisableSmeeAndFordEmailFeatureEnabled()).thenReturn(true);
+        when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(true);
         when(zipFileService.createTempZipFile("Probate_Docs_2000-12-30")).thenReturn(tempFile);
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
@@ -181,7 +181,7 @@ class SmeeAndFordDataExtractServiceTest {
 
     @Test
     void shouldNotSendSmeeAndFordEmailWhenEmailFeatureEnabled() throws NotificationClientException {
-        when(featureToggleService.isProbateDisableSmeeAndFordEmailFeatureEnabled()).thenReturn(true);
+        when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(true);
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
         verify(notificationService, never()).sendSmeeAndFordEmail(any(), any(), any());
     }
@@ -202,7 +202,7 @@ class SmeeAndFordDataExtractServiceTest {
     @Test
     void shouldThrowClientExceptionForDateRange() {
         assertThrows(ClientException.class, () -> {
-            when(featureToggleService.isProbateDisableSmeeAndFordEmailFeatureEnabled()).thenReturn(false);
+            when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(false);
             when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
                     .thenThrow(NotificationClientException.class);
 

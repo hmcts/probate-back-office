@@ -68,13 +68,13 @@ public class SmeeAndFordDataExtractService {
                     log.info("Zip file uploaded on blob store");
                     Files.deleteIfExists(tempFile.toPath());
                 }
-                boolean isSmeeAndFordEmailDisabled =
-                    featureToggleService.isProbateDisableSmeeAndFordEmailFeatureEnabled();
+                boolean isSmeeAndFordEmailNotificationDisabled =
+                    featureToggleService.isSmeeAndFordEmailNotificationDisabled();
                 log.info(
                     "LaunchDarkly flag probate-disable-smee-ford-email is enabled: {}",
-                    isSmeeAndFordEmailDisabled
+                    isSmeeAndFordEmailNotificationDisabled
                 );
-                if (isSmeeAndFordEmailDisabled) {
+                if (isSmeeAndFordEmailNotificationDisabled) {
                     log.info("Skipping Smee & Ford email notification because "
                         + "probate-disable-smee-ford-email flag in LaunchDarkly feature is true.");
                 } else {
