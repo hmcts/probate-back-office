@@ -246,7 +246,9 @@ notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-05-08"
   grantAwaitingDocumentationNotificationPeriodDays: 35
-  govNotifyApiKey: ${PROBATE_NOTIFY_KEY:dummykey}
+  govNotifyApiKeyPrimary: ${PROBATE_NOTIFY_KEY_PRIMARY:dummykey_primary}
+  govNotifyApiKeySecondary: ${PROBATE_NOTIFY_KEY_SECONDARY:dummykey_secondary}
+  govNotifyBaseUrl: https://api.notifications.service.gov.uk
   stop:
     reasons:
       english:
@@ -378,8 +380,8 @@ notifications:
           grantRaisedCtsc: "8560e744-2b60-4fd9-97bd-9dda83a0a4d4"
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
-          requestInformation: "7e6da132-b710-472a-b41a-56596ad86c75"
-          requestInformationByPost: "4e13a901-5cf4-4865-b2e8-77c1e8b2b208"
+          requestInformation: "529e6bf0-4452-4d5c-b934-3675a9b8c2d3"
+          requestInformationByPost: "516e967e-a095-4453-ad54-56805904e1da"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
           grantIssuedIntestacy: "9a10802b-f449-486c-ae40-b76d1cbe78eb"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
@@ -399,7 +401,7 @@ notifications:
           declarationNotSignedPrimaryApplicant: "c04e65be-51f4-46b1-bce4-8795c1113ae7"
           declarationNotSignedExecutors: "38f8f966-1a7b-4d2b-ae2c-a67f41e4d788"
           postGrantIssuedNotification: "b2ec97b0-0b0f-4e9d-9f1a-9638294cda2a"
-          registrarEscalationNotification: "2abb444d-472e-40ed-aed9-a7075af5458c"
+          registrarEscalationNotification: "a2653239-c111-4c7a-847c-49b253bbaa8f"
           registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
         solicitor:
           applicationReceived: "47d37cc5-4445-4725-8bf4-90441cf2bb31"
@@ -419,7 +421,7 @@ notifications:
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
-          requestInformation: "b20619ef-2eaa-45ab-9b0e-a53b6c220cac"
+          requestInformation: "d65c6d4d-921a-46c4-ac58-97f78ca29d5a"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "8b24d6a3-d7bc-4d25-8e76-900d5a7ca0de"
           caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
@@ -436,7 +438,7 @@ notifications:
           dormantWarning: "9cfa645e-4849-433e-8b72-382a27d7ddea"
           unsubmittedApplication: "ef129c9b-b1a9-47d4-a567-3229e3de55cb"
           postGrantIssuedNotification: "b2ec97b0-0b0f-4e9d-9f1a-9638294cda2a"
-          registrarEscalationNotification: "2abb444d-472e-40ed-aed9-a7075af5458c"
+          registrarEscalationNotification: "a2653239-c111-4c7a-847c-49b253bbaa8f"
           registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
       welsh:
         personal:
@@ -456,8 +458,8 @@ notifications:
           grantRaisedPaperFormBulkScan: "6e8a1de8-a05b-455c-98b0-e669f2fa0470"
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
-          requestInformation: "e0be211b-89c1-4bc0-9e03-43da906fa756"
-          requestInformationByPost: "0eeadc74-3ced-4b26-9126-ebdc055c79a6"
+          requestInformation: "e800cddd-9ce3-4413-9349-ac2e356908a9"
+          requestInformationByPost: "6a505b1d-5fba-4b08-839a-39ae16ba31d5"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
           grantIssuedIntestacy: "37adbe0b-a119-44be-b094-f62cbbbe2178"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
@@ -476,7 +478,7 @@ notifications:
           declarationNotSignedPrimaryApplicant: "08c35f45-453d-45bc-99d1-a7752fde98a1"
           declarationNotSignedExecutors: "2bbd7b4d-2308-4b92-ae13-3a5f8608c94b"
           postGrantIssuedNotification: "6fadebcf-4769-42c0-9e60-74dbb75ef99c"
-          registrarEscalationNotification: "5d67e88e-1b7a-415e-b2b1-697cd85d13f2"
+          registrarEscalationNotification: "557d7313-8767-41e8-a5f4-7ab3fc7f7dfe"
           registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
         solicitor:
           applicationReceived: "c7da81e4-77c9-499e-b1a2-ebac7a83342f"
@@ -496,7 +498,7 @@ notifications:
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
-          requestInformation: "0f761ecd-0665-44d9-a877-eb9333598fdc"
+          requestInformation: "3c30a5b4-2fdc-4bc5-b814-a59783cf89f2"
           redeclarationSot: "c34256d7-c8f5-451c-b7a6-1a9580622f1c"
           grantIssuedIntestacy: "3f2f66f5-1675-42f0-bec8-97a8afb00115"
           caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
@@ -512,7 +514,7 @@ notifications:
           dormantWarning: "f2d04d10-fb1e-4693-a3d7-845a64cfcc7c"
           unsubmittedApplication: "1f67e261-c7f7-41f7-9c86-46fe2a2bb118"
           postGrantIssuedNotification: "6fadebcf-4769-42c0-9e60-74dbb75ef99c"
-          registrarEscalationNotification: "5d67e88e-1b7a-415e-b2b1-697cd85d13f2"
+          registrarEscalationNotification: "557d7313-8767-41e8-a5f4-7ab3fc7f7dfe"
           registrarEscalationNotificationFailed: "9ec2193d-d607-4633-af22-fda2c9ec4946"
 
 documents:
@@ -815,3 +817,5 @@ automated_notification:
   dormant_reminder_days: 365
   unsubmitted_application_days: 28
   declaration_not_signed_days: 3
+upload_doc:
+  expiry_weeks: 26

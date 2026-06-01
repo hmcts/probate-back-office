@@ -24,15 +24,21 @@ import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
@@ -49,11 +55,13 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.BulkPrint;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
+import uk.gov.service.notify.RetentionPeriodDuration;
+
 import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
@@ -64,8 +72,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -77,9 +86,11 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_IMPORTED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PAYMENT_FAILED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_PENDING;
 import static uk.gov.service.notify.NotificationClient.prepareUpload;
@@ -108,13 +119,17 @@ public class NotificationService {
     private static final String AD_COLLIGENDA_BONA_CASE_TYPE = "adColligendaBona";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
+    private static final String PERSONALISATION_UPLOAD_CHECK = "upload_check";
+    private static final String PERSONALISATION_LINK_FILE = "link_to_file";
+    private static final String PERSONALISATION_EXPIRY_DATE = "expiry_date";
+    private static final String PERSONALISATION_EXPIRY_DATE_WELSH = "expiry_date_cy";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final List<String> PA_DRAFT_STATE_LIST = List.of(STATE_PENDING, STATE_CASE_PAYMENT_FAILED);
+    private static final int MAX_FILE_SIZE_BYTES = 2 * 1024 * 1024;
 
     private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
     private final RegistriesProperties registriesProperties;
-    private final NotificationClient notificationClient;
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
     private final EventValidationService eventValidationService;
@@ -126,6 +141,7 @@ public class NotificationService {
     private final CaveatPersonalisationService caveatPersonalisationService;
     private final SentEmailPersonalisationService sentEmailPersonalisationService;
     private final TemplateService templateService;
+    private final AuditEventService auditEventService;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final NotificationClientService notificationClientService;
     private final DocumentManagementService documentManagementService;
@@ -137,6 +153,7 @@ public class NotificationService {
     private final EmailValidationService emailValidationService;
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
     private final Clock clock;
+    private final SecurityUtils securityUtils;
 
 
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -145,6 +162,8 @@ public class NotificationService {
     private Long grantAwaitingDocumentationNotificationPeriodDays;
     @Value("${notifications.grantDelayedNotificationReleaseDate}")
     private String grantDelayedNotificationReleaseDate;
+    @Value("${upload_doc.expiry_weeks}")
+    private String expiryWeeks;
 
     public Document sendEmail(State state, CaseDetails caseDetails)
         throws NotificationClientException {
@@ -179,6 +198,8 @@ public class NotificationService {
         personalisation = updatePersonalisationForSolicitorGrantIssuedEmails(state, caseData, caseDetails.getId(),
                 personalisation);
 
+        addPersonalisationForUploadDocument(caseData, personalisation, caseDetails.getId().toString());
+
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         String reference = caseData.getSolsSolicitorAppReference();
@@ -208,20 +229,87 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION,
-            caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
-                null, caseData.getChannelChoice(), caseData.getInformationNeededByPost());
         Map<String, Object> personalisation =
                 grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                         registry);
 
         updatePersonalisationForSolicitor(caseData, personalisation);
+        addPersonalisationForUploadDocument(caseData, personalisation, caseDetails.getId().toString());
 
         doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
+
+        String templateId = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION,
+                caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
+                null, caseData.getChannelChoice(), caseData.getInformationNeededByPost());
 
         TemplatePreview previewResponse =
                 notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
         return getGeneratedDocument(previewResponse, getEmail(caseData), SENT_EMAIL);
+    }
+
+    private void addPersonalisationForUploadDocument(CaseData caseData, Map<String, Object> personalisation,
+                                                     String caseReference) {
+        personalisation.put(PERSONALISATION_UPLOAD_CHECK, caseData.getUploadFileCheck());
+        UploadDocument cwDocumentUpload = caseData.getCwDocumentUpload();
+        if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())
+                && cwDocumentUpload != null) {
+            log.info("Got cwDocumentUpload for case: {}", caseReference);
+            addExpiryDatePersonalisation(caseData, personalisation);
+            addCwDocumentToPersonalisation(cwDocumentUpload, personalisation, caseReference);
+        } else if (NO.equalsIgnoreCase(caseData.getUploadFileCheck())) {
+            personalisation.put(PERSONALISATION_LINK_FILE, " ");
+            personalisation.put(PERSONALISATION_EXPIRY_DATE, " ");
+            personalisation.put(PERSONALISATION_EXPIRY_DATE_WELSH, " ");
+        }
+    }
+
+    private void addExpiryDatePersonalisation(CaseData caseData, Map<String, Object> personalisation) {
+        LocalDate expiryDate = LocalDate.now().plusWeeks(Long.parseLong(expiryWeeks));
+        String expiryDateFormatted = caseData.convertDate(expiryDate);
+        personalisation.put(PERSONALISATION_EXPIRY_DATE, expiryDateFormatted);
+        personalisation.put(PERSONALISATION_EXPIRY_DATE_WELSH, localDateToWelshStringConverter.convert(expiryDate));
+    }
+
+    private void addCwDocumentToPersonalisation(
+            UploadDocument cwDocumentUpload,
+            Map<String, Object> personalisation, String caseReference) {
+        try {
+            byte[] fileContents = documentManagementService.getDocumentByBinaryUrl(cwDocumentUpload.getDocumentLink()
+                    .getDocumentBinaryUrl());
+            cwPrepareUpload(fileContents, personalisation, caseReference);
+        } catch (IOException e) {
+            log.error("Error reading CW document file", e);
+            final String message = MessageFormat.format(
+                    "A system error occurred while preparing to send an email for case: {0}. Please raise an "
+                            + "incident with the support team and provide this case reference.",
+                    caseReference);
+            throw new BusinessValidationException(message, e.getMessage());
+        }
+    }
+
+    private void cwPrepareUpload(byte[] fileContents, Map<String, Object> personalisation, String caseReference) {
+        if (fileContents.length > MAX_FILE_SIZE_BYTES) {
+            throw new BusinessValidationException(
+                    "The file you are trying to upload is too large. Please upload a file smaller than 2 MB.",
+                    "File size: " + fileContents.length
+            );
+        }
+        try {
+            personalisation.put(PERSONALISATION_LINK_FILE,
+                    NotificationClient.prepareUpload(
+                            fileContents,
+                            false,
+                            new RetentionPeriodDuration(Integer.parseInt(expiryWeeks), ChronoUnit.WEEKS)
+                    ));
+
+        } catch (NotificationClientException e) {
+            log.error("Error Preparing to send email : {} ", e.getMessage());
+            final String message = MessageFormat.format(
+                    "Unable prepare to send email for case : {} ",
+                    caseReference);
+            throw new BusinessValidationException(message, e.getMessage());
+
+        }
     }
 
     void updatePersonalisationForSolicitor(CaseData caseData, Map<String, Object> personalisation) {
@@ -1222,6 +1310,22 @@ public class NotificationService {
             .filter(Objects::nonNull)
             .map(ExecutorApplying::getApplyingExecutorName)
             .toList();
+    }
+
+    public boolean isBoImportedStateBeforeDormant(String caseReference)
+            throws NotificationClientException {
+        log.info("looking up previous state for caseReference {}", caseReference);
+        SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+        Optional<AuditEvent> previousEvent = auditEventService.getPreviousAuditEventOfByEventId(caseReference,
+                 EventId.MAKE_CASE_DORMANT, securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation());
+        if (previousEvent.isPresent()) {
+            AuditEvent auditEvent = previousEvent.get();
+            log.info("The previous state of case {} is {} at event CreatedDate: {}",
+                    caseReference, auditEvent.getStateId(), auditEvent.getCreatedDate());
+            return auditEvent.getStateId().equals(STATE_BO_CASE_IMPORTED);
+        } else {
+            throw new NotificationClientException("No previous state found for case ID: " + caseReference);
+        }
     }
 
     public Document sendPostGrantIssuedNotification(final CaseDetails caseDetails) {

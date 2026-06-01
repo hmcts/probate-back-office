@@ -2688,7 +2688,12 @@ class CallbackResponseTransformerTest {
                 .informationNeededByPost(NO)
                 .citizenResponseCheckbox(YES)
                 .expectedResponseDate("some date")
-                .documentUploadIssue(YES);
+                .documentUploadIssue(YES)
+                .uploadFileCheck(YES)
+                .cwDocumentUpload(UploadDocument.builder()
+                        .documentLink(documentLinkMock)
+                        .documentType(SENT_EMAIL)
+                        .build());
 
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
@@ -2706,6 +2711,9 @@ class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
         assertEquals(callbackResponse.getData().getEvidenceHandledDate(),
                 LocalDate.now().toString());
+        List<CollectionMember<UploadDocument>> uploadedDocs = callbackResponse.getData().getCwDocumentUploadedList();
+        assertNotNull(uploadedDocs);
+        assertEquals(1, uploadedDocs.size());
     }
 
     @Test
