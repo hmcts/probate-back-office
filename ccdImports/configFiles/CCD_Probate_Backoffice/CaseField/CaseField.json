@@ -538,6 +538,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "cwDocumentUpload", "Label": "Documents uploaded", "FieldType": "documentUpload", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "cwDocumentUploadedList", "Label": "Request Information upload docs", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseName", "Label": "Case Name", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "region", "Label": "Region", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "roleCategory", "Label": "Role Category", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "region", "Label": "Region", "FieldType": "Text", "SecurityClassification": "Public"}
 ]

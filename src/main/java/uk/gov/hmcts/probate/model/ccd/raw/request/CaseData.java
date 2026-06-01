@@ -635,7 +635,6 @@ public class CaseData extends CaseDataParent {
     private final String executorsNamed;
     private LocalDate firstStopReminderSentDate;
     private final String evidenceHandledDate;
-    private final String roleCategory;
 
     private TTL ttl;
 
