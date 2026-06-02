@@ -1,0 +1,4 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseName", "Label": "Case Name", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "region", "Label": "Region", "FieldType": "Text", "SecurityClassification": "Public"}
+]
