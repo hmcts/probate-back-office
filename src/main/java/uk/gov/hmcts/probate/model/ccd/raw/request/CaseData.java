@@ -649,6 +649,8 @@ public class CaseData extends CaseDataParent {
      */
     private final String migrationCallbackMetadata;
 
+    private final String disposedCasesCcdId;
+
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
 
