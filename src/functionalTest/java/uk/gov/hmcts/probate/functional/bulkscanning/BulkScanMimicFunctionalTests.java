@@ -182,7 +182,9 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
             +
             "for a bulk scan case in CasePrinted state (attach scanned docs)")
     void verifyAttachScannedDocsReturns200ForBulkScanCasePrintedState() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD, START_GRANT_DELAYED_URL);
+        final ResponseBody responseBody = validatePostSuccess(
+                BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD,
+                START_GRANT_DELAYED_URL);
         assertNotNull(responseBody);
     }
 
