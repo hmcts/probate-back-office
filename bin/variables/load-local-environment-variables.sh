@@ -59,3 +59,8 @@ echo "XUI_LD_ID=$(az keyvault secret show --vault-name rpx-aat -o tsv --query va
 #ccd exports
 echo "API_GATEWAY_IDAM_SECRET=$(az keyvault secret show --vault-name ccd-aat -o tsv --query value --name ccd-api-gateway-oauth2-client-secret)" >> .aat-env
 echo "CCD_IDAM_REDIRECT_URL=https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect" >> .aat-env
+
+### NOTE THIS IS A DEMO CONFIG!
+echo "PROBATE_TABLE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING=$(az keyvault secret show --vault-name probate-demo -o tsv --query value --name probate-storage-account-disposed-primary-connection-string)" >> .aat-env
+echo "PROBATE_TABLE_STORAGE_CASES_TABLE=DisposedCases" >> .aat-env
+echo "PROBATE_TABLE_STORAGE_DOCUMENTS_TABLE=DisposedDocuments" >> .aat-env
