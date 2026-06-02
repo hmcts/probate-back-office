@@ -19,9 +19,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.PROCESS_CATEGORY_PROCESSING;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROUTINE_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.resultsMatchUsingNameKey;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -42,7 +42,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                                         "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
                                         "name", "Examine Digital Case - Probate",
                                         "workingDaysAllowed", 7,
-                                        "processCategories", PROCESS_CATEGORY_PROCESSING,
+                                        "processCategories", "case progression",
                                         "workType", ROUTINE_WORK_TYPE,
                                         "roleCategory", ROLE_CATEGORY_CTSC
                                 )
@@ -66,13 +66,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                                                       String postEventState,
                                                       String evidenceHandled,
                                                       String caseType,
-                                                      List<Map<String, String>> expectation) {
+                                                      List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);
         inputVariables.putValue("evidenceHandled", evidenceHandled);
         inputVariables.putValue("caseType", caseType);
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
-        //assertThat(dmnDecisionTableResult.getResultList(), is(expectation));
+        resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
 }
