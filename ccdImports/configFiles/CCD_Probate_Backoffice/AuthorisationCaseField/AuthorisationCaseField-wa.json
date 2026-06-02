@@ -4,7 +4,5 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedForenames", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedSurname", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "region", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "roleCategory", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "registryLocation", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"}
 ]

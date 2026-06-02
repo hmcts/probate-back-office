@@ -31,7 +31,7 @@ public class ConfigurationExpectationBuilder {
             DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_WORKING_DAYS_OF_WEEK, WORK_TYPE, ROLE_CATEGORY,
             DUE_DATE_INTERVAL_DAYS,
             ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID, DESCRIPTION, PRIORITY_DATE_ORIGIN_REF, DUE_DATE_ORIGIN,
-            DUE_DATE_TIME, "caseCategory"
+            DUE_DATE_TIME
     );
 
     private final Map<String, Map<String, Object>> expectations = new HashMap<>();
