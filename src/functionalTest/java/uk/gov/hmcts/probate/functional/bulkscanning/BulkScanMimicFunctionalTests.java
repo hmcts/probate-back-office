@@ -34,7 +34,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
 
     private static final String BULK_SCAN_MIMIC_CASE_PRINTED_PAYLOAD = "bulkScanMimicCasePrintedPayload.json";
     private static final String BULK_SCAN_MIMIC_CREATE_CASE_PAYLOAD = "bulkScanMimicCreateCasePayload.json";
-    private static final String BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD = "bulkScanMimicAttachScannedDocsPayload.json";
+    private static final String BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD
+            = "bulkScanMimicAttachScannedDocsPayload.json";
     private static final String EVENT_PARM = "EVENT_PARM";
 
     // CCD event used to manually create a paper application (caseworker-raised).
@@ -65,7 +66,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("Verify /notify/grant-received returns 200 and includes scanned documents data for a bulk scan case in CasePrinted state")
+    @DisplayName("Verify /notify/grant-received returns 200 and includes " +
+            "scanned documents data for a bulk scan case in CasePrinted state")
     void verifyBulkScanGrantReceivedNotificationReturns200ForPersonalApplicant() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(BULK_SCAN_MIMIC_CASE_PRINTED_PAYLOAD,
                 GRANT_RECEIVED_URL);
@@ -89,7 +91,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("Verify /notify/grant-received preserves scanned documents data for a bulk scan case in CasePrinted state")
+    @DisplayName("Verify /notify/grant-received preserves scanned documents data " +
+            "for a bulk scan case in CasePrinted state")
     void verifyBulkScanGrantReceivedPreservesScannedDocuments() throws IOException {
         final Response response = RestAssured.given()
                 .config(config)
@@ -110,7 +113,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("Verify /notify/grant-received preserves bulk scan envelope references for a bulk scan case in CasePrinted state")
+    @DisplayName("Verify /notify/grant-received preserves bulk scan envelope references " +
+            "for a bulk scan case in CasePrinted state")
     void verifyBulkScanGrantReceivedPreservesBulkScanEnvelopes() throws IOException {
         final Response response = RestAssured.given()
                 .config(config)
@@ -127,7 +131,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("Verify /notify/grant-received returns correct deceased details for a bulk scan case in CasePrinted state")
+    @DisplayName("Verify /notify/grant-received returns correct deceased details " +
+            "for a bulk scan case in CasePrinted state")
     void verifyBulkScanGrantReceivedReturnsCorrectDeceasedDetails() throws IOException {
         final Response response = RestAssured.given()
                 .config(config)
@@ -150,7 +155,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("Verify /case/casePrinted returns no validation errors for a bulk scan case in CasePrinted state")
+    @DisplayName("Verify /case/casePrinted returns no validation errors " +
+            "for a bulk scan case in CasePrinted state")
     void verifyBulkScanCasePrintedCallbackHasNoErrors() throws IOException {
         final Response response = RestAssured.given()
                 .config(config)
@@ -167,14 +173,16 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
 
 
     @Test
-    @DisplayName("Verify /notify/start-grant-delayed-notify-period returns 200 for a bulk scan case in CasePrinted state (attach scanned docs)")
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period returns 200 " +
+            "for a bulk scan case in CasePrinted state (attach scanned docs)")
     void verifyAttachScannedDocsReturns200ForBulkScanCasePrintedState() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD, START_GRANT_DELAYED_URL);
         assertNotNull(responseBody);
     }
 
     @Test
-    @DisplayName("Verify /notify/start-grant-delayed-notify-period sets lastEvidenceAddedDate for a bulk scan case in CasePrinted state (attach scanned docs)")
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period sets lastEvidenceAddedDate " +
+            "for a bulk scan case in CasePrinted state (attach scanned docs)")
     void verifyAttachScannedDocsSetsLastEvidenceAddedDate() throws IOException {
         final Response response = RestAssured.given()
                 .config(config)
@@ -189,7 +197,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("Verify /notify/start-grant-delayed-notify-period sets grantDelayedNotificationDate for a bulk scan case in CasePrinted state (attach scanned docs)")
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period sets grantDelayedNotificationDate " +
+            "for a bulk scan case in CasePrinted state (attach scanned docs)")
     void verifyAttachScannedDocsSetsGrantDelayedNotificationDate() throws IOException {
         final Response response = RestAssured.given()
                 .config(config)
@@ -204,7 +213,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("Verify /notify/start-grant-delayed-notify-period sets evidenceHandled=No for a bulk scan case in CasePrinted state (attach scanned docs)")
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period sets evidenceHandled=No " +
+            "for a bulk scan case in CasePrinted state (attach scanned docs)")
     void verifyAttachScannedDocsSetsEvidenceHandledToNo() throws IOException {
         final Response response = RestAssured.given()
                 .config(config)
@@ -218,7 +228,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("Verify /notify/start-grant-delayed-notify-period preserves scanned documents for a bulk scan case in CasePrinted state (attach scanned docs)")
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period preserves scanned documents " +
+            "for a bulk scan case in CasePrinted state (attach scanned docs)")
     void verifyAttachScannedDocsPreservesScannedDocuments() throws IOException {
         final Response response = RestAssured.given()
                 .config(config)
@@ -234,7 +245,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("Verify /notify/start-grant-delayed-notify-period preserves bulk scan envelope references for a bulk scan case in CasePrinted state (attach scanned docs)")
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period preserves bulk scan envelope " +
+            "references for a bulk scan case in CasePrinted state (attach scanned docs)")
     void verifyAttachScannedDocsPreservesBulkScanEnvelopes() throws IOException {
         final Response response = RestAssured.given()
                 .config(config)
@@ -250,7 +262,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("Verify /notify/start-grant-delayed-notify-period returns no validation errors for a bulk scan case in CasePrinted state (attach scanned docs)")
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period returns " +
+            "no validation errors for a bulk scan case in CasePrinted state (attach scanned docs)")
     void verifyAttachScannedDocsHasNoValidationErrors() throws IOException {
         final Response response = RestAssured.given()
                 .config(config)
@@ -267,7 +280,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
 
     @Disabled("Requires a live CCD environment with caseworker roles configured")
     @Test
-    @DisplayName("Verify full bulk scan lifecycle from case creation to CasePrinted state, including preservation of scanned documents and bulk scan envelope references")
+    @DisplayName("Verify full bulk scan lifecycle from case creation to CasePrinted state, " +
+            "including preservation of scanned documents and bulk scan envelope references")
     void verifyFullBulkScanLifecycleCreateAndProgressToCasePrinted() {
 
         final JsonPath createJsonPath = JsonPath.from(createResponse);
@@ -304,7 +318,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
 
     @Disabled("Requires a live CCD environment with caseworker roles configured")
     @Test
-    @DisplayName("Verify /notify/grant-received returns 200 and correct data when called after case reaches CasePrinted state in bulk scan lifecycle")
+    @DisplayName("Verify /notify/grant-received returns 200 and correct data when called " +
+            "after case reaches CasePrinted state in bulk scan lifecycle")
     void verifyBulkScanGrantReceivedNotificationAfterCasePrintedTransition() throws IOException {
 
         final String caseId = JsonPath.from(createResponse).get("id").toString();
