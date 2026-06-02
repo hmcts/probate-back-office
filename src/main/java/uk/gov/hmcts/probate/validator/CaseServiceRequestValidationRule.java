@@ -47,6 +47,12 @@ public class CaseServiceRequestValidationRule {
 
     private boolean hasServiceRequest(Long caseId) {
         PaymentsResponse payments = paymentsService.retrievePayments(String.valueOf(caseId));
-        return payments != null && payments.getPayments() != null;
+        if (payments == null) {
+            log.info("Payments response is null, caseId: {}", caseId);
+            return false;
+        }
+
+        log.info("Payments: {} , caseId:{} ", payments, caseId);
+        return payments.getPayments() != null && !payments.getPayments().isEmpty();
     }
 }

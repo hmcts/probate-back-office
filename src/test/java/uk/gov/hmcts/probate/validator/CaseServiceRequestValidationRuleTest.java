@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.payments.PaymentDto;
 import uk.gov.hmcts.probate.model.payments.PaymentsResponse;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
@@ -44,7 +45,7 @@ class CaseServiceRequestValidationRuleTest {
     void shouldThrowBusinessValidationExceptionForCaseDetailsWhenServiceRequestExists() {
         CaseDetails caseDetails = new CaseDetails(null, null, CASE_ID);
         when(paymentsService.retrievePayments(String.valueOf(CASE_ID)))
-                .thenReturn(PaymentsResponse.builder().payments(List.of()).build());
+                .thenReturn(PaymentsResponse.builder().payments(List.of(PaymentDto.builder().build())).build());
         when(businessValidationMessageRetriever.getMessage(
                 CaseServiceRequestValidationRule.SERVICE_REQUEST_EXISTS, null, Locale.UK))
                 .thenReturn(USER_MESSAGE);
@@ -68,7 +69,7 @@ class CaseServiceRequestValidationRuleTest {
     void shouldThrowBusinessValidationExceptionForCaveatDetailsWhenServiceRequestExists() {
         CaveatDetails caveatDetails = new CaveatDetails(null, null, CASE_ID);
         when(paymentsService.retrievePayments(String.valueOf(CASE_ID)))
-                .thenReturn(PaymentsResponse.builder().payments(List.of()).build());
+                .thenReturn(PaymentsResponse.builder().payments(List.of(PaymentDto.builder().build())).build());
         when(businessValidationMessageRetriever.getMessage(
                 CaseServiceRequestValidationRule.SERVICE_REQUEST_EXISTS, null, Locale.UK))
                 .thenReturn(USER_MESSAGE);
