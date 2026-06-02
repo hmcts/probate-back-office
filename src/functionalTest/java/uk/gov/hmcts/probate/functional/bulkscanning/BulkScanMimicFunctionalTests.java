@@ -30,9 +30,11 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
 
     private static final String GRANT_RECEIVED_URL = "/notify/grant-received";
     private static final String CASE_PRINTED_URL = "/case/casePrinted";
+    private static final String START_GRANT_DELAYED_URL = "/notify/start-grant-delayed-notify-period";
 
     private static final String BULK_SCAN_MIMIC_CASE_PRINTED_PAYLOAD = "bulkScanMimicCasePrintedPayload.json";
     private static final String BULK_SCAN_MIMIC_CREATE_CASE_PAYLOAD = "bulkScanMimicCreateCasePayload.json";
+    private static final String BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD = "bulkScanMimicAttachScannedDocsPayload.json";
     private static final String EVENT_PARM = "EVENT_PARM";
 
     // CCD event used to manually create a paper application (caseworker-raised).
@@ -46,6 +48,8 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
     private static final String DATA_BULK_SCAN_ENVELOPES = "data.bulkScanEnvelopes";
     private static final String DATA_DECEASED_FORENAMES = "data.deceasedForenames";
     private static final String DATA_DECEASED_SURNAME = "data.deceasedSurname";
+    private static final String DATA_LAST_EVIDENCE_ADDED_DATE = "data.lastEvidenceAddedDate";
+    private static final String DATA_GRANT_DELAYED_NOTIFICATION_DATE = "data.grantDelayedNotificationDate";
 
     private String baseCaseJson;
     private String createResponse;
@@ -161,6 +165,106 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
         assertTrue(errors == null || jsonPath.getList("errors").isEmpty());
     }
 
+
+    @Test
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period returns 200 for a bulk scan case in CasePrinted state (attach scanned docs)")
+    void verifyAttachScannedDocsReturns200ForBulkScanCasePrintedState() throws IOException {
+        final ResponseBody responseBody = validatePostSuccess(BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD, START_GRANT_DELAYED_URL);
+        assertNotNull(responseBody);
+    }
+
+    @Test
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period sets lastEvidenceAddedDate for a bulk scan case in CasePrinted state (attach scanned docs)")
+    void verifyAttachScannedDocsSetsLastEvidenceAddedDate() throws IOException {
+        final Response response = RestAssured.given()
+                .config(config)
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD))
+                .when().post(START_GRANT_DELAYED_URL)
+                .andReturn();
+
+        response.then().assertThat().statusCode(200);
+        final JsonPath jsonPath = JsonPath.from(response.getBody().asString());
+        assertNotNull(jsonPath.get(DATA_LAST_EVIDENCE_ADDED_DATE));
+    }
+
+    @Test
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period sets grantDelayedNotificationDate for a bulk scan case in CasePrinted state (attach scanned docs)")
+    void verifyAttachScannedDocsSetsGrantDelayedNotificationDate() throws IOException {
+        final Response response = RestAssured.given()
+                .config(config)
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD))
+                .when().post(START_GRANT_DELAYED_URL)
+                .andReturn();
+
+        response.then().assertThat().statusCode(200);
+        final JsonPath jsonPath = JsonPath.from(response.getBody().asString());
+        assertNotNull(jsonPath.get(DATA_GRANT_DELAYED_NOTIFICATION_DATE));
+    }
+
+    @Test
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period sets evidenceHandled=No for a bulk scan case in CasePrinted state (attach scanned docs)")
+    void verifyAttachScannedDocsSetsEvidenceHandledToNo() throws IOException {
+        final Response response = RestAssured.given()
+                .config(config)
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD))
+                .when().post(START_GRANT_DELAYED_URL)
+                .andReturn();
+
+        response.then().assertThat().statusCode(200)
+                .and().body(DATA_EVIDENCE_HANDLED, equalTo("No"));
+    }
+
+    @Test
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period preserves scanned documents for a bulk scan case in CasePrinted state (attach scanned docs)")
+    void verifyAttachScannedDocsPreservesScannedDocuments() throws IOException {
+        final Response response = RestAssured.given()
+                .config(config)
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD))
+                .when().post(START_GRANT_DELAYED_URL)
+                .andReturn();
+
+        response.then().assertThat().statusCode(200);
+        final JsonPath jsonPath = JsonPath.from(response.getBody().asString());
+        final int scannedDocCount = jsonPath.getList(DATA_SCANNED_DOCUMENTS).size();
+        assertEquals(2, scannedDocCount);
+    }
+
+    @Test
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period preserves bulk scan envelope references for a bulk scan case in CasePrinted state (attach scanned docs)")
+    void verifyAttachScannedDocsPreservesBulkScanEnvelopes() throws IOException {
+        final Response response = RestAssured.given()
+                .config(config)
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD))
+                .when().post(START_GRANT_DELAYED_URL)
+                .andReturn();
+
+        response.then().assertThat().statusCode(200);
+        final JsonPath jsonPath = JsonPath.from(response.getBody().asString());
+        final int envelopeCount = jsonPath.getList(DATA_BULK_SCAN_ENVELOPES).size();
+        assertEquals(2, envelopeCount);
+    }
+
+    @Test
+    @DisplayName("Verify /notify/start-grant-delayed-notify-period returns no validation errors for a bulk scan case in CasePrinted state (attach scanned docs)")
+    void verifyAttachScannedDocsHasNoValidationErrors() throws IOException {
+        final Response response = RestAssured.given()
+                .config(config)
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(BULK_SCAN_MIMIC_ATTACH_SCANNED_DOCS_PAYLOAD))
+                .when().post(START_GRANT_DELAYED_URL)
+                .andReturn();
+
+        response.then().assertThat().statusCode(200);
+        final JsonPath jsonPath = JsonPath.from(response.getBody().asString());
+        final Object errors = jsonPath.get("errors");
+        assertTrue(errors == null || jsonPath.getList("errors").isEmpty());
+    }
+
     @Disabled("Requires a live CCD environment with caseworker roles configured")
     @Test
     @DisplayName("Verify full bulk scan lifecycle from case creation to CasePrinted state, including preservation of scanned documents and bulk scan envelope references")
@@ -190,7 +294,6 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
         printCaseJson = utils.replaceAttribute(printCaseJson, EVENT_PARM, PRINT_CASE_EVENT);
         final String printedCaseResponse = utils.continueUpdateCaseAsCaseworker(printCaseJson, caseId);
         assertNotNull(printedCaseResponse);
-        log.info("BulkScanMimicFunctionalTests: case {} now in CasePrinted state", caseId);
 
         final JsonPath retrievedJsonPath = JsonPath.from(printedCaseResponse);
         assertEquals("CasePrinted", retrievedJsonPath.get("state"));
@@ -212,7 +315,6 @@ public class BulkScanMimicFunctionalTests extends IntegrationTestBase {
         printCaseJson = utils.replaceAttribute(printCaseJson, EVENT_PARM, PRINT_CASE_EVENT);
         final String printedCaseResponse = utils.continueUpdateCaseAsCaseworker(printCaseJson, caseId);
         assertNotNull(printedCaseResponse);
-        log.info("BulkScanMimicFunctionalTests: case {} now in CasePrinted state", caseId);
 
         // In a real bulk scan flow, this is called by CCD after the case reaches CasePrinted.
         // We use the static payload here as a representative substitute.
