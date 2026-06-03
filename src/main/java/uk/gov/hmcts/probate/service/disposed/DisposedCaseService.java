@@ -50,8 +50,9 @@ public class DisposedCaseService {
 
         final String deceasedForenames = caseData.getDeceasedForenames();
         final String deceasedSurname = caseData.getDeceasedSurname();
-        final String deceasedDateOfDeath = caseData.getDeceasedDateOfDeath().toString();
+        final String deceasedDateOfDeath = String.valueOf(caseData.getDeceasedDateOfDeath());
 
+        final String caseType = caseData.getCaseType();
         final String applicationType = caseData.getApplicationType().getCode();
 
         // This is the wrong date obviously but for the purpose of demonstration...
@@ -65,6 +66,7 @@ public class DisposedCaseService {
                 .addProperty("dec_forenames", deceasedForenames)
                 .addProperty("dec_surname", deceasedSurname)
                 .addProperty("dec_death_date", deceasedDateOfDeath)
+                .addProperty("case_type", caseType)
                 .addProperty("application_type", applicationType)
                 .addProperty("disposed_date", disposedDate)
                 .addProperty("has_scanned_docs", hasScannedDocs);
@@ -105,8 +107,8 @@ public class DisposedCaseService {
             final ScannedDocument scannedDoc = scannedDocE.getValue();
 
             final String controlNumber = scannedDoc.getControlNumber();
-            final String scanDate = scannedDoc.getScannedDate().toString();
-            final String deliveryDate = scannedDoc.getDeliveryDate().toString();
+            final String scanDate = String.valueOf(scannedDoc.getScannedDate());
+            final String deliveryDate = String.valueOf(scannedDoc.getDeliveryDate());
             final String type = scannedDoc.getType();
             final String subtype = scannedDoc.getSubtype();
             final String exceptionRecord = scannedDoc.getExceptionRecordReference();
