@@ -1,21 +1,18 @@
 package uk.gov.hmcts.probate.service.disposed;
 
 import com.azure.data.tables.TableClient;
-import com.azure.data.tables.TableClientBuilder;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableServiceException;
-import com.azure.data.tables.models.TableTransactionAction;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
-import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DisposedCase;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -24,8 +21,8 @@ import uk.gov.hmcts.probate.service.AzureTableService;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -46,7 +43,7 @@ public class DisposedCaseService {
     }
 
     public TableEntity writeCaseToTables(final CaseDetails caseDetails) {
-        TableClient disposedCases = azureTableService.getDisposedCases();
+        final TableClient disposedCases = azureTableService.getDisposedCases();
 
         final String ccdId = caseDetails.getId().toString();
         final CaseData caseData = caseDetails.getData();
@@ -74,21 +71,69 @@ public class DisposedCaseService {
 
         if (hasScannedDocs) {
             final List<String> addedDocuments = writeDocumentsToTable(ccdId, scannedDocs);
-            final boolean allDocsAdded = addedDocuments != null && !addedDocuments.isEmpty();
-            final String documentKeys = addedDocuments.stream().collect(Collectors.joining(","));
+            final boolean allDocsAdded = addedDocuments.size() == scannedDocs.size();
+            final String documentKeys = String.join(",", addedDocuments);
 
             caseEntity
                     .addProperty("added_documents", documentKeys)
                     .addProperty("all_documents_added", allDocsAdded);
         }
 
-        disposedCases.upsertEntity(caseEntity);
+        try {
+            disposedCases.upsertEntityWithResponse(
+                    caseEntity,
+                    TableEntityUpdateMode.REPLACE,
+                    Duration.ofSeconds(1),
+                    null);
+        } catch (TableServiceException e) {
+            log.warn("Unable to save disposed case {}", ccdId);
+            throw new DisposedCaseException("Unable to save case into table", e);
+        }
 
-        throw new NotImplementedException();
+        return caseEntity;
     }
 
-    List<TableEntity> writeDocumentsToTable(final String ccdId, final List<CollectionMember<ScannedDocument>> scannedDocs) {
-        throw new NotImplementedException();
+    List<String> writeDocumentsToTable(
+            final String ccdId,
+            final List<CollectionMember<ScannedDocument>> scannedDocs) {
+        final TableClient disposedDocuments = azureTableService.getDisposedDocuments();
+
+        final List<String> addedDocuments = new ArrayList<>();
+
+        for (final var scannedDocE : scannedDocs) {
+            final String key = scannedDocE.getId();
+            final ScannedDocument scannedDoc = scannedDocE.getValue();
+
+            final String controlNumber = scannedDoc.getControlNumber();
+            final String scanDate = scannedDoc.getScannedDate().toString();
+            final String deliveryDate = scannedDoc.getDeliveryDate().toString();
+            final String type = scannedDoc.getType();
+            final String subtype = scannedDoc.getSubtype();
+            final String exceptionRecord = scannedDoc.getExceptionRecordReference();
+
+            final TableEntity docEntity = new TableEntity(azureTableService.getPartition(), key)
+                    .addProperty("ccd_id", ccdId)
+                    .addProperty("control_number", controlNumber)
+                    .addProperty("scan_date", scanDate)
+                    .addProperty("delivery_date", deliveryDate)
+                    .addProperty("type", type)
+                    .addProperty("subtype", subtype)
+                    .addProperty("exception_record", exceptionRecord);
+
+            try {
+                disposedDocuments.upsertEntityWithResponse(
+                        docEntity,
+                        TableEntityUpdateMode.REPLACE,
+                        Duration.ofSeconds(1),
+                        null);
+
+                addedDocuments.add(key);
+            } catch (final TableServiceException e) {
+                log.warn("Unable to save disposed document {} for case {}", key, ccdId);
+            }
+        }
+
+        return addedDocuments;
     }
 
     public List<CollectionMember<DisposedCase>> getAllCases() {
@@ -109,9 +154,11 @@ public class DisposedCaseService {
         try {
             final TableEntity returnedCase = disposedCases.getEntity(azureTableService.getPartition(), ccdId.trim());
             return processCase(returnedCase);
-        } catch (TableServiceException e) {
+        } catch (final TableServiceException e) {
             log.warn("No disposed case found for id {}", ccdId);
-            throw new NoDisposedCaseFoundException();
+            throw new DisposedCaseException(
+                    "No case matching provided case ID was found in the disposed case history",
+                    e);
         }
     }
 
@@ -138,7 +185,7 @@ public class DisposedCaseService {
         final TableClient disposedDocuments = azureTableService.getDisposedDocuments();
 
         final ListEntitiesOptions documentSearch = new ListEntitiesOptions()
-                .setFilter(String.format("PartitionKey eq '%s' and ccdId eq '%s'",
+                .setFilter(String.format("PartitionKey eq '%s' and ccd_id eq '%s'",
                         azureTableService.getPartition(),
                         ccdId.trim()))
                 .setSelect(null);
@@ -155,9 +202,17 @@ public class DisposedCaseService {
                 .collect(Collectors.toList());
     }
 
-    final class NoDisposedCaseFoundException extends BusinessValidationException {
-        public NoDisposedCaseFoundException() {
-            super("No case matching provided case ID was found in the disposed case history", "No matching disposed case record found");
+    static final class DisposedCaseException extends BusinessValidationException {
+        public DisposedCaseException(final String userMessage) {
+            super(userMessage, "Issue with case disposal");
+        }
+
+        public DisposedCaseException(
+                final String userMessage,
+                final Throwable cause) {
+            this(userMessage);
+            // seems like just having a super() constructor which took the cause would be simpler but...
+            this.initCause(cause);
         }
     }
 }
