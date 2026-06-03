@@ -61,7 +61,6 @@ public class DisposedCaseInfoController {
 
         final String idToSearch = callbackRequest.getCaseDetails().getData().getDisposedCasesCcdId();
 
-
         final List<CollectionMember<DisposedCase>> disposedCasesReturn = new ArrayList<>();
         if (StringUtils.isBlank(idToSearch) || idToSearch.trim().equalsIgnoreCase("*")) {
             final var disposedCases = disposedCaseService.getAllCases();
