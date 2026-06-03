@@ -47,6 +47,7 @@ public class DisposedCaseInfoController {
             final HttpServletRequest request) {
         log.info("POST: {}", request.getRequestURI());
         disposedCaseService.writeCaseToTables(callbackRequest.getCaseDetails());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping(
