@@ -37,7 +37,7 @@
           <text>"ctsc"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0dkpkpd">
-          <text>"Read,Own,Claim,Unclaim,Manage,Complete"</text>
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1i76hru">
           <text>"CTSC"</text>

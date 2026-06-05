@@ -55,8 +55,8 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .isUrgent()
                                 .build(),
                         ConfigurationExpectationBuilder.defaultExpectations()
-                                .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
-                                        + "/trigger/boSelectForQA)", true)
+                                .expectedValue(DESCRIPTION, "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                                        + "/trigger/boStopCase)", true)
                                 .expectedValue(WORK_TYPE, "decision_making_work", true)
                                 .expectedValue(CASE_MANAGEMENT_CATEGORY,
                                         "someCaseType", true)
@@ -113,6 +113,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("taskAttributes", taskAttributes);
         inputVariables.putValue("taskType", taskType);
         inputVariables.putValue("caseData", caseData);
+        inputVariables.putValue("eventId", "handleEvidence");
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
 

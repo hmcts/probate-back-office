@@ -65,7 +65,7 @@
           <text>"description"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0n1yxlg">
-          <text>"[Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)"</text>
+          <text>if (eventId != null and eventId = "handleEvidence") then "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCase)" else if (eventId != null and eventId = "applyforGrantPaperApplication") then "[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)" else "hello"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1cvv017">
           <text>true</text>

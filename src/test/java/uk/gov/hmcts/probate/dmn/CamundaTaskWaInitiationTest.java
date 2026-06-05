@@ -31,22 +31,29 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     static Stream<Arguments> scenarioProvider() {
+        Map<String,Object> examineDigitalCaseProbateTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
+                "name", "Examine Digital Case - Probate",
+                "workingDaysAllowed", 7,
+                "processCategories", "case progression",
+                "workType", ROUTINE_WORK_TYPE,
+                "roleCategory", ROLE_CATEGORY_CTSC
+        );
+
         return Stream.of(
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
                         "No",
                         "gop",
-                        List.of(
-                                Map.of(
-                                        "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
-                                        "name", "Examine Digital Case - Probate",
-                                        "workingDaysAllowed", 7,
-                                        "processCategories", "case progression",
-                                        "workType", ROUTINE_WORK_TYPE,
-                                        "roleCategory", ROLE_CATEGORY_CTSC
-                                )
-                        )
+                        List.of(examineDigitalCaseProbateTaskAttributes)
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplication",
+                        "CasePrinted",
+                        "No",
+                        "gop",
+                        List.of(examineDigitalCaseProbateTaskAttributes)
                 )
         );
     }
@@ -57,7 +64,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(4));
         assertThat(logic.getOutputs().size(), is(7));
-        assertThat(logic.getRules().size(), is(3));
+        assertThat(logic.getRules().size(), is(4));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
