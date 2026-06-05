@@ -109,7 +109,8 @@ public class CaveatQueryService {
         if (searchAfterValues != null) {
             sourceBuilder.searchAfter(searchAfterValues);
         }
-        String jsonQuery = sourceBuilder.toString();
+        String jsonQuery = sourceBuilder.toString()
+                .replaceFirst("\\{", "{\"_source\":[\"reference\"],");
         return runQuery(CAVEAT, jsonQuery).getCaveats();
     }
 
