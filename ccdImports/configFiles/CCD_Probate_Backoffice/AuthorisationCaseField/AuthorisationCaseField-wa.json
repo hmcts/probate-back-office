@@ -1,0 +1,4 @@
+[
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandledDate", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"}
+]
