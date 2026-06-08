@@ -7,13 +7,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.exception.DataMigrationException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.migration.CaveatMigrationHandler;
 import uk.gov.hmcts.probate.service.migration.GorMigrationHandler;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -250,6 +253,49 @@ class DataMigrationControllerTest {
     }
 
     @Test
+    void gorDataMigrationSetsStateOnResponseWhenStateChanges() {
+        final CallbackRequest callbackRequest = mock();
+        final HttpServletRequest request = mock();
+        final DataMigrationController.MigrationOperation migrationOperation = mock();
+
+        final CaseDetails caseDetails = mock();
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetails);
+
+        final Long caseId = 1L;
+        when(caseDetails.getId())
+                .thenReturn(caseId);
+
+        final CaseData caseData = mock();
+        when(caseDetails.getData())
+                .thenReturn(caseData);
+        when(caseData.getMigrationCallbackMetadata())
+                .thenReturn(null);
+
+        final CaseDetails detailsBefore = mock();
+        when(callbackRequest.getCaseDetailsBefore()).thenReturn(detailsBefore);
+        when(detailsBefore.getState()).thenReturn("StateBefore");
+        when(caseDetails.getState()).thenReturn("StateAfter");
+
+        final CallbackResponse callbackResponse = mock();
+        when(callbackResponseTransformerMock.updateTaskList(callbackRequest, Optional.empty()))
+                .thenReturn(callbackResponse);
+
+        final ResponseEntity<CallbackResponse> responseEntity = controller.gorDataMigration(
+                callbackRequest,
+                request,
+                migrationOperation);
+
+        assertAll(
+                () -> verify(callbackResponseTransformerMock).updateTaskList(callbackRequest, Optional.empty()),
+                () -> verify(callbackResponse).setState("StateAfter"),
+                () -> verifyNoInteractions(gorMigrationHandlersMock),
+                () -> verify(callbackRequest).getCaseDetailsBefore(),
+                () -> verify(caseDetails).getState(),
+                () -> org.junit.jupiter.api.Assertions.assertEquals(callbackResponse, responseEntity.getBody()));
+    }
+
+    @Test
     void caveatDataMigrationThrowsIfMigrationDataNotJson() {
         final CaveatCallbackRequest caveatCallbackRequest = mock();
         final HttpServletRequest request = mock();
@@ -433,5 +479,49 @@ class DataMigrationControllerTest {
                 () -> verify(caveatMigrationHandler).migrate(eq(caveatCallbackRequest), any()),
                 () -> verify(caveatCallbackResponseTransformerMock)
                         .transformResponseWithNoChanges(migratedCaveatCallbackRequest));
+    }
+
+    @Test
+    void caveatDataMigrationSetsStateOnResponseWhenStateChanges() {
+        final CaveatCallbackRequest caveatCallbackRequest = mock();
+        final HttpServletRequest request = mock();
+        final DataMigrationController.MigrationOperation migrationOperation = mock();
+
+        final CaveatDetails caveatDetails = mock();
+        when(caveatCallbackRequest.getCaseDetails())
+                .thenReturn(caveatDetails);
+
+        final Long caseId = 1L;
+        when(caveatDetails.getId())
+                .thenReturn(caseId);
+
+        final CaveatData caveatData = mock();
+        when(caveatDetails.getData())
+                .thenReturn(caveatData);
+        when(caveatData.getMigrationCallbackMetadata())
+                .thenReturn(null);
+
+        final CaveatDetails caveatDetailsBefore = mock();
+        when(caveatCallbackRequest.getCaseDetailsBefore()).thenReturn(caveatDetailsBefore);
+        when(caveatDetailsBefore.getState()).thenReturn("StateBefore");
+        when(caveatDetails.getState()).thenReturn("StateAfter");
+
+        final CaveatCallbackResponse caveatCallbackResponse = mock();
+        when(caveatCallbackResponseTransformerMock.transformResponseWithNoChanges(caveatCallbackRequest))
+                .thenReturn(caveatCallbackResponse);
+
+        final ResponseEntity<CaveatCallbackResponse> responseEntity = controller.caveatDataMigration(
+                caveatCallbackRequest,
+                request,
+                migrationOperation);
+
+        assertAll(
+                () -> verify(caveatCallbackResponseTransformerMock)
+                        .transformResponseWithNoChanges(caveatCallbackRequest),
+                () -> verify(caveatCallbackResponse).setState("StateAfter"),
+                () -> verifyNoInteractions(caveatMigrationHandlersMock),
+                () -> verify(caveatCallbackRequest).getCaseDetailsBefore(),
+                () -> verify(caveatDetails).getState(),
+                () -> org.junit.jupiter.api.Assertions.assertEquals(caveatCallbackResponse, responseEntity.getBody()));
     }
 }
