@@ -4359,5 +4359,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorFirmName", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSOTName", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastModifiedDateForDormant", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "TTL", "UserRole": "TTL_profile", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "TTL", "UserRole": "TTL_profile", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "disposedCasesCcdId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "disposedCasesReturn", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
 ]
