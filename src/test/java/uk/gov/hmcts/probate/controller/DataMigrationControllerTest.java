@@ -117,6 +117,12 @@ class DataMigrationControllerTest {
         when(caseData.getMigrationCallbackMetadata())
                 .thenReturn(migrationMetadata);
 
+        // Mock getCaseDetailsBefore and its getState
+        final CaseDetails detailsBefore = mock();
+        when(callbackRequest.getCaseDetailsBefore()).thenReturn(detailsBefore);
+        when(detailsBefore.getState()).thenReturn("state");
+        when(caseDetails.getState()).thenReturn("state");
+
         controller.gorDataMigration(
                 callbackRequest,
                 request,
@@ -227,6 +233,12 @@ class DataMigrationControllerTest {
         final CallbackRequest migratedCallbackRequest = mock();
         when(gorMigrationHandler.migrate(eq(callbackRequest), any()))
                 .thenReturn(migratedCallbackRequest);
+
+        // Mock getCaseDetailsBefore and its getState
+        final CaseDetails detailsBefore = mock();
+        when(callbackRequest.getCaseDetailsBefore()).thenReturn(detailsBefore);
+        when(detailsBefore.getState()).thenReturn("state");
+        when(caseDetails.getState()).thenReturn("state");
 
         controller.gorDataMigration(callbackRequest, request, migrationOperation);
 
