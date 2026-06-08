@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.34.0">
-  <decision id="wa-task-configuration-probate" name="Task configuration DMN" camunda:historyTimeToLive="P90D">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
+  <decision id="wa-task-configuration-probate-grantofrepresentation" name="Task configuration DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_14cx079" hitPolicy="RULE ORDER">
       <input id="InputClause_1gxyo7f" label="CCD Case Data" camunda:inputVariable="caseData">
         <inputExpression id="LiteralExpression_0mra7c4" typeRef="string">
@@ -20,23 +20,6 @@
       <output id="Output_1" label="Name" name="name" typeRef="string" biodi:width="349" />
       <output id="OutputClause_021y3bb" label="Value" name="value" typeRef="string" biodi:width="932" />
       <output id="OutputClause_0tefly7" label="Can Reconfigure?" name="canReconfigure" typeRef="boolean" biodi:width="551" />
-      <rule id="DecisionRule_06lzwv2">
-        <inputEntry id="UnaryTests_1mcz2gy">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0a3bnkb">
-          <text>"ExamineDigitalCaseProbate"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1whdf9l">
-          <text>"description"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0n1yxlg">
-          <text>"[Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1cvv017">
-          <text>true</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_0gmi4fj">
         <inputEntry id="UnaryTests_1sevjwl">
           <text></text>
@@ -71,11 +54,45 @@
           <text>true</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_06lzwv2">
+        <inputEntry id="UnaryTests_1mcz2gy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a3bnkb">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1whdf9l">
+          <text>"description"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0n1yxlg">
+          <text>"[Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cvv017">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0j5fpym">
+        <inputEntry id="UnaryTests_07ckxmk">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wm8t08">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1pghx77">
+          <text>"workType"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yrjv8l">
+          <text>"decision_making_work"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0x0ofpm">
+          <text>true</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="DMNDiagram_1ifewa3">
-      <dmndi:DMNShape id="DMNShape_0ijg0or" dmnElementRef="wa-task-configuration-probate">
+      <dmndi:DMNShape id="DMNShape_0ijg0or" dmnElementRef="wa-task-configuration-probate-grantofrepresentation">
         <dc:Bounds height="80" width="180" x="150" y="80" />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>
