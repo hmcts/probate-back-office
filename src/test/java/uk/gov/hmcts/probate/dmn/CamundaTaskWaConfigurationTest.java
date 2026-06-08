@@ -54,6 +54,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         CaseDataBuilder.defaultWaCase()
                                 .isUrgent()
                                 .build(),
+                        "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION, "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boStopCase)", true)
@@ -71,6 +72,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         CaseDataBuilder.defaultCase()
                                 .isUrgent()
                                 .build(),
+                        "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
                                          + "/trigger/boSelectForQA)", true)
@@ -81,6 +83,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         CaseDataBuilder.defaultCase()
                                 .isUrgent()
                                 .build(),
+                        "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boSelectForQA)", true)
@@ -102,6 +105,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     @MethodSource("scenarioProvider")
     void should_return_correct_configuration_values_for_scenario(
             String taskType, Map<String, Object> caseData,
+            String eventId,
             List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
 
@@ -113,7 +117,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("taskAttributes", taskAttributes);
         inputVariables.putValue("taskType", taskType);
         inputVariables.putValue("caseData", caseData);
-        inputVariables.putValue("eventId", "handleEvidence");
+        inputVariables.putValue("eventId", eventId);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
 
