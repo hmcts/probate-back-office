@@ -23,8 +23,12 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static uk.gov.hmcts.probate.service.disposed.DisposedCaseService.Constants.*;
 
 @Slf4j
 @Service
@@ -32,6 +36,26 @@ public class DisposedCaseService {
     private final AzureTableService azureTableService;
     private final ObjectMapper objectMapper;
     private final Clock clock;
+
+    class Constants {
+        public static final String DEC_FORENAMES = "dec_forenames";
+        public static final String DEC_SURNAME = "dec_surname";
+        public static final String DATE_OF_DEATH = "dec_death_date";
+        public static final String CASE_TYPE = "case_type";
+        public static final String APPL_TYPE = "application_type";
+        public static final String DISP_DATE = "disposed_date";
+        public static final String HAS_DOCS = "has_scanned_docs";
+        public static final String ADDED_DOCS = "added_documents";
+        public static final String ALL_DOCS_ADDED = "all_documents_added";
+
+        public static final String CCD_ID = "ccd_id";
+        public static final String CONTROL_NUMBER = "control_number";
+        public static final String SCAN_DATE = "scan_date";
+        public static final String DELIVERY_DATE = "delivery_date";
+        public static final String TYPE = "type";
+        public static final String SUBTYPE = "subtype";
+        public static final String EX_RECORD = "exception_record";
+    }
 
     DisposedCaseService(
             final AzureTableService azureTableService,
@@ -63,13 +87,13 @@ public class DisposedCaseService {
         final boolean hasScannedDocs = scannedDocs != null && !scannedDocs.isEmpty();
 
         TableEntity caseEntity = new TableEntity(azureTableService.getPartition(), ccdId)
-                .addProperty("dec_forenames", deceasedForenames)
-                .addProperty("dec_surname", deceasedSurname)
-                .addProperty("dec_death_date", deceasedDateOfDeath)
-                .addProperty("case_type", caseType)
-                .addProperty("application_type", applicationType)
-                .addProperty("disposed_date", disposedDate)
-                .addProperty("has_scanned_docs", hasScannedDocs);
+                .addProperty(DEC_FORENAMES, deceasedForenames)
+                .addProperty(DEC_SURNAME, deceasedSurname)
+                .addProperty(DATE_OF_DEATH, deceasedDateOfDeath)
+                .addProperty(CASE_TYPE, caseType)
+                .addProperty(APPL_TYPE, applicationType)
+                .addProperty(DISP_DATE, disposedDate)
+                .addProperty(HAS_DOCS, hasScannedDocs);
 
         if (hasScannedDocs) {
             final List<String> addedDocuments = writeDocumentsToTable(ccdId, scannedDocs);
@@ -77,8 +101,8 @@ public class DisposedCaseService {
             final String documentKeys = String.join(",", addedDocuments);
 
             caseEntity
-                    .addProperty("added_documents", documentKeys)
-                    .addProperty("all_documents_added", allDocsAdded);
+                    .addProperty(ADDED_DOCS, documentKeys)
+                    .addProperty(ALL_DOCS_ADDED, allDocsAdded);
         }
 
         try {
@@ -114,13 +138,13 @@ public class DisposedCaseService {
             final String exceptionRecord = scannedDoc.getExceptionRecordReference();
 
             final TableEntity docEntity = new TableEntity(azureTableService.getPartition(), key)
-                    .addProperty("ccd_id", ccdId)
-                    .addProperty("control_number", controlNumber)
-                    .addProperty("scan_date", scanDate)
-                    .addProperty("delivery_date", deliveryDate)
-                    .addProperty("type", type)
-                    .addProperty("subtype", subtype)
-                    .addProperty("exception_record", exceptionRecord);
+                    .addProperty(CCD_ID, ccdId)
+                    .addProperty(CONTROL_NUMBER, controlNumber)
+                    .addProperty(SCAN_DATE, scanDate)
+                    .addProperty(DELIVERY_DATE, deliveryDate)
+                    .addProperty(TYPE, type)
+                    .addProperty(SUBTYPE, subtype)
+                    .addProperty(EX_RECORD, exceptionRecord);
 
             try {
                 disposedDocuments.upsertEntityWithResponse(
@@ -166,12 +190,26 @@ public class DisposedCaseService {
 
     CollectionMember<DisposedCase> processCase(final TableEntity tableEntity) {
         final String ccdId = tableEntity.getRowKey();
-        final String caseData;
-        try {
-            caseData = objectMapper.writeValueAsString(tableEntity.getProperties());
-        } catch (final JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        final Map<String, Object> props = tableEntity.getProperties();
+        final StringBuilder caseDataBuilder = new StringBuilder();
+
+        final Function<String, StringBuilder> fmtProp = (final String s) -> caseDataBuilder
+                    .append("*")
+                    .append(s)
+                    .append("* : ")
+                    .append(props.get(s))
+                    .append("\n\n");
+
+        fmtProp.apply(DEC_FORENAMES);
+        fmtProp.apply(DEC_SURNAME);
+        fmtProp.apply(DATE_OF_DEATH);
+        fmtProp.apply(CASE_TYPE);
+        fmtProp.apply(APPL_TYPE);
+        fmtProp.apply(DISP_DATE);
+        fmtProp.apply(HAS_DOCS);
+        fmtProp.apply(ALL_DOCS_ADDED);
+
+        final String caseData = caseDataBuilder.toString();
 
         final var documents = getDocumentsForCase(ccdId);
 
@@ -194,12 +232,26 @@ public class DisposedCaseService {
         final var returnedDocs = disposedDocuments.listEntities(documentSearch, Duration.ofSeconds(3), null);
 
         return returnedDocs.stream().map(te -> {
-                    try {
-                        final String docAsString = objectMapper.writeValueAsString(te.getProperties());
-                        return new CollectionMember<>(docAsString);
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
+                    final Map<String, Object> props = te.getProperties();
+                    final StringBuilder documentBuilder = new StringBuilder();
+
+                    final Function<String, StringBuilder> fmtProp = (final String s) -> documentBuilder
+                            .append("*")
+                            .append(s)
+                            .append("* : ")
+                            .append(props.get(s))
+                            .append("\n\n");
+
+                    fmtProp.apply("RowKey");
+                    fmtProp.apply(CONTROL_NUMBER);
+                    fmtProp.apply(SCAN_DATE);
+                    fmtProp.apply(DELIVERY_DATE);
+                    fmtProp.apply(TYPE);
+                    fmtProp.apply(SUBTYPE);
+                    fmtProp.apply(EX_RECORD);
+
+                    final String docAsString = documentBuilder.toString();
+                    return new CollectionMember<>(docAsString);
                 })
                 .collect(Collectors.toList());
     }
