@@ -1,4 +1,8 @@
 [
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandledDate", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandledDate", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedForenames", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedSurname", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "registryLocation", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRU"}
 ]
