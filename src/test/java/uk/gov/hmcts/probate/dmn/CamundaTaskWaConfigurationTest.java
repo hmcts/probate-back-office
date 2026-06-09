@@ -56,8 +56,18 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
-                                .expectedValue(DESCRIPTION, "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
-                                        + "/trigger/boStopCase)", true)
+                                .expectedValue(DESCRIPTION, "[Amend Case Details](/cases/case-details/"
+                                        + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails) "
+                                        + "[Issue Grant](/cases/case-details/"
+                                        + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching) "
+                                        + "[Escalate to Registrar](/cases/case-details/"
+                                        + "${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar) "
+                                        + "[Select For QA](/cases/case-details/"
+                                        + "${[CASE_REFERENCE]}/trigger/boSelectForQA) "
+                                        + "[SME Referral](/cases/case-details/"
+                                        + "${[CASE_REFERENCE]}/trigger/boUploadDocsForSMEReferral) "
+                                        + "[Stop Case](/cases/case-details/"
+                                        + "${[CASE_REFERENCE]}/trigger/boStopCase)", true)
                                 .expectedValue(WORK_TYPE, "decision_making_work", true)
                                 .expectedValue(CASE_MANAGEMENT_CATEGORY,
                                         "someCaseType", true)
