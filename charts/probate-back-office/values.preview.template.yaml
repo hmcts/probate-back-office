@@ -91,8 +91,8 @@ ccd:
       imagePullPolicy: Always
       autoscaling:
         maxReplicas: 2
-      devcpuRequests: 50m
-      devcpuLimits: 500m
+      devcpuRequests: 100m
+      devcpuLimits: 600m
       devmemoryRequests: 1Gi
       devmemoryLimits: 2Gi
       environment:
