@@ -106,7 +106,9 @@ public class ExceptionRecordService {
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
                 .toList());
 
-            caveatData.setApplicationSubmittedDate(erRequest.getDeliveryDate().toLocalDate());
+            LocalDate scannedDate = erRequest.getFormScannedDate()
+                    .orElseThrow(() -> new OCRMappingException("Unable to map scanned date from scanned document"));
+            caveatData.setApplicationSubmittedDate(scannedDate);
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails caveatCaseDetailsResponse =
                 caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
@@ -171,7 +173,9 @@ public class ExceptionRecordService {
                 grantOfRepresentationData.setGrantType(grantType);
             }
 
-            grantOfRepresentationData.setApplicationSubmittedDate(erRequest.getDeliveryDate().toLocalDate());
+            LocalDate scannedDate = erRequest.getFormScannedDate()
+                    .orElseThrow(() -> new OCRMappingException("Unable to map scanned date from scanned document"));
+            grantOfRepresentationData.setApplicationSubmittedDate(scannedDate);
 
             log.info(
                 "Calling grantOfRepresentationTransformer to create transformation response for bulk scan "
@@ -185,7 +189,7 @@ public class ExceptionRecordService {
                 .build();
         } catch (OCRMappingException ocrMappingException) {
             log.error("OCR Mapping Exception: {} for caseid: {}",
-                ocrMappingException.getMessage(), erRequest.getExceptionRecordId());
+                ocrMappingException.getMessage(), erRequest.getExceptionRecordId(), ocrMappingException);
             throw ocrMappingException;
         } catch (Exception e) {
             log.error("Error transforming Grant of Representation case from Exception Record", e);

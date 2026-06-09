@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -99,7 +100,10 @@ class ExceptionRecordServiceTest {
     @Mock
     private CaveatsExpiryValidationRule caveatExpiryRule;
 
-    private TestUtils testUtils = new TestUtils();
+    @Mock
+    private ExceptionRecordRequest exceptionRecordRequestMock;
+
+    private final TestUtils testUtils = new TestUtils();
 
     private ExceptionRecordRequest erRequestCaveat;
 
@@ -144,7 +148,7 @@ class ExceptionRecordServiceTest {
     private CaseCreationDetails grantOfProbateCaseDetailsResponse;
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
 
         List<CaveatsExpiryValidationRule> validationRules = List.of(caveatExpiryRule);
@@ -469,7 +473,7 @@ class ExceptionRecordServiceTest {
     }
 
     @Test
-    void shouldSetGORApplicationSubmittedDateFromDeliveryDate() {
+    void shouldSetGORApplicationSubmittedDateFromScannedDate() {
         when(erGrantOfRepresentationMapper.toCcdData(any(), any())).thenReturn(grantOfRepresentationDataSolsIntestacy);
         grantOfProbateCaseDetailsResponse =
                 CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
@@ -484,15 +488,36 @@ class ExceptionRecordServiceTest {
         GrantOfRepresentationData grantOfRepresentationDataResponse
                 = (GrantOfRepresentationData) response.getCaseCreationDetails().getCaseData();
         assertEquals(grantOfRepresentationDataResponse.getApplicationSubmittedDate(),
-                erRequestGrantOfProbateSolsIntestacy.getDeliveryDate().toLocalDate());
+                erRequestGrantOfProbateSolsIntestacy.getFormScannedDate().orElseThrow());
     }
 
     @Test
-    void shouldSetCaveatApplicationSubmittedDateFromDeliveryDate() {
+    void shouldThrowExceptionIfGORScannedDateNotPresent() {
+        when(exceptionRecordRequestMock.getFormScannedDate()).thenReturn(Optional.empty());
+        assertThrows(
+                OCRMappingException.class,
+                () -> erService.createGrantOfRepresentationCaseFromExceptionRecord(exceptionRecordRequestMock,
+                        GrantType.INTESTACY,
+                        warnings)
+        );
+    }
+
+    @Test
+    void shouldSetCaveatApplicationSubmittedDateFromScannedDate() {
         SuccessfulTransformationResponse response =
                 erService.createCaveatCaseFromExceptionRecord(erRequestCaveat, warnings);
         CaveatData caveatDataResponse = (CaveatData) response.getCaseCreationDetails().getCaseData();
-        assertEquals(caveatDataResponse.getApplicationSubmittedDate(), erRequestCaveat.getDeliveryDate().toLocalDate());
+        assertEquals(caveatDataResponse.getApplicationSubmittedDate(),
+                erRequestCaveat.getFormScannedDate().orElseThrow());
+    }
+
+    @Test
+    void shouldThrowExceptionIfCaveatScannedDateNotPresent() {
+        when(exceptionRecordRequestMock.getFormScannedDate()).thenReturn(Optional.empty());
+        assertThrows(
+                OCRMappingException.class,
+                () -> erService.createCaveatCaseFromExceptionRecord(exceptionRecordRequestMock, warnings)
+        );
     }
 
     @Test

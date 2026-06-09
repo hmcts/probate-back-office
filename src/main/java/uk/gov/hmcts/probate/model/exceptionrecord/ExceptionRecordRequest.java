@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.get;
 
@@ -314,5 +316,13 @@ public class ExceptionRecordRequest {
             .dxNumber(get(ocrFields, "dxNumber"))
             .practitionerAcceptsServiceByEmail(get(ocrFields, "practitionerAcceptsServiceByEmail"))
             .build();
+    }
+
+    public Optional<LocalDate> getFormScannedDate() {
+        return scannedDocuments.stream()
+                .filter(doc -> "form".equalsIgnoreCase(doc.type))
+                .findFirst()
+                .map(doc -> doc.scannedDate)
+                .map(LocalDateTime::toLocalDate);
     }
 }
