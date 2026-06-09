@@ -88,6 +88,91 @@
           <text>true</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_14darf3">
+        <inputEntry id="UnaryTests_0hr4stz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qccoho">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1me1na3">
+          <text>"caseManagementCategory"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_09iaklr">
+          <text>caseData.caseType</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bv2xzf">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1evyc9n">
+        <inputEntry id="UnaryTests_12xpv6u">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ifu8wu">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1uvmdeh">
+          <text>"caseName"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0d5o0tk">
+          <text>caseData.deceasedForenames + " " + caseData.deceasedSurname</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15scpg9">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1qiajo4">
+        <inputEntry id="UnaryTests_0h3m8si">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0265cyh">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_19ge0vb">
+          <text>"region"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1duwa2u">
+          <text>"someRegion"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gcz5d0">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0q6iroy">
+        <inputEntry id="UnaryTests_1xolkxo">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ol0bht">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1vwmxcn">
+          <text>"roleCategory"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0alvihy">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0y8wh5m">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_140oil7">
+        <inputEntry id="UnaryTests_121ra98">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bs4y2i">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13i06we">
+          <text>"location"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08tqtmv">
+          <text>caseData.registryLocation</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08oiise">
+          <text>true</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
