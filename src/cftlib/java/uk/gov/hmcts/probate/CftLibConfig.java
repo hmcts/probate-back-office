@@ -42,6 +42,7 @@ public class CftLibConfig implements CFTLibConfigurer {
             "caseworker-caa",
             "caseworker-probate-rparobot",
             "caseworker-approver",
+            "caseworker-wa-task-configuration",
             "TTL_profile"
         );
 
