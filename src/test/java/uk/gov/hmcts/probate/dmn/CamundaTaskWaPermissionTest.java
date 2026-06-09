@@ -45,7 +45,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
     private static final List<Map<String, Object>> ctscExamineDigitalCaseProbatePermissions = List.of(
             Map.of(
                     "name", "ctsc",
-                    "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel",
+                    "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
                     "roleCategory", ROLE_CATEGORY_CTSC,
                     "assignmentPriority", 1,
                     "autoAssignable", false
