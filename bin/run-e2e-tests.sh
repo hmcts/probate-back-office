@@ -1,5 +1,6 @@
 #!/bin/bash
-set -ex
+set -euo pipefail
+set -x
 
 # Base export
 export TEST_E2E_URL=${TEST_E2E_URL}
@@ -19,4 +20,27 @@ export CW_USER_PASSWORD=${CW_USER_PASSWORD}
 # Paths
 export E2E_OUTPUT_DIR='./functional-output'
 
-yarn test:functional
+# Clean up old reports
+rm -rf ./functional-output/reports
+mkdir -p ./functional-output/reports
+
+# Run with xvfb
+export DISPLAY=:99
+Xvfb :99 -screen 0 1280x720x24 &
+XVFB_PID=$!
+
+# Always clean up Xvfb
+trap 'set +e; [[ -n "${XVFB_PID:-}" ]] && kill "$XVFB_PID" >/dev/null 2>&1' EXIT
+
+# Run tests but don't abort the script; capture exit code
+set +e
+yarn test:functional-chromium
+TEST_STATUS=$?
+set -e
+
+if [ $TEST_STATUS -ne 0 ]; then
+    echo "TEST_FAILED" > ./functional-output/test-status.txt
+fi
+
+# Exit with the tests' status (fails pipeline if tests failed)
+exit $TEST_STATUS

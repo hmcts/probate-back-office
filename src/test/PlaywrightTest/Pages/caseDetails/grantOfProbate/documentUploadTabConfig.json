@@ -1,0 +1,14 @@
+{
+  "tabName": "Documents",
+  "waitForText" : "Manage Cases",
+  "fields": [
+    "Type",
+    "Document Url",
+    "Comment"
+  ],
+  "dataKeys": [
+    "documentTypeSelected",
+    "filename",
+    "comment"
+  ]
+}

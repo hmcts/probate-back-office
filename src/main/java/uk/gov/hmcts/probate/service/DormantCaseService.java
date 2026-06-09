@@ -68,7 +68,7 @@ public class DormantCaseService {
                 if (StringUtils.isNotBlank(returnedCaseDetails.getData().getMoveToDormantDateTime())) {
                     LocalDateTime moveToDormantDateTime = LocalDateTime.parse(returnedCaseDetails.getData()
                             .getMoveToDormantDateTime(), DATE_FORMAT);
-                    if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime)) {
+                    if (returnedCaseDetails.getData().getLastModifiedDateForDormant().isAfter(moveToDormantDateTime)) {
                         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                                 .evidenceHandled(false)
                                 .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))

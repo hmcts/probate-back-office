@@ -1,0 +1,16 @@
+{
+  "waitForText" : "Create case",
+  "list1_text": "Manage probate application",
+  "list2_text_will": "WillLodgement",
+  "list2_text_caveat": "Caveat",
+  "list2_text_gor": "GrantOfRepresentation",
+  "list3_text_will": "Create a will lodgement",
+  "list3_text_caveat": "Raise a caveat",
+  "list4_text_caveat": "Raise a caveat (Solicitor)",
+  "list3_text_gor": "PA1P/PA1A/Solicitors",
+  "list3_text_gor_manual": "PA1P/PA1A/Solicitors Manual",
+  "list3_text_solGor": "Apply for probate",
+  "startButton": ".button",
+  "UKpostcodeLink": ".manual-link",
+  "stopReason": "Executor not accounted for"
+}

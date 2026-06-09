@@ -809,4 +809,14 @@ class CaveatNotificationServiceTest {
         verify(eventValidationService).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
     }
 
+    @Test
+    void setsPaymentTakenToYesForNullInitialValue() {
+        CaveatData caveatData = CaveatData.builder().paymentTaken(null).build();
+        CaveatDetails caveatDetails = new CaveatDetails(caveatData, new String[0], 1L);
+        CaveatCallbackRequest request = new CaveatCallbackRequest(caveatDetails);
+
+        caveatNotificationService.setPaymentTaken(request);
+
+        assertEquals("Yes", caveatData.getPaymentTaken());
+    }
 }

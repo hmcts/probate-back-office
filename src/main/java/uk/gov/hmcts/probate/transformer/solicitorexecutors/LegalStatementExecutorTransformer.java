@@ -117,9 +117,18 @@ public class LegalStatementExecutorTransformer extends ExecutorsTransformer {
     }
 
     private void formatNames(CaseData caseData) {
-        caseData.setDeceasedForenames(FormattingService.capitaliseEachWord(caseData.getDeceasedForenames()));
-        caseData.setDeceasedSurname(FormattingService.capitaliseEachWord(caseData.getDeceasedSurname()));
-        caseData.setSolsSolicitorFirmName(FormattingService.capitaliseEachWord(caseData.getSolsSolicitorFirmName()));
+        final String capDecFnames = FormattingService.capitaliseEachWord(
+                caseData.getDeceasedForenames(),
+                "Deceased Forenames");
+        final String capDecSname = FormattingService.capitaliseEachWord(
+                caseData.getDeceasedSurname(),
+                "Deceased Surname");
+        final String capSolFirmName = FormattingService.capitaliseEachWord(
+                caseData.getSolsSolicitorFirmName(),
+                "Solicitor Firm Name");
+        caseData.setDeceasedForenames(capDecFnames);
+        caseData.setDeceasedSurname(capDecSname);
+        caseData.setSolsSolicitorFirmName(capSolFirmName);
     }
 
     private String getSingularProfitSharingTextForLegalStatement(CaseData caseData) {

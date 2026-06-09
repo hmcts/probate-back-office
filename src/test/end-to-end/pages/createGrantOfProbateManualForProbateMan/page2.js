@@ -11,7 +11,6 @@ module.exports = async function (crud) {
     if (crud === 'create') {
         await I.waitForText(caseProgressConfig.IHT205Label);
         await I.waitForText(caseProgressConfig.IHT400Label);
-        await I.waitForText(caseProgressConfig.IHT400421Label);
         await I.waitForText(caseProgressConfig.IHT207Label);
         await I.click({css: `#ihtFormId-${caseProgressConfig.IHT400Option}`});
         await I.click(`#foreignAsset_${createGrantOfProbateConfig.ForeignAssetNo}`);

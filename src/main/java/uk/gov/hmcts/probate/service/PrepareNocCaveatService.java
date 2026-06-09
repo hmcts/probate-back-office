@@ -48,8 +48,11 @@ public class PrepareNocCaveatService {
         ChangeOrganisationRequest changeOrganisationRequest = getChangeOrganisationRequest(caseData);
         List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
         log.info("Change of Representatives before for case {} : {} ", caseDetails.getId().toString(), representatives);
+        Optional<SolicitorUser> solicitorDetails = getSolicitorDetails(
+                securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
+                changeOrganisationRequest, caseDetails.getId().toString());
         ChangeOfRepresentative representative = prepareNocService.buildChangeOfRepresentative(caseData,
-                changeOrganisationRequest);
+                changeOrganisationRequest, solicitorDetails, representatives, caseDetails.getCaseTypeId());
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after for case {} : {} ", caseDetails.getId().toString(), representatives);
         representatives.sort((m1, m2) -> {
@@ -57,8 +60,7 @@ public class PrepareNocCaveatService {
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
             return dt2.compareTo(dt1);
         });
-        findNewCaveatSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
-                        changeOrganisationRequest, caseData, caseDetails.getId().toString());
+        setNewCaveatSolicitorDetails(changeOrganisationRequest, caseData, solicitorDetails);
         ProbateAddress solsAddress =
                 getNewSolicitorAddress(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest.getOrganisationToAdd().getOrganisationID(),
@@ -91,26 +93,12 @@ public class PrepareNocCaveatService {
         return null;
     }
 
-    private void findNewCaveatSolicitorDetails(SecurityDTO securityDTO,
-                                                           ChangeOrganisationRequest changeOrganisationRequest,
-                                                       Map<String, Object> caseData, String id) {
-        FindUsersByOrganisation organisationUser =
-                findCaveatOrganisationDetails(securityDTO, changeOrganisationRequest, id);
-        Optional<SolicitorUser> solicitorDetails = Optional.empty();
-        if (null != organisationUser
-                && null != organisationUser.getUsers()
-                && !organisationUser.getUsers().isEmpty()) {
-            solicitorDetails = organisationUser.getUsers()
-                    .stream()
-                    .filter(x -> changeOrganisationRequest.getCreatedBy().equalsIgnoreCase(
-                            x.getEmail()))
-                    .findFirst();
-        }
+    private void setNewCaveatSolicitorDetails(ChangeOrganisationRequest changeOrganisationRequest,
+                                               Map<String, Object> caseData, Optional<SolicitorUser> solicitorDetails) {
 
         if (solicitorDetails.isPresent()) {
             SolicitorUser solicitorUser = solicitorDetails.get();
             caseData.put("caveatorEmailAddress", solicitorUser.getEmail());
-
         } else {
             log.error(
                     "Notice of change: Solicitor {} does not belong to organisation id {}",
@@ -118,6 +106,20 @@ public class PrepareNocCaveatService {
                     changeOrganisationRequest.getOrganisationToAdd().getOrganisationID()
             );
         }
+    }
+
+    private Optional<SolicitorUser> getSolicitorDetails(SecurityDTO securityDTO,
+                                                        ChangeOrganisationRequest changeOrganisationRequest,
+                                                        String id) {
+        FindUsersByOrganisation organisationUser =
+                findCaveatOrganisationDetails(securityDTO, changeOrganisationRequest, id);
+        if (organisationUser != null && organisationUser.getUsers() != null && !organisationUser.getUsers().isEmpty()) {
+            return organisationUser.getUsers()
+                    .stream()
+                    .filter(x -> changeOrganisationRequest.getCreatedBy().equalsIgnoreCase(x.getEmail()))
+                    .findFirst();
+        }
+        return Optional.empty();
     }
 
     private FindUsersByOrganisation findCaveatOrganisationDetails(SecurityDTO securityDTO,

@@ -100,17 +100,17 @@ Died on
 {% endmacro %}
 
 {% macro codicils(codicil) %}
-{% if codicil == 1 or codicil == "1" %} with one codicil
-{% elseif codicil == 2 or codicil == "2" %} with two codicils
-{% elseif codicil == 3 or codicil == "3" %} with three codicils
-{% elseif codicil == 4 or codicil == "4" %} with four codicils
-{% elseif codicil == 5 or codicil == "5" %} with five codicils
+{% if codicil == 1 or codicil == "1" %} with one Codicil
+{% elseif codicil == 2 or codicil == "2" %} with two Codicils
+{% elseif codicil == 3 or codicil == "3" %} with three Codicils
+{% elseif codicil == 4 or codicil == "4" %} with four Codicils
+{% elseif codicil == 5 or codicil == "5" %} with five Codicils
 {% endif %}
 {% endmacro %}
 
 {% macro lastWillAndTestamentParagraph(cd, applyingExecCounter) %}
 <p>The Last Will and Testament <strong>
-    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}{% if cd.willHasCodicils == "Yes" %}{% if cd.codicilAddedDateList != null %}{{ codicils(cd.codicilAddedDateList|length) }}{% elseif cd.willNumberOfCodicils != null and cd.willNumberOfCodicils != "" %}{{ codicils(cd.willNumberOfCodicils) }}{% endif %}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
+    {% if cd.willHasCodicils == "Yes" %}{% if cd.codicilAddedDateList != null %}{{ codicils(cd.codicilAddedDateList|length) }}{% elseif cd.willNumberOfCodicils != null and cd.willNumberOfCodicils != "" %}{{ codicils(cd.willNumberOfCodicils) }}{% endif %}{% endif %}{% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
     The Administration of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong>'s estate is granted by this court to the following Executor{% if applyingExecCounter > 1 %}s{% endif %} </p>
 {% endmacro %}
 

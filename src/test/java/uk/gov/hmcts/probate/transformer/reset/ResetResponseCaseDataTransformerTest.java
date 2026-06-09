@@ -18,6 +18,8 @@ import uk.gov.hmcts.probate.service.TitleAndClearingTypeService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.DATE;
@@ -197,9 +199,48 @@ class ResetResponseCaseDataTransformerTest {
 
         assertNull(responseCaseData.getDispenseWithNoticeOtherExecsList());
         assertNull(responseCaseData.getDispenseWithNoticeLeaveGiven());
-        assertNull(responseCaseData.getDispenseWithNoticeLeaveGiven());
         assertNull(responseCaseData.getDispenseWithNoticeOverview());
         assertNull(responseCaseData.getDispenseWithNoticeSupportingDocs());
     }
 
+    @Test
+    void shouldResetTitleAndClearingTrustCorpAndPartnerOptionsExcludeFirmNamedInWill() {
+
+        caseDataBuilder
+                .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
+                .trustCorpName(TRUST_CORP_NAME)
+                .trustCorpAddress(SOLICITOR_ADDRESS)
+                .lodgementAddress(LODGEMENT_ADDRESS)
+                .lodgementDate(DATE)
+                .otherPartnersApplyingAsExecutors(partnerExecutorList)
+                .nameOfSucceededFirm(SOLICITOR_FIRM_NAME)
+                .nameOfFirmNamedInWill(SOLICITOR_FIRM_NAME)
+                .addressOfSucceededFirm(SOLICITOR_ADDRESS)
+                .addressOfFirmNamedInWill(SOLICITOR_ADDRESS)
+                .whoSharesInCompanyProfits(sharesInCompanyProfits);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        when(titleAndClearingTypeService
+                .firmCeasedTradingNoSuccTitleAndClearingOptionSelected(caseDataBuilder.build())).thenReturn(true);
+
+        resetResponseCaseDataTransformer.resetTitleAndClearingFields(caseDetailsMock.getData(),
+                responseCaseDataBuilder);
+
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+
+        assertAll(
+                () -> assertNull(responseCaseData.getAdditionalExecutorsTrustCorpList()),
+                () -> assertNull(responseCaseData.getTrustCorpName()),
+                () -> assertNull(responseCaseData.getTrustCorpAddress()),
+                () -> assertNull(responseCaseData.getLodgementAddress()),
+                () -> assertNull(responseCaseData.getLodgementDate()),
+                () -> assertNull(responseCaseData.getOtherPartnersApplyingAsExecutors()),
+                () -> assertEquals(SOLICITOR_FIRM_NAME, responseCaseData.getNameOfFirmNamedInWill()),
+                () -> assertNull(responseCaseData.getNameOfSucceededFirm()),
+                () -> assertNull(responseCaseData.getAddressOfSucceededFirm()),
+                () -> assertNull(responseCaseData.getAddressOfFirmNamedInWill()),
+                () -> assertNull(responseCaseData.getWhoSharesInCompanyProfits())
+        );
+    }
 }

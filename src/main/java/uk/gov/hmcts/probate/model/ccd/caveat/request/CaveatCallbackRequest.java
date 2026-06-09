@@ -11,4 +11,8 @@ public class CaveatCallbackRequest {
     @Valid
     @JsonProperty(value = "case_details", required = true)
     private final CaveatDetails caseDetails;
+    @JsonProperty("event_id")
+    private String eventId;
+    @JsonProperty("case_details_before")
+    private CaveatDetails caseDetailsBefore;
 }

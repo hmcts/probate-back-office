@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -12,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -97,7 +100,7 @@ class CaseDataTest {
     private AutoCloseable closeableMocks;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
 
         closeableMocks = openMocks(this);
 
@@ -998,5 +1001,38 @@ class CaseDataTest {
         applCaseData.clearPrimaryApplicant();
 
         assertEquals(baseCaseData, applCaseData);
+    }
+
+    @Test
+    void clearAdditionalExecutorListClearsAdditionalExecutorList() {
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
+        additionalExecutorsList.add(additionalExecutors1Mock);
+        additionalExecutorsList.add(additionalExecutors2Mock);
+
+        CaseData caseData = CaseData.builder()
+                .solsAdditionalExecutorList(additionalExecutorsList)
+                .otherExecutorExists(NO)
+                .build();
+
+        caseData.clearAdditionalExecutorList();
+
+        assertTrue(caseData.getSolsAdditionalExecutorList().isEmpty());
+        assertEquals(NO, caseData.getOtherExecutorExists());
+    }
+
+    @Test
+    void clearDeceasedAliasNameList() {
+        List<CollectionMember<AliasName>> deceasedAliasNamesList = new ArrayList<>();
+        deceasedAliasNamesList.add(new CollectionMember<>("1", AliasName.builder().build()));
+
+        CaseData caseData = CaseData.builder()
+                .solsDeceasedAliasNamesList(deceasedAliasNamesList)
+                .deceasedAnyOtherNames(NO)
+                .build();
+
+        caseData.clearSolsDeceasedAliasNamesList();
+
+        Assertions.assertTrue(caseData.getSolsDeceasedAliasNamesList().isEmpty());
+        assertEquals(NO, caseData.getDeceasedAnyOtherNames());
     }
 }

@@ -68,6 +68,8 @@ public class CaseQueryService {
             + "dormant_date_range_query.json";
     private static final String REACTIVATE_DORMANT_QUERY = "templates/elasticsearch/caseMatching/"
             + "reactivate_dormant_date_range_query.json";
+    private static final String DRAFT_CASES_QUERY = "templates/elasticsearch/caseMatching/"
+            + "draft_cases_date_range_query.json";
     private static final String SORT_COLUMN = "id";
     private final RestTemplate restTemplate;
     private final HttpHeadersFactory headers;
@@ -269,4 +271,7 @@ public class CaseQueryService {
         return paginatedQry.replaceFirst("\"from\": *\\d*,", "\"from\":" + pageStart + ",");
     }
 
+    public List<ReturnedCaseDetails> findCaseWithQueryPathAndDate(String invokeFrom, String queryPath, String date) {
+        return findCaseStateWithinDateRange(invokeFrom, queryPath, date, date);
+    }
 }

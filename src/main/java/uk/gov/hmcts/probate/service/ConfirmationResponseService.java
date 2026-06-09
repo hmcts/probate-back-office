@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.lang.String.format;
+import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
@@ -201,6 +202,7 @@ public class ConfirmationResponseService {
         }
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{caseReference}}", id.toString());
+        keyValue.put("{{caseType}}", CAVEAT.getCode());
 
         return markdownSubstitutionService
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
@@ -257,7 +259,7 @@ public class ConfirmationResponseService {
                     + "**Customer application reference** " + ccdData.getFee().getSolsPBAPaymentReference();
 
             paymentInfo = "**You must complete payment next**\n"
-                    + "\n" + "Go to the Service Request tab on you case details\n"
+                    + "\n" + "Go to the Service Request tab on your case details\n"
                     + "\n" + "Complete the payment process\n";
 
             paymentSummaryWelsh = "**Ffi gwneud cais** &pound;"

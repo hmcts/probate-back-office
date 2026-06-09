@@ -9,17 +9,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
-import uk.gov.hmcts.probate.model.caseaccess.Organisation;
-import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -35,17 +34,22 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.PrepareNocService;
 import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.math.BigDecimal;
@@ -55,6 +59,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -179,6 +185,11 @@ class BusinessValidationControllerIT {
     private static final String ASSEMBLE_LETTER_EVENT = "/case/use-assemble-letter-event";
     private static final String SUPER_USER_MAKE_DORMANT = "/case/superUserMakeDormantCase";
     private static final String VALIDATE_STOP_REASON = "/case/validate-stop-reason";
+    private static final String MOVE_TO_POST_GRANT_ISSUED = "/case/moveToPostGrantIssued";
+    private static final String ESCALATE_TO_REGISTRAR = "/case/case-escalated";
+    private static final String SOLICITOR_SUBMIT_CASE = "/case/setCaseSubmissionDate";
+    private static final String CHECK_CASE_MATCHES = "/case/checkCaseMatches";
+
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -217,26 +228,34 @@ class BusinessValidationControllerIT {
     private MockMvc mockMvc;
     private CaseDataBuilder caseDataBuilder;
 
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
 
-    @MockBean
+    @MockitoBean
     private CaseStoppedService caseStoppedService;
 
-    @MockBean
+    @MockitoBean
     private NotificationService notificationService;
-    @MockBean
+    @MockitoBean
     private CaseDataTransformer caseDataTransformer;
-    @MockBean
+    @MockitoBean
     private CcdDataStoreService ccdDataStoreService;
-    @MockBean
+    @MockitoBean
     private RegistrarDirectionService registrarDirectionService;
-    @MockBean
+    @MockitoBean
     private PrepareNocService prepareNocService;
-    @MockBean
+    @MockitoBean
     private UserInfoService userInfoService;
+    @MockitoBean
+    private SecurityUtils securityUtils;
+    @MockitoBean
+    private AuditEventService auditEventService;
+    @MockitoBean
+    private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
-    @SpyBean
+
+
+    @MockitoSpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
 
     @BeforeEach
@@ -1310,15 +1329,17 @@ class BusinessValidationControllerIT {
 
     @Test
     void shouldValidateRollback() throws Exception {
-        OrganisationPolicy policy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("ABC")
-                        .organisationName("OrgName")
-                        .build())
-                .orgPolicyReference(null)
-                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
                 .build();
-        caseDataBuilder.applicantOrganisationPolicy(policy);
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventService.getLatestAuditEventByName(any(), any(), any(), any()))
+                .thenReturn(Optional.ofNullable(AuditEvent.builder()
+                        .stateId("SolsAppUpdated")
+                        .createdDate(LocalDateTime.now())
+                        .build()));
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -1399,5 +1420,106 @@ class BusinessValidationControllerIT {
                 .andExpect(content().string(CoreMatchers.containsString(
                         "you must use the 'Assemble a letter' event to request information instead.")));
     }
-}
 
+    @Test
+    void shouldSendEmailWhenMoveToPostGrantIssued() throws Exception {
+        final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        final CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        final Document document = new Document();
+        final String docName = UUID.randomUUID().toString();
+        document.setDocumentFileName(docName);
+
+        final String requestJson = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        when(notificationService.sendPostGrantIssuedNotification(any()))
+                .thenReturn(document);
+
+        mockMvc.perform(post(MOVE_TO_POST_GRANT_ISSUED)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(requestJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // validate that the generated notification has been added as the last entry in the list of notifs
+                .andExpect(jsonPath("$.data.probateNotificationsGenerated[-1].value.DocumentFileName")
+                        .value(document.getDocumentFileName()));
+    }
+
+    @Test
+    void shouldSendEmailWhenRegistarEscalation() throws Exception {
+        final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        final CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        final Document document = new Document();
+        final String docName = UUID.randomUUID().toString();
+        document.setDocumentFileName(docName);
+
+        final String requestJson = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        when(notificationService.sendRegistrarEscalationNotification(any()))
+                .thenReturn(document);
+
+        mockMvc.perform(post(ESCALATE_TO_REGISTRAR)
+                        .header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(requestJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // validate that the generated notification has been added as the last entry in the list of notifs
+                .andExpect(jsonPath("$.data.probateNotificationsGenerated[-1].value.DocumentFileName")
+                        .value(document.getDocumentFileName()));
+    }
+
+    @Test
+    void shouldReturnSuccessForSolicitorSubmitEvent() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+
+        solicitorPayload =  solicitorPayload.replaceFirst("\"applicationType\": \"Solicitor\"",
+                "\"applicationType\": \"Personal\"");
+
+        Document emailDocument = Document.builder().documentType(DocumentType.EMAIL)
+                .documentLink(DocumentLink.builder().documentFilename("email.pdf").build())
+                .build();
+
+        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
+                .thenReturn(emailDocument);
+
+        mockMvc.perform(post(SOLICITOR_SUBMIT_CASE).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.schemaVersion").doesNotExist())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void shouldDefaultHasValidMatchToYes() throws Exception {
+        CaseMatch validMatch = CaseMatch.builder()
+                .id("someId")
+                .type("Grant of Representation")
+                .valid("Yes")
+                .build();
+        caseDataBuilder.caseMatches(List.of(new CollectionMember<>(null, validMatch)));
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CHECK_CASE_MATCHES).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.data.hasValidMatches").value(YES));
+    }
+
+    @Test
+    void shouldDefaultHasValidMatchToNo() throws Exception {
+        caseDataBuilder.caseMatches(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CHECK_CASE_MATCHES).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.data.hasValidMatches").value(NO));
+    }
+}

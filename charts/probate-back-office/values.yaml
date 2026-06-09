@@ -16,9 +16,21 @@ elastic:
 postgresql:
   enabled: false
 
+wa:
+  enabled: false
+
+am-org-role-mapping-service:
+  enabled: false
+
+servicebus:
+  enabled: false
+
+ccd-message-publisher:
+  enabled: false
+
 java:
   applicationPort: 4104
-  image: hmctspublic.azurecr.io/probate/back-office:latest
+  image: hmctsprod.azurecr.io/probate/back-office:latest
   aadIdentityName: probate
   ingressHost: probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   autoscaling:
@@ -44,7 +56,6 @@ java:
     PAYMENT_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     ACA_SERVICE_API_BASEURL: http://aac-manage-case-assignment-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-
     PROBATE_POSTGRESQL_USER: pgadmin
     PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-flexible-db-{{ .Values.global.environment }}.postgres.database.azure.com
     PROBATE_POSTGRESQL_DATABASE: probatemandb
@@ -53,6 +64,9 @@ java:
     ADHOC_JOB_DATE:
     JOB_SHUTDOWN_DELAY: 10
     BACK_OFFICE_BASEURL: http://probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    MANAGE_CASE_URL: https://manage-case.{{ .Values.global.environment }}.platform.hmcts.net
+    FRONTEND_URL: https://probate.{{ .Values.global.environment }}.platform.hmcts.net
+    CCD_SERVICEBUS_DESTINATION: ccd-case-events-{{ .Values.global.environment }}
   keyVaults:
     probate:
       secrets:
@@ -63,7 +77,9 @@ java:
         - name: s2s-probate-backend
           alias: idam.s2s-auth.totp_secret
         - name: probate-bo-govNotifyApiKey
-          alias: notifications.govNotifyApiKey
+          alias: notifications.govNotifyApiKeyPrimary
+        - name: probate-bo-govNotifyApiKey-secondary
+          alias: notifications.govNotifyApiKeySecondary
         - name: authTokenEmail
           alias: auth.provider.client.email
         - name: authTokenPassword
@@ -76,6 +92,8 @@ java:
           alias: hmrcEmail
         - name: sealedAndCertifiedEmail
           alias: sealedAndCertifiedEmail
+        - name: draftCaseWithPaymentEmail
+          alias: draftCaseWithPaymentEmail
         - name: ftpSignature
           alias: ftp.client.signature
         - name: ftpEnv
@@ -120,3 +138,5 @@ java:
           alias: SCHEDULER_CASEWORKER_PASSWORD
         - name: probate-storage-account-primary-connection-string
           alias: PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING
+        - name: probate-storage-account-nfi-primary-connection-string
+          alias: PROBATE_STORAGE_ACCOUNT_NFI_PRIMARY_CONNECTION_STRING

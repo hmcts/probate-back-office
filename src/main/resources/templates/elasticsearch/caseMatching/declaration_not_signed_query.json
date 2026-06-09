@@ -1,0 +1,43 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "term": {
+            "state.keyword": "Pending"
+          }
+        },
+        {
+          "term": {
+            "data.otherExecutorsApplying": "Yes"
+
+          }
+        },
+        {
+          "term": {
+            "data.declarationCheckbox": "Yes"
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "exists": { "field": "data.extraCopiesOfGrant" }
+        }
+      ]
+    }
+  },
+  "_source": ["reference"],
+  "size": %s,
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]

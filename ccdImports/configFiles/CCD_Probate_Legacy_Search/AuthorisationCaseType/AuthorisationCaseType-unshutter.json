@@ -1,5 +1,6 @@
 [
   {"CaseTypeID": "LegacySearch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
-  {"CaseTypeID": "LegacySearch", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
+  {"CaseTypeID": "LegacySearch", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "UserRole": "caseworker-probate-legacysearch", "CRUD": "CRUD"}
 ]

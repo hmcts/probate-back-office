@@ -20,6 +20,7 @@ import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_CLOSED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 @Component
@@ -66,6 +67,7 @@ public class CaseDataTransformer {
         solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
                 caseDetails);
 
+        solicitorApplicationCompletionTransformer.clearAdditionalExecutorWhenUpdatingApplicantDetails(caseDetails);
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
@@ -103,6 +105,18 @@ public class CaseDataTransformer {
     public void transformCaseDataForEvidenceHandled(CallbackRequest callbackRequest) {
         if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
             evidenceHandledTransformer.updateEvidenceHandled(callbackRequest.getCaseDetails().getData());
+        }
+    }
+
+    public void transformCaseDataForCaseCloseEvidenceHandledYes(CallbackRequest callbackRequest) {
+        if (BO_CASE_CLOSED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
+            evidenceHandledTransformer.updateEvidenceHandledToYes(callbackRequest.getCaseDetails().getData());
+        }
+    }
+
+    public void transformCaseDataForCaseCloseEvidenceHandledNo(CallbackRequest callbackRequest) {
+        if (BO_CASE_CLOSED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
+            evidenceHandledTransformer.updateEvidenceHandledToNo(callbackRequest.getCaseDetails().getData());
         }
     }
 
@@ -213,5 +227,12 @@ public class CaseDataTransformer {
     public void transformCaseDataForPaperForm(CallbackRequest callbackRequest) {
         final var caseData = callbackRequest.getCaseDetails().getData();
         caseData.setChannelChoice(PAPERFORM);
+    }
+
+    public void clearDeceasedAliasesWhenUpdatingDeceasedDetails(CaseDetails caseDetails) {
+        if (NO.equals(caseDetails.getData().getDeceasedAnyOtherNames())
+                && caseDetails.getData().getSolsDeceasedAliasNamesList() != null) {
+            caseDetails.getData().clearSolsDeceasedAliasNamesList();
+        }
     }
 }

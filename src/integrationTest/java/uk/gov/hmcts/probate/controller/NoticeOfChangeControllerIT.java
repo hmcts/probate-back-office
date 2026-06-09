@@ -8,8 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -49,13 +49,13 @@ class NoticeOfChangeControllerIT {
     private static final String NOC_EMAIL = "/noc/caveat-noc-notification";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
-    @MockBean
+    @MockitoBean
     private PrepareNocService prepareNocService;
-    @MockBean
+    @MockitoBean
     private PrepareNocCaveatService prepareNocCaveatService;
-    @MockBean
+    @MockitoBean
     private CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
-    @MockBean
+    @MockitoBean
     private  NotificationService notificationService;
     @Autowired
     private MockMvc mockMvc;

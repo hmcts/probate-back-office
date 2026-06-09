@@ -1,0 +1,31 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "PAAppCreated",
+              "CasePaymentFailed",
+              "Pending"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "size": %s,
+  "_source": ["reference" , "data.deceasedForenames", "data.deceasedSurname"],
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]

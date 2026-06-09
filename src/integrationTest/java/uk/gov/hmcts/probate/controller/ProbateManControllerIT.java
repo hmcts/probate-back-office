@@ -8,8 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -65,16 +65,16 @@ class ProbateManControllerIT {
 
     private static final String LEGACY_RESET_SEARCH_URL = "/legacy/resetSearch";
 
-    @MockBean
+    @MockitoBean
     private ProbateManService probateManService;
 
-    @MockBean
+    @MockitoBean
     private LegacySearchService legacySearchService;
 
-    @MockBean
+    @MockitoBean
     private LegacyImportService legacyImportService;
 
-    @MockBean
+    @MockitoBean
     private BusinessValidationMessageService businessValidationMessageService;
 
     @Autowired

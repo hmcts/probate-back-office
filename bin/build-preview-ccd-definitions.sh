@@ -2,4 +2,7 @@
 
 set -eu
 
-.././ccdImports/conversionScripts/createAllXLS-pipeline.sh probate-back-office-pr-${1}-java "preview" ${2} probate-back-office-pr-${1}-aac-manage-case-assignment
+environment=${1:-prod}
+shutterOption=${2:-false}
+excludedFilenamePatterns=${3:-""}
+.././ccdImports/conversionScripts/createAllXLS-pipeline.sh probate-back-office-pr-${environment}-java "preview" ${shutterOption} probate-back-office-pr-${environment}-aac-manage-case-assignment ${excludedFilenamePatterns}

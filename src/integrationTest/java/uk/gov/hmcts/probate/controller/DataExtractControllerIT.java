@@ -9,9 +9,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
+import uk.gov.hmcts.probate.service.dataextract.DataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
@@ -31,28 +32,32 @@ import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 import java.math.BigDecimal;
 
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.DataExtractType.NATIONAL_FRAUD_INITIATIVE;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 class DataExtractControllerIT {
 
-    public static final String PERFORM_HMRC_DATA_EXTRACT_FINISHED = "Perform HMRC data extract finished";
-    public static final String PERFORM_IM_DATA_EXTRACT_FINISHED = "Perform Iron Mountain data extract finished";
+    public static final String PERFORM_HMRC_DATA_EXTRACT_FINISHED = "Perform HMRC data extract task submitted";
 
-    @MockBean
+    @MockitoBean
     private HmrcDataExtractService hmrcDataExtractService;
-    @MockBean
+    @MockitoBean
     private IronMountainDataExtractService ironMountainDataExtractService;
-    @MockBean
+    @MockitoBean
     private ExelaDataExtractService exelaDataExtractService;
-    @MockBean
+    @MockitoBean
     private SmeeAndFordDataExtractService smeeAndFordDataExtractService;
-    @MockBean
+    @MockitoBean
     private DataExtractDateValidator dataExtractDateValidator;
+    @MockitoBean
+    private DataExtractService dataExtractService;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -67,7 +72,7 @@ class DataExtractControllerIT {
     void ironMountainShouldReturnOkResponseOnValidDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/iron-mountain?date=2019-03-13"))
             .andExpect(status().isAccepted())
-            .andExpect(content().string("Perform Iron Mountain data extract finished"));
+            .andExpect(content().string("Perform Iron Mountain data extract task submitted"));
     }
 
     @Test
@@ -157,14 +162,14 @@ class DataExtractControllerIT {
     void exelaShouldReturnOkResponseOnValidDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/exela?fromDate=2019-02-13&toDate=2019-02-13"))
             .andExpect(status().isAccepted())
-            .andExpect(content().string("Exela data extract finished"));
+            .andExpect(content().string("Exela data extract task submitted"));
     }
 
     @Test
     void exelaShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
         mockMvc.perform(post("/data-extract/exela?fromDate=2019-02-13&toDate=2019-02-14"))
             .andExpect(status().isAccepted())
-            .andExpect(content().string("Exela data extract finished"));
+            .andExpect(content().string("Exela data extract task submitted"));
     }
 
     @Test
@@ -183,5 +188,22 @@ class DataExtractControllerIT {
     void smeeAndFordShouldReturnErrorWithNoDateOnPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/smee-and-ford"))
             .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void nfiShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
+        mockMvc.perform(post("/data-extract/nfi?fromDate=2019-02-13&toDate=2019-02-13"))
+                .andExpect(status().isAccepted());
+
+        verify(dataExtractDateValidator).dateValidator("2019-02-13", "2019-02-13");
+        verify(dataExtractService).performExtractForDateRange("2019-02-13", "2019-02-13", NATIONAL_FRAUD_INITIATIVE);
+    }
+
+    @Test
+    void nfiShouldReturnErrorWithNoDateOnPathParam() throws Exception {
+        mockMvc.perform(post("/data-extract/nfi"))
+                .andExpect(status().is4xxClientError());
+
+        verifyNoInteractions(dataExtractService);
     }
 }

@@ -27,7 +27,6 @@ public class TemplateService {
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
                                 LanguagePreference languagePreference) {
         return getTemplateId(state, applicationType, registryLocation, languagePreference, null, null, null);
-
     }
 
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
@@ -89,13 +88,109 @@ public class TemplateService {
         }
     }
 
-    private boolean requestInfoByPostForPersonalApplication(String channelChoice, ApplicationType applicationType,
+    private boolean requestInfoByPostForPersonalApplication(String channelChoice,
+                                                            ApplicationType applicationType,
                                                             String informationNeededByPost) {
         return ApplicationType.PERSONAL.equals(applicationType)
             && ((CHANNEL_CHOICE_DIGITAL.equalsIgnoreCase(channelChoice)
                 && !NO.equalsIgnoreCase(informationNeededByPost))
                 || CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase(channelChoice)
                 || CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase(channelChoice));
+    }
+
+    public String getStopReminderTemplateId(ApplicationType applicationType,
+                                            LanguagePreference languagePreference,
+                                            String channelChoice,
+                                            String informationNeededByPost,
+                                            boolean isFirstStopReminder) {
+        EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
+
+        boolean isSolicitor = ApplicationType.SOLICITOR.equals(applicationType);
+        boolean isPostalRequest = requestInfoByPostForPersonalApplication(channelChoice,
+                applicationType, informationNeededByPost);
+        boolean useHubTemplate = !(isSolicitor || isPostalRequest);
+
+        if (isFirstStopReminder) {
+            return useHubTemplate ? emailTemplates.getFirstStopReminderForHub()
+                    : emailTemplates.getFirstStopReminder();
+        } else {
+            return useHubTemplate ? emailTemplates.getSecondStopReminderForHub()
+                    : emailTemplates.getSecondStopReminder();
+        }
+    }
+
+    public String getHseReminderTemplateId(ApplicationType applicationType,
+                                            LanguagePreference languagePreference,
+                                            String channelChoice,
+                                            String informationNeededByPost) {
+        EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
+
+        boolean isSolicitor = ApplicationType.SOLICITOR.equals(applicationType);
+        boolean isPostalRequest = requestInfoByPostForPersonalApplication(channelChoice,
+                applicationType, informationNeededByPost);
+        boolean useHubTemplate = !(isSolicitor || isPostalRequest);
+
+        return useHubTemplate ? emailTemplates.getHseReminderForHub()
+                : emailTemplates.getHseReminder();
+    }
+
+    public String getDormantWarningTemplateId(ApplicationType applicationType,
+                                              LanguagePreference languagePreference) {
+        EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
+        return emailTemplates.getDormantWarning();
+    }
+
+    public String getStopResponseReceivedTemplateId(ApplicationType applicationType,
+                                              LanguagePreference languagePreference) {
+        EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
+        return emailTemplates.getStopResponseReceived();
+    }
+
+    public String getUnsubmittedApplicationTemplateId(ApplicationType applicationType,
+                                                      LanguagePreference languagePreference) {
+        EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
+        return emailTemplates.getUnsubmittedApplication();
+    }
+
+    public String getDeclarationNotSignedTemplateId(LanguagePreference languagePreference,
+                                                    boolean isPrimaryApplicant) {
+        EmailTemplates emailTemplates =
+                notificationTemplates.getEmail().get(languagePreference).get(ApplicationType.PERSONAL);
+        if (isPrimaryApplicant) {
+            return emailTemplates.getDeclarationNotSignedPrimaryApplicant();
+        } else {
+            return emailTemplates.getDeclarationNotSignedExecutors();
+        }
+    }
+
+    public String getPostGrantIssueTemplateId(
+            final LanguagePreference languagePreference,
+            final ApplicationType applicationType) {
+        final EmailTemplates emailTemplates = notificationTemplates.getEmail()
+                .get(languagePreference)
+                .get(applicationType);
+
+        return emailTemplates.getPostGrantIssuedNotification();
+    }
+
+    public String getRegistrarEscalationNotification(
+            final ApplicationType applicationType,
+            final LanguagePreference languagePreference) {
+        final EmailTemplates emailTemplates = notificationTemplates.getEmail()
+                .get(languagePreference)
+                .get(applicationType);
+
+        return emailTemplates.getRegistrarEscalationNotification();
+    }
+
+    public String getRegistrarEscalationNotificationFailed(
+            final ApplicationType applicationType,
+            final LanguagePreference languagePreference) {
+        final EmailTemplates emailTemplates = notificationTemplates.getEmail()
+                .get(languagePreference)
+                .get(applicationType);
+
+        return emailTemplates.getRegistrarEscalationNotificationFailed();
     }
 }
 

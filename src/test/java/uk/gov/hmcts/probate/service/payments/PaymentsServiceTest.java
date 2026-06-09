@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.payments;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.payments.PaymentServiceResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestPaymentResponseDto;
@@ -71,6 +73,8 @@ class PaymentsServiceTest {
     private DocumentTransformer documentTransformer;
     @Mock
     private CaveatNotificationService caveatNotificationService;
+    @Mock
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setup() {
@@ -108,6 +112,12 @@ class PaymentsServiceTest {
                 .data(caseData)
                 .build();
         when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+        when(objectMapper.convertValue(caseData, Map.class))
+                .thenReturn(caseData);
+        when(objectMapper.convertValue(caseData, CaseData.class))
+                .thenReturn(CaseData.builder()
+                        .payments(new ArrayList<>())
+                        .build());
         Document sentEmail = Document.builder()
                 .documentLink(DocumentLink.builder().build())
                 .documentType(DocumentType.EMAIL)
@@ -160,6 +170,12 @@ class PaymentsServiceTest {
         when(pdfManagementService
                 .generateAndUpload(any(CallbackRequest.class), any())).thenReturn(coversheet);
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
+        when(objectMapper.convertValue(caseData, Map.class))
+                .thenReturn(caseData);
+        when(objectMapper.convertValue(caseData, CaseData.class))
+                .thenReturn(CaseData.builder()
+                        .payments(new ArrayList<>())
+                        .build());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
                         .status(PaymentStatus.SUCCESS)
@@ -200,6 +216,12 @@ class PaymentsServiceTest {
                 .build();
         when(pdfManagementService
                 .generateAndUpload(any(CallbackRequest.class), any())).thenReturn(coversheet);
+        when(objectMapper.convertValue(caseData, Map.class))
+                .thenReturn(caseData);
+        when(objectMapper.convertValue(caseData, CaseData.class))
+                .thenReturn(CaseData.builder()
+                        .payments(new ArrayList<>())
+                        .build());
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
@@ -230,6 +252,12 @@ class PaymentsServiceTest {
                 .build();
         when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
+        when(objectMapper.convertValue(caseData, Map.class))
+                .thenReturn(caseData);
+        when(objectMapper.convertValue(caseData, CaseData.class))
+                .thenReturn(CaseData.builder()
+                        .payments(new ArrayList<>())
+                        .build());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
                         .status(PaymentStatus.FAILED)
@@ -264,6 +292,12 @@ class PaymentsServiceTest {
                         .build())
                 .build();
         when(caveatNotificationService.solsCaveatRaise(any())).thenReturn(response);
+        when(objectMapper.convertValue(caseData, Map.class))
+                .thenReturn(caseData);
+        when(objectMapper.convertValue(caseData, uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.class))
+                .thenReturn(uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.builder()
+                        .payments(new ArrayList<>())
+                        .build());
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
@@ -293,6 +327,13 @@ class PaymentsServiceTest {
                 .build();
         when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
+        when(objectMapper.convertValue(caseData, Map.class))
+                .thenReturn(caseData);
+        when(objectMapper.convertValue(caseData, uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.class))
+                .thenReturn(uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.builder()
+                        .payments(new ArrayList<>())
+                        .build());
+
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
                         .status(PaymentStatus.FAILED)
@@ -327,6 +368,12 @@ class PaymentsServiceTest {
                         .build())
                 .build();
         when(caveatNotificationService.solsCaveatRaise(any())).thenReturn(response);
+        when(objectMapper.convertValue(caseData, Map.class))
+                .thenReturn(caseData);
+        when(objectMapper.convertValue(caseData, uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.class))
+                .thenReturn(uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.builder()
+                        .payments(new ArrayList<>())
+                        .build());
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
@@ -358,6 +405,12 @@ class PaymentsServiceTest {
                     .build();
             when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
             when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
+            when(objectMapper.convertValue(caseData, Map.class))
+                    .thenReturn(caseData);
+            when(objectMapper.convertValue(caseData, uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.class))
+                    .thenReturn(uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.builder()
+                            .payments(new ArrayList<>())
+                            .build());
             List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                     CasePayment.builder()
                             .status(PaymentStatus.SUCCESS)

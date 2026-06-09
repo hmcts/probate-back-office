@@ -73,7 +73,7 @@ class InformationRequestServiceTest {
     }
 
     @Test
-    void testEmailRequestReturnsSentEmailDocumentSuccessfully() {
+    void testEmailRequestReturnsSentEmailDocumentSuccessfully() throws NotificationClientException {
         CollectionMember<Document> documentCollectionMember =
             new CollectionMember<>(Document.builder().documentType(DocumentType.SENT_EMAIL).build());
         documentList = new ArrayList<>();
@@ -102,7 +102,7 @@ class InformationRequestServiceTest {
     }
 
     @Test
-    void testEmailRequestReturnsErrorWhenNoEmailProvided() {
+    void testEmailRequestReturnsErrorWhenNoEmailProvided() throws NotificationClientException {
         caseData = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
                 .build();

@@ -1,0 +1,119 @@
+{
+  "tabName": "Applicant details",
+  "fields": [
+    "Name of the firm, or the name under which the applicant operates",
+    "Your reference for this application",
+    "Contact email address",
+    "Contact phone number",
+    "Is the Probate practitioner named in the will as an executor?",
+    "Building and Street",
+    "Address Line 2",
+    "Address Line 3",
+    "Town or City",
+    "County",
+    "Postcode/Zipcode",
+    "Country"
+  ],
+  "dataKeys": [
+    "page2_firm_name",
+    "page2_app_ref",
+    "page2_sol_email",
+    "page2_phone_num",
+    "address_line1",
+    "address_line2",
+    "address_line3",
+    "address_town",
+    "address_county",
+    "address_country",
+    "address_postcode"
+  ],
+  "ApplicantAndAdditionalExecutorInfo": {
+    "fields": [
+      "Name of the firm, or the name under which the applicant operates",
+      "Your reference for this application",
+      "Probate practitioner name",
+      "Contact email address",
+      "Contact phone number",
+      "Is the Probate practitioner named in the will as an executor?",
+      "Is the Probate practitioner acting as an executor?",
+      "Building and Street",
+      "Address Line 2",
+      "Address Line 3",
+      "Town or City",
+      "County",
+      "Postcode/Zipcode",
+      "Country",
+      "Are there any more executors?"
+    ],
+    "dataKeys": [
+      "page2_firm_name",
+      "page2_app_ref",
+      "page2_sol_name",
+      "page2_sol_email",
+      "page2_phone_num",
+      "address_line1",
+      "address_line2",
+      "address_line3",
+      "address_town",
+      "address_country",
+      "address_postcode"
+    ]
+  },
+  "SolicitorMainApplicantAndExecutor" : {
+    "fields": [
+      "Is the Probate practitioner acting as an executor?",
+      "First name(s)",
+      "Last name(s)",
+      "Contact phone number",
+      "Contact email address",
+      "Are there any more executors?",
+      "Building and Street",
+      "Address Line 2",
+      "Address Line 3",
+      "Town or City",
+      "County",
+      "Postcode/Zipcode",
+      "Country"
+    ],
+    "dataKeys": [
+      "page2_sol_forename",
+      "page2_sol_surname",
+      "address_line1",
+      "address_line2",
+      "address_line3",
+      "address_town",
+      "address_county",
+      "address_country",
+      "address_postcode",
+      "page2_phone_num"
+    ]
+  },
+  "Applicant": {
+    "fields": [
+      "First name(s)",
+      "Last name(s)",
+      "Applicant phone number",
+      "Applicant email address",
+      "Building and Street",
+      "Address Line 2",
+      "Address Line 3",
+      "Town or City",
+      "County",
+      "Postcode/Zipcode",
+      "Country"
+    ],
+    "dataKeys": [
+      "applicant_firstname",
+      "applicant_lastname",
+      "applicant_email",
+      "applicant_phone",
+      "address_line1",
+      "address_line2",
+      "address_line3",
+      "address_town",
+      "address_county",
+      "address_country",
+      "address_postcode"
+    ]
+  }
+}

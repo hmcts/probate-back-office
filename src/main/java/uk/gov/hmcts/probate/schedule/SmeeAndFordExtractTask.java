@@ -30,8 +30,8 @@ public class SmeeAndFordExtractTask implements Runnable {
     @Value("${adhocSchedulerJobDate}")
     public String adHocJobDate;
 
-    @Value("${shcedulerTimerShutdownDelayMinutes}")
-    public String shcedulerTimerShutdownDelayMinutes;
+    @Value("${schedulerTimerShutdownDelayMinutes}")
+    public String schedulerTimerShutdownDelayMinutes;
 
     @Override
     public void run() {
@@ -61,7 +61,7 @@ public class SmeeAndFordExtractTask implements Runnable {
                 public void run() {
                     log.info("TimerTask for Smee And Ford data extract completed");
                 }
-            }, Integer.parseInt(shcedulerTimerShutdownDelayMinutes), TimeUnit.MINUTES);
+            }, Integer.parseInt(schedulerTimerShutdownDelayMinutes), TimeUnit.MINUTES);
             executorService.shutdown();
         }
     }

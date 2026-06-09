@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface UserInfoService {
 
     Optional<UserInfo> getCaseworkerInfo();
+
+    Optional<String> getUserEmailByCaseId(Long caseId);
 }

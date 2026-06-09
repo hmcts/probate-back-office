@@ -1,12 +1,12 @@
 {
   "tabName": "IHT",
   "fields": [
-    "Did you complete Inheritance Tax (IHT) forms to report the estate’s value?",
+    "Were any Inheritance Tax (IHT) forms completed to report the value of the estate?",
     "Gross estate value for IHT",
     "Net estate value for IHT",
     "Net qualifying estate value for IHT",
-    "Did the deceased have a late spouse or civil partner?",
-    "Are you claiming the unused IHT allowance (‘nil-rate band’) of the deceased’s late spouse or civil partner?"
+    "Did the deceased have a late husband, wife or civil partner?",
+    "Are you claiming the unused IHT allowance (‘nil-rate band’) of the deceased’s late husband, wife or civil partner?"
   ],
   "dataKeys": [
     "EE_ihtFormEstateValueCompletedNo",

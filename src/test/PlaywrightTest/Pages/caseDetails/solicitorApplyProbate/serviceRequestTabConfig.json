@@ -1,0 +1,9 @@
+{
+  "tabName": "Service Request",
+  "fields": [
+    "Status",
+    "Amount",
+    "Party",
+    "Request reference"
+  ]
+}

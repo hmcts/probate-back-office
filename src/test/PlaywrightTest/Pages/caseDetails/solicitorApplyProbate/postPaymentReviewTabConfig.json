@@ -1,0 +1,16 @@
+{
+  "tabName": "Service Request",
+  "fields": [
+    "Service request",
+    "Service request reference",
+    "Status",
+    "Paid",
+    "Date created",
+    "Party",
+    "CCD event",
+    "Fee",
+    "Amount",
+    "Total",
+    "Total fees: £"
+  ]
+}

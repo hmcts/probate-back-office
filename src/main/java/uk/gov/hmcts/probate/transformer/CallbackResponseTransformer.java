@@ -32,9 +32,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.probate.service.FeatureToggleService;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
@@ -104,6 +106,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.BO_CASE_CLOSED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -130,11 +133,13 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
-    private static final String SOL_AS_EXEC_ID = "solicitor";
-    private static final String PBA_PAYMENT_METHOD = "pba";
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final String IHT400 = "IHT400";
-    private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection", "boCorrection");
+    private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection",
+            "boCorrection");
+    private static final List<String> ROLLBACK_STATE_LIST = List.of("Pending", "CasePaymentFailed", "SolAdmonCreated",
+            "SolAppCreatedDeceasedDtls", "SolAppCreatedSolicitorDtls", "SolAppUpdated", "SolProbateCreated",
+            "SolIntestacyCreated", "Deleted", "Stopped");
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -147,9 +152,12 @@ public class CallbackResponseTransformer {
     private final OrganisationsRetrievalService organisationsRetrievalService;
     private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
+    private final GrantIssueTooEarlyTransformer grantIssueTooEarlyTransformer;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
-    private final FeatureToggleService featureToggleService;
+    private final AuditEventService auditEventService;
+    private final SecurityUtils securityUtils;
+    private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -209,13 +217,28 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse setCaseSubmissionDate(Document sentEmail, Document coversheet,
+                                                  CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), Optional.empty(),true)
+                .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
+                .applicationSubmittedDate(LocalDate.now().format(dateTimeFormatter))
+                .paymentTaken(YES);
+        if (sentEmail != null) {
+            documentTransformer.addDocument(callbackRequest, sentEmail, false);
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
                                                                 Optional<String> newState,
                                                                 Optional<UserInfo> caseworkerInfo) {
         final CaseDetails cd = callbackRequest.getCaseDetails();
         // set here to ensure tasklist html is correctly generated
         cd.setState(newState.orElse(null));
-
+        if (BO_CASE_CLOSED_NAME.equals(cd.getState())) {
+            cd.getData().setEvidenceHandled(YES);
+        }
         ResponseCaseData responseCaseData =
                 getResponseCaseData(cd,
                         callbackRequest.getEventId(),
@@ -311,14 +334,19 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(),
                         callbackRequest.getEventId(),
-                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        caseworkerInfo,
                         false);
         responseCaseDataBuilder.evidenceHandled(YES);
+        responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (isHubResponseRequired(caseData)) {
             responseCaseDataBuilder.citizenResponseCheckbox(null)
                     .expectedResponseDate(null)
                     .documentUploadIssue(null);
+        }
+        if (YES.equalsIgnoreCase(caseData.getUploadFileCheck())) {
+            responseCaseDataBuilder
+                    .cwDocumentUploadedList(addCaseworkerUploadDocument(caseData));
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailRequestInfoNotificationRequested(
@@ -326,6 +354,18 @@ public class CallbackResponseTransformer {
         }
 
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private List<CollectionMember<UploadDocument>> addCaseworkerUploadDocument(CaseData caseData) {
+        List<CollectionMember<UploadDocument>> currentUploads = caseData.getCwDocumentUploadedList();
+        if (currentUploads == null) {
+            currentUploads = new ArrayList<>();
+        }
+        UploadDocument uploadedDoc = caseData.getCwDocumentUpload();
+        if (uploadedDoc != null) {
+            currentUploads.add(new CollectionMember<>(null, uploadedDoc));
+        }
+        return currentUploads;
     }
 
     public CallbackResponse transformCitizenHubResponse(CallbackRequest callbackRequest) {
@@ -339,6 +379,7 @@ public class CallbackResponseTransformer {
         if (YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())
                 && !YES.equalsIgnoreCase(caseData.getIsSaveAndClose())) {
             responseCaseDataBuilder.evidenceHandled(YES);
+            responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
 
             if (nothingSubmitted(caseData)) {
                 resetRequestInformationFields(responseCaseDataBuilder);
@@ -412,6 +453,7 @@ public class CallbackResponseTransformer {
                     .grantIssuedDate(grantIssuedDate);
 
             responseCaseDataBuilder.evidenceHandled(YES);
+            responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
 
         } else if (documentTransformer.hasDocumentWithType(documents, EDGE_CASE)) {
             String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
@@ -559,6 +601,9 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.matches("No matches found");
         }
 
+        responseCaseDataBuilder.issueEarlySwitch(
+                grantIssueTooEarlyTransformer.defaultIssueTooEarlySwitch(callbackRequest.getCaseDetails().getData())
+        );
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -630,7 +675,15 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(),false);
-        responseCaseDataBuilder.applicantOrganisationPolicy(null);
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        auditEventService.getLatestAuditEventByState(
+                        callbackRequest.getCaseDetails().getId().toString(), ROLLBACK_STATE_LIST,
+                        securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation())
+                .ifPresent(auditEvent -> {
+                    log.info("Audit event found: Case ID = {}, Event State = {}",
+                            callbackRequest.getCaseDetails().getId(), auditEvent.getStateId());
+                    responseCaseDataBuilder.state(auditEvent.getStateId());
+                });
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -726,7 +779,8 @@ public class CallbackResponseTransformer {
         final var applicationFee = transformMoneyGBPToString(feesResponse.getApplicationFeeResponse().getFeeAmount());
         final var totalFee = transformMoneyGBPToString(feesResponse.getTotalAmount());
 
-        final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
+        final var applicationSubmittedDate = feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO) == 0
+                ? dateTimeFormatter.format(LocalDate.now()) : null;
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
         caseDataTransformer
                 .transformForSolicitorApplicationCompletion(callbackRequest, feesResponse.getTotalAmount());
@@ -890,7 +944,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(),
                         callbackRequest.getEventId(),
-                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        caseworkerInfo,
                         doTransform);
 
         if (letterId != null) {
@@ -1090,6 +1144,10 @@ public class CallbackResponseTransformer {
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
+
+        if (SOLICITOR.equals(cd.getApplicationType())) {
+            responseCaseDataBuilder.applicantOrganisationPolicy(buildEmptySolicitorOrganisationPolicy());
+        }
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
@@ -1390,6 +1448,8 @@ public class CallbackResponseTransformer {
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
+            .modifiedOCRFieldList(caseData.getModifiedOCRFieldList())
+            .autoCaseWarnings(caseData.getAutoCaseWarnings())
             .lastModifiedCaseworkerForenames(caseData.getLastModifiedCaseworkerForenames())
             .lastModifiedCaseworkerSurname(caseData.getLastModifiedCaseworkerSurname())
             .informationNeeded(caseData.getInformationNeeded())
@@ -1400,20 +1460,17 @@ public class CallbackResponseTransformer {
             .expectedResponseDate(caseData.getExpectedResponseDate())
             .citizenResponses(caseData.getCitizenResponses())
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
-            .isSaveAndClose(caseData.getIsSaveAndClose());
+            .isSaveAndClose(caseData.getIsSaveAndClose())
+            .executorsNamed(caseData.getExecutorsNamed())
+            .ttl(caseData.getTtl())
+            .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
+            .evidenceHandledDate(caseData.getEvidenceHandledDate())
+            .cwDocumentUploadedList(caseData.getCwDocumentUploadedList());
 
-        if (featureToggleService.enableNewAliasTransformation()) {
-            handleDeceasedAliases(
-                    builder,
-                    caseData,
-                    caseDetails.getId());
-        } else {
-            builder.solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData));
-
-            builder.deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill());
-            builder.deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill());
-            builder.deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill());
-        }
+        handleDeceasedAliases(
+                builder,
+                caseData,
+                caseDetails.getId());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -2213,5 +2270,30 @@ public class CallbackResponseTransformer {
         } else {
             responseCaseDataBuilder.informationNeededByPostSwitch(NO);
         }
+    }
+
+    private OrganisationPolicy buildEmptySolicitorOrganisationPolicy() {
+        return OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
+    }
+
+    public CallbackResponse transformForIssueGrant(CallbackRequest callbackRequest,
+                                                   Optional<UserInfo> caseworkerInfo) {
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(caseDetails,
+                        callbackRequest.getEventId(),
+                        callbackRequest.isStateChanged() ? caseworkerInfo : Optional.empty(),
+                        false);
+        responseCaseDataBuilder.hasValidMatches(
+                hasValidMatchesDefaulter.defaultHasValidMatches(caseDetails.getData())
+        );
+        return transformResponse(responseCaseDataBuilder.build());
     }
 }

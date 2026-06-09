@@ -60,8 +60,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
     private static final String MULTI_EXEC_TC = "The Last Will and Testament ";
     private static final String MULTI_EXEC_TC_DECEASED = "John Smith";
-    private static final String ONE_CODICIL = "with one codicil";
-    private static final String TWO_CODICILS = "with two codicils";
+    private static final String ONE_CODICIL = "with one Codicil";
+    private static final String TWO_CODICILS = "with two Codicils";
     private static final String MULTI_EXEC_TC_ADMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executors";
     private static final String MULTI_EXEC_TC_NOT_NAMED_ADMINISTRATION_STATEMENT = "The Administration of John 's "
@@ -81,6 +81,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     public static final String GOP_JSON = "gop.json";
     public static final String DECEASED_DOMICILE_IN_ENG_WALES_YES = "\"deceasedDomicileInEngWales\": \"Yes\"";
     public static final String DECEASED_DOMICILE_IN_ENG_WALES_NO = "\"deceasedDomicileInEngWales\": \"No\"";
+    public static final String LIMITATION_TEXT_NO = "\"boLimitationText\": \"\"";
+    public static final String LIMITATION_TEXT_YES = "\"boLimitationText\": \"medical negligence\"";
     public static final String ADMON_WILL_JSON = "admonWill.json";
     public static final String ADMON_WILL_REISSUE_JSON = "admonWillReissue.json";
     public static final String INTESTACY_JSON = "intestacy.json";
@@ -149,6 +151,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String AD_COLLIGENDA_GRANT_TEXT = "This is an Ad Colligenda Bona grant and is limited for the "
             + "purposes only of collecting getting in and receiving the estate and doing such acts as may be necessary "
             + "for the preservation of the same in particular, to deal with issues and if necessary to sell";
+    private static final String LIMITATION_TEXT = "medical negligence";
 
     @Test
     void verifySolicitorGenerateGrantShouldReturnOkResponseCode() throws IOException {
@@ -461,6 +464,16 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
                 GENERATE_GRANT_DRAFT);
         assertTrue("Draft grant document does not contain expected text.",
                 response.contains(AD_COLLIGENDA_GRANT_TEXT));
+    }
+
+    @Test
+    void verifyGenerateFreeTextAdColligendaPersonalGrantTypeDraft() throws IOException {
+        String adColligendaPayload = "/default/adColligenda/personal/";
+        String payload = replaceAllInString(getJsonFromFile(adColligendaPayload + AD_COLLIGENDA_JSON),
+                LIMITATION_TEXT_NO, LIMITATION_TEXT_YES);
+        String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_DRAFT);
+        assertTrue("Draft grant document does not contain expected text.",
+                response.contains(LIMITATION_TEXT));
     }
 
     @Test

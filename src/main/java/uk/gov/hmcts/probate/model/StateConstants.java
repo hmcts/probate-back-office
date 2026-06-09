@@ -47,6 +47,8 @@ public class StateConstants {
 
     public static final String STATE_BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
 
+    public static final String STATE_DORMANT = "Dormant";
+
     // inset text for case progress tab
     public static final String STATE_DESC_DEFAULT = "Default";
     public static final String STATE_DESC_WELSH_DEFAULT = "Default";

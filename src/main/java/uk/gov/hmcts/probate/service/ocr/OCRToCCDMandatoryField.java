@@ -6,10 +6,8 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACitizenMandatoryFieldsValidator;
-import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACommonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ASolicitorMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PCitizenMandatoryFieldsValidator;
-import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PCommonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PSolicitorMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa8a.PA8ACitizenMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa8a.PA8ASolicitorMandatoryFieldsValidator;
@@ -27,13 +25,10 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.SOLICTOR_KE
 @Service
 @RequiredArgsConstructor
 public class OCRToCCDMandatoryField {
-
-    private final PA1PCommonMandatoryFieldsValidator pa1PCommonMandatoryFieldsValidator;
     private final PA1PCitizenMandatoryFieldsValidator pa1PCitizenMandatoryFieldsValidator;
     private final PA1PSolicitorMandatoryFieldsValidator pa1PSolicitorMandatoryFieldsValidator;
     private final PA1ACitizenMandatoryFieldsValidator pa1ACitizenMandatoryFieldsValidator;
     private final PA1ASolicitorMandatoryFieldsValidator pa1ASolicitorMandatoryFieldsValidator;
-    private final PA1ACommonMandatoryFieldsValidator pa1ACommonMandatoryFieldsValidator;
     private final PA8ACitizenMandatoryFieldsValidator pa8ACitizenMandatoryFieldsValidator;
     private final PA8ASolicitorMandatoryFieldsValidator pa8ASolicitorMandatoryFieldsValidator;
 
@@ -69,7 +64,6 @@ public class OCRToCCDMandatoryField {
         } else {
             pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         }
-        pa1PCommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         return warnings;
     }
 
@@ -82,7 +76,6 @@ public class OCRToCCDMandatoryField {
         } else {
             pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         }
-        pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         return warnings;
     }
 

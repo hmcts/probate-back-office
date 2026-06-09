@@ -173,11 +173,12 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.caseProgressStopEscalateIssueStoppedTabCheck();
 
         await I.logInfo(scenarioName, 'Resolve stop', caseRef);
+        const nextState = 'Awaiting documentation';
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCaseworkerChooseNextStepAndGo('Resolve stop', caseRef);
-        await I.caseProgressStopEscalateIssueAddCaseResolveStop();
+        await I.caseProgressStopEscalateIssueAddCaseResolveStop(nextState);
         await I.caseProgressClickSubmitAndSignOut();
 
         await I.logInfo(scenarioName, 'Check progress tab for Resolve stop', caseRef);

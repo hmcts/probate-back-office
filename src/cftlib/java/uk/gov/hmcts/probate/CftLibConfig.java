@@ -37,10 +37,13 @@ public class CftLibConfig implements CFTLibConfigurer {
             "caseworker-probate-systemupdate",
             "caseworker-probate-scheduler",
             "caseworker-probate-charity",
+            "caseworker-probate-legacysearch",
             "citizen",
             "caseworker-caa",
             "caseworker-probate-rparobot",
-            "caseworker-approver"
+            "caseworker-approver",
+            "caseworker-wa-task-configuration",
+            "TTL_profile"
         );
 
         try {

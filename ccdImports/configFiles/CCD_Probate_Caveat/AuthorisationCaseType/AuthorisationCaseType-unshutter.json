@@ -10,5 +10,6 @@
   {"CaseTypeID": "Caveat", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
+  {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "UserRole": "TTL_profile", "CRUD": "CRU"}
 ]

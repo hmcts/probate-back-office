@@ -1,0 +1,35 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "data.lastModifiedDateForDormant": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "match": {
+            "state": "Dormant"
+          }
+        }
+      ],
+      "must_not": {
+          "terms": {
+            "data.boCaseStopReasonList.value.caseStopReason.keyword": [
+              "CaveatMatch",
+              "Permanent Caveat"
+            ]
+          }
+      }
+    }
+  },
+  "size": %s,
+  "_source": ["reference"],
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]

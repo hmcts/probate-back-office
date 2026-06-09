@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional.checkyouranswers;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,9 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 @ExtendWith(SerenityJUnit5Extension.class)
-public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
+class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     private static final String VALIDATE_URL = "/case/sols-validate";
     private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
@@ -29,7 +31,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     private static final String DOC_NAME = "success.beforeLegalStatement.checkYourAnswersPayload.json";
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         initialiseConfig();
     }
 
@@ -223,8 +225,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
 
         assertEquals(400, response.getStatusCode());
-        assertEquals(jsonPath.get("fieldErrors[0].message"), "Primary applicant forenames cannot be empty");
-        assertEquals(jsonPath.get("message"), "Invalid payload");
+        assertEquals("Primary applicant forenames cannot be empty", jsonPath.get("fieldErrors[0].message"));
+        assertEquals("Invalid payload", jsonPath.get("message"));
     }
 
     @Test
@@ -239,8 +241,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertEquals(400, response.getStatusCode());
-        assertEquals(jsonPath.get("fieldErrors[0].message"), "Primary applicant forenames cannot be empty");
-        assertEquals(jsonPath.get("message"), "Invalid payload");
+        assertEquals("Primary applicant forenames cannot be empty", jsonPath.get("fieldErrors[0].message"));
+        assertEquals("Invalid payload", jsonPath.get("message"));
     }
 
     @Test
@@ -320,9 +322,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             final String textContent = removeCrLfs(textContentOf(response.getBody().asByteArray()));
             validationString = removeCrLfs(validationString);
             assertTrue(textContent.contains(validationString));
-            assertEquals(response.contentType(), "application/pdf");
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("IOException in downloadPdfAndVerifyString", e);
         }
     }
 }

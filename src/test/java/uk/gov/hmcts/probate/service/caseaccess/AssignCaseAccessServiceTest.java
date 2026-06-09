@@ -4,9 +4,9 @@ import feign.FeignException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.service.IdamApi;
@@ -26,19 +26,19 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {AssignCaseAccessService.class})
 @ExtendWith(SpringExtension.class)
 class AssignCaseAccessServiceTest {
-    @MockBean
+    @MockitoBean
     private AssignCaseAccessClient assignCaseAccessClient;
 
     @Autowired
     private AssignCaseAccessService assignCaseAccessService;
 
-    @MockBean
+    @MockitoBean
     private AuthTokenGenerator authTokenGenerator;
 
-    @MockBean
+    @MockitoBean
     private CcdDataStoreService ccdDataStoreService;
 
-    @MockBean
+    @MockitoBean
     private IdamApi idamApi;
 
     @Test

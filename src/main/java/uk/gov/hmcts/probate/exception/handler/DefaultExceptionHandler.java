@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
+import uk.gov.hmcts.probate.exception.DataMigrationException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.exception.SocketException;
@@ -20,12 +21,12 @@ import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -41,7 +42,6 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String SERVER_ERROR = "Server Error";
     public static final String CONNECTION_ERROR = "Connection error";
     public static final String UNAUTHORISED_DATA_EXTRACT_ERROR = "Unauthorised access to Data-Extract error";
-
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handle(BadRequestException exception) {
@@ -94,16 +94,6 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
     }
 
-    @ExceptionHandler(value = NotificationClientException.class)
-    public ResponseEntity<ErrorResponse> handle(NotificationClientException exception) {
-        log.warn("Notification service exception", exception);
-        ErrorResponse errorResponse =
-            new ErrorResponse(SERVICE_UNAVAILABLE.value(), CLIENT_ERROR, exception.getMessage());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
-    }
-
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<ErrorResponse> handle(NotFoundException exception) {
         log.warn("Not found exception", exception);
@@ -143,4 +133,26 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.ok(callbackResponse);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<CallbackResponse> handle(RuntimeException exception) {
+        String errorId = UUID.randomUUID().toString();
+        log.error("Unhandled RuntimeException [ID: {}]: {}", errorId, exception.getMessage(), exception);
+        List<String> errors = List.of("A system error occurred within a probate callback. "
+                + "(Error ID: " + errorId + "). "
+                + "If this persists, an incident may need to be raised.",
+                "Profwyd gwall system o fewn  galwad yn ôl profiant. "
+                        + "(Dynodydd Gwall: " + errorId + "). "
+                        + "Os bydd hyn yn parhau, mae’n bosib y bydd angen codi achos.");
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
+        return ResponseEntity.ok(callbackResponse);
+    }
+
+    @ExceptionHandler(DataMigrationException.class)
+    public ResponseEntity<CallbackResponse>  handle(DataMigrationException exception) {
+        log.error("Exception within data migration", exception);
+
+        List<String> errors = List.of(exception.getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(errors).build();
+        return ResponseEntity.ok(callbackResponse);
+    }
 }

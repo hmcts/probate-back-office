@@ -12,6 +12,8 @@ public final class Constants {
 
     public static final String YES = "Yes";
     public static final String NO = "No";
+    public static final String TRUE = "TRUE";
+    public static final String FALSE = "FALSE";
     public static final int CAVEAT_LIFESPAN = 6;
     public static final int CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS = 6;
     public static final int STANDING_SEARCH_LIFESPAN = 6;
@@ -67,6 +69,7 @@ public final class Constants {
     public static final String PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD = "adoptedChild";
 
     public static final String TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED = "TCTPartSuccPowerRes";
+    public static final String TITLE_AND_CLEARING_FIRM_CEASED_TRADING_NO_SUCCESSOR = "TCTFirmCeasedTradingNoSucc";
     public static final String TITLE_AND_CLEARING_PARTNER_POWER_RESERVED = "TCTPartPowerRes";
     public static final String TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR = "TCTSolePrinSucc";
     public static final String TITLE_AND_CLEARING_SOLE_PRINCIPLE = "TCTSolePrin";
@@ -92,7 +95,7 @@ public final class Constants {
     public static final String PA14_FORM_TEXT = "Medical certificate completed by a health professional";
 
     public static final String PA14_FORM_TEXT_WELSH
-            = "Tystysgrif feddygol wedi'i chwblhau gan weithiwr iechyd proffesiynol ";
+            = "Tystysgrif feddygol wedi'i chwblhau gan weithiwr iechyd proffesiynol";
     public static final String PA14_FORM_TEXT_AFTER = "(PA14) for ";
     public static final String PA14_FORM_TEXT_AFTER_WELSH = "(PA14) ar gyfer";
     public static final String PA15_FORM_URL = "https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights";

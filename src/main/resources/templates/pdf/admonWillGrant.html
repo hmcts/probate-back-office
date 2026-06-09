@@ -12,11 +12,11 @@
 {% endmacro %}
 
 {% macro codicils(cd) %}
-{% if cd == 1 or cd == "1" %} with one codicil
-{% elseif cd == 2 or cd == "2" %} with two codicils
-{% elseif cd == 3 or cd == "3" %} with three codicils
-{% elseif cd == 4 or cd == "4" %} with four codicils
-{% elseif cd == 5 or cd == "5" %} with five codicils
+{% if cd == 1 or cd == "1" %} with one Codicil
+{% elseif cd == 2 or cd == "2" %} with two Codicils
+{% elseif cd == 3 or cd == "3" %} with three Codicils
+{% elseif cd == 4 or cd == "4" %} with four Codicils
+{% elseif cd == 5 or cd == "5" %} with five Codicils
 {% endif %}
 {% endmacro %}
 
@@ -235,7 +235,7 @@
                 {% endif %} <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>{% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{case_details.case_data.domicilityCountry}}{% else %}England and Wales{% endif %}</strong>
             </p>
             <p>The Last Will and Testament <strong>
-                {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}{% if case_details.case_data.willHasCodicils == "Yes" %}{% if case_details.case_data.codicilAddedDateList != null %}{{ codicils(case_details.case_data.codicilAddedDateList|length) }}{% elseif case_details.case_data.willNumberOfCodicils != null and case_details.case_data.willNumberOfCodicils != "" %}{{ codicils(case_details.case_data.willNumberOfCodicils) }}{% endif %}{% endif %}
+                {% if case_details.case_data.willHasCodicils == "Yes" %}{% if case_details.case_data.codicilAddedDateList != null %}{{ codicils(case_details.case_data.codicilAddedDateList|length) }}{% elseif case_details.case_data.willNumberOfCodicils != null and case_details.case_data.willNumberOfCodicils != "" %}{{ codicils(case_details.case_data.willNumberOfCodicils) }}{% endif %}{% endif %}{% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
                 </strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
                 The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by this court to the following administrator{% set applyingExecCounter = 0 %}{% for executor
                 in case_details.case_data.executorsApplying %}{% set applyingExecCounter = applyingExecCounter + 1 %}{%

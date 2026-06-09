@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.probate.config.FeignClientConfiguration;
-import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
 import uk.gov.hmcts.probate.model.TokenExchangeResponse;
+import uk.gov.hmcts.reform.idam.client.models.UserDetails;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -23,24 +24,6 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 
 @FeignClient(name = "idam-api", url = "${auth.provider.client.user}", configuration = FeignClientConfiguration.class)
 public interface IdamApi {
-
-    /**
-     * User Authenticate method.
-     *
-     * @deprecated IDAM oauth2/authorize endpoint is deprecated
-     */
-    @Deprecated
-    @PostMapping(
-        value = "/oauth2/authorize",
-        headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
-        consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
-    )
-    AuthenticateUserResponse authenticateUser(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) final String authorisation,
-        @RequestParam("response_type") final String responseType,
-        @RequestParam("client_id") final String clientId,
-        @RequestParam("redirect_uri") final String redirectUri
-    );
 
     @PostMapping(
         value = "/oauth2/token",
@@ -75,5 +58,9 @@ public interface IdamApi {
     )
     TokenResponse generateOpenIdToken(@RequestBody TokenRequest tokenRequest);
 
-
+    @GetMapping("/api/v1/users")
+    List<UserDetails> searchUsers(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation,
+            @RequestParam("query") final String elasticSearchQuery
+    );
 }

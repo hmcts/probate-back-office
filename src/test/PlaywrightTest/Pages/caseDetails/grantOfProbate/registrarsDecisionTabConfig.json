@@ -1,0 +1,12 @@
+{
+  "tabName": "Registrar Direction",
+  "fields": [
+    "Direction added",
+    "Registrar decision",
+    "Further information"
+  ],
+  "dataKeys": [
+    "registrarsDecision_decision_probateRefused",
+    "registrarsDecision_furtherInformation"
+  ]
+}

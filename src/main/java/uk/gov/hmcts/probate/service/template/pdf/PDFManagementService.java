@@ -1,6 +1,8 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
@@ -14,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
@@ -21,7 +24,6 @@ import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -37,24 +39,24 @@ public class PDFManagementService {
     static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion";
     private final PDFGeneratorService pdfGeneratorService;
     private final DocumentManagementService documentManagementService;
-    private final HttpServletRequest httpServletRequest;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFDecoratorService pdfDecoratorService;
+    private final SecurityUtils securityUtils;
 
     @Autowired
     public PDFManagementService(PDFGeneratorService pdfGeneratorService,
-                                HttpServletRequest httpServletRequest,
                                 DocumentManagementService documentManagementService,
                                 PDFServiceConfiguration pdfServiceConfiguration,
                                 FileSystemResourceService fileSystemResourceService,
-                                PDFDecoratorService pdfDecoratorService) {
+                                PDFDecoratorService pdfDecoratorService,
+                                SecurityUtils securityUtils) {
         this.pdfGeneratorService = pdfGeneratorService;
         this.documentManagementService = documentManagementService;
-        this.httpServletRequest = httpServletRequest;
         this.pdfServiceConfiguration = pdfServiceConfiguration;
         this.fileSystemResourceService = fileSystemResourceService;
         this.pdfDecoratorService = pdfDecoratorService;
+        this.securityUtils = securityUtils;
     }
 
     public Document generateAndUpload(CallbackRequest callbackRequest, DocumentType documentType) {
@@ -153,7 +155,7 @@ public class PDFManagementService {
                 .documentLink(documentLink)
                 .documentType(documentType)
                 .documentDateAdded(LocalDate.now())
-                .documentGeneratedBy(httpServletRequest.getHeader("user-id"))
+                .documentGeneratedBy(securityUtils.getOrDefaultCaseworkerSecurityDTO().getUserId())
                 .build();
         } catch (IOException e) {
             log.error(e.getMessage(), e);
@@ -186,5 +188,23 @@ public class PDFManagementService {
 
     public String getDecodedSignature() {
         return decryptedFileAsBase64String(pdfServiceConfiguration.getGrantSignatureEncryptedFile());
+    }
+
+    /** Converts an input HTML string to an XHTML string.
+     * This is needed because the underlying pdfGeneratorService uses an XML parser rather
+     * than an HTML parser.
+     * @param inputHtml an HTML string
+     * @return the input rendered as XHTML
+     */
+    public String rerenderAsXhtml(String inputHtml) {
+        final Safelist safelist = Safelist.relaxed();
+
+
+        final org.jsoup.nodes.Document.OutputSettings outputSettings = new org.jsoup.nodes.Document.OutputSettings()
+                .syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml)
+                .charset(StandardCharsets.UTF_8)
+                .prettyPrint(false);
+
+        return Jsoup.clean(inputHtml, "", safelist, outputSettings);
     }
 }

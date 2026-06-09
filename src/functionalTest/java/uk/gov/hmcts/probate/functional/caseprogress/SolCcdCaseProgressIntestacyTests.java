@@ -1,12 +1,15 @@
 package uk.gov.hmcts.probate.functional.caseprogress;
 
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 
 import java.io.IOException;
+
+import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
 @ExtendWith(SerenityJUnit5Extension.class)
 public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
@@ -116,8 +119,11 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     }
 
     private String getAddApplicationDetailsUrl() {
-        return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY.replaceFirst("<CASE_ID>",
-            "1528365719153338");
+        return StringUtils.replaceEach(
+            UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY,
+            new String[]{"<CASE_ID>", "<CASE_TYPE>"},
+            new String[]{"1528365719153338", GRANT_OF_REPRESENTATION.getCode()}
+        );
     }
 
     @Test

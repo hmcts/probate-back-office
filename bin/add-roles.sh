@@ -4,6 +4,9 @@ set -eu
 
 dir=$(dirname ${0})
 
+export USER_TOKEN_ENV=$(${binFolder}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Pa55word11})
+export SERVICE_TOKEN_ENV=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
+
 ${dir}/idam-role.sh caseworker
 ${dir}/idam-role.sh caseworker-probate
 ${dir}/idam-role.sh caseworker-probate-issuer
@@ -12,6 +15,7 @@ ${dir}/idam-role.sh caseworker-probate-authoriser
 ${dir}/idam-role.sh caseworker-probate-systemupdate
 ${dir}/idam-role.sh caseworker-probate-caseofficer
 ${dir}/idam-role.sh caseworker-probate-rparobot
+${dir}/idam-role.sh caseworker-probate-legacysearch
 ${dir}/idam-role.sh caseworker-probate-caseadmin
 ${dir}/idam-role.sh caseworker-probate-registrar
 ${dir}/idam-role.sh caseworker-probate-superuser
@@ -22,6 +26,7 @@ ${dir}/idam-role.sh payment
 ${dir}/idam-role.sh ccd-import
 ${dir}/idam-role.sh caseworker-caa
 ${dir}/idam-role.sh caseworker-approver
+${dir}/idam-role.sh TTL_profile
 
 # User used during the CCD import and ccd-role creation
 ${dir}/idam-create-caseworker.sh "ccd-import" "ccd.docker.default@hmcts.net"

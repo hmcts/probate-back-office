@@ -7,7 +7,6 @@ Feature('Solicitor - Share A Case').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Share A Case';
 
 Scenario(scenarioName, async function ({I}) {
-
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
     // await I.logInfo(scenarioName, 'Login as PP user 1');
@@ -16,11 +15,19 @@ Scenario(scenarioName, async function ({I}) {
     const nextStepName = 'Deceased details';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
+    await I.selectCaseTypeOptions(
+        createCaseConfig.list2_text_gor,
+        createCaseConfig.list3_text_solGor
+    );
     await I.applyForProbatePage1();
-    await I.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
+    await I.applyForProbatePage2(
+        isSolicitorNamedExecutor,
+        isSolicitorApplyingExecutor
+    );
     await I.cyaPage();
-    const sacCaseRef = await I.grabTextFrom('//div[@class="column-one-half"]//ccd-case-header');
+    const sacCaseRef = await I.grabTextFrom(
+        '//div[@class="column-one-half"]//ccd-case-header'
+    );
     const caseIdShareCase = sacCaseRef.replace(/#/g, '');
     const sacCaseRefNumber = sacCaseRef.replace(/\D/g, '');
     await I.shareCaseSelection(sacCaseRefNumber);
@@ -35,5 +42,4 @@ Scenario(scenarioName, async function ({I}) {
     // await I.logInfo(scenarioName, 'Delete the case ' + caseRef + ' and sign out');
     await I.authenticateUserShareCase(false);
     await I.shareCaseDelete(caseIdShareCase, sacCaseRef);
-
 }).retry(testConfig.TestRetryScenarios);

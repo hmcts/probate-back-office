@@ -1,0 +1,52 @@
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        { "match": { "state": "Dormant" }},
+        {
+          "terms": {
+            "data.boCaseStopReasonList.value.caseStopReason.keyword": [
+              "CaveatMatch",
+              "Permanent Caveat",
+              "MatchingApplication"
+            ]
+          }
+        }
+      ],
+      "filter": [
+        {
+          "range": {
+            "data.lastModifiedDateForDormant": {
+              "gte": "%s",
+              "lte": "%s"
+            }
+          }
+        },
+        {
+          "terms": {
+            "state.keyword": [
+              "BOCaseMatchingIssueGrant",
+              "BOCaseQA",
+              "BOReadyToIssue",
+              "BORegistrarEscalation",
+              "BOCaseStopped",
+              "CasePrinted",
+              "BOSotGenerated",
+              "BORedecNotificationSent",
+              "BOCaseStoppedAwaitRedec",
+              "BOCaseImported",
+              "BOCaveatPermenant",
+              "BOCaseWorkerEscalation"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "size": %s,
+  "_source": ["reference"],
+  "sort": [
+    {
+      "reference.keyword": "asc"
+    }
+  ]

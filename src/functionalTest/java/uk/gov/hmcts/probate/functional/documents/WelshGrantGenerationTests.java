@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 
@@ -58,6 +58,12 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
     void verifyPersonalGenerateWelshGrantAdColligenda() throws IOException {
         verifyPersonalWelshGrantText("personalPayloadGrantAdColligendaWelsh.json",
                 "expectedDocumentGrantAdColligendaWelsh.txt");
+    }
+
+    @Test
+    void verifyPersonalGenerateWelshGrantAdColligendaWithLimitationText() throws IOException {
+        verifyPersonalWelshGrantText("personalPayloadLimitationTextGrantAdColligendaWelsh.json",
+                "expectedDocumentWithLimitationTextAdColligendaWelsh.txt");
     }
 
     private void verifyPersonalWelshGrantText(String payload, String expectedFile) throws IOException {

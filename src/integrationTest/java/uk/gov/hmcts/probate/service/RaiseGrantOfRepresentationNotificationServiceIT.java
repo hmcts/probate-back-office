@@ -7,8 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
+import uk.gov.hmcts.probate.service.notification.NotificationClientProvider;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -61,15 +62,15 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
             .roles(Arrays.asList("caseworker-probate"))
             .build());
 
-    @MockBean
+    @MockitoBean
     BulkPrintService bulkPrintService;
     @Autowired
     private RaiseGrantOfRepresentationNotificationService handleGrantReceivedNotification;
-    @MockBean
+    @MockitoBean
     private SendEmailResponse sendEmailResponse;
-    @MockBean
+    @MockitoBean
     private PDFManagementService pdfManagementService;
-    @MockBean
+    @MockitoBean
     private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
     @Mock
     private EventValidationService eventValidationService;
@@ -79,11 +80,13 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
     private CallbackResponse callbackResponse;
     @Mock
     private DateFormatterService dateFormatterService;
-    @MockBean
+    @MockitoBean
     private ServiceAuthTokenGenerator tokenGenerator;
-    @MockBean
+    @MockitoBean
     private DocumentManagementService documentManagementService;
-    @SpyBean
+    @MockitoBean
+    private NotificationClientProvider notificationClientProvider;
+    @MockitoSpyBean(name = "primaryNotificationClient")
     private NotificationClient notificationClient;
     private CallbackRequest callbackRequest;
 
@@ -99,6 +102,7 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
         SendLetterResponse letterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), any(), any()))
             .thenReturn(letterResponse);
+        when(notificationClientProvider.getClient()).thenReturn(notificationClient);
     }
 
     @Disabled

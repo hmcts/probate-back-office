@@ -32,6 +32,7 @@ import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     private static final String CAVEAT_RAISED = "/caveat/raise";
+    private static final String SOLICITOR_CREATE_CASE = "/caveat/setCaseSubmissionDate";
 
     private static final String RAISED_CAVEAT_VALIDATE = "/caveat/raise-caveat-validate";
     private static final String CAVEAT_DEFAULT_VALUES = "/caveat/defaultValues";
@@ -92,6 +93,11 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     void verifyCaveatRaisedShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_PAYLOAD, CAVEAT_RAISED);
+    }
+
+    @Test
+    void verifySolicitorCreateCaseShouldReturnOkResponseCode() throws IOException {
+        validatePostSuccess(DEFAULT_PAYLOAD, SOLICITOR_CREATE_CASE);
     }
 
     @Test

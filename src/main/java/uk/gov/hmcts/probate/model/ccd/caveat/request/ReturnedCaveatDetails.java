@@ -1,19 +1,28 @@
 package uk.gov.hmcts.probate.model.ccd.caveat.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import uk.gov.hmcts.reform.probate.model.cases.CaseState;
+
+import java.time.LocalDateTime;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ReturnedCaveatDetails {
 
     @Valid
     @JsonProperty(value = "case_data")
     private final CaveatData data;
 
-    private final String[] lastModified;
+    @JsonProperty(value = "last_modified")
+    private final LocalDateTime lastModified;
+
+    @JsonProperty
+    private final CaseState state;
 
     @NotNull
     private final Long id;

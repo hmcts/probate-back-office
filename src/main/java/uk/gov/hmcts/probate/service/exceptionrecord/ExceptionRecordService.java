@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.exceptionrecord;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
@@ -14,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 import uk.gov.hmcts.probate.model.exceptionrecord.ResponseCaveatDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
@@ -25,12 +25,15 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveat
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordGrantOfRepresentationMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptionRecordCaseDataValidator;
+import uk.gov.hmcts.probate.service.ocr.OCRFieldModifierUtils;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,7 +41,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static java.util.stream.Collectors.toList;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS;
 import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_ADMON;
@@ -49,51 +51,60 @@ public class ExceptionRecordService {
 
     private static final String CAVEAT_EXTEND_CASE_REFERENCE_KEY = "caseReference";
 
-    @Autowired
-    List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry;
+    private final List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry;
+    private final EventValidationService eventValidationService;
+    private final CaveatNotificationService caveatNotificationService;
+    private final ExceptionRecordCaveatMapper erCaveatMapper;
+    private final ExceptionRecordGrantOfRepresentationMapper erGrantOfRepresentationMapper;
+    private final ScannedDocumentMapper documentMapper;
+    private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
+    private final CallbackResponseTransformer grantOfRepresentationTransformer;
+    private final OCRFieldModifierUtils ocrFieldModifierUtils;
+    private final ExceptionRecordCaseDataValidator exceptionRecordCaseDataValidator;
 
-    @Autowired
-    EventValidationService eventValidationService;
-
-    @Autowired
-    CaveatNotificationService caveatNotificationService;
-
-    @Autowired
-    ExceptionRecordCaveatMapper erCaveatMapper;
-
-    @Autowired
-    ExceptionRecordGrantOfRepresentationMapper erGrantOfRepresentationMapper;
-
-    @Autowired
-    ScannedDocumentMapper documentMapper;
-
-    @Autowired
-    CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
-
-    @Autowired
-    CallbackResponseTransformer grantOfRepresentationTransformer;
+    public ExceptionRecordService(List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry,
+                                  EventValidationService eventValidationService,
+                                  CaveatNotificationService caveatNotificationService,
+                                  ExceptionRecordCaveatMapper erCaveatMapper,
+                                  ExceptionRecordGrantOfRepresentationMapper erGrantOfRepresentationMapper,
+                                  ScannedDocumentMapper documentMapper,
+                                  CaveatCallbackResponseTransformer caveatCallbackResponseTransformer,
+                                  CallbackResponseTransformer grantOfRepresentationTransformer,
+                                  OCRFieldModifierUtils ocrFieldModifierUtils,
+                                  ExceptionRecordCaseDataValidator exceptionRecordCaseDataValidator) {
+        this.validationRuleCaveatsExpiry = validationRuleCaveatsExpiry;
+        this.eventValidationService = eventValidationService;
+        this.caveatNotificationService = caveatNotificationService;
+        this.erCaveatMapper = erCaveatMapper;
+        this.erGrantOfRepresentationMapper = erGrantOfRepresentationMapper;
+        this.documentMapper = documentMapper;
+        this.caveatCallbackResponseTransformer = caveatCallbackResponseTransformer;
+        this.grantOfRepresentationTransformer = grantOfRepresentationTransformer;
+        this.ocrFieldModifierUtils = ocrFieldModifierUtils;
+        this.exceptionRecordCaseDataValidator = exceptionRecordCaseDataValidator;
+    }
 
     public SuccessfulTransformationResponse createCaveatCaseFromExceptionRecord(
         ExceptionRecordRequest erRequest,
         List<String> warnings) {
 
-        List<String> errors = new ArrayList<String>();
-
         try {
             log.info("About to map Caveat OCR fields to CCD for case: {}", erRequest.getExceptionRecordId());
-            CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
+            ExceptionRecordOCRFields exceptionRecordOCRFields = erRequest.getOCRFieldsObject();
+
+            CaveatData caveatData = erCaveatMapper.toCcdData(exceptionRecordOCRFields);
 
             // Add bulkScanReferenceId
             caveatData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
             // Add scanned documents
             log.info("About to map Caveat Scanned Documents to CCD.");
-            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+            exceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
                     erRequest.getScannedDocuments(), CaseType.CAVEAT);
             caveatData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
-                .collect(toList()));
+                .toList());
 
             caveatData.setApplicationSubmittedDate(erRequest.getDeliveryDate().toLocalDate());
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
@@ -119,17 +130,33 @@ public class ExceptionRecordService {
         try {
             log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
                     erRequest.getExceptionRecordId());
-            GrantOfRepresentationData grantOfRepresentationData =
-                    erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
-            ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
+            ExceptionRecordOCRFields exceptionRecordOCRFields = erRequest.getOCRFieldsObject();
+
+            List<CollectionMember<ModifiedOCRField>> modifiedFields = ocrFieldModifierUtils
+                    .setDefaultGorValues(exceptionRecordOCRFields, grantType);
+
+            List<CollectionMember<String>> autoCaseWarnings = ocrFieldModifierUtils
+                    .checkWarnings(exceptionRecordOCRFields);
+
+            log.info("AutoCaseWarnings: {}", autoCaseWarnings);
+            GrantOfRepresentationData grantOfRepresentationData =
+                    erGrantOfRepresentationMapper.toCcdData(exceptionRecordOCRFields, grantType);
+
+            exceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
+
+            grantOfRepresentationData.setModifiedOCRFieldList(modifiedFields);
+
+            grantOfRepresentationData.setAutoCaseWarnings(autoCaseWarnings);
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
+            exceptionRecordCaseDataValidator.validateDateOfDeath(grantOfRepresentationData);
+
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");
-            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+            exceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
                     erRequest.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
@@ -203,7 +230,7 @@ public class ExceptionRecordService {
             log.info("Mapping Caveat Scanned Documents to case.");
             uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = caveatDetails.getData();
             int originalScannedNumber = caveatCallbackRequest.getCaseDetails().getData().getScannedDocuments().size();
-            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+            exceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
                     erRequest.getScannedDocuments(), CaseType.CAVEAT);
             caveatCallbackRequest.getCaseDetails().getData().setScannedDocuments(
                     mergeScannedDocuments(

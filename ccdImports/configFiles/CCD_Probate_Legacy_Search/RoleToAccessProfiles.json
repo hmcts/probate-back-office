@@ -1,0 +1,6 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "RoleName": "idam:caseworker-probate-issuer", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-issuer"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "RoleName": "idam:caseworker-probate-caseadmin", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-caseadmin"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "RoleName": "idam:caseworker-probate-superuser", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-superuser"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "RoleName": "idam:caseworker-probate-legacysearch", "ReadOnly": "N", "AccessProfiles": "caseworker-probate-legacysearch"}
+]

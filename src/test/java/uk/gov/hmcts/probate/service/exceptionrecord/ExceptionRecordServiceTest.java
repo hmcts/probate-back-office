@@ -6,11 +6,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.config.BulkScanConfig;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
@@ -29,14 +29,18 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveatMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordGrantOfRepresentationMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper;
+import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptionRecordCaseDataValidator;
+import uk.gov.hmcts.probate.service.ocr.OCRFieldModifierUtils;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ModifiedOCRField;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -48,6 +52,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
@@ -62,7 +67,7 @@ class ExceptionRecordServiceTest {
     private static final String EXCEPTION_RECORD_GOR_EVENT_ID = "caseCreated";
     @Mock
     CaveatNotificationService caveatNotificationService;
-    @InjectMocks
+
     private ExceptionRecordService erService;
 
     @Mock
@@ -83,6 +88,17 @@ class ExceptionRecordServiceTest {
     @Mock
     private EventValidationService eventValidationService;
 
+    @Mock
+    private BulkScanConfig bulkScanConfig;
+    @Mock
+    private OCRFieldModifierUtils ocrFieldModifierUtils;
+
+    @Mock
+    private ExceptionRecordCaseDataValidator exceptionRecordCaseDataValidator;
+
+    @Mock
+    private CaveatsExpiryValidationRule caveatExpiryRule;
+
     private TestUtils testUtils = new TestUtils();
 
     private ExceptionRecordRequest erRequestCaveat;
@@ -95,11 +111,15 @@ class ExceptionRecordServiceTest {
 
     private ExceptionRecordRequest erRequestGrantOfProbateSolsIntestacy;
 
+    private ExceptionRecordRequest erRequestGrantOfProbateMissingValue;
+
     private CaveatCaseUpdateRequest caveatCaseUpdateRequest;
 
     private String exceptionRecordPayloadPA8A;
 
     private String exceptionRecordPayloadPA1P;
+
+    private String exceptionRecordPayloadPA1PMissingValue;
 
     private String exceptionRecordPayloadPA1A;
 
@@ -127,6 +147,29 @@ class ExceptionRecordServiceTest {
     public void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
 
+        List<CaveatsExpiryValidationRule> validationRules = List.of(caveatExpiryRule);
+        erService = new ExceptionRecordService(
+                validationRules,
+                eventValidationService,
+                caveatNotificationService,
+                erCaveatMapper,
+                erGrantOfRepresentationMapper,
+                documentMapper,
+                caveatTransformer,
+                grantOfProbatetransformer,
+                ocrFieldModifierUtils,
+                exceptionRecordCaseDataValidator
+        );
+
+        Mockito.doNothing().when(exceptionRecordCaseDataValidator)
+                .validateInputScannedDocumentTypes(Mockito.any(), Mockito.any());
+
+        Mockito.doNothing().when(exceptionRecordCaseDataValidator)
+                .validateIhtValues(Mockito.any());
+
+        Mockito.doNothing().when(exceptionRecordCaseDataValidator)
+                .validateDateOfDeath(Mockito.any());
+
         exceptionRecordPayloadPA8A =
             testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
 
@@ -143,6 +186,10 @@ class ExceptionRecordServiceTest {
         exceptionRecordPayloadPA1A =
                 testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorSingleExecutorPA1A.json");
 
+        exceptionRecordPayloadPA1PMissingValue =
+                testUtils.getStringFromFile(
+                        "expectedExceptionRecordDataCitizenSingleExecutorPA1PMissingSwitchDate.json");
+
         erRequestCaveat = getObjectMapper().readValue(exceptionRecordPayloadPA8A, ExceptionRecordRequest.class);
 
         erRequestGrantOfProbate = getObjectMapper().readValue(exceptionRecordPayloadPA1P, ExceptionRecordRequest.class);
@@ -155,6 +202,9 @@ class ExceptionRecordServiceTest {
 
         erRequestGrantOfProbateSolsIntestacy = getObjectMapper()
                 .readValue(exceptionRecordPayloadPA1A, ExceptionRecordRequest.class);
+
+        erRequestGrantOfProbateMissingValue = getObjectMapper()
+                .readValue(exceptionRecordPayloadPA1PMissingValue, ExceptionRecordRequest.class);
 
         warnings = new ArrayList<String>();
         caveatData = new CaveatData();
@@ -198,6 +248,8 @@ class ExceptionRecordServiceTest {
         when(caveatTransformer.bulkScanCaveatCaseTransform(any())).thenReturn(caveatCaseDetailsResponse);
         when(grantOfProbatetransformer.bulkScanGrantOfRepresentationCaseTransform(any()))
             .thenReturn(grantOfProbateCaseDetailsResponse);
+
+        when(bulkScanConfig.getPostcode()).thenReturn("MI55 1NG");
     }
 
     @Test
@@ -233,6 +285,7 @@ class ExceptionRecordServiceTest {
             .thenReturn(caveatCallbackResponse);
         when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
             .thenReturn(caveatCallbackResponse);
+        when(caveatExpiryRule.validate(any())).thenReturn(Collections.emptyList());
         ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
         when(responseCaseveatData.getScannedDocuments()).thenReturn(Arrays.asList(
             new CollectionMember(null, null)));
@@ -260,6 +313,7 @@ class ExceptionRecordServiceTest {
             .thenReturn(caveatCallbackResponse);
         when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
             .thenReturn(caveatCallbackResponse);
+        when(caveatExpiryRule.validate(any())).thenReturn(Collections.emptyList());
         ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
         when(responseCaseveatData.getScannedDocuments()).thenReturn(Arrays.asList(
             new CollectionMember(null, null)));
@@ -287,6 +341,7 @@ class ExceptionRecordServiceTest {
                     .thenReturn(caveatCallbackResponse);
             when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
                     .thenReturn(caveatCallbackResponse);
+            when(caveatExpiryRule.validate(any())).thenReturn(Collections.emptyList());
             ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
             ScannedDocument scannedDocument = ScannedDocument.builder().build();
             when(responseCaseveatData.getScannedDocuments())
@@ -311,6 +366,7 @@ class ExceptionRecordServiceTest {
                     .thenReturn(caveatCallbackResponse);
             when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
                     .thenReturn(caveatCallbackResponse);
+            when(caveatExpiryRule.validate(any())).thenReturn(Collections.emptyList());
             ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
             ScannedDocument scannedDocument = ScannedDocument.builder().build();
             when(responseCaseveatData.getScannedDocuments())
@@ -437,5 +493,32 @@ class ExceptionRecordServiceTest {
                 erService.createCaveatCaseFromExceptionRecord(erRequestCaveat, warnings);
         CaveatData caveatDataResponse = (CaveatData) response.getCaseCreationDetails().getCaseData();
         assertEquals(caveatDataResponse.getApplicationSubmittedDate(), erRequestCaveat.getDeliveryDate().toLocalDate());
+    }
+
+    @Test
+    void createGrantOfProbateCaseWithModifiedOCRFieldList() {
+        List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ModifiedOCRField>> modifiedOCRFieldList =
+                new ArrayList<>();
+        ModifiedOCRField modifiedOCRField = ModifiedOCRField.builder()
+                .fieldName("deceasedDiedOnAfterSwitchDate")
+                .originalValue(null)
+                .build();
+        modifiedOCRFieldList
+                .add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember(null, modifiedOCRField));
+        when(ocrFieldModifierUtils.setDefaultGorValues(any(), any()))
+                .thenReturn(modifiedOCRFieldList);
+        SuccessfulTransformationResponse response =
+                erService
+                        .createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbateMissingValue,
+                                GrantType.GRANT_OF_PROBATE, warnings);
+        GrantOfRepresentationData grantOfRepresentationDataResponse
+                = (GrantOfRepresentationData) response.getCaseCreationDetails().getCaseData();
+        assertEquals(RegistryLocation.CTSC, grantOfRepresentationDataResponse.getRegistryLocation());
+        assertEquals(ApplicationType.PERSONAL, grantOfRepresentationDataResponse.getApplicationType());
+        assertEquals(GrantType.GRANT_OF_PROBATE, grantOfRepresentationDataResponse.getGrantType());
+        assertEquals("deceasedDiedOnAfterSwitchDate", grantOfRepresentationDataResponse
+                .getModifiedOCRFieldList().getFirst().getValue().getFieldName());
+        assertNull(grantOfRepresentationDataResponse
+                .getModifiedOCRFieldList().getFirst().getValue().getOriginalValue());
     }
 }

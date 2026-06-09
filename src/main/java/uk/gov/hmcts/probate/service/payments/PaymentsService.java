@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service.payments;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +51,6 @@ import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION
 @Slf4j
 public class PaymentsService {
 
-    private static final String SERVICE_REQUEST_REFERENCE_KEY = "service_request_reference";
     private static final String PAYMENT_SUMMARY = "Service request payment details updated on case";
     private static final String PAYMENT_COMMENT = "Service request payment status ";
     private static final String SRP_STATUS_PAID = "Paid";
@@ -65,6 +63,7 @@ public class PaymentsService {
     private final PDFManagementService pdfManagementService;
     private final DocumentTransformer documentTransformer;
     private final CaveatNotificationService caveatNotificationService;
+    private final ObjectMapper objectMapper;
 
     public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
@@ -83,14 +82,14 @@ public class PaymentsService {
         SecurityDTO securityDTO = getCaseworkerSecurityDTO();
         if (GRANT_OF_REPRESENTATION == ccdCaseType) {
             GrantOfRepresentationData caseData = buildGrantData(retrievedCaseDetails, response);
-            String paymentStatus = caseData.getPayments().get(caseData.getPayments().size() - 1)
+            String paymentStatus = caseData.getPayments().getLast()
                     .getValue().getStatus().getName();
             ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId, retrievedCaseDetails.getLastModified(),
                     caseData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
                     securityDTO, PAYMENT_COMMENT + paymentStatus, PAYMENT_SUMMARY);
         } else if (CAVEAT == ccdCaseType) {
             CaveatData caveatData = buildCaveatData(retrievedCaseDetails, response);
-            String paymentStatus = caveatData.getPayments().get(caveatData.getPayments().size() - 1)
+            String paymentStatus = caveatData.getPayments().getLast()
                     .getValue().getStatus().getName();
             ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId, retrievedCaseDetails.getLastModified(),
                     caveatData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
@@ -129,9 +128,8 @@ public class PaymentsService {
             uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrievedCaseDetails,
             ServiceRequestUpdateResponseDto response) {
 
-        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        Map<String, Object> placeholders = mapper.convertValue(retrievedCaseDetails.getData(), Map.class);
-        CaseData caseData = mapper.convertValue(placeholders, CaseData.class);
+        Map<String, Object> placeholders = objectMapper.convertValue(retrievedCaseDetails.getData(), Map.class);
+        CaseData caseData = objectMapper.convertValue(placeholders, CaseData.class);
 
         CaseDetails caseDetails = new CaseDetails(caseData, null, retrievedCaseDetails.getId());
         caseDetails.setState(retrievedCaseDetails.getState());
@@ -163,6 +161,7 @@ public class PaymentsService {
             }
             documentTransformer.addDocument(callbackRequest, sentEmail, false);
         }
+        final var applicationSubmittedDate = LocalDate.now();
 
         List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
                 caseDetails.getData().getPayments(), response);
@@ -179,6 +178,7 @@ public class PaymentsService {
                 .payments(allPayments)
                 .paymentTaken(getPaymentTakenStatus(caseDetails.getData().getPaymentTaken(),
                         response.getServiceRequestStatus()))
+                .applicationSubmittedDate(applicationSubmittedDate)
                 .build();
     }
 
@@ -208,9 +208,8 @@ public class PaymentsService {
     private CaveatData buildCaveatData(
             uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrievedCaseDetails,
             ServiceRequestUpdateResponseDto response) {
-        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-        Map<String, Object> placeholders = mapper.convertValue(retrievedCaseDetails.getData(), Map.class);
-        uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = mapper.convertValue(placeholders,
+        Map<String, Object> placeholders = objectMapper.convertValue(retrievedCaseDetails.getData(), Map.class);
+        uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = objectMapper.convertValue(placeholders,
                 uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.class);
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, null, retrievedCaseDetails.getId());
         return isSuccessfulPayment(response.getServiceRequestStatus())

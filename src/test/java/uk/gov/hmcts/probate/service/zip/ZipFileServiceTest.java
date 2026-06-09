@@ -19,7 +19,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.zip.SmeeAndFordCommentMode;
+import uk.gov.hmcts.probate.model.zip.ZippedManifestData;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractStrategy;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
@@ -34,11 +38,18 @@ import java.util.List;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.atMostOnce;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
+import static uk.gov.hmcts.probate.model.DataExtractType.NATIONAL_FRAUD_INITIATIVE;
 
 @ExtendWith(SpringExtension.class)
 class ZipFileServiceTest {
@@ -55,7 +66,13 @@ class ZipFileServiceTest {
     @Mock
     private BlobUpload blobUpload;
 
+    @Mock
+    private FeatureToggleService featureToggleService;
+
     private ZipFileService zipFileService;
+
+    @Mock
+    private SmeeAndFordDataExtractStrategy smeeAndFOrdDataExtractStrategy;
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final List<ByteArrayResource> byteArrayResourceList = new ArrayList<>();
@@ -66,7 +83,7 @@ class ZipFileServiceTest {
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
         zipFileService = new ZipFileService(documentManagementService, smeeAndFordPersonalisationService,
-                fileSystemResourceService, blobUpload);
+                fileSystemResourceService, blobUpload, featureToggleService);
 
         returnedCaseDetails.add(getNewCaseData(1234567812345678L));
         returnedCaseDetails.add(getNewCaseData(1234567812345610L));
@@ -91,6 +108,10 @@ class ZipFileServiceTest {
         when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/ManifestFileHeaderRow.csv"))
                 .thenReturn("Case reference number|Document id|Document type|"
                         + "Document sub type|Case type|Document file name|Error description");
+        when(fileSystemResourceService.getFileFromResourceAsString(
+                "templates/dataExtracts/ManifestFileHeaderRowWithoutComment.csv"))
+                .thenReturn("Case reference number|Document id|Document type|Document sub type"
+                        + "|Case type|Document file name|Error description");
         when(smeeAndFordPersonalisationService.getSmeeAndFordByteArray(anyList()))
                 .thenReturn(smeeAndFordDataFileByteArray.getByteArray());
     }
@@ -137,16 +158,18 @@ class ZipFileServiceTest {
                 .boDocumentsUploaded(willDocuments)
                 .scannedDocuments(scannedWillDocuments)
                 .build();
-        ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(data, null, caseId);
 
-        return returnedCaseDetails;
+        return new ReturnedCaseDetails(data, null, caseId);
     }
 
     @Test
     void shouldCreateZip() throws IOException {
         String todayDate = DATE_FORMAT.format(LocalDate.now());
         File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
-        zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate);
+        doNothing().when(smeeAndFOrdDataExtractStrategy).uploadToBlobStorage(any(File.class));
+        zipFileService
+                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
+                        smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.INCLUDE_COMMENT);
         Assertions.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
         ZipFile zip = new ZipFile(zipFile);
         Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
@@ -171,7 +194,8 @@ class ZipFileServiceTest {
         String todayDate = DATE_FORMAT.format(LocalDate.now());
         File zipFile = new File("");
         Assertions.assertThrows(ZipFileException.class, () ->
-                zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate));
+                zipFileService.generateAndUploadZipFile(returnedCaseDetails, zipFile,
+                        todayDate, smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.INCLUDE_COMMENT));
     }
 
     @Test
@@ -185,4 +209,109 @@ class ZipFileServiceTest {
         Files.delete(tempFile.toPath());
     }
 
+    @Test
+    void shouldCreateZipForDataExtractTypeOnlyAllCasesCsv() throws Exception {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_NFI_Docs_" + todayDate + ".zip");
+
+        File returned = zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate,
+                NATIONAL_FRAUD_INITIATIVE);
+
+        Assertions.assertEquals(zipFile.getAbsolutePath(), returned.getAbsolutePath());
+        Assertions.assertTrue(returned.exists());
+
+        try (ZipFile zip = new ZipFile(returned)) {
+            Assertions.assertTrue(
+                    zip.stream().map(ZipEntry::getName)
+                            .anyMatch(name -> name.equalsIgnoreCase("all_cases_data_" + todayDate + ".csv")),
+                    "ZIP should contain all_cases_data_<date>.csv"
+            );
+            Assertions.assertFalse(
+                    zip.stream().map(ZipEntry::getName).anyMatch(name -> name.equalsIgnoreCase("manifest_file.csv")),
+                    "ZIP must not contain manifest_file.csv for data-extract overload"
+            );
+            Assertions.assertFalse(
+                    zip.stream().map(ZipEntry::getName).anyMatch(name -> name.contains("digitalGrant")),
+                    "ZIP must not contain grant documents for data-extract overload"
+            );
+            Assertions.assertEquals(1, zip.size(), "ZIP should contain exactly one entry");
+        }
+
+        verifyNoInteractions(documentManagementService);
+        verifyNoInteractions(blobUpload);
+
+        Files.deleteIfExists(zipFile.toPath());
+    }
+
+    @Test
+    void shouldThrowZipFileExceptionWhenFileIsInvalidForDataExtractType() {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("");
+
+        Assertions.assertThrows(ZipFileException.class, () ->
+                zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate, NATIONAL_FRAUD_INITIATIVE)
+        );
+
+        verifyNoInteractions(documentManagementService);
+        verifyNoInteractions(blobUpload);
+    }
+
+    @Test
+    void shouldPropagateZipFileExceptionWhenSmeeAndFordByteArrayFails() throws Exception {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_NFI_Docs_" + todayDate + ".zip");
+
+        doThrow(new RuntimeException("boom"))
+                .when(smeeAndFordPersonalisationService).getSmeeAndFordByteArray(anyList());
+
+        Assertions.assertThrows(ZipFileException.class, () ->
+                zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate, NATIONAL_FRAUD_INITIATIVE)
+        );
+
+        verifyNoInteractions(documentManagementService);
+        verifyNoInteractions(blobUpload);
+
+        Files.deleteIfExists(zipFile.toPath());
+    }
+
+    @Test
+    void shouldCreateZipWithFeatureToggleTrue() throws IOException {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
+        when(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()).thenReturn(true);
+        zipFileService
+                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
+                        smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.INCLUDE_COMMENT);
+
+        verify(featureToggleService, atLeastOnce()).isSmeeAndFordCommentFieldFeatureToggleOn();
+        Assertions.assertTrue(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn());
+        Files.delete(zipFile.toPath());
+    }
+
+    @Test
+    void shouldCreateZipWithFeatureToggleFalse() throws IOException {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
+        when(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn()).thenReturn(false);
+        zipFileService
+                .generateAndUploadZipFile(returnedCaseDetails, zipFile, todayDate,
+                        smeeAndFOrdDataExtractStrategy, SmeeAndFordCommentMode.EXCLUDE_COMMENT);
+
+        verify(featureToggleService, atMostOnce()).isSmeeAndFordCommentFieldFeatureToggleOn();
+        Assertions.assertFalse(featureToggleService.isSmeeAndFordCommentFieldFeatureToggleOn());
+        Files.delete(zipFile.toPath());
+    }
+
+    @Test
+    void shouldFormatOriginalWillSubtypeForDocumentName() {
+        ZippedManifestData data = ZippedManifestData.builder()
+            .caseNumber("123456789")
+            .docType("scanned_will")
+            .docFileType(".pdf")
+            .subType("Original Will")
+            .build();
+        String docName = data.getDocumentName();
+        Assertions.assertTrue(docName.contains("original_will"),
+            "Expected document name to contain 'original_will', but got: " + docName);
+    }
 }

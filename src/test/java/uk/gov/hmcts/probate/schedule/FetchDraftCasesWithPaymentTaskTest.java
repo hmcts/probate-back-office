@@ -1,0 +1,82 @@
+package uk.gov.hmcts.probate.schedule;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.service.FetchDraftCaseService;
+import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
+import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
+
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
+
+@ExtendWith(SpringExtension.class)
+class FetchDraftCasesWithPaymentTaskTest {
+
+    @Mock
+    private DataExtractDateValidator dataExtractDateValidator;
+
+    @Mock
+    private FetchDraftCaseService fetchDraftCaseService;
+
+    @Mock
+    private Clock clock;
+
+    @InjectMocks
+    private FetchDraftCasesWithPaymentTask fetchDraftCasesWithPaymentTask;
+    private static final String DATE_TODAY = "2025-10-02";
+    private final String adhocDate = "2022-09-05";
+
+    @BeforeEach
+    void setUp() {
+        clock = Clock.fixed(
+                Instant.parse("2025-10-02T03:00:00Z"),
+                ZoneOffset.UTC);
+
+        fetchDraftCasesWithPaymentTask = new FetchDraftCasesWithPaymentTask(
+                dataExtractDateValidator,
+                fetchDraftCaseService,
+                adhocDate,
+                clock
+        );
+    }
+
+    @Test
+    void shouldPerformDraftCasesExtractDateRange() {
+        fetchDraftCasesWithPaymentTask.run();
+        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
+        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,GRANT_OF_REPRESENTATION);
+        verify(fetchDraftCaseService).fetchDraftCases(adhocDate, DATE_TODAY,CAVEAT);
+    }
+
+
+    @Test
+    void shouldThrowClientExceptionWithBadRequestForDraftCasesExtractWithIncorrectDateFormat() {
+        doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
+                .dateValidator(adhocDate, DATE_TODAY);
+        fetchDraftCasesWithPaymentTask.run();
+        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
+        verifyNoInteractions(fetchDraftCaseService);
+    }
+
+    @Test
+    void shouldThrowExceptionForDraftCasesExtract() {
+        doThrow(new NullPointerException()).when(dataExtractDateValidator)
+                .dateValidator(adhocDate, DATE_TODAY);
+        fetchDraftCasesWithPaymentTask.run();
+        verify(dataExtractDateValidator).dateValidator(adhocDate, DATE_TODAY);
+        verifyNoInteractions(fetchDraftCaseService);
+    }
+
+}

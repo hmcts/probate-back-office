@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 @Data
-public class    CaveatDetails {
+public class CaveatDetails {
 
     @Valid
     @JsonProperty(value = "case_data")
@@ -15,6 +15,9 @@ public class    CaveatDetails {
 
     @JsonProperty(value = "last_modified")
     private final String[] lastModified;
+
+    @JsonProperty(value = "state")
+    private String state;
 
     @NotNull
     private final Long id;
