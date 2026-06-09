@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -184,6 +184,41 @@
           <text>"routine_work"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_09u0200">
+          <text>"CTSC"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0l7h8s9">
+        <inputEntry id="UnaryTests_1mcz2gy">
+          <text>"applyforGrantPaperApplicationMan"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a3bnkb">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="LiteralExpression_1whdf9l">
+          <text>"No"</text>
+        </inputEntry>
+        <inputEntry id="LiteralExpression_0n1yxlg">
+          <text>"gop"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1cvv017">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pghx77">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yrjv8l">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0x0ofpm">
+          <text>10</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0l7h8s9_pc">
+          <text>"case progression"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0l7h8s9_wt">
+          <text>"routine_work"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0l7h8s9_rc">
           <text>"CTSC"</text>
         </outputEntry>
       </rule>
