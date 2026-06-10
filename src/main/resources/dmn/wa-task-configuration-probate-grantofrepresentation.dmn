@@ -65,7 +65,7 @@
           <text>"description"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0n1yxlg">
-          <text>"[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetails) [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching) [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar) [Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA) [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/boUploadDocsForSMEReferral) [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCase)"</text>
+          <text>"[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/boUploadDocsForSMEReferral)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCase)"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1cvv017">
           <text>true</text>
