@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.model.DisposedCaseSearchType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DisposedCase;
+import uk.gov.hmcts.probate.model.ccd.raw.DisposedCaseSearch;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
@@ -60,18 +62,31 @@ public class DisposedCaseInfoController {
             final HttpServletRequest request) {
         log.info("POST: {}", request.getRequestURI());
 
-        final String idToSearch = callbackRequest.getCaseDetails().getData().getDisposedCasesCcdId();
+        final DisposedCaseSearch disposedCaseSearch = callbackRequest.getCaseDetails().getData().getDisposedCasesCcdId();
 
-        final List<CollectionMember<DisposedCase>> disposedCasesReturn = new ArrayList<>();
-        if (StringUtils.isBlank(idToSearch) || idToSearch.trim().equalsIgnoreCase("*")) {
-            final var disposedCases = disposedCaseService.getAllCases();
-            disposedCasesReturn.addAll(disposedCases);
-        } else {
-            // get single case if exists in table
-            final CollectionMember<DisposedCase> dc = disposedCaseService.getCase(idToSearch);
-
-            disposedCasesReturn.add(dc);
-        }
+        final String searchType = disposedCaseSearch.getSearchType();
+        final DisposedCaseSearchType disposedCaseSearchType = DisposedCaseSearchType.fromCode(searchType);
+        final List<CollectionMember<DisposedCase>> disposedCasesReturn = switch (disposedCaseSearchType) {
+            case ALL -> {
+                yield disposedCaseService.getAllCases();
+            }
+            case CASE_ID -> {
+                yield List.of(disposedCaseService.getCase(disposedCaseSearch.getCcdId().trim()));
+            }
+            case DATE_OF_DEATH -> {
+                yield disposedCaseService.getCasesWithDateOfDeathAndSurname(
+                        disposedCaseSearch.getDecDeathDate(),
+                        disposedCaseSearch.getDecDeathDateRange(),
+                        null);
+            }
+            case DATE_OF_DEATH_AND_SURNAME -> {
+                yield disposedCaseService.getCasesWithDateOfDeathAndSurname(
+                        disposedCaseSearch.getDecDeathDate(),
+                        disposedCaseSearch.getDecDeathDateRange(),
+                        disposedCaseSearch.getDecSurname());
+            }
+            case FULL_NAME -> throw new NotImplementedException();
+        };
 
         final ResponseCaseData rcd = ResponseCaseData.builder()
                 .disposedCasesReturn(disposedCasesReturn)
@@ -90,7 +105,6 @@ public class DisposedCaseInfoController {
             @RequestBody final CallbackRequest callbackRequest,
             final BindingResult bindingResult,
             final HttpServletRequest request) {
-
         throw new NotImplementedException();
     }
 }
