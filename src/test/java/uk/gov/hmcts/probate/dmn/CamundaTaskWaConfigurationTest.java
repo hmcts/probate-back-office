@@ -26,13 +26,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_MANAGEMENT_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_TYPE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_FORENAMES_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_SURNAME_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECISION_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DESCRIPTION;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.LOCATION;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.LOCATION_NAME;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGION;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGISTRY_LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.resultsMatchUsingNameKey;
 
@@ -41,6 +48,18 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     private static final String REQUEST = "classpath:custom-case-data.json";
     private static final String taskId = UUID.randomUUID().toString();
     private static final String roleAssignmentId = UUID.randomUUID().toString();
+    private static final String DESCRIPTION_DEFAULT_VALUE = "[Amend Case Details](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
+            + "[Issue Grant](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
+            + "[Escalate to Registrar](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  "
+            + "[Select For QA](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boSelectForQA)  "
+            + "[SME Referral](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boUploadDocsForSMEReferral)  "
+            + "[Stop Case](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boStopCase)";
 
     @BeforeAll
     public static void initialization() {
@@ -56,26 +75,15 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
-                                .expectedValue(DESCRIPTION, "[Amend Case Details](/cases/case-details/"
-                                        + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
-                                        + "[Issue Grant](/cases/case-details/"
-                                        + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
-                                        + "[Escalate to Registrar](/cases/case-details/"
-                                        + "${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  "
-                                        + "[Select For QA](/cases/case-details/"
-                                        + "${[CASE_REFERENCE]}/trigger/boSelectForQA)  "
-                                        + "[SME Referral](/cases/case-details/"
-                                        + "${[CASE_REFERENCE]}/trigger/boUploadDocsForSMEReferral)  "
-                                        + "[Stop Case](/cases/case-details/"
-                                        + "${[CASE_REFERENCE]}/trigger/boStopCase)", true)
-                                .expectedValue(WORK_TYPE, "decision_making_work", true)
-                                .expectedValue(CASE_MANAGEMENT_CATEGORY,
-                                        "someCaseType", true)
-                                .expectedValue(CASE_NAME, "someDeceasedForenames someDeceasedSurname", true)
+                                .expectedValue(DESCRIPTION, DESCRIPTION_DEFAULT_VALUE, true)
+                                .expectedValue(WORK_TYPE, DECISION_WORK_TYPE, true)
+                                .expectedValue(CASE_MANAGEMENT_CATEGORY, CASE_TYPE_VALUE, true)
+                                .expectedValue(CASE_NAME, DECEASED_FORENAMES_VALUE + " "
+                                        + DECEASED_SURNAME_VALUE, true)
                                 .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
-                                .expectedValue(ROLE_CATEGORY, "CTSC", true)
-                                .expectedValue(LOCATION, "someRegistryLocation", true)
-                                .expectedValue("locationName", "someRegistryLocation", true)
+                                .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
+                                .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
+                                .expectedValue(LOCATION_NAME, REGISTRY_LOCATION_VALUE, true)
                                 .build()
                 ),
                 Arguments.of(

@@ -6,10 +6,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.util.ResourceUtils.getFile;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_TYPE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_FORENAMES;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_FORENAMES_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_SURNAME;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_SURNAME_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGION;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGISTRY_LOCATION;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGISTRY_LOCATION_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_CTSC;
 
 public class CaseDataBuilder {
 
@@ -33,18 +43,12 @@ public class CaseDataBuilder {
         Map<String,Object> caseData = new HashMap<>();
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
-        caseData.put("dueDate", LocalDate.now());
-        String refusalOfEuLabel = "Refusal of a human rights claim";
-        caseData.put("caseManagementCategory", Map.of(
-                "value", Map.of("code", "refusalOfHumanRights", "label", "Refusal of a human rights claim"),
-                "list_items", List.of(Map.of("code", "refusalOfHumanRights", "label", refusalOfEuLabel))
-        ));
-        caseData.put("caseType", "someCaseType");
-        caseData.put("deceasedForenames", "someDeceasedForenames");
-        caseData.put("deceasedSurname", "someDeceasedSurname");
-        caseData.put("region", "someRegion");
-        caseData.put("roleCategory", "someRoleCategory");
-        caseData.put("registryLocation", "someRegistryLocation");
+        caseData.put(CASE_TYPE, CASE_TYPE_VALUE);
+        caseData.put(DECEASED_FORENAMES, DECEASED_FORENAMES_VALUE);
+        caseData.put(DECEASED_SURNAME, DECEASED_SURNAME_VALUE);
+        caseData.put(REGION, "someRegion");
+        caseData.put(ROLE_CATEGORY, ROLE_CATEGORY_CTSC);
+        caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
         return new CaseDataBuilder(caseData);
     }
 
