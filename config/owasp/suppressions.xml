@@ -65,4 +65,22 @@
       -->
         <cve>CVE-2026-29181</cve>
     </suppress>
+    <suppress until = "2026-07-13">
+        <cve>CVE-2026-41842</cve>
+    </suppress>
+    <suppress until = "2026-07-13">
+        <cve>CVE-2026-41850</cve>
+    </suppress>
+    <suppress until = "2026-07-13">
+        <cve>CVE-2026-41851</cve>
+    </suppress>
+    <suppress until = "2026-07-13">
+        <cve>CVE-2026-41840</cve>
+    </suppress>
+    <suppress until = "2026-07-13">
+        <cve>CVE-2026-41841</cve>
+    </suppress>
+    <suppress until = "2026-07-13">
+        <cve>CVE-2026-41843</cve>
+    </suppress>
 </suppressions>
