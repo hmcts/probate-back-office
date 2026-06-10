@@ -277,7 +277,7 @@ class BusinessValidationUnitTest {
             businessValidationMessageServiceMock,
             userInfoServiceMock,
             documentTransformerMock,
-            attorneyAppointedExecutorValidationRule
+            attorneyAppointedExecutorValidationRule,
             ccdSupplementaryDataService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
