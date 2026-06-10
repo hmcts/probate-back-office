@@ -133,7 +133,7 @@
           <text>"region"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1duwa2u">
-          <text>"someRegion"</text>
+          <text>"DUMMY_PLACEHOLDER_REGION"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gcz5d0">
           <text>true</text>
@@ -170,6 +170,23 @@
           <text>caseData.registryLocation</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_08oiise">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0wplfxm">
+        <inputEntry id="UnaryTests_08lzaj3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0n4h6rp">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1snulwi">
+          <text>"locationName"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0orasga">
+          <text>caseData.registryLocation</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hdb8zu">
           <text>true</text>
         </outputEntry>
       </rule>

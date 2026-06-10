@@ -72,9 +72,10 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .expectedValue(CASE_MANAGEMENT_CATEGORY,
                                         "someCaseType", true)
                                 .expectedValue(CASE_NAME, "someDeceasedForenames someDeceasedSurname", true)
-                                .expectedValue(REGION, "someRegion", true)
+                                .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
                                 .expectedValue(ROLE_CATEGORY, "CTSC", true)
                                 .expectedValue(LOCATION, "someRegistryLocation", true)
+                                .expectedValue("locationName", "someRegistryLocation", true)
                                 .build()
                 ),
                 Arguments.of(
@@ -108,7 +109,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(9, logic.getRules().size());
+        assertEquals(10, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
