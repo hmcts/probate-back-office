@@ -471,7 +471,7 @@ export class SolCreateCasePage extends BasePage {
     } else {
       const selectTable = tables.nth(1);
       refCell = selectTable.locator('td').filter({
-        hasText: new RegExp(refundConfig.totalAmountPaid)
+        hasText: new RegExp(`^£${refundConfig.totalAmountPaid}\\.?\\d*$`)
       });
     }
     await expect(refCell).toHaveCount(1);

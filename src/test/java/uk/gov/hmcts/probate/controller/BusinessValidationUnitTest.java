@@ -44,6 +44,7 @@ import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
+import uk.gov.hmcts.probate.validator.AttorneyAppointedExecutorValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckIntestacyMaritalStatusRule;
@@ -236,6 +237,8 @@ class BusinessValidationUnitTest {
     @Mock
     private DocumentTransformer documentTransformerMock;
     @Mock
+    private AttorneyAppointedExecutorValidationRule attorneyAppointedExecutorValidationRule;
+    @Mock
     private IntestacyDivorceOrSeparationDateValidationRule intestacyDivorceOrSeparationDateValidationRule;
 
     @Mock
@@ -290,7 +293,8 @@ class BusinessValidationUnitTest {
             intestacyCoApplicantValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
-            documentTransformerMock);
+            documentTransformerMock,
+            attorneyAppointedExecutorValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
@@ -402,6 +406,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        verify(attorneyAppointedExecutorValidationRule, times(1)).validate(caseDetailsMock);
     }
 
     @Test
@@ -423,6 +428,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        verify(attorneyAppointedExecutorValidationRule, times(1)).validate(caseDetailsMock);
     }
 
     @Test
@@ -1313,7 +1319,7 @@ class BusinessValidationUnitTest {
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
                 () -> assertThat(notificationsGenerated, empty()));
     }
-  
+
     @Test
     void shouldAttemptToEmailCaseworkerWhenEscalateToRegistrarFails() throws RegistrarEscalationException {
 
