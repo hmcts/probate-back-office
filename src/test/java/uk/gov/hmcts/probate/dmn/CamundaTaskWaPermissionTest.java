@@ -45,6 +45,13 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
     private static final List<Map<String, Object>> ctscExamineDigitalCaseProbatePermissions = List.of(
             Map.of(
                     "name", "ctsc",
+                    "value", "Read,Own,Claim,Unclaim,Manage,Assign,Unassign",
+                    "roleCategory", ROLE_CATEGORY_CTSC,
+                    "assignmentPriority", 1,
+                    "autoAssignable", false
+            ),
+            Map.of(
+                    "name", "ctsc-team-leader",
                     "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
                     "roleCategory", ROLE_CATEGORY_CTSC,
                     "assignmentPriority", 1,
@@ -101,7 +108,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(3));
+        assertThat(logic.getRules().size(), is(4));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

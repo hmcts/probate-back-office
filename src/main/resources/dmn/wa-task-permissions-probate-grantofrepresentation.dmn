@@ -37,7 +37,7 @@
           <text>"ctsc"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0dkpkpd">
-          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+          <text>"Read,Own,Claim,Unclaim,Manage,Assign,Unassign"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1i76hru">
           <text>"CTSC"</text>
@@ -49,6 +49,35 @@
           <text>1</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1xf4md3">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_00eu5yd">
+        <inputEntry id="UnaryTests_0l346di">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j98w96">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0gdhjpp">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04teupl">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_00wshfw">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1k8tmxy">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nlp78t">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1skx59f">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1e27gye">
           <text>false</text>
         </outputEntry>
       </rule>
