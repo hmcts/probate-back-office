@@ -191,7 +191,7 @@ ccd:
     clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
   logstash:
     image: hmctsprod.azurecr.io/imported/elastic/logstash
-    imageTag: "9.2.4"
+    imageTag: "9.2.3"
     imagePullPolicy: "IfNotPresent"
     logstashJavaOpts: "-Xmx1g -Xms512M"
     extraEnvs:
