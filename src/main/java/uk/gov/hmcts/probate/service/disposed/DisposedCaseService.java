@@ -9,6 +9,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -25,8 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.IntPredicate;
+import java.util.function.IntUnaryOperator;
+import java.util.function.ObjIntConsumer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static uk.gov.hmcts.probate.service.disposed.DisposedCaseService.Constants.*;
 
@@ -72,12 +79,18 @@ public class DisposedCaseService {
         final String ccdId = caseDetails.getId().toString();
         final CaseData caseData = caseDetails.getData();
 
-        final String deceasedForenames = caseData.getDeceasedForenames();
-        final String deceasedSurname = caseData.getDeceasedSurname();
+        final String deceasedForenames = Optional.ofNullable(caseData.getDeceasedForenames())
+                .map(s -> s.trim().toLowerCase())
+                .orElse(null);
+        final String deceasedSurname = Optional.ofNullable(caseData.getDeceasedSurname())
+                .map(s -> s.trim().toLowerCase())
+                .orElse(null);
         final String deceasedDateOfDeath = String.valueOf(caseData.getDeceasedDateOfDeath());
 
         final String caseType = caseData.getCaseType();
-        final String applicationType = caseData.getApplicationType().getCode();
+        final String applicationType = Optional.ofNullable(caseData.getApplicationType())
+                .map(aT -> aT.getCode())
+                .orElse(null);
 
         // This is the wrong date obviously but for the purpose of demonstration...
         // It's also potentially an option if we add this as a post-submission callback for the event into Disposed?
@@ -186,6 +199,71 @@ public class DisposedCaseService {
                     "No case matching provided case ID was found in the disposed case history",
                     e);
         }
+    }
+
+    class TakeAllButLast implements IntUnaryOperator {
+        final int length;
+        int seen;
+
+        TakeAllButLast(final int length) {
+            this.length = length;
+            this.seen = 0;
+        }
+
+        @Override
+        public int applyAsInt(int operand) {
+            seen++;
+            if (seen < length) {
+                return operand;
+            }
+            return operand + 1;
+        }
+    }
+
+    String getNextString(final String baseString) {
+        final int length = baseString.codePointCount(0, baseString.length());
+        final IntStream codePoints = baseString.codePoints();
+        final String nextString = codePoints
+                .map(new TakeAllButLast(length))
+                .collect(
+                        StringBuilder::new,
+                        StringBuilder::appendCodePoint,
+                        StringBuilder::append)
+                .toString();
+        return nextString;
+    }
+
+    public List<CollectionMember<DisposedCase>> getCasesWithDateOfDeathAndSurname(
+            final LocalDate deathDate,
+            final Integer deathDateRange,
+            final String surname) {
+        final TableClient disposedCases = azureTableService.getDisposedCases();
+
+        final StringBuilder filterBuilder = new StringBuilder()
+                .append("PartitionKey eq '").append(azureTableService.getPartition()).append("'");
+
+        if (deathDate == null || deathDateRange == 0) {
+            filterBuilder.append(" and ").append(DATE_OF_DEATH).append(" eq '").append(deathDate).append("'");
+        } else {
+            final LocalDate startDate = deathDate.minusDays(deathDateRange);
+            final LocalDate endDate = startDate.plusDays(deathDateRange);
+            filterBuilder
+                    .append(" and ").append(DATE_OF_DEATH).append(" ge '").append(startDate).append("'")
+                    .append(" and ").append(DATE_OF_DEATH).append(" le '").append(endDate).append("'");
+        }
+        if (surname != null && StringUtils.isNotBlank(surname)) {
+            final String lcSurname = surname.trim().toLowerCase();
+            final String nextString = getNextString(lcSurname);
+            filterBuilder
+                    .append(" and ").append(DEC_SURNAME).append(" eq '").append(lcSurname).append("'");
+        }
+        final ListEntitiesOptions caseSearch = new ListEntitiesOptions()
+                .setFilter(filterBuilder.toString())
+                .setSelect(null);
+        final var returnedCases = disposedCases.listEntities(caseSearch, Duration.ofSeconds(3), null);
+        return returnedCases.stream()
+                .map(this::processCase)
+                .collect(Collectors.toList());
     }
 
     CollectionMember<DisposedCase> processCase(final TableEntity tableEntity) {

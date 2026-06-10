@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
+import uk.gov.hmcts.probate.model.ccd.raw.DisposedCaseSearch;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
@@ -651,7 +652,7 @@ public class CaseData extends CaseDataParent {
     private final String migrationCallbackMetadata;
 
     private final String caseNameHmctsInternal;
-    private final String disposedCasesCcdId;
+    private final DisposedCaseSearch disposedCasesCcdId;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
