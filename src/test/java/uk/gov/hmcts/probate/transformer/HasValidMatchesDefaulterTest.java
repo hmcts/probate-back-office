@@ -26,9 +26,11 @@ class HasValidMatchesDefaulterTest {
     @ValueSource(strings = {
         "Grant of Representation",
         "Caveat",
+        "Will Lodgement",
         "Legacy CAVEAT",
         "Legacy LEGACY APPLICATION",
-        "Legacy LEGACY GRANT"
+        "Legacy LEGACY GRANT",
+        "Legacy WILL"
     })
     void returnsYesWhenValidMatchExists(String caseType) {
         CaseMatch validMatch = CaseMatch.builder()
@@ -72,7 +74,7 @@ class HasValidMatchesDefaulterTest {
     void returnsNoWhenTypeIsNotValid() {
         CaseMatch invalidMatch = CaseMatch.builder()
                 .id("someId")
-                .type("Will Lodgement")
+                .type("Standing Search")
                 .valid(YES)
                 .build();
         CollectionMember<CaseMatch> member = new CollectionMember<>(null, invalidMatch);
