@@ -1,0 +1,160 @@
+{
+  "event": {
+    "id": "EVENT_PARM",
+    "description": "Bulk scan mimic case created by functional test",
+    "summary": "Bulk scan mimic application"
+  },
+  "ignore_warning": true,
+  "event_token": "TOKEN_PARM",
+  "data": {
+    "caseType": "gop",
+    "applicationType": "Personal",
+    "channelChoice": "BulkScan",
+    "paperForm": "Yes",
+    "bulkScanCaseReference": "818934032424212002473004",
+    "bulkScanEnvelopes": [
+      {
+        "id": "02169768-d0a0-4499-9840-de8750b2776e",
+        "value": {
+          "id": "43333f54-bf33-43bd-9455-ff02e0940385",
+          "action": "update"
+        }
+      },
+      {
+        "id": "9c956622-df96-40c5-9211-8a7d84212864",
+        "value": {
+          "id": "595dd947-f41b-4dd2-90c3-71779da9c5f2",
+          "action": "update"
+        }
+      }
+    ],
+    "scannedDocuments": [
+      {
+        "id": "809dafa7-1092-4f30-a18f-0afc0d19eb6a",
+        "value": {
+          "type": "other",
+          "subtype": "will",
+          "fileName": "90000001.pdf",
+          "scannedDate": "2025-08-13T10:55:03.123",
+          "deliveryDate": "2025-08-13T14:20:22.123",
+          "controlNumber": "818934032424212002473004",
+          "exceptionRecordReference": null
+        }
+      },
+      {
+        "id": "d9335882-5eba-49de-abb8-bfca05513f55",
+        "value": {
+          "type": "other",
+          "subtype": "will",
+          "fileName": "90000001.pdf",
+          "scannedDate": "2025-08-13T10:55:03.123",
+          "deliveryDate": "2025-08-13T14:20:22.123",
+          "controlNumber": "818934052424212002473004",
+          "exceptionRecordReference": null
+        }
+      }
+    ],
+    "deceasedForenames": "Tester",
+    "deceasedSurname": "Smith",
+    "deceasedDateOfBirth": "1978-08-10",
+    "deceasedDateOfDeath": "2024-02-03",
+    "deceasedAddress": {
+      "County": null,
+      "Country": "United Kingdom",
+      "PostCode": "E3 5EF",
+      "PostTown": "London",
+      "AddressLine1": "71 Rosebank Gardens",
+      "AddressLine2": null,
+      "AddressLine3": null
+    },
+    "deceasedAnyOtherNames": "No",
+    "deceasedDomicileInEngWales": "Yes",
+    "deceasedDeathCertificate": "deathCertificate",
+    "willExists": "Yes",
+    "willHasCodicils": "No",
+    "willHasVisibleDamage": "No",
+    "primaryApplicantForenames": "Test",
+    "primaryApplicantSurname": "User",
+    "primaryApplicantEmailAddress": "primary@probate-test.com",
+    "primaryApplicantIsApplying": "Yes",
+    "primaryApplicantHasAlias": "No",
+    "primaryApplicantSameWillName": "Yes",
+    "primaryApplicantAddress": {
+      "County": null,
+      "Country": "United Kingdom",
+      "PostCode": "E4 9AX",
+      "PostTown": "London",
+      "AddressLine1": "29 Broad Oak Close",
+      "AddressLine2": null,
+      "AddressLine3": null
+    },
+    "primaryApplicantPhoneNumber": "0742424424222",
+    "ihtFormEstate": "IHT400",
+    "ihtNetValue": "250000",
+    "ihtGrossValue": "250000",
+    "ihtNetValueField": "2500",
+    "ihtGrossValueField": "2500",
+    "uniqueProbateCodeId": "CTS04055611443tpps8e9",
+    "ihtFormEstateValuesCompleted": "Yes",
+    "hmrcLetterId": "Yes",
+    "registryLocation": "ctsc",
+    "numberOfExecutors": 1,
+    "numberOfApplicants": 1,
+    "otherExecutorExists": "No",
+    "executorsApplying": [],
+    "executorsNotApplying": [],
+    "executorsApplyingNotifications": [
+      {
+        "id": "1",
+        "value": {
+          "name": "Test User",
+          "email": "primary@probate-test.com",
+          "address": {
+            "County": null,
+            "Country": "United Kingdom",
+            "PostCode": "E4 9AX",
+            "PostTown": "London",
+            "AddressLine1": "29 Broad Oak Close",
+            "AddressLine2": null,
+            "AddressLine3": null
+          },
+          "notification": "Yes",
+          "responseReceived": null
+        }
+      }
+    ],
+    "extraCopiesOfGrant": "0",
+    "outsideUKGrantCopies": "0",
+    "boSendToBulkPrint": "Yes",
+    "boEmailDocsReceivedNotification": "Yes",
+    "boEmailDocsReceivedNotificationRequested": "Yes",
+    "boEmailRequestInfoNotification": "Yes",
+    "boEmailRequestInfoNotificationRequested": "Yes",
+    "boEmailGrantIssuedNotification": "Yes",
+    "boCaveatStopSendToBulkPrint": "Yes",
+    "boAssembleLetterSendToBulkPrint": "Yes",
+    "boGrantReissueSendToBulkPrint": "Yes",
+    "boCaveatStopEmailNotification": "Yes",
+    "boRequestInfoSendToBulkPrint": "Yes",
+    "applicationSubmittedDate": "2026-04-22",
+    "informationNeeded": "Yes",
+    "informationNeededByPost": "No",
+    "languagePreferenceWelsh": "No",
+    "declarationCheckbox": "Yes",
+    "dateOfDeathType": "diedOn",
+    "declaration": {
+      "accept": "I confirm that I will administer the estate of the person who died according to law, and that my application is truthful.",
+      "confirm": "I confirm that I will administer the estate of Tester Smith, according to law. I will:",
+      "requests": "If the probate registry (court) asks me to do so, I will:",
+      "understand": "I understand that:",
+      "confirmItem1": "collect the whole estate",
+      "confirmItem2": "keep full details (an inventory) of the estate",
+      "confirmItem3": "keep a full account of how the estate has been administered",
+      "requestsItem1": "provide the full details of the estate and how it has been administered",
+      "requestsItem2": "return the grant of probate to the court",
+      "understandItem1": "my application will be rejected if I do not answer any questions about the information I have given",
+      "understandItem2": "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant"
+    }
+  }
+}
+
