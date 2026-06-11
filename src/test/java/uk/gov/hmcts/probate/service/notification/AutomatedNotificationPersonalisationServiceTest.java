@@ -126,6 +126,27 @@ class AutomatedNotificationPersonalisationServiceTest {
     }
 
     @Test
+    void getRedecReminderPersonalisation() {
+        when(stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH,
+                "redecNotificationSent"))
+                .thenReturn("Redeclaration of the legal statement required");
+        when(stopReasonService.getStopReasonDescription(LanguagePreference.WELSH,
+                "redecNotificationSent"))
+                .thenReturn("Mae'n ofynnol i ailddatgan y datganiad cyfreithiol");
+        Map<String,Object> data = new HashMap<>();
+        CaseDetails cd = CaseDetails.builder().caseTypeId("GrantOfRepresentation")
+                .data(data).id(0L).createdDate(LocalDateTime.now()).build();
+        Map<String, Object> result =
+                underTest.getRedecReminderPersonalisation(cd, ApplicationType.SOLICITOR);
+        assertAll("redec reminder personalisation",
+                () -> assertEquals("Redeclaration of the legal statement required",
+                        result.get("stop-reasons")),
+                () -> assertEquals("Mae'n ofynnol i ailddatgan y datganiad cyfreithiol",
+                        result.get("stop-reasons-welsh"))
+        );
+    }
+
+    @Test
     void getPersonalisationShouldIncludeAllFields() {
         when(stopReasonService.getStopReasonDescription(LanguagePreference.ENGLISH, "R1"))
                 .thenReturn("Reason One");
