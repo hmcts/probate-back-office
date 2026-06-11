@@ -71,7 +71,7 @@ export class BasePage {
   }
 
   async waitForNavigationToComplete(buttonLocator: Locator | string, timeout: number = 5_000): Promise<void> {
-    const currentUrl = await this.page.url();
+    const currentUrl = this.page.url();
     const locator = typeof buttonLocator === 'string'
       ? this.page.locator(buttonLocator)  // String - convert to Locator
       : buttonLocator;
@@ -293,7 +293,6 @@ export class BasePage {
       // await I.waitForText(tabConfigFile.waitForText, testConfig.WaitForTextTimeout || 60);
     }
 
-    /* eslint-disable no-await-in-loop */
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
       if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
         await expect(this.page.getByText(tabConfigFile.fields[i]).first()).toBeVisible();
