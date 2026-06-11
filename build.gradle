@@ -1,7 +1,7 @@
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.7'
-  id 'org.springframework.boot' version '3.5.14'
+  id 'org.springframework.boot' version '3.5.15'
   id 'uk.gov.hmcts.java' version '0.12.70'
   id 'com.github.ben-manes.versions' version '0.54.0'
   id 'com.gorylenko.gradle-git-properties' version '3.0.3'
@@ -178,7 +178,7 @@ def versions = [
         sendLetterClientVersion         : '5.1.1',
         serenity                        : '5.3.10',
         serviceAuthVersion              : '5.3.4',
-        springBootVersion               : '3.5.14',
+        springBootVersion               : '3.5.15',
         springCloud                     : '4.3.0',
         springDocOpenUi                 : '2.8.17',
         swaggerAnnotations              : '2.2.50',
