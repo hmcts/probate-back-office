@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.service.migration.CaveatMigrationHandler;
 import uk.gov.hmcts.probate.service.migration.Dtspb5005CaveatRollback;
 import uk.gov.hmcts.probate.service.migration.Dtspb5005GorRollback;
 import uk.gov.hmcts.probate.service.migration.GorMigrationHandler;
+import uk.gov.hmcts.probate.service.migration.dtspb5539.Dtspb5539GorMigrationHandler;
 
 import java.util.Map;
 
@@ -14,9 +15,11 @@ public class DataMigrationConfiguration {
 
     @Bean
     public Map<String, GorMigrationHandler> gorMigrationHandlers(
-            final Dtspb5005GorRollback dtspb5005GorRollback) {
+            final Dtspb5005GorRollback dtspb5005GorRollback,
+            final Dtspb5539GorMigrationHandler dtspb5539GorMigrationHandler) {
         return Map.of(
-                "DTSPB-5005_rollback", dtspb5005GorRollback);
+                "DTSPB-5005_rollback", dtspb5005GorRollback,
+                "DTSPB-5539", dtspb5539GorMigrationHandler);
     }
 
     @Bean
