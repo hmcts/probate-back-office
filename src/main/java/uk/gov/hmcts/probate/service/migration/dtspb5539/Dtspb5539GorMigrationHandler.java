@@ -45,7 +45,7 @@ public class Dtspb5539GorMigrationHandler implements GorMigrationHandler {
                                    JSONObject migrationData) {
 
         caseDataTransformer.transformFormCaseData(callbackRequest);
-        numberOfApplyingExecutorsValidationRule.validate(
+     /*   numberOfApplyingExecutorsValidationRule.validate(
                 callbackRequest.getCaseDetails()
         );
         CallbackResponse response =
@@ -57,11 +57,11 @@ public class Dtspb5539GorMigrationHandler implements GorMigrationHandler {
             callbackResponseTransformer.transform(
                     callbackRequest,
                     Optional.empty()
-            );
+            );*/
 
             ccdSupplementaryDataService.submitSupplementaryDataToCcd(
                     callbackRequest.getCaseDetails().getId().toString());
-        }
+        //}
 
         return callbackRequest;
     }
