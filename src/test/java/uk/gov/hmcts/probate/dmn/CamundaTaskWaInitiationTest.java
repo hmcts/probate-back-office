@@ -21,6 +21,7 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROUTINE_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.resultsMatchUsingNameKey;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -40,19 +41,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "roleCategory", ROLE_CATEGORY_CTSC
         );
 
+        Map<String, Object> additionalData = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + "No" + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\"\n"
+                + "  }\n"
+                + "}");
+
         return Stream.of(
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        "No",
-                        "gop",
+                        additionalData,
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
                         "applyforGrantPaperApplication",
                         "CasePrinted",
-                        "No",
-                        "gop",
+                        additionalData,
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 )
         );
@@ -71,14 +77,14 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     @MethodSource("scenarioProvider")
     void given_multiple_event_ids_should_evaluate_dmn(String eventId,
                                                       String postEventState,
-                                                      String evidenceHandled,
-                                                      String caseType,
+                                                      Map<String, Object> additionalData,
                                                       List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);
-        inputVariables.putValue("evidenceHandled", evidenceHandled);
-        inputVariables.putValue("caseType", caseType);
+        if (additionalData != null) {
+            inputVariables.putAll(additionalData);
+        }
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
