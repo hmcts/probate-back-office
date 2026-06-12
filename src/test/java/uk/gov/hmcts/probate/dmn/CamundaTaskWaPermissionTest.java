@@ -6,7 +6,6 @@ import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableInputImpl;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableOutputImpl;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.impl.VariableMapImpl;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,10 +26,41 @@ import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.resultsMatchUsingNameKey;
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
     private static final String DUMMY_CASE_DATA = "someCaseData";
+
+    private static final List<Map<String, Object>> ctscDefaultPermissions = List.of(
+            Map.of(
+                    "name", "ctsc",
+                    "value", "Read,Own,Claim,Unclaim,Manage,Complete",
+                    "roleCategory", ROLE_CATEGORY_CTSC,
+                    "assignmentPriority", 1,
+                    "autoAssignable", false
+                )
+        );
+
+    private static final List<Map<String, Object>> ctscExamineDigitalCaseProbatePermissions = List.of(
+            Map.of(
+                    "name", "ctsc",
+                    "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
+                    "roleCategory", ROLE_CATEGORY_CTSC,
+                    "assignmentPriority", 1,
+                    "autoAssignable", false,
+                    "authorisations", "SKILL:ABA6:ProbateExamining"
+            ),
+            Map.of(
+                    "name", "ctsc-team-leader",
+                    "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
+                    "roleCategory", ROLE_CATEGORY_CTSC,
+                    "assignmentPriority", 1,
+                    "autoAssignable", false
+            )
+        );
+
+
 
     @BeforeAll
     public static void initialization() {
@@ -42,17 +72,17 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         DUMMY_CASE_DATA,
-                        defaultAdminAndCtscTaskPermissions()
+                        ctscExamineDigitalCaseProbatePermissions
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         DUMMY_CASE_DATA,
-                        defaultAdminAndCtscTaskPermissions()
+                        ctscDefaultPermissions
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
                         DUMMY_CASE_DATA,
-                        defaultAdminAndCtscTaskPermissions()
+                        ctscDefaultPermissions
                 )
         );
     }
@@ -79,21 +109,21 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(3));
+        assertThat(logic.getRules().size(), is(4));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
     @MethodSource("scenarioProvider")
-    void given_null_or_empty_inputs_when_evaluate_dmn_it_returns_expected_rules(String taskType,
+    void given_inputs_should_evaluate_dmn_and_return_expected_rules(String taskType,
                                                                                 String caseData,
-                                                                                List<Map<String, String>> expectation) {
+                                                                                List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("taskAttributes", Map.of("taskType", taskType));
         inputVariables.putValue("case", caseData);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
 
-        MatcherAssert.assertThat(dmnDecisionTableResult.getResultList(), is(expectation));
+        resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
 
     private void assertThatInputContainInOrder(List<String> inputColumnIds, List<DmnDecisionTableInputImpl> inputs) {
@@ -104,22 +134,6 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
     private void assertThatOutputContainInOrder(List<String> outputColumnIds, List<DmnDecisionTableOutputImpl> output) {
         IntStream.range(0, output.size())
                 .forEach(i -> assertThat(output.get(i).getOutputName(), is(outputColumnIds.get(i))));
-    }
-
-    private static List<Map<String, Object>> defaultAdminAndCtscTaskPermissions() {
-        return List.of(
-                ctscPermissions()
-        );
-    }
-
-    private static Map<String, Object> ctscPermissions() {
-        return Map.of(
-                "name", "ctsc",
-                "value", "Read,Own,Claim,Unclaim,Manage,Complete",
-                "roleCategory", ROLE_CATEGORY_CTSC,
-                "assignmentPriority", 1,
-                "autoAssignable", false
-        );
     }
 
 }

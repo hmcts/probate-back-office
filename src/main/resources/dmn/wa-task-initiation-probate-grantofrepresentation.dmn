@@ -55,10 +55,10 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0izdcb4">
-          <text></text>
+          <text>"No"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0dm0vju">
-          <text></text>
+          <text>"gop"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yp6gfj">
           <text>"ExamineDigitalCaseProbate"</text>
@@ -79,6 +79,41 @@
           <text>"routine_work"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_19ua141">
+          <text>"CTSC"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0nmqzhb">
+        <inputEntry id="UnaryTests_1f06n36">
+          <text>"applyforGrantPaperApplication"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0uux0lw">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nljvi3">
+          <text>"No"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1tnsteb">
+          <text>"gop"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09b8joj">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ciowfv">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0flgkzk">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10ypwse">
+          <text>7</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1aqxna6">
+          <text>"case progression"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17lt81l">
+          <text>"routine_work"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xhke8w">
           <text>"CTSC"</text>
         </outputEntry>
       </rule>

@@ -19,9 +19,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.PROCESS_CATEGORY_PROCESSING;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROUTINE_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.mapAdditionalData;
+import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.resultsMatchUsingNameKey;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -31,22 +32,34 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     static Stream<Arguments> scenarioProvider() {
+        Map<String,Object> examineDigitalCaseProbateTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
+                "name", "Examine Digital Case - Probate",
+                "workingDaysAllowed", 7,
+                "processCategories", "case progression",
+                "workType", ROUTINE_WORK_TYPE,
+                "roleCategory", ROLE_CATEGORY_CTSC
+        );
+
+        Map<String, Object> additionalData = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + "No" + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\"\n"
+                + "  }\n"
+                + "}");
+
         return Stream.of(
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        "No",
-                        "gop",
-                        List.of(
-                                Map.of(
-                                        "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
-                                        "name", "Examine Digital Case - Probate",
-                                        "workingDaysAllowed", 7,
-                                        "processCategories", PROCESS_CATEGORY_PROCESSING,
-                                        "workType", ROUTINE_WORK_TYPE,
-                                        "roleCategory", ROLE_CATEGORY_CTSC
-                                )
-                        )
+                        additionalData,
+                        List.of(examineDigitalCaseProbateTaskAttributes)
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplication",
+                        "CasePrinted",
+                        additionalData,
+                        List.of(examineDigitalCaseProbateTaskAttributes)
                 )
         );
     }
@@ -57,22 +70,22 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(4));
         assertThat(logic.getOutputs().size(), is(7));
-        assertThat(logic.getRules().size(), is(3));
+        assertThat(logic.getRules().size(), is(4));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource("scenarioProvider")
     void given_multiple_event_ids_should_evaluate_dmn(String eventId,
                                                       String postEventState,
-                                                      String evidenceHandled,
-                                                      String caseType,
-                                                      List<Map<String, String>> expectation) {
+                                                      Map<String, Object> additionalData,
+                                                      List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);
-        inputVariables.putValue("evidenceHandled", evidenceHandled);
-        inputVariables.putValue("caseType", caseType);
+        if (additionalData != null) {
+            inputVariables.putAll(additionalData);
+        }
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
-        //assertThat(dmnDecisionTableResult.getResultList(), is(expectation));
+        resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
 }
