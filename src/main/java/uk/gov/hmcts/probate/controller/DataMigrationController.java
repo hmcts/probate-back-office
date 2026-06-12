@@ -96,10 +96,22 @@ public class DataMigrationController {
             final CallbackRequest callbackRequest,
             final HttpServletRequest request,
             final MigrationOperation migrationOperation) {
-        final CaseDetails caseDetails = Objects.requireNonNull(callbackRequest.getCaseDetails());
-        final CaseData caseData = Objects.requireNonNull(caseDetails.getData());
+        final CaseDetails caseDetails = Objects.requireNonNull(callbackRequest.getCaseDetails(),
+                "caseDetails is null");
+        log.info("Extracted caseDetails: {}", caseDetails);
+        final CaseData caseData = Objects.requireNonNull(caseDetails.getData(),
+                "caseData is null");
+        log.info("Extracted caseData: {}", caseData);
+
         // might be null if not provided by migration caller
         final String migrationData = caseData.getMigrationCallbackMetadata();
+
+        log.info(
+                "Migration callback metadata extracted. migrationData={}, caseId={}",
+                migrationData,
+                caseDetails.getId()
+        );
+
         final Long caseId = Objects.requireNonNull(caseDetails.getId());
         log.info("POST {} for {} of GrantOfRepresentation case {}",
                 migrationOperation,
