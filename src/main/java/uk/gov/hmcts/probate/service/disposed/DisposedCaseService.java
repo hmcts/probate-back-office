@@ -242,7 +242,7 @@ public class DisposedCaseService {
         final StringBuilder filterBuilder = new StringBuilder()
                 .append("PartitionKey eq '").append(azureTableService.getPartition()).append("'");
 
-        if (deathDate == null || deathDateRange == 0) {
+        if (deathDate == null || deathDateRange == null || deathDateRange == 0) {
             filterBuilder.append(" and ").append(DATE_OF_DEATH).append(" eq '").append(deathDate).append("'");
         } else {
             final LocalDate startDate = deathDate.minusDays(deathDateRange);
@@ -253,9 +253,16 @@ public class DisposedCaseService {
         }
         if (surname != null && StringUtils.isNotBlank(surname)) {
             final String lcSurname = surname.trim().toLowerCase();
-            final String nextString = getNextString(lcSurname);
-            filterBuilder
-                    .append(" and ").append(DEC_SURNAME).append(" eq '").append(lcSurname).append("'");
+            if (lcSurname.endsWith("*")) {
+                final String fromSurname = lcSurname.substring(0, lcSurname.length() - 1);
+                final String toSurname = getNextString(fromSurname);
+                filterBuilder
+                        .append(" and ").append(DEC_SURNAME).append(" ge '").append(fromSurname).append("'")
+                        .append(" and ").append(DEC_SURNAME).append(" lt '").append(toSurname).append("'");
+            } else {
+                filterBuilder
+                        .append(" and ").append(DEC_SURNAME).append(" eq '").append(lcSurname).append("'");
+            }
         }
         final ListEntitiesOptions caseSearch = new ListEntitiesOptions()
                 .setFilter(filterBuilder.toString())
