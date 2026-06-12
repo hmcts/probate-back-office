@@ -56,8 +56,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                     "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
                     "roleCategory", ROLE_CATEGORY_CTSC,
                     "assignmentPriority", 1,
-                    "autoAssignable", false,
-                    "authorisations", "SKILL:ABA6:ProbateExamining"
+                    "autoAssignable", false
             )
         );
 
