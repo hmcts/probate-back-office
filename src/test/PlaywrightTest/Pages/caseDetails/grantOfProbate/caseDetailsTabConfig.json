@@ -2,8 +2,8 @@
   "tabName": "Case details",
   "fields": [
     "What case type is this?",
-    "Is this a paper form?",
-    "IHT Form completed Online",
+    "What is the channel choice?",
+    "Were any Inheritance Tax (IHT) forms completed to report the value of the estate?",
     "IHT Reference Number",
     "Gross value of the estate",
     "Net value of the estate",
@@ -39,7 +39,6 @@
     "Are you applying as an attorney on behalf of one or more people who are entitled to apply for Grant of Representation?",
     "Please give the full names of the person or people on whose behalf you are applying and their address",
     "Town or City",
-    "County",
     "Postcode/Zipcode",
     "Country",
     "Is a person on whose behalf you are applying unable to make a decision for themselves due to an impairment of or a disturbance in the functioning of their mind or brain?",
