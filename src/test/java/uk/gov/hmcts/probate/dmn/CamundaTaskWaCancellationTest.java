@@ -29,7 +29,10 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
     public static Stream<Arguments> scenarioProvider() {
         return Stream.of(
+                // Withdraw application from CasePrinted ("Awaiting documentation") cancels all tasks on the case
                 event("boWithdrawApplicationForCasePrinted")
+                        .fromState("CasePrinted")
+                        .toState("BOCaseClosed")
                         .cancelAll()
                         .build()
         );
