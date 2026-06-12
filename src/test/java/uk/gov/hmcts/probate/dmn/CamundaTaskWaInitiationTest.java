@@ -30,11 +30,34 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_INITIATION_PROBATE;
     }
 
+
+    /**
+     * Builds the variable in the shape WA passes to the DMN at runtime.
+     * The initiation DMN reads evidenceHandled and caseType from additionalData.Data.* via a
+     * FEEL expression
+     */
+    private static Map<String, Object> additionalData(String handleSuppEvidence, String caseType) {
+        return Map.of("Data", Map.of(
+                "evidenceHandled", handleSuppEvidence,
+                "caseType", caseType
+        ));
+    }
+
     static Stream<Arguments> scenarioProvider() {
-        Map<String,Object> examineDigitalCaseProbateTaskAttributes = Map.of(
+
+        Map<String, Object> examineDigitalCaseProbate7Days = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
                 "name", "Examine Digital Case - Probate",
                 "workingDaysAllowed", 7,
+                "processCategories", "case progression",
+                "workType", ROUTINE_WORK_TYPE,
+                "roleCategory", ROLE_CATEGORY_CTSC
+        );
+
+        Map<String, Object> examineDigitalCaseProbate10Days = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
+                "name", "Examine Digital Case - Probate",
+                "workingDaysAllowed", 10,
                 "processCategories", "case progression",
                 "workType", ROUTINE_WORK_TYPE,
                 "roleCategory", ROLE_CATEGORY_CTSC
@@ -44,16 +67,20 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        "No",
-                        "gop",
-                        List.of(examineDigitalCaseProbateTaskAttributes)
+                        additionalData("No", "gop"),
+                        List.of(examineDigitalCaseProbate7Days)
                 ),
                 Arguments.of(
                         "applyforGrantPaperApplication",
                         "CasePrinted",
-                        "No",
-                        "gop",
-                        List.of(examineDigitalCaseProbateTaskAttributes)
+                        additionalData("No", "gop"),
+                        List.of(examineDigitalCaseProbate7Days)
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalData("No", "gop"),
+                        List.of(examineDigitalCaseProbate10Days)
                 )
         );
     }
@@ -64,21 +91,19 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(4));
         assertThat(logic.getOutputs().size(), is(7));
-        assertThat(logic.getRules().size(), is(4));
+        assertThat(logic.getRules().size(), is(5));
     }
 
-    @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
+    @ParameterizedTest(name = "event id: {0} post event state: {1}")
     @MethodSource("scenarioProvider")
     void given_multiple_event_ids_should_evaluate_dmn(String eventId,
                                                       String postEventState,
-                                                      String evidenceHandled,
-                                                      String caseType,
+                                                      Map<String, Object> additionalData,
                                                       List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);
-        inputVariables.putValue("evidenceHandled", evidenceHandled);
-        inputVariables.putValue("caseType", caseType);
+        inputVariables.putValue("additionalData", additionalData);
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
