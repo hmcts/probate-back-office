@@ -21,6 +21,7 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROUTINE_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.resultsMatchUsingNameKey;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
