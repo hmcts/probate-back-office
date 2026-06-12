@@ -45,6 +45,21 @@ public class CamundaUtils {
     }
 
     @Test
+    void shouldMatchResultsWhenAllEntriesMatchByNameOutOfOrder() {
+        List<Map<String, Object>> results = List.of(
+                Map.of("name", "task2", "value", "value2", "canReconfigure", false),
+                Map.of("name", "task1", "value", "value1", "canReconfigure", true)
+        );
+
+        List<Map<String, Object>> expectation = List.of(
+                Map.of("name", "task1", "value", "value1", "canReconfigure", true),
+                Map.of("name", "task2", "value", "value2", "canReconfigure", false)
+        );
+
+        CamundaUtils.resultsMatchUsingNameKey(results, expectation);
+    }
+
+    @Test
     void shouldThrowErrorWhenResultIsMissingForExpectedName() {
         List<Map<String, Object>> results = List.of(
                 Map.of("name", "task1", "value", "value1", "canReconfigure", true)

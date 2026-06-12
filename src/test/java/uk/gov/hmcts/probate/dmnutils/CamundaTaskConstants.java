@@ -22,6 +22,10 @@ public class CamundaTaskConstants {
     public static final String DUE_DATE_TIME = "dueDateTime";
     public static final String PRIORITY_DATE_ORIGIN_REF = "priorityDateOriginRef";
     public static final String ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID = "additionalProperties_roleAssignmentId";
+    public static final String REGISTRY_LOCATION = "registryLocation";
+    public static final String DECEASED_FORENAMES = "deceasedForenames";
+    public static final String DECEASED_SURNAME = "deceasedSurname";
+    public static final String CASE_TYPE = "caseType";
 
     public static final String DECISION_WORK_TYPE = "decision_making_work";
     public static final String ROUTINE_WORK_TYPE = "routine_work";
@@ -66,4 +70,9 @@ public class CamundaTaskConstants {
     public static final String PROCESS_CATEGORY_HEARING_COMPLETION = "HearingCompletion";
 
     public static final String PROCESS_REINSTATEMENT_DECISION_NOTICE_TASK = "processReinstatementDecisionNotice";
+
+    public static final String CASE_TYPE_VALUE = "someCaseType";
+    public static final String DECEASED_FORENAMES_VALUE = "someDeceasedForenames";
+    public static final String DECEASED_SURNAME_VALUE = "someDeceasedSurname";
+    public static final String REGISTRY_LOCATION_VALUE = "someRegistryLocation";
 }
