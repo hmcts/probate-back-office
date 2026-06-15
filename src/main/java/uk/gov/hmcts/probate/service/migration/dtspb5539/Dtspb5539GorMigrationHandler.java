@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.migration.dtspb5539;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.migration.GorMigrationHandler;
@@ -14,7 +13,6 @@ import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class Dtspb5539GorMigrationHandler implements GorMigrationHandler {
@@ -45,23 +43,9 @@ public class Dtspb5539GorMigrationHandler implements GorMigrationHandler {
                                    JSONObject migrationData) {
 
         caseDataTransformer.transformFormCaseData(callbackRequest);
-     /*   numberOfApplyingExecutorsValidationRule.validate(
-                callbackRequest.getCaseDetails()
-        );
-        CallbackResponse response =
-                eventValidationService.validateRequest(
-                        callbackRequest,
-                        allCaseworkerAmendAndCreateValidationRules
-                );
-        if (response.getErrors().isEmpty()) {
-            callbackResponseTransformer.transform(
-                    callbackRequest,
-                    Optional.empty()
-            );*/
 
-            ccdSupplementaryDataService.submitSupplementaryDataToCcd(
-                    callbackRequest.getCaseDetails().getId().toString());
-        //}
+        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                callbackRequest.getCaseDetails().getId().toString());
 
         return callbackRequest;
     }
