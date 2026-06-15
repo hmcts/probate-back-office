@@ -30,13 +30,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_INITIATION_PROBATE;
     }
 
-
     /**
      * Builds the variable in the shape WA passes to the DMN at runtime.
      * The initiation DMN reads evidenceHandled and caseType from additionalData.Data.* via a
      * FEEL expression
      */
-    private static Map<String, Object> additionalData(Boolean evidenceHandled, String caseType) {
+    private static Map<String, Object> additionalData(String evidenceHandled, String caseType) {
         return Map.of("Data", Map.of(
                 "evidenceHandled", evidenceHandled,
                 "caseType", caseType
@@ -68,14 +67,14 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        additionalData(false, "gop"),
+                        additionalData("No", "gop"),
                         List.of(examineDigitalCaseProbate7Days)
                 ),
                 // Rule 2: applyforGrantPaperApplication → CasePrinted, evidenceHandled/caseType unconstrained
                 Arguments.of(
                         "applyforGrantPaperApplication",
                         "CasePrinted",
-                        additionalData(false, "gop"),
+                        additionalData("No", "gop"),
                         List.of(examineDigitalCaseProbate7Days)
                 ),
                 // Rule 5: PA1P/PA1A/Solicitors Manual → Awaiting documentation (CasePrinted),
@@ -83,7 +82,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
                         "CasePrinted",
-                        additionalData(false, "gop"),
+                        additionalData("No", "gop"),
                         List.of(examineDigitalCaseProbate10Days)
                 )
         );
@@ -98,7 +97,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getRules().size(), is(5));
     }
 
-    @ParameterizedTest(name = "event id: {0} post event state: {1}")
+    @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource("scenarioProvider")
     void given_multiple_event_ids_should_evaluate_dmn(String eventId,
                                                       String postEventState,
