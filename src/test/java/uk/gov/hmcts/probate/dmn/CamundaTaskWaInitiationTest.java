@@ -107,7 +107,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);
-        if (additionalData != null){
+        if (additionalData != null) {
             inputVariables.putValue("additionalData", additionalData);
         }
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
