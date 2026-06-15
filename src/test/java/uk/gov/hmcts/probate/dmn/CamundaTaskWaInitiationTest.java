@@ -35,7 +35,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
      * The initiation DMN reads evidenceHandled and caseType from additionalData.Data.* via a
      * FEEL expression
      */
-    private static Map<String, Object> additionalData(String evidenceHandled, String caseType) {
+    private static Map<String, Object> additionalData(boolean evidenceHandled, String caseType) {
         return Map.of("Data", Map.of(
                 "evidenceHandled", evidenceHandled,
                 "caseType", caseType
@@ -67,14 +67,14 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        additionalData("No", "gop"),
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbate7Days)
                 ),
                 // Rule 2: applyforGrantPaperApplication → CasePrinted, evidenceHandled/caseType unconstrained
                 Arguments.of(
                         "applyforGrantPaperApplication",
                         "CasePrinted",
-                        additionalData("No", "gop"),
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbate7Days)
                 ),
                 // Rule 5: PA1P/PA1A/Solicitors Manual → Awaiting documentation (CasePrinted),
@@ -82,7 +82,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
                         "CasePrinted",
-                        additionalData("No", "gop"),
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbate10Days)
                 )
         );
