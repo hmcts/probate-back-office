@@ -43,7 +43,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
         Map<String, Object> additionalData = mapAdditionalData("{\n"
                 + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + "No" + "\",\n"
+                + "  \"evidenceHandled\" : \"" + false + "\",\n"
                 + "  \"caseType\" : \"" + "gop" + "\"\n"
                 + "  }\n"
                 + "}");
