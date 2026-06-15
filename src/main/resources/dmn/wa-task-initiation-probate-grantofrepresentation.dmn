@@ -13,7 +13,7 @@
         </inputExpression>
       </input>
       <input id="InputClause_03i3ghi" label="evidenceHandled" biodi:width="291" camunda:inputVariable="evidenceHandled">
-        <inputExpression id="LiteralExpression_0kx1xp4" typeRef="boolean">
+        <inputExpression id="LiteralExpression_0kx1xp4" typeRef="string">
           <text>if(additionalData != null and additionalData.Data != null and
             additionalData.Data.evidenceHandled
             != null) then
@@ -22,6 +22,9 @@
             ""
           </text>
         </inputExpression>
+        <inputValues id="UnaryTests_0imp90y">
+          <text>"Yes","No"</text>
+        </inputValues>
       </input>
       <input id="InputClause_0igjxpg" label="caseType" biodi:width="291" camunda:inputVariable="caseType">
         <inputExpression id="LiteralExpression_176w5mt" typeRef="string">
@@ -52,7 +55,7 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0izdcb4">
-          <text>false</text>
+          <text>"No"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0dm0vju">
           <text>"gop"</text>
@@ -87,7 +90,7 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0nljvi3">
-          <text>false</text>
+          <text>"No"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1tnsteb">
           <text>"gop"</text>
@@ -122,7 +125,7 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_11p2mwh">
-          <text>false</text>
+          <text>"No"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1fd6wo4">
           <text>"admonWill"</text>
@@ -157,7 +160,7 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0g8530j">
-          <text>false</text>
+          <text>"No"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1qkrz9q">
           <text>"intestacy"</text>
