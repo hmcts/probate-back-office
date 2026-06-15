@@ -36,9 +36,9 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
      * The initiation DMN reads evidenceHandled and caseType from additionalData.Data.* via a
      * FEEL expression
      */
-    private static Map<String, Object> additionalData(String handleSuppEvidence, String caseType) {
+    private static Map<String, Object> additionalData(Boolean evidenceHandled, String caseType) {
         return Map.of("Data", Map.of(
-                "evidenceHandled", handleSuppEvidence,
+                "evidenceHandled", evidenceHandled,
                 "caseType", caseType
         ));
     }
@@ -64,22 +64,26 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
 
         return Stream.of(
+                // Rule 1: handleEvidence → CasePrinted, evidenceHandled/caseType unconstrained
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        additionalData("No", "gop"),
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbate7Days)
                 ),
+                // Rule 2: applyforGrantPaperApplication → CasePrinted, evidenceHandled/caseType unconstrained
                 Arguments.of(
                         "applyforGrantPaperApplication",
                         "CasePrinted",
-                        additionalData("No", "gop"),
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbate7Days)
                 ),
+                // Rule 5: PA1P/PA1A/Solicitors Manual → Awaiting documentation (CasePrinted),
+                // evidenceHandled=false, gop → ExamineDigitalCaseProbate (10 working days)
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
                         "CasePrinted",
-                        additionalData("No", "gop"),
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbate10Days)
                 )
         );
@@ -103,7 +107,9 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);
-        inputVariables.putValue("additionalData", additionalData);
+        if (additionalData != null){
+            inputVariables.putValue("additionalData", additionalData);
+        }
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }

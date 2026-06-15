@@ -19,9 +19,12 @@
             != null) then
             additionalData.Data.evidenceHandled
             else
-            ""
+            null
           </text>
         </inputExpression>
+        <inputValues id="UnaryTests_0imp90y">
+          <text>true,false</text>
+        </inputValues>
       </input>
       <input id="InputClause_0igjxpg" label="caseType" biodi:width="291" camunda:inputVariable="caseType">
         <inputExpression id="LiteralExpression_176w5mt" typeRef="string">
@@ -52,10 +55,10 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0izdcb4">
-          <text>false</text>
+          <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0dm0vju">
-          <text>"gop"</text>
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yp6gfj">
           <text>"ExamineDigitalCaseProbate"</text>
@@ -87,10 +90,10 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0nljvi3">
-          <text>false</text>
+          <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1tnsteb">
-          <text>"gop"</text>
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_09b8joj">
           <text>"ExamineDigitalCaseProbate"</text>
@@ -192,7 +195,7 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="LiteralExpression_1whdf9l">
-          <text>"No"</text>
+          <text>false</text>
         </inputEntry>
         <inputEntry id="LiteralExpression_0n1yxlg">
           <text>"gop"</text>
