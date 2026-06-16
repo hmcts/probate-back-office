@@ -33,7 +33,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
                 event("boWithdrawApplicationForCasePrinted")
                         .fromState("CasePrinted")
                         .toState("BOCaseClosed")
-                        .cancelAll()
+                        .cancel("DUMMY_PLACEHOLDER_IDENTIFIER")
                         .build()
         );
     }
