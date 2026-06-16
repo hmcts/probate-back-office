@@ -5,7 +5,7 @@ import createGrantOfProbateConfig from "../../../Pages/createGrantOfProbateManua
 import eventSummaryConfig from "../../../Pages/eventSummary/eventSummaryConfig.json" with { type: "json" };
 
 import applicantDetailsTabConfig from "../../../Pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE.json" with { type: "json" };
-import caseDetailsTabConfig from "../../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfig.json" with { type: "json" };
+import caseDetailsTabConfig from "../../../Pages/caseDetails/grantOfProbate/caseDetailsTabConfigCW.json" with { type: "json" };
 import copiesTabConfig from "../../../Pages/caseDetails/grantOfProbate/copiesTabConfig.json" with { type: "json" };
 import deceasedTabConfig from "../../../Pages/caseDetails/grantOfProbate/deceasedTabConfig.json" with { type: "json" };
 import historyTabConfig from "../../../Pages/caseDetails/grantOfProbate/historyTabConfig.json" with { type: "json" };
@@ -59,7 +59,7 @@ test.describe("Caseworker Grant of Probate - PA1P/PA1A/Solicitors Manual Case Cr
     await basePage.logInfo(scenarioName, "enterGrantOfProbateManualPage3", null);
     await createCasePage.enterGrantOfProbateManualPage3(
       "create",
-      createGrantOfProbateConfig
+      configWithCaseType
     );
 
     await createCasePage.checkMyAnswers(nextStepName);
@@ -80,26 +80,26 @@ test.describe("Caseworker Grant of Probate - PA1P/PA1A/Solicitors Manual Case Cr
       testInfo,
       caseRef,
       deceasedTabConfig,
-      createGrantOfProbateConfig
+      configWithCaseType
     );
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       caseDetailsTabConfig,
-      createGrantOfProbateConfig
+      configWithCaseType
     );
     await basePage.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       applicantDetailsTabConfig,
-      createGrantOfProbateConfig
+      configWithCaseType
     );
     await basePage.seeCaseDetails(
       testInfo,
       caseRef,
       copiesTabConfig,
-      createGrantOfProbateConfig
+      configWithCaseType
     );
   })
 });

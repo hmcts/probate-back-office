@@ -344,18 +344,10 @@ export class CreateCasePage extends BasePage {
     async enterGrantOfProbateManualPage2(crud: string) {
         if (crud === 'create') {
             await expect(this.ihtPageWaitForTextLocator).toBeVisible();
-            await this.page.locator(`#ihtFormEstateValuesCompleted_${createGrantOfProbateConfig.EE_ihtFormEstateValueCompletedNo}`).click();
-            await this.page.locator(`#ihtFormEstateValuesCompleted_${createGrantOfProbateConfig.EE_ihtFormEstateValueCompletedNo}`).click();
+            await this.page.locator(`#ihtFormEstateValuesCompleted_${createGrantOfProbateConfig.EE_ihtFormEstateValueCompletedYes}`).click();
+            await this.page.locator(`#ihtFormEstateValuesCompleted_${createGrantOfProbateConfig.EE_ihtFormEstateValueCompletedYes}`).click();
+            await this.page.locator(`#ihtFormEstate-${createGrantOfProbateConfig.EE_ihtFormEstate207}`).click();
 
-            await this.page.locator('#ihtEstateGrossValue')
-                .fill(createGrantOfProbateConfig.EE_ihtEstateGrossValue);
-            await this.page.locator('#ihtEstateNetValue')
-                .fill(createGrantOfProbateConfig.EE_ihtEstateNetValue);
-            await this.page.locator('#ihtEstateNetQualifyingValue')
-                .fill(createGrantOfProbateConfig.EE_ihtEstateNetValue);
-
-            await this.page.locator(`#deceasedHadLateSpouseOrCivilPartner_${createGrantOfProbateConfig.EE_deceasedHadLateSpouseOrCivilPartnerYes}`).click();
-            await this.page.locator(`#ihtUnusedAllowanceClaimed_${createGrantOfProbateConfig.EE_ihtUnusedAllowanceClaimed_No}`).click();
         } else {
             await expect(this.page.getByText(caseProgressConfig.IHT205Label)).toBeVisible();
             await expect(this.page.locator('#ihtFormId').getByText(caseProgressConfig.IHT400Label)).toBeVisible();
