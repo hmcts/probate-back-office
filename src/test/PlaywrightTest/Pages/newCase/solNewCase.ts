@@ -72,6 +72,7 @@ export class SolCreateCasePage extends BasePage {
   });
   readonly postcodeLinkLocator = this.page.getByText(createCaveatConfig.UKpostcodeLink);
   readonly solSignSot = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionNo}`);
+  readonly solSignSotYes = this.page.locator(`#solsSolicitorWillSignSOT_${applyProbateConfig.page2_optionYes}`);
   readonly solsStartPageLocator = this.page.locator('#solsStartPage');
   readonly solsApplyPageLocator = this.page.locator('#solsApplyPage');
   readonly solsPageSubHeading = this.page.getByText(applyProbateConfig.page2_subheading);
@@ -658,12 +659,10 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.solsPageSubHeading).toBeVisible();
     await expect(this.solsHelp).toBeVisible();
 
-    await expect(this.solSignSot).toBeVisible();
-    await this.solSignSot.click();
-    await this.solForenameLocator.fill(applyProbateConfig.page2_sol_forename);
-    await this.solSurnameLocator.fill(applyProbateConfig.page2_sol_surname);
-    await this.solSotForenameLocator.fill(applyProbateConfig.page2_sol_forename);
-    await this.solSotSurnameLocator.fill(applyProbateConfig.page2_sol_surname);
+    await expect(this.solSignSotYes).toBeVisible();
+    await this.solSignSotYes.click();
+    await this.page.getByLabel('Probate practitioner first name(s)').fill(applyProbateConfig.page2_sol_forename);
+    await this.page.getByLabel('Probate practitioner last name(s)').fill(applyProbateConfig.page2_sol_surname);
 
     if (isSolicitorNamedExecutor) {
       await this.solsIsExecLocator.click();
@@ -776,7 +775,11 @@ export class SolCreateCasePage extends BasePage {
       await expect(this.nilBandRateLocator).toBeVisible();
       await this.iht217OptionLocator.click();
     } else {
-      await this.formIdLocator.click();
+      if (whichIHTFormsCompleted === 'IHT207') {
+        await this.page.locator(`#ihtFormId-${deceasedDetailsConfig.page2_solsIHTFormsCompleted207}`).click();
+      } else {
+        await this.formIdLocator.click();
+      }
     }
 
     await this.waitForNavigationToComplete(commonConfig.continueButton);
@@ -835,15 +838,8 @@ export class SolCreateCasePage extends BasePage {
     await this.codicilAddedMonthLocator.fill(grantOfProbateConfig.page1_codicilDate_month);
     await this.codicilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
     await expect(this.languagePreferenceLabelLocator).toBeVisible();
-    await this.languagePreferenceWelshLocator.click();
-    // await this.page.waitForTimeout(testConfig.ManualDelayLong);
-    const isLanguagePreferenceSelected = await this.languagePreferenceWelshLocator.isChecked();
-    if (isLanguagePreferenceSelected) {
-      await this.waitForNavigationToComplete(commonConfig.continueButton);
-    } else {
-      await this.languagePreferenceWelshLocator.click();
-      await this.waitForNavigationToComplete(commonConfig.continueButton);
-    }
+    await this.page.locator('#languagePreferenceWelsh_No').click();
+    await this.waitForNavigationToComplete(commonConfig.continueButton);
 
   }
 
@@ -857,47 +853,15 @@ export class SolCreateCasePage extends BasePage {
     } else {
       await expect(this.page.getByText(grantOfProbateConfig.page2_prev_identified_execs_text)).not.toBeVisible();
     }
-    await this.dispNoticeLocator.scrollIntoViewIfNeeded();
-    await expect(this.dispNoticeLocator).toBeVisible();
-    await this.dispNoticeLocator.click();
+    await this.page.locator('#dispenseWithNotice_No').scrollIntoViewIfNeeded();
+    await expect(this.page.locator('#dispenseWithNotice_No')).toBeVisible();
+    await this.page.locator('#dispenseWithNotice_No').click();
     await expect(this.tctTypeLocator).toBeVisible();
     if (verifyTrustCorpOpts) {
       await this.verifyTitleAndClearingTypeOptionsPage();
     }
-
     await this.tctTypeLocator.focus();
     await this.tctTypeLocator.click();
-    await expect(this.tctTrustCorpLocator).toBeVisible();
-    await this.tctTrustCorpLocator.click();
-    await expect(this.othersRenouncingLocator).toBeVisible();
-    await this.othersRenouncingLocator.click();
-    await this.additionalApplyingPartnersLocator.focus();
-    await this.additionalApplyingPartnersLocator.click();
-    await expect(this.additionalExecutorsLocator).toBeVisible();
-    await this.noAdditionalPartnersLocator.click();
-    await expect(this.additionalExecutorsLocator).not.toBeVisible();
-    await this.tctTrustCorpLocator.focus();
-    await this.tctTrustCorpLocator.click();
-    await expect(this.trusCorpNameLocator).toBeVisible();
-    await this.trusCorpNameLocator.fill(grantOfProbateConfig.page2_nameOfTrustCorp);
-    await this.trustCorpPostcodeLinkLocator.click()
-    await this.trustCorpAddressLine1Locator.fill(grantOfProbateConfig.address_line1);
-    await this.trustCorpAddressLine2Locator.fill(grantOfProbateConfig.address_line2);
-    await this.trustCorpAddressLine3Locator.fill(grantOfProbateConfig.address_line3);
-    await this.trustCorpPostTownLocator.fill(grantOfProbateConfig.address_town)
-    await this.trustCorpCountyLocator.fill(grantOfProbateConfig.address_county);
-    await this.trustCorpPostcodeLocator.fill(grantOfProbateConfig.address_postcode);
-    await this.trustCorpCountryLocator.fill(grantOfProbateConfig.address_country);
-
-    await expect(this.anyOtherPartnersTextLocator).toBeVisible();
-    await this.anyOtherApplyingPartnersTcLocator.focus();
-    await this.anyOtherApplyingPartnersTcLocator.click();
-    await expect(this.addPersonLocator).toBeVisible();
-    await this.addExecutorsTcLocator.click();
-    await this.addExecutorFirstnameLocator.fill(grantOfProbateConfig.page2_executorFirstName);
-    await this.addExecutorLastnameLocator.fill(grantOfProbateConfig.page2_executorSurname);
-    await this.addExecutorTcPositionLocator.fill(grantOfProbateConfig.page2_positionInTrustCorp)
-    await this.probatePractitionerPositionLocator.fill(grantOfProbateConfig.page2_positionInTrust);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 

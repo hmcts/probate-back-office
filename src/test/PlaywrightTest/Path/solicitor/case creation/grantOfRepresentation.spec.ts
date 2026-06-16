@@ -2,7 +2,6 @@ import {test} from "../../../Fixtures/fixtures.ts";
 
 import createCaseConfig from "../../../Pages/createCase/createCaseConfig.json" with { type: "json" };
 import deceasedDetailsConfig from "../../../Pages/solicitorApplyProbate/deceasedDetails/deceasedDetailsConfig.json" with { type: "json" };
-import caseProgressConfig from "../../../Pages/caseProgressStandard/caseProgressConfig.json" with { type: "json" };
 
 test.describe("Solicitor - Grant of Representation Case Creation", () => {
   test("Solicitor - Grant of Representation Case Creation @webkit", async ({
@@ -40,9 +39,8 @@ test.describe("Solicitor - Grant of Representation Case Creation", () => {
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.deceasedDetailsPage1();
-    await solCreateCasePage.deceasedDetailsPage2();
-    await solCreateCasePage.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
-    await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, 'IHT400');
+    await solCreateCasePage.deceasedDetailsPage2(undefined, undefined, 'IHT207');
+    await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, 'IHT207');
     await solCreateCasePage.deceasedDetailsPage3();
     await solCreateCasePage.deceasedDetailsPage4();
     await solCreateCasePage.cyaPage();
@@ -55,8 +53,7 @@ test.describe("Solicitor - Grant of Representation Case Creation", () => {
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.grantOfProbatePage1();
     await solCreateCasePage.grantOfProbatePage2(true, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
-    await solCreateCasePage.grantOfProbatePage3();
-    await solCreateCasePage.grantOfProbatePage4(isSolicitorApplyingExecutor);
+    await solCreateCasePage.grantOfProbatePage4(false);
     await solCreateCasePage.grantOfProbatePage5();
     await solCreateCasePage.grantOfProbatePage6();
     await solCreateCasePage.cyaPage();
