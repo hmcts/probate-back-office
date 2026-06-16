@@ -59,7 +59,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
             + "[SME Referral](/cases/case-details/"
             + "${[CASE_REFERENCE]}/trigger/boUploadDocsForSMEReferral)  "
             + "[Stop Case](/cases/case-details/"
-            + "${[CASE_REFERENCE]}/trigger/boStopCase)";
+            + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
 
     @BeforeAll
     public static void initialization() {
