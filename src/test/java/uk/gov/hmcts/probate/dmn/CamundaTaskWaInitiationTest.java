@@ -57,7 +57,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
                 "name", "Examine Digital Case - Probate",
                 "workingDaysAllowed", 10,
-                "processCategories", "DUMMY_PLACEHOLDER_IDENTIFIER",
+                "processCategories", "case progression",
                 "workType", ROUTINE_WORK_TYPE,
                 "roleCategory", ROLE_CATEGORY_CTSC
         );
