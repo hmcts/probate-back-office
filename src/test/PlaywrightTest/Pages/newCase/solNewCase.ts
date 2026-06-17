@@ -645,7 +645,7 @@ export class SolCreateCasePage extends BasePage {
     await this.backToServiceRequestLocator.click();
   }
 
-  async applyForProbatePage1() {
+  async applyForProbatePage1(isProbate = true) {
     await this.verifyPageLoad(this.solsStartPageLocator);
     await expect(this.solsStartPageLocator).toBeVisible();
     await this.runAccessibilityTest();
@@ -659,10 +659,12 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.solsPageSubHeading).toBeVisible();
     await expect(this.solsHelp).toBeVisible();
 
-    await expect(this.solSignSotYes).toBeVisible();
-    await this.solSignSotYes.click();
-    await this.page.getByLabel('Probate practitioner first name(s)').fill(applyProbateConfig.page2_sol_forename);
-    await this.page.getByLabel('Probate practitioner last name(s)').fill(applyProbateConfig.page2_sol_surname);
+    await expect(this.solSignSot).toBeVisible();
+    await this.solSignSot.click();
+    await this.solForenameLocator.fill(applyProbateConfig.page2_sol_forename);
+    await this.solSurnameLocator.fill(applyProbateConfig.page2_sol_surname);
+    await this.solSotForenameLocator.fill(applyProbateConfig.page2_sol_forename);
+    await this.solSotSurnameLocator.fill(applyProbateConfig.page2_sol_surname);
 
     if (isSolicitorNamedExecutor) {
       await this.solsIsExecLocator.click();
