@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
@@ -205,6 +206,13 @@ public class BusinessValidationController {
         @RequestBody CallbackRequest request) {
         logRequest("/sols-created", request);
         return ResponseEntity.ok(callbackResponseTransformer.createSolsCase(request, authToken));
+    }
+
+    @PostMapping(path = "/supplementaryData1", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> setSupplementaryData1(
+            @Valid @RequestBody final CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(callbackResponseTransformer.addSupplementaryData(callbackRequest));
     }
 
     @PostMapping(path = "/sols-access", produces = {APPLICATION_JSON_VALUE})
@@ -871,6 +879,8 @@ public class BusinessValidationController {
 
         return ResponseEntity.ok(callbackResponse);
     }
+
+
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

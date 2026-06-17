@@ -1,8 +1,12 @@
 package uk.gov.hmcts.probate.transformer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -34,6 +38,7 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.ccd.AuditEventService;
@@ -158,6 +163,11 @@ public class CallbackResponseTransformer {
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
     private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
+    private final CcdSupplementaryDataService ccdSupplementaryDataService;
+
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -171,7 +181,41 @@ public class CallbackResponseTransformer {
             callbackRequest.getEventId(), Optional.empty(), true);
         responseCaseDataBuilder.applicantOrganisationPolicy(buildOrganisationPolicy(
             callbackRequest.getCaseDetails(), authToken));
-        return transformResponse(responseCaseDataBuilder.build());
+        CallbackResponse callbackResponse =
+                transformResponse(responseCaseDataBuilder.build());
+
+        callbackResponse.setSupplementary_data_request(
+                ccdSupplementaryDataService.buildSupplementaryDataRequest()
+        );
+        try {
+            log.info("CallbackResponse:\n{}",
+                    objectMapper.writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(callbackResponse));
+        } catch (JsonProcessingException e) {
+            log.error("Failed to serialise CallbackResponse", e);
+        }
+        return callbackResponse;
+    }
+
+    public CallbackResponse addSupplementaryData(
+            CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), Optional.empty(), true);
+
+        CallbackResponse callbackResponse =
+                transformResponse(responseCaseDataBuilder.build());
+
+        callbackResponse.setSupplementary_data_request(
+                ccdSupplementaryDataService.buildSupplementaryDataRequest()
+        );
+        try {
+            log.info("CallbackResponse:\n{}",
+                    objectMapper.writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(callbackResponse));
+        } catch (JsonProcessingException e) {
+            log.error("Failed to serialise CallbackResponse", e);
+        }
+        return callbackResponse;
     }
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
@@ -185,7 +229,22 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse defaultDateOfDeathType(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE);
-        return transformResponse(builder.build());
+
+        CallbackResponse callbackResponse =
+                transformResponse(builder.build());
+
+        callbackResponse.setSupplementary_data_request(
+                ccdSupplementaryDataService.buildSupplementaryDataRequest()
+        );
+
+        try {
+            log.info("CallbackResponse:\n{}",
+                    objectMapper.writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(callbackResponse));
+        } catch (JsonProcessingException e) {
+            log.error("Failed to serialise CallbackResponse", e);
+        }
+        return callbackResponse;
     }
 
     public CallbackResponse setupOriginalDocumentsForRemoval(CallbackRequest callbackRequest) {

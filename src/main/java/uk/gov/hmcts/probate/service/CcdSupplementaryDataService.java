@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Collections.singletonMap;
 
@@ -132,4 +133,16 @@ public class CcdSupplementaryDataService {
                 ex
         );
     }
+
+    public Map<String, Map<String, Object>> buildSupplementaryDataRequest() {
+
+        return Map.of(
+                SET_OPERATION,
+                Map.of(
+                        SERVICE_ID_FIELD,
+                        supplementaryDataConfiguration.getHmctsId()
+                )
+        );
+    }
+
 }

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -340,7 +341,7 @@ class BusinessValidationUnitTest {
     }
 
     @Test
-    void shouldVerifySolsCreatedWithNoErrors() {
+    void shouldVerifySolsCreatedWithNoErrors() throws JsonProcessingException {
         when(callbackResponseTransformerMock.createSolsCase(callbackRequestMock, AUTH_TOKEN))
                 .thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response = underTest.createSolsCaseWithOrganisation(AUTH_TOKEN,
