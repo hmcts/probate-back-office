@@ -366,6 +366,7 @@ export class SolCreateCasePage extends BasePage {
     await this.deceasedAddressCountyLocator.fill(applicationDetailsConfig.address_county);
     await this.deceasedAddressPostCodeLocator.fill(applicationDetailsConfig.address_postcode);
     await this.deceasedAddressCountryLocator.fill(applicationDetailsConfig.address_country);
+    await this.page.locator(`#languagePreferenceWelsh_${applicationDetailsConfig.page2_langPrefNo}`).click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
