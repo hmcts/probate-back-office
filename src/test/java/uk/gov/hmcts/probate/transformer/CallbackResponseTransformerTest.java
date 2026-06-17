@@ -57,6 +57,7 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
@@ -89,15 +90,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -591,6 +584,8 @@ class CallbackResponseTransformerTest {
     private AuditEventService auditEventService;
     @Mock
     private HasValidMatchesDefaulter hasValidMatchesDefaulter;
+    @Mock
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
 
     @BeforeEach
     public void setup() {
@@ -1019,6 +1014,18 @@ class CallbackResponseTransformerTest {
         when(taskListUpdateService.generateTaskList(any(CaseDetails.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class)))
             .thenAnswer(invocation -> invocation.getArgument(1));
+
+        when(ccdSupplementaryDataService.buildSupplementaryDataRequest())
+                .thenReturn(
+                        Map.of(
+                                "$set",
+                                Map.of(
+                                        "HMCTSServiceId",
+                                        "BBA3"
+                                )
+                        )
+                );
+
         ReflectionTestUtils.setField(underTest, "makeDormantAddTimeMinutes", 5);
     }
 
