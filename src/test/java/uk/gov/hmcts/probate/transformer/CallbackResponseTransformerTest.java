@@ -1,6 +1,8 @@
 package uk.gov.hmcts.probate.transformer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.commons.lang3.BooleanUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -596,8 +598,14 @@ class CallbackResponseTransformerTest {
     @Mock
     private CcdSupplementaryDataService ccdSupplementaryDataService;
 
+    @Mock
+    private ObjectMapper objectMapper;
+
+    @Mock
+    private ObjectWriter objectWriter;
+
     @BeforeEach
-    public void setup() {
+    public void setup() throws Exception {
 
         caseDataBuilder = CaseData.builder()
             .applicationType(APPLICATION_TYPE)
@@ -1025,17 +1033,24 @@ class CallbackResponseTransformerTest {
             .thenAnswer(invocation -> invocation.getArgument(1));
 
         when(ccdSupplementaryDataService.buildSupplementaryDataRequest())
-                .thenReturn(
-                        Map.of(
-                                "$set",
-                                Map.of(
-                                        "HMCTSServiceId",
-                                        "BBA3"
-                                )
-                        )
-                );
+            .thenReturn(
+                    Map.of(
+                            "$set",
+                            Map.of(
+                                    "HMCTSServiceId",
+                                    "ABA6"
+                            )
+                    )
+            );
+
+        when(objectMapper.writerWithDefaultPrettyPrinter())
+                .thenReturn(objectWriter);
+
+        when(objectWriter.writeValueAsString(any()))
+                .thenReturn("{}");
 
         ReflectionTestUtils.setField(underTest, "makeDormantAddTimeMinutes", 5);
+        ReflectionTestUtils.setField(underTest, "objectMapper", objectMapper);
     }
 
     @Test
