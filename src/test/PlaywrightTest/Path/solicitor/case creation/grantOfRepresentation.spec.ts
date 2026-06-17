@@ -13,8 +13,8 @@ test.describe("Solicitor - Grant of Representation Case Creation", () => {
   }, testInfo) => {
     test.setTimeout(300000);
     const scenarioName = 'Solicitor - Grant of Representation Case Creation';
-    const isSolicitorNamedExecutor = true;
-    const isSolicitorApplyingExecutor = true;
+    const caseTypeKey = (process.env.CASE_TYPE ?? 'probate').toLowerCase();
+    const isProbate = !['admon', 'intestacy'].includes(caseTypeKey);
 
     await basePage.logInfo(scenarioName, 'Login as Solicitor');
     await signInPage.authenticateWithIdamIfAvailable(true);
@@ -24,8 +24,8 @@ test.describe("Solicitor - Grant of Representation Case Creation", () => {
     await basePage.logInfo(scenarioName, nextStepName);
     await createCasePage.selectNewCase();
     await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
-    await solCreateCasePage.applyForProbatePage1();
-    await solCreateCasePage.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
+    await solCreateCasePage.applyForProbatePage1(isProbate);
+    await solCreateCasePage.applyForProbatePage2(isProbate, isProbate);
     await solCreateCasePage.cyaPage();
 
     await solCreateCasePage.seeEndState(endState);
@@ -35,36 +35,67 @@ test.describe("Solicitor - Grant of Representation Case Creation", () => {
     console.log(`Grant of Representation case created with reference: ${caseRef}`);
 
     nextStepName = 'Deceased details';
-    endState = 'Grant of probate created';
+    const endStateMap: Record<string, string> = { admon: 'Admon will grant created', intestacy: 'Intestacy grant created' };
+    endState = endStateMap[caseTypeKey] ?? 'Grant of probate created';
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
+    const willTypeMap: Record<string, string> = { admon: 'WillLeftAnnexed', intestacy: 'NoWill' };
+    const willType = willTypeMap[caseTypeKey] ?? 'WillLeft';
     await solCreateCasePage.deceasedDetailsPage1();
     await solCreateCasePage.deceasedDetailsPage2(undefined, undefined, 'IHT207');
     await solCreateCasePage.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, 'IHT207');
-    await solCreateCasePage.deceasedDetailsPage3();
-    await solCreateCasePage.deceasedDetailsPage4();
+    await solCreateCasePage.deceasedDetailsPage3(willType); // Information about the will page
+    if (isProbate) {
+      await solCreateCasePage.deceasedDetailsPage4();
+    }
     await solCreateCasePage.cyaPage();
 
     await solCreateCasePage.seeEndState(endState);
 
-    nextStepName = 'Grant of probate details';
-    endState = 'Application updated';
-    await basePage.logInfo(scenarioName, nextStepName, caseRef);
-    await cwEventActionsPage.chooseNextStep(nextStepName);
-    await solCreateCasePage.grantOfProbatePage1();
-    await solCreateCasePage.grantOfProbatePage2(true, isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
-    await solCreateCasePage.grantOfProbatePage4(false);
-    await solCreateCasePage.grantOfProbatePage5();
-    await solCreateCasePage.grantOfProbatePage6();
-    await solCreateCasePage.cyaPage();
+    if (caseTypeKey === 'admon') {
+      nextStepName = 'Admon will details';
+      endState = 'Application updated';
+      await basePage.logInfo(scenarioName, nextStepName, caseRef);
+      await cwEventActionsPage.chooseNextStep(nextStepName);
+      await solCreateCasePage.admonWillDetailsPage1();
+      await solCreateCasePage.admonWillDetailsPage2(true);
+      await solCreateCasePage.admonWillDetailsPage3();
+      await solCreateCasePage.admonWillDetailsPage4();
+      await solCreateCasePage.admonWillDetailsPage5();
+      await solCreateCasePage.cyaPage();
+      await solCreateCasePage.seeEndState(endState);
 
-    await solCreateCasePage.seeEndState(endState);
+    } else if (caseTypeKey === 'intestacy') {
+      nextStepName = 'Intestacy details';
+      endState = 'Application updated';
+      await basePage.logInfo(scenarioName, nextStepName, caseRef);
+      await cwEventActionsPage.chooseNextStep(nextStepName);
+      await solCreateCasePage.intestacyDetailsPage1();
+      await solCreateCasePage.intestacyDetailsPage2();
+      await solCreateCasePage.intestacyDetailsPage3();
+      await solCreateCasePage.intestacyDetailsPage4();
+      await solCreateCasePage.cyaPage();
+      await solCreateCasePage.seeEndState(endState);
+
+    } else {
+      nextStepName = 'Grant of probate details';
+      endState = 'Application updated';
+      await basePage.logInfo(scenarioName, nextStepName, caseRef);
+      await cwEventActionsPage.chooseNextStep(nextStepName);
+      await solCreateCasePage.grantOfProbatePage1();
+      await solCreateCasePage.grantOfProbatePage2(true, isProbate, isProbate);
+      await solCreateCasePage.grantOfProbatePage4(false);
+      await solCreateCasePage.grantOfProbatePage5();
+      await solCreateCasePage.grantOfProbatePage6();
+      await solCreateCasePage.cyaPage();
+      await solCreateCasePage.seeEndState(endState);
+    }
 
     nextStepName = 'Complete application';
     endState = 'Awaiting documentation';
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
-    await solCreateCasePage.completeApplicationPage1();
+    await solCreateCasePage.completeApplicationPage1(willType);
     await solCreateCasePage.completeApplicationPage3();
     await solCreateCasePage.completeApplicationPage4();
     await solCreateCasePage.completeApplicationPage5();
