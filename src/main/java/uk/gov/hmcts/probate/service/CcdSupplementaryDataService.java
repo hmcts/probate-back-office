@@ -18,7 +18,7 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
 
 import static java.util.Collections.singletonMap;
 
