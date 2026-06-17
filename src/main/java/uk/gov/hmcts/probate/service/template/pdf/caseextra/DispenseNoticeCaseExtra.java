@@ -10,4 +10,5 @@ import lombok.Data;
 public class DispenseNoticeCaseExtra {
     private final String showDispenseNoticeSupportDocs;
     private final String dispenseNoticeSupportDocsText;
+    private final String dispenseNoticeSupportDocsTextWelsh;
 }

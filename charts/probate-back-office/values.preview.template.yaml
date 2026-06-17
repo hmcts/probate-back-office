@@ -47,6 +47,10 @@ ccd:
       image: hmctsprod.azurecr.io/ccd/admin-web:latest
       ingressHost: admin-web-${SERVICE_FQDN}
       keyVaults: []
+      devcpuRequests: 20m # if 10m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 20m to make sure the pod can be up and running.
+      devcpuLimits: 2000m
+      devmemoryRequests: 500Mi
+      devmemoryLimits: 1Gi
       environment:
         IDAM_ADMIN_WEB_SERVICE_KEY: ${ADMIN_S2S_KEY}
         IDAM_OAUTH2_AW_CLIENT_SECRET: ${ADMIN_WEB_IDAM_SECRET}
@@ -62,6 +66,10 @@ ccd:
         IDAM_PRINT_SERVICE_KEY: ${PRINT_S2S_KEY}
       ingressHost:
         ccd-case-print-service-${SERVICE_FQDN}
+      devcpuRequests: 30m # if 10m/20m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 30m to make sure the pod can be up and running.
+      devcpuLimits: 300m
+      devmemoryRequests: 400Mi
+      devmemoryLimits: 800Mi
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
@@ -74,14 +82,18 @@ ccd:
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
       keyVaults: []
+      devcpuRequests: 40m # if 10m/20m/30m is used, the pod can't spining up at aks deploy preview, and it will cause the whole deployment failed. So increase it to 40m to make sure the pod can be up and running.
+      devcpuLimits: 400m
+      devmemoryRequests: 250Mi
+      devmemoryLimits: 512Mi
   ccd-data-store-api:
     java:
       imagePullPolicy: Always
-      devcpuRequests: 1
       autoscaling:
         maxReplicas: 2
-      devmemoryRequests: 2Gi
-      devcpuLimits: 2
+      devcpuRequests: 100m
+      devcpuLimits: 600m
+      devmemoryRequests: 1Gi
       devmemoryLimits: 2Gi
       environment:
         DATA_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
@@ -102,17 +114,20 @@ ccd:
         CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?))
         CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
-        CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: aac_manage_case_assignment,fpl_case_service,iac,finrem_case_orchestration,divorce_frontend,nfdiv_cos,civil_service,probate_backend
+        CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: aac_manage_case_assignment,fpl_case_service,iac,finrem_case_orchestration,divorce_frontend,nfdiv_cos,civil_service,probate_backend,wa_task_management_api
         LOG_CALLBACK_DETAILS: "*"
+        DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,probate_backend,divorce_ccd_submission,sscs,sscs_bulkscan,cmc,cmc_claim_store,cmc_claim_external_api,jui_webapp,pui_webapp,bulk_scan_orchestrator,fpl_case_service,iac,finrem_ccd_data_migrator,finrem_case_orchestration,employment_tribunals,ethos_repl_service,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,bulk_scan_payment_processor,pcq_consolidation_service,em_npa_app,ecm_consumer,aac_manage_case_assignment,am_role_assignment_service,wa_task_configuration_api,divorce_frontend,wa_task_management_api,wa_workflow_api,em_hrs_api,nfdiv_case_api,civil_service,wa_task_monitor,ccd_case_document_am_api,adoption_cos_api,adoption_web,et_cos,et_msg_handler,prl_cos_api,wa_case_event_handler,et_sya_api,ds_ui,hmc_cft_hearing_service,prl_cos_api,fis_hmc_api,ccd_next_hearing_date_updater,civil_general_applications,fis_cos_api,sptribs_case_api,et_wa_post_deployment_ft_tests,em_annotation_app,et_hearings_api,sptribs_dss_update_case_web,pcs_api,pcs_frontend,finrem_citizen_ui,cpo_case_payment_orders_api,wa_task_management_api
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
   am-role-assignment-service:
     java:
+      image: hmctsprod.azurecr.io/am/role-assignment-service:latest
       disableKeyVaults: true
       keyVaults:
         am:
           secrets:
             - role-assignment-service-LD-SDK-KEY
+      ingressHost: am-role-assignment-service-${SERVICE_FQDN}
       environment:
         ROLE_ASSIGNMENT_DB_HOST: '{{ .Values.global.postgresHostname }}'
         ROLE_ASSIGNMENT_DB_NAME: "{{ .Values.global.databaseNamePrefix }}role-assignment"
@@ -120,6 +135,10 @@ ccd:
         ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: probate_backend,ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,wa_task_configuration_api,xui_webapp,aac_manage_case_assignment,ccd_data,wa_workflow_api,wa_task_monitor,wa_case_event_handler,iac,hmc_cft_hearing_service,ccd_case_disposer
         LAUNCH_DARKLY_ENV: pr
         LD_SDK_KEY: ${LD_SDK_AM_KEY}
+    devcpuRequests: 250m
+    devcpuLimits: 512m
+    devmemoryRequests: 1Gi
+    devmemoryLimits: 2Gi
   ccd-definition-store-api:
     java:
       autoscaling:
@@ -129,12 +148,18 @@ ccd:
         DEFINITION_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
         DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,xui_webapp,aac_manage_case_assignment
-        DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
+        DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 240
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         ELASTIC_SEARCH_ENABLED: true
+        ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 50000
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
+        ELASTIC_SEARCH_SCHEME: http
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
+      devcpuRequests: 500m
+      devcpuLimits: 1000m
+      devmemoryRequests: 1Gi
+      devmemoryLimits: 2Gi
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
@@ -142,29 +167,33 @@ ccd:
         USER_PROFILE_DB_HOST: '{{ .Values.global.postgresHostname }}'
       keyVaults: []
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
+      devcpuRequests: 250m
+      devcpuLimits: 512m
+      devmemoryRequests: 800Mi
+      devmemoryLimits: 1.2G
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
-    imageTag: "7.17.1"
+    image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
+    imageTag: "9.2.3"
+    createCert: false
+    protocol: http
     replicas: 1
     minimumMasterNodes: 1
     antiAffinity: "soft"
     esJavaOpts: "-Xmx512m -Xms512m"
-    extraEnvs:
-      - name: discovery.type
-        value: single-node
-      - name: cluster.initial_master_nodes
-        value: ""
-      - name: action.auto_create_index
-        value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
+    esConfig:
+      elasticsearch.yml: |
+        action.auto_create_index: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
+        xpack.security.enabled: false
     persistence:
       enabled: false
+    clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
   logstash:
-    elasticsearch:
-      host: ${SERVICE_NAME}-es-master
-      port: 9200
-    image: hmctsprod.azurecr.io/ccd/logstash
-    imageTag: "ccd-probate-logstash-latest"
+    image: hmctsprod.azurecr.io/imported/elastic/logstash
+    imageTag: "9.2.4"
+    imagePullPolicy: "IfNotPresent"
+    logstashJavaOpts: "-Xmx1g -Xms512M"
     extraEnvs:
       - name: DATA_STORE_URL
         value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
@@ -172,35 +201,169 @@ ccd:
         value: hmcts
       - name: DATA_STORE_PASS
         value: hmcts
-      - name: DB_URL
-        value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
-      - name: DB_USER
-        value: hmcts
-      - name: DB_PWD
-        value: hmcts
       - name: ES_HOSTS
         value: http://${SERVICE_NAME}-es-master:9200
-      - name: ES_DATA_NODES_URL
-        value: http://${SERVICE_NAME}-es-master:9200
-      - name: ELASTIC_SEARCH_DATA_NODES_HOSTS
-        value: http://${SERVICE_NAME}-es-master:9200
-      - name: ES_URL
-        value: http://${SERVICE_NAME}-es-master:9200
-    resources:
-      requests:
-        cpu: "500m"
-        memory: "1024Mi"
-      limits:
-        cpu: "2500m"
-        memory: "1024Mi"
-    configTpl:
-      xpack.monitoring.enabled: "false"
-      db.url: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
-      db.user: hmcts
-      db.pwd: hmcts
-      es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
-    livenessProbe:
-      initialDelaySeconds: 90
+    devcpuRequests: 500m
+    devcpuLimits: 700m
+    devmemoryRequests: 1.1G
+    devmemoryLimits: 1.5G
+    extraInitContainers: |
+        - name: download-postgres-jdbc
+          image: hmctsprod.azurecr.io/curl:7.70.0
+          command: ['curl', '-L', 'https://jdbc.postgresql.org/download/postgresql-42.7.9.jar', '-o', '/logstash-lib/postgresql.jar']
+          volumeMounts:
+          - name: logstash-lib
+            mountPath: /logstash-lib
+    extraVolumes: |
+        - name: logstash-lib
+          emptyDir: {}
+        - name: database-secret-volume
+          secret:
+            secretName: postgres
+    extraVolumeMounts: |
+        - name: logstash-lib
+          mountPath: /usr/share/logstash/ccd
+        - name: database-secret-volume
+          mountPath: /etc/logstash/secrets
+          readOnly: true
+    logstashConfig:
+        logstash.yml: |
+          api.http.host: 0.0.0.0
+          xpack.monitoring.enabled: false
+          xpack.monitoring.elasticsearch.hosts: ["http://{{ .Release.Name }}-es-master:9200"]
+          queue.type: persisted
+          dead_letter_queue.enable: true
+          pipeline.ecs_compatibility: disabled
+        pipelines.yml: |
+          - pipeline.id: main
+            path.config: "/usr/share/logstash/pipeline/{01_input,02_filter,03_output}.conf"
+            queue.type: persisted
+    logstashPipeline:
+      01_input.conf: |
+        input  {
+          jdbc {
+            jdbc_connection_string => "jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?sslmode=require&stringtype=unspecified"
+            jdbc_user => "hmcts"
+            jdbc_password_filepath => "/etc/logstash/secrets/PASSWORD"
+            jdbc_validate_connection => true
+            jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
+            jdbc_driver_class => "org.postgresql.Driver"
+            jdbc_default_timezone => "UTC"
+            statement => "UPDATE case_data SET marked_by_logstash = true WHERE marked_by_logstash = false RETURNING id, created_date, last_modified, jurisdiction, case_type_id, state, last_state_modified_date, data::TEXT as json_data, data_classification::TEXT as json_data_classification, reference, security_classification, supplementary_data::TEXT as json_supplementary_data"
+            clean_run => false
+            schedule => "* * * * * *"
+          }
+        }
+      02_filter.conf: |
+        filter{
+          json{
+              source => "json_data"
+              target => "data"
+              remove_field => ["json_data"]
+              }
+              json{
+                  source => "json_supplementary_data"
+                  target => "supplementary_data"
+                  remove_field => ["json_supplementary_data"]
+              }
+              json{
+                  source => "json_data_classification"
+                  target => "data_classification"
+                  remove_field => ["json_data_classification"]
+              }
+              if [data][SearchCriteria] {
+                  clone {
+                      clones => ["SearchCriteria"]
+                  }
+              }
+              if [type] == "SearchCriteria" {
+                  if [data][SearchCriteria] {
+                      mutate {
+                        rename => {"[data][SearchCriteria]" => "[data_new][SearchCriteria]" }
+                      }
+                  }
+                  if [data][caseManagementLocation] {
+                      mutate {
+                        rename => {"[data][caseManagementLocation]" => "[data_new][caseManagementLocation]" }
+                      }
+                  }
+                  if [data][CaseAccessCategory] {
+                    mutate {
+                        rename => {"[data][CaseAccessCategory]" => "[data_new][CaseAccessCategory]" }
+                    }
+                  }
+                  if [data][caseNameHmctsInternal] {
+                      mutate {
+                        rename => {"[data][caseNameHmctsInternal]" => "[data_new][caseNameHmctsInternal]" }
+                      }
+                  }
+                  if [data][caseManagementCategory] {
+                      mutate {
+                        rename => {"[data][caseManagementCategory]" => "[data_new][caseManagementCategory]" }
+                      }
+                  }
+                  if [supplementary_data][HMCTSServiceId] {
+                      mutate {
+                        rename => {"[supplementary_data][HMCTSServiceId]" => "[supplementary_data_new][HMCTSServiceId]" }
+                      }
+                  }
+                  if [data_classification][SearchCriteria] {
+                      mutate {
+                        rename => {"[data_classification][SearchCriteria]" => "[data_classification_new][SearchCriteria]" }
+                      }
+                  }
+                  if [data_classification][CaseAccessCategory] {
+                    mutate {
+                          rename => {"[data_classification][CaseAccessCategory]" => "[data_classification_new][CaseAccessCategory]" }
+                    }
+                  }
+                  if [data_classification][caseManagementLocation] {
+                    mutate {
+                        rename => {"[data_classification][caseManagementLocation]" => "[data_classification_new][caseManagementLocation]" }
+                    }
+                  }
+                  if [data_classification][caseNameHmctsInternal] {
+                      mutate {
+                        rename => {"[data_classification][caseNameHmctsInternal]" => "[data_classification_new][caseNameHmctsInternal]" }
+                      }
+                  }
+                  if [data_classification][caseManagementCategory] {
+                      mutate {
+                        rename => {"[data_classification][caseManagementCategory]" => "[data_classification_new][caseManagementCategory]" }
+                      }
+                  }
+                  mutate { remove_field =>[ "data" ,"supplementary_data", "data_classification", "last_state_modified_date", "type","last_modified", "created_date" ] }
+                  mutate {
+                          rename => { "[data_new]" => "data" }
+                          rename => { "[supplementary_data_new]"  => "supplementary_data" }
+                          rename => { "[data_classification_new]"  => "data_classification" }
+                  }
+                  mutate {
+                    add_field => { "index_id" => "global_search" }
+                  }
+                  mutate {
+                    lowercase => [ "index_id" ]
+                  }
+              } else {
+                  mutate {
+                      add_field => { "index_id" => "%{case_type_id}_cases" }
+                }
+              mutate {
+                lowercase => [ "index_id" ]
+              }
+              }
+        }
+      03_output.conf: |
+        output {
+            elasticsearch {
+                hosts => ["http://${SERVICE_NAME}-es-master:9200"]
+                sniffing => false
+                index => "%{[index_id]}"
+                document_id => "%{id}"
+                timeout => 60
+            }
+        }
+
   ccd-user-profile-importer:
     image: hmctsprod.azurecr.io/ccd/user-profile-importer:latest
     users:
@@ -214,10 +377,10 @@ xui-webapp:
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
     image: hmctsprod.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
-    devcpuRequests: 500m
-    devmemoryRequests: 512Mi
-    devcpuLimits: 1
-    devmemoryLimits: 1Gi
+    devcpuRequests: 20m
+    devcpuLimits: 200m
+    devmemoryRequests: 512Mi #timeout happens when 256Mi is used, so increase it to 512Mi to make sure the pod can be up and running.
+    devmemoryLimits: 800Mi
     environment:
       HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
@@ -260,6 +423,10 @@ aac-manage-case-assignment:
     releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
     image: hmctsprod.azurecr.io/aac/manage-case-assignment:latest
     ingressHost: aac-${SERVICE_FQDN}
+    devcpuRequests: 150m
+    devcpuLimits: 250m
+    devmemoryRequests: 550Mi
+    devmemoryLimits: 768Mi
     environment:
       IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
       IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
@@ -277,7 +444,7 @@ aac-manage-case-assignment:
       MANAGE_CASE_S2S_KEY: ${MANAGE_CASE_S2S_KEY}
       IDAM_NOC_APPROVER_USERNAME: ${BEFTA_IDAM_NOC_APPROVER_USERNAME}
       IDAM_NOC_APPROVER_PASSWORD: ${BEFTA_IDAM_NOC_APPROVER_PASSWORD}
-      NOTIFY_MCA_API_KEY: ${PROBATE_BO_NOTIFY_KEY}
+      NOTIFY_MCA_API_KEY: ${NOTIFY_MCA_API_KEY}
       NOTIFY_EMAIL_TEMPLATE_ID: 85f22924-7b45-4fc6-9954-c08a8833f6a0
       ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
     autoscaling:
@@ -286,7 +453,10 @@ aac-manage-case-assignment:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-  devmemoryLimits: 1.5Gi
+  devcpuRequests: 150m
+  devcpuLimits: 250m
+  devmemoryRequests: 1Gi
+  devmemoryLimits: 1.5G
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
@@ -310,7 +480,9 @@ java:
         - name: s2s-probate-backend
           alias: idam.s2s-auth.totp_secret
         - name: probate-bo-govNotifyApiKey
-          alias: notifications.govNotifyApiKey
+          alias: notifications.govNotifyApiKeyPrimary
+        - name: probate-bo-govNotifyApiKey-secondary
+          alias: notifications.govNotifyApiKeySecondary
         - name: authTokenEmail
           alias: auth.provider.client.email
         - name: authTokenPassword
@@ -369,3 +541,4 @@ java:
           alias: SCHEDULER_CASEWORKER_USERNAME
         - name: schedulerCaseWorkerPass
           alias: SCHEDULER_CASEWORKER_PASSWORD
+

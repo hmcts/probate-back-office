@@ -37,6 +37,13 @@ echo excludedFilenamePatterns = $excludedFilenamePatterns
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
 export CCD_DEF_AAC_URL=$4
 
+waEnabledVar=${PROBATE_WA_ENABLED:-false}
+if [[ "${waEnabledVar}" == true ]]; then
+  export CCD_DEF_PUBLISH="Y"
+else
+  export CCD_DEF_PUBLISH="N"
+fi
+
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,$CCD_DEF_AAC_URL
 
 ${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Backoffice/ ${environment} "${excludedFilenamePatterns}"

@@ -4,19 +4,59 @@ set -eu
 
 conversionFolder=$(dirname "$0")
 configFolder=${conversionFolder}/../configFiles
-shutterOption=${2:-false}
-extraExclusions=${3:-",*-wa.json"}
+# Params:
+#   $1 = CCD_DEF_CASE_SERVICE_BASE_URL
+#   $2 = CCD_DEF_AAC_URL
+#   $3 = shutterOption (true|false), optional, defaults to false
+#   $4 = extraExclusions (optional, comma-separated patterns) Additional exclusions are appended based on feature flags:
+#        - WA disabled → adds "*-wa.json"
+#        - GS disabled → adds "*-gs.json"
+# Note: CCD_DEF_PUBLISH is derived automatically from PROBATE_WA_ENABLED env var
+caseServiceUrl="${1-}"
+aacUrl="${2-}"
+shutterOption="${3:-false}"
+extraExclusions="${4:-}"
 
 waEnabledVar=${PROBATE_WA_ENABLED:-false}
-if [ ${waEnabledVar} == true ]; then
-  extraExclusions=""
-fi
+gsEnabledVar=${PROBATE_GS_ENABLED:-false}
 
-if [ -z "$1" ]
-  then
+if [ -z "$caseServiceUrl" ] || [ -z "$aacUrl" ]; then
     echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
     exit 1
 fi
+
+patterns=()
+
+echo "[INFO] Initial extraExclusions: $extraExclusions"
+# WA flag
+if [[ "${waEnabledVar}" != true ]]; then
+  echo "[INFO] WA feature is DISABLED adding *-wa.json to exclusions"
+  patterns+=("*-wa.json")
+  publishEnabled="N"
+else
+  echo "[INFO] WA feature is ENABLED no exclusion added"
+  publishEnabled="Y"
+fi
+
+# GS flag
+if [[ "${gsEnabledVar}" != true ]]; then
+  echo "[INFO] GS feature is DISABLED adding *-gs.json to exclusions"
+  patterns+=("*-gs.json")
+else
+  echo "[INFO] GS feature is ENABLED no exclusion added"
+fi
+
+# Build extraExclusions as a comma-separated string from the patterns array.
+# - If patterns is empty - extraExclusions remains an unchanged
+# - If patterns has values - join them with commas and prefix with a leading comma
+#   e.g. ["*-wa.json","*-gs.json"] - ",*-wa.json,*-gs.json"
+if [ ${#patterns[@]} -gt 0 ]; then
+  joined=",$(IFS=,; printf "%s" "${patterns[*]}")"
+  extraExclusions="${extraExclusions}${joined}"
+fi
+
+echo "[INFO] Final extraExclusions: $extraExclusions"
+
 
 if [ ${shutterOption} == true ]; then
   echo Creating shuttered CCD Definition
@@ -27,11 +67,11 @@ else
 fi
 echo excludedFilenamePatterns = $excludedFilenamePatterns
 
-export CCD_DEF_CASE_SERVICE_BASE_URL=$1
-export CCD_DEF_AAC_URL=$2
-echo CCD_DEF_AAC_URL=$CCD_DEF_AAC_URL
+export CCD_DEF_CASE_SERVICE_BASE_URL="${caseServiceUrl}"
+export CCD_DEF_AAC_URL="${aacUrl}"
+export CCD_DEF_PUBLISH="${publishEnabled}"
 
-echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL
+echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,$CCD_DEF_AAC_URL
 
 ${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Backoffice/ "${excludedFilenamePatterns}"
 ${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Caveat/ "${excludedFilenamePatterns}"
