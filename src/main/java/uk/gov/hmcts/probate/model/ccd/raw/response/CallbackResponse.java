@@ -17,6 +17,6 @@ public class CallbackResponse {
     private List<String> errors;
     private List<String> warnings;
     @JsonProperty("supplementary_data_request")
-    private Map<String, Map<String, Object>> supplementary_data_request;
+    private Map<String, Map<String, Object>> supplementaryDataRequest;
 
 }

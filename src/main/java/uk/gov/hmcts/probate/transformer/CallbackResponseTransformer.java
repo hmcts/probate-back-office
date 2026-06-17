@@ -184,7 +184,7 @@ public class CallbackResponseTransformer {
         CallbackResponse callbackResponse =
                 transformResponse(responseCaseDataBuilder.build());
 
-        callbackResponse.setSupplementary_data_request(
+        callbackResponse.setSupplementaryDataRequest(
                 ccdSupplementaryDataService.buildSupplementaryDataRequest()
         );
         try {
@@ -205,7 +205,7 @@ public class CallbackResponseTransformer {
         CallbackResponse callbackResponse =
                 transformResponse(responseCaseDataBuilder.build());
 
-        callbackResponse.setSupplementary_data_request(
+        callbackResponse.setSupplementaryDataRequest(
                 ccdSupplementaryDataService.buildSupplementaryDataRequest()
         );
         try {
@@ -233,7 +233,7 @@ public class CallbackResponseTransformer {
         CallbackResponse callbackResponse =
                 transformResponse(builder.build());
 
-        callbackResponse.setSupplementary_data_request(
+        callbackResponse.setSupplementaryDataRequest(
                 ccdSupplementaryDataService.buildSupplementaryDataRequest()
         );
 
