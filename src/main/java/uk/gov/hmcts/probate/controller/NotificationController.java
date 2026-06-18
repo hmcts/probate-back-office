@@ -228,6 +228,7 @@ public class NotificationController {
                 .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         Optional<UserInfo> caseworkerInfo = userInfoService.getCaseworkerInfo();
+
         return ResponseEntity
             .ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest,
                     caseworkerInfo));
