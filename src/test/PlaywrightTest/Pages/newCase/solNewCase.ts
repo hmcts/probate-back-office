@@ -366,12 +366,14 @@ export class SolCreateCasePage extends BasePage {
     await this.deceasedAddressCountyLocator.fill(applicationDetailsConfig.address_county);
     await this.deceasedAddressPostCodeLocator.fill(applicationDetailsConfig.address_postcode);
     await this.deceasedAddressCountryLocator.fill(applicationDetailsConfig.address_country);
-    await this.page.locator(`#languagePreferenceWelsh_${applicationDetailsConfig.page2_langPrefNo}`).click();
 
-    const languagePreferenceNo = this.page.locator(`#languagePreferenceWelsh_${applicationDetailsConfig.page2_langPrefNo}`);
-    await expect(languagePreferenceNo).toBeVisible();
-    await languagePreferenceNo.click();
-    await expect(languagePreferenceNo).toBeChecked();
+    const languagePreferenceWelshNoLocator = this.page.locator(
+      `#languagePreferenceWelsh_${applicationDetailsConfig.page2_langPrefNo}`
+    );
+    await languagePreferenceWelshNoLocator.click();
+
+    await expect(languagePreferenceWelshNoLocator).toBeVisible();
+    await expect(languagePreferenceWelshNoLocator).toBeChecked();
 
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
@@ -492,7 +494,7 @@ export class SolCreateCasePage extends BasePage {
       }
     }*/
 
-   // await expect(this.page.locator(".govuk-back-link")).toBeEnabled();
+    // await expect(this.page.locator(".govuk-back-link")).toBeEnabled();
   }
 
   async makePaymentPage2(caseRef: string) {
@@ -921,7 +923,7 @@ export class SolCreateCasePage extends BasePage {
   async verifyTitleAndClearingTypeOptionsPage() {
     const opts = ['TCTPartSuccPowerRes', 'TCTPartPowerRes', 'TCTSolePrinSucc', 'TCTSolePrin', 'TCTPartSuccAllRenouncing',
       'TCTPartAllRenouncing', 'TCTTrustCorpResWithSDJ', 'TCTTrustCorpResWithApp', 'TCTPartSuccOthersRenouncing', 'TCTPartOthersRenouncing', 'TCTNoT'];
-      for (let i = 0; i < opts.length; i++) {
+    for (let i = 0; i < opts.length; i++) {
       // eslint-disable-next-line no-await-in-loop
       await this.verifyTitleAndClearingTypeOptionPage(opts[i]);
     }
