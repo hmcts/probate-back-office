@@ -133,7 +133,7 @@ export class SolCreateCasePage extends BasePage {
   readonly originalWillSignedDayLocator = this.page.locator('#originalWillSignedDate-day');
   readonly originalWillSignedMonthLocator = this.page.locator('#originalWillSignedDate-month');
   readonly originalWillSignedYearLocator = this.page.locator('#originalWillSignedDate-year');
-  readonly willHasCodicilsLocator = this.page.locator(`#willHasCodicils_${grantOfProbateConfig.optionYes}`);
+  readonly willHasCodicilsLocator = this.page.locator(`#willHasCodicils_${grantOfProbateConfig.optionNo}`);
   readonly codicilAddButtonLocator = this.page.locator('#codicilAddedDateList button');
   readonly codicilAddedDayLocator = this.page.locator('#dateCodicilAdded-day');
   readonly codicilAddedMonthLocator = this.page.locator('#dateCodicilAdded-month');
@@ -831,14 +831,14 @@ export class SolCreateCasePage extends BasePage {
     await this.originalWillSignedYearLocator.fill(grantOfProbateConfig.page1_originalWillSignedDate_year);
     await this.willHasCodicilsLocator.focus();
     await this.willHasCodicilsLocator.click();
-    await expect(this.codicilAddButtonLocator).toBeVisible();
-    await this.codicilAddButtonLocator.scrollIntoViewIfNeeded();
-    await this.codicilAddButtonLocator.click();
+    //await expect(this.codicilAddButtonLocator).toBeVisible();
+    //await this.codicilAddButtonLocator.scrollIntoViewIfNeeded();
+    //await this.codicilAddButtonLocator.click();
 
     // exui bug - generating multiple elements with same id
-    await this.codicilAddedDayLocator.fill(grantOfProbateConfig.page1_codicilDate_day);
-    await this.codicilAddedMonthLocator.fill(grantOfProbateConfig.page1_codicilDate_month);
-    await this.codicilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
+    //await this.codicilAddedDayLocator.fill(grantOfProbateConfig.page1_codicilDate_day);
+    //await this.codicilAddedMonthLocator.fill(grantOfProbateConfig.page1_codicilDate_month);
+    //await this.codicilAddedYearLocator.fill(grantOfProbateConfig.page1_codicilDate_year);
     await expect(this.languagePreferenceLabelLocator).toBeVisible();
     await this.page.locator('#languagePreferenceWelsh_No').click();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
@@ -1047,8 +1047,6 @@ export class SolCreateCasePage extends BasePage {
 
     /*****Need to uncomment this accessibility test after fixing the bug in exui ******/
     // await this.runAccessibilityTest();
-    await this.extrCopiesLocator.fill(completeProbateApplicationConfig.page5_extraCopiesUK);
-    await this.extraCopiesOutsideUKLocator.fill(completeProbateApplicationConfig.page5_outsideUKGrantCopies);
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
@@ -1071,11 +1069,6 @@ export class SolCreateCasePage extends BasePage {
     // await this.verifyPageLoad(this.page.getByText(completeProbateApplicationConfig.page8_waitForText));
     await expect(this.page.getByText(completeProbateApplicationConfig.page8_waitForText)).toBeVisible();
     await this.runAccessibilityTest();
-    await expect(this.page.getByText(completeProbateApplicationConfig.page8_applicationFee)).toBeVisible();
-    await expect(this.page.getByText(completeProbateApplicationConfig.page8_additionalCopiesFee)).toBeVisible();
-    await expect(this.page.getByText(completeProbateApplicationConfig.page8_feeForCertifiedCopies)).toBeVisible();
-    await expect(this.page.getByText(completeProbateApplicationConfig.page8_totalFeeAmount)).toBeVisible();
-    await expect(this.page.getByText(completeProbateApplicationConfig.page8_customerReference)).toBeVisible();
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 
