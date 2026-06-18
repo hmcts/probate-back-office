@@ -453,10 +453,10 @@ aac-manage-case-assignment:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-  devcpuRequests: 150m
-  devcpuLimits: 250m
-  devmemoryRequests: 1Gi
-  devmemoryLimits: 1.5G
+  devcpuRequests: 300m
+  devcpuLimits: 500m
+  devmemoryRequests: 1.5Gi
+  devmemoryLimits: 2Gi
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
