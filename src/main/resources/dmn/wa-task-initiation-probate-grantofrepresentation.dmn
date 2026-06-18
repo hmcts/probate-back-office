@@ -219,6 +219,41 @@
           <text>"CTSC"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1cl5zsa">
+        <inputEntry id="UnaryTests_0bsqjhx">
+          <text>"attachScannedDocs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q4eyvy">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0w9ojdk">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0p2wk7i">
+          <text>"gop"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00h6mh5">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xor3z7">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fqjxin">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1p543tx">
+          <text>10</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0aopq82">
+          <text>"case progression"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1i9lhpb">
+          <text>"routine_work"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ideg9c">
+          <text>"CTSC"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
