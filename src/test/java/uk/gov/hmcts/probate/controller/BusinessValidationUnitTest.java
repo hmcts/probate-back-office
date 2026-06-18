@@ -282,6 +282,9 @@ class BusinessValidationUnitTest {
             ccdSupplementaryDataService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
+        when(callbackResponseTransformerMock.addSupplementaryData(
+                Mockito.any(CallbackResponse.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
     }
 

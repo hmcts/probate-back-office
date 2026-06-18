@@ -631,7 +631,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
         CallbackResponse response = callbackResponseTransformer.defaultDateOfDeathType(callbackRequest);
-
+        response = callbackResponseTransformer.addSupplementaryData(response);
         return ResponseEntity.ok(response);
     }
 
@@ -680,7 +680,7 @@ public class BusinessValidationController {
         } else {
             response = callbackResponseTransformer.paperForm(callbackRequest, document, caseworkerInfo);
         }
-
+        response = callbackResponseTransformer.addSupplementaryData(response);
         return ResponseEntity.ok(response);
     }
 

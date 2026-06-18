@@ -218,6 +218,23 @@ public class CallbackResponseTransformer {
         return callbackResponse;
     }
 
+    public CallbackResponse addSupplementaryData(CallbackResponse callbackResponse) {
+
+        callbackResponse.setSupplementaryDataRequest(
+                ccdSupplementaryDataService.buildSupplementaryDataRequest()
+        );
+
+        try {
+            log.info("CallbackResponse:\n{}",
+                    objectMapper.writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(callbackResponse));
+        } catch (JsonProcessingException e) {
+            log.error("Failed to serialise CallbackResponse", e);
+        }
+
+        return callbackResponse;
+    }
+
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(),
