@@ -49,7 +49,11 @@ module.exports = async function () {
     await I.fillField('#deceasedAddress__detailCounty', applicationDetailsConfig.address_county);
     await I.fillField('#deceasedAddress__detailPostCode', applicationDetailsConfig.address_postcode);
     await I.fillField('#deceasedAddress__detailCountry', applicationDetailsConfig.address_country);
-    await I.click(`#languagePreferenceWelsh_${applicationDetailsConfig.page2_langPrefNo}`);
+
+    const languagePreferenceNo = `#languagePreferenceWelsh_${applicationDetailsConfig.page2_langPrefNo}`;
+    await I.waitForVisible(languagePreferenceNo, 30);
+    await I.click(languagePreferenceNo);
+    await I.waitForElement(`${languagePreferenceNo}:checked`, 30);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
