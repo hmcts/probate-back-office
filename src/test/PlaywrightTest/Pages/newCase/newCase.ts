@@ -16,7 +16,7 @@ type CaseProgressConfig = typeof caseProgressConfig;
 
 export class CreateCasePage extends BasePage {
     readonly createCasePageLocator = this.page.getByRole('link', {name: newCaseConfig.waitForText});
-    readonly createCaseLocator = this.page.getByRole('link', {name: newCaseConfig.xuiCreateCaseLocator});
+    readonly createCaseLocator = this.page.getByRole('link', { name: /create case/i });
     readonly jurisdictionLocator = this.page.getByLabel(newCaseConfig.jurisdictionLocatorName);
     readonly caseTypeLocator = this.page.locator('#cc-case-type');
     readonly eventLocator = this.page.getByLabel(newCaseConfig.eventLocatorName);
