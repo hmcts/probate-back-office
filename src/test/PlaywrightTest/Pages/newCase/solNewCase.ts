@@ -467,11 +467,20 @@ export class SolCreateCasePage extends BasePage {
     }
 
     console.log(`[DTSPB-5228] Waiting for caveat payment Review link. Case ref: ${caseRef}, URL: ${this.page.url()}`);
-    await expect(async () => {
+    for (let attempt = 1; attempt <= 12; attempt++) {
       await this.serviceRequestTabLocator.click();
-      console.log(`[DTSPB-5228] Caveat payment Review link count: ${await this.reviewLinkLocator.count()}`);
-      await expect(this.reviewLinkLocator).toBeVisible({ timeout: 5_000 });
-    }).toPass({ intervals: [2_000], timeout: 60_000 });
+      const reviewLinkCount = await this.reviewLinkLocator.count();
+      console.log(`[DTSPB-5228] Caveat payment Review link attempt ${attempt}/12. Count: ${reviewLinkCount}, URL: ${this.page.url()}`);
+      if (await this.reviewLinkLocator.isVisible().catch(() => false)) {
+        break;
+      }
+      if (attempt % 3 === 0) {
+        console.log(`[DTSPB-5228] Reloading Service Request tab while waiting for caveat payment Review link. Case ref: ${caseRef}`);
+        await this.page.reload({ waitUntil: 'domcontentloaded', timeout: 60_000 });
+      }
+      await this.page.waitForTimeout(5_000);
+    }
+    await expect(this.reviewLinkLocator).toBeVisible({ timeout: 10_000 });
     console.log(`[DTSPB-5228] Caveat payment Review link visible. URL: ${this.page.url()}`);
     await this.reviewLinkLocator.click();
   }
@@ -670,11 +679,20 @@ export class SolCreateCasePage extends BasePage {
   async postPaymentReviewDetails(caseRef: string) {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
     console.log(`[DTSPB-5228] Waiting for post-payment Review link. Case ref: ${caseRef}, URL: ${this.page.url()}`);
-    await expect(async () => {
+    for (let attempt = 1; attempt <= 12; attempt++) {
       await this.serviceRequestTabLocator.click();
-      console.log(`[DTSPB-5228] Post-payment Review link count: ${await this.reviewLinkLocator.count()}`);
-      await expect(this.reviewLinkLocator).toBeVisible({ timeout: 5_000 });
-    }).toPass({ intervals: [2_000], timeout: 60_000 });
+      const reviewLinkCount = await this.reviewLinkLocator.count();
+      console.log(`[DTSPB-5228] Post-payment Review link attempt ${attempt}/12. Count: ${reviewLinkCount}, URL: ${this.page.url()}`);
+      if (await this.reviewLinkLocator.isVisible().catch(() => false)) {
+        break;
+      }
+      if (attempt % 3 === 0) {
+        console.log(`[DTSPB-5228] Reloading Service Request tab while waiting for post-payment Review link. Case ref: ${caseRef}`);
+        await this.page.reload({ waitUntil: 'domcontentloaded', timeout: 60_000 });
+      }
+      await this.page.waitForTimeout(5_000);
+    }
+    await expect(this.reviewLinkLocator).toBeVisible({ timeout: 10_000 });
     console.log(`[DTSPB-5228] Post-payment Review link visible. URL: ${this.page.url()}`);
     await this.reviewLinkLocator.click();
     await expect(this.serviceRequestTabLocator).toBeEnabled();

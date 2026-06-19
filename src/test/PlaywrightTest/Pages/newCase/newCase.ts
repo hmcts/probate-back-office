@@ -64,6 +64,13 @@ export class CreateCasePage extends BasePage {
 
       await this.page.waitForLoadState('domcontentloaded');
       await this.rejectCookies();
+      if ((await this.createCaseLocator.count()) === 0) {
+        console.log(`[DTSPB-5228] Create Case link not immediately available. Navigating to cases page from URL: ${this.page.url()}`);
+        await this.page.goto(new URL('/cases', this.page.url()).toString(), {
+          waitUntil: 'domcontentloaded',
+          timeout: 60_000
+        });
+      }
       try{
         await expect(this.createCaseLocator).toBeVisible({timeout: 60_000});
       }
@@ -87,12 +94,19 @@ export class CreateCasePage extends BasePage {
         await this.verifyPageLoad(this.createCaseLocator, 10_000);
         await expect(this.createCaseLocator).toBeVisible();
         await expect(this.jurisdictionLocator).toBeEnabled();
-        const jurisdictionOptions = await this.jurisdictionLocator.locator('option').evaluateAll((options) =>
+        const getJurisdictionOptions = async () => this.jurisdictionLocator.locator('option').evaluateAll((options) =>
           options.map((option) => ({
             text: option.textContent?.trim(),
             value: (option as HTMLOptionElement).value
           }))
         );
+        await expect
+          .poll(async () => (await getJurisdictionOptions()).some((option) => option.value === newCaseConfig.jurisdictionValue), {
+            intervals: [1_000],
+            timeout: 60_000
+          })
+          .toBe(true);
+        const jurisdictionOptions = await getJurisdictionOptions();
         console.log(`[DTSPB-5228] Jurisdiction options before select: ${JSON.stringify(jurisdictionOptions)}`);
         await this.jurisdictionLocator.selectOption({value: newCaseConfig.jurisdictionValue});
         // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
