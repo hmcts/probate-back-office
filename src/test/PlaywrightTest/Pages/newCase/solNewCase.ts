@@ -367,15 +367,41 @@ export class SolCreateCasePage extends BasePage {
     await this.deceasedAddressPostCodeLocator.fill(applicationDetailsConfig.address_postcode);
     await this.deceasedAddressCountryLocator.fill(applicationDetailsConfig.address_country);
 
-    const languagePreferenceWelshNoLocator = this.page.locator(
-      `#languagePreferenceWelsh_${applicationDetailsConfig.page2_langPrefNo}`
+    const languagePreferenceWelshOptions = this.page.locator(
+      'input[type="radio"][id^="languagePreferenceWelsh_"]'
     );
-    // This radio is conditionally rendered in some caveat journeys.
-    if (await languagePreferenceWelshNoLocator.count() > 0) {
-      await expect(languagePreferenceWelshNoLocator).toBeVisible({ timeout: 30000 });
-      await languagePreferenceWelshNoLocator.click();
-      await expect(languagePreferenceWelshNoLocator).toBeChecked({ timeout: 10000 });
+    const optionCount = await languagePreferenceWelshOptions.count();
+    const pageHeading = await this.page
+      .getByRole("heading", { level: 1 })
+      .first()
+      .textContent()
+      .catch(() => null);
+
+    if (optionCount === 0) {
+      throw new Error(
+        `Mandatory field languagePreferenceWelsh is not rendered on ${this.page.url()} (h1: ${pageHeading ?? "unknown"}).`
+      );
     }
+
+    const languagePreferenceWelshNoLocator = this.page.locator(
+      `input[type="radio"][id^="languagePreferenceWelsh_"][id$="_${applicationDetailsConfig.page2_langPrefNo}"]`
+    );
+
+    if ((await languagePreferenceWelshNoLocator.count()) === 0) {
+      const optionDetails = await languagePreferenceWelshOptions.evaluateAll((elements) =>
+        elements.map((el) => {
+          const input = el as HTMLInputElement;
+          return { id: input.id, value: input.value };
+        })
+      );
+      throw new Error(
+        `Unable to find languagePreferenceWelsh option '${applicationDetailsConfig.page2_langPrefNo}' on ${this.page.url()} (h1: ${pageHeading ?? "unknown"}). Available options: ${JSON.stringify(optionDetails)}.`
+      );
+    }
+
+    await expect(languagePreferenceWelshNoLocator).toBeVisible({ timeout: 30000 });
+    await languagePreferenceWelshNoLocator.click();
+    await expect(languagePreferenceWelshNoLocator).toBeChecked({ timeout: 10000 });
 
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
