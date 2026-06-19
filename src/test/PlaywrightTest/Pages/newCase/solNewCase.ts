@@ -242,6 +242,33 @@ export class SolCreateCasePage extends BasePage {
     super(page);
   }
 
+  private async waitForServiceRequestReviewLink(caseRef: string, context: string, attempts = 8) {
+    console.log(`[DTSPB-5228] Waiting for ${context} Review link. Case ref: ${caseRef}, URL: ${this.page.url()}`);
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+      const tabVisible = await this.serviceRequestTabLocator.isVisible().catch(() => false);
+      const reviewLinkCount = await this.reviewLinkLocator.count().catch(() => -1);
+      const pageHeading = await this.page.locator('h1').first().textContent().catch(() => 'unknown');
+      console.log(`[DTSPB-5228] ${context} Review link attempt ${attempt}/${attempts}. Tab visible: ${tabVisible}, count: ${reviewLinkCount}, h1: ${pageHeading}, URL: ${this.page.url()}`);
+
+      if (tabVisible) {
+        await this.serviceRequestTabLocator.click({ timeout: 10_000 }).catch((error) => {
+          console.log(`[DTSPB-5228] ${context} Service Request tab click failed on attempt ${attempt}: ${error.message}`);
+        });
+      }
+
+      if (await this.reviewLinkLocator.isVisible().catch(() => false)) {
+        console.log(`[DTSPB-5228] ${context} Review link visible. URL: ${this.page.url()}`);
+        return;
+      }
+
+      await this.page.waitForTimeout(5_000);
+    }
+
+    const bodyText = await this.page.locator('body').innerText({ timeout: 5_000 }).catch(() => '');
+    console.log(`[DTSPB-5228] ${context} Review link missing after ${attempts} attempts. Case ref: ${caseRef}, URL: ${this.page.url()}, body excerpt: ${bodyText.slice(0, 1000)}`);
+    await expect(this.reviewLinkLocator).toBeVisible({ timeout: 10_000 });
+  }
+
   async applyCaveatPage1() {
     await expect(this.page.locator("#solsCaveatEligibility")).toBeVisible();
     await this.runAccessibilityTest();
@@ -466,22 +493,7 @@ export class SolCreateCasePage extends BasePage {
       }
     }
 
-    console.log(`[DTSPB-5228] Waiting for caveat payment Review link. Case ref: ${caseRef}, URL: ${this.page.url()}`);
-    for (let attempt = 1; attempt <= 12; attempt++) {
-      await this.serviceRequestTabLocator.click();
-      const reviewLinkCount = await this.reviewLinkLocator.count();
-      console.log(`[DTSPB-5228] Caveat payment Review link attempt ${attempt}/12. Count: ${reviewLinkCount}, URL: ${this.page.url()}`);
-      if (await this.reviewLinkLocator.isVisible().catch(() => false)) {
-        break;
-      }
-      if (attempt % 3 === 0) {
-        console.log(`[DTSPB-5228] Reloading Service Request tab while waiting for caveat payment Review link. Case ref: ${caseRef}`);
-        await this.page.reload({ waitUntil: 'domcontentloaded', timeout: 60_000 });
-      }
-      await this.page.waitForTimeout(5_000);
-    }
-    await expect(this.reviewLinkLocator).toBeVisible({ timeout: 10_000 });
-    console.log(`[DTSPB-5228] Caveat payment Review link visible. URL: ${this.page.url()}`);
+    await this.waitForServiceRequestReviewLink(caseRef, 'caveat payment');
     await this.reviewLinkLocator.click();
   }
 
@@ -629,7 +641,9 @@ export class SolCreateCasePage extends BasePage {
       if (result) {
         break;
       }
-      await this.page.reload();
+      await this.page.goto(this.page.url(), { waitUntil: 'domcontentloaded', timeout: 20_000 }).catch((error) => {
+        console.log(`[DTSPB-5228] Card payment status reload failed. Case ref: ${caseRef}, URL: ${this.page.url()}, error: ${error.message}`);
+      });
       // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     }
   }
@@ -642,9 +656,10 @@ export class SolCreateCasePage extends BasePage {
     await expect(this.serviceRequestLinkLocator).toBeEnabled();
     await this.serviceRequestLinkLocator.click();
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
-    await expect(
-      this.page.getByText(makePaymentConfig.paymentStatus)
-    ).toBeVisible();
+    await expect(async () => {
+      console.log(`[DTSPB-5228] Waiting for payment status '${makePaymentConfig.paymentStatus}'. Case ref: ${caseRef}, URL: ${this.page.url()}`);
+      await expect(this.page.getByText(makePaymentConfig.paymentStatus)).toBeVisible({ timeout: 5_000 });
+    }).toPass({ intervals: [2_000], timeout: 60_000 });
     await expect(
       this.page.getByText(makePaymentConfig.payNowLinkText)
     ).toBeHidden();
@@ -664,7 +679,9 @@ export class SolCreateCasePage extends BasePage {
       }
 
       await this.page.waitForTimeout(10000);
-      await this.page.reload();
+      await this.page.goto(this.page.url(), { waitUntil: 'domcontentloaded', timeout: 20_000 }).catch((error) => {
+        console.log(`[DTSPB-5228] Payment status reload failed. Case ref: ${caseRef}, URL: ${this.page.url()}, error: ${error.message}`);
+      });
       // await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     }
     if (appType !== "Caveat") {
@@ -678,22 +695,7 @@ export class SolCreateCasePage extends BasePage {
 
   async postPaymentReviewDetails(caseRef: string) {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
-    console.log(`[DTSPB-5228] Waiting for post-payment Review link. Case ref: ${caseRef}, URL: ${this.page.url()}`);
-    for (let attempt = 1; attempt <= 12; attempt++) {
-      await this.serviceRequestTabLocator.click();
-      const reviewLinkCount = await this.reviewLinkLocator.count();
-      console.log(`[DTSPB-5228] Post-payment Review link attempt ${attempt}/12. Count: ${reviewLinkCount}, URL: ${this.page.url()}`);
-      if (await this.reviewLinkLocator.isVisible().catch(() => false)) {
-        break;
-      }
-      if (attempt % 3 === 0) {
-        console.log(`[DTSPB-5228] Reloading Service Request tab while waiting for post-payment Review link. Case ref: ${caseRef}`);
-        await this.page.reload({ waitUntil: 'domcontentloaded', timeout: 60_000 });
-      }
-      await this.page.waitForTimeout(5_000);
-    }
-    await expect(this.reviewLinkLocator).toBeVisible({ timeout: 10_000 });
-    console.log(`[DTSPB-5228] Post-payment Review link visible. URL: ${this.page.url()}`);
+    await this.waitForServiceRequestReviewLink(caseRef, 'post-payment');
     await this.reviewLinkLocator.click();
     await expect(this.serviceRequestTabLocator).toBeEnabled();
     await this.runAccessibilityTest();
@@ -1199,9 +1201,8 @@ export class SolCreateCasePage extends BasePage {
       }
     }
 
-    //await this.verifyPageLoad(this.reviewLocator);
-    await expect(this.reviewLocator).toBeVisible();
-    await this.reviewLocator.click();
+    await this.waitForServiceRequestReviewLink(caseRef, 'grant payment');
+    await this.reviewLinkLocator.click();
   }
 
   async intestacyDetailsPage1() {
