@@ -64,10 +64,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -194,6 +196,7 @@ class BusinessValidationControllerIT {
     private static final String ESCALATE_TO_REGISTRAR = "/case/case-escalated";
     private static final String SOLICITOR_SUBMIT_CASE = "/case/setCaseSubmissionDate";
     private static final String CHECK_CASE_MATCHES = "/case/checkCaseMatches";
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
@@ -1530,11 +1533,28 @@ class BusinessValidationControllerIT {
                 .build();
         when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
 
+        String caseId = objectMapper.readTree(gopPayload)
+                .path("case_details")
+                .path("id")
+                .asText();
+
         mockMvc.perform(post("/case/supplementaryData")
                         .content(gopPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        verify(coreCaseDataApi).submitSupplementaryData(any(), any(), any(), any());
+        verify(coreCaseDataApi).submitSupplementaryData(eq("userToken"),
+                any(),
+                eq(caseId),
+                eq(Map.of(
+                        "supplementary_data_updates",
+                        Map.of(
+                                "$set",
+                                Map.of(
+                                        "HMCTSServiceId",
+                                        "ABA6"
+                                )
+                        )
+                )));
     }
 
     @Test
