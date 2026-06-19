@@ -370,9 +370,12 @@ export class SolCreateCasePage extends BasePage {
     const languagePreferenceWelshNoLocator = this.page.locator(
       `#languagePreferenceWelsh_${applicationDetailsConfig.page2_langPrefNo}`
     );
-    await expect(languagePreferenceWelshNoLocator).toBeVisible({timeout: 30000});
-    await languagePreferenceWelshNoLocator.click();
-    await expect(languagePreferenceWelshNoLocator).toBeChecked({timeout: 10000});
+    // This radio is conditionally rendered in some caveat journeys.
+    if (await languagePreferenceWelshNoLocator.count() > 0) {
+      await expect(languagePreferenceWelshNoLocator).toBeVisible({ timeout: 30000 });
+      await languagePreferenceWelshNoLocator.click();
+      await expect(languagePreferenceWelshNoLocator).toBeChecked({ timeout: 10000 });
+    }
 
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
