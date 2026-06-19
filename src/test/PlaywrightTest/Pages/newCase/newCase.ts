@@ -15,8 +15,7 @@ type CreateGrantOfProbateConfig = typeof createGrantOfProbateConfig | typeof cre
 type CaseProgressConfig = typeof caseProgressConfig;
 
 export class CreateCasePage extends BasePage {
-    readonly createCasePageLocator = this.page.getByRole('link', {name: newCaseConfig.waitForText});
-    readonly createCaseLocator = this.page.getByRole('link', { name: /create case/i });
+    readonly createCaseLocator = this.page.getByRole('link', { name: /^Create Case$/i });
     readonly jurisdictionLocator = this.page.getByLabel(newCaseConfig.jurisdictionLocatorName);
     readonly caseTypeLocator = this.page.locator('#cc-case-type');
     readonly eventLocator = this.page.getByLabel(newCaseConfig.eventLocatorName);
@@ -62,13 +61,24 @@ export class CreateCasePage extends BasePage {
     }
 
     async selectNewCase() {
-        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
-      await this.verifyPageLoad(this.createCaseLocator, 10_000);
-        await expect(this.createCasePageLocator).toBeVisible();
-        await this.rejectCookies();
-        await expect(this.createCaseLocator).toBeEnabled();
-        // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
-        await this.createCaseLocator.click();
+
+      await this.page.waitForLoadState('domcontentloaded');
+      await this.rejectCookies();
+      try{
+        await expect(this.createCaseLocator).toBeVisible({timeout: 60_000});
+      }
+      catch(error){
+        console.log('[DTSPB-5228] URL before Create Case:', this.page.url());
+        console.log('[DTSPB-5228] Page title before Create Case:', await this.page.title());
+        console.log('[DTSPB-5228] Create Case Count:', await this.createCaseLocator.count());
+        await this.page.screenshot({
+          path: 'functional-output/before-create-case.png',
+          fullPage: true
+        });
+        throw error;
+      }
+      await expect(this.createCaseLocator).toBeEnabled({timeout: 30_000});
+      await this.createCaseLocator.click();
     }
 
     async selectCaseTypeOptions(caseType: string, event: string) {
