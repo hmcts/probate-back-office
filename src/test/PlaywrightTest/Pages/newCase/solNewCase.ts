@@ -466,7 +466,13 @@ export class SolCreateCasePage extends BasePage {
       }
     }
 
-    await expect(this.reviewLinkLocator).toBeVisible();
+    console.log(`[DTSPB-5228] Waiting for caveat payment Review link. Case ref: ${caseRef}, URL: ${this.page.url()}`);
+    await expect(async () => {
+      await this.serviceRequestTabLocator.click();
+      console.log(`[DTSPB-5228] Caveat payment Review link count: ${await this.reviewLinkLocator.count()}`);
+      await expect(this.reviewLinkLocator).toBeVisible({ timeout: 5_000 });
+    }).toPass({ intervals: [2_000], timeout: 60_000 });
+    console.log(`[DTSPB-5228] Caveat payment Review link visible. URL: ${this.page.url()}`);
     await this.reviewLinkLocator.click();
   }
 
@@ -663,7 +669,13 @@ export class SolCreateCasePage extends BasePage {
 
   async postPaymentReviewDetails(caseRef: string) {
     await expect(this.page.getByText(caseRef).first()).toBeVisible();
-    await expect(this.reviewLinkLocator).toBeVisible();
+    console.log(`[DTSPB-5228] Waiting for post-payment Review link. Case ref: ${caseRef}, URL: ${this.page.url()}`);
+    await expect(async () => {
+      await this.serviceRequestTabLocator.click();
+      console.log(`[DTSPB-5228] Post-payment Review link count: ${await this.reviewLinkLocator.count()}`);
+      await expect(this.reviewLinkLocator).toBeVisible({ timeout: 5_000 });
+    }).toPass({ intervals: [2_000], timeout: 60_000 });
+    console.log(`[DTSPB-5228] Post-payment Review link visible. URL: ${this.page.url()}`);
     await this.reviewLinkLocator.click();
     await expect(this.serviceRequestTabLocator).toBeEnabled();
     await this.runAccessibilityTest();
