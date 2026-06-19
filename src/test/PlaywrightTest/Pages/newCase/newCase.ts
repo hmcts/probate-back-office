@@ -78,6 +78,7 @@ export class CreateCasePage extends BasePage {
         throw error;
       }
       await expect(this.createCaseLocator).toBeEnabled({timeout: 30_000});
+      console.log(`[DTSPB-5228] Create Case link visible. URL: ${this.page.url()}`);
       await this.createCaseLocator.click();
     }
 
@@ -86,6 +87,13 @@ export class CreateCasePage extends BasePage {
         await this.verifyPageLoad(this.createCaseLocator, 10_000);
         await expect(this.createCaseLocator).toBeVisible();
         await expect(this.jurisdictionLocator).toBeEnabled();
+        const jurisdictionOptions = await this.jurisdictionLocator.locator('option').evaluateAll((options) =>
+          options.map((option) => ({
+            text: option.textContent?.trim(),
+            value: (option as HTMLOptionElement).value
+          }))
+        );
+        console.log(`[DTSPB-5228] Jurisdiction options before select: ${JSON.stringify(jurisdictionOptions)}`);
         await this.jurisdictionLocator.selectOption({value: newCaseConfig.jurisdictionValue});
         // await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await expect(this.caseTypeLocator).toBeEnabled();

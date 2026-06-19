@@ -75,18 +75,15 @@ export class BasePage {
     const locator = typeof buttonLocator === 'string'
       ? this.page.locator(buttonLocator)  // String - convert to Locator
       : buttonLocator;
-    await expect(locator).toBeVisible();
-    await expect(locator).toBeEnabled();
+    await expect(locator).toBeVisible({ timeout });
+    await expect(locator).toBeEnabled({ timeout });
+    console.log(`[DTSPB-5228] Clicking navigation control from URL: ${currentUrl}`);
+    await locator.click({ timeout });
 
-    await expect(async () => {
-      if (this.page.url() === currentUrl) {
-        await expect(locator).toBeVisible();
-        await expect(locator).toBeEnabled();
-        await locator.click({ timeout: timeout });
-      }
-      await expect(this.page).not.toHaveURL(currentUrl);
-      // console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
-    }).toPass({ intervals: [2_000], timeout: 60_000 });
+    await expect
+      .poll(() => this.page.url(), { intervals: [1_000], timeout: 60_000 })
+      .not.toBe(currentUrl);
+    console.log(`[DTSPB-5228] Navigation completed. New URL: ${this.page.url()}`);
 
   }
 
