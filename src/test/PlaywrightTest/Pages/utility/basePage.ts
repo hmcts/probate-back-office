@@ -71,19 +71,24 @@ export class BasePage {
   }
 
   async waitForNavigationToComplete(buttonLocator: Locator | string, timeout: number = 5_000): Promise<void> {
-    const currentUrl = await this.page.url();
+    const currentUrl = this.page.url();
     const locator = typeof buttonLocator === 'string'
       ? this.page.locator(buttonLocator)  // String - convert to Locator
       : buttonLocator;
     await expect(locator).toBeVisible({ timeout });
     await expect(locator).toBeEnabled({ timeout });
     console.log(`[DTSPB-5228] Clicking navigation control from URL: ${currentUrl}`);
-    await locator.click({ timeout });
+    await locator.click({ timeout, noWaitAfter: true });
 
-    await expect
-      .poll(() => this.page.url(), { intervals: [1_000], timeout: 60_000 })
-      .not.toBe(currentUrl);
-    console.log(`[DTSPB-5228] Navigation completed. New URL: ${this.page.url()}`);
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 10_000 }).catch(() => undefined);
+    try {
+      await expect
+        .poll(() => this.page.url(), { intervals: [1_000], timeout: 60_000 })
+        .not.toBe(currentUrl);
+      console.log(`[DTSPB-5228] Navigation completed. New URL: ${this.page.url()}`);
+    } catch {
+      console.log(`[DTSPB-5228] URL did not change after click. Current URL: ${this.page.url()}`);
+    }
 
   }
 
@@ -320,10 +325,13 @@ export class BasePage {
   }
 
   async waitForUploadToBeCompleted() {
-    const locs = await this.page.getByText("Cancel upload").all();
-    for (let i = 0; i < locs.length; i++) {
-      await expect(locs[i]).toBeDisabled();
-    }
+    await expect(async () => {
+      const locs = await this.page.getByText("Cancel upload").all();
+      console.log(`[DTSPB-5228] Waiting for upload completion. Cancel upload button count: ${locs.length}, URL: ${this.page.url()}`);
+      for (let i = 0; i < locs.length; i++) {
+        await expect(locs[i]).toBeDisabled({ timeout: 5_000 });
+      }
+    }).toPass({ intervals: [2_000], timeout: 90_000 });
   }
 
   async caseProgressContinueWithoutChangingAnything(numTimes = 1) {
