@@ -404,6 +404,9 @@ export class SolCreateCasePage extends BasePage {
     await expect(languagePreferenceWelshNoLocator).toBeChecked({ timeout: 10000 });
 
     await this.waitForNavigationToComplete(commonConfig.continueButton);
+
+    console.log('[DTSPB:5228] After continue URL:', this.page.url());
+    console.log('[DTSPB:5228] After continue headings:', await this.page.locator('h1').first().textContent())
   }
 
   async completeCaveatApplicationPage1() {
