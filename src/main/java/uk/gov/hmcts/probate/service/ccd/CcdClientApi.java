@@ -101,6 +101,7 @@ public class CcdClientApi implements CoreCaseDataService {
         }
         CaseDataContent caseDataContent = createCaseDataContent(caseData, eventId, startEventResponse,
                 description, summary);
+        log.info("Submitting data: {}", caseDataContent.getData());
         log.info("Submit event to CCD for Caseworker, caseType: {}, caseId: {}",
                 caseType.getName(), caseId);
         return coreCaseDataApi.submitEventForCaseWorker(
