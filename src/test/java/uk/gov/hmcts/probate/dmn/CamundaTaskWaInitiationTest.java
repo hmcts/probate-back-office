@@ -84,6 +84,14 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "CasePrinted",
                         additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbate10Days)
+                ),
+                // Rule 6: attach scanned docs → Awaiting documentation (CasePrinted),
+                // evidenceHandled=false, gop → ExamineDigitalCaseProbate (10 working days)
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalData(false, "gop"),
+                        List.of(examineDigitalCaseProbate10Days)
                 )
         );
     }
@@ -94,7 +102,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(4));
         assertThat(logic.getOutputs().size(), is(7));
-        assertThat(logic.getRules().size(), is(5));
+        assertThat(logic.getRules().size(), is(6));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
