@@ -1,0 +1,3 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForAwaitingDocumentation", "CaseFieldID": "evidenceHandled", "PageFieldDisplayOrder": 60, "DisplayContext": "OPTIONAL", "PageID": "boAmendCaseDetailsPage9", "PageDisplayOrder": 9, "FieldShowCondition": "caseType=\"intestacy\"", "ShowSummaryChangeOption": "y", "Publish": "${CCD_DEF_PUBLISH}"}
+]
