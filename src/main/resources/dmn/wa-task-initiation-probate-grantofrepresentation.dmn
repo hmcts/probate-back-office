@@ -175,6 +175,9 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
         <inputEntry id="LiteralExpression_1whdf9l">
           <text>false</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1qrdf9q">
+          <text></text>
+        </inputEntry>
         <inputEntry id="LiteralExpression_0n1yxlg">
           <text></text>
         </inputEntry>
