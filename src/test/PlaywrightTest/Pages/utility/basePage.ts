@@ -83,7 +83,7 @@ export class BasePage {
     await this.page.waitForLoadState('domcontentloaded', { timeout: 10_000 }).catch(() => undefined);
     try {
       await expect
-        .poll(() => this.page.url(), { intervals: [1_000], timeout: 60_000 })
+        .poll(() => this.page.url(), { intervals: [500], timeout: 5_000 })
         .not.toBe(currentUrl);
       console.log(`[DTSPB-5228] Navigation completed. New URL: ${this.page.url()}`);
     } catch {
@@ -109,7 +109,7 @@ export class BasePage {
     dataConfigFile, // TODO: type?
     nextStep?: string,
     endState?: string,
-    delay: number = testConfig.CaseDetailsDelayDefault,
+    _delay: number = testConfig.CaseDetailsDelayDefault,
     nocEvent?: boolean
   ) {
     if (tabConfigFile.tabName && tabConfigFile.tabName !== "Documents") {
@@ -123,7 +123,7 @@ export class BasePage {
     ).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
-    await this.page.waitForTimeout(delay);
+    await this.page.waitForLoadState("domcontentloaded");
 
     if(!nocEvent) {
       await this.runAccessibilityTest();
@@ -244,7 +244,14 @@ export class BasePage {
     ).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
+    await this.page.waitForLoadState("domcontentloaded");
     await this.runAccessibilityTest();
+
+    await expect(async () => {
+      await expect(
+        this.page.getByRole("table", { name: "case viewer table" })
+      ).toBeVisible({ timeout: 5_000 });
+    }).toPass({ intervals: [1_000], timeout: 20_000 });
 
     if (tabUpdates) {
       const updatedConfig = tabConfigFile[tabUpdates];
@@ -256,7 +263,10 @@ export class BasePage {
       }
 
       for (let i = 0; i < fields.length; i++) {
-        await expect(this.page.getByText(fields[i]).first()).toBeVisible();
+        const fieldLabel = fields[i];
+        await expect(async () => {
+          await expect(this.page.getByText(fieldLabel).first()).toBeVisible({ timeout: 5_000 });
+        }).toPass({ intervals: [1_000], timeout: 20_000 });
       }
 
       for (let i = 0; i < keys.length; i++) {
@@ -272,7 +282,6 @@ export class BasePage {
   }
 
   async seeTabDetailsBilingual(caseRef, tabConfigFile, dataConfigFile) {
-    const delay = testConfig.CaseDetailsDelayDefault;
 
     if (tabConfigFile.tabName) {
       await expect(this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`)).toBeEnabled();
@@ -283,7 +292,7 @@ export class BasePage {
     await expect(this.page.getByRole("heading", { name: caseRef })).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
-    await this.page.waitForTimeout(delay);
+    await this.page.waitForLoadState("domcontentloaded");
     await this.runAccessibilityTest();
     // await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
     // await I.clickTab(tabConfigFile.tabName);
@@ -295,7 +304,6 @@ export class BasePage {
       // await I.waitForText(tabConfigFile.waitForText, testConfig.WaitForTextTimeout || 60);
     }
 
-    /* eslint-disable no-await-in-loop */
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
       if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
         await expect(this.page.getByText(tabConfigFile.fields[i]).first()).toBeVisible();

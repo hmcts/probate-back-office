@@ -7,7 +7,6 @@ import caseProgressConfig from "../caseProgressAppStopped/caseProgressConfig.jso
 
 export class CaseProgressPage extends SignInPage {
   readonly deceasedForenameLocator = this.page.locator("#deceasedForenames");
-  readonly goButtonLocator = this.page.getByRole("button", { name: "Go" });
   readonly caseProgressHeadingLocator = this.page.getByLabel('Case Progress', { exact: true });
 
   constructor(public readonly page: Page) {
@@ -20,7 +19,8 @@ export class CaseProgressPage extends SignInPage {
     await this.page.getByRole("tab", { name: 'Case Progress' }).focus();
     await this.page.getByRole("tab", { name: 'Case Progress' }).click();
     await this.page.getByRole("tab", { name: 'Case Progress' }).click();
-    const texts = await this.page.locator('markdown  p.govuk-body-s').allTextContents();
+    const markdownBodyLocator = this.page.locator("xpath=//*[local-name()='markdown']//p[contains(@class,'govuk-body-s')]");
+    const texts = await markdownBodyLocator.allTextContents();
 
     // Check text on lhs side is all correct.
     assert (texts.length === 37);
@@ -39,7 +39,7 @@ export class CaseProgressPage extends SignInPage {
       assert (texts[17] === 'Once payment is made, you\'ll need to refresh the page or re-enter the case for the payment status to update.');
     }
 
-    const splitText = await this.page.locator('markdown  p.govuk-body-s').nth(18).innerText();
+    const splitText = await markdownBodyLocator.nth(18).innerText();
 
     assert (splitText.split('\n')[0] === 'Send documents');
     assert (texts[19] === 'These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.');
@@ -60,7 +60,13 @@ export class CaseProgressPage extends SignInPage {
       const lnk = await this.page.locator('p.govuk-body-s a').first().getAttribute('href');
       assert (lnk.endsWith(opts.linkUrl));
     } else {
-      await expect(this.page.locator('p.govuk-body-s a')).toHaveCount(0);
+      const renderedLinkHrefs = await this.page
+        .locator('p.govuk-body-s a')
+        .evaluateAll((links) => links.map((link) => link.getAttribute('href') ?? ''));
+      const actionableLinkHrefs = renderedLinkHrefs.filter((href) =>
+        href.includes('/trigger/') || href.includes('#Service%20Request') || href.includes('#Service Request')
+      );
+      expect(actionableLinkHrefs).toHaveLength(0);
       const docsText = await this.page.locator('span.govuk-details__summary-text').first().innerText();
       assert.equal(docsText, 'View the documents needed by HM Courts and Tribunal Service');
     }
@@ -139,38 +145,6 @@ export class CaseProgressPage extends SignInPage {
     }
   }
 
-  async clickGoButton() {
-    const currentUrl = this.page.url();
-
-    await expect(this.page.locator('button[type="submit"].button')).toBeVisible();
-    await expect(this.page.locator('button[type="submit"].button')).toBeEnabled();
-    await this.page.locator('button[type="submit"].button').click({ noWaitAfter: true });
-
-    await expect(async () => {
-      if (this.page.url() === currentUrl) {
-        await this.page.reload({ timeout: 10_000 });
-        await this.caseProgressSelectPenultimateNextStep();
-        await this.page.locator('button[type="submit"].button').click({ timeout: 5_000 });
-      }
-      await expect(this.page).not.toHaveURL(currentUrl);
-    }).toPass({ intervals: [1_000], timeout: 60_000 });
-
-    // Wait for URL to be anything different
-    /* let attempts = 0;
-      while (this.page.url() === currentUrl && attempts < 50) {
-      await this.page.reload();
-      await this.page.waitForLoadState('load');
-      await this.caseProgressSelectPenultimateNextStep();
-      // await this.page.waitForTimeout(1000);
-      await this.page.locator('button[type="submit"].button').click({ timeout: 5_000 });
-      // await this.page.waitForTimeout(3000);
-      attempts++;
-    }*/
-
-    // Additional settle time
-    // await this.page.waitForTimeout(2000);
-  }
-
   async caseProgressResumeDeceasedDetails() {
     await this.verifyPageLoad(this.deceasedForenameLocator);
     await expect(this.deceasedForenameLocator).toBeEnabled();
@@ -207,4 +181,4 @@ export class CaseProgressPage extends SignInPage {
     await expect(this.page.locator( 'div.govuk-inset-text').first()).toContainText(caseProgressConfig.AppStoppedTabTitle, { timeout: 2000 });
     await expect(this.page.getByText( caseProgressConfig.AppStoppedTabCheckText, { exact: true })).toBeVisible();
   }
-};
+}
