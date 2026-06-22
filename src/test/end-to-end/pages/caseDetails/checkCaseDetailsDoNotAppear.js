@@ -13,5 +13,6 @@ module.exports = async function (fieldLabelsNotToBeShown) {
         // eslint-disable-next-line
         numElements = await I.grabNumberOfVisibleElements({ xpath: `//div[contains(@class, 'case-viewer-label')][text()='${fieldLabelsNotToBeShown[i]}']`});
         assert (numElements === 0);
+
     }
 };
