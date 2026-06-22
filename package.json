@@ -146,6 +146,6 @@
     "serialize-javascript": "^7.0.5",
     "yargs-parser": "^22.0.0"
   },
-  "packageManager": "yarn@4.15.0",
+  "packageManager": "yarn@4.16.0",
   "license": "MIT"
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.34.0">
-  <decision id="wa-task-initiation-probate" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
+  <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
         <inputExpression id="InputExpression_1" typeRef="string">
@@ -14,11 +14,13 @@
       </input>
       <input id="InputClause_03i3ghi" label="evidenceHandled" biodi:width="291" camunda:inputVariable="evidenceHandled">
         <inputExpression id="LiteralExpression_0kx1xp4" typeRef="string">
-          <text>if(additionalData != null and additionalData.Data != null and additionalData.Data.evidenceHandled
+          <text>if(additionalData != null and additionalData.Data != null and
+            additionalData.Data.evidenceHandled
             != null) then
             additionalData.Data.evidenceHandled
             else
-            ""</text>
+            ""
+          </text>
         </inputExpression>
         <inputValues id="UnaryTests_0imp90y">
           <text>"Yes","No"</text>
@@ -26,11 +28,13 @@
       </input>
       <input id="InputClause_0igjxpg" label="caseType" biodi:width="291" camunda:inputVariable="caseType">
         <inputExpression id="LiteralExpression_176w5mt" typeRef="string">
-          <text>if(additionalData != null and additionalData.Data != null and additionalData.Data.evidenceHandled
+          <text>if(additionalData != null and additionalData.Data != null and
+            additionalData.Data.evidenceHandled
             != null) then
             additionalData.Data.caseType
             else
-            ""</text>
+            ""
+          </text>
         </inputExpression>
         <inputValues id="UnaryTests_0s5s50h">
           <text>"gop","admonWill","intestacy"</text>
@@ -51,10 +55,10 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0izdcb4">
-          <text>"No"</text>
+          <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0dm0vju">
-          <text>"gop"</text>
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yp6gfj">
           <text>"ExamineDigitalCaseProbate"</text>
@@ -152,7 +156,7 @@
   </decision>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="DMNDiagram_0b2rkcb">
-      <dmndi:DMNShape id="DMNShape_0wc7glt" dmnElementRef="wa-task-initiation-probate">
+      <dmndi:DMNShape id="DMNShape_0wc7glt" dmnElementRef="wa-task-initiation-probate-grantofrepresentation">
         <dc:Bounds height="80" width="180" x="150" y="80" />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>
