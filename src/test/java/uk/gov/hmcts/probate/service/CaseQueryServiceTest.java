@@ -64,7 +64,7 @@ class CaseQueryServiceTest {
     private CaseQueryService caseQueryService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
@@ -92,8 +92,8 @@ class CaseQueryServiceTest {
             caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");
 
         assertEquals(1, cases.size());
-        assertThat(cases.get(0).getId(), is(1L));
-        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+        assertThat(cases.getFirst().getId(), is(1L));
+        assertEquals("Smith", cases.getFirst().getData().getDeceasedSurname());
     }
 
     @Test
@@ -103,8 +103,8 @@ class CaseQueryServiceTest {
             "2021-01-01");
 
         assertEquals(1, cases.size());
-        assertThat(cases.get(0).getId(), is(1L));
-        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+        assertThat(cases.getFirst().getId(), is(1L));
+        assertEquals("Smith", cases.getFirst().getData().getDeceasedSurname());
     }
 
     @Test
@@ -204,8 +204,8 @@ class CaseQueryServiceTest {
             "2021-01-01");
 
         assertEquals(1, cases.size());
-        assertThat(cases.get(0).getId(), is(1L));
-        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+        assertThat(cases.getFirst().getId(), is(1L));
+        assertEquals("Smith", cases.getFirst().getData().getDeceasedSurname());
     }
 
     @Test
@@ -220,8 +220,8 @@ class CaseQueryServiceTest {
             .findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
 
         assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
+        assertEquals(0, cases.getFirst().getId().intValue());
+        assertEquals("Smith0", cases.getFirst().getData().getDeceasedSurname());
     }
 
     @Test
@@ -256,8 +256,8 @@ class CaseQueryServiceTest {
             .findCaseStateWithinDateRangeHMRC("2019-01-01", "2019-02-05");
 
         assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
+        assertEquals(0, cases.getFirst().getId().intValue());
+        assertEquals("Smith0", cases.getFirst().getData().getDeceasedSurname());
     }
 
     @Test
@@ -273,8 +273,8 @@ class CaseQueryServiceTest {
             .findCaseStateWithinDateRangeSmeeAndFord("2019-01-01", "2019-02-05");
 
         assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
+        assertEquals(0, cases.getFirst().getId().intValue());
+        assertEquals("Smith0", cases.getFirst().getData().getDeceasedSurname());
     }
 
     @Test
@@ -290,8 +290,8 @@ class CaseQueryServiceTest {
                 .findCaseToBeMadeDormant("2022-01-01", "2022-01-10");
 
         assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
+        assertEquals(0, cases.getFirst().getId().intValue());
+        assertEquals("Smith0", cases.getFirst().getData().getDeceasedSurname());
     }
 
     @Test
@@ -307,8 +307,8 @@ class CaseQueryServiceTest {
                 .findCaseToBeReactivatedFromDormant("2022-01-01");
 
         assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
+        assertEquals(0, cases.getFirst().getId().intValue());
+        assertEquals("Smith0", cases.getFirst().getData().getDeceasedSurname());
     }
 
     @Test
@@ -325,23 +325,27 @@ class CaseQueryServiceTest {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantDelayed("2019-02-05");
 
         assertEquals(1, cases.size());
-        assertEquals(1, cases.get(0).getId().intValue());
-        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+        assertEquals(1, cases.getFirst().getId().intValue());
+        assertEquals("Smith", cases.getFirst().getData().getDeceasedSurname());
     }
 
     @Test
     void findCasesForGrantAwaitingDocs() {
         CaseData caseData = CaseData.builder()
-            .deceasedSurname("Smith")
-            .build();
-        List<ReturnedCaseDetails> caseList =
-            new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, 1L))
+                .deceasedSurname("Smith")
                 .build();
-        ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
-        when(restTemplate.postForObject(any(), entityCaptor.capture(), any())).thenReturn(returnedCases);
 
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantAwaitingDocumentation("2019-02-05");
+        List<ReturnedCaseDetails> caseList =
+                new ImmutableList.Builder<ReturnedCaseDetails>()
+                        .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L))
+                        .build();
+
+        ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
+        when(restTemplate.postForObject(any(), entityCaptor.capture(), any()))
+                .thenReturn(returnedCases);
+
+        List<ReturnedCaseDetails> cases =
+                caseQueryService.findCasesForGrantAwaitingDocumentation("2019-02-05");
 
         String expected = "{\"from\":0,\"size\":0,\"query\":{\"bool\":{\"must\":[{\"bool\":{\"should\":[{\"match\":"
                 + "{\"state\":{\"query\":\"CasePrinted\"}}}],\"minimum_should_match\":\"1\",\"boost\":1.0}},"
@@ -352,8 +356,8 @@ class CaseQueryServiceTest {
                 + "{\"order\":\"asc\"}}]}";
         assertEquals(expected, entityCaptor.getValue().getBody());
         assertEquals(1, cases.size());
-        assertEquals(1, cases.get(0).getId().intValue());
-        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+        assertEquals(1, cases.getFirst().getId().intValue());
+        assertEquals("Smith", cases.getFirst().getData().getDeceasedSurname());
     }
 
     @Test
@@ -377,7 +381,7 @@ class CaseQueryServiceTest {
                 .findCaseWithQueryPathAndDate("NFI", "queryPath", "2019-02-05");
 
         assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
+        assertEquals(0, cases.getFirst().getId().intValue());
+        assertEquals("Smith0", cases.getFirst().getData().getDeceasedSurname());
     }
 }

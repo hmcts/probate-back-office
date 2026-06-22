@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.util.ResourceUtils.getFile;
@@ -25,6 +26,25 @@ public class CaseDataBuilder {
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
         caseData.put("dueDate", LocalDate.now());
+        return new CaseDataBuilder(caseData);
+    }
+
+    public static CaseDataBuilder defaultWaCase() {
+        Map<String,Object> caseData = new HashMap<>();
+        caseData.put("caseNameHmctsInternal", "Joe Blogs");
+        caseData.put("isUrgent", "No");
+        caseData.put("dueDate", LocalDate.now());
+        String refusalOfEuLabel = "Refusal of a human rights claim";
+        caseData.put("caseManagementCategory", Map.of(
+                "value", Map.of("code", "refusalOfHumanRights", "label", "Refusal of a human rights claim"),
+                "list_items", List.of(Map.of("code", "refusalOfHumanRights", "label", refusalOfEuLabel))
+        ));
+        caseData.put("caseType", "someCaseType");
+        caseData.put("deceasedForenames", "someDeceasedForenames");
+        caseData.put("deceasedSurname", "someDeceasedSurname");
+        caseData.put("region", "someRegion");
+        caseData.put("roleCategory", "someRoleCategory");
+        caseData.put("registryLocation", "someRegistryLocation");
         return new CaseDataBuilder(caseData);
     }
 

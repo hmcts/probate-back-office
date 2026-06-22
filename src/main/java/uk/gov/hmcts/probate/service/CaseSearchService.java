@@ -21,7 +21,7 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.springframework.util.StringUtils.isEmpty;
+import static org.springframework.util.StringUtils.hasText;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class CaseSearchService {
 
         String jsonQuery;
 
-        if (isEmpty(criteria.getRecordId())) {
+        if (!hasText(criteria.getRecordId())) {
             jsonQuery = getSearchQuery(criteria);
         } else {
             jsonQuery = getSearchByRecordIdQuery(criteria);
