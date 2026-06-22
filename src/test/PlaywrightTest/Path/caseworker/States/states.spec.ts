@@ -59,7 +59,7 @@ test.describe("Caseworker - Case State Setup", () => {
     await basePage.logInfo(scenarioName, "Case created", caseRef);
   });
 
-  test.only("Get case to Ready to Issue state", async ({ basePage, solCreateCasePage, cwEventActionsPage }) => {
+  test("Get case to Ready to Issue state", async ({ basePage, solCreateCasePage, cwEventActionsPage }) => {
     const nextStepName = 'Generate grant preview';
     await basePage.logInfo('Caseworker - Case State Setup', nextStepName, caseRef);
     await solCreateCasePage.navigateToCase(caseRef);
@@ -67,9 +67,20 @@ test.describe("Caseworker - Case State Setup", () => {
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
   });
 
-  test("Get case to Case Stopped state", async () => {
+  test("Get case to Case Stopped state", async ({ basePage, solCreateCasePage, cwEventActionsPage }) => {
+    const nextStepName = 'Stop case';
+    await basePage.logInfo('Caseworker - Case State Setup', nextStepName, caseRef);
+    await solCreateCasePage.navigateToCase(caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.stopCase);
+    await cwEventActionsPage.caseProgressStopEscalateIssueAddCaseStoppedReason();
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
   });
 
-  test("Get case to SME Referral state", async () => {
+  test("Get case to SME Referral state", async ({ basePage, solCreateCasePage, cwEventActionsPage }) => {
+    const nextStepName = 'SME Referral';
+    await basePage.logInfo('Caseworker - Case State Setup', nextStepName, caseRef);
+    await solCreateCasePage.navigateToCase(caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.smeReferral);
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
   });
 });
