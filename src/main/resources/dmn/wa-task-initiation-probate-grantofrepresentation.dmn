@@ -213,17 +213,8 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
         <outputEntry id="LiteralExpression_1fqjxin">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1p543tx">
-          <text>10</text>
-        </outputEntry>
         <outputEntry id="LiteralExpression_0aopq82">
-          <text>"case progression"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1i9lhpb">
-          <text>"routine_work"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0ideg9c">
-          <text>"CTSC"</text>
+          <text>&quot;case progression&quot;</text>
         </outputEntry>
       </rule>
     </decisionTable>
