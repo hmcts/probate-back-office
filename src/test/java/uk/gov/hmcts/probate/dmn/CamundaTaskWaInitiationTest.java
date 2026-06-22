@@ -19,8 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_CTSC;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROUTINE_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.resultsMatchUsingNameKey;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -30,57 +29,38 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_INITIATION_PROBATE;
     }
 
-    /**
-     * Builds the variable in the shape WA passes to the DMN at runtime.
-     * The initiation DMN reads evidenceHandled and caseType from additionalData.Data.* via a
-     * FEEL expression
-     */
-    private static Map<String, Object> additionalData(boolean evidenceHandled, String caseType) {
-        return Map.of("Data", Map.of(
-                "evidenceHandled", evidenceHandled,
-                "caseType", caseType
-        ));
-    }
-
     static Stream<Arguments> scenarioProvider() {
-
-        Map<String, Object> examineDigitalCaseProbate7Days = Map.of(
+        Map<String,Object> examineDigitalCaseProbateTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
                 "name", "Examine Digital Case - Probate",
                 "processCategories", "case progression"
         );
 
-        Map<String, Object> examineDigitalCaseProbate10Days = Map.of(
-                "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
-                "name", "Examine Digital Case - Probate",
-                "workingDaysAllowed", 10,
-                "processCategories", "case progression",
-                "workType", ROUTINE_WORK_TYPE,
-                "roleCategory", ROLE_CATEGORY_CTSC
-        );
+        Map<String, Object> additionalData = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + false + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\"\n"
+                + "  }\n"
+                + "}");
 
         return Stream.of(
-                // Rule 1: handleEvidence → CasePrinted, evidenceHandled/caseType unconstrained
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        additionalData(false, "gop"),
-                        List.of(examineDigitalCaseProbate7Days)
+                        additionalData,
+                        List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
-                // Rule 2: applyforGrantPaperApplication → CasePrinted, evidenceHandled/caseType unconstrained
                 Arguments.of(
                         "applyforGrantPaperApplication",
                         "CasePrinted",
-                        additionalData(false, "gop"),
-                        List.of(examineDigitalCaseProbate7Days)
+                        additionalData,
+                        List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
-                // Rule 5: PA1P/PA1A/Solicitors Manual → Awaiting documentation (CasePrinted),
-                // evidenceHandled=false, gop → ExamineDigitalCaseProbate (10 working days)
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
                         "CasePrinted",
-                        additionalData(false, "gop"),
-                        List.of(examineDigitalCaseProbate10Days)
+                        additionalData,
+                        List.of(examineDigitalCaseProbateTaskAttributes)
                 )
         );
     }
@@ -90,7 +70,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(4));
-        assertThat(logic.getOutputs().size(), is(7));
+        assertThat(logic.getOutputs().size(), is(4));
         assertThat(logic.getRules().size(), is(5));
     }
 
@@ -104,7 +84,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);
         if (additionalData != null) {
-            inputVariables.putValue("additionalData", additionalData);
+            inputVariables.putAll(additionalData);
         }
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
