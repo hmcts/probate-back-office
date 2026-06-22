@@ -16,11 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD;
-import static uk.gov.hmcts.probate.model.Constants.SOLS_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -37,7 +34,7 @@ public class HandOffLegacyService {
             || NO.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite())) {
 
             return isForeignWill(caseData) || isForeignDomicile(caseData)
-                    || isTrustCorporation(caseData) || isExtendedIntestacy(caseData);
+                    || isTrustCorporation(caseData);
         } else {
             return YES.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite());
         }
@@ -69,10 +66,6 @@ public class HandOffLegacyService {
 
             if (isForeignWill(caseData)) {
                 handoffReasonsList.add(buildHandOffReason(HandoffReasonId.FOREIGN_WILL));
-            }
-
-            if (isExtendedIntestacy(caseData)) {
-                handoffReasonsList.add(buildHandOffReason(HandoffReasonId.EXTENDED_INTESTACY));
             }
         }
         return handoffReasonsList;
@@ -107,18 +100,5 @@ public class HandOffLegacyService {
             || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseType))
             && NO.equalsIgnoreCase(caseData.getWillAccessOriginal())
             && YES.equalsIgnoreCase(caseData.getWillAccessNotarial());
-    }
-
-    private boolean isExtendedIntestacy(CaseData caseData) {
-        final boolean isIntestacyCase = DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType());
-        return (SOLICITOR.equals(caseData.getApplicationType())
-                && isIntestacyCase
-                && SOLS_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD
-                    .equals(caseData.getSolsApplicantRelationshipToDeceased()))
-            || (PERSONAL.equals(caseData.getApplicationType())
-                && isIntestacyCase
-                && PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD
-                    .equals(caseData.getPrimaryApplicantRelationshipToDeceased())
-                && YES.equalsIgnoreCase(caseData.getPrimaryApplicantAdoptionInEnglandOrWales()));
     }
 }
