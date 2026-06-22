@@ -33,7 +33,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         Map<String,Object> examineDigitalCaseProbateTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
                 "name", "Examine Digital Case - Probate",
-                "workingDaysAllowed", 7,
                 "processCategories", "case progression"
         );
 
@@ -65,7 +64,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(4));
-        assertThat(logic.getOutputs().size(), is(5));
+        assertThat(logic.getOutputs().size(), is(4));
         assertThat(logic.getRules().size(), is(4));
     }
 
