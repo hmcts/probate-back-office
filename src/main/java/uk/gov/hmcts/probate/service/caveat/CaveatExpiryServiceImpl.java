@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_AWAITING_RESOLUTION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_CAVEAT_NOT_MATCHED;
 import static uk.gov.hmcts.probate.model.ccd.EventId.CAVEAT_EXPIRED_FOR_WARNNG_VALIDATION;
@@ -96,7 +97,7 @@ public class CaveatExpiryServiceImpl implements CaveatExpiryService {
             validateStateForExpiry(startEventResponse, caveat.getId());
             checkExpiryDate(startEventResponse, caveat.getId());
 
-            startEventResponse.getCaseDetails().getData().put("autoClosedExpiry", true);
+            startEventResponse.getCaseDetails().getData().put("autoClosedExpiry", YES);
             CaseDataContent caseDataContent = CaseDataContent.builder()
                     .event(Event.builder()
                             .id(startEventResponse.getEventId())
