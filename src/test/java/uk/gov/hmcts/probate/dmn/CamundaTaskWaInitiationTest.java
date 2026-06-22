@@ -48,9 +48,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
                 "name", "Examine Digital Case - Probate",
                 "workingDaysAllowed", 7,
-                "processCategories", "case progression",
-                "workType", ROUTINE_WORK_TYPE,
-                "roleCategory", ROLE_CATEGORY_CTSC
+                "processCategories", "case progression"
         );
 
         Map<String, Object> examineDigitalCaseProbate10Days = Map.of(
