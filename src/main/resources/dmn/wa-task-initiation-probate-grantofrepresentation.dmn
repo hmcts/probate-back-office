@@ -42,7 +42,6 @@
       <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" typeRef="integer" />
       <output id="OutputClause_0i6c6c2" label="Working Days Allowed" name="workingDaysAllowed" typeRef="integer" />
       <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
-      <output id="OutputClause_09b12hk" label="Role Category" name="roleCategory" typeRef="string" />
       <rule id="DecisionRule_0in26ix">
         <inputEntry id="UnaryTests_1mtpy0d">
           <text>"handleEvidence"</text>
@@ -70,9 +69,6 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1p20qkn">
           <text>"case progression"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_19ua141">
-          <text>"CTSC"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0nmqzhb">
@@ -103,9 +99,6 @@
         <outputEntry id="LiteralExpression_1aqxna6">
           <text>"case progression"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1xhke8w">
-          <text>"CTSC"</text>
-        </outputEntry>
       </rule>
       <rule id="DecisionRule_0qpj4ul">
         <inputEntry id="UnaryTests_0nzv4gr">
@@ -135,9 +128,6 @@
         <outputEntry id="LiteralExpression_1r5w3wg">
           <text>"case progression"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1l9h9th">
-          <text>"CTSC"</text>
-        </outputEntry>
       </rule>
       <rule id="DecisionRule_0p8qcwb">
         <inputEntry id="UnaryTests_0r4ctab">
@@ -166,9 +156,6 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1hg6z8n">
           <text>"case progression"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_09u0200">
-          <text>"CTSC"</text>
         </outputEntry>
       </rule>
     </decisionTable>
