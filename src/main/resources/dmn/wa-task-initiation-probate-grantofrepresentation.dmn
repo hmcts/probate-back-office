@@ -37,7 +37,7 @@
           <text>"gop","admonWill","intestacy"</text>
         </inputValues>
       </input>
-      <input id="InputClause_0ts4kea" camunda:inputVariable="boHandoffReasonCount">
+      <input id="InputClause_0ts4kea" label="boHandoffReasonPresent" camunda:inputVariable="boHandoffReasonPresent">
         <inputExpression id="LiteralExpression_1l94sjj" typeRef="boolean">
           <text>if(additionalData != null and additionalData.Data != null and
             additionalData.Data.boHandoffReasonList != null and 
