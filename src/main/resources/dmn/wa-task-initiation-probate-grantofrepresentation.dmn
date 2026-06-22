@@ -42,7 +42,6 @@
       <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" typeRef="integer" />
       <output id="OutputClause_0i6c6c2" label="Working Days Allowed" name="workingDaysAllowed" typeRef="integer" />
       <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
-      <output id="OutputClause_1wziqr5" label="Work Type" name="workType" typeRef="string" />
       <output id="OutputClause_09b12hk" label="Role Category" name="roleCategory" typeRef="string" />
       <rule id="DecisionRule_0in26ix">
         <inputEntry id="UnaryTests_1mtpy0d">
@@ -71,9 +70,6 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1p20qkn">
           <text>"case progression"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0te3ddw">
-          <text>"routine_work"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_19ua141">
           <text>"CTSC"</text>
@@ -107,9 +103,6 @@
         <outputEntry id="LiteralExpression_1aqxna6">
           <text>"case progression"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_17lt81l">
-          <text>"routine_work"</text>
-        </outputEntry>
         <outputEntry id="LiteralExpression_1xhke8w">
           <text>"CTSC"</text>
         </outputEntry>
@@ -142,9 +135,6 @@
         <outputEntry id="LiteralExpression_1r5w3wg">
           <text>"case progression"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0vx9kp1">
-          <text>"routine_work"</text>
-        </outputEntry>
         <outputEntry id="LiteralExpression_1l9h9th">
           <text>"CTSC"</text>
         </outputEntry>
@@ -176,9 +166,6 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1hg6z8n">
           <text>"case progression"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_17gx2p0">
-          <text>"routine_work"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_09u0200">
           <text>"CTSC"</text>

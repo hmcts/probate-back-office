@@ -20,7 +20,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_CTSC;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROUTINE_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaUtils.resultsMatchUsingNameKey;
 
@@ -37,7 +36,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "name", "Examine Digital Case - Probate",
                 "workingDaysAllowed", 7,
                 "processCategories", "case progression",
-                "workType", ROUTINE_WORK_TYPE,
                 "roleCategory", ROLE_CATEGORY_CTSC
         );
 
@@ -69,7 +67,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(4));
-        assertThat(logic.getOutputs().size(), is(7));
+        assertThat(logic.getOutputs().size(), is(6));
         assertThat(logic.getRules().size(), is(4));
     }
 
