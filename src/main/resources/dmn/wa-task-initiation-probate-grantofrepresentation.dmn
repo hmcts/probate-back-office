@@ -37,6 +37,14 @@
           <text>"gop","admonWill","intestacy"</text>
         </inputValues>
       </input>
+      <input id="InputClause_0ts4kea" label="boHandoffReasonPresent" camunda:inputVariable="boHandoffReasonPresent">
+        <inputExpression id="LiteralExpression_1l94sjj" typeRef="boolean">
+          <text>if(additionalData != null and additionalData.Data != null and
+            additionalData.Data.boHandoffReasonList != null and 
+count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
+            true else false</text>
+        </inputExpression>
+      </input>
       <output id="Output_1" label="Task Id" name="taskId" typeRef="string" biodi:width="320" />
       <output id="OutputClause_0p5fhhd" label="Task Name" name="name" typeRef="string" biodi:width="362" />
       <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" typeRef="integer" />
@@ -53,6 +61,9 @@
         </inputEntry>
         <inputEntry id="UnaryTests_0dm0vju">
           <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0py9fwu">
+          <text>false</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yp6gfj">
           <text>"ExamineDigitalCaseProbate"</text>
@@ -80,6 +91,9 @@
         <inputEntry id="UnaryTests_1tnsteb">
           <text>"gop"</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1kd4rdo">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_09b8joj">
           <text>"ExamineDigitalCaseProbate"</text>
         </outputEntry>
@@ -106,6 +120,9 @@
         <inputEntry id="UnaryTests_1fd6wo4">
           <text>"admonWill"</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1qr5yae">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0w3g61g">
           <text>"ExamineDigitalCaseAdmon"</text>
         </outputEntry>
@@ -131,6 +148,9 @@
         </inputEntry>
         <inputEntry id="UnaryTests_1qkrz9q">
           <text>"intestacy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vkaray">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0z8vdkn">
           <text>"ExamineDigitalCaseIntestacy"</text>
