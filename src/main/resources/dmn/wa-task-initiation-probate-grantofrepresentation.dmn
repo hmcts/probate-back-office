@@ -81,7 +81,7 @@
       </rule>
       <rule id="DecisionRule_0nmqzhb">
         <inputEntry id="UnaryTests_1f06n36">
-          <text>"applyforGrantPaperApplication"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0uux0lw">
           <text>"CasePrinted"</text>
