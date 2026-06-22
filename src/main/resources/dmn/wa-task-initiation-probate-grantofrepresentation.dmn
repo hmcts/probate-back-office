@@ -40,7 +40,6 @@
       <output id="Output_1" label="Task Id" name="taskId" typeRef="string" biodi:width="320" />
       <output id="OutputClause_0p5fhhd" label="Task Name" name="name" typeRef="string" biodi:width="362" />
       <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" typeRef="integer" />
-      <output id="OutputClause_0i6c6c2" label="Working Days Allowed" name="workingDaysAllowed" typeRef="integer" />
       <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
       <rule id="DecisionRule_0in26ix">
         <inputEntry id="UnaryTests_1mtpy0d">
@@ -63,9 +62,6 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_0j4vwvw">
           <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0h32jop">
-          <text>7</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1p20qkn">
           <text>"case progression"</text>
@@ -93,9 +89,6 @@
         <outputEntry id="LiteralExpression_0flgkzk">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_10ypwse">
-          <text>7</text>
-        </outputEntry>
         <outputEntry id="LiteralExpression_1aqxna6">
           <text>"case progression"</text>
         </outputEntry>
@@ -122,9 +115,6 @@
         <outputEntry id="LiteralExpression_1acnnxj">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_03yus2w">
-          <text>7</text>
-        </outputEntry>
         <outputEntry id="LiteralExpression_1r5w3wg">
           <text>"case progression"</text>
         </outputEntry>
@@ -150,9 +140,6 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1xsk40t">
           <text></text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_02k8nc5">
-          <text>7</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1hg6z8n">
           <text>"case progression"</text>
