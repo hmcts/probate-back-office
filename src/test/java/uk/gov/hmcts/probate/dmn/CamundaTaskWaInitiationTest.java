@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -44,12 +45,54 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 + "  }\n"
                 + "}");
 
+        Map<String, Object> additionalDataEvidenceHandledTrue = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + true + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"boHandoffReasonList\" : []\n"
+                + "  }\n"
+                + "}");
+
+        Map<String, Object> additionalDataCaseTypeOther = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + false + "\",\n"
+                + "  \"caseType\" : \"" + "other" + "\",\n"
+                + "  \"boHandoffReasonList\" : []\n"
+                + "  }\n"
+                + "}");
+
+        Map<String, Object> additionalDataHandOffListNotEmpty = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + false + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"boHandoffReasonList\" : [1]\n"
+                + "  }\n"
+                + "}");
+
         return Stream.of(
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
                         additionalData,
                         List.of(examineDigitalCaseProbateTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalDataEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalDataCaseTypeOther,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty,
+                        Collections.emptyList()
                 ),
                 Arguments.of(
                         "applyforGrantPaperApplication",
