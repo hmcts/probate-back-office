@@ -20,6 +20,7 @@ public class CamundaTaskConstants {
     public static final String DUE_DATE_INTERVAL_DAYS = "dueDateIntervalDays";
     public static final String DUE_DATE_ORIGIN = "dueDateOrigin";
     public static final String DUE_DATE_TIME = "dueDateTime";
+    public static final String DUE_DATE_NON_WORKING_DAYS_OF_WEEK = "dueDateNonWorkingDaysOfWeek";
     public static final String PRIORITY_DATE_ORIGIN_REF = "priorityDateOriginRef";
     public static final String ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID = "additionalProperties_roleAssignmentId";
     public static final String REGISTRY_LOCATION = "registryLocation";
@@ -75,4 +76,9 @@ public class CamundaTaskConstants {
     public static final String DECEASED_FORENAMES_VALUE = "someDeceasedForenames";
     public static final String DECEASED_SURNAME_VALUE = "someDeceasedSurname";
     public static final String REGISTRY_LOCATION_VALUE = "someRegistryLocation";
+    public static final String DUE_DATE_INTERVAL_DAYS_VALUE = "10";
+    public static final String DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE = "SATURDAY,SUNDAY";
+    public static final String PRIORITY_DATE_ORIGIN_REF_VALUE = "dueDate";
+    public static final String DUE_DATE_NON_WORKING_CALENDAR_VALUE = "https://www.gov.uk/bank-holidays/england-and-wales.json";
+    public static final String DUE_DATE_TIME_VALUE = "16:00";
 }

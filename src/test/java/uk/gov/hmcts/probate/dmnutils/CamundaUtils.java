@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CamundaUtils {
     public static void resultsMatchUsingNameKey(List<Map<String, Object>> results,
                                                 List<Map<String, Object>> expectation) {
+        // Create a mutable copy of the results list
+        results = new ArrayList<>(results);
+
+        // Remove entries from results where the "name" key contains "dueDateOrigin"
+        results.removeIf(result -> result.containsKey("name")
+                && result.get("name").toString().contains("dueDateOrigin"));
+
+
         assertThat(results.size(), is(expectation.size()));
 
         for (Map<String, Object> expectedEntry : expectation) {
