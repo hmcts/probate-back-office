@@ -9,17 +9,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.util.ResourceUtils.getFile;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_TYPE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_TYPE_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_FORENAMES;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_FORENAMES_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_SURNAME;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_SURNAME_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGION;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGISTRY_LOCATION;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGISTRY_LOCATION_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_TYPE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_FORENAMES;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_FORENAMES_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_SURNAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_SURNAME_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 
 public class CaseDataBuilder {
 
