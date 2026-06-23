@@ -79,5 +79,6 @@ public class CamundaTaskConstants {
     public static final String DUE_DATE_INTERVAL_DAYS_VALUE = "10";
     public static final String DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE = "SATURDAY,SUNDAY";
     public static final String PRIORITY_DATE_ORIGIN_REF_VALUE = "dueDate";
-    public static final String DUE_DATE_NON_WORKING_CALENDAR_VALUE = "https://www.gov.uk/bank-holidays/england-and-wales.json, https://raw.githubusercontent.com/hmcts/ia-task-configuration/master/src/test/resources/extra-non-working-day-calendar.json";
+    public static final String DUE_DATE_NON_WORKING_CALENDAR_VALUE = "https://www.gov.uk/bank-holidays/england-and-wales.json";
+    public static final String DUE_DATE_TIME_VALUE = "16:00";
 }

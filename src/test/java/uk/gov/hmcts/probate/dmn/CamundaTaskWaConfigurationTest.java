@@ -38,6 +38,8 @@ import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_NON_WO
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_NON_WORKING_CALENDAR_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_TIME;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_TIME_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
@@ -95,6 +97,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
                                 .expectedValue(LOCATION_NAME, REGISTRY_LOCATION_VALUE, true)
                                 .expectedValue(DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_NON_WORKING_CALENDAR_VALUE, true)
+                                .expectedValue(DUE_DATE_TIME, DUE_DATE_TIME_VALUE, true)
                                 .expectedValue(DUE_DATE_INTERVAL_DAYS, DUE_DATE_INTERVAL_DAYS_VALUE, true)
                                 .expectedValue(DUE_DATE_NON_WORKING_DAYS_OF_WEEK,
                                         DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE, true)
@@ -132,7 +135,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(15, logic.getRules().size());
+        assertEquals(16, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

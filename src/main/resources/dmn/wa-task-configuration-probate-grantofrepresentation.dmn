@@ -218,7 +218,7 @@
           <text>"dueDateNonWorkingCalendar"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1xky3y2">
-          <text>"https://www.gov.uk/bank-holidays/england-and-wales.json, https://raw.githubusercontent.com/hmcts/ia-task-configuration/master/src/test/resources/extra-non-working-day-calendar.json"</text>
+          <text>"https://www.gov.uk/bank-holidays/england-and-wales.json"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0coo8a0">
           <text>true</text>
@@ -272,6 +272,23 @@
           <text>"SATURDAY,SUNDAY"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1w6pn13">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10l9zjb">
+        <inputEntry id="UnaryTests_0vli1u6">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17c1gn3">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0qzof0w">
+          <text>"dueDateTime"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hkz8cd">
+          <text>"16:00"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mz9vju">
           <text>true</text>
         </outputEntry>
       </rule>
