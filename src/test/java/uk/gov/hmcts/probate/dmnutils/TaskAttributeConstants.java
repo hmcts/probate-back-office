@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.dmnutils;
 
-public class CamundaTaskConstants {
+public class TaskAttributeConstants {
 
-    private CamundaTaskConstants() {
+    private TaskAttributeConstants() {
     }
 
     public static final String CASE_NAME = "caseName";
