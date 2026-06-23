@@ -102,15 +102,16 @@ public class CaveatQueryService {
 
     public List<ReturnedCaveatDetails> fetchExpiredCaveatsPage(String expiryDate, Long[] searchAfterValues) {
         BoolQueryBuilder query = buildExpiryQuery(expiryDate);
+
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
                 .query(query)
                 .sort(SORT_COLUMN, SortOrder.ASC)
-                .size(dataExtractPaginationSize);
+                .size(dataExtractPaginationSize)
+                .fetchSource(true);
         if (searchAfterValues != null) {
             sourceBuilder.searchAfter(searchAfterValues);
         }
-        String jsonQuery = sourceBuilder.toString()
-                .replaceFirst("\\{", "{\"_source\":[\"reference\"],");
+        String jsonQuery = sourceBuilder.toString();
         return runQuery(CAVEAT, jsonQuery).getCaveats();
     }
 
