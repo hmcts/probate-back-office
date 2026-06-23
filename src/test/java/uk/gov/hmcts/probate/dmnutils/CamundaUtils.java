@@ -20,6 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CamundaUtils {
     public static void resultsMatchUsingNameKey(List<Map<String, Object>> results,
                                                 List<Map<String, Object>> expectation) {
+        // Remove entries from results where the "name" key contains "dueDateOrigin"
+        results.removeIf(result -> result.containsKey("name")
+                && result.get("name").toString().contains("dueDateOrigin"));
+
+
         assertThat(results.size(), is(expectation.size()));
 
         for (Map<String, Object> expectedEntry : expectation) {

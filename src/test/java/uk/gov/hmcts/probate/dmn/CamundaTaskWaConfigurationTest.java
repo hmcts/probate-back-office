@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.dmnutils.CaseDataBuilder;
 import uk.gov.hmcts.probate.dmnutils.ConfigurationExpectationBuilder;
 
 import java.io.IOException;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +32,19 @@ import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_FORENA
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECEASED_SURNAME_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DECISION_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DESCRIPTION;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_INTERVAL_DAYS;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_INTERVAL_DAYS_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_NON_WORKING_CALENDAR;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_NON_WORKING_CALENDAR_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.LOCATION;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.LOCATION_NAME;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.PRIORITY_DATE_ORIGIN_REF;
+import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.PRIORITY_DATE_ORIGIN_REF_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGION;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGISTRY_LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY;
@@ -67,6 +76,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     static Stream<Arguments> scenarioProvider() throws IOException {
+        String dateOrigin = ZonedDateTime.now(ZoneId.of("UTC")).toString();
         return Stream.of(
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
@@ -84,6 +94,11 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
                                 .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
                                 .expectedValue(LOCATION_NAME, REGISTRY_LOCATION_VALUE, true)
+                                .expectedValue(DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_NON_WORKING_CALENDAR_VALUE, true)
+                                .expectedValue(DUE_DATE_INTERVAL_DAYS, DUE_DATE_INTERVAL_DAYS_VALUE, true)
+                                .expectedValue(DUE_DATE_NON_WORKING_DAYS_OF_WEEK,
+                                        DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE, true)
+                                .expectedValue(PRIORITY_DATE_ORIGIN_REF, PRIORITY_DATE_ORIGIN_REF_VALUE, true)
                                 .build()
                 ),
                 Arguments.of(
@@ -117,7 +132,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(10, logic.getRules().size());
+        assertEquals(15, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
