@@ -22,7 +22,7 @@ test.describe("Solicitor - Case State Setup", () => {
     await solCreateCasePage.navigateToCase(caseRef);
   });
 
-  test.only("Get case to Ready to Issue state", async ({ basePage, solCreateCasePage, cwEventActionsPage }) => {
+  test("Get case to Ready to Issue state", async ({ basePage, solCreateCasePage, cwEventActionsPage }) => {
     const nextStepName = 'Generate grant preview';
     await basePage.logInfo('Solicitor - Case State Setup', nextStepName, caseRef);
     await solCreateCasePage.navigateToCase(caseRef);
