@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CamundaUtils {
+public class CamundaVerifier {
     public static void resultsMatchUsingNameKey(List<Map<String, Object>> results,
                                                 List<Map<String, Object>> expectation) {
         // Create a mutable copy of the results list
@@ -57,7 +57,7 @@ public class CamundaUtils {
                 Map.of("name", "task2", "value", "value2", "canReconfigure", false)
         );
 
-        CamundaUtils.resultsMatchUsingNameKey(results, expectation);
+        CamundaVerifier.resultsMatchUsingNameKey(results, expectation);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class CamundaUtils {
                 Map.of("name", "task2", "value", "value2", "canReconfigure", false)
         );
 
-        CamundaUtils.resultsMatchUsingNameKey(results, expectation);
+        CamundaVerifier.resultsMatchUsingNameKey(results, expectation);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class CamundaUtils {
                 Map.of("name", "task2", "value", "value2", "canReconfigure", false)
         );
 
-        assertThrows(AssertionError.class, () -> CamundaUtils.resultsMatchUsingNameKey(results, expectation));
+        assertThrows(AssertionError.class, () -> CamundaVerifier.resultsMatchUsingNameKey(results, expectation));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class CamundaUtils {
                 Map.of("name", "task2", "value", "value2", "canReconfigure", false)
         );
 
-        assertThrows(AssertionError.class, () -> CamundaUtils.resultsMatchUsingNameKey(results, expectation));
+        assertThrows(AssertionError.class, () -> CamundaVerifier.resultsMatchUsingNameKey(results, expectation));
     }
 
     @Test
@@ -115,7 +115,7 @@ public class CamundaUtils {
                 Map.of("name", "task2", "value", "value2", "canReconfigure", false)
         );
 
-        assertThrows(AssertionError.class, () -> CamundaUtils.resultsMatchUsingNameKey(results, expectation));
+        assertThrows(AssertionError.class, () -> CamundaVerifier.resultsMatchUsingNameKey(results, expectation));
     }
 
     public static Map<String, Object> mapAdditionalData(String additionalData) {
@@ -136,7 +136,7 @@ public class CamundaUtils {
     void shouldReturnMappedAdditionalDataWhenJsonIsValid() {
         String validJson = "{ \"key1\": \"value1\", \"key2\": 2 }";
 
-        Map<String, Object> result = CamundaUtils.mapAdditionalData(validJson);
+        Map<String, Object> result = CamundaVerifier.mapAdditionalData(validJson);
 
         assertNotNull(result);
         assertTrue(result.containsKey("additionalData"));
@@ -149,14 +149,14 @@ public class CamundaUtils {
     void shouldReturnNullWhenJsonIsInvalid() {
         String invalidJson = "{ \"key1\": \"value1\", ";
 
-        Map<String, Object> result = CamundaUtils.mapAdditionalData(invalidJson);
+        Map<String, Object> result = CamundaVerifier.mapAdditionalData(invalidJson);
 
         assertNull(result);
     }
 
     @Test
     void shouldReturnNullWhenInputIsNull() {
-        Map<String, Object> result = CamundaUtils.mapAdditionalData(null);
+        Map<String, Object> result = CamundaVerifier.mapAdditionalData(null);
 
         assertNull(result);
     }
