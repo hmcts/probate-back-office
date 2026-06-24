@@ -85,7 +85,7 @@ class ExelaDataExtractServiceTest {
             .build();
 
 
-        when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
         when(caseQueryService.findCaseStateWithinDateRangeExela(any(), any())).thenReturn(returnedCases);
         when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.CREATED.value());
     }

@@ -89,7 +89,7 @@ class CaseQueryServiceTest {
     @Test
     void findCasesWithDatedDocumentReturnsCaseList() {
         List<ReturnedCaseDetails> cases =
-            caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");
+            caseQueryService.findCasesWithGrantIssuedDate("invokingService", "2021-01-01");
 
         assertEquals(1, cases.size());
         assertThat(cases.getFirst().getId(), is(1L));
@@ -200,7 +200,7 @@ class CaseQueryServiceTest {
     @Test
     void findCasesInitiatedBySchedulerReturnsCaseList() {
         when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
-        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithGrantIssuedDate("invokingService",
             "2021-01-01");
 
         assertEquals(1, cases.size());
@@ -253,7 +253,7 @@ class CaseQueryServiceTest {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
                 returnedCases3);
         List<ReturnedCaseDetails> cases = caseQueryService
-            .findCaseStateWithinDateRangeHMRC("2019-01-01", "2019-02-05");
+            .findCasesWithGrantIssuedDateRange("HMRC", "2019-01-01", "2019-02-05");
 
         assertEquals(3, cases.size());
         assertEquals(0, cases.getFirst().getId().intValue());
@@ -316,7 +316,7 @@ class CaseQueryServiceTest {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
         assertThrows(CaseMatchingException.class, () ->
-                caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
+                caseQueryService.findCasesWithGrantIssuedDate("invokingService",
             "2021-01-01"));
     }
 
@@ -364,7 +364,7 @@ class CaseQueryServiceTest {
     void testExceptionWithNullFromRestTemplatePost() {
         assertThrows(ClientDataException.class, () -> {
             when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
-            caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");
+            caseQueryService.findCasesWithGrantIssuedDate("invokingService", "2021-01-01");
         });
     }
 
