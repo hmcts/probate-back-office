@@ -63,10 +63,16 @@ export class CaseProgressPage extends SignInPage {
       const renderedLinkHrefs = await this.page
         .locator('p.govuk-body-s a')
         .evaluateAll((links) => links.map((link) => link.getAttribute('href') ?? ''));
-      const actionableLinkHrefs = renderedLinkHrefs.filter((href) =>
-        href.includes('/trigger/') || href.includes('#Service%20Request') || href.includes('#Service Request')
+      const triggerLinkHrefs = renderedLinkHrefs.filter((href) => href.includes('/trigger/'));
+      const serviceRequestLinkHrefs = renderedLinkHrefs.filter((href) =>
+        href.includes('#Service%20Request') || href.includes('#Service Request')
       );
-      expect(actionableLinkHrefs).toHaveLength(0);
+      expect(triggerLinkHrefs).toHaveLength(0);
+      if (opts.allowServiceRequestLinks) {
+        expect(serviceRequestLinkHrefs.length).toBeGreaterThan(0);
+      } else {
+        expect(serviceRequestLinkHrefs).toHaveLength(0);
+      }
       const docsText = await this.page.locator('span.govuk-details__summary-text').first().innerText();
       assert.equal(docsText, 'View the documents needed by HM Courts and Tribunal Service');
     }
@@ -146,6 +152,9 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressResumeDeceasedDetails() {
+    if (await this.isVisible('text=Resume application', 1_500)) {
+      await this.clickIfPresent('text=Resume application');
+    }
     await this.verifyPageLoad(this.deceasedForenameLocator);
     await expect(this.deceasedForenameLocator).toBeEnabled();
     await this.waitForNavigationToComplete(commonConfig.continueButton);
