@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -106,13 +108,15 @@ public class CaveatQueryService {
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder()
                 .query(query)
                 .sort(SORT_COLUMN, SortOrder.ASC)
-                .size(dataExtractPaginationSize)
-                .fetchSource(new String[]{REFERENCE}, null);
+                .size(dataExtractPaginationSize);
         if (searchAfterValues != null) {
             sourceBuilder.searchAfter(searchAfterValues);
         }
         String jsonQuery = sourceBuilder.toString();
-        return runQuery(CAVEAT, jsonQuery).getCaveats();
+        JSONObject jsonObject = new JSONObject(jsonQuery);
+        jsonObject.put("_source", new JSONArray().put(REFERENCE));
+        String actualQuery = jsonObject.toString();
+        return runQuery(CAVEAT, actualQuery).getCaveats();
     }
 
     private BoolQueryBuilder buildExpiryQuery(String expiryDate) {
