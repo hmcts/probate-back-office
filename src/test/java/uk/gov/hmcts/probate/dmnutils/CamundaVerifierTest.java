@@ -114,4 +114,18 @@ class CamundaVerifierTest {
 
         assertNull(result);
     }
+
+    @Test
+    void shouldRemoveEntriesWithNameContainingDueDateOrigin() {
+        List<Map<String, Object>> results = List.of(
+                Map.of("name", "dueDateOrigin", "value", "value1", "canReconfigure", true),
+                Map.of("name", "task2", "value", "value2", "canReconfigure", false)
+        );
+
+        List<Map<String, Object>> expectation = List.of(
+                Map.of("name", "task2", "value", "value2", "canReconfigure", false)
+        );
+
+        CamundaVerifier.resultsMatchUsingNameKey(results, expectation);
+    }
 }
