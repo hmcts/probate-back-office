@@ -190,6 +190,108 @@
           <text>true</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0y4ohc1">
+        <inputEntry id="UnaryTests_0cntr2k">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09ep7ys">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kmzx5s">
+          <text>"dueDateOrigin"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0davc9r">
+          <text>now()</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0i31201">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1nevyol">
+        <inputEntry id="UnaryTests_0e1oy6f">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1974p73">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0agv2w5">
+          <text>"dueDateNonWorkingCalendar"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xky3y2">
+          <text>"https://www.gov.uk/bank-holidays/england-and-wales.json"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0coo8a0">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0oco872">
+        <inputEntry id="UnaryTests_01h3iyo">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vk0ats">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0j93xsr">
+          <text>"dueDateIntervalDays"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jxuh5p">
+          <text>10</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1dv19ap">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_14fm6k6">
+        <inputEntry id="UnaryTests_0dptf4z">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fhauae">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1oktc01">
+          <text>"priorityDateOriginRef"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16jt6ez">
+          <text>"dueDate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rmi44m">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1dkymz1">
+        <inputEntry id="UnaryTests_0n6v4f3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15uvuii">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10u6fpl">
+          <text>"dueDateNonWorkingDaysOfWeek"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18x6uk8">
+          <text>"SATURDAY,SUNDAY"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1w6pn13">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10l9zjb">
+        <inputEntry id="UnaryTests_0vli1u6">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17c1gn3">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0qzof0w">
+          <text>"dueDateTime"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hkz8cd">
+          <text>"16:00"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mz9vju">
+          <text>true</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
