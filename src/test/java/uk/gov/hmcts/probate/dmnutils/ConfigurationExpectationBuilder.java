@@ -8,9 +8,6 @@ import java.util.stream.Collectors;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_TYPE_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_FORENAMES_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_SURNAME_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
@@ -57,9 +54,8 @@ public class ConfigurationExpectationBuilder {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
         builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true)
                 .expectedValue(WORK_TYPE, DECISION_WORK_TYPE, true)
-                .expectedValue(CASE_MANAGEMENT_CATEGORY, CASE_TYPE_VALUE, true)
-                .expectedValue(CASE_NAME, DECEASED_FORENAMES_VALUE + " "
-                        + DECEASED_SURNAME_VALUE, true)
+                .expectedValue(CASE_MANAGEMENT_CATEGORY, "DUMMY_PLACEHOLDER_CASE_MANAGEMENT_CATEGORY", true)
+                .expectedValue(CASE_NAME, "DUMMY_PLACEHOLDER_CASE_NAME", true)
                 .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
                 .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
                 .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
