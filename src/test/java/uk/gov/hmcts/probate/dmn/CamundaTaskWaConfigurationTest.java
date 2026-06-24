@@ -25,33 +25,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_TYPE_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_FORENAMES_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_SURNAME_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_INTERVAL_DAYS;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_INTERVAL_DAYS_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_CALENDAR;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_CALENDAR_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_TIME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_TIME_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
@@ -59,18 +36,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     private static final String REQUEST = "classpath:custom-case-data.json";
     private static final String taskId = UUID.randomUUID().toString();
     private static final String roleAssignmentId = UUID.randomUUID().toString();
-    private static final String DESCRIPTION_DEFAULT_VALUE = "[Amend Case Details](/cases/case-details/"
-            + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
-            + "[Issue Grant](/cases/case-details/"
-            + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
-            + "[Escalate to Registrar](/cases/case-details/"
-            + "${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  "
-            + "[Select For QA](/cases/case-details/"
-            + "${[CASE_REFERENCE]}/trigger/boSelectForQA)  "
-            + "[SME Referral](/cases/case-details/"
-            + "${[CASE_REFERENCE]}/trigger/boUploadDocsForSMEReferral)  "
-            + "[Stop Case](/cases/case-details/"
-            + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
 
     @BeforeAll
     public static void initialization() {
@@ -86,23 +51,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .isUrgent()
                                 .build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.defaultExpectations()
-                                .expectedValue(DESCRIPTION, DESCRIPTION_DEFAULT_VALUE, true)
-                                .expectedValue(WORK_TYPE, DECISION_WORK_TYPE, true)
-                                .expectedValue(CASE_MANAGEMENT_CATEGORY, CASE_TYPE_VALUE, true)
-                                .expectedValue(CASE_NAME, DECEASED_FORENAMES_VALUE + " "
-                                        + DECEASED_SURNAME_VALUE, true)
-                                .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
-                                .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
-                                .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
-                                .expectedValue(LOCATION_NAME, REGISTRY_LOCATION_VALUE, true)
-                                .expectedValue(DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_NON_WORKING_CALENDAR_VALUE, true)
-                                .expectedValue(DUE_DATE_TIME, DUE_DATE_TIME_VALUE, true)
-                                .expectedValue(DUE_DATE_INTERVAL_DAYS, DUE_DATE_INTERVAL_DAYS_VALUE, true)
-                                .expectedValue(DUE_DATE_NON_WORKING_DAYS_OF_WEEK,
-                                        DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE, true)
-                                .expectedValue(PRIORITY_DATE_ORIGIN_REF, PRIORITY_DATE_ORIGIN_REF_VALUE, true)
-                                .build()
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
