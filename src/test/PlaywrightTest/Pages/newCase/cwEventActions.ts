@@ -460,9 +460,8 @@ export class CwEventActionsPage extends BasePage {
       `#evidenceHandled_${handled}`
     );
     await expect(caseRefLocator).toBeVisible();
-    await expect(this.handleEvideChkBoxLocator).toBeEnabled();
-    await handleEvidenceChkBoxOptionLocator.isChecked();
-    await this.handleEvideChkBoxLocator.click();
+    await expect(handleEvidenceChkBoxOptionLocator).toBeEnabled();
+    await handleEvidenceChkBoxOptionLocator.click();
     await this.waitForNavigationToComplete(commonConfig.submitButton);
   }
 

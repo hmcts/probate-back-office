@@ -83,4 +83,13 @@ test.describe("Caseworker - Case State Setup", () => {
     await cwEventActionsPage.chooseNextStep(nextStepConfig.smeReferral);
     await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
   });
+
+  test("Handle Supplementary Evidence set to No is visible in tasks", async ({ basePage, solCreateCasePage, cwEventActionsPage }) => {
+    const nextStepName = 'Handle supplementary evidence';
+    await basePage.logInfo('Caseworker - Case State Setup', nextStepName, caseRef);
+    await solCreateCasePage.navigateToCase(caseRef);
+    await cwEventActionsPage.chooseNextStep(nextStepConfig.handleSupEvidence);
+    await cwEventActionsPage.handleEvidence(caseRef, "No");
+    await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
+  });
 });
