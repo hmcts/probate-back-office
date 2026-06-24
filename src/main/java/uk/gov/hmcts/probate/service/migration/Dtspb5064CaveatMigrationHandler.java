@@ -11,7 +11,7 @@ public class Dtspb5064CaveatMigrationHandler implements CaveatMigrationHandler {
     public CaveatCallbackRequest migrate(CaveatCallbackRequest callbackRequest, JSONObject migrationData) {
         final CaveatDetails caveatDetails = callbackRequest.getCaseDetails();
 
-        caveatDetails.setState("CaveatMatching");
+        caveatDetails.setState("AwaitingCaveatResolution");
         return callbackRequest;
     }
 

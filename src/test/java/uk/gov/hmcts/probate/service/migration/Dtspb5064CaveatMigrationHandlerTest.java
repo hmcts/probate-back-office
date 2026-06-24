@@ -24,7 +24,7 @@ class Dtspb5064CaveatMigrationHandlerTest {
     }
 
     @Test
-    void shouldSetStateToCaveatMatchingAkaCaveatResolutionState() {
+    void shouldSetStateToAwaitingCaveatResolutionState() {
         final CaveatCallbackRequest callbackRequest = mock();
         final CaveatDetails caveatDetails = mock();
         final CaveatData caveatData = mock();
@@ -40,7 +40,7 @@ class Dtspb5064CaveatMigrationHandlerTest {
         final CaveatCallbackRequest result = underTest.migrate(callbackRequest, migrationData);
 
         assertAll(
-                () -> verify(caveatDetails).setState("CaveatMatching"),
+                () -> verify(caveatDetails).setState("AwaitingCaveatResolution"),
                 () -> assertThat(result, sameInstance(callbackRequest)));
     }
 }
