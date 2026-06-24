@@ -113,7 +113,6 @@ test.describe("Case Progress - standard path", () => {
       numCompleted: 5,
       numInProgress: 1,
       numNotStarted: 0,
-      allowServiceRequestLinks: true,
       signOut: true});
 
     let nextStepName = 'Select for QA';
