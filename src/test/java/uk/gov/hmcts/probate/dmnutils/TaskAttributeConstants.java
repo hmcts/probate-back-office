@@ -81,4 +81,18 @@ public class TaskAttributeConstants {
     public static final String PRIORITY_DATE_ORIGIN_REF_VALUE = "dueDate";
     public static final String DUE_DATE_NON_WORKING_CALENDAR_VALUE = "https://www.gov.uk/bank-holidays/england-and-wales.json";
     public static final String DUE_DATE_TIME_VALUE = "16:00";
+    public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE =
+            "[Amend Case Details](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
+            + "[Issue Grant](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
+            + "[Escalate to Registrar](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  "
+            + "[Select For QA](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boSelectForQA)  "
+            + "[SME Referral](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boUploadDocsForSMEReferral)  "
+            + "[Stop Case](/cases/case-details/"
+            + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
+
 }
