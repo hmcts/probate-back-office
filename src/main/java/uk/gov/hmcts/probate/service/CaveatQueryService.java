@@ -107,7 +107,7 @@ public class CaveatQueryService {
                 .query(query)
                 .sort(SORT_COLUMN, SortOrder.ASC)
                 .size(dataExtractPaginationSize)
-                .fetchSource(new String[]{"reference"}, null);
+                .fetchSource(new String[]{REFERENCE}, null);
         if (searchAfterValues != null) {
             sourceBuilder.searchAfter(searchAfterValues);
         }
