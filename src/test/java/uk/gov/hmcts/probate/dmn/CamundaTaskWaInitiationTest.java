@@ -77,6 +77,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
+                        "someOtherEventId",
+                        "CasePrinted",
+                        additionalData,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
                         additionalDataEvidenceHandledTrue,
