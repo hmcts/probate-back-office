@@ -14,74 +14,6 @@ export class BasePage {
 
   constructor(public readonly page: Page) {}
 
-  async isVisible(selector: string, timeout = 2_000): Promise<boolean> {
-    try {
-      await this.page.locator(selector).first().waitFor({ state: "visible", timeout });
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  async fillIfPresent(selector: string, value: string, timeout = 2_000): Promise<boolean> {
-    const visible = await this.isVisible(selector, timeout);
-    if (!visible) {
-      console.warn(`[OptionalField] Not visible, skipping fill: ${selector}`);
-      return false;
-    }
-    await this.page.locator(selector).first().fill(value);
-    return true;
-  }
-
-  async clickIfPresent(selector: string, timeout = 2_000): Promise<boolean> {
-    const visible = await this.isVisible(selector, timeout);
-    if (!visible) {
-      console.warn(`[OptionalField] Not visible, skipping click: ${selector}`);
-      return false;
-    }
-    await this.page.locator(selector).first().click();
-    return true;
-  }
-
-  async expectTextEventually(
-    selector: string,
-    text: string,
-    opts: { timeout?: number; soft?: boolean } = {}
-  ): Promise<boolean> {
-    const timeout = opts.timeout ?? 15_000;
-    try {
-      await expect(this.page.locator(selector)).toContainText(text, { timeout });
-      return true;
-    } catch (error) {
-      if (opts.soft) {
-        console.warn(`[SoftAssert] "${text}" not found in ${selector} within ${timeout}ms`);
-        return false;
-      }
-      throw error;
-    }
-  }
-
-  private async waitForTabFieldWithRecovery(fieldLabel: string, attempts = 8, soft = false) {
-    for (let attempt = 1; attempt <= attempts; attempt++) {
-      const fieldLocator = this.page.getByText(fieldLabel).first();
-      if (await fieldLocator.isVisible().catch(() => false)) {
-        return true;
-      }
-
-      console.log(`[DTSPB-5228] Field '${fieldLabel}' not visible on attempt ${attempt}/${attempts}. URL: ${this.page.url()}`);
-      await this.page.goto(this.page.url(), { waitUntil: "domcontentloaded", timeout: 20_000 }).catch(() => undefined);
-    }
-
-    const bodyText = await this.page.locator("body").innerText({ timeout: 5_000 }).catch(() => "");
-    console.log(`[DTSPB-5228] Field '${fieldLabel}' not visible after retries. URL: ${this.page.url()}, body excerpt: ${bodyText.slice(0, 800)}`);
-    if (soft) {
-      return false;
-    }
-
-    await expect(this.page.getByText(fieldLabel).first()).toBeVisible({ timeout: 10_000 });
-    return false;
-  }
-
   async logInfo(scenarioName: string, log: string, caseRef?: string) {
     let ret = scenarioName;
     // await this.page.waitForTimeout(testConfig.GetCaseRefFromUrlDelay);
@@ -139,52 +71,30 @@ export class BasePage {
   }
 
   async waitForNavigationToComplete(buttonLocator: Locator | string, timeout: number = 5_000): Promise<void> {
-    const currentUrl = this.page.url();
+    const currentUrl = await this.page.url();
     const locator = typeof buttonLocator === 'string'
       ? this.page.locator(buttonLocator)  // String - convert to Locator
       : buttonLocator;
-    await expect(locator).toBeVisible({ timeout });
-    await expect(locator).toBeEnabled({ timeout });
-    console.log(`[DTSPB-5228] Clicking navigation control from URL: ${currentUrl}`);
-    await locator.click({ timeout, noWaitAfter: true });
+    await expect(locator).toBeVisible();
+    await expect(locator).toBeEnabled();
 
-    await this.page.waitForLoadState('domcontentloaded', { timeout: 10_000 }).catch(() => undefined);
-    let urlChanged = false;
-    try {
-      await expect
-        .poll(() => this.page.url(), { intervals: [500], timeout: 5_000 })
-        .not.toBe(currentUrl);
-      urlChanged = true;
-      console.log(`[DTSPB-5228] Navigation completed. New URL: ${this.page.url()}`);
-    } catch {
-      console.log(`[DTSPB-5228] URL did not change after click. Current URL: ${this.page.url()}`);
-    }
-
-    if (!urlChanged) {
-      console.log(`[DTSPB-5228] Retrying click after unchanged URL: ${currentUrl}`);
-      await locator.scrollIntoViewIfNeeded().catch(() => undefined);
-      await locator.click({ timeout, noWaitAfter: true }).catch(() => undefined);
-      await this.page.waitForLoadState('domcontentloaded', { timeout: 10_000 }).catch(() => undefined);
-      try {
-        await expect
-          .poll(() => this.page.url(), { intervals: [500], timeout: 5_000 })
-          .not.toBe(currentUrl);
-        console.log(`[DTSPB-5228] Navigation completed after retry. New URL: ${this.page.url()}`);
-      } catch {
-        console.log(`[DTSPB-5228] URL still unchanged after retry. Current URL: ${this.page.url()}`);
+    await expect(async () => {
+      if (this.page.url() === currentUrl) {
+        await expect(locator).toBeVisible();
+        await expect(locator).toBeEnabled();
+        await locator.click({ timeout: timeout });
       }
-    }
+      await expect(this.page).not.toHaveURL(currentUrl);
+      // console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
+    }).toPass({ intervals: [2_000], timeout: 60_000 });
 
   }
 
   async verifyPageLoad(pageLocator: Locator, timeout: number = 5_000): Promise<void> {
-    let hasRetriedWithReload = false;
     await expect(async () => {
-      await this.page.waitForLoadState('domcontentloaded', { timeout: 10_000 }).catch(() => undefined);
-      if (!(await pageLocator.isVisible()) && !hasRetriedWithReload) {
-        hasRetriedWithReload = true;
-        console.log(`[DTSPB-5228] verifyPageLoad did not find locator, reloading once. URL: ${this.page.url()}`);
-        await this.page.reload({ waitUntil: 'domcontentloaded' }).catch(() => undefined);
+      if (!(await pageLocator.isVisible())) {
+        await this.page.reload();
+        await this.page.waitForLoadState('load');
       }
       await expect(pageLocator).toBeVisible({ timeout: timeout });
     }).toPass({ intervals: [1_000], timeout: 60_000 });
@@ -200,7 +110,6 @@ export class BasePage {
     delay: number = testConfig.CaseDetailsDelayDefault,
     nocEvent?: boolean
   ) {
-    void delay;
     if (tabConfigFile.tabName && tabConfigFile.tabName !== "Documents") {
       await expect(
         this.page.getByLabel(`${tabConfigFile.tabName}`, { exact: true })
@@ -212,7 +121,7 @@ export class BasePage {
     ).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
-    await this.page.waitForLoadState("domcontentloaded");
+    await this.page.waitForTimeout(delay);
 
     if(!nocEvent) {
       await this.runAccessibilityTest();
@@ -333,27 +242,7 @@ export class BasePage {
     ).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
-    await this.page.waitForLoadState("domcontentloaded");
     await this.runAccessibilityTest();
-
-    const caseViewerTable = this.page.getByRole("table", { name: "case viewer table" });
-    let tableVisible = false;
-    for (let attempt = 1; attempt <= 6; attempt++) {
-      await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click().catch(() => undefined);
-      await this.page.waitForLoadState("domcontentloaded", { timeout: 10_000 }).catch(() => undefined);
-      tableVisible = await caseViewerTable.isVisible().catch(() => false);
-      if (tableVisible) {
-        break;
-      }
-      console.log(`[DTSPB-5228] case viewer table hidden on tab '${tabConfigFile.tabName}' attempt ${attempt}/6. URL: ${this.page.url()}`);
-      await this.page.goto(this.page.url(), { waitUntil: "domcontentloaded", timeout: 20_000 }).catch(() => undefined);
-    }
-    const allowHiddenTable = tabConfigFile.tabName === "Caveat details";
-    if (!tableVisible && allowHiddenTable) {
-      console.log(`[DTSPB-5228] case viewer table remained hidden on '${tabConfigFile.tabName}', continuing with label-based checks. URL: ${this.page.url()}`);
-    } else {
-      await expect(caseViewerTable).toBeVisible({ timeout: 10_000 });
-    }
 
     if (tabUpdates) {
       const updatedConfig = tabConfigFile[tabUpdates];
@@ -365,13 +254,7 @@ export class BasePage {
       }
 
       for (let i = 0; i < fields.length; i++) {
-        const fieldLabel = fields[i];
-        const softField = fieldLabel === "Caveat expiry date";
-        if (softField && !(await this.page.getByText(fieldLabel).first().isVisible().catch(() => false))) {
-          console.log(`[DTSPB-5228] Optional field '${fieldLabel}' not visible; skipping strict check. URL: ${this.page.url()}`);
-          continue;
-        }
-        await this.waitForTabFieldWithRecovery(fieldLabel, 8, softField);
+        await expect(this.page.getByText(fields[i]).first()).toBeVisible();
       }
 
       for (let i = 0; i < keys.length; i++) {
@@ -387,6 +270,7 @@ export class BasePage {
   }
 
   async seeTabDetailsBilingual(caseRef, tabConfigFile, dataConfigFile) {
+    const delay = testConfig.CaseDetailsDelayDefault;
 
     if (tabConfigFile.tabName) {
       await expect(this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`)).toBeEnabled();
@@ -397,7 +281,7 @@ export class BasePage {
     await expect(this.page.getByRole("heading", { name: caseRef })).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
-    await this.page.waitForLoadState("domcontentloaded");
+    await this.page.waitForTimeout(delay);
     await this.runAccessibilityTest();
     // await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
     // await I.clickTab(tabConfigFile.tabName);
@@ -409,6 +293,7 @@ export class BasePage {
       // await I.waitForText(tabConfigFile.waitForText, testConfig.WaitForTextTimeout || 60);
     }
 
+    /* eslint-disable no-await-in-loop */
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
       if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
         await expect(this.page.getByText(tabConfigFile.fields[i]).first()).toBeVisible();
@@ -438,13 +323,10 @@ export class BasePage {
   }
 
   async waitForUploadToBeCompleted() {
-    await expect(async () => {
-      const locs = await this.page.getByText("Cancel upload").all();
-      console.log(`[DTSPB-5228] Waiting for upload completion. Cancel upload button count: ${locs.length}, URL: ${this.page.url()}`);
-      for (let i = 0; i < locs.length; i++) {
-        await expect(locs[i]).toBeDisabled({ timeout: 5_000 });
-      }
-    }).toPass({ intervals: [2_000], timeout: 90_000 });
+    const locs = await this.page.getByText("Cancel upload").all();
+    for (let i = 0; i < locs.length; i++) {
+      await expect(locs[i]).toBeDisabled();
+    }
   }
 
   async caseProgressContinueWithoutChangingAnything(numTimes = 1) {

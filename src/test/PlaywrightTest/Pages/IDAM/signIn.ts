@@ -18,31 +18,10 @@ export class SignInPage extends BasePage {
     signInDelay = testConfig.SignInDelayDefault
   ) {
     await this.page.goto(`${testConfig.TestBackOfficeUrl}/`, {
-      waitUntil: 'domcontentloaded',
+      waitUntil: 'load',
       timeout: 60000
     });
     // await this.page.waitForTimeout(testConfig.ManualDelayLong);
-    if ((await this.usernameLocator.count()) === 0) {
-      console.log(`[DTSPB-5228] IDAM login fields not visible after goto. URL: ${this.page.url()}, title: ${await this.page.title()}`);
-      const signOutLink = this.page.locator('nav.hmcts-header__navigation ul li:last-child a');
-      if (await signOutLink.isVisible().catch(() => false)) {
-        console.log('[DTSPB-5228] Existing XUI session detected before login. Signing out and retrying IDAM login page.');
-        await signOutLink.click({ noWaitAfter: true });
-        await this.page.waitForLoadState('domcontentloaded', { timeout: 20_000 }).catch(() => undefined);
-        await this.page.goto(`${testConfig.TestBackOfficeUrl}/`, {
-          waitUntil: 'domcontentloaded',
-          timeout: 60_000
-        });
-      }
-    }
-    if ((await this.usernameLocator.count()) === 0) {
-      console.log(`[DTSPB-5228] Clearing browser context cookies after missing IDAM login fields. URL: ${this.page.url()}`);
-      await this.page.context().clearCookies();
-      await this.page.goto(`${testConfig.TestBackOfficeUrl}/`, {
-        waitUntil: 'domcontentloaded',
-        timeout: 60_000
-      });
-    }
     await this.verifyPageLoad(this.usernameLocator, 10_000);
     await expect(
       this.page.getByRole("heading", {
@@ -87,16 +66,8 @@ export class SignInPage extends BasePage {
   async signOut() {
     await this.verifyPageLoad(this.page.locator('nav.hmcts-header__navigation ul li:last-child a'));
     await this.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', 10_000);
-    await this.page.waitForLoadState('domcontentloaded', { timeout: 20_000 }).catch(() => undefined);
-    if (!(await this.usernameLocator.isVisible().catch(() => false))) {
-      console.log(`[DTSPB-5228] Sign out did not expose IDAM login fields. Clearing cookies. URL: ${this.page.url()}, title: ${await this.page.title()}`);
-      await this.page.context().clearCookies();
-      await this.page.goto(`${testConfig.TestBackOfficeUrl}/`, {
-        waitUntil: 'domcontentloaded',
-        timeout: 60_000
-      });
-    }
-    await expect(this.usernameLocator).toBeVisible({ timeout: 30_000 });
+    await this.verifyPageLoad(this.usernameLocator, 10_000);
+    await expect(this.usernameLocator).toBeVisible();
   }
 
   async authenticateUserNoc(useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
