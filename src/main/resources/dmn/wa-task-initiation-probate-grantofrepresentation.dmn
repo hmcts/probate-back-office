@@ -205,7 +205,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1qlpz9q">
-          <text>"gop"</text>
+          <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0p2wk7i">
           <text>false</text>
