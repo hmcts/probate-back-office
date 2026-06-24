@@ -1,68 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?><suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-    <suppress until = "2026-07-13">
-        <!--
-            Pebble literal templates can permit loading from the filesystem.
-            If a user could control the template input this would be an issue,
-            but we only load templates through a classpath loaded, not using
-            a string loader, and the templates are managed from the resources
-            in probate-commons.
-        -->
-        <cve>CVE-2025-1686</cve>
-    </suppress>
-    <suppress until = "2026-07-13">
-        <!--
-            In Jakarta Mail 2.0.3 it is possible to preform a SMTP Injection by utilizing
-            the \r and \n UTF-8 characters to separate different messages.
-        -->
-        <cve>CVE-2025-7962</cve>
-    </suppress>
-    <suppress until = "2026-07-13">
-        <!--
-            Nu Html Checker (validator.nu) contains a restriction bypass that allows remote attackers to make the server
-            perform arbitrary HTTP/HTTPS requests to internal resources, including localhost services.
-            spring-boot-starter-validation:3.5.10 is the latest version and so suppression is the only option.
-        -->
-        <cve>CVE-2025-15104</cve>
-    </suppress>
-    <suppress until = "2026-07-13">
+    <suppress until = "2026-10-24">
         <notes><![CDATA[
-   file name: kotlin-stdlib-1.9.25.jar
-   ]]></notes>
-        <cve>CVE-2020-29582</cve>
-    </suppress>
-    <suppress until = "2026-07-13">
-        <!--
-           The scanner is doing a version-range match on the CVE's CPE, and your tool is matching the fasterxml:jackson-core:3.0.1 CPE
-           broadly across both your 3.x JARs and your 2.x JARs. NVD uses CPEs that apply to a range of versions, which requires its own
-           version comparison logic — and this is commonly a source of false positives when version schemes change or when a product changes its namespace.
-        -->
-        <cve>CVE-2026-29062</cve>
-    </suppress>
-    <suppress until = "2026-07-13">
+            CVE-2025-21199 applies to Microsoft Azure Agent Installer products under the CPE family
+            cpe:2.3:a:microsoft:azure_agent:* and the NVD affected-software entries are for the "backup"
+            and "site_recovery" products. This repo contains the Java libraries
+            com.microsoft.azure:applicationinsights-core and com.microsoft.azure:applicationinsights-web,
+            which are being mapped to the generic azure_agent CPE by Dependency-Check.
+            Keep this suppression only for that false-positive CPE match.
+    ]]></notes>
         <cve>CVE-2025-21199</cve>
     </suppress>
-    <suppress until = "2026-07-13">
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+            Azure SDK artifacts are at the latest stable versions available to this build.
+            dependency-check maps these independent com.azure artifacts to the broad microsoft:azure_sdk_for_java CPE.
+        ]]></notes>
         <cve>CVE-2026-33117</cve>
-    </suppress>
-    <suppress until = "2026-07-13">
-        <!--
-          opentelemetry-semconv.jar is a classic case of a false positive caused by matching text names (opentelemetry) rather than the actual language ecosystem.
-          Both CVE-2026-39883 and CVE-2026-39882 are vulnerabilities that exclusively exist in OpenTelemetry-Go (the Golang implementation of the OpenTelemetry SDK).
-       -->
-        <cve>CVE-2026-39882</cve>
-    </suppress>
-    <suppress until = "2026-07-13">
-        <!--
-         opentelemetry-semconv.jar is a classic case of a false positive caused by matching text names (opentelemetry) rather than the actual language ecosystem.
-         Both CVE-2026-39883 and CVE-2026-39882 are vulnerabilities that exclusively exist in OpenTelemetry-Go (the Golang implementation of the OpenTelemetry SDK).
-      -->
-        <cve>CVE-2026-39883</cve>
-    </suppress>
-    <suppress until = "2026-07-13">
-        <!--
-         opentelemetry-semconv.jar is a classic case of a false positive caused by matching text names (opentelemetry) rather than the actual language ecosystem.
-         CVE-2026-29181 is vulnerabilities that exclusively exist in OpenTelemetry-Go (the Golang implementation of the OpenTelemetry SDK).
-      -->
-        <cve>CVE-2026-29181</cve>
     </suppress>
 </suppressions>
