@@ -113,6 +113,8 @@ public class CaveatQueryService {
             sourceBuilder.searchAfter(searchAfterValues);
         }
         String jsonQuery = sourceBuilder.toString();
+        // this should have worked with .fetchSource(new String[]{REFERENCE}, null);
+        // but ccd does not accept it so it needs to be done like below
         JSONObject jsonObject = new JSONObject(jsonQuery);
         jsonObject.put("_source", new JSONArray().put(REFERENCE));
         String actualQuery = jsonObject.toString();
