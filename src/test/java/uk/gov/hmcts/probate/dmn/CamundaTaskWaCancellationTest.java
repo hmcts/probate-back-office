@@ -82,8 +82,8 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
     private void testBoWithdrawApplicationEvent(List<Map<String, Object>> dmnResultList,
                                                 Map<String, String> cancellationProperties) {
-        if (cancellationProperties.containsValue("CasePrinted") ||
-                cancellationProperties.containsValue("BOCaseClosed")) {
+        if (cancellationProperties.containsValue("CasePrinted")
+                || cancellationProperties.containsValue("BOCaseClosed")) {
             Assertions.assertEquals(1, dmnResultList.size());
             Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
                     cancellationProperties.get("processCategories"));
