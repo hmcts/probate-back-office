@@ -118,7 +118,7 @@ class Dtspb5113GorMigrationTest {
                 () -> underTest.migrate(callbackRequest, migrationData)
         );
 
-        assertEquals("No audit event found for migration", exception.getMessage());
+        assertEquals("No audit event found for case ID: 1", exception.getMessage());
 
         verify(caseDetails, never()).setState(anyString());
     }
