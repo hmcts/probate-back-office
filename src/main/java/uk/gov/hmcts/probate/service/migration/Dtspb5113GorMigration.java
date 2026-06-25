@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.migration;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.DataMigrationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -47,8 +48,8 @@ public class Dtspb5113GorMigration implements GorMigrationHandler {
                         caseDetails.getId(), auditEvent.getStateId());
                 caseDetails.setState(auditEvent.getStateId());
             }, () -> {
-                    log.info("Audit event NOT found: Case ID = {}, Event State = {}");
-                    throw new RuntimeException("No audit event found for migration");
+                    log.info("Audit event NOT found: Case ID = {}", caseDetails.getId());
+                    throw new DataMigrationException("No audit event found for case ID: " + caseDetails.getId());
             });
 
 
