@@ -99,7 +99,7 @@
           <text>"caseManagementCategory"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_09iaklr">
-          <text>caseData.caseType</text>
+          <text>"DUMMY_PLACEHOLDER_CASE_MANAGEMENT_CATEGORY"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bv2xzf">
           <text>true</text>
@@ -116,7 +116,7 @@
           <text>"caseName"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0d5o0tk">
-          <text>caseData.deceasedForenames + " " + caseData.deceasedSurname</text>
+          <text>"DUMMY_PLACEHOLDER_CASE_NAME"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15scpg9">
           <text>true</text>
