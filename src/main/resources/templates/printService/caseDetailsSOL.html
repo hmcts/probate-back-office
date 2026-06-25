@@ -320,7 +320,19 @@
     <tr><td>&nbsp;</td></tr>
     {% endif %}
 
-    {% if case_data.executorsApplying | length == 0 %}
+    {% if case_data.executorsApplying | length == 0 && case_data.caseType == 'intestacy' %}
+    {% for additionalExecutor in case_data.solsIntestacyExecutorList %}
+    {% if additionalExecutor.value.additionalApplying == "Yes" %}{% set applying = applying + 1 %}
+    <tr>
+      <td colspan="2">Executor {{ applying }} name:</td>
+      <td>{{ names(additionalExecutor.value.additionalExecForenames,additionalExecutor.value.additionalExecLastname) }}</td>
+    </tr>
+    {% if additionalExecutor.value.additionalExecAddress %}
+    {{address(additionalExecutor.value.additionalExecAddress)}}
+    {% endif %}
+    <tr><td>&nbsp;</td></tr>
+    </tr>{% endif %}{% endfor %}
+    {% elseif case_data.executorsApplying | length == 0 && case_data.caseType != 'intestacy' %}
     {% for additionalExecutor in case_data.solsAdditionalExecutorList %}
     {% if additionalExecutor.value.additionalApplying == "Yes" %}{% set applying = applying + 1 %}
     <tr>
@@ -346,7 +358,6 @@
     <tr><td>&nbsp;</td></tr>
     </tr>{% endfor %}
     {% endif %}
-
     {% if case_data.executorsApplying | length >= 1 %}
         <tr>
           <td colspan="2">Primary Applicant Alias</td>

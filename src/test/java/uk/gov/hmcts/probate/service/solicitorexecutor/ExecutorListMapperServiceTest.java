@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.service.solicitorexecutor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -11,19 +13,33 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerRese
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicRadioListElement;
+import uk.gov.hmcts.probate.model.ccd.raw.IntestacyAdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsApplicantFamilyDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
+import static uk.gov.hmcts.probate.model.Constants.CHILD;
+import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
+import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_APPLICANTS;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.DIRECTOR;
@@ -258,6 +274,84 @@ class ExecutorListMapperServiceTest {
         assertEquals(1, result.size());
     }
 
+    private static Stream<String> relationship() {
+        return Stream.of(CHILD, GRAND_CHILD, WHOLE_BLOOD_SIBLING, WHOLE_BLOOD_NIECE_OR_NEPHEW,
+                HALF_BLOOD_SIBLING, HALF_BLOOD_NIECE_OR_NEPHEW);
+    }
+
+    @ParameterizedTest
+    @MethodSource("relationship")
+    void mapsIntestacyExecutorsToApplyingExecutorsWithChildRelationship(final String coApplicantRelationship) {
+        DynamicRadioListElement radioListElement = DynamicRadioListElement.builder()
+                .code(coApplicantRelationship)
+                .label(coApplicantRelationship)
+                .build();
+        DynamicRadioList radioList = DynamicRadioList.builder()
+                .listItems(List.of(radioListElement))
+                .value(radioListElement)
+                .build();
+        SolsApplicantFamilyDetails familyDetails = SolsApplicantFamilyDetails.builder()
+                .relationship(radioList)
+                .coApplicantAdoptedIn(YES)
+                .coApplicantAdoptionInEnglandOrWales(NO)
+                .coApplicantAdoptedOut(NO)
+                .build();
+        IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
+                .solsApplicantFamilyDetails(familyDetails)
+                .build();
+        List<CollectionMember<IntestacyAdditionalExecutor>> executorList =
+                List.of(new CollectionMember<>(additionalExecutor));
+
+        CaseData caseData = CaseData.builder().solsIntestacyExecutorList(executorList).build();
+
+
+        List<CollectionMember<AdditionalExecutorApplying>> result =
+                underTest.mapFromSolsIntestacyExecutorListToApplyingExecutors(caseData);
+
+        assertEquals(1, result.size());
+        AdditionalExecutorApplying applying = result.getFirst().getValue();
+        assertEquals(EXECUTOR_TYPE_APPLICANTS, applying.getApplyingExecutorType());
+        assertEquals(coApplicantRelationship, applying.getApplicantFamilyDetails().getRelationshipToDeceased());
+    }
+
+    @Test
+    void throwsExceptionForUnknownRelationship() {
+        DynamicRadioListElement radioListElement = DynamicRadioListElement.builder()
+                .code("UNKNOWN_RELATIONSHIP")
+                .label("UNKNOWN_RELATIONSHIP")
+                .build();
+        DynamicRadioList radioList = DynamicRadioList.builder()
+                .listItems(List.of(radioListElement))
+                .value(radioListElement)
+                .build();
+        SolsApplicantFamilyDetails familyDetails = SolsApplicantFamilyDetails.builder()
+                .relationship(radioList)
+                .coApplicantAdoptedIn(YES)
+                .coApplicantAdoptionInEnglandOrWales(NO)
+                .coApplicantAdoptedOut(NO)
+                .build();
+        IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
+                .solsApplicantFamilyDetails(familyDetails)
+                .build();
+        List<CollectionMember<IntestacyAdditionalExecutor>> executorList =
+                List.of(new CollectionMember<>(additionalExecutor));
+
+        CaseData caseData = CaseData.builder().solsIntestacyExecutorList(executorList).build();
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+                underTest.mapFromSolsIntestacyExecutorListToApplyingExecutors(caseData)
+        );
+        assertTrue(ex.getMessage().contains("Unexpected relationship to deceased"));
+    }
+
+    @Test
+    void returnsEmptyListWhenNoExecutors() {
+        CaseData caseData = CaseData.builder().solsIntestacyExecutorList(new ArrayList<>()).build();
+        List<CollectionMember<AdditionalExecutorApplying>> result =
+                underTest.mapFromSolsIntestacyExecutorListToApplyingExecutors(caseData);
+        assertTrue(result.isEmpty());
+    }
+
     @Test
     void shouldMapFromSolsAdditionalExecToNotApplyingExecutors() {
         List<CollectionMember<AdditionalExecutor>> solsAdditionalExecs = new ArrayList<>();
@@ -272,8 +366,8 @@ class ExecutorListMapperServiceTest {
                 .notApplyingExecutorNameOnWill(EXEC_WILL_NAME)
                 .build();
 
-        assertEquals(expected, result.get(0).getValue());
-        assertEquals(EXEC_ID, result.get(0).getId());
+        assertEquals(expected, result.getFirst().getValue());
+        assertEquals(EXEC_ID, result.getFirst().getId());
         assertEquals(1, result.size());
     }
 
