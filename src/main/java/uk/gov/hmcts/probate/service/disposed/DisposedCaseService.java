@@ -246,7 +246,7 @@ public class DisposedCaseService {
             filterBuilder.append(" and ").append(DATE_OF_DEATH).append(" eq '").append(deathDate).append("'");
         } else {
             final LocalDate startDate = deathDate.minusDays(deathDateRange);
-            final LocalDate endDate = startDate.plusDays(deathDateRange);
+            final LocalDate endDate = deathDate.plusDays(deathDateRange);
             filterBuilder
                     .append(" and ").append(DATE_OF_DEATH).append(" ge '").append(startDate).append("'")
                     .append(" and ").append(DATE_OF_DEATH).append(" le '").append(endDate).append("'");
