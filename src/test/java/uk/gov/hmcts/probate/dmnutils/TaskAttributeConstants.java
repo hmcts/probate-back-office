@@ -91,7 +91,7 @@ public class TaskAttributeConstants {
             + "[Select For QA](/cases/case-details/"
             + "${[CASE_REFERENCE]}/trigger/boSelectForQA)  "
             + "[SME Referral](/cases/case-details/"
-            + "${[CASE_REFERENCE]}/trigger/boUploadDocsForSMEReferral)  "
+            + "${[CASE_REFERENCE]}/trigger/resolveCWEscalation)  "
             + "[Stop Case](/cases/case-details/"
             + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
 
