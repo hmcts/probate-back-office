@@ -52,7 +52,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
             Assertions.assertEquals(0, dmnResultList.size());
         } else {
             // can be modified to use a switch case in future
-            if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_EVENT_ID)){
+            if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_EVENT_ID)) {
                 testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
             } else {
                 Assertions.assertEquals(0, dmnResultList.size());
@@ -61,28 +61,34 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
     }
 
-    private VariableMap putAllCancellationProperties(VariableMap inputVariables, Map<String, String> cancellationProperties) {
-        if (cancellationProperties != null && !cancellationProperties.isEmpty()){
+    private VariableMap putAllCancellationProperties(VariableMap inputVariables,
+                                                     Map<String, String> cancellationProperties) {
+        if (cancellationProperties != null && !cancellationProperties.isEmpty()) {
             inputVariables.putValue("event", cancellationProperties.get("event"));
             inputVariables.putValue("fromState", cancellationProperties.get("fromState"));
             inputVariables.putValue("state", cancellationProperties.get("state"));
-            if (cancellationProperties.size() == 3){
+            if (cancellationProperties.size() == 3) {
                 return inputVariables;
             }
             inputVariables.putValue("action", cancellationProperties.get("action"));
             // For when it is a 'cancel all' type of task cancellation
             if (cancellationProperties.containsKey("processCategories")) {
-                inputVariables.putValue("processCategories", cancellationProperties.get("processCategories"));
+                inputVariables.putValue("processCategories",
+                        cancellationProperties.get("processCategories"));
             }
         }
         return inputVariables;
     }
 
-    private void testBoWithdrawApplicationEvent(List<Map<String, Object>> dmnResultList, Map<String, String> cancellationProperties) {
-        if (cancellationProperties.containsValue("CasePrinted") || cancellationProperties.containsValue("BOCaseClosed")) {
-                Assertions.assertEquals(1, dmnResultList.size());
-                Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"), cancellationProperties.get("processCategories"));
-                Assertions.assertEquals(dmnResultList.getFirst().get("action"), cancellationProperties.get("action"));
+    private void testBoWithdrawApplicationEvent(List<Map<String, Object>> dmnResultList,
+                                                Map<String, String> cancellationProperties) {
+        if (cancellationProperties.containsValue("CasePrinted") ||
+                cancellationProperties.containsValue("BOCaseClosed")) {
+            Assertions.assertEquals(1, dmnResultList.size());
+            Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
+                    cancellationProperties.get("processCategories"));
+            Assertions.assertEquals(dmnResultList.getFirst().get("action"),
+                    cancellationProperties.get("action"));
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
         }
