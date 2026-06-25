@@ -543,5 +543,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "uploadFileCheck", "Label": "Do you want to attach a file to the Request for Information?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "cwDocumentUpload", "Label": "Documents uploaded", "FieldType": "documentUpload", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "cwDocumentUploadedList", "Label": "Request Information upload docs", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedSpouseName", "Label":  "Name of the deceased's spouse or civil partner", "FieldType":  "Text", "SecurityClassification":  "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedSpouseName", "Label":  "What was their husband's, wife's or civil partner's name?", "FieldType":  "Text", "SecurityClassification":  "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedMarriedAfterWillOrCodicilDateYN", "Label": "Did they get married or form a civil partnership after the will was signed?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedDivorcedOutsideEnglandOrWalesLabel", "Label": "You cannot use the online service if the divorce or dissolution took place outside of England and Wales. You should apply by post using Form PA1A instead.", "FieldType": "Label", "SecurityClassification": "Public"}
 ]
