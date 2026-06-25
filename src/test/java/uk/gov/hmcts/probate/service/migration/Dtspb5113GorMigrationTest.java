@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.gov.hmcts.probate.exception.DataMigrationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
@@ -112,8 +113,8 @@ class Dtspb5113GorMigrationTest {
                 anyString()))
                 .thenReturn(Optional.empty());
 
-        final RuntimeException exception = assertThrows(
-                RuntimeException.class,
+        final DataMigrationException exception = assertThrows(
+                DataMigrationException.class,
                 () -> underTest.migrate(callbackRequest, migrationData)
         );
 
