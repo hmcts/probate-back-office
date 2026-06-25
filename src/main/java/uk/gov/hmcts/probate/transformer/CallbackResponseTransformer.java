@@ -1267,6 +1267,7 @@ public class CallbackResponseTransformer {
             .declaration(caseData.getDeclaration())
             .legalStatement(caseData.getLegalStatement())
             .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
+            .deceasedMarriedAfterWillOrCodicilDateYN(caseData.getDeceasedMarriedAfterWillOrCodicilDateYN())
 
             .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1())
             .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
