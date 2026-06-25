@@ -1,3 +1,5 @@
+import uk.gov.hmcts.rse.AuthMode
+
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.7'
@@ -5,7 +7,7 @@ plugins {
   id 'uk.gov.hmcts.java' version '0.12.70'
   id 'com.github.ben-manes.versions' version '0.54.0'
   id 'com.gorylenko.gradle-git-properties' version '3.0.3'
-  id 'info.solidsoft.pitest' version '1.15.0'
+  id 'info.solidsoft.pitest' version '1.19.0'
   id 'jacoco'
   id 'project-report'
   id 'au.com.dius.pact' version '4.7.0'
@@ -57,6 +59,7 @@ pitest {
   timestampedReports = false
   mutationThreshold = 50
   timeoutConstInMillis = 30000
+  addJUnitPlatformLauncher = false
 }
 
 sourceSets {
@@ -103,10 +106,15 @@ sourceSets {
 tasks.withType(Test).configureEach {
   maxHeapSize = "1024m"
   useJUnitPlatform()
+
+  testLogging {
+    exceptionFormat = 'full'
+  }
 }
 
 tasks.register('smoke', Test) {
   description = "Runs Smoke Tests"
+  group = "Verification"
   testClassesDirs = sourceSets.testSmoke.output.classesDirs
   classpath = sourceSets.testSmoke.runtimeClasspath
 }
@@ -128,6 +136,7 @@ tasks.register('functional', Test) {
   }
 
   description = "Runs functional Tests"
+  group = "Verification"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs
   classpath = sourceSets.testFunctional.runtimeClasspath
   finalizedBy aggregate
@@ -137,6 +146,7 @@ functional.finalizedBy(aggregate)
 
 tasks.register('caseCreator', Test) {
   description = "Runs functional Case creator Tests"
+  group = "Verification"
   testClassesDirs = sourceSets.testCaseCreator.output.classesDirs
   classpath = sourceSets.testCaseCreator.runtimeClasspath
   finalizedBy aggregate
@@ -191,8 +201,9 @@ def versions = [
 jacocoTestReport {
   executionData(test,integration)
   reports {
-    xml.required = true
-    csv.required = false
+    csv.getRequired().set(false)
+    html.getRequired().set(true)
+    xml.getRequired().set(true)
     xml.outputLocation = file("${layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml")
   }
 }
@@ -258,9 +269,9 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonVersion
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   implementation group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonVersion
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonVersion
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.17.1'
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonVersion
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonVersion
   implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: versions.springDocOpenUi
   implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: versions.swaggerAnnotations
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -282,7 +293,7 @@ dependencies {
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: versions.ccdClient
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBootVersion
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.11'
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
@@ -304,7 +315,7 @@ dependencies {
   testImplementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.32'
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
-  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootVersion
   testImplementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
   testImplementation group: 'org.wiremock', name: 'wiremock-standalone', version: '3.13.2'
   testImplementation group: 'org.awaitility', name: 'awaitility', version: '4.3.0'
@@ -329,7 +340,6 @@ dependencies {
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.13.0'
   testFunctionalImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   testFunctionalImplementation group: 'com.github.hmcts', name: 'pdf-service-client', version: versions.pdfServiceClientVersion
-  testFunctionalImplementation group: 'net.thucydides', name: 'thucydides-core', version: '0.9.275'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
   testFunctionalImplementation sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -347,20 +357,20 @@ dependencies {
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonVersion
   contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.17.1'
   contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonVersion
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonVersion
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-  contractTestImplementation('org.junit.jupiter:junit-jupiter-api')
-  contractTestRuntimeOnly('org.junit.platform:junit-platform-commons')
+  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.12.2")
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.12.2')
+  contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.12.2'
   contractTestImplementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchdarkly
 
-  contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-  contractTestRuntimeOnly group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBootVersion
+  contractTestRuntimeOnly group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBootVersion
 
   contractTestImplementation group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probateCommonsVersion
   contractTestImplementation sourceSets.main.runtimeClasspath
@@ -422,7 +432,7 @@ tasks.register('printVersion') {
 }
 
 run {
-  if (debug == 'true') {
+  if (debug) {
     jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005']
   }
 }
@@ -549,9 +559,9 @@ bootWithCCD {
   environment 'CASE_DOCUMENT_S2S_AUTHORISED_SERVICES', 'ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,em_npa_app,fprl_dgs_api,dg_docassembly_api,cmc_claim_store,civil_service,civil_general_applications,bulk_scan_orchestrator,ethos_repl_service,et_cos,nfdiv_case_api,divorce_frontend,probate_backend'
   environment("spring.profiles.active", "local")
 
-  if (new Boolean(System.getenv('USE_LOCAL_SUPPORT_SERVICES'))) {
+  if (Boolean.parseBoolean(System.getenv('USE_LOCAL_SUPPORT_SERVICES'))) {
     dependsOn buildBackOfficeXlsx
-    authMode = uk.gov.hmcts.rse.AuthMode.Local
+    authMode = AuthMode.Local
     environment 'IDAM_S2S_URL', 'http://localhost:8489'
     environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
   } else {
@@ -587,12 +597,8 @@ bootJar {
     attributes('Implementation-Version': project.version.toString())
   }
 
-dependencyCheck {
-    analyzers {
-      nodeAudit {
-        yarnEnabled = false
-      }
-    }
+  dependencyCheck {
+      analyzers.nodeAudit.yarnEnabled = false
   }
 }
 
