@@ -179,7 +179,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text>"gop"</text>
         </inputEntry>
         <inputEntry id="LiteralExpression_0n1yxlg">
-          <text></text>
+          <text>false</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1cvv017">
           <text>"ExamineDigitalCaseProbate"</text>

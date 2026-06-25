@@ -4,38 +4,28 @@ import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.impl.VariableMapImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
+import uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder.event;
 
 class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
+
+    private static String WITHDRAW_APPLICATION_EVENT_ID = "boWithdrawApplicationForCasePrinted";
 
     @BeforeAll
     public static void initialization() {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_CANCELLATION_PROBATE;
-    }
-
-    public static Stream<Arguments> scenarioProvider() {
-        return Stream.of(
-                // Withdraw application from CasePrinted ("Awaiting documentation") cancels all tasks on the case
-                event("boWithdrawApplicationForCasePrinted")
-                        .fromState("CasePrinted")
-                        .toState("BOCaseClosed")
-                        .cancelAll()
-                        .build()
-        );
     }
 
     @Test
@@ -48,18 +38,53 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     @ParameterizedTest(name = "from state: {0}, event id: {1}, state: {2}")
-    @MethodSource("scenarioProvider")
-    void given_multiple_event_ids_should_evaluate_dmn(String fromState,
-                                                      String eventId,
-                                                      String state,
-                                                      List<Map<String, Object>> expectedDmnOutcome) {
+    @ArgumentsSource(CancellationScenarioBuilder.class)
+    void given_multiple_event_ids_should_evaluate_dmn(Map<String, String> cancellationProperties) {
+
         VariableMap inputVariables = new VariableMapImpl();
-        inputVariables.putValue("fromState", fromState);
-        inputVariables.putValue("event", eventId);
-        inputVariables.putValue("state", state);
+        inputVariables = putAllCancellationProperties(inputVariables, cancellationProperties);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
-        assertThat(dmnDecisionTableResult.getResultList(), is(expectedDmnOutcome));
+        List<Map<String, Object>> dmnResultList = dmnDecisionTableResult.getResultList();
+
+        // no action key means the no results will be returned
+        if (!cancellationProperties.containsKey("action")) {
+            Assertions.assertEquals(0, dmnResultList.size());
+        } else {
+            // can be modified to use a switch case in future
+            if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_EVENT_ID)){
+                testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
+            } else {
+                Assertions.assertEquals(0, dmnResultList.size());
+            }
+        }
+
     }
 
+    private VariableMap putAllCancellationProperties(VariableMap inputVariables, Map<String, String> cancellationProperties) {
+        if (cancellationProperties != null && !cancellationProperties.isEmpty()){
+            inputVariables.putValue("event", cancellationProperties.get("event"));
+            inputVariables.putValue("fromState", cancellationProperties.get("fromState"));
+            inputVariables.putValue("state", cancellationProperties.get("state"));
+            if (cancellationProperties.size() == 3){
+                return inputVariables;
+            }
+            inputVariables.putValue("action", cancellationProperties.get("action"));
+            // For when it is a 'cancel all' type of task cancellation
+            if (cancellationProperties.containsKey("processCategories")) {
+                inputVariables.putValue("processCategories", cancellationProperties.get("processCategories"));
+            }
+        }
+        return inputVariables;
+    }
+
+    private void testBoWithdrawApplicationEvent(List<Map<String, Object>> dmnResultList, Map<String, String> cancellationProperties) {
+        if (cancellationProperties.containsValue("CasePrinted") || cancellationProperties.containsValue("BOCaseClosed")) {
+                Assertions.assertEquals(1, dmnResultList.size());
+                Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"), cancellationProperties.get("processCategories"));
+                Assertions.assertEquals(dmnResultList.getFirst().get("action"), cancellationProperties.get("action"));
+        } else {
+            Assertions.assertEquals(0, dmnResultList.size());
+        }
+    }
 }
