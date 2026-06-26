@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -77,6 +78,9 @@ import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -105,6 +109,10 @@ public class BusinessValidationController {
     private static final String INVALID_CREATION_EVENT = "Invalid creation event";
     private static final String USE_DIFFERENT_EVENT = "Use different event";
     private static final String UPLOAD_DOCUMENTS_EVENT = "uploadDocumentsDormantCase";
+    private static final String DIV_DISS_OUTSIDE_ENG_WALES_EN = "You cannot use the online service if the divorce or dissolution took place outside of England and Wales. You should apply by post using Form PA1A instead.";
+    private static final String DIV_DISS_OUTSIDE_ENG_WALES_CY = "Ni allwch ddefnyddio'r gwasanaeth ar-lein os digwyddodd yr ysgariad neu'r diddymiad y tu allan i Gymru a Lloegr. Dylech wneud cais drwy'r post gan ddefnyddio Ffurflen PA1A yn lle hynny.";
+    private static final String SEPARATION_OUTSIDE_ENG_WALES_EN = "You cannot use the online service if the judicial separation took place outside of England and  Wales. You should apply by post using Form PA1A instead.";
+    private static final String SEPARATION_OUTSIDE_ENG_WALES_CY = "Ni allwch ddefnyddio'r gwasanaeth ar-lein os digwyddodd yr ymwahaniad cyfreithiol y tu allan i Gymru a Lloegr. Dylech wneud cais drwy'r post gan ddefnyddio Ffurflen PA1A yn lle hynny.";
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
@@ -314,6 +322,62 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(
+            path = "/sols-validate-will-and-codicil-dates-in-create",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> solsValidateCreationProbateAdmon(
+            @RequestBody
+            final CallbackRequest callbackRequest,
+            final HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        final List<String> errors = new ArrayList<>();
+
+        final CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        final CaseData caseData = caseDetails.getData();
+
+        {
+            final LocalDate dob = caseData.getDeceasedDateOfBirth();
+            final LocalDate dod = caseData.getDeceasedDateOfDeath();
+            final String sepDateStr = caseData.getDateOfDivorcedCPJudicially();
+            if (! StringUtils.isBlank(sepDateStr)) {
+                final LocalDate sepDate = LocalDate.parse(sepDateStr);
+                if (sepDate.isBefore(dob)) {
+                    errors.add("sepDate cannot be before dob");
+                }
+                if (sepDate.isAfter(dod)) {
+                    errors.add("sepDate cannot be after dod");
+                }
+            }
+        }
+
+        {
+            final String separationInEngWal = caseData.getDeceasedDivorcedInEnglandOrWales();
+            final String decMaritalStatus = caseData.getDeceasedMaritalStatus();
+
+            if (NO.equals(separationInEngWal)) {
+                if ("divorcedCivilPartnership".equals(decMaritalStatus)) {
+                    errors.add(DIV_DISS_OUTSIDE_ENG_WALES_EN);
+                    errors.add(DIV_DISS_OUTSIDE_ENG_WALES_CY);
+                }
+                if ("judicially".equals(decMaritalStatus)) {
+                    errors.add(SEPARATION_OUTSIDE_ENG_WALES_EN);
+                    errors.add(SEPARATION_OUTSIDE_ENG_WALES_CY);
+                }
+            }
+        }
+
+        if (! errors.isEmpty()) {
+            CallbackResponse errResponse = CallbackResponse.builder()
+                    .errors(errors)
+                    .build();
+            return ResponseEntity.ok(errResponse);
+        }
+
+        return commonSolsValidateProbatePage1(callbackRequest);
+    }
+
     @PostMapping(path = "/sols-validate-will-and-codicil-dates", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateProbatePage1(
@@ -321,6 +385,12 @@ public class BusinessValidationController {
             HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
+
+        return commonSolsValidateProbatePage1(callbackRequest);
+    }
+
+    private ResponseEntity<CallbackResponse> commonSolsValidateProbatePage1(
+            final CallbackRequest callbackRequest) {
         var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
         final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
 
