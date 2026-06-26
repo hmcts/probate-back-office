@@ -649,6 +649,7 @@ public class CaseData extends CaseDataParent {
      */
     private final String migrationCallbackMetadata;
 
+    private String primaryApplicantAdoptedIn;
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
 
@@ -797,5 +798,9 @@ public class CaseData extends CaseDataParent {
 
     public void clearSolsDeceasedAliasNamesList() {
         getSolsDeceasedAliasNamesList().clear();
+    }
+
+    public void clearPrimaryApplicantAdoptedIn() {
+        setPrimaryApplicantAdoptedIn(null);
     }
 }
