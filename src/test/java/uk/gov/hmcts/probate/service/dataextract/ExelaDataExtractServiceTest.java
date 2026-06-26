@@ -29,6 +29,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -86,7 +87,7 @@ class ExelaDataExtractServiceTest {
 
 
         when(caseQueryService.findCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
-        when(caseQueryService.findCaseStateWithinDateRangeExela(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCasesWithGrantIssuedDateRange(anyString(),any(), any())).thenReturn(returnedCases);
         when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.CREATED.value());
     }
 

@@ -141,10 +141,6 @@ public class CaseQueryService {
         return findCaseStateWithinDateRange("ReactivateDormant", REACTIVATE_DORMANT_QUERY, date, date);
     }
 
-    public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
-        return findCaseStateWithinDateRange("Exela", GRANT_RANGE_QUERY_EXELA, startDate, endDate);
-    }
-
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeSmeeAndFord(String startDate, String endDate) {
         return findCaseStateWithinDateRange("SMEEFORD", GRANT_RANGE_QUERY_SMEEFORD, startDate, endDate);
     }
