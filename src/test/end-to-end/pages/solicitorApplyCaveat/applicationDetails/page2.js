@@ -49,6 +49,7 @@ module.exports = async function () {
     await I.fillField('#deceasedAddress__detailCounty', applicationDetailsConfig.address_county);
     await I.fillField('#deceasedAddress__detailPostCode', applicationDetailsConfig.address_postcode);
     await I.fillField('#deceasedAddress__detailCountry', applicationDetailsConfig.address_country);
+    await I.click(`#languagePreferenceWelsh_${applicationDetailsConfig.page2_languagePreferenceWelsh}`);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };
