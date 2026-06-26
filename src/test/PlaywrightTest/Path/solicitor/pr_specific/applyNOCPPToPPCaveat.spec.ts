@@ -103,6 +103,7 @@ test.describe("Solicitor - Apply NOC Caveat", () => {
 
     let env = 'AAT';
     const url = testConfig.TestBackOfficeUrl;
+    // eslint-disable-next-line playwright/no-conditional-in-test
     if (url.includes('demo')) {
       env = 'Demo';
     } else {
@@ -120,6 +121,7 @@ test.describe("Solicitor - Apply NOC Caveat", () => {
 
     await basePage.seeCaseDetails(testInfo, caseRef, historyTabConfig, {}, nextStepName, endState);
 
+    // eslint-disable-next-line playwright/no-conditional-in-test
     if (env === 'Demo') {
       dateFns.format(
         dateFns.addMonths(new Date(), 6),
