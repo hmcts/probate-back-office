@@ -21,7 +21,7 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_PROBATE
 
 class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
-    private static String WITHDRAW_APPLICATION_EVENT_ID = "boWithdrawApplicationForCasePrinted";
+    private static final String WITHDRAW_APPLICATION_EVENT_ID = "boWithdrawApplicationForCasePrinted";
 
     @BeforeAll
     public static void initialization() {
