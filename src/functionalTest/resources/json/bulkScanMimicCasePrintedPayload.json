@@ -1,0 +1,176 @@
+{
+  "case_details": {
+    "id": 1776868211515440,
+    "jurisdiction": "PROBATE",
+    "state": "CasePrinted",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [2026, 4, 22, 14, 33, 0, 0],
+    "last_modified": [2026, 5, 7, 8, 58, 6, 0],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "caseType": "gop",
+      "applicationType": "Personal",
+      "channelChoice": "BulkScan",
+      "paperForm": "Yes",
+      "bulkScanCaseReference": "818934032424212002473004",
+      "bulkScanEnvelopes": [
+        {
+          "id": "02169768-d0a0-4499-9840-de8750b2776e",
+          "value": {
+            "id": "43333f54-bf33-43bd-9455-ff02e0940385",
+            "action": "update"
+          }
+        },
+        {
+          "id": "9c956622-df96-40c5-9211-8a7d84212864",
+          "value": {
+            "id": "595dd947-f41b-4dd2-90c3-71779da9c5f2",
+            "action": "update"
+          }
+        }
+      ],
+      "scannedDocuments": [
+        {
+          "id": "809dafa7-1092-4f30-a18f-0afc0d19eb6a",
+          "value": {
+            "url": {
+              "document_url": "http://dm-store/documents/0deebe0a-82c6-450b-b2ab-35e988b38bbb",
+              "document_filename": "90000001.pdf",
+              "document_binary_url": "http://dm-store/documents/0deebe0a-82c6-450b-b2ab-35e988b38bbb/binary"
+            },
+            "type": "other",
+            "subtype": "will",
+            "fileName": "90000001.pdf",
+            "scannedDate": "2025-08-13T10:55:03.123",
+            "deliveryDate": "2025-08-13T14:20:22.123",
+            "controlNumber": "818934032424212002473004",
+            "exceptionRecordReference": null
+          }
+        },
+        {
+          "id": "d9335882-5eba-49de-abb8-bfca05513f55",
+          "value": {
+            "url": {
+              "document_url": "http://dm-store/documents/a13abf98-3733-41d7-9583-9cd571ca42c6",
+              "document_filename": "90000001.pdf",
+              "document_binary_url": "http://dm-store/documents/a13abf98-3733-41d7-9583-9cd571ca42c6/binary"
+            },
+            "type": "other",
+            "subtype": "will",
+            "fileName": "90000001.pdf",
+            "scannedDate": "2025-08-13T10:55:03.123",
+            "deliveryDate": "2025-08-13T14:20:22.123",
+            "controlNumber": "818934052424212002473004",
+            "exceptionRecordReference": null
+          }
+        }
+      ],
+      "deceasedForenames": "Tester",
+      "deceasedSurname": "Smith",
+      "deceasedDateOfBirth": "1978-08-10",
+      "deceasedDateOfDeath": "2024-02-03",
+      "deceasedAddress": {
+        "County": null,
+        "Country": "United Kingdom",
+        "PostCode": "E3 5EF",
+        "PostTown": "London",
+        "AddressLine1": "71 Rosebank Gardens",
+        "AddressLine2": null,
+        "AddressLine3": null
+      },
+      "deceasedAnyOtherNames": "No",
+      "deceasedDomicileInEngWales": "Yes",
+      "deceasedDeathCertificate": "deathCertificate",
+      "willExists": "Yes",
+      "willHasCodicils": "No",
+      "willHasVisibleDamage": "No",
+      "primaryApplicantForenames": "Test",
+      "primaryApplicantSurname": "User",
+      "primaryApplicantEmailAddress": "primary@probate-test.com",
+      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantHasAlias": "No",
+      "primaryApplicantSameWillName": "Yes",
+      "primaryApplicantAddress": {
+        "County": null,
+        "Country": "United Kingdom",
+        "PostCode": "E4 9AX",
+        "PostTown": "London",
+        "AddressLine1": "29 Broad Oak Close",
+        "AddressLine2": null,
+        "AddressLine3": null
+      },
+      "primaryApplicantPhoneNumber": "0742424424222",
+      "ihtFormEstate": "IHT400",
+      "ihtNetValue": "250000",
+      "ihtGrossValue": "250000",
+      "ihtNetValueField": "2500",
+      "ihtGrossValueField": "2500",
+      "uniqueProbateCodeId": "CTS04055611443tpps8e9",
+      "ihtFormEstateValuesCompleted": "Yes",
+      "hmrcLetterId": "Yes",
+      "registryLocation": "ctsc",
+      "numberOfExecutors": 1,
+      "numberOfApplicants": 1,
+      "otherExecutorExists": "No",
+      "executorsApplying": [],
+      "executorsNotApplying": [],
+      "executorsApplyingNotifications": [
+        {
+          "id": "1",
+          "value": {
+            "name": "Test User",
+            "email": "primary@probate-test.com",
+            "address": {
+              "County": null,
+              "Country": "United Kingdom",
+              "PostCode": "E4 9AX",
+              "PostTown": "London",
+              "AddressLine1": "29 Broad Oak Close",
+              "AddressLine2": null,
+              "AddressLine3": null
+            },
+            "notification": "Yes",
+            "responseReceived": null
+          }
+        }
+      ],
+      "extraCopiesOfGrant": "0",
+      "outsideUKGrantCopies": "0",
+      "payments": [
+        {
+          "id": "35dfd10d-0ad8-42e5-bc4f-a578847620e6",
+          "value": {
+            "date": null,
+            "amount": null,
+            "method": null,
+            "siteId": null,
+            "status": "not_required",
+            "reference": null,
+            "transactionId": null
+          }
+        }
+      ],
+      "boSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "Yes",
+      "boEmailDocsReceivedNotificationRequested": "Yes",
+      "boEmailRequestInfoNotification": "Yes",
+      "boEmailRequestInfoNotificationRequested": "Yes",
+      "boEmailGrantIssuedNotification": "Yes",
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "boCaveatStopEmailNotification": "Yes",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "applicationSubmittedDate": "2026-04-22",
+      "evidenceHandledDate": "2026-04-22",
+      "authenticatedDate": "2026-05-07",
+      "informationNeeded": "Yes",
+      "informationNeededByPost": "No",
+      "languagePreferenceWelsh": "No",
+      "caseHandedOffToLegacySite": "No",
+      "declarationCheckbox": "Yes",
+      "dateOfDeathType": "diedOn"
+    }
+  }
+}
+
