@@ -579,7 +579,7 @@ class BusinessValidationUnitTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, Optional.empty()))
+        when(callbackResponseTransformerMock.transformAmendDetails(callbackRequestMock))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,

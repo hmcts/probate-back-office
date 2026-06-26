@@ -142,8 +142,13 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_CHILD;
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_GRANDCHILD;
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_PARENT;
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.HALF_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -157,6 +162,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
@@ -5210,6 +5216,360 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.clearSiblingFields(callbackRequestMock);
 
         assertNotNull(callbackResponse.getData().getOtherHalfBloodSiblings());
+    }
+
+    @Test
+    void shouldClearPPGrandchildFieldsWhenRelationshipChangedFromGrandchild() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SOLICITOR_CHILD)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .primaryApplicantAdoptedIn(YES)
+                .primaryApplicantAdoptionInEnglandOrWales(YES)
+                .primaryApplicantParentAdoptedIn(YES)
+                .primaryApplicantParentAdoptionInEnglandOrWales(YES);
+
+        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(SOLICITOR_GRANDCHILD);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedIn());
+        assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptionInEnglandOrWales());
+    }
+
+    @Test
+    void shouldClearPPChildFieldsWhenRelationshipChangedFromChild() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SOLICITOR_PARENT)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .primaryApplicantAdoptedIn(YES)
+                .primaryApplicantAdoptionInEnglandOrWales(YES);
+
+        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(SOLICITOR_CHILD);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+    }
+
+
+    @Test
+    void shouldClearFewPPSiblingFieldsWhenRelationshipChangedFromSibling() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SOLICITOR_PARENT)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .deceasedAnyLivingDescendants(NO)
+                .deceasedAdoptedIn(YES)
+                .deceasedAdoptionInEnglandOrWales(YES)
+                .applicantSameParentsAsDeceased(HALF_SIBLING)
+                .deceasedAnyLivingParents(NO)
+                .primaryApplicantAdoptedIn(YES)
+                .primaryApplicantAdoptionInEnglandOrWales(YES)
+                .anyLivingWholeBloodSiblings(NO);
+
+        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(SOLICITOR_SIBLING);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getApplicantSameParentsAsDeceased());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+        assertNull(callbackResponse.getData().getDeceasedAnyLivingParents());
+        assertNotNull(callbackResponse.getData().getDeceasedAnyLivingDescendants());
+        assertNotNull(callbackResponse.getData().getDeceasedAdoptedIn());
+    }
+
+    @Test
+    void shouldClearAllPPSiblingFieldsWhenRelationshipChangedFromSibling() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SOLICITOR_CHILD)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .deceasedAnyLivingDescendants(NO)
+                .deceasedAdoptedIn(YES)
+                .deceasedAdoptionInEnglandOrWales(YES)
+                .applicantSameParentsAsDeceased(HALF_SIBLING)
+                .deceasedAnyLivingParents(NO)
+                .anyLivingWholeBloodSiblings(NO);
+
+        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(SOLICITOR_SIBLING);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getApplicantSameParentsAsDeceased());
+        assertNull(callbackResponse.getData().getDeceasedAnyLivingParents());
+        assertNull(callbackResponse.getData().getDeceasedAnyLivingDescendants());
+        assertNull(callbackResponse.getData().getDeceasedAdoptedIn());
+    }
+
+    @Test
+    void shouldClearAllPPParentFieldsWhenRelationshipChangedFromParent() {
+        caseDataBuilder.solsApplicantRelationshipToDeceased(SOLICITOR_CHILD)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .deceasedAnyLivingDescendants(NO)
+                .deceasedAdoptedIn(YES)
+                .deceasedAdoptionInEnglandOrWales(YES);
+
+        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(SOLICITOR_PARENT);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getDeceasedAnyLivingDescendants());
+        assertNull(callbackResponse.getData().getDeceasedAdoptedIn());
+        assertNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
+    }
+
+    @Test
+    void shouldClearAnyWholeSiblingFieldsWhenRelationshipChangedFromHalfSibling() {
+        caseDataBuilder.applicantSameParentsAsDeceased(WHOLE_SIBLING)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .anyLivingWholeBloodSiblings(NO);
+
+        caseDataBuilderBefore.applicantSameParentsAsDeceased(HALF_SIBLING);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getAnyLivingWholeBloodSiblings());
+    }
+
+    @Test
+    void shouldClearApplicantAdoptionInEnglandOrWalesFieldWhenApplicantAdoptedInChangedFromYesToNo() {
+        caseDataBuilder.primaryApplicantAdoptedIn(NO)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .primaryApplicantAdoptionInEnglandOrWales(YES)
+                .primaryApplicantAdoptedOut(NO);
+
+        caseDataBuilderBefore.primaryApplicantAdoptedIn(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+    }
+
+    @Test
+    void shouldClearApplicantAdoptedOutFieldWhenChangedApplicantAdoptedInChangedFromNoToYes() {
+        caseDataBuilder.primaryApplicantAdoptedIn(YES)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .primaryApplicantAdoptionInEnglandOrWales(YES)
+                .primaryApplicantAdoptedOut(NO);
+
+        caseDataBuilderBefore.primaryApplicantAdoptedIn(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedOut());
+        assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+    }
+
+    @Test
+    void shouldClearApplicantAdoptionInEnglandOrWalesFieldWhenApplicantAdoptedInChangedFromYesToNoInAmendDetails() {
+        caseDataBuilder.primaryApplicantAdoptedIn(NO)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .primaryApplicantAdoptionInEnglandOrWales(YES)
+                .primaryApplicantAdoptedOut(NO);
+
+        caseDataBuilderBefore.primaryApplicantAdoptedIn(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse callbackResponse = underTest.transformAmendDetails(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+    }
+
+    @Test
+    void shouldClearApplicantAdoptedOutFieldWhenChangedApplicantAdoptedInChangedFromNoToYesInAmendDetails() {
+        caseDataBuilder.primaryApplicantAdoptedIn(YES)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .primaryApplicantAdoptionInEnglandOrWales(YES)
+                .primaryApplicantAdoptedOut(NO);
+
+        caseDataBuilderBefore.primaryApplicantAdoptedIn(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        CallbackResponse callbackResponse = underTest.transformAmendDetails(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedOut());
+        assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+    }
+
+    @Test
+    void shouldClearApplicantParentAdoptionInEnglandOrWalesFieldWhenApplicantParentAdoptedInChangedFromYesToNo() {
+        caseDataBuilder.primaryApplicantParentAdoptedIn(NO)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .primaryApplicantParentAdoptionInEnglandOrWales(YES)
+                .primaryApplicantParentAdoptedOut(NO);
+
+        caseDataBuilderBefore.primaryApplicantParentAdoptedIn(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptionInEnglandOrWales());
+    }
+
+    @Test
+    void shouldClearApplicantParentAdoptedOutFieldWhenChangedApplicantParentAdoptedInChangedFromNoToYes() {
+        caseDataBuilder.primaryApplicantParentAdoptedIn(YES)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .primaryApplicantParentAdoptionInEnglandOrWales(YES)
+                .primaryApplicantParentAdoptedOut(NO);
+
+        caseDataBuilderBefore.primaryApplicantParentAdoptedIn(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getPrimaryApplicantParentAdoptedOut());
+        assertNotNull(callbackResponse.getData().getPrimaryApplicantParentAdoptionInEnglandOrWales());
+    }
+
+    @Test
+    void shouldClearDeceasedAdoptionInEnglandOrWalesFieldWhenDeceasedAdoptedInChangedFromYesToNo() {
+        caseDataBuilder.deceasedAdoptedIn(NO)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .deceasedAdoptionInEnglandOrWales(YES)
+                .deceasedAdoptedOut(NO);
+
+        caseDataBuilderBefore.deceasedAdoptedIn(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
+    }
+
+    @Test
+    void shouldClearDeceasedAdoptedOutFieldWhenChangedDeceasedAdoptedInChangedFromNoToYes() {
+        caseDataBuilder.deceasedAdoptedIn(YES)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .deceasedAdoptionInEnglandOrWales(YES)
+                .deceasedAdoptedOut(NO);
+
+        caseDataBuilderBefore.deceasedAdoptedIn(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT_INTESTACY)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "intestacy");
+
+        assertNull(callbackResponse.getData().getDeceasedAdoptedOut());
+        assertNotNull(callbackResponse.getData().getDeceasedAdoptionInEnglandOrWales());
     }
 
     @Test

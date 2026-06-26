@@ -391,7 +391,7 @@ public class BusinessValidationController {
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transform(callbackRequest, Optional.empty());
+            response = callbackResponseTransformer.transformAmendDetails(callbackRequest);
         }
         return ResponseEntity.ok(response);
     }
