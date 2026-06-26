@@ -34,7 +34,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
 
     static Stream<Arguments> scenarioProvider() {
 
-        Stream<Arguments> of = Stream.of(
+        return Stream.of(
                 Arguments.of(
                         "boSelectForQA",
                         List.of(
@@ -62,11 +62,19 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
+                        "boEscalateToRegistrar",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
+                                )
+                        )
+                ),
+                Arguments.of(
                         "otherEventId",
                         Collections.emptyList()
                 )
         );
-        return of;
     }
 
     @Test
@@ -75,7 +83,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(4));
+        assertThat(logic.getRules().size(), is(5));
     }
 
     @ParameterizedTest(name = "event id: {0}")
