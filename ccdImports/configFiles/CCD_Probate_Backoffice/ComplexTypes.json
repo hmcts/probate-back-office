@@ -217,5 +217,17 @@
   {"LiveFrom": "01/01/2017", "ID": "citizenHubResponse", "ListElementCode": "citizenResponse", "FieldType": "TextArea", "ElementLabel": "Citizen's response", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "citizenHubResponse", "ListElementCode": "submittedDate", "FieldType": "DateTime", "ElementLabel": "Submitted Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "fieldName", "FieldType": "Text", "ElementLabel": "OCR Field", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "originalValue", "FieldType": "Text", "ElementLabel": "Original Value", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "ModifiedOCRField", "ListElementCode": "originalValue", "FieldType": "Text", "ElementLabel": "Original Value", "SecurityClassification": "Public"},
+
+
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "ListElementCode": "searchType", "FieldType": "FixedList", "FieldTypeParameter": "DisposedSearchTypeFixedList", "ElementLabel": "Search Type", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "ListElementCode": "ccdId", "FieldType": "Text", "ElementLabel": "CCD ID", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "ListElementCode": "decDeathDate", "FieldType": "Date", "ElementLabel": "Deceased Date of Death", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "ListElementCode": "decDeathDateRange", "FieldType": "Number", "Min": "0", "Max":  "7", "ElementLabel": "Deceased Date of Death Leeway", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "ListElementCode": "decForenames", "FieldType": "Text", "ElementLabel": "Deceased Forenames", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "ListElementCode": "decSurname", "FieldType": "Text", "ElementLabel": "Deceased Surname", "SecurityClassification": "Public"},
+
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCase", "ListElementCode": "ccdId", "FieldType": "Text", "ElementLabel": "CCD ID", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCase", "ListElementCode": "caseData", "FieldType": "TextArea", "ElementLabel": "CaseInfo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCase", "ListElementCode": "documentData", "FieldType": "Collection", "FieldTypeParameter": "TextArea", "ElementLabel": "DocumentInfo", "SecurityClassification": "Public"}
 ]

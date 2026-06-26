@@ -316,5 +316,12 @@
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "boFindMatchedCasePostGrantRegistrarEscalation", "CaseFieldID": "caseMatches", "ListElementCode": "doImport", "EventElementLabel":  "Do import?", "FieldDisplayOrder":  15, "DisplayContext": "OPTIONAL"},
   {"LiveFrom": "01/01/2017", "ID": "ManageCaseTTL", "CaseEventID":  "manageCaseTTL", "CaseFieldID": "TTL", "ListElementCode": "SystemTTL", "EventElementLabel":  "System TTL", "FieldDisplayOrder":  1, "DisplayContext": "READONLY"},
   {"LiveFrom": "01/01/2017", "ID": "ManageCaseTTL", "CaseEventID":  "manageCaseTTL", "CaseFieldID": "TTL", "ListElementCode": "OverrideTTL", "EventElementLabel":  "Override TTL", "FieldDisplayOrder":  2, "DisplayContext": "OPTIONAL"},
-  {"LiveFrom": "01/01/2017", "ID": "ManageCaseTTL", "CaseEventID":  "manageCaseTTL", "CaseFieldID": "TTL", "ListElementCode": "Suspended", "EventElementLabel":  "Suspend Deletion", "FieldDisplayOrder":  3, "DisplayContext": "OPTIONAL"}
+  {"LiveFrom": "01/01/2017", "ID": "ManageCaseTTL", "CaseEventID":  "manageCaseTTL", "CaseFieldID": "TTL", "ListElementCode": "Suspended", "EventElementLabel":  "Suspend Deletion", "FieldDisplayOrder":  3, "DisplayContext": "OPTIONAL"},
+
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "CaseEventID": "disposedCaseSearch", "CaseFieldID": "disposedCasesCcdId", "ListElementCode": "searchType", "EventElementLabel": "Search Type from CETCT", "FieldDisplayOrder": 1, "DisplayContext": "MANDATORY"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "CaseEventID": "disposedCaseSearch", "CaseFieldID": "disposedCasesCcdId", "ListElementCode": "ccdId", "EventElementLabel": "ID from CETCT", "FieldDisplayOrder": 2, "DisplayContext": "OPTIONAL"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "CaseEventID": "disposedCaseSearch", "CaseFieldID": "disposedCasesCcdId", "ListElementCode": "decDeathDate", "FieldDisplayOrder": 3, "DisplayContext": "OPTIONAL"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "CaseEventID": "disposedCaseSearch", "CaseFieldID": "disposedCasesCcdId", "ListElementCode": "decDeathDateRange", "FieldDisplayOrder": 4, "DisplayContext": "OPTIONAL"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "CaseEventID": "disposedCaseSearch", "CaseFieldID": "disposedCasesCcdId", "ListElementCode": "decForenames", "FieldDisplayOrder": 5, "DisplayContext": "OPTIONAL"},
+  {"LiveFrom": "01/01/2017", "ID": "DisposedCaseSearch", "CaseEventID": "disposedCaseSearch", "CaseFieldID": "disposedCasesCcdId", "ListElementCode": "decSurname", "FieldDisplayOrder": 6, "DisplayContext": "OPTIONAL"}
 ]
