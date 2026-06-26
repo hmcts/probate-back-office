@@ -217,7 +217,7 @@ class CaseQueryServiceTest {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
                 returnedCases3);
         List<ReturnedCaseDetails> cases = caseQueryService
-            .findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
+            .findCasesWithGrantIssuedDateRange("Excela", "2019-01-01", "2019-02-05");
 
         assertEquals(3, cases.size());
         assertEquals(0, cases.getFirst().getId().intValue());
@@ -240,7 +240,7 @@ class CaseQueryServiceTest {
             when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
 
             when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
-            caseQueryService.findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
+            caseQueryService.findCasesWithGrantIssuedDateRange("Excela", "2019-01-01", "2019-02-05");
         });
     }
 
