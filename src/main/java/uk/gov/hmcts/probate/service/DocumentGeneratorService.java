@@ -110,11 +110,11 @@ public class DocumentGeneratorService {
                                  Optional<DocumentIssueType> issueType) {
         Map<String, Object> images;
 
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
         images = new HashMap<>();
         images.put(CREST_IMAGE, CREST_FILE_PATH);
         images.put(SEAL_IMAGE, SEAL_FILE_PATH);
 
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Document document;
 
         if (status == DocumentStatus.FINAL) {
