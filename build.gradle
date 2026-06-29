@@ -50,6 +50,7 @@ test.finalizedBy jacocoTestReport
 
 dependencyCheck {
   suppressionFile = 'config/owasp/suppressions.xml'
+  analyzers.nodeAudit.yarnEnabled = false
 }
 
 pitest {
@@ -393,6 +394,28 @@ dependencies {
 configurations.configureEach {
   exclude group: 'commons-logging', module: 'commons-logging'
   exclude group: 'com.vaadin.external.google', module: 'android-json'
+
+  def kotlinVersion = '2.1.0'
+  def jacksonCoreVersion = '3.2.0'
+
+  resolutionStrategy.eachDependency { details ->
+    def requested = details.requested
+
+    if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith('kotlin-stdlib')) {
+      details.useVersion(kotlinVersion)
+    }
+
+    if (requested.group.startsWith('tools.jackson.core')) {
+      details.useVersion(jacksonCoreVersion)
+    }
+  }
+
+  resolutionStrategy.force(
+          // CVE-2020-29582 - Fixed in Kotlin 2.1.0+
+          'org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}',
+          'org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}',
+          'org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}'
+  )
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -583,10 +606,6 @@ bootJar {
 
   manifest {
     attributes('Implementation-Version': project.version.toString())
-  }
-
-  dependencyCheck {
-      analyzers.nodeAudit.yarnEnabled = false
   }
 }
 
