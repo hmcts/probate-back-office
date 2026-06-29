@@ -55,7 +55,7 @@
       </rule>
       <rule id="DecisionRule_1kqt5nx">
         <inputEntry id="UnaryTests_0zf4ps4">
-          <text>"resolveCWEscalation"</text>
+          <text>"moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_17gfw48">
           <text>"ExamineDigitalCaseProbate"</text>
