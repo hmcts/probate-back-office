@@ -392,16 +392,21 @@ configurations.configureEach {
 
   def kotlinVersion = '2.1.0'
   def jacksonCoreVersion = '3.2.0'
+  def angusVersion = '2.1.0-M1'
 
   resolutionStrategy.eachDependency { details ->
     def requested = details.requested
-
+    // CVE-2020-29582
     if (requested.group == 'org.jetbrains.kotlin' && requested.name.startsWith('kotlin-stdlib')) {
       details.useVersion(kotlinVersion)
     }
-
+    // CVE-2026-29062
     if (requested.group.startsWith('tools.jackson.core')) {
       details.useVersion(jacksonCoreVersion)
+    }
+    // CVE-2025-7962
+    if (requested.group == 'org.eclipse.angus' && requested.name == 'angus-activation') {
+      details.useVersion(angusVersion)
     }
   }
 
