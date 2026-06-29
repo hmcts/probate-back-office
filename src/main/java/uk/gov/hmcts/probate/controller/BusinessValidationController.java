@@ -106,10 +106,26 @@ public class BusinessValidationController {
     private static final String INVALID_CREATION_EVENT = "Invalid creation event";
     private static final String USE_DIFFERENT_EVENT = "Use different event";
     private static final String UPLOAD_DOCUMENTS_EVENT = "uploadDocumentsDormantCase";
-    private static final String DIV_DISS_OUTSIDE_ENG_WALES_EN = "You cannot use the online service if the divorce or dissolution took place outside of England and Wales. You should apply by post using Form PA1A instead.";
-    private static final String DIV_DISS_OUTSIDE_ENG_WALES_CY = "Ni allwch ddefnyddio'r gwasanaeth ar-lein os digwyddodd yr ysgariad neu'r diddymiad y tu allan i Gymru a Lloegr. Dylech wneud cais drwy'r post gan ddefnyddio Ffurflen PA1A yn lle hynny.";
-    private static final String SEPARATION_OUTSIDE_ENG_WALES_EN = "You cannot use the online service if the judicial separation took place outside of England and  Wales. You should apply by post using Form PA1A instead.";
-    private static final String SEPARATION_OUTSIDE_ENG_WALES_CY = "Ni allwch ddefnyddio'r gwasanaeth ar-lein os digwyddodd yr ymwahaniad cyfreithiol y tu allan i Gymru a Lloegr. Dylech wneud cais drwy'r post gan ddefnyddio Ffurflen PA1A yn lle hynny.";
+
+    private static final String SEP_DATE_BEFORE_DOB_EN = "WIP Date of divorce, dissolution or judicial separation"
+            + " must be after the date of birth";
+    private static final String SEP_DATE_BEFORE_DOB_CY = "WIP (NEEDS TRANSLATION) Date of divorce, dissolution or"
+            + " judicial separation must be after the date of birth";
+    private static final String SEP_DATE_AFTER_DOD_EN = "Date of divorce, dissolution or judicial separation must be"
+            + " before the date of death";
+    private static final String SEP_DATE_AFTER_DOD_CY = "Rhaid i ddyddiad yr ysgariad, diddymiad neu ymwahaniad"
+            + " cyfreithiol fod cyn dyddiad y farwolaeth";
+    private static final String DIV_DISS_OUTSIDE_ENG_WALES_EN = "You cannot use the online service if the divorce or"
+            + " dissolution took place outside of England and Wales. You should apply by post using Form PA1A instead.";
+    private static final String DIV_DISS_OUTSIDE_ENG_WALES_CY = "Ni allwch ddefnyddio'r gwasanaeth ar-lein os"
+            + " digwyddodd yr ysgariad neu'r diddymiad y tu allan i Gymru a Lloegr. Dylech wneud cais drwy'r post gan"
+            + " ddefnyddio Ffurflen PA1A yn lle hynny.";
+    private static final String SEPARATION_OUTSIDE_ENG_WALES_EN = "You cannot use the online service if the judicial"
+            + " separation took place outside of England and  Wales. You should apply by post using Form PA1A instead.";
+    private static final String SEPARATION_OUTSIDE_ENG_WALES_CY = "Ni allwch ddefnyddio'r gwasanaeth ar-lein os"
+            + " digwyddodd yr ymwahaniad cyfreithiol y tu allan i Gymru a Lloegr. Dylech wneud cais drwy'r post gan"
+            + " ddefnyddio Ffurflen PA1A yn lle hynny.";
+
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
@@ -335,9 +351,13 @@ public class BusinessValidationController {
             if (! StringUtils.isBlank(sepDateStr)) {
                 final LocalDate sepDate = LocalDate.parse(sepDateStr);
                 if (sepDate.isBefore(dob)) {
+                    errors.add(SEP_DATE_BEFORE_DOB_EN);
+                    errors.add(SEP_DATE_BEFORE_DOB_CY);
                     errors.add("sepDate cannot be before dob");
                 }
                 if (sepDate.isAfter(dod)) {
+                    errors.add(SEP_DATE_AFTER_DOD_EN);
+                    errors.add(SEP_DATE_AFTER_DOD_CY);
                     errors.add("sepDate cannot be after dod");
                 }
             }
