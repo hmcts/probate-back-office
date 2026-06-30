@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
@@ -354,6 +355,16 @@ public class DocumentController {
 
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
+        if (featureToggleService.usePreventUpdatingExistingUploadedDocumentsFeatureToggleOn()) {
+            try {
+                evidenceUploadService.validateExistingUploadedDocuments(callbackRequest);
+            } catch (BusinessValidationException exception) {
+                return ResponseEntity.ok(CallbackResponse.builder()
+                        .errors(List.of(exception.getUserMessage()))
+                        .build());
+            }
+        }
+
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         try {
             final CaseDetails caseDetails = callbackRequest.getCaseDetails();
