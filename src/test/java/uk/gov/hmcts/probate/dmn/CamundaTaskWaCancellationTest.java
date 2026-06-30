@@ -21,7 +21,7 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_PROBATE
 
 class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
-    private static String WITHDRAW_APPLICATION_EVENT_ID = "boWithdrawApplicationForCasePrinted";
+    private static final String WITHDRAW_APPLICATION_EVENT_ID = "boWithdrawApplicationForCasePrinted";
 
     @BeforeAll
     public static void initialization() {
@@ -47,16 +47,11 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         List<Map<String, Object>> dmnResultList = dmnDecisionTableResult.getResultList();
 
-        // no action key means the no results will be returned
-        if (!cancellationProperties.containsKey("action")) {
-            Assertions.assertEquals(0, dmnResultList.size());
+        // can be modified to use a switch case in future
+        if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_EVENT_ID)) {
+            testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
         } else {
-            // can be modified to use a switch case in future
-            if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_EVENT_ID)) {
-                testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
-            } else {
-                Assertions.assertEquals(0, dmnResultList.size());
-            }
+            Assertions.assertEquals(0, dmnResultList.size());
         }
 
     }
@@ -83,7 +78,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
     private void testBoWithdrawApplicationEvent(List<Map<String, Object>> dmnResultList,
                                                 Map<String, String> cancellationProperties) {
         if (cancellationProperties.containsValue("CasePrinted")
-                || cancellationProperties.containsValue("BOCaseClosed")) {
+                && cancellationProperties.containsValue("BOCaseClosed")) {
             Assertions.assertEquals(1, dmnResultList.size());
             Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
                     cancellationProperties.get("processCategories"));
