@@ -61,8 +61,8 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
       <input id="InputClause_10czn8g" label="caseHandedOffToLegacySite">
         <inputExpression id="LiteralExpression_0e39959" typeRef="boolean">
           <text>if(additionalData != null and additionalData.Data != null and
-            additionalData.Data.caseHandedOffToLegacySite != null and additionalData.Data.caseHandedOffToLegacySite = "Yes") then
-            true else false</text>
+            additionalData.Data.caseHandedOffToLegacySite != null) then additionalData.Data.caseHandedOffToLegacySite 
+else false</text>
         </inputExpression>
       </input>
       <output id="Output_1" label="Task Id" name="taskId" typeRef="string" biodi:width="320" />
