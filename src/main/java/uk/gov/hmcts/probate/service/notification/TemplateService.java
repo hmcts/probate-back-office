@@ -119,6 +119,13 @@ public class TemplateService {
         }
     }
 
+    public String getRedecReminderTemplateId(ApplicationType applicationType,
+                                            LanguagePreference languagePreference,
+                                            boolean isFirstStopReminder) {
+        EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
+        return isFirstStopReminder ? emailTemplates.getFirstRedecReminder() : emailTemplates.getSecondRedecReminder();
+    }
+
     public String getHseReminderTemplateId(ApplicationType applicationType,
                                             LanguagePreference languagePreference,
                                             String channelChoice,
