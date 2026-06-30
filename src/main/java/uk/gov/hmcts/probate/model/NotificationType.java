@@ -2,7 +2,9 @@ package uk.gov.hmcts.probate.model;
 
 public enum NotificationType {
     FIRST_STOP_REMINDER,
+    FIRST_REDEC_REMINDER,
     SECOND_STOP_REMINDER,
+    SECOND_REDEC_REMINDER,
     HSE_REMINDER,
     DORMANT_WARNING,
     UNSUBMITTED_APPLICATION,
