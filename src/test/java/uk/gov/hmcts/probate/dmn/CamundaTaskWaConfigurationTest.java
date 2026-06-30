@@ -88,7 +88,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boEscalateToRegistrar)  "
                                         + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
-                                        + "/trigger/boUploadDocsForSMEReferral)  "
+                                        + "/trigger/moveToCWEscalation)  "
                                         + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boStopCaseForCasePrinted)", true)
                                 .build()
