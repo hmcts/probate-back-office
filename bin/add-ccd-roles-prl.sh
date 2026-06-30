@@ -4,7 +4,6 @@ set -eu
 
 dir=$(dirname ${0})
 
-${dir}/ccd-add-role.sh caseworker-wa-task-configuration
 ${dir}/ccd-add-role.sh caseworker-privatelaw-cafcass
 ${dir}/ccd-add-role.sh caseworker-privatelaw-bulkscan
 ${dir}/ccd-add-role.sh payments
