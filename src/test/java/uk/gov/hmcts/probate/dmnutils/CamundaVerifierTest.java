@@ -1,40 +1,17 @@
 package uk.gov.hmcts.probate.dmnutils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CamundaUtils {
-    public static void resultsMatchUsingNameKey(List<Map<String, Object>> results,
-                                                List<Map<String, Object>> expectation) {
-        assertThat(results.size(), is(expectation.size()));
-
-        for (Map<String, Object> expectedEntry : expectation) {
-            String expectedName = (String) expectedEntry.get("name");
-            Map<String, Object> resultEntry = results.stream()
-                    .filter(result -> expectedName.equals(result.get("name")))
-                    .findFirst()
-                    .orElseThrow(() -> new AssertionError("No result found for name: " + expectedName));
-
-            for (String key : expectedEntry.keySet()) {
-                assertEquals(expectedEntry.get(key), resultEntry.get(key),
-                        "Mismatch for key: " + key + " in entry with name: " + expectedName);
-            }
-        }
-    }
+class CamundaVerifierTest {
 
     @Test
     void shouldMatchResultsWhenAllEntriesMatchByName() {
@@ -48,7 +25,7 @@ public class CamundaUtils {
                 Map.of("name", "task2", "value", "value2", "canReconfigure", false)
         );
 
-        CamundaUtils.resultsMatchUsingNameKey(results, expectation);
+        CamundaVerifier.resultsMatchUsingNameKey(results, expectation);
     }
 
     @Test
@@ -63,7 +40,7 @@ public class CamundaUtils {
                 Map.of("name", "task2", "value", "value2", "canReconfigure", false)
         );
 
-        CamundaUtils.resultsMatchUsingNameKey(results, expectation);
+        CamundaVerifier.resultsMatchUsingNameKey(results, expectation);
     }
 
     @Test
@@ -77,7 +54,7 @@ public class CamundaUtils {
                 Map.of("name", "task2", "value", "value2", "canReconfigure", false)
         );
 
-        assertThrows(AssertionError.class, () -> CamundaUtils.resultsMatchUsingNameKey(results, expectation));
+        assertThrows(AssertionError.class, () -> CamundaVerifier.resultsMatchUsingNameKey(results, expectation));
     }
 
     @Test
@@ -92,7 +69,7 @@ public class CamundaUtils {
                 Map.of("name", "task2", "value", "value2", "canReconfigure", false)
         );
 
-        assertThrows(AssertionError.class, () -> CamundaUtils.resultsMatchUsingNameKey(results, expectation));
+        assertThrows(AssertionError.class, () -> CamundaVerifier.resultsMatchUsingNameKey(results, expectation));
     }
 
     @Test
@@ -106,28 +83,14 @@ public class CamundaUtils {
                 Map.of("name", "task2", "value", "value2", "canReconfigure", false)
         );
 
-        assertThrows(AssertionError.class, () -> CamundaUtils.resultsMatchUsingNameKey(results, expectation));
-    }
-
-    public static Map<String, Object> mapAdditionalData(String additionalData) {
-        if (additionalData == null) {
-            return null;
-        }
-
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {};
-            return Map.of("additionalData", mapper.readValue(additionalData, typeRef));
-        } catch (IOException exp) {
-            return null;
-        }
+        assertThrows(AssertionError.class, () -> CamundaVerifier.resultsMatchUsingNameKey(results, expectation));
     }
 
     @Test
     void shouldReturnMappedAdditionalDataWhenJsonIsValid() {
         String validJson = "{ \"key1\": \"value1\", \"key2\": 2 }";
 
-        Map<String, Object> result = CamundaUtils.mapAdditionalData(validJson);
+        Map<String, Object> result = CamundaVerifier.mapAdditionalData(validJson);
 
         assertNotNull(result);
         assertTrue(result.containsKey("additionalData"));
@@ -140,15 +103,29 @@ public class CamundaUtils {
     void shouldReturnNullWhenJsonIsInvalid() {
         String invalidJson = "{ \"key1\": \"value1\", ";
 
-        Map<String, Object> result = CamundaUtils.mapAdditionalData(invalidJson);
+        Map<String, Object> result = CamundaVerifier.mapAdditionalData(invalidJson);
 
         assertNull(result);
     }
 
     @Test
     void shouldReturnNullWhenInputIsNull() {
-        Map<String, Object> result = CamundaUtils.mapAdditionalData(null);
+        Map<String, Object> result = CamundaVerifier.mapAdditionalData(null);
 
         assertNull(result);
+    }
+
+    @Test
+    void shouldRemoveEntriesWithNameContainingDueDateOrigin() {
+        List<Map<String, Object>> results = List.of(
+                Map.of("name", "dueDateOrigin", "value", "value1", "canReconfigure", true),
+                Map.of("name", "task2", "value", "value2", "canReconfigure", false)
+        );
+
+        List<Map<String, Object>> expectation = List.of(
+                Map.of("name", "task2", "value", "value2", "canReconfigure", false)
+        );
+
+        CamundaVerifier.resultsMatchUsingNameKey(results, expectation);
     }
 }
