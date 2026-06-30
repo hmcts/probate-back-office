@@ -80,6 +80,29 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 + "  \"Data\":{\n"
                 + "  \"evidenceHandled\" : \"" + false + "\",\n"
                 + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"caseHandedOffToLegacySite\" : \"" + "Yes" + "\",\n"
+                + "  \"boHandoffReasonList\" : [\n" +
+                "    {\n" +
+                "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
+                "      \"value\": {\n" +
+                "        \"caseHandoffReason\": \"DeBonisNon\"\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
+                "      \"value\": {\n" +
+                "        \"caseHandoffReason\": \"OtherReason\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n"
+                + "  }\n"
+                + "}");
+
+        Map<String, Object> additionalDataHandOffListLegacySiteNo = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + false + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"caseHandedOffToLegacySite\" : \"" + "No" + "\",\n"
                 + "  \"boHandoffReasonList\" : [\n" +
                 "    {\n" +
                 "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
@@ -101,6 +124,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 + "  \"Data\":{\n"
                 + "  \"evidenceHandled\" : \"" + false + "\",\n"
                 + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"caseHandedOffToLegacySite\" : \"" + "Yes" + "\",\n"
                 + "  \"boHandoffReasonList\" : [\n" +
                 "    {\n" +
                 "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
@@ -116,6 +140,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 + "  \"Data\":{\n"
                 + "  \"evidenceHandled\" : \"" + false + "\",\n"
                 + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"caseHandedOffToLegacySite\" : \"" + "Yes" + "\",\n"
                 + "  \"boHandoffReasonList\" : []\n"
                 + "  }\n"
                 + "}");
@@ -166,6 +191,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
+                        additionalDataHandOffListLegacySiteNo,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
                         additionalDataHandOffListOtherReason,
                         Collections.emptyList()
                 ),
@@ -182,7 +213,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(7));
+        assertThat(logic.getInputs().size(), is(8));
         assertThat(logic.getOutputs().size(), is(4));
         assertThat(logic.getRules().size(), is(5));
     }

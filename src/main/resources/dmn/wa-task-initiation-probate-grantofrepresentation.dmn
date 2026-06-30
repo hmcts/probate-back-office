@@ -50,13 +50,20 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "DeBonisNon")</text>
         </inputExpression>
       </input>
-      <input id="InputClause_13vi5ch" camunda:inputVariable="cellInput">
+      <input id="InputClause_13vi5ch" label="De Bonis Non" camunda:inputVariable="cellInput">
         <inputExpression id="LiteralExpression_0vlz4ms" typeRef="string">
           <text></text>
         </inputExpression>
         <inputValues id="UnaryTests_1li9jo3">
           <text></text>
         </inputValues>
+      </input>
+      <input id="InputClause_10czn8g" label="caseHandedOffToLegacySite">
+        <inputExpression id="LiteralExpression_0e39959" typeRef="boolean">
+          <text>if(additionalData != null and additionalData.Data != null and
+            additionalData.Data.caseHandedOffToLegacySite != null and additionalData.Data.caseHandedOffToLegacySite = "Yes") then
+            true else false</text>
+        </inputExpression>
       </input>
       <output id="Output_1" label="Task Id" name="taskId" typeRef="string" biodi:width="320" />
       <output id="OutputClause_0p5fhhd" label="Task Name" name="name" typeRef="string" biodi:width="362" />
@@ -82,6 +89,9 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_16133fw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bgiy9z">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yp6gfj">
@@ -119,6 +129,9 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
         <inputEntry id="UnaryTests_0j8iwnt">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1wtr76m">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_09b8joj">
           <text>"ExamineDigitalCaseProbate"</text>
         </outputEntry>
@@ -152,6 +165,9 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0qj3s7k">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06u2uis">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0w3g61g">
@@ -189,6 +205,9 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
         <inputEntry id="UnaryTests_14p1ar6">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1r6xwhh">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0z8vdkn">
           <text>"ExamineDigitalCaseIntestacy"</text>
         </outputEntry>
@@ -223,6 +242,9 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
         </inputEntry>
         <inputEntry id="UnaryTests_10jrt3g">
           <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "DeBonisNon")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ix20fg">
+          <text>true</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1cunumo">
           <text>"ExamineDeBonisNon"</text>
