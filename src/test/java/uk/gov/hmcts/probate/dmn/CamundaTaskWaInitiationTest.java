@@ -81,20 +81,20 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 + "  \"evidenceHandled\" : \"" + false + "\",\n"
                 + "  \"caseType\" : \"" + "gop" + "\",\n"
                 + "  \"caseHandedOffToLegacySite\" : \"" + "Yes" + "\",\n"
-                + "  \"boHandoffReasonList\" : [\n" +
-                "    {\n" +
-                "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
-                "      \"value\": {\n" +
-                "        \"caseHandoffReason\": \"DeBonisNon\"\n" +
-                "      }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
-                "      \"value\": {\n" +
-                "        \"caseHandoffReason\": \"OtherReason\"\n" +
-                "      }\n" +
-                "    }\n" +
-                "  ]\n"
+                + "  \"boHandoffReasonList\" : [\n"
+                + "    {\n"
+                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+                + "      \"value\": {\n"
+                + "        \"caseHandoffReason\": \"DeBonisNon\"\n"
+                + "      }\n"
+                + "    },\n"
+                + "    {\n"
+                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+                + "      \"value\": {\n"
+                + "        \"caseHandoffReason\": \"OtherReason\"\n"
+                + "      }\n"
+                + "    }\n"
+                + "  ]\n"
                 + "  }\n"
                 + "}");
 
@@ -103,20 +103,20 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 + "  \"evidenceHandled\" : \"" + false + "\",\n"
                 + "  \"caseType\" : \"" + "gop" + "\",\n"
                 + "  \"caseHandedOffToLegacySite\" : \"" + "No" + "\",\n"
-                + "  \"boHandoffReasonList\" : [\n" +
-                "    {\n" +
-                "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
-                "      \"value\": {\n" +
-                "        \"caseHandoffReason\": \"DeBonisNon\"\n" +
-                "      }\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
-                "      \"value\": {\n" +
-                "        \"caseHandoffReason\": \"OtherReason\"\n" +
-                "      }\n" +
-                "    }\n" +
-                "  ]\n"
+                + "  \"boHandoffReasonList\" : [\n"
+                + "    {\n"
+                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+                + "      \"value\": {\n"
+                + "        \"caseHandoffReason\": \"DeBonisNon\"\n"
+                + "      }\n"
+                + "    },\n"
+                + "    {\n"
+                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+                + "      \"value\": {\n"
+                + "        \"caseHandoffReason\": \"OtherReason\"\n"
+                + "      }\n"
+                + "    }\n"
+                + "  ]\n"
                 + "  }\n"
                 + "}");
 
@@ -125,14 +125,14 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 + "  \"evidenceHandled\" : \"" + false + "\",\n"
                 + "  \"caseType\" : \"" + "gop" + "\",\n"
                 + "  \"caseHandedOffToLegacySite\" : \"" + "Yes" + "\",\n"
-                + "  \"boHandoffReasonList\" : [\n" +
-                "    {\n" +
-                "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
-                "      \"value\": {\n" +
-                "        \"caseHandoffReason\": \"OtherReason\"\n" +
-                "      }\n" +
-                "    }\n" +
-                "  ]\n"
+                + "  \"boHandoffReasonList\" : [\n"
+                + "    {\n"
+                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+                + "      \"value\": {\n"
+                + "        \"caseHandoffReason\": \"OtherReason\"\n"
+                + "      }\n"
+                + "    }\n"
+                + "  ]\n"
                 + "  }\n"
                 + "}");
 
