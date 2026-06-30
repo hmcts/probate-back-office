@@ -353,6 +353,7 @@ public class DocumentController {
         return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest, caseworkerInfo));
     }
 
+    @SuppressWarnings("java:S6863")
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
         if (featureToggleService.usePreventUpdatingExistingUploadedDocumentsFeatureToggleOn()) {

@@ -63,9 +63,12 @@ public class EvidenceUploadService {
             UploadDocument afterDocument = afterById.get(existingDocument.getId());
             if (!afterById.containsKey(existingDocument.getId())
                     || !Objects.equals(existingDocument.getValue(), afterDocument)) {
+                Long caseId = Optional.ofNullable(callbackRequest.getCaseDetails())
+                        .map(CaseDetails::getId)
+                        .orElse(null);
                 log.error("Document with ID {} has been modified or removed for case {}",
                         existingDocument.getId(),
-                        callbackRequest.getCaseDetails().getId());
+                        caseId);
                 throw new BusinessValidationException(
                         DOCUMENT_MODIFICATION_NOT_ALLOWED_ERROR,
                         DOCUMENT_MODIFICATION_NOT_ALLOWED_ERROR
