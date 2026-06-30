@@ -1,4 +1,5 @@
 [
   {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "CaseFieldID": "caseType", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "evidenceHandledPage1", "FieldShowCondition": "[STATE]=\"NeverShow\"", "ShowSummaryChangeOption": "n", "Publish": "${CCD_DEF_PUBLISH}"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "CaseFieldID": "boHandoffReasonList", "PageFieldDisplayOrder": 1, "DisplayContext": "OPTIONAL", "PageID": "evidenceHandledPage1", "FieldShowCondition": "[STATE]=\"NeverShow\"", "ShowSummaryChangeOption": "n", "Publish": "${CCD_DEF_PUBLISH}"}
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "CaseFieldID": "boHandoffReasonList", "PageFieldDisplayOrder": 1, "DisplayContext": "OPTIONAL", "PageID": "evidenceHandledPage1", "FieldShowCondition": "[STATE]=\"NeverShow\"", "ShowSummaryChangeOption": "n", "Publish": "${CCD_DEF_PUBLISH}"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "CaseFieldID": "caseHandedOffToLegacySite", "PageFieldDisplayOrder": 1, "DisplayContext": "OPTIONAL", "PageID": "evidenceHandledPage1", "FieldShowCondition": "[STATE]=\"NeverShow\"", "ShowSummaryChangeOption": "n", "Publish": "${CCD_DEF_PUBLISH}"}
 ]
