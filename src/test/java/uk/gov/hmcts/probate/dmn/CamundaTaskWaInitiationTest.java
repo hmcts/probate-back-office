@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
@@ -34,6 +35,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         Map<String,Object> examineDigitalCaseProbateTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
                 "name", "Examine Digital Case - Probate",
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
+                "taskId", EXAMINE_DE_BONIS_NON,
+                "name", "Examine - De Bonis Non",
                 "processCategories", "case progression"
         );
 
@@ -66,6 +73,50 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 + "  \"evidenceHandled\" : \"" + false + "\",\n"
                 + "  \"caseType\" : \"" + "gop" + "\",\n"
                 + "  \"boHandoffReasonList\" : [1]\n"
+                + "  }\n"
+                + "}");
+
+        Map<String, Object> additionalDataHandOffListDeBonisNon = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + false + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"boHandoffReasonList\" : [\n" +
+                "    {\n" +
+                "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
+                "      \"value\": {\n" +
+                "        \"caseHandoffReason\": \"DeBonisNon\"\n" +
+                "      }\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
+                "      \"value\": {\n" +
+                "        \"caseHandoffReason\": \"OtherReason\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n"
+                + "  }\n"
+                + "}");
+
+        Map<String, Object> additionalDataHandOffListOtherReason = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + false + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"boHandoffReasonList\" : [\n" +
+                "    {\n" +
+                "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n" +
+                "      \"value\": {\n" +
+                "        \"caseHandoffReason\": \"OtherReason\"\n" +
+                "      }\n" +
+                "    }\n" +
+                "  ]\n"
+                + "  }\n"
+                + "}");
+
+        Map<String, Object> additionalDataHandOffListEmpty = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + false + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"boHandoffReasonList\" : []\n"
                 + "  }\n"
                 + "}");
 
@@ -105,6 +156,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "CasePrinted",
                         additionalData,
                         List.of(examineDigitalCaseProbateTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListDeBonisNon,
+                        List.of(examineDeBonisNonTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListOtherReason,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListEmpty,
+                        Collections.emptyList()
                 )
         );
     }
@@ -113,9 +182,9 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(5));
+        assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(4));
+        assertThat(logic.getRules().size(), is(5));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
