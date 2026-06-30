@@ -312,6 +312,7 @@ public class CallbackResponseTransformer {
         ResponseCaseData responseCaseData =
             getResponseCaseData(caseDetails, callbackRequest.getEventId(), Optional.empty(),false)
                 .executorsApplyingNotifications(exec)
+                .firstRedecReminderSentDate(null)
                 .build();
 
         return transformResponse(responseCaseData);
@@ -1464,6 +1465,7 @@ public class CallbackResponseTransformer {
             .executorsNamed(caseData.getExecutorsNamed())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
+            .firstRedecReminderSentDate(caseData.getFirstRedecReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
             .cwDocumentUploadedList(caseData.getCwDocumentUploadedList());
 
