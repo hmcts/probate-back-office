@@ -36,8 +36,10 @@ public class EmailTemplates {
     private String caveatDisposalReminder;
     private String draftCasePaymentSuccess;
     private String firstStopReminder;
+    private String firstRedecReminder;
     private String firstStopReminderForHub;
     private String secondStopReminder;
+    private String secondRedecReminder;
     private String secondStopReminderForHub;
     private String hseReminder;
     private String hseReminderForHub;
