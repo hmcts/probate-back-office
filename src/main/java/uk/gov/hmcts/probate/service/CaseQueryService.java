@@ -59,8 +59,6 @@ public class CaseQueryService {
         "data.grantAwaitingDocumentatioNotificationSent";
     private static final String KEY_EVIDENCE_HANDLED = "data.evidenceHandled";
     private static final String KEY_PAPER_FORM = "data.paperForm";
-    private static final String GRANT_RANGE_QUERY_EXELA = "templates/elasticsearch/caseMatching/"
-        + "grants_issued_date_range_query_exela.json";
     private static final String GRANT_RANGE_QUERY_SMEEFORD = "templates/elasticsearch/caseMatching/"
         + "grants_issued_date_range_query_smeeford.json";
     private static final String DORMANT_QUERY = "templates/elasticsearch/caseMatching/"
