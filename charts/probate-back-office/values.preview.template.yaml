@@ -377,10 +377,10 @@ xui-webapp:
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
     image: hmctsprod.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
-    devcpuRequests: 20m
-    devcpuLimits: 200m
-    devmemoryRequests: 512Mi #timeout happens when 256Mi is used, so increase it to 512Mi to make sure the pod can be up and running.
-    devmemoryLimits: 800Mi
+    devcpuRequests: 40m
+    devcpuLimits: 400m
+    devmemoryRequests: 800Mi #timeout happens when 256Mi is used, so increase it to 512Mi to make sure the pod can be up and running.
+    devmemoryLimits: 1.5Gi
     environment:
       HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
@@ -453,10 +453,10 @@ aac-manage-case-assignment:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-  devcpuRequests: 150m
-  devcpuLimits: 250m
-  devmemoryRequests: 1Gi
-  devmemoryLimits: 1.5G
+  devcpuRequests: 500m
+  devcpuLimits: 800m
+  devmemoryRequests: 2Gi
+  devmemoryLimits: 3Gi
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
