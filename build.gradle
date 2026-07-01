@@ -183,7 +183,7 @@ def versions = [
         springDocOpenUi                 : '2.8.17',
         swaggerAnnotations              : '2.2.50',
         springSecurityVersion           : '6.5.11',
-        tomcat                          : '10.1.55',
+        tomcat                          : '10.1.56',
         camunda                         : '7.24.0'
 ]
 
