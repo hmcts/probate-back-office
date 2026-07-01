@@ -10,8 +10,12 @@ import createWillLodgementConfig from '../createWillLodgement/createWillLodgemen
 import eventSummaryConfig from '../eventSummary/eventSummaryConfig.json' with { type: 'json' };
 import { BasePage } from '../utility/basePage.ts';
 import newCaseConfig from './newCaseConfig.json' with { type: 'json' };
+import createStandingSearchConfig from '../createStandingSearch/createStandingSearchConfig.json' with { type: 'json' };
 
 type CreateGrantOfProbateConfig = typeof createGrantOfProbateConfig | typeof createGrantOfProbateManualProbateManCaseConfig;
+type CreateCaveatConfig = typeof createCaveatConfig;
+type CreateWillLodgementConfig = typeof createWillLodgementConfig;
+type createStandingSearchConfig = typeof createStandingSearchConfig;
 type CaseProgressConfig = typeof caseProgressConfig;
 
 export class CreateCasePage extends BasePage {
@@ -56,6 +60,10 @@ export class CreateCasePage extends BasePage {
     readonly createWillWaitForTextLocator = this.page.getByText(createWillLodgementConfig.page2_waitForText);
     readonly amendWillWaitForTextLocator = this.page.getByText(createWillLodgementConfig.page2_amend_waitForText);
     readonly genderLocator = this.page.locator('#deceasedGender');
+    readonly createStandingSearchPageLocator = this.page.getByText(createStandingSearchConfig.page1_waitForText);
+    readonly createStandingSearchPage2Locator = this.page.getByText(createStandingSearchConfig.page2_waitForText);
+    readonly createStandingSearchPage3Locator = this.page.getByText(createStandingSearchConfig.page3_waitForText);
+    readonly createStandingSearchPage4Locator = this.page.getByText(createStandingSearchConfig.page4_waitForText);
 
     constructor(public readonly page: Page) {
         super(page);
@@ -111,26 +119,27 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async enterCaveatPage2(crud: string, unique_deceased_user: string) {
+    async enterCaveatPage2(crud: string, unique_deceased_user: string = Date.now().toString(), createCaveatCaseConfig: CreateCaveatConfig = createCaveatConfig) {
+        const unique_deceased_identifier = createCaveatCaseConfig === createCaveatConfig ? unique_deceased_user : "";
         if (crud === 'create') {
             await expect(this.createCaveatPage2Locator).toBeVisible();
-            await this.page.locator('#deceasedForenames').fill(createCaveatConfig.page2_forenames+unique_deceased_user);
-            await this.page.locator('#deceasedSurname').fill(createCaveatConfig.page2_surname+unique_deceased_user);
-            await this.page.locator('#deceasedDateOfDeath-day').fill(createCaveatConfig.page2_dateOfDeath_day);
-            await this.page.locator('#deceasedDateOfDeath-month').fill(createCaveatConfig.page2_dateOfDeath_month);
-            await this.page.locator('#deceasedDateOfDeath-year').fill(createCaveatConfig.page2_dateOfDeath_year);
-            await this.page.locator(`#deceasedAnyOtherNames_${createCaveatConfig.page2_hasAliasYes}`).focus();
-            await this.page.locator(`#deceasedAnyOtherNames_${createCaveatConfig.page2_hasAliasYes}`).check();
+            await this.page.locator('#deceasedForenames').fill(createCaveatCaseConfig.page2_forenames+unique_deceased_identifier);
+            await this.page.locator('#deceasedSurname').fill(createCaveatCaseConfig.page2_surname+unique_deceased_identifier);
+            await this.page.locator('#deceasedDateOfDeath-day').fill(createCaveatCaseConfig.page2_dateOfDeath_day);
+            await this.page.locator('#deceasedDateOfDeath-month').fill(createCaveatCaseConfig.page2_dateOfDeath_month);
+            await this.page.locator('#deceasedDateOfDeath-year').fill(createCaveatCaseConfig.page2_dateOfDeath_year);
+            await this.page.locator(`#deceasedAnyOtherNames_${createCaveatCaseConfig.page2_hasAliasYes}`).focus();
+            await this.page.locator(`#deceasedAnyOtherNames_${createCaveatCaseConfig.page2_hasAliasYes}`).check();
 
             let idx = 0;
-            const keys = Object.keys(createCaveatConfig);
+            const keys = Object.keys(createCaveatCaseConfig);
             let addNewButtonLocator: Locator;
             for (let i=0; i < keys.length; i++) {
                 const propName = keys[i];
                 if (idx === 0) {
-                    addNewButtonLocator = this.page.getByRole('button', {name: createCaveatConfig.page2_addAliasButton}).first();
+                    addNewButtonLocator = this.page.getByRole('button', {name: createCaveatCaseConfig.page2_addAliasButton}).first();
                 } else {
-                    addNewButtonLocator = this.page.getByRole('button', {name: createCaveatConfig.page2_addAliasButton}).nth(1);
+                    addNewButtonLocator = this.page.getByRole('button', {name: createCaveatCaseConfig.page2_addAliasButton}).nth(1);
                 }
 
                 if (propName.includes('page2_alias_')) {
@@ -139,7 +148,7 @@ export class CreateCasePage extends BasePage {
                         await this.page.waitForTimeout(testConfig.ManualDelayShort); // implicit wait needed here
                     }*/
                     await expect(this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`)).toBeEnabled();
-                    await this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`).fill(createCaveatConfig[propName]);
+                    await this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`).fill(createCaveatCaseConfig[propName]);
                     idx += 1;
                 }
             }
@@ -149,51 +158,51 @@ export class CreateCasePage extends BasePage {
             /*if (!testConfig.TestAutoDelayEnabled) {
                 await this.page.waitForTimeout(testConfig.ManualDelayShort); // implicit wait needed here
             }*/
-            await this.page.locator('#deceasedAddress__detailAddressLine1').fill(createCaveatConfig.address_line1);
-            await this.page.locator('#deceasedAddress__detailAddressLine2').fill(createCaveatConfig.address_line2);
-            await this.page.locator('#deceasedAddress__detailAddressLine3').fill(createCaveatConfig.address_line3);
-            await this.page.locator('#deceasedAddress__detailPostTown').fill(createCaveatConfig.address_town);
-            await this.page.locator('#deceasedAddress__detailCounty').fill(createCaveatConfig.address_county);
-            await this.page.locator('#deceasedAddress__detailPostCode').fill(createCaveatConfig.address_postcode);
-            await this.page.locator('#deceasedAddress__detailCountry').fill(createCaveatConfig.address_country);
+            await this.page.locator('#deceasedAddress__detailAddressLine1').fill(createCaveatCaseConfig.address_line1);
+            await this.page.locator('#deceasedAddress__detailAddressLine2').fill(createCaveatCaseConfig.address_line2);
+            await this.page.locator('#deceasedAddress__detailAddressLine3').fill(createCaveatCaseConfig.address_line3);
+            await this.page.locator('#deceasedAddress__detailPostTown').fill(createCaveatCaseConfig.address_town);
+            await this.page.locator('#deceasedAddress__detailCounty').fill(createCaveatCaseConfig.address_county);
+            await this.page.locator('#deceasedAddress__detailPostCode').fill(createCaveatCaseConfig.address_postcode);
+            await this.page.locator('#deceasedAddress__detailCountry').fill(createCaveatCaseConfig.address_country);
         }
 
         if (crud === 'update') {
             await expect(this.amendCaveatPage2Locator).toBeVisible();
-            await this.page.locator('#deceasedForenames').fill(createCaveatConfig.page2_forenames_update+unique_deceased_user);
-            await this.page.locator('#deceasedSurname').fill(createCaveatConfig.page2_surname_update+unique_deceased_user);
+            await this.page.locator('#deceasedForenames').fill(createCaveatCaseConfig.page2_forenames_update+unique_deceased_identifier);
+            await this.page.locator('#deceasedSurname').fill(createCaveatCaseConfig.page2_surname_update+unique_deceased_identifier);
         }
 
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async enterCaveatPage3(crud: string) {
+    async enterCaveatPage3(crud: string, createCaveatCaseConfig: CreateCaveatConfig = createCaveatConfig) {
         if (crud === 'create') {
             await expect(this.createCaveatPage3Locator).toBeVisible();
 
-            await this.page.locator('#caveatorForenames').fill(createCaveatConfig.page3_caveator_forenames);
-            await this.page.locator('#caveatorSurname').fill(createCaveatConfig.page3_caveator_surname);
-            await this.page.locator('#caveatorEmailAddress').fill(createCaveatConfig.page3_caveator_email);
-            await this.page.locator('#solsSolicitorAppReference').fill(createCaveatConfig.page3_solAppReference);
+            await this.page.locator('#caveatorForenames').fill(createCaveatCaseConfig.page3_caveator_forenames);
+            await this.page.locator('#caveatorSurname').fill(createCaveatCaseConfig.page3_caveator_surname);
+            await this.page.locator('#caveatorEmailAddress').fill(createCaveatCaseConfig.page3_caveator_email);
+            await this.page.locator('#solsSolicitorAppReference').fill(createCaveatCaseConfig.page3_solAppReference);
 
             await this.postcodeLinkLocator.focus();
             await this.postcodeLinkLocator.click();
-            await this.page.locator('#caveatorAddress__detailAddressLine1').fill(createCaveatConfig.address_line1);
-            await this.page.locator('#caveatorAddress__detailAddressLine2').fill(createCaveatConfig.address_line2);
-            await this.page.locator('#caveatorAddress__detailAddressLine3').fill(createCaveatConfig.address_line3);
-            await this.page.locator('#caveatorAddress__detailPostTown').fill(createCaveatConfig.address_town);
-            await this.page.locator('#caveatorAddress__detailCounty').fill(createCaveatConfig.address_county);
-            await this.page.locator('#caveatorAddress__detailPostCode').fill(createCaveatConfig.address_postcode);
-            await this.page.locator('#caveatorAddress__detailCountry').fill(createCaveatConfig.address_country);
-            await this.page.locator(`#languagePreferenceWelsh_${createCaveatConfig.page3_langPrefNo}`).click();
+            await this.page.locator('#caveatorAddress__detailAddressLine1').fill(createCaveatCaseConfig.address_line1);
+            await this.page.locator('#caveatorAddress__detailAddressLine2').fill(createCaveatCaseConfig.address_line2);
+            await this.page.locator('#caveatorAddress__detailAddressLine3').fill(createCaveatCaseConfig.address_line3);
+            await this.page.locator('#caveatorAddress__detailPostTown').fill(createCaveatCaseConfig.address_town);
+            await this.page.locator('#caveatorAddress__detailCounty').fill(createCaveatCaseConfig.address_county);
+            await this.page.locator('#caveatorAddress__detailPostCode').fill(createCaveatCaseConfig.address_postcode);
+            await this.page.locator('#caveatorAddress__detailCountry').fill(createCaveatCaseConfig.address_country);
+            await this.page.locator(`#languagePreferenceWelsh_${createCaveatCaseConfig.page3_langPrefNo}`).click();
             await this.waitForNavigationToComplete(commonConfig.continueButton);
         }
 
         if (crud === 'update') {
             await expect(this.amendCaveatPage3Locator).toBeVisible();
 
-            await this.page.locator('#caveatorForenames').fill(createCaveatConfig.page3_caveator_forenames_update);
-            await this.page.locator('#caveatorSurname').fill(createCaveatConfig.page3_caveator_surname_update);
+            await this.page.locator('#caveatorForenames').fill(createCaveatCaseConfig.page3_caveator_forenames_update);
+            await this.page.locator('#caveatorSurname').fill(createCaveatCaseConfig.page3_caveator_surname_update);
             await this.waitForNavigationToComplete(commonConfig.submitButton);
         }
 
@@ -538,52 +547,54 @@ export class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async enterWillLodgementPage1(crud: string) {
+    async enterWillLodgementPage1(crud: string, createWillLodgementCaseConfig: CreateWillLodgementConfig = createWillLodgementConfig) {
         if (crud === 'create') {
             // await this.page.waitForTimeout(testConfig.WaitForTextTimeout);
             await expect(this.applicationTypeLocator).toBeEnabled();
-            await this.applicationTypeLocator.selectOption({label: createWillLodgementConfig.page1_list1_application_type});
+            await this.applicationTypeLocator.selectOption({label: createWillLodgementCaseConfig.page1_list1_application_type});
             await expect(this.registryLocator).toBeVisible();
             await expect(this.registryLocator).toBeEnabled();
-            await this.registryLocator.selectOption({label: createWillLodgementConfig.page1_list2_registry_location});
+            await this.registryLocator.selectOption({label: createWillLodgementCaseConfig.page1_list2_registry_location});
             await expect(this.lodgementTypeLocator).toBeVisible();
             await expect(this.lodgementTypeLocator).toBeEnabled();
-            await this.lodgementTypeLocator.selectOption({label: createWillLodgementConfig.page1_list3_lodgement_type});
+            await this.lodgementTypeLocator.selectOption({label: createWillLodgementCaseConfig.page1_list3_lodgement_type});
 
-            await this.page.locator('#lodgedDate-day').fill(createWillLodgementConfig.page1_lodgedDate_day);
-            await this.page.locator('#lodgedDate-month').fill(createWillLodgementConfig.page1_lodgedDate_month);
-            await this.page.locator('#lodgedDate-year').fill(createWillLodgementConfig.page1_lodgedDate_year);
+            await this.page.locator('#lodgedDate-day').fill(createWillLodgementCaseConfig.page1_lodgedDate_day);
+            await this.page.locator('#lodgedDate-month').fill(createWillLodgementCaseConfig.page1_lodgedDate_month);
+            await this.page.locator('#lodgedDate-year').fill(createWillLodgementCaseConfig.page1_lodgedDate_year);
 
-            await this.page.locator('#willDate-day').fill(createWillLodgementConfig.page1_willDate_day);
-            await this.page.locator('#willDate-month').fill(createWillLodgementConfig.page1_willDate_month);
-            await this.page.locator('#willDate-year').fill(createWillLodgementConfig.page1_willDate_year);
+            await this.page.locator('#willDate-day').fill(createWillLodgementCaseConfig.page1_willDate_day);
+            await this.page.locator('#willDate-month').fill(createWillLodgementCaseConfig.page1_willDate_month);
+            await this.page.locator('#willDate-year').fill(createWillLodgementCaseConfig.page1_willDate_year);
 
-            await this.page.locator('#codicilDate-day').fill(createWillLodgementConfig.page1_codicilDate_day);
-            await this.page.locator('#codicilDate-month').fill(createWillLodgementConfig.page1_codicilDate_month);
-            await this.page.locator('#codicilDate-year').fill(createWillLodgementConfig.page1_codicilDate_year);
+            await this.page.locator('#codicilDate-day').fill(createWillLodgementCaseConfig.page1_codicilDate_day);
+            await this.page.locator('#codicilDate-month').fill(createWillLodgementCaseConfig.page1_codicilDate_month);
+            await this.page.locator('#codicilDate-year').fill(createWillLodgementCaseConfig.page1_codicilDate_year);
 
-            await this.page.locator('#numberOfCodicils').fill(createWillLodgementConfig.page1_numberOfCodicils);
-            await this.page.locator(`#jointWill_${createWillLodgementConfig.page1_jointWill}`).click();
+            await this.page.locator('#numberOfCodicils').fill(createWillLodgementCaseConfig.page1_numberOfCodicils);
+            await this.page.locator(`#jointWill_${createWillLodgementCaseConfig.page1_jointWill}`).click();
         }
 
         if (crud === 'update') {
             // await this.page.waitForTimeout(testConfig.WaitForTextTimeout);
             await expect(this.registryLocator).toBeVisible();
             await expect(this.registryLocator).toBeEnabled();
-            await this.registryLocator.selectOption({label: createWillLodgementConfig.page1_list2_registry_location_update});
+            await this.registryLocator.selectOption({label: createWillLodgementCaseConfig.page1_list2_registry_location_update});
             await expect(this.lodgementTypeLocator).toBeVisible();
             await expect(this.lodgementTypeLocator).toBeEnabled();
-            await this.lodgementTypeLocator.selectOption({label: createWillLodgementConfig.page1_list3_lodgement_type_update});
-            await this.page.locator('#lodgedDate-day').fill(createWillLodgementConfig.page1_lodgedDate_day_update);
-            await this.page.locator('#lodgedDate-month').fill(createWillLodgementConfig.page1_lodgedDate_month_update);
-            await this.page.locator('#lodgedDate-year').fill(createWillLodgementConfig.page1_lodgedDate_year_update);
+            await this.lodgementTypeLocator.selectOption({label: createWillLodgementCaseConfig.page1_list3_lodgement_type_update});
+            await this.page.locator('#lodgedDate-day').fill(createWillLodgementCaseConfig.page1_lodgedDate_day_update);
+            await this.page.locator('#lodgedDate-month').fill(createWillLodgementCaseConfig.page1_lodgedDate_month_update);
+            await this.page.locator('#lodgedDate-year').fill(createWillLodgementCaseConfig.page1_lodgedDate_year_update);
 
-            await this.page.locator('#numberOfCodicils').fill(createWillLodgementConfig.page1_numberOfCodicils_update);
+            await this.page.locator('#numberOfCodicils').fill(createWillLodgementCaseConfig.page1_numberOfCodicils_update);
         }
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async enterWillLodgementPage2(crud: string, unique_deceased_user: string = Date.now().toString()) {
+    async enterWillLodgementPage2(crud: string, unique_deceased_user: string = Date.now().toString(), createWillLodgementCaseConfig: CreateWillLodgementConfig = createWillLodgementConfig) {
+        const unique_deceased_identifier = createWillLodgementCaseConfig === createWillLodgementConfig ? unique_deceased_user : "";
+        const _unique_deceased_identifier = createWillLodgementCaseConfig === createWillLodgementConfig ? ("_"+unique_deceased_user) : "";
         if (crud === 'create') {
             await expect(this.createWillWaitForTextLocator).toBeVisible();
 
@@ -592,33 +603,33 @@ export class CreateCasePage extends BasePage {
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
             }*/
-            await this.page.locator('#deceasedForenames').fill(createWillLodgementConfig.page2_forenames + '_' + unique_deceased_user);
+            await this.page.locator('#deceasedForenames').fill(createWillLodgementCaseConfig.page2_forenames + _unique_deceased_identifier);
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
             }*/
 
-            await this.page.locator('#deceasedSurname').fill(createWillLodgementConfig.page2_surname + '_' + unique_deceased_user);
-            await this.genderLocator.selectOption({label: createWillLodgementConfig.page2_gender});
-            await this.page.locator('#deceasedDateOfBirth-day').fill(createWillLodgementConfig.page2_dateOfBirth_day);
-            await this.page.locator('#deceasedDateOfBirth-month').fill(createWillLodgementConfig.page2_dateOfBirth_month);
-            await this.page.locator('#deceasedDateOfBirth-year').fill(createWillLodgementConfig.page2_dateOfBirth_year);
-            await this.page.locator('#deceasedDateOfDeath-day').fill(createWillLodgementConfig.page2_dateOfDeath_day);
-            await this.page.locator('#deceasedDateOfDeath-month').fill(createWillLodgementConfig.page2_dateOfDeath_month);
-            await this.page.locator('#deceasedDateOfDeath-year').fill(createWillLodgementConfig.page2_dateOfDeath_year);
-            await this.page.locator('#deceasedTypeOfDeath').selectOption({label: createWillLodgementConfig.page2_typeOfDeath});
+            await this.page.locator('#deceasedSurname').fill(createWillLodgementCaseConfig.page2_surname + _unique_deceased_identifier);
+            await this.genderLocator.selectOption({label: createWillLodgementCaseConfig.page2_gender});
+            await this.page.locator('#deceasedDateOfBirth-day').fill(createWillLodgementCaseConfig.page2_dateOfBirth_day);
+            await this.page.locator('#deceasedDateOfBirth-month').fill(createWillLodgementCaseConfig.page2_dateOfBirth_month);
+            await this.page.locator('#deceasedDateOfBirth-year').fill(createWillLodgementCaseConfig.page2_dateOfBirth_year);
+            await this.page.locator('#deceasedDateOfDeath-day').fill(createWillLodgementCaseConfig.page2_dateOfDeath_day);
+            await this.page.locator('#deceasedDateOfDeath-month').fill(createWillLodgementCaseConfig.page2_dateOfDeath_month);
+            await this.page.locator('#deceasedDateOfDeath-year').fill(createWillLodgementCaseConfig.page2_dateOfDeath_year);
+            await this.page.locator('#deceasedTypeOfDeath').selectOption({label: createWillLodgementCaseConfig.page2_typeOfDeath});
             // await this.page.waitForTimeout(testConfig.ManualDelayShort);
-            await expect(this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementConfig.page2_hasAliasYes}`)).toBeEnabled();
-            await this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementConfig.page2_hasAliasYes}`).click();
-            await this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementConfig.page2_hasAliasYes}`).click();
+            await expect(this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementCaseConfig.page2_hasAliasYes}`)).toBeEnabled();
+            await this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementCaseConfig.page2_hasAliasYes}`).click();
+            await this.page.locator(`#deceasedAnyOtherNames_${createWillLodgementCaseConfig.page2_hasAliasYes}`).click();
 
             let idx = 0;
-            const keys = Object.keys(createWillLodgementConfig);
+            const keys = Object.keys(createWillLodgementCaseConfig);
             for (let i=0; i < keys.length; i++) {
                 const propName = keys[i];
                 if (propName.includes('page2_alias_')) {
-                    await this.page.locator(createWillLodgementConfig.page2_addAliasButton)
+                    await this.page.locator(createWillLodgementCaseConfig.page2_addAliasButton)
                         .first()
                         .click();
                     // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
@@ -629,7 +640,7 @@ export class CreateCasePage extends BasePage {
                         await this.page.waitForTimeout(testConfig.ManualDelayShort);
                     }*/
                     await expect(deceasedNameListlocator).toBeVisible();
-                    await deceasedNameListlocator.fill(createWillLodgementConfig[propName]);
+                    await deceasedNameListlocator.fill(createWillLodgementCaseConfig[propName]);
                     idx += 1;
                 }
             }
@@ -638,17 +649,17 @@ export class CreateCasePage extends BasePage {
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
             }*/
-            await this.page.locator('#deceasedFullAliasNameList_0_FullAliasName').fill(createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user);
+            await this.page.locator('#deceasedFullAliasNameList_0_FullAliasName').fill(createWillLodgementCaseConfig.page2_alias_1 + _unique_deceased_identifier);
 
             await this.pcLocator2.click();
-            await this.page.locator('#deceasedAddress__detailAddressLine1').fill(createWillLodgementConfig.address_line1);
-            await this.page.locator('#deceasedAddress__detailAddressLine2').fill(createWillLodgementConfig.address_line2);
-            await this.page.locator('#deceasedAddress__detailAddressLine3').fill(createWillLodgementConfig.address_line3);
-            await this.page.locator('#deceasedAddress__detailPostTown').fill(createWillLodgementConfig.address_town);
-            await this.page.locator('#deceasedAddress__detailCounty').fill(createWillLodgementConfig.address_county);
-            await this.page.locator('#deceasedAddress__detailPostCode').fill(createWillLodgementConfig.address_postcode);
-            await this.page.locator('#deceasedAddress__detailCountry').fill(createWillLodgementConfig.address_country);
-            await this.page.locator('#deceasedEmailAddress').fill(createWillLodgementConfig.page2_email);
+            await this.page.locator('#deceasedAddress__detailAddressLine1').fill(createWillLodgementCaseConfig.address_line1);
+            await this.page.locator('#deceasedAddress__detailAddressLine2').fill(createWillLodgementCaseConfig.address_line2);
+            await this.page.locator('#deceasedAddress__detailAddressLine3').fill(createWillLodgementCaseConfig.address_line3);
+            await this.page.locator('#deceasedAddress__detailPostTown').fill(createWillLodgementCaseConfig.address_town);
+            await this.page.locator('#deceasedAddress__detailCounty').fill(createWillLodgementCaseConfig.address_county);
+            await this.page.locator('#deceasedAddress__detailPostCode').fill(createWillLodgementCaseConfig.address_postcode);
+            await this.page.locator('#deceasedAddress__detailCountry').fill(createWillLodgementCaseConfig.address_country);
+            await this.page.locator('#deceasedEmailAddress').fill(createWillLodgementCaseConfig.page2_email);
         }
 
         if (crud === 'update') {
@@ -659,26 +670,26 @@ export class CreateCasePage extends BasePage {
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayShort);
             }*/
-            await this.page.locator('#deceasedForenames').fill(createWillLodgementConfig.page2_forenames + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
+            await this.page.locator('#deceasedForenames').fill(createWillLodgementCaseConfig.page2_forenames + _unique_deceased_identifier + ' UPDATED' + unique_deceased_identifier);
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }*/
 
-            await this.page.locator('#deceasedSurname').fill(createWillLodgementConfig.page2_surname + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
+            await this.page.locator('#deceasedSurname').fill(createWillLodgementCaseConfig.page2_surname + _unique_deceased_identifier + ' UPDATED' + unique_deceased_identifier);
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }*/
-            await this.page.locator('#deceasedFullAliasNameList_0_FullAliasName').fill(createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
-            await this.page.locator('#deceasedDateOfDeath-day').fill(createWillLodgementConfig.page2_dateOfDeath_day_update);
-            await this.page.locator('#deceasedDateOfDeath-month').fill(createWillLodgementConfig.page2_dateOfDeath_month_update);
-            await this.page.locator('#deceasedDateOfDeath-year').fill(createWillLodgementConfig.page2_dateOfDeath_year_update);
-            await this.page.locator('#deceasedDateOfBirth-day').fill(createWillLodgementConfig.page2_dateOfBirth_day_update);
-            await this.page.locator('#deceasedDateOfBirth-month').fill(createWillLodgementConfig.page2_dateOfBirth_month_update);
-            await this.page.locator('#deceasedDateOfBirth-year').fill(createWillLodgementConfig.page2_dateOfBirth_year_update);
+            await this.page.locator('#deceasedFullAliasNameList_0_FullAliasName').fill(createWillLodgementCaseConfig.page2_alias_1 + _unique_deceased_identifier + ' UPDATED' + unique_deceased_identifier);
+            await this.page.locator('#deceasedDateOfDeath-day').fill(createWillLodgementCaseConfig.page2_dateOfDeath_day_update);
+            await this.page.locator('#deceasedDateOfDeath-month').fill(createWillLodgementCaseConfig.page2_dateOfDeath_month_update);
+            await this.page.locator('#deceasedDateOfDeath-year').fill(createWillLodgementCaseConfig.page2_dateOfDeath_year_update);
+            await this.page.locator('#deceasedDateOfBirth-day').fill(createWillLodgementCaseConfig.page2_dateOfBirth_day_update);
+            await this.page.locator('#deceasedDateOfBirth-month').fill(createWillLodgementCaseConfig.page2_dateOfBirth_month_update);
+            await this.page.locator('#deceasedDateOfBirth-year').fill(createWillLodgementCaseConfig.page2_dateOfBirth_year_update);
         }
 
         if (crud === 'update2orig') {
@@ -686,18 +697,18 @@ export class CreateCasePage extends BasePage {
             // "reverting" update back to defaults - to enable case-match with matching case
             await this.waitForNavigationToComplete(commonConfig.continueButton);
             await expect(this.amendWillWaitForTextLocator).toBeVisible();
-            await this.page.locator('#deceasedDateOfDeath-day').fill(createWillLodgementConfig.page2_dateOfDeath_day);
-            await this.page.locator('#deceasedDateOfDeath-month').fill(createWillLodgementConfig.page2_dateOfDeath_month);
-            await this.page.locator('#deceasedDateOfDeath-year').fill(createWillLodgementConfig.page2_dateOfDeath_year);
-            await this.page.locator('#deceasedDateOfBirth-day').fill(createWillLodgementConfig.page2_dateOfBirth_day);
-            await this.page.locator('#deceasedDateOfBirth-month').fill(createWillLodgementConfig.page2_dateOfBirth_month);
-            await this.page.locator('#deceasedDateOfBirth-year').fill(createWillLodgementConfig.page2_dateOfBirth_year);
+            await this.page.locator('#deceasedDateOfDeath-day').fill(createWillLodgementCaseConfig.page2_dateOfDeath_day);
+            await this.page.locator('#deceasedDateOfDeath-month').fill(createWillLodgementCaseConfig.page2_dateOfDeath_month);
+            await this.page.locator('#deceasedDateOfDeath-year').fill(createWillLodgementCaseConfig.page2_dateOfDeath_year);
+            await this.page.locator('#deceasedDateOfBirth-day').fill(createWillLodgementCaseConfig.page2_dateOfBirth_day);
+            await this.page.locator('#deceasedDateOfBirth-month').fill(createWillLodgementCaseConfig.page2_dateOfBirth_month);
+            await this.page.locator('#deceasedDateOfBirth-year').fill(createWillLodgementCaseConfig.page2_dateOfBirth_year);
             await this.waitForNavigationToComplete(commonConfig.continueButton);
         }
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async enterWillLodgementPage3(crud: string) {
+    async enterWillLodgementPage3(crud: string, createWillLodgementCaseConfig: CreateWillLodgementConfig = createWillLodgementConfig) {
         const index = 0;
         /* eslint prefer-const: 0 */
         let executorFieldList = [];
@@ -711,78 +722,172 @@ export class CreateCasePage extends BasePage {
         });
 
         if (crud === 'create') {
-            await expect(this.page.getByText(createWillLodgementConfig.page3_waitForText)).toBeVisible();
-            await this.page.locator('#executorTitle').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title`)]]);
+            await expect(this.page.getByText(createWillLodgementCaseConfig.page3_waitForText)).toBeVisible();
+            await this.page.locator('#executorTitle').fill(createWillLodgementCaseConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title`)]]);
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }*/
-            await this.page.locator('#executorForenames').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames`)]]);
+            await this.page.locator('#executorForenames').fill(createWillLodgementCaseConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames`)]]);
             // await I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames`)]]);
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }*/
-            await this.page.locator('#executorSurname').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname`)]]);
-            await this.page.locator('#executorEmailAddress').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email`)]]);
+            await this.page.locator('#executorSurname').fill(createWillLodgementCaseConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname`)]]);
+            await this.page.locator('#executorEmailAddress').fill(createWillLodgementCaseConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email`)]]);
             await this.postcodeLinkLocator.click();
-            await this.page.locator('#executorAddress__detailAddressLine1').fill(createWillLodgementConfig.address_line1);
-            await this.page.locator('#executorAddress__detailAddressLine2').fill(createWillLodgementConfig.address_line2);
-            await this.page.locator('#executorAddress__detailAddressLine3').fill(createWillLodgementConfig.address_line3);
-            await this.page.locator('#executorAddress__detailPostTown').fill(createWillLodgementConfig.address_town);
-            await this.page.locator('#executorAddress__detailCounty').fill(createWillLodgementConfig.address_county);
-            await this.page.locator('#executorAddress__detailPostCode').fill(createWillLodgementConfig.address_postcode);
-            await this.page.locator('#executorAddress__detailCountry').fill(createWillLodgementConfig.address_country);
+            await this.page.locator('#executorAddress__detailAddressLine1').fill(createWillLodgementCaseConfig.address_line1);
+            await this.page.locator('#executorAddress__detailAddressLine2').fill(createWillLodgementCaseConfig.address_line2);
+            await this.page.locator('#executorAddress__detailAddressLine3').fill(createWillLodgementCaseConfig.address_line3);
+            await this.page.locator('#executorAddress__detailPostTown').fill(createWillLodgementCaseConfig.address_town);
+            await this.page.locator('#executorAddress__detailCounty').fill(createWillLodgementCaseConfig.address_county);
+            await this.page.locator('#executorAddress__detailPostCode').fill(createWillLodgementCaseConfig.address_postcode);
+            await this.page.locator('#executorAddress__detailCountry').fill(createWillLodgementCaseConfig.address_country);
 
-            Object.keys(createWillLodgementConfig).forEach(function (value) {
+            Object.keys(createWillLodgementCaseConfig).forEach(function (value) {
                 if (value.includes('page3_additional_executor')) {
                     additionalExecutorFieldList.push(value);
                 }
             });
 
-            await this.page.locator(createWillLodgementConfig.page3_addExecutorButton).click();
+            await this.page.locator(createWillLodgementCaseConfig.page3_addExecutorButton).click();
             await expect(this.page.locator(`#additionalExecutorList_${index}_executorForenames`)).toBeEnabled();
             // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-            await this.page.locator(`#additionalExecutorList_${index}_executorTitle`).fill(createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_title`)]]);
+            await this.page.locator(`#additionalExecutorList_${index}_executorTitle`).fill(createWillLodgementCaseConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_title`)]]);
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }*/
 
-            await this.page.locator(`#additionalExecutorList_${index}_executorForenames`).fill(createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_forenames`)]]);
-            await this.page.locator(`#additionalExecutorList_${index}_executorSurname`).fill(createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_surname`)]]);
+            await this.page.locator(`#additionalExecutorList_${index}_executorForenames`).fill(createWillLodgementCaseConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_forenames`)]]);
+            await this.page.locator(`#additionalExecutorList_${index}_executorSurname`).fill(createWillLodgementCaseConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_surname`)]]);
             await this.postcodeLinkLocator.click();
             await expect(this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailAddressLine1`)).toBeVisible();
-            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailAddressLine1`).fill(createWillLodgementConfig.address_line1);
-            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailAddressLine2`).fill(createWillLodgementConfig.address_line2);
-            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailAddressLine3`).fill(createWillLodgementConfig.address_line3);
-            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailPostTown`).fill(createWillLodgementConfig.address_town);
-            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailCounty`).fill(createWillLodgementConfig.address_county);
-            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailPostCode`).fill(createWillLodgementConfig.address_postcode);
-            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailCountry`).fill(createWillLodgementConfig.address_country);
-            await this.page.locator(`#additionalExecutorList_${index}_executorEmailAddress`).fill(createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_email`)]]);
+            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailAddressLine1`).fill(createWillLodgementCaseConfig.address_line1);
+            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailAddressLine2`).fill(createWillLodgementCaseConfig.address_line2);
+            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailAddressLine3`).fill(createWillLodgementCaseConfig.address_line3);
+            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailPostTown`).fill(createWillLodgementCaseConfig.address_town);
+            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailCounty`).fill(createWillLodgementCaseConfig.address_county);
+            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailPostCode`).fill(createWillLodgementCaseConfig.address_postcode);
+            await this.page.locator(`#additionalExecutorList_${index}_executorAddress__detailCountry`).fill(createWillLodgementCaseConfig.address_country);
+            await this.page.locator(`#additionalExecutorList_${index}_executorEmailAddress`).fill(createWillLodgementCaseConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_email`)]]);
         }
 
         if (crud === 'update') {
-            await expect(this.page.getByText(createWillLodgementConfig.page3_amend_waitForText)).toBeVisible();
-            await this.page.locator('#executorTitle').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title_update`)]]);
+            await expect(this.page.getByText(createWillLodgementCaseConfig.page3_amend_waitForText)).toBeVisible();
+            await this.page.locator('#executorTitle').fill(createWillLodgementCaseConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title_update`)]]);
 
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }*/
-            await this.page.locator('#executorForenames').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames_update`)]]);
+            await this.page.locator('#executorForenames').fill(createWillLodgementCaseConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames_update`)]]);
             /*if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }*/
-            await this.page.locator('#executorSurname').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname_update`)]]);
-            await this.page.locator('#executorEmailAddress').fill(createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email_update`)]]);
+            await this.page.locator('#executorSurname').fill(createWillLodgementCaseConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname_update`)]]);
+            await this.page.locator('#executorEmailAddress').fill(createWillLodgementCaseConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email_update`)]]);
+        }
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async enterStandingSearchPage1(crud: string) {
+        if (crud === 'create') {
+            await expect(this.createStandingSearchPageLocator).toBeVisible();
+            await expect(this.applicationTypeLocator).toBeEnabled();
+            await this.applicationTypeLocator.selectOption({label: createStandingSearchConfig.page1_list1_application_type});
+            await expect(this.registryLocator).toBeVisible();
+            await expect(this.registryLocator).toBeEnabled();
+            await this.registryLocator.selectOption({label: createStandingSearchConfig.page1_list2_registry_location});
+        }
+
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async enterStandingSearchPage2(crud: string, createStandingSearchConfig: createStandingSearchConfig) {
+        if (crud === 'create') {
+            await expect(this.createStandingSearchPage2Locator).toBeVisible();
+            await this.page.locator('#deceasedForenames').fill(createStandingSearchConfig.page2_forenames);
+            await this.page.locator('#deceasedSurname').fill(createStandingSearchConfig.page2_surname);
+            await this.page.locator('#deceasedDateOfDeath-day').fill(createStandingSearchConfig.page2_dateOfDeath_day);
+            await this.page.locator('#deceasedDateOfDeath-month').fill(createStandingSearchConfig.page2_dateOfDeath_month);
+            await this.page.locator('#deceasedDateOfDeath-year').fill(createStandingSearchConfig.page2_dateOfDeath_year);
+            await this.page.locator(`#deceasedAnyOtherNames_${createStandingSearchConfig.page2_hasAliasYes}`).focus();
+            await this.page.locator(`#deceasedAnyOtherNames_${createStandingSearchConfig.page2_hasAliasYes}`).check();
+
+            let idx = 0;
+            const keys = Object.keys(createStandingSearchConfig);
+            let addNewButtonLocator: Locator;
+            for (let i=0; i < keys.length; i++) {
+                const propName = keys[i];
+                if (idx === 0) {
+                    addNewButtonLocator = this.page.getByRole('button', {name: createStandingSearchConfig.page2_addAliasButton}).first();
+                } else {
+                    addNewButtonLocator = this.page.getByRole('button', {name: createStandingSearchConfig.page2_addAliasButton}).nth(1);
+                }
+
+                if (propName.includes('page2_alias_')) {
+                    await addNewButtonLocator.click();
+                    /*if (!testConfig.TestAutoDelayEnabled) {
+                        await this.page.waitForTimeout(testConfig.ManualDelayShort); // implicit wait needed here
+                    }*/
+                    await expect(this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`)).toBeEnabled();
+                    await this.page.locator(`#deceasedFullAliasNameList_${idx}_FullAliasName`).fill(createStandingSearchConfig[propName]);
+                    idx += 1;
+                }
+            }
+
+            await this.postcodeLinkLocator.focus();
+            await this.postcodeLinkLocator.click();
+            /*if (!testConfig.TestAutoDelayEnabled) {
+                await this.page.waitForTimeout(testConfig.ManualDelayShort); // implicit wait needed here
+            }*/
+            await this.page.locator('#deceasedAddress__detailAddressLine1').fill(createStandingSearchConfig.page2_address_line1);
+            await this.page.locator('#deceasedAddress__detailAddressLine2').fill(createStandingSearchConfig.page2_address_line2);
+            await this.page.locator('#deceasedAddress__detailAddressLine3').fill(createStandingSearchConfig.page2_address_line3);
+            await this.page.locator('#deceasedAddress__detailPostTown').fill(createStandingSearchConfig.page2_address_town);
+            await this.page.locator('#deceasedAddress__detailCounty').fill(createStandingSearchConfig.page2_address_county);
+            await this.page.locator('#deceasedAddress__detailPostCode').fill(createStandingSearchConfig.page2_address_postcode);
+            await this.page.locator('#deceasedAddress__detailCountry').fill(createStandingSearchConfig.page2_address_country);
+        }
+
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async enterStandingSearchPage3(crud: string, createStandingSearchConfig: createStandingSearchConfig) {
+        if (crud === 'create') {
+            await expect(this.createStandingSearchPage3Locator).toBeVisible();
+            await this.page.locator('#applicantForenames').fill(createStandingSearchConfig.page3_applicant_forenames);
+            await this.page.locator('#applicantSurname').fill(createStandingSearchConfig.page3_applicant_surname);
+            await this.page.locator('#applicantEmailAddress').fill(createStandingSearchConfig.page3_applicant_email);
+            await this.postcodeLinkLocator.focus();
+            await this.postcodeLinkLocator.click();
+            /*if (!testConfig.TestAutoDelayEnabled) {
+                await this.page.waitForTimeout(testConfig.ManualDelayShort); // implicit wait needed here
+            }*/
+            await this.page.locator('#applicantAddress__detailAddressLine1').fill(createStandingSearchConfig.page3_address_line1);
+            await this.page.locator('#applicantAddress__detailAddressLine2').fill(createStandingSearchConfig.page3_address_line2);
+            await this.page.locator('#applicantAddress__detailAddressLine3').fill(createStandingSearchConfig.page3_address_line3);
+            await this.page.locator('#applicantAddress__detailPostTown').fill(createStandingSearchConfig.page3_address_town);
+            await this.page.locator('#applicantAddress__detailCounty').fill(createStandingSearchConfig.page3_address_county);
+            await this.page.locator('#applicantAddress__detailPostCode').fill(createStandingSearchConfig.page3_address_postcode);
+            await this.page.locator('#applicantAddress__detailCountry').fill(createStandingSearchConfig.page3_address_country);
+        }
+
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async enterStandingSearchPage4(crud: string) {
+        if (crud === 'create') {
+            await expect(this.createStandingSearchPage4Locator).toBeVisible();
+            await this.page.locator('#numberOfCopies').fill(createStandingSearchConfig.page4_extra_copies_amount);
         }
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
