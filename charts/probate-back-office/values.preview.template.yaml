@@ -392,8 +392,7 @@ xui-webapp:
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}
       SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
       SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-      JURISDICTIONS: PROBATE
-      LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
+      JURISDICTIONS: PRIVATELAW,PROBATE
       FEATURE_REDIS_ENABLED: false
       FEATURE_APP_INSIGHTS_ENABLED: false
       FEATURE_SECURE_COOKIE_ENABLED: false
@@ -401,10 +400,12 @@ xui-webapp:
       FEATURE_TERMS_AND_CONDITIONS_ENABLED: false
       FEATURE_HELMET_ENABLED: true
       FEATURE_OIDC_ENABLED: false
+      GLOBAL_SEARCH_SERVICES: IA,CIVIL,PRIVATELAW,PUBLICLAW,SSCS,ST_CIC,EMPLOYMENT,PROBATE
       NOW: false
       REDISCLOUD_URL: http://dummyrediscloudurl
       UV_THREADPOOL_SIZE: 128
       PROTOCOL: http
+      
     keyVaults:
       rpx:
         resourceGroup: rpx
@@ -414,6 +415,8 @@ xui-webapp:
           - mc-idam-client-secret
           - system-user-name
           - system-user-password
+          -  name: launch-darkly-client-id-onboarding
+          - alias: LAUNCH_DARKLY_CLIENT_ID
 
 aac-manage-case-assignment:
   enabled: true
@@ -473,6 +476,8 @@ java:
     PROBATE_POSTGRESQL_HOSTNAME_VAL: '{{ .Values.global.postgresHostname }}'
     MANAGE_CASE_URL: https://xui-${SERVICE_FQDN}.preview.platform.hmcts.net
     FRONTEND_URL: http://probate.aat.platform.hmcts.net
+    PROBATE_WA_ENABLED: ${PROBATE_WA_ENABLED}
+    PROBATE_GS_ENABLED: ${PROBATE_GS_ENABLED}
 
   keyVaults:
     probate:
