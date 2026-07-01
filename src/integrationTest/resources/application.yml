@@ -584,3 +584,6 @@ automated_notification:
   declaration_not_signed_days: 3
 upload_doc:
   expiry_weeks: 26
+
+supplementary-data:
+  hmctsid: ${SUPPLEMENTARY_DATA_HMCTSID:ABA6}
