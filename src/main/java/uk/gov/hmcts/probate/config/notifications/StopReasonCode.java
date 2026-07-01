@@ -57,4 +57,5 @@ public class StopReasonCode {
     private String powerOfAttorney;
     private String renunciation;
     private String resolutions;
+    private String redecNotificationSent;
 }
