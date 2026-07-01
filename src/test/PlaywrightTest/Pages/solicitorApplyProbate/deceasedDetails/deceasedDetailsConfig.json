@@ -26,8 +26,8 @@
   "page2_netValueIHTEstateLabel": "Net estate value for IHT",
   "page2_netQualifyingValueIHTEstateLabel": "Net qualifying estate value for IHT",
 
-  "page2_ihtGrossValue": "12000000",
-  "page2_ihtNetValue": "1030000",
+  "page2_ihtGrossValue": "500",
+  "page2_ihtNetValue": "500",
   "page2_grossValueIHTEstate": "25000000",
   "page2_netValueIHTEstate": "4000000",
   "page2_netQualifyingValueIHTEstate": "500000",
