@@ -542,5 +542,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "migrationCallbackMetadata", "Label": "Field to provide metadata where needed for callback handling during migration. Not intented to be persisted to the case data.", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "uploadFileCheck", "Label": "Do you want to attach a file to the Request for Information?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "cwDocumentUpload", "Label": "Documents uploaded", "FieldType": "documentUpload", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "cwDocumentUploadedList", "Label": "Request Information upload docs", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "cwDocumentUploadedList", "Label": "Request Information upload docs", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "disposedCasesCcdId", "Label": "Search Information", "FieldType": "DisposedCaseSearch", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "disposedCasesReturn", "Label": "Returned Disposed Cases", "FieldType": "Collection", "FieldTypeParameter": "DisposedCase", "SecurityClassification": "Public"}
 ]

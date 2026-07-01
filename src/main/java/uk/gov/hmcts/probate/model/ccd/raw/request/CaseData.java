@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
+import uk.gov.hmcts.probate.model.ccd.raw.DisposedCaseSearch;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
@@ -649,6 +650,8 @@ public class CaseData extends CaseDataParent {
      * This is only intended for use during migrations and should not be persisted into the case record.
      */
     private final String migrationCallbackMetadata;
+
+    private final DisposedCaseSearch disposedCasesCcdId;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
