@@ -361,6 +361,7 @@ public class CaseData extends CaseDataParent {
     private final Declaration declaration;
     private final LegalStatement legalStatement;
     private final String deceasedMarriedAfterWillOrCodicilDate;
+    private final String deceasedMarriedAfterWillOrCodicilDateYN;
     private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
     private String primaryApplicantPhoneNumber;
     private final String primaryApplicantNotRequiredToSendDocuments;

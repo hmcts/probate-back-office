@@ -238,6 +238,10 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"deceasedMarriedAfterWillOrCodicilDate\"), "
                     + "ocrFields.getDeceasedMarriedAfterWillOrCodicilDate()))",
             qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "deceasedMarriedAfterWillOrCodicilDateYN",
+            expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"deceasedMarriedAfterWillOrCodicilDateYN\"),"
+                    + " ocrFields.getDeceasedMarriedAfterWillOrCodicilDate()))",
+            qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "languagePreferenceWelsh", expression =
             "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"bilingualGrantRequested\"), "
                     + "ocrFields.getBilingualGrantRequested()))", qualifiedBy = {ToYesOrNo.class})
