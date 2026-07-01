@@ -43,7 +43,7 @@ public class DataExtractController {
     @Operation(summary = "Initiate HMRC data extract within 2 dates",
             description = "Dates MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/hmrc")
-    public ResponseEntity<String> performHmrcExtractForDateRange(
+    public ResponseEntity<String> initiateHmrcExtractFromDateRange(
             @RequestParam(value = "fromDate") String fromDate,
             @RequestParam(value = "toDate") String toDate) {
 
