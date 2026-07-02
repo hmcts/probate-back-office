@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SerenityJUnit5Extension.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
-    private static final int APP_FEE = 52600; //comment this out for local tests - keep for commits
+    private static final int APP_FEE = 30000; //comment this out for local tests - keep for commits
     // private static final int APP_FEE = 15500;
     private static final int COPIES_FEE = 150;
     private static final double MAX_UK_COPIES = 50;
