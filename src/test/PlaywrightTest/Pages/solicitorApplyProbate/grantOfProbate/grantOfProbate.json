@@ -12,6 +12,12 @@
   "page1_codicilDate": "11 Oct 2019",
   "page1_languagePreferenceLabel": "Do you need a bilingual grant in English and Welsh?",
 
+  "page1_deceasedMaritalStatus": "What was the marital status of the deceased at the date of death?",
+  "page1_divorcedSeparatedDay": "01",
+  "page1_divorcedSeparatedMonth": "01",
+  "page1_divorcedSeparatedYear": "2016",
+  "page1_predeceasedSpouseName": "Deceased Spouse",
+
   "page2_firm_name": "Solicitor Rob Firm",
   "page2_sol_forename":"Jason",
   "page2_sol_surname":"Rob",
