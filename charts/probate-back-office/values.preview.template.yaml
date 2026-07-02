@@ -416,6 +416,8 @@ xui-webapp:
           - mc-idam-client-secret
           - system-user-name
           - system-user-password
+          - name: launch-darkly-client-id-onboarding
+            alias: LAUNCH_DARKLY_CLIENT_ID
 
 aac-manage-case-assignment:
   enabled: true
