@@ -164,7 +164,7 @@ fee.api:
   channel: default
   applicantType: all
   keyword: NewFee
-  newCopiesFeeKeyword: GrantWill
+  newCopiesFeeKeyword: GrantWillCopiesIndividualApplication
   newIssuesFee5kKeyword: SAL5K
   newIssuesFeeKeyword: SA
   newCaveat: Caveat
