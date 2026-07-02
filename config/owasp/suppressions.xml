@@ -65,14 +65,25 @@
       -->
         <cve>CVE-2026-29181</cve>
     </suppress>
-    <suppress>
-        <cve>CVE-2026-54515</cve>
-        <cve>CVE-2026-54516</cve>
+    <suppress until = "2026-07-13">
+        <notes><![CDATA[
+   file name: jackson-databind-2.22.0.jar
+   file name: jackson-databind-3.0.1.jar
+   ]]></notes>
+        <cve>CVE-2026-54512</cve>
         <cve>CVE-2026-54513</cve>
         <cve>CVE-2026-54514</cve>
-        <cve>CVE-2026-53914</cve>
+        <cve>CVE-2026-54515</cve>
+        <cve>CVE-2026-54516</cve>
         <cve>CVE-2026-54517</cve>
         <cve>CVE-2026-54518</cve>
-        <cve>CVE-2026-54512</cve>
+    </suppress>
+    <suppress until = "2026-10-13">
+        <notes><![CDATA[
+   file name: kotlin-stdlib-1.9.25.jar
+   file name: kotlin-stdlib-jdk7-1.9.25.jar
+   file name: kotlin-stdlib-jdk8-1.9.25.jar
+   ]]></notes>
+        <cve>CVE-2026-53914</cve>
     </suppress>
 </suppressions>
