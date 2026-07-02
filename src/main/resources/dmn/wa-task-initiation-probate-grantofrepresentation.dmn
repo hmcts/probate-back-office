@@ -45,11 +45,6 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
             true else false</text>
         </inputExpression>
       </input>
-      <input id="InputClause_1b5k9vd" camunda:inputVariable="cellInput">
-        <inputExpression id="LiteralExpression_0enrcbf" typeRef="boolean">
-          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "DeBonisNon")</text>
-        </inputExpression>
-      </input>
       <input id="InputClause_13vi5ch" label="De Bonis Non" camunda:inputVariable="cellInput">
         <inputExpression id="LiteralExpression_0vlz4ms" typeRef="string">
           <text></text>
@@ -85,9 +80,6 @@ else false</text>
         <inputEntry id="UnaryTests_0py9fwu">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_05w7y8j">
-          <text></text>
-        </inputEntry>
         <inputEntry id="UnaryTests_16133fw">
           <text></text>
         </inputEntry>
@@ -121,9 +113,6 @@ else false</text>
           <text>"gop"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1kd4rdo">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0qu5hgv">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0j8iwnt">
@@ -161,9 +150,6 @@ else false</text>
         <inputEntry id="UnaryTests_1qr5yae">
           <text></text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1i8nmz2">
-          <text></text>
-        </inputEntry>
         <inputEntry id="UnaryTests_0qj3s7k">
           <text></text>
         </inputEntry>
@@ -199,9 +185,6 @@ else false</text>
         <inputEntry id="UnaryTests_1vkaray">
           <text></text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1tr32ex">
-          <text></text>
-        </inputEntry>
         <inputEntry id="UnaryTests_14p1ar6">
           <text></text>
         </inputEntry>
@@ -235,9 +218,6 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0t5d9np">
-          <text>true</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0jd3ay0">
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_10jrt3g">
