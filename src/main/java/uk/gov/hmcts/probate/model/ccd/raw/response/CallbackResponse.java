@@ -12,6 +12,7 @@ import java.util.List;
 public class CallbackResponse {
 
     private ResponseCaseData data;
+    private String state;
     private List<String> errors;
     private List<String> warnings;
 }

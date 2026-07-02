@@ -180,4 +180,52 @@ class TemplateServiceTest {
 
         assertThat(actual, sameInstance(expected));
     }
+
+    @Test
+    void returnsFirstRedecReminderPersonalWelsh() {
+
+        when(applicationTypeTemplatesMapWelsh.get(ApplicationType.PERSONAL)).thenReturn(emailTemplates);
+        when(emailTemplates.getFirstRedecReminder()).thenReturn("pa-first-redec-reminder-welsh");
+
+        String result = underTest.getRedecReminderTemplateId(ApplicationType.PERSONAL, LanguagePreference.WELSH,
+                true);
+
+        assertEquals("pa-first-redec-reminder-welsh", result);
+    }
+
+    @Test
+    void returnsFirstRedecReminderPersonalEnglish() {
+
+        when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL)).thenReturn(emailTemplates);
+        when(emailTemplates.getFirstRedecReminder()).thenReturn("pa-first-redec-reminder");
+
+        String result = underTest.getRedecReminderTemplateId(ApplicationType.PERSONAL, LanguagePreference.ENGLISH,
+                true);
+
+        assertEquals("pa-first-redec-reminder", result);
+    }
+
+    @Test
+    void returnsSecondRedecReminderPersonalWelsh() {
+
+        when(applicationTypeTemplatesMapWelsh.get(ApplicationType.PERSONAL)).thenReturn(emailTemplates);
+        when(emailTemplates.getSecondRedecReminder()).thenReturn("pa-second-redec-reminder-welsh");
+
+        String result = underTest.getRedecReminderTemplateId(ApplicationType.PERSONAL, LanguagePreference.WELSH,
+                false);
+
+        assertEquals("pa-second-redec-reminder-welsh", result);
+    }
+
+    @Test
+    void returnsSecondRedecReminderPersonalEnglish() {
+
+        when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL)).thenReturn(emailTemplates);
+        when(emailTemplates.getSecondRedecReminder()).thenReturn("pa-second-redec-reminder");
+
+        String result = underTest.getRedecReminderTemplateId(ApplicationType.PERSONAL, LanguagePreference.ENGLISH,
+                false);
+
+        assertEquals("pa-second-redec-reminder", result);
+    }
 }
