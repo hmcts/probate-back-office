@@ -113,7 +113,6 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             rndNonUkCopies = (int) (Math.random() * MAX_NON_UK_COPIES) + 1;
         }
         Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
-        log.info("validatePostRequestSuccessForFee-->Response: " + response.getBody().asPrettyString());
         response.then().assertThat().statusCode(200);
         if (hasApplication) {
             response.then().assertThat().body("data.applicationFee", equalTo("" + applicationFee));
