@@ -50,7 +50,7 @@ public class FeatureToggleService {
     }
 
     public boolean isNewFee2026Enabled() {
-        return isFeatureToggleOn("probate-fee-increase-2026", false);
+        return isFeatureToggleOn("probate-fee-increase-2026", true);
     }
 
     public boolean enableNewMarkdownFiltering() {
