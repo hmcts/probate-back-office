@@ -107,8 +107,7 @@ class FeeServiceTest {
         FeeResponse copiesFee = feeService.getCopiesFeeResponse(1L);
 
         assertEquals(BigDecimal.ONE, copiesFee.getFeeAmount());
-        verify(feeServiceConfiguration, times(1)).getKeyword();
-        //verify(feeServiceConfiguration, times(1)).getNewCopiesFeeKeyword();
+        verify(feeServiceConfiguration, times(1)).getNewCopiesFeeKeyword();
     }
 
     @Test
