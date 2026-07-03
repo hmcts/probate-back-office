@@ -118,6 +118,7 @@ fee.api:
   applicantType: all
   keyword: NewFee
   newCopiesFeeKeyword: GrantWill
+  newCopiesFee2026Keyword: GrantWillCopiesIndividualApplication
   newIssuesFee5kKeyword: SAL5K
   newIssuesFeeKeyword: SA
   ihtMinAmt: 5000.00
