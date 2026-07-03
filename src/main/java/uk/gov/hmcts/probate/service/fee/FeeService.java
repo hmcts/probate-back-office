@@ -131,11 +131,16 @@ public class FeeService {
         }
 
         if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
-            if (featureToggleService.isNewFee2026Enabled()) {
+            if (featureToggleService.isNewFeeRegisterCodeEnabled()) {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewCopiesFeeKeyword());
+            } else {
+                builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
+            }
+            /*if (featureToggleService.isNewFee2026Enabled()) {
                 builder.queryParam("keyword", feeServiceConfiguration.getNewCopiesFee2026Keyword());
             } else {
                 builder.queryParam("keyword", feeServiceConfiguration.getNewCopiesFeeKeyword());
-            }
+            }*/
         }
 
         if (FEE_API_EVENT_TYPE_CAVEAT.equals(event)) {
