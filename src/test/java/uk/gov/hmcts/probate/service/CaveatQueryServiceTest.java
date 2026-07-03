@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveats;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -34,6 +35,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.CaseState.DRAFT;
 class CaveatQueryServiceTest {
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now();
+    private static final String EXPIRY_DATE = "2020-12-31";
 
     @Mock
     private RestTemplate restTemplate;
@@ -56,9 +58,14 @@ class CaveatQueryServiceTest {
     @InjectMocks
     private CaveatQueryService caveatQueryService;
 
+    private SecurityDTO securityDTO;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        securityDTO = SecurityDTO.builder().build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
         when(securityUtils.getCaseworkerToken()).thenReturn("Bearer 123");
@@ -67,15 +74,14 @@ class CaveatQueryServiceTest {
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
 
-        CaveatData caveatData = CaveatData.builder()
-                .deceasedSurname("Smith")
-                .build();
+        CaveatData caveatData = CaveatData.builder().deceasedSurname("Smith").build();
         List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
                 new ReturnedCaveatDetails(caveatData, LAST_MODIFIED, DRAFT, 1L))
                 .build();
         ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList, 1);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
+        caveatQueryService.dataExtractPaginationSize = 100;
     }
 
     @Test
@@ -117,9 +123,43 @@ class CaveatQueryServiceTest {
     }
 
     @Test
-    void findCaveatWithExpiryDate() {
-        List<ReturnedCaveatDetails> result = caveatQueryService.findCaveatExpiredCases("2023-10-01");
-        assertEquals("Smith", result.getFirst().getData().getDeceasedSurname());
+    void shouldReturnExpiredCaveats() {
+        CaveatData caveatData = CaveatData.builder().deceasedSurname("Expired").build();
+        List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
+                new ReturnedCaveatDetails(caveatData, LAST_MODIFIED, DRAFT, 1L))
+                .build();
+        ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList, 1);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
+        List<ReturnedCaveatDetails> result = caveatQueryService.fetchExpiredCaveatsPage(EXPIRY_DATE, null);
+        assertEquals(1, result.size());
+        assertEquals("Expired", result.get(0).getData().getDeceasedSurname());
     }
 
+    @Test
+    void shouldHandleSearchAfterValuesForPagination() {
+        CaveatData caveatData = CaveatData.builder().deceasedSurname("Pagination").build();
+        List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
+                new ReturnedCaveatDetails(caveatData, LAST_MODIFIED, DRAFT, 1L))
+                .build();
+        ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList, 1);
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
+        List<ReturnedCaveatDetails> result = caveatQueryService.fetchExpiredCaveatsPage(EXPIRY_DATE, new Long[]{1L});
+        assertEquals(1, result.size());
+        assertEquals("Pagination", result.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    void shouldThrowClientDataExceptionWhenRestTemplateReturnsNull() {
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
+        assertThrows(ClientDataException.class,
+                () -> caveatQueryService.fetchExpiredCaveatsPage(EXPIRY_DATE, null));
+    }
+
+    @Test
+    void shouldThrowCaseMatchingExceptionOnHttpClientError() {
+        when(restTemplate.postForObject(any(), any(), any()))
+                .thenThrow(new HttpClientErrorException(org.springframework.http.HttpStatus.BAD_REQUEST));
+        assertThrows(CaseMatchingException.class,
+                () -> caveatQueryService.fetchExpiredCaveatsPage(EXPIRY_DATE, null));
+    }
 }
