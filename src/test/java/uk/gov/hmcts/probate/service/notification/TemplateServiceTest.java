@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.config.notifications.EmailTemplates;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.sameInstance;
@@ -28,6 +29,9 @@ class TemplateServiceTest {
 
     @Mock
     NotificationTemplates notificationTemplates;
+
+    @Mock
+    FeatureToggleService featureToggleService;
 
     @Mock
     Map<LanguagePreference, Map<ApplicationType, EmailTemplates>> emailTemplatesMap;
@@ -53,7 +57,7 @@ class TemplateServiceTest {
     @BeforeEach
     void setUp() {
         closeableMocks = MockitoAnnotations.openMocks(this);
-        underTest = new TemplateService(notificationTemplates);
+        underTest = new TemplateService(notificationTemplates, featureToggleService);
         when(notificationTemplates.getEmail()).thenReturn(emailTemplatesMap);
         when(emailTemplatesMap.get(LanguagePreference.ENGLISH)).thenReturn(applicationTypeTemplatesMap);
         when(emailTemplatesMap.get(LanguagePreference.WELSH)).thenReturn(applicationTypeTemplatesMapWelsh);
