@@ -226,7 +226,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0jhd0sk">
         <inputEntry id="UnaryTests_05onw3k">
-          <text>"handleEvidence"</text>
+          <text>"handleEvidence", "boResolveStop"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ptc893">
           <text>"BOReadyToIssue"</text>
