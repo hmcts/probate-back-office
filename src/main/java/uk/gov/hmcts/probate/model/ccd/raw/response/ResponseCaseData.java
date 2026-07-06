@@ -168,6 +168,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final Declaration declaration;
     private final String deceasedMarriedAfterWillOrCodicilDate;
     private final String deceasedMarriedAfterWillOrCodicilDateYN;
+    private final String deceasedSpouseName;
     private final String primaryApplicantPhoneNumber;
 
     private final String boExaminationChecklistQ2;
