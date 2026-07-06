@@ -13,16 +13,16 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.sameInstance;
-import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
-import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
-
-
 import java.util.Map;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.sameInstance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
 
 @ExtendWith(SpringExtension.class)
 class TemplateServiceTest {
@@ -231,5 +231,51 @@ class TemplateServiceTest {
                 false);
 
         assertEquals("pa-second-redec-reminder", result);
+    }
+
+    @Test
+    void returnCaveatRaisedTemplateWhenFeatureToggleEnabled() {
+        when(featureToggleService.isNewFee2026Enabled()).thenReturn(true);
+        when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL)).thenReturn(emailTemplates);
+        when(emailTemplates.getCaveatRaised()).thenReturn("pa-caveat-raised");
+
+        String result = underTest.getTemplateId(CAVEAT_RAISED, ApplicationType.PERSONAL,"",LanguagePreference.ENGLISH);
+
+        assertEquals("pa-caveat-raised", result);
+    }
+
+    @Test
+    void returnCaveatRaisedTemplateWhenFeatureToggleDisEnabled() {
+        when(featureToggleService.isNewFee2026Enabled()).thenReturn(false);
+        when(applicationTypeTemplatesMap.get(ApplicationType.PERSONAL)).thenReturn(emailTemplates);
+        when(emailTemplates.getCaveatRaisedOld()).thenReturn("pa-caveat-raised-old");
+
+        String result = underTest.getTemplateId(CAVEAT_RAISED, ApplicationType.PERSONAL,"",LanguagePreference.ENGLISH);
+
+        assertEquals("pa-caveat-raised-old", result);
+    }
+
+    @Test
+    void returnSolsCaveatRaisedTemplateWhenFeatureToggleEnabled() {
+        when(featureToggleService.isNewFee2026Enabled()).thenReturn(true);
+        when(applicationTypeTemplatesMap.get(ApplicationType.SOLICITOR)).thenReturn(emailTemplates);
+        when(emailTemplates.getCaveatRaisedSols()).thenReturn("caveat-raised-sols");
+
+        String result = underTest.getTemplateId(CAVEAT_RAISED_SOLS, ApplicationType.SOLICITOR,"",
+                LanguagePreference.ENGLISH);
+
+        assertEquals("caveat-raised-sols", result);
+    }
+
+    @Test
+    void returnSolsCaveatRaisedTemplateWhenFeatureToggleDisEnabled() {
+        when(featureToggleService.isNewFee2026Enabled()).thenReturn(false);
+        when(applicationTypeTemplatesMap.get(ApplicationType.SOLICITOR)).thenReturn(emailTemplates);
+        when(emailTemplates.getCaveatRaisedSolsOld()).thenReturn("caveat-raised-sols-old");
+
+        String result = underTest.getTemplateId(CAVEAT_RAISED_SOLS, ApplicationType.SOLICITOR,"",
+                LanguagePreference.ENGLISH);
+
+        assertEquals("caveat-raised-sols-old", result);
     }
 }

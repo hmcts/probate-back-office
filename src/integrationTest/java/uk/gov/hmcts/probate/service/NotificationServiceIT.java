@@ -193,6 +193,9 @@ class NotificationServiceIT {
     private DocumentManagementService documentManagementService;
 
     @MockitoBean
+    FeatureToggleService featureToggleServiceMock;
+
+    @MockitoBean
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
     @MockitoBean
@@ -1204,7 +1207,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseData);
 
         verify(notificationClient).sendEmail(
@@ -1236,7 +1239,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
         personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseDataBilingual);
 
         verify(notificationClient).sendEmail(
@@ -1269,7 +1272,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
         personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, solicitorCaveatRaisedCaseData);
 
         verify(notificationClient).sendEmail(
