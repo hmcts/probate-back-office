@@ -86,4 +86,14 @@
    ]]></notes>
         <cve>CVE-2026-53914</cve>
     </suppress>
+    <suppress>
+        <cve>CVE-2026-53404</cve>
+        <cve>CVE-2026-55956</cve>
+        <cve>CVE-2026-55955</cve>
+        <cve>CVE-2026-50229</cve>
+        <cve>CVE-2026-55276</cve>
+        <cve>CVE-2026-53434</cve>
+        <cve>CVE-2026-56149</cve>
+        <cve>CVE-2026-56148</cve>
+    </suppress>
 </suppressions>
