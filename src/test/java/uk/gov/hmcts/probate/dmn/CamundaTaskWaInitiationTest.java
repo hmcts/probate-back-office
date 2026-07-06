@@ -229,6 +229,30 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "BOReadyToIssue",
                         additionalDataHandOffListEmpty,
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListDeBonisNon,
+                        List.of(examineDeBonisNonTaskAttributes)
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListLegacySiteNo,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListOtherReason,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListEmpty,
+                        Collections.emptyList()
                 )
         );
     }
