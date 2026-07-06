@@ -84,11 +84,6 @@ public class CaseQueryService {
 
     public List<ReturnedCaseDetails> findCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
         BoolQueryBuilder query = boolQuery();
-        BoolQueryBuilder stateChecks = boolQuery();
-
-        stateChecks.minimumShouldMatch(1);
-
-        query.must(stateChecks);
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
@@ -99,14 +94,9 @@ public class CaseQueryService {
                 queryDate, queryDate);
     }
 
-    public List<ReturnedCaseDetails> findCasesWithGrantIssuedDateRange(String invokedFrom, String fromDate,
-                                                                       String toDate) {
+    public List<ReturnedCaseDetails> findCasesWithGrantIssuedDateRange(String invokedFrom,
+                                                                       String fromDate, String toDate) {
         BoolQueryBuilder query = boolQuery();
-        BoolQueryBuilder stateChecks = boolQuery();
-
-        stateChecks.minimumShouldMatch(1);
-
-        query.must(stateChecks);
         query.must(rangeQuery(GRANT_ISSUED_DATE).gte(fromDate).lte(toDate));
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
