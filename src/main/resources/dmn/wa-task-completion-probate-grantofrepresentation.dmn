@@ -75,6 +75,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1br4h1y">
+        <inputEntry id="UnaryTests_13qauv0">
+          <text>"resolveCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14memun">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0flqv1j">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
