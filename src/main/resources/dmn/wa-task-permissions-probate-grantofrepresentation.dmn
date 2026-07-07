@@ -101,7 +101,7 @@
           <text>"CTSC"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_14ebfc8">
-          <text></text>
+          <text>"SKILL:ABA6:AdmonExamining"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1phpqop">
           <text>1</text>
@@ -136,6 +136,35 @@
           <text>1</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0xim3oo">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10s22ft">
+        <inputEntry id="UnaryTests_0eharyd">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1a6nyt4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1bylzjf">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mbgm38">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rh0cre">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_169jdma">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1we16ey">
+          <text>"SKILL:ABA6:AdmonExamining"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_157pfmp">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_168o86p">
           <text>false</text>
         </outputEntry>
       </rule>
