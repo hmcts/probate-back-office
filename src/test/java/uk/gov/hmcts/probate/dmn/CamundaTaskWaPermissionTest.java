@@ -125,7 +125,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
     }
 
     private static List<Map<String, Object>> getCtscExaminePermissions(String skillCode) {
-       return List.of(
+        return List.of(
                 Map.of(
                         "name", "ctsc",
                         "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
