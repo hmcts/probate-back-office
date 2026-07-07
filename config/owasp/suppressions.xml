@@ -77,6 +77,8 @@
         <cve>CVE-2026-54516</cve>
         <cve>CVE-2026-54517</cve>
         <cve>CVE-2026-54518</cve>
+        <cve>CVE-2026-54428</cve>
+        <cve>CVE-2026-54399</cve>
     </suppress>
     <suppress until = "2026-10-13">
         <notes><![CDATA[
