@@ -212,6 +212,11 @@ dependencyManagement {
 
   dependencies {
     dependency group: 'org.camunda.connect', name: 'camunda-connect-connectors-all', version: versions.camunda
+
+    dependencySet(group: 'org.apache.httpcomponents.core5', version: '5.4.3') {
+        entry 'httpcore5'
+        entry 'httpcore5-h2'
+    }
   }
 }
 
