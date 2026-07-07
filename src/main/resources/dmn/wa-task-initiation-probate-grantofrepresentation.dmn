@@ -286,7 +286,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text>"resolveCWEscalation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0b0uu13">
-          <text>"BOCaseWorkerEscalation"</text>
+          <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0v9n2fa">
           <text>false</text>
