@@ -86,4 +86,8 @@
    ]]></notes>
         <cve>CVE-2026-53914</cve>
     </suppress>
+    <suppress>
+        <cve>CVE-2026-54428</cve>
+        <cve>CVE-2026-54399</cve>
+    </suppress>
 </suppressions>
