@@ -1325,7 +1325,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
         personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
-
+        when(featureToggleServiceMock.isNewFee2026Enabled()).thenReturn(Boolean.TRUE);
         notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, solicitorCaveatRaisedCaseDataWelsh);
 
         verify(notificationClient).sendEmail(
