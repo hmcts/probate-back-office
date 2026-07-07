@@ -53,14 +53,6 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text></text>
         </inputValues>
       </input>
-      <input id="InputClause_0kfcp07" label="Fiat Will">
-        <inputExpression id="LiteralExpression_18w4vdu" typeRef="string">
-          <text>if (list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "FiatWill")) then true else false</text>
-        </inputExpression>
-        <inputValues id="UnaryTests_1oxt3wn">
-          <text></text>
-        </inputValues>
-      </input>
       <input id="InputClause_10czn8g" label="caseHandedOffToLegacySite">
         <inputExpression id="LiteralExpression_0e39959" typeRef="boolean">
           <text>if(additionalData != null and additionalData.Data != null and
@@ -89,9 +81,6 @@ else false</text>
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_16133fw">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0ew64y6">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0bgiy9z">
@@ -129,9 +118,6 @@ else false</text>
         <inputEntry id="UnaryTests_0j8iwnt">
           <text></text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0p8m989">
-          <text></text>
-        </inputEntry>
         <inputEntry id="UnaryTests_1wtr76m">
           <text></text>
         </inputEntry>
@@ -165,9 +151,6 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0qj3s7k">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0s83j1h">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_06u2uis">
@@ -205,9 +188,6 @@ else false</text>
         <inputEntry id="UnaryTests_14p1ar6">
           <text></text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1gbec7p">
-          <text></text>
-        </inputEntry>
         <inputEntry id="UnaryTests_1r6xwhh">
           <text></text>
         </inputEntry>
@@ -243,9 +223,6 @@ else false</text>
         <inputEntry id="UnaryTests_10jrt3g">
           <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "DeBonisNon")</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1777kne">
-          <text></text>
-        </inputEntry>
         <inputEntry id="UnaryTests_1ix20fg">
           <text>true</text>
         </inputEntry>
@@ -279,10 +256,7 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0za2oh4">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1hrlvyn">
-          <text>true</text>
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "FiatWill")</text>
         </inputEntry>
         <inputEntry id="UnaryTests_12kayl1">
           <text>true</text>
