@@ -309,6 +309,11 @@ class TemplateServiceIT {
             CTSC, LanguagePreference.ENGLISH);
 
         assertEquals("solicitor-caveat-raised", response);
+
+        String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED_SOLS, SOLICITOR,
+                CTSC, LanguagePreference.WELSH);
+
+        assertEquals("solicitor-caveat-raised-welsh", responseWelsh);
     }
 
     @Test
