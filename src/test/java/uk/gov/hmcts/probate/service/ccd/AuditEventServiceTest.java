@@ -19,9 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_IMPORTED;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED_REISSUE;
-import static uk.gov.hmcts.probate.model.StateConstants.STATE_CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.StateConstants.STATE_DORMANT;
 
 @ExtendWith(MockitoExtension.class)
@@ -180,93 +177,5 @@ class AuditEventServiceTest {
                 EventId.MAKE_CASE_DORMANT, USER_TOKEN, SERVICE_TOKEN);
 
         assertThat(previousAuditEvent).isPresent().contains(expectedAuditEvent);
-    }
-
-    @Test
-    void shouldReturnLatestAuditEventWhenStateIsInProvidedStateList() {
-        AuditEvent expectedAuditEvent =
-                buildAuditEvent(EVENT_NAME, STATE_NAME, LOCAL_DATE_TIME);
-
-        List<AuditEvent> auditEventList = List.of(
-                buildAuditEvent(EVENT_NAME, STATE_CASE_PRINTED, LOCAL_DATE_TIME.minusMinutes(5)),
-                expectedAuditEvent,
-                buildAuditEvent(EVENT_NAME, STATE_BO_CASE_STOPPED_REISSUE, LOCAL_DATE_TIME.minusMinutes(2))
-        );
-
-        when(auditEventsResponse.getAuditEvents()).thenReturn(auditEventList);
-
-        Optional<AuditEvent> actualAuditEvent =
-                auditEventService.getLatestAuditEventExcludingDormantState(
-                        CASE_ID,
-                        List.of(STATE_NAME),
-                        USER_TOKEN,
-                        SERVICE_TOKEN
-                );
-
-        assertThat(actualAuditEvent).isPresent().contains(expectedAuditEvent);
-    }
-
-    @Test
-    void shouldReturnEmptyOptionalWhenLatestAuditEventStateIsNotInProvidedList() {
-        AuditEvent latestAuditEvent =
-                buildAuditEvent(EVENT_NAME, STATE_DORMANT, LOCAL_DATE_TIME);
-
-        List<AuditEvent> auditEventList = List.of(
-                buildAuditEvent(EVENT_NAME, STATE_BO_CASE_STOPPED, LOCAL_DATE_TIME.minusMinutes(3)),
-                latestAuditEvent
-        );
-
-        when(auditEventsResponse.getAuditEvents()).thenReturn(auditEventList);
-
-        Optional<AuditEvent> actualAuditEvent =
-                auditEventService.getLatestAuditEventExcludingDormantState(
-                        CASE_ID,
-                        List.of(STATE_NAME),
-                        USER_TOKEN,
-                        SERVICE_TOKEN
-                );
-
-        assertThat(actualAuditEvent).isEmpty();
-    }
-
-    @Test
-    void shouldIgnoreDormantStateAndReturnNextLatestMatchingState() {
-        AuditEvent dormantAuditEvent =
-                buildAuditEvent(EVENT_NAME, STATE_DORMANT, LOCAL_DATE_TIME);
-
-        AuditEvent expectedAuditEvent =
-                buildAuditEvent(EVENT_NAME, STATE_BO_CASE_STOPPED_REISSUE, LOCAL_DATE_TIME.minusMinutes(1));
-
-        List<AuditEvent> auditEventList = List.of(
-                expectedAuditEvent,
-                dormantAuditEvent
-        );
-
-        when(auditEventsResponse.getAuditEvents()).thenReturn(auditEventList);
-
-        Optional<AuditEvent> actualAuditEvent =
-                auditEventService.getLatestAuditEventExcludingDormantState(
-                        CASE_ID,
-                        List.of(STATE_BO_CASE_STOPPED_REISSUE),
-                        USER_TOKEN,
-                        SERVICE_TOKEN
-                );
-
-        assertThat(actualAuditEvent).isPresent().contains(expectedAuditEvent);
-    }
-
-    @Test
-    void shouldReturnEmptyOptionalWhenAuditEventsIsEmptyForExcludingState() {
-        when(auditEventsResponse.getAuditEvents()).thenReturn(List.of());
-
-        Optional<AuditEvent> actualAuditEvent =
-                auditEventService.getLatestAuditEventExcludingDormantState(
-                        CASE_ID,
-                        List.of(STATE_NAME),
-                        USER_TOKEN,
-                        SERVICE_TOKEN
-                );
-
-        assertThat(actualAuditEvent).isEmpty();
     }
 }
