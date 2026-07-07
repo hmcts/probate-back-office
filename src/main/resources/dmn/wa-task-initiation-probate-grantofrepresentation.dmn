@@ -45,7 +45,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
             true else false</text>
         </inputExpression>
       </input>
-      <input id="InputClause_13vi5ch" label="De Bonis Non" camunda:inputVariable="cellInput">
+      <input id="InputClause_13vi5ch" label="Contains handOff Reason" camunda:inputVariable="cellInput">
         <inputExpression id="LiteralExpression_0vlz4ms" typeRef="string">
           <text></text>
         </inputExpression>
@@ -206,7 +206,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0jhd0sk">
         <inputEntry id="UnaryTests_05onw3k">
-          <text>"handleEvidence", "boResolveStop", "moveToCWEscalation"</text>
+          <text>"handleEvidence", "boResolveStop", "moveToCWEscalation", "changeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ptc893">
           <text>"BOReadyToIssue"</text>
