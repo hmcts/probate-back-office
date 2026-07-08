@@ -929,7 +929,7 @@ export class SolCreateCasePage extends BasePage {
     const opts = ['TCTPartSuccPowerRes', 'TCTPartPowerRes', 'TCTSolePrinSucc', 'TCTSolePrin', 'TCTPartSuccAllRenouncing',
       'TCTPartAllRenouncing', 'TCTTrustCorpResWithSDJ', 'TCTTrustCorpResWithApp', 'TCTPartSuccOthersRenouncing', 'TCTPartOthersRenouncing', 'TCTNoT'];
       for (let i = 0; i < opts.length; i++) {
-       
+
       await this.verifyTitleAndClearingTypeOptionPage(opts[i]);
     }
   }
@@ -1139,7 +1139,7 @@ export class SolCreateCasePage extends BasePage {
     await this.runAccessibilityTest();
     for (let i = 0; i < serviceRequestTabConfig.fields.length; i++) {
       if (serviceRequestTabConfig.fields[i] && serviceRequestTabConfig.fields[i] !== '') {
-        await expect(this.page.getByText(serviceRequestTabConfig.fields[i]).first()).toBeVisible();  
+        await expect(this.page.getByText(serviceRequestTabConfig.fields[i]).first()).toBeVisible();
       }
     }
 
