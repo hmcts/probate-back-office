@@ -292,6 +292,227 @@
           <text>true</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_14ngfol">
+        <inputEntry id="UnaryTests_0cpcpfa">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qovuvp">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0205tlm">
+          <text>"dueDateTime"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1qkg6hw">
+          <text>"16:00"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zbf9p3">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ninzxd">
+        <inputEntry id="UnaryTests_12wux7d">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19lj7jy">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0etzaco">
+          <text>"dueDateNonWorkingDaysOfWeek"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_141ooda">
+          <text>"SATURDAY,SUNDAY"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1euh9zg">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ke8z6w">
+        <inputEntry id="UnaryTests_01s1zt7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02py0av">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1yuid4v">
+          <text>"priorityDateOriginRef"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1oo6fw9">
+          <text>"dueDate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04a2mf4">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10vaol4">
+        <inputEntry id="UnaryTests_0e7rle7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z9i6qc">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0thagp5">
+          <text>"dueDateIntervalDays"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0d3ypbt">
+          <text>10</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1lkx4ss">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_113qlec">
+        <inputEntry id="UnaryTests_072tuml">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1up6nvi">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1q96spr">
+          <text>"dueDateNonWorkingCalendar"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_028thi5">
+          <text>"https://www.gov.uk/bank-holidays/england-and-wales.json"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0d5p4f8">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1hkpcis">
+        <inputEntry id="UnaryTests_00i0n1h">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02hftkx">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1v9sx10">
+          <text>"dueDateOrigin"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pbatx6">
+          <text>now()</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1nn6604">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0lzs3jk">
+        <inputEntry id="UnaryTests_1uiilh8">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0b64cz9">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0g996dm">
+          <text>"location"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1do53e3">
+          <text>caseData.registryLocation</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19jwomk">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0e4vjni">
+        <inputEntry id="UnaryTests_1336id5">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dapsws">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1b1oqvm">
+          <text>"locationName"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hfai51">
+          <text>caseData.registryLocation</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15j2aj7">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1xxu643">
+        <inputEntry id="UnaryTests_132qbcw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1m008k7">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18ne9wv">
+          <text>"roleCategory"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mx9pxe">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0fwwl8z">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_13xocef">
+        <inputEntry id="UnaryTests_1lr1gjj">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1tkjfz4">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1kxrdkh">
+          <text>"region"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04dojmd">
+          <text>"DUMMY_PLACEHOLDER_REGION"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_190frq2">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ez63l8">
+        <inputEntry id="UnaryTests_0wk6p52">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1y6if7q">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xaes5r">
+          <text>"caseName"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_093kryi">
+          <text>"DUMMY_PLACEHOLDER_CASE_NAME"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0z0kxgi">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1mofcr7">
+        <inputEntry id="UnaryTests_1f1m3bk">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vmtg4j">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0fcsn2e">
+          <text>"caseManagementCategory"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1t0uceh">
+          <text>"DUMMY_PLACEHOLDER_CASE_MANAGEMENT_CATEGORY"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ie96o4">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ifjwwr">
+        <inputEntry id="UnaryTests_126gbwk">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mixm6f">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18qnoun">
+          <text>"workType"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1w09ou4">
+          <text>"decision_making_work"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cg9o02">
+          <text>true</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

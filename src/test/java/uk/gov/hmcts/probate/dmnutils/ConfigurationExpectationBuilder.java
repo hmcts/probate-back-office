@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.dmnutils;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -46,11 +48,10 @@ public class ConfigurationExpectationBuilder {
     private final Map<String, Map<String, Object>> expectations = new HashMap<>();
 
     public static ConfigurationExpectationBuilder defaultExpectations() {
-        ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
-        return builder;
+        return new ConfigurationExpectationBuilder();
     }
 
-    public static ConfigurationExpectationBuilder defaultExamineDigitalCaseProbateExpectations() {
+    public static ConfigurationExpectationBuilder defaultExamineDigitalCaseExpectations() {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
         builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true)
                 .expectedValue(WORK_TYPE, DECISION_WORK_TYPE, true)

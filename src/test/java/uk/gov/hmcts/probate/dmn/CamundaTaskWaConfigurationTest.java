@@ -43,7 +43,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     static Stream<Arguments> scenarioProvider() throws IOException {
-        String dateOrigin = ZonedDateTime.now(ZoneId.of("UTC")).toString();
         return Stream.of(
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
@@ -51,18 +50,15 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .isUrgent()
                                 .build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations().build()
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultCase()
+                        CaseDataBuilder.defaultWaCase()
                                 .isUrgent()
                                 .build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.defaultExpectations()
-                                .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
-                                         + "/trigger/boSelectForQA)", true)
-                                .build()
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
@@ -84,7 +80,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(16, logic.getRules().size());
+        assertEquals(29, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
@@ -108,13 +104,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
 
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
-    }
-
-    private boolean validNow(ZonedDateTime expected, ZonedDateTime result) {
-        ZonedDateTime now = ZonedDateTime.now();
-        return result != null
-                && (expected.isEqual(result) || expected.isBefore(result))
-                && (now.isEqual(result) || now.isAfter(result));
     }
 
 }
