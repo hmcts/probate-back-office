@@ -37,7 +37,6 @@ class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void shouldIncludePA17Link() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutorsPA17.json",
             true, true);
@@ -45,7 +44,6 @@ class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void shouldTransformSolicitorExecutorFields() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutors.json", true,
             true);
@@ -76,7 +74,6 @@ class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyAllFeesAboveThreshold() throws IOException {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", true, true);
     }
