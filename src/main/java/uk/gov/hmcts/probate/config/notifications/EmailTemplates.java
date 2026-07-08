@@ -19,9 +19,11 @@ public class EmailTemplates {
     private String grantRaised;
     private String grantRaisedPaperFormBulkScan;
     private String caveatRaised;
+    private String caveatRaisedOld;
     private String caveatExtend;
     private String caveatRaisedCtsc;
     private String caveatRaisedSols;
+    private String caveatRaisedSolsOld;
     private String requestInformation;
     private String requestInformationByPost;
     private String redeclarationSot;
