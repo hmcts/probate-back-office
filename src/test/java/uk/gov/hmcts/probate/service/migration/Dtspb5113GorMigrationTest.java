@@ -4,14 +4,10 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.exception.DataMigrationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.ccd.AuditEventService;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -26,12 +22,6 @@ import static org.mockito.Mockito.when;
 class Dtspb5113GorMigrationTest {
 
     private Dtspb5113GorMigration underTest;
-
-    @Mock
-    SecurityUtils securityUtils;
-
-    @Mock
-    AuditEventService auditEventService;
 
     @BeforeEach
     void setUp() {
