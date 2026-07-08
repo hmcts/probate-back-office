@@ -136,8 +136,8 @@
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-superuser", "CRUD": "CR"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "originalDocuments", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "StandingSearch", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
-  {"CaseTypeID": "StandingSearch", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "applicationType", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "applicationSubmittedDate", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "registryLocation", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
@@ -159,9 +159,9 @@
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "documentsUploaded", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "matches", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
-  {"CaseTypeID": "StandingSearch", "CaseFieldID": "recordId", "UserRole": "caseworker-probate-scheduler", "CRUD": "CR"},
-  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-scheduler", "CRUD": "CR"},
-  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-scheduler", "CRUD": "CR"},
-  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-scheduler", "CRUD": "CR"},
-  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"}
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "recordId", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"}
 ]
