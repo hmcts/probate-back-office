@@ -86,6 +86,61 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1td45el">
+        <inputEntry id="UnaryTests_1enpuip">
+          <text>"boStopCaseForCasePrinted"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03b69y9">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0a0i9c2">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1w1rset">
+        <inputEntry id="UnaryTests_0mughc6">
+          <text>"boEscalateToRegistrar"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1tl5r9j">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tqu3do">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_04nvjla">
+        <inputEntry id="UnaryTests_1ldy74t">
+          <text>"boIssueGrantForCaseMatching"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1rmdw5u">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0v87xsi">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ilvmf5">
+        <inputEntry id="UnaryTests_10hxh6t">
+          <text>"resolveCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0v8jayz">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0apob31">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0rc45hz">
+        <inputEntry id="UnaryTests_0ozyzto">
+          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1828lvg">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0q11gif">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
