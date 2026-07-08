@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
@@ -30,206 +31,377 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_INITIATION_PROBATE;
     }
 
-    static Stream<Arguments> scenarioProvider() {
-        Map<String,Object> examineDigitalCaseProbateTaskAttributes = Map.of(
-                "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
-                "name", "Examine Digital Case - Probate",
-                "processCategories", "case progression"
-        );
 
-        Map<String, Object> additionalData = mapAdditionalData("{\n"
+    private static Map<String, Object> additionalData(boolean evidenceHandled, String caseType){
+        return mapAdditionalData("{\n"
                 + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + false + "\",\n"
-                + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"evidenceHandled\" : \"" + evidenceHandled + "\",\n"
+                + "  \"caseType\" : \"" + caseType + "\",\n"
                 + "  \"boHandoffReasonList\" : []\n"
                 + "  }\n"
                 + "}");
+    }
 
-        Map<String, Object> additionalDataEvidenceHandledTrue = mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + true + "\",\n"
-                + "  \"caseType\" : \"" + "gop" + "\",\n"
-                + "  \"boHandoffReasonList\" : []\n"
-                + "  }\n"
-                + "}");
-
-        Map<String, Object> additionalDataCaseTypeOther = mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + false + "\",\n"
-                + "  \"caseType\" : \"" + "other" + "\",\n"
-                + "  \"boHandoffReasonList\" : []\n"
-                + "  }\n"
-                + "}");
-
-        Map<String, Object> additionalDataHandOffListNotEmpty = mapAdditionalData("{\n"
+    private static Map<String, Object> additionalDataHandOffListNotEmpty(){
+        return mapAdditionalData("{\n"
                 + "  \"Data\":{\n"
                 + "  \"evidenceHandled\" : \"" + false + "\",\n"
                 + "  \"caseType\" : \"" + "gop" + "\",\n"
                 + "  \"boHandoffReasonList\" : [1]\n"
                 + "  }\n"
                 + "}");
+    }
+
+    static Stream<Arguments> probateScenarios() {
+
+        Map<String,Object> examineDigitalCaseProbateTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_PROBATE,
+                "name", "Examine Digital Case - Probate",
+                "processCategories", "case progression"
+        );
+
 
         return Stream.of(
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        additionalData,
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
                         "someOtherEventId",
                         "CasePrinted",
-                        additionalData,
+                        additionalData(false, "gop"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        additionalDataEvidenceHandledTrue,
+                        additionalData(true, "gop"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        additionalDataCaseTypeOther,
+                        additionalData(false, "other"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        additionalDataHandOffListNotEmpty,
+                        additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "applyforGrantPaperApplication",
                         "CasePrinted",
-                        additionalData,
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
                         "attachScannedDocs",
                         "CasePrinted",
-                        additionalData,
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
                         "attachScannedDocs",
                         "CasePrinted",
-                        additionalDataEvidenceHandledTrue,
+                        additionalData(true, "gop"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "attachScannedDocs",
                         "CasePrinted",
-                        additionalDataCaseTypeOther,
+                        additionalData(false, "other"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "attachScannedDocs",
                         "CasePrinted",
-                        additionalDataHandOffListNotEmpty,
+                        additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
                         "CasePrinted",
-                        additionalData,
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
                         "CasePrinted",
-                        additionalDataEvidenceHandledTrue,
+                        additionalData(true, "gop"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
                         "CasePrinted",
-                        additionalDataCaseTypeOther,
+                        additionalData(false, "other"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
                         "CasePrinted",
-                        additionalDataHandOffListNotEmpty,
+                        additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
                         "CasePrinted",
-                        additionalData,
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",
                         "CasePrinted",
-                        additionalDataEvidenceHandledTrue,
+                        additionalData(true, "gop"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
                         "CasePrinted",
-                        additionalDataCaseTypeOther,
+                        additionalData(false, "other"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
                         "CasePrinted",
-                        additionalDataHandOffListNotEmpty,
+                        additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "changeState",
                         "CasePrinted",
-                        additionalData,
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
                         "changeState",
                         "CasePrinted",
-                        additionalDataEvidenceHandledTrue,
+                        additionalData(true, "gop"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "changeState",
                         "CasePrinted",
-                        additionalDataCaseTypeOther,
+                        additionalData(false, "other"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "changeState",
                         "CasePrinted",
-                        additionalDataHandOffListNotEmpty,
+                        additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "CasePrinted",
-                        additionalData,
+                        additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "CasePrinted",
-                        additionalDataEvidenceHandledTrue,
+                        additionalData(true, "gop"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "CasePrinted",
-                        additionalDataCaseTypeOther,
+                        additionalData(false, "other"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "CasePrinted",
-                        additionalDataHandOffListNotEmpty,
+                        additionalDataHandOffListNotEmpty(),
+                        Collections.emptyList()
+                )
+        );
+    }
+
+    static Stream<Arguments> admonScenarios(){
+
+        Map<String,Object> examineDigitalCaseAdmonTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_ADMON,
+                "name", "Examine Digital Case - Admon",
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        "someOtherEventId",
+                        "CasePrinted",
+                        additionalData(false, "admonWill"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalData(true, "admonWill"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalData(false, "other"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalData(true, "admonWill"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalData(false, "other"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalData(true, "admonWill"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalData(false, "other"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalData(true, "admonWill"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalData(false, "other"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalData(true, "admonWill"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalData(false, "other"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "CasePrinted",
-                        additionalDataHandOffListNotEmpty,
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalData(true, "admonWill"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalData(false, "other"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty(),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "createCaseFromBulkScan",
+                        "CasePrinted",
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "createCaseFromBulkScan",
+                        "CasePrinted",
+                        additionalData(true, "admonWill"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "createCaseFromBulkScan",
+                        "CasePrinted",
+                        additionalData(false, "other"),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "createCaseFromBulkScan",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
                 )
         );
@@ -241,12 +413,28 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(5));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(9));
+        assertThat(logic.getRules().size(), is(15));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
-    @MethodSource("scenarioProvider")
-    void given_multiple_event_ids_should_evaluate_dmn(String eventId,
+    @MethodSource("probateScenarios")
+    void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
+                                                      String postEventState,
+                                                      Map<String, Object> additionalData,
+                                                      List<Map<String, Object>> expectation) {
+        VariableMap inputVariables = new VariableMapImpl();
+        inputVariables.putValue("eventId", eventId);
+        inputVariables.putValue("postEventState", postEventState);
+        if (additionalData != null) {
+            inputVariables.putAll(additionalData);
+        }
+        DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
+        resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
+    }
+
+    @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
+    @MethodSource("admonScenarios")
+    void given_multiple_event_ids_should_evaluate_dmn_for_admon_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,
                                                       List<Map<String, Object>> expectation) {
