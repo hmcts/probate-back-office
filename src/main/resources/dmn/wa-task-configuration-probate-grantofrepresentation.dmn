@@ -76,7 +76,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0wm8t08">
-          <text>"ExamineDigitalCaseProbate", "ExamineDeBonisNon"</text>
+          <text>"ExamineDigitalCaseProbate"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1pghx77">
           <text>"workType"</text>
@@ -306,6 +306,23 @@
           <text>"[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0x6smwi">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0bub45n">
+        <inputEntry id="UnaryTests_08ims08">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1v0k3uj">
+          <text>"ExamineDeBonisNon"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ekukf5">
+          <text>"workType"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02r0tuv">
+          <text>"applications"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ltmxmg">
           <text>true</text>
         </outputEntry>
       </rule>
