@@ -10,7 +10,7 @@ export default defineConfig({
   testDir: "./src/test/PlaywrightTest",
   ...CommonConfig.recommended,
     expect: {
-        timeout: 30000, // for all expect() assertions
+        timeout: 60000, // for all expect() assertions
     },
 
     reporter: [

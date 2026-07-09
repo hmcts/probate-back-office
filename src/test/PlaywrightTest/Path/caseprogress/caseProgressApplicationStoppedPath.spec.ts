@@ -22,7 +22,6 @@ test.describe("01 BO Case Progress E2E - application stopped: complete", () => {
     await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
     // await I.waitForNavigationToComplete(commonConfig.continueButton, testConfig.CreateCaseContinueDelay);
 
-    /* eslint-disable no-console */
     await basePage.logInfo(scenarioName, 'Initial application entry');
     await solCreateCasePage.applyForProbatePage1();
     await solCreateCasePage.applyForProbatePage2();
