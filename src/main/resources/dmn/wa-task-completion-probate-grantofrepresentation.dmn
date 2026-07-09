@@ -61,6 +61,14 @@
           <text>"ExamineDigitalCaseProbate"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0uaunu4">
+      <rule id="DecisionRule_1kqt5nx">
+        <inputEntry id="UnaryTests_0zf4ps4">
+          <text>"moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_17gfw48">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0t81lei">
           <text>"Auto"</text>
         </outputEntry>
       </rule>
@@ -77,7 +85,7 @@
       </rule>
       <rule id="DecisionRule_1br4h1y">
         <inputEntry id="UnaryTests_13qauv0">
-          <text>"resolveCWEscalation"</text>
+          <text>"moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_14memun">
           <text>"ExamineDigitalCaseProbate"</text>
@@ -121,7 +129,7 @@
       </rule>
       <rule id="DecisionRule_0ilvmf5">
         <inputEntry id="UnaryTests_10hxh6t">
-          <text>"resolveCWEscalation"</text>
+          <text>"moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0v8jayz">
           <text>"ExamineDigitalCaseAdmonWill"</text>

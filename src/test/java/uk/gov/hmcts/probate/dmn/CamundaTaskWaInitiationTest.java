@@ -93,55 +93,73 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "applyforGrantPaperApplication",
+                        "boAmendCaseDetailsForAwaitingDocumentation",
                         "CasePrinted",
                         additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
-                        "attachScannedDocs",
+                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        "CasePrinted",
+                        additionalDataEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        "CasePrinted",
+                        additionalDataCaseTypeOther,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                  "applyforGrantPaperApplicationMan",
                         "CasePrinted",
                         additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
-                        "attachScannedDocs",
+                        "applyforGrantPaperApplicationMan",
                         "CasePrinted",
                         additionalData(true, "gop"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "attachScannedDocs",
+                        "applyforGrantPaperApplicationMan",
                         "CasePrinted",
                         additionalData(false, "other"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "attachScannedDocs",
+                        "applyforGrantPaperApplicationMan",
                         "CasePrinted",
                         additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "applyforGrantPaperApplicationMan",
+                        "attachScannedDocs",
                         "CasePrinted",
                         additionalData(false, "gop"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
-                        "applyforGrantPaperApplicationMan",
+                        "attachScannedDocs",
                         "CasePrinted",
                         additionalData(true, "gop"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "applyforGrantPaperApplicationMan",
+                        "attachScannedDocs",
                         "CasePrinted",
                         additionalData(false, "other"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "applyforGrantPaperApplicationMan",
+                        "attachScannedDocs",
                         "CasePrinted",
                         additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
