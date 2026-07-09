@@ -1,3 +1,4 @@
 [
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boStopCaseForCasePrinted", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
 ]
