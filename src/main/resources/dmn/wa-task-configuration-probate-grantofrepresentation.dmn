@@ -326,7 +326,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1v0k3uj">
-          <text>"ExamineDeBonisNon"</text>
+          <text>"ExamineDeBonisNon","ExamineFiatWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ekukf5">
           <text>"workType"</text>

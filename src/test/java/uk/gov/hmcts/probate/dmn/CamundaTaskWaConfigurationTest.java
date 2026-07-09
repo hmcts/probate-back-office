@@ -104,6 +104,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         .build(),
                     "handleEvidence",
                     ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations()
+                        .expectedValue(WORK_TYPE, APPLICATION_WORK_TYPE, true)
                         .expectedValue(DESCRIPTION, "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
                             + "/trigger/boIssueGrantForCaseMatching)  "
                             + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
