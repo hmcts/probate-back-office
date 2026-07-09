@@ -97,7 +97,7 @@ public final class Constants {
     public static final String WELSH_SPOUSE = "gyn-briod neu’n bartner sifil";
     public static final String WELSH_GRANDCHILD = "wyr/wyres";
     public static final String WELSH_PARENT = "rhiant";
-    public static final String WELSH_SIBLING = "hanner brawd neu chwaer/brawd neu chwaer cyflawn";
+    public static final String WELSH_SIBLING = "brawd/chwaer";
     public static final String WELSH_WHOLE_BLOOD_SIBLING = "brawd neu chwaer gwaed cyfan";
     public static final String WELSH_HALF_BLOOD_SIBLING = "hanner brawd/chwaer";
     public static final String WELSH_WHOLE_BLOOD_NIECE_OR_NEPHEW = "nith neu nai";

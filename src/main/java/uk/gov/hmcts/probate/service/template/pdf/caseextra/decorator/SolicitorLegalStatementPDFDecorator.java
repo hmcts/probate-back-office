@@ -17,14 +17,15 @@ import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.HALF_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_CONFIRM;
 import static uk.gov.hmcts.probate.model.Constants.LS_HALF_NIECE_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.LS_HALF_SIBLING;
-import static uk.gov.hmcts.probate.model.Constants.LS_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.LS_SPOUSE;
 import static uk.gov.hmcts.probate.model.Constants.LS_WHOLE_NIECE_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.LS_WHOLE_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.PARENT;
+import static uk.gov.hmcts.probate.model.Constants.SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_GRANDCHILD;
 import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_PARENT;
@@ -41,6 +42,7 @@ import static uk.gov.hmcts.probate.model.Constants.WELSH_WHOLE_BLOOD_NIECE_OR_NE
 import static uk.gov.hmcts.probate.model.Constants.WELSH_WHOLE_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.WHOLE_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -55,7 +57,9 @@ public class SolicitorLegalStatementPDFDecorator {
                     SOLICITOR_CHILD, CHILD,
                     SOLICITOR_GRANDCHILD, GRAND_CHILD,
                     SOLICITOR_PARENT, PARENT,
-                    SOLICITOR_SIBLING, LS_SIBLING
+                    SOLICITOR_SIBLING, SIBLING,
+                    WHOLE_SIBLING, LS_WHOLE_SIBLING,
+                    HALF_SIBLING, LS_HALF_SIBLING
             ),
             "ENGLISH_EXECUTOR", Map.of(
                     CHILD, CHILD,
@@ -71,7 +75,9 @@ public class SolicitorLegalStatementPDFDecorator {
                     SOLICITOR_CHILD, WELSH_CHILD,
                     SOLICITOR_GRANDCHILD, WELSH_GRANDCHILD,
                     SOLICITOR_PARENT, WELSH_PARENT,
-                    SOLICITOR_SIBLING, WELSH_SIBLING
+                    SOLICITOR_SIBLING, WELSH_SIBLING,
+                    WHOLE_SIBLING, WELSH_WHOLE_BLOOD_SIBLING,
+                    HALF_SIBLING, WELSH_HALF_BLOOD_SIBLING
             ),
             "WELSH_EXECUTOR", Map.of(
                     CHILD, WELSH_CHILD,
@@ -87,6 +93,10 @@ public class SolicitorLegalStatementPDFDecorator {
     private static String getRelationship(CaseData caseData, int i, AdditionalExecutorApplying ex, String lang) {
         if (i == 0) {
             String key = lang.equals("ENGLISH") ? "ENGLISH_APPLICANT" : "WELSH_APPLICANT";
+            if (caseData.getSolsApplicantRelationshipToDeceased().equals(SOLICITOR_SIBLING)) {
+                return RELATIONSHIP_MAP.get(key).getOrDefault(caseData.getApplicantSameParentsAsDeceased(),
+                        "");
+            }
             return RELATIONSHIP_MAP.get(key).getOrDefault(caseData.getSolsApplicantRelationshipToDeceased(),
                     "");
         } else {
