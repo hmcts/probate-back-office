@@ -33,14 +33,12 @@ public class EvidenceUploadService {
     }
 
     public void validateExistingUploadedDocuments(CallbackRequest callbackRequest) {
-        CaseDetails caseDetailsBefore = callbackRequest.getCaseDetailsBefore();
-        CaseData dataBefore = caseDetailsBefore != null ? caseDetailsBefore.getData() : null;
-        if (dataBefore == null) {
-            return;
-        }
-
-        List<CollectionMember<UploadDocument>> documentsBefore = dataBefore.getBoDocumentsUploaded();
-        if (documentsBefore == null || documentsBefore.isEmpty()) {
+        List<CollectionMember<UploadDocument>> documentsBefore =
+                Optional.ofNullable(callbackRequest.getCaseDetailsBefore())
+                .map(CaseDetails::getData)
+                .map(CaseData::getBoDocumentsUploaded)
+                .orElse(Collections.emptyList());
+        if (documentsBefore.isEmpty()) {
             return;
         }
 
