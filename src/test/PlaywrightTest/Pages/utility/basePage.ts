@@ -356,4 +356,38 @@ export class BasePage {
       return data[key];
     });
   }
+
+  async navigateViaUrl(urlSuffix: string) {
+    const baseUrl = testConfig.TestBackOfficeUrl;
+    await this.page.goto(`${baseUrl}${urlSuffix}`);
+    await expect(this.page).toHaveURL(`${baseUrl}${urlSuffix}`);
+  }
+
+  calculateDueDate(daysToAdd: number): string {
+    const currentDate = new Date();
+    let addedDays = 0;
+
+    // Each loop adds one day to current date, and checks if it's a weekend.
+    // If not a weekend add 1 to addedDays, until addedDays equals daysToAdd
+    // If it is a weekend, do not add to addedDays, but still add 1 to currentDate
+    while (addedDays < daysToAdd) {
+      currentDate.setDate(currentDate.getDate() + 1);
+      const dayOfWeek = currentDate.getDay();
+
+      //0 = Sunday, 6 = Saturday
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
+      if (!isWeekend) {
+        addedDays++;
+      }
+    }
+
+    const options: Intl.DateTimeFormatOptions = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
+
+    return currentDate.toLocaleDateString("en-GB", options);
+  }
 }
