@@ -130,17 +130,6 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0rc45hz">
-        <inputEntry id="UnaryTests_0ozyzto">
-          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1828lvg">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0q11gif">
-          <text>"Auto"</text>
-        </outputEntry>
-      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
