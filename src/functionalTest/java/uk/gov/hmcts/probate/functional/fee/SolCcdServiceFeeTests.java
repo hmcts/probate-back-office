@@ -6,7 +6,6 @@ import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -25,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SerenityJUnit5Extension.class)
 class SolCcdServiceFeeTests extends IntegrationTestBase {
 
-    private static final int APP_FEE = 30000; //comment this out for local tests - keep for commits
+    private static final int APP_FEE = 52600; //comment this out for local tests - keep for commits
     // private static final int APP_FEE = 15500;
     private static final int COPIES_FEE = 150;
     private static final double MAX_UK_COPIES = 50;
@@ -37,7 +36,6 @@ class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void shouldIncludePA17Link() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutorsPA17.json",
             true, true);
@@ -45,7 +43,6 @@ class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void shouldTransformSolicitorExecutorFields() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutors.json", true,
             true);
@@ -76,7 +73,6 @@ class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyAllFeesAboveThreshold() throws IOException {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", true, true);
     }
