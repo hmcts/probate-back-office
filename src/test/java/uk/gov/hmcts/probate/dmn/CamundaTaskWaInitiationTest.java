@@ -244,6 +244,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
                         "CasePrinted",
                         additionalData(true, "admonWill"),
                         Collections.emptyList()
@@ -311,6 +317,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "boResolveStop",
                         "CasePrinted",
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
                         additionalData(false, "admonWill"),
                         List.of(examineDigitalCaseAdmonTaskAttributes)
                 ),
@@ -335,6 +347,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "changeState",
                         "CasePrinted",
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
                         additionalData(false, "admonWill"),
                         List.of(examineDigitalCaseAdmonTaskAttributes)
                 ),
@@ -359,6 +377,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "resolveCWEscalation",
                         "CasePrinted",
+                        additionalData(false, "admonWill"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
                         additionalData(false, "admonWill"),
                         List.of(examineDigitalCaseAdmonTaskAttributes)
                 ),
@@ -413,7 +437,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(5));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(15));
+        assertThat(logic.getRules().size(), is(19));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
