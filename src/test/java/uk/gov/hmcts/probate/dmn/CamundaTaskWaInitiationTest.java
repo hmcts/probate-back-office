@@ -32,7 +32,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     }
 
 
-    private static Map<String, Object> additionalData(boolean evidenceHandled, String caseType){
+    private static Map<String, Object> additionalData(boolean evidenceHandled, String caseType) {
         return mapAdditionalData("{\n"
                 + "  \"Data\":{\n"
                 + "  \"evidenceHandled\" : \"" + evidenceHandled + "\",\n"
@@ -42,7 +42,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 + "}");
     }
 
-    private static Map<String, Object> additionalDataHandOffListNotEmpty(){
+    private static Map<String, Object> additionalDataHandOffListNotEmpty() {
         return mapAdditionalData("{\n"
                 + "  \"Data\":{\n"
                 + "  \"evidenceHandled\" : \"" + false + "\",\n"
@@ -221,7 +221,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
-    static Stream<Arguments> admonScenarios(){
+    static Stream<Arguments> admonScenarios() {
 
         Map<String,Object> examineDigitalCaseAdmonTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_ADMON,
