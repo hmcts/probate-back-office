@@ -664,6 +664,7 @@ public class CaseData extends CaseDataParent {
     private final String executorsNamed;
     private final String hasCoApplicant;
     private LocalDate firstStopReminderSentDate;
+    private LocalDate firstRedecReminderSentDate;
     private final String evidenceHandledDate;
     private final String childAlive;
     private final String isApplicantParentDeceasedChild;
