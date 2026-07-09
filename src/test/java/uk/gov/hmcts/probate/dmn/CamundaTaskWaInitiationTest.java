@@ -101,37 +101,31 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "applyforGrantPaperApplication",
+                        "boAmendCaseDetailsForAwaitingDocumentation",
                         "CasePrinted",
                         additionalData,
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
-                        "attachScannedDocs",
-                        "CasePrinted",
-                        additionalData,
-                        List.of(examineDigitalCaseProbateTaskAttributes)
-                ),
-                Arguments.of(
-                        "attachScannedDocs",
+                        "boAmendCaseDetailsForAwaitingDocumentation",
                         "CasePrinted",
                         additionalDataEvidenceHandledTrue,
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "attachScannedDocs",
+                        "boAmendCaseDetailsForAwaitingDocumentation",
                         "CasePrinted",
                         additionalDataCaseTypeOther,
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "attachScannedDocs",
+                        "boAmendCaseDetailsForAwaitingDocumentation",
                         "CasePrinted",
                         additionalDataHandOffListNotEmpty,
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "applyforGrantPaperApplicationMan",
+                  "applyforGrantPaperApplicationMan",
                         "CasePrinted",
                         additionalData,
                         List.of(examineDigitalCaseProbateTaskAttributes)
@@ -150,6 +144,30 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalData,
+                        List.of(examineDigitalCaseProbateTaskAttributes)
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalDataEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalDataCaseTypeOther,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
                         "CasePrinted",
                         additionalDataHandOffListNotEmpty,
                         Collections.emptyList()
