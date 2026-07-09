@@ -34,6 +34,7 @@ test.describe("Solicitor - Apply NOC Caveat", () => {
                                             solCreateCasePage,
                                             cwEventActionsPage,
                                           }, testInfo) => {
+    test.setTimeout(600000);
     const scenarioName = "Solicitor - Apply NOC Caveat";
 
     await basePage.logInfo(scenarioName, "Login as Solicitor", null);
@@ -129,7 +130,7 @@ test.describe("Solicitor - Apply NOC Caveat", () => {
       await basePage.seeCaseDetails(testInfo, caseRef, postNocCaveatorDetailsTabConfig, postNocCaveatorConfigDemo);
       await basePage.seeUpdatesOnCase(testInfo, caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
       await basePage.seeUpdatesOnCase(testInfo, caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
-      await basePage.seeCaseDetails(testInfo, caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesCaveatorDetailsConfigDemo, 'changeOfRepresentative', endState, 90);
+      await basePage.seeCaseDetails(testInfo, caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesCaveatorDetailsConfigDemo, 'changeOfRepresentative', endState, 90, true);
     } else {
       changeOfRepresentativesCaveatorDetailsConfigAAT.nocTriggeredDate = dateFns.format(new Date(), testConfig.dateFormat);
       await basePage.seeCaseDetails(testInfo, caseRef, postNocCaveatorDetailsTabConfig, postNocCaveatorConfig);

@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -18,15 +17,14 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SerenityJUnit5Extension.class)
 class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     private static final String VALIDATE_URL = "/nextsteps/validate";
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyAllDataInTheReturnedMarkdown() throws IOException {
         validatePostRequestSuccessForLegalStatement("success.nextsteps.json",
             "deceasedFirstName",
@@ -40,7 +38,6 @@ class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatement() throws IOException {
         String fullResponse = validatePostRequestSuccessForLegalStatement(
             "success.nextsteps-LegalStatementUploaded"
@@ -51,7 +48,6 @@ class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatementWithPA16Form() throws IOException {
         String fullResponse = validatePostRequestSuccessForLegalStatement(
             "success.nextsteps-LegalStatementUploaded-PA16"
@@ -73,7 +69,6 @@ class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatementWithPA17Form() throws IOException {
         validatePostRequestSuccessForLegalStatement(
             "success.nextsteps-LegalStatementUploaded-PA17"
@@ -81,7 +76,6 @@ class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyAllDetailsInTheReturnedMarkdown() throws IOException {
         validatePostRequestSuccessForLegalStatement(Arrays.asList("deceasedFirstName", "deceasedLastName",
             "01/01/2018", "refCYA2", "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln",
@@ -89,7 +83,6 @@ class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
         String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
@@ -101,7 +94,6 @@ class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyGenerateSolsGopExpectedEstatesNo() throws IOException {
         String dir = "/exceptedEstates/ihtEstateCompletedNo/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
@@ -113,7 +105,6 @@ class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyGenerateSolsGopExpectedEstatesCompletedYes207() throws IOException {
         String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
@@ -125,7 +116,6 @@ class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() throws IOException {
         String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextSteps.json",
@@ -137,7 +127,6 @@ class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyGenerateSolsGopAuthenticatedTranslationRequestInApplication() throws IOException {
         Response fullResponse = validatePostRequestSuccessForLegalStatement(
                 "/nextsteps/authenticatedTranslation/nextSteps.json", Collections.emptyList());
@@ -189,7 +178,6 @@ class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Disabled("Temporarily disabled due to fee code change")
     void verifyGenerateSolsGopTcResolutionLodgedWithinApplication() throws IOException {
         String dir = "/nextsteps/tcResolutionLodged/";
         Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextsteps.json",
