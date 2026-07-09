@@ -9,6 +9,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -30,6 +33,7 @@ import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 
 import java.math.BigDecimal;
+import java.util.concurrent.Executor;
 
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -40,9 +44,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static uk.gov.hmcts.probate.model.DataExtractType.NATIONAL_FRAUD_INITIATIVE;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(classes = {DataExtractControllerIT.SynchronousExecutorTestConfig.class})
 @AutoConfigureMockMvc
 class DataExtractControllerIT {
+
+    @TestConfiguration
+    static class SynchronousExecutorTestConfig {
+        @Bean(name = "threadPoolTaskExecutor")
+        @Primary
+        Executor threadPoolTaskExecutor() {
+            return Runnable::run;
+        }
+    }
 
     public static final String PERFORM_HMRC_DATA_EXTRACT_FINISHED = "Perform HMRC data extract task submitted";
 
@@ -192,11 +205,17 @@ class DataExtractControllerIT {
 
     @Test
     void nfiShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
-        mockMvc.perform(post("/data-extract/nfi?fromDate=2019-02-13&toDate=2019-02-13"))
+        mockMvc.perform(post("/data-extract/nfi")
+                        .param("fromDate", "2019-02-13")
+                        .param("toDate", "2019-02-13"))
                 .andExpect(status().isAccepted());
 
         verify(dataExtractDateValidator).dateValidator("2019-02-13", "2019-02-13");
-        verify(dataExtractService).performExtractForDateRange("2019-02-13", "2019-02-13", NATIONAL_FRAUD_INITIATIVE);
+        verify(dataExtractService).performExtractForDateRange(
+                "2019-02-13",
+                "2019-02-13",
+                NATIONAL_FRAUD_INITIATIVE
+        );
     }
 
     @Test
