@@ -248,6 +248,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         List.of(examineDeBonisNonTaskAttributes)
                 ),
                 Arguments.of(
+                    "boResolveStop",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListFiatWill,
+                    List.of(examineFiatWillTaskAttributes)
+                ),
+                Arguments.of(
                         "boResolveStop",
                         "BOReadyToIssue",
                         additionalDataHandOffListLegacySiteNo,
@@ -270,6 +276,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "BOReadyToIssue",
                         additionalDataHandOffListDeBonisNon,
                         List.of(examineDeBonisNonTaskAttributes)
+                ),
+                Arguments.of(
+                    "moveToCWEscalation",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListFiatWill,
+                    List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         "moveToCWEscalation",
@@ -294,6 +306,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "BOReadyToIssue",
                         additionalDataHandOffListDeBonisNon,
                         List.of(examineDeBonisNonTaskAttributes)
+                ),
+                Arguments.of(
+                    "changeState",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListFiatWill,
+                    List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
                         "changeState",
