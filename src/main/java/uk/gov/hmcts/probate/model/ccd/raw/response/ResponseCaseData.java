@@ -168,6 +168,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final Declaration declaration;
     private final String deceasedMarriedAfterWillOrCodicilDate;
     private final String deceasedMarriedAfterWillOrCodicilDateYN;
+    private final String deceasedSpouseName;
     private final String primaryApplicantPhoneNumber;
 
     private final String boExaminationChecklistQ2;
@@ -315,6 +316,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String latestGrantReissueDate;
 
     private final String deceasedDivorcedInEnglandOrWales;
+    private final String deceasedDivorcedDateKnown;
     private final String primaryApplicantAdoptionInEnglandOrWales;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
@@ -421,6 +423,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final TTL ttl;
     private final String executorsNamed;
     private final LocalDate firstStopReminderSentDate;
+    private final LocalDate firstRedecReminderSentDate;
     private String issueEarlySwitch;
     private String hasValidMatches;
     private final List<CollectionMember<UploadDocument>> cwDocumentUploadedList;

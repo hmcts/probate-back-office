@@ -312,6 +312,7 @@ public class CallbackResponseTransformer {
         ResponseCaseData responseCaseData =
             getResponseCaseData(caseDetails, callbackRequest.getEventId(), Optional.empty(),false)
                 .executorsApplyingNotifications(exec)
+                .firstRedecReminderSentDate(null)
                 .build();
 
         return transformResponse(responseCaseData);
@@ -1268,6 +1269,7 @@ public class CallbackResponseTransformer {
             .legalStatement(caseData.getLegalStatement())
             .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
             .deceasedMarriedAfterWillOrCodicilDateYN(caseData.getDeceasedMarriedAfterWillOrCodicilDateYN())
+            .deceasedSpouseName(caseData.getDeceasedSpouseName())
 
             .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1())
             .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
@@ -1464,8 +1466,10 @@ public class CallbackResponseTransformer {
             .executorsNamed(caseData.getExecutorsNamed())
             .ttl(caseData.getTtl())
             .firstStopReminderSentDate(caseData.getFirstStopReminderSentDate())
+            .firstRedecReminderSentDate(caseData.getFirstRedecReminderSentDate())
             .evidenceHandledDate(caseData.getEvidenceHandledDate())
-            .cwDocumentUploadedList(caseData.getCwDocumentUploadedList());
+            .cwDocumentUploadedList(caseData.getCwDocumentUploadedList())
+            .deceasedDivorcedDateKnown(caseData.getDeceasedDivorcedDateKnown());
 
         handleDeceasedAliases(
                 builder,

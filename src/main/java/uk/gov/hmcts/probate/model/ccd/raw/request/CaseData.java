@@ -362,6 +362,7 @@ public class CaseData extends CaseDataParent {
     private final LegalStatement legalStatement;
     private final String deceasedMarriedAfterWillOrCodicilDate;
     private final String deceasedMarriedAfterWillOrCodicilDateYN;
+    private final String deceasedSpouseName;
     private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
     private String primaryApplicantPhoneNumber;
     private final String primaryApplicantNotRequiredToSendDocuments;
@@ -504,6 +505,7 @@ public class CaseData extends CaseDataParent {
     private final String boGrantReissueSendToBulkPrint = YES;
     private final String boGrantReissueSendToBulkPrintRequested;
     private final String deceasedDivorcedInEnglandOrWales;
+    private final String deceasedDivorcedDateKnown;
     private final String primaryApplicantAdoptionInEnglandOrWales;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;
@@ -635,6 +637,7 @@ public class CaseData extends CaseDataParent {
     private List<CollectionMember<CitizenResponse>> citizenResponses;
     private final String executorsNamed;
     private LocalDate firstStopReminderSentDate;
+    private LocalDate firstRedecReminderSentDate;
     private final String evidenceHandledDate;
 
     private TTL ttl;

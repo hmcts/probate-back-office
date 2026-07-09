@@ -42,6 +42,8 @@ export class SolCreateCasePage extends BasePage {
   readonly deceasedAddressCountyLocator = this.page.locator("#deceasedAddress__detailCounty");
   readonly deceasedAddressPostCodeLocator = this.page.locator("#deceasedAddress__detailPostCode");
   readonly deceasedAddressCountryLocator = this.page.locator("#deceasedAddress__detailCountry");
+  readonly languagePreferenceWelshYesLocator = this.page.locator("#languagePreferenceWelsh_Yes");
+  readonly languagePreferenceWelshNoLocator = this.page.locator("#languagePreferenceWelsh_No");
   readonly completeApplicationSubmitButton = this.page.getByRole("button", {name: "Close and return to case details",});
   readonly serviceRequestTabLocator = this.page.getByRole("tab", {name: makePaymentConfig.paymentTab,});
   readonly paymentHistoryTabLocator = this.page.getByRole("tab", {name: makePaymentConfig.paymentTab,});
@@ -366,6 +368,18 @@ export class SolCreateCasePage extends BasePage {
     await this.deceasedAddressCountyLocator.fill(applicationDetailsConfig.address_county);
     await this.deceasedAddressPostCodeLocator.fill(applicationDetailsConfig.address_postcode);
     await this.deceasedAddressCountryLocator.fill(applicationDetailsConfig.address_country);
+    //Add the new question here:
+    const languagePreferenceWelshMap = {
+      Yes: this.languagePreferenceWelshYesLocator,
+      No: this.languagePreferenceWelshNoLocator,
+      Ydw: this.languagePreferenceWelshYesLocator,
+      "Nac ydw": this.languagePreferenceWelshNoLocator,
+    } as const;
+
+    await languagePreferenceWelshMap[
+      applicationDetailsConfig.page2_languagePreferenceWelsh as "Yes" | "No" | "Ydw" | "Nac ydw"
+      ].check();
+
     await this.waitForNavigationToComplete(commonConfig.continueButton);
   }
 
