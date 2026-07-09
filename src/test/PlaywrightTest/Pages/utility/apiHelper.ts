@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const  getAccessToken = async ( idamUrl, email: string,  password: string  ) => {
+export const getAccessToken = async ( idamUrl, email: string,  password: string  ) => {
   try {
     console.log('=== API REQUEST DEBUG ===');
     console.log('Base URL:', idamUrl);
