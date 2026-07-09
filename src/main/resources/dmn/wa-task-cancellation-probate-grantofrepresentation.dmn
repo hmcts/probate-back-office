@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.34.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-cancellation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
   <decision id="wa-task-cancellation-probate-grantofrepresentation" name="Task cancellation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0z3jx1g" hitPolicy="COLLECT">
       <input id="Input_1" label="From State">
@@ -21,28 +21,27 @@
       <output id="OutputClause_0tu8bqp" label="Warning Code" name="warningCode" typeRef="string" />
       <output id="OutputClause_1kfc3jv" label="Warning Text" name="warningText" typeRef="string" />
       <output id="OutputClause_0dqzted" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="277" />
-      <rule id="DecisionRule_1guzypv">
-        <description></description>
-        <inputEntry id="UnaryTests_1n3g5ie">
-          <text></text>
+      <rule id="DecisionRule_0ulx1ne">
+        <inputEntry id="UnaryTests_1j3lvnt">
+          <text>"BOReadyToIssue"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1g1cc7g">
-          <text>"boWithdrawApplicationForCasePrinted"</text>
+        <inputEntry id="UnaryTests_0no8e7o">
+          <text>"boWithdrawApplicationForReadyToIssue"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1ah5t17">
-          <text></text>
+        <inputEntry id="UnaryTests_014j2bp">
+          <text>"BOCaseClosed"</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1c4vo81">
+        <outputEntry id="LiteralExpression_1724sh6">
           <text>"Cancel"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0mfk4dd">
+        <outputEntry id="LiteralExpression_1wn1qof">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1xi8ame">
+        <outputEntry id="LiteralExpression_1uliqg6">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_038kekv">
-          <text></text>
+        <outputEntry id="LiteralExpression_0r1d28b">
+          <text>"case progression"</text>
         </outputEntry>
       </rule>
     </decisionTable>

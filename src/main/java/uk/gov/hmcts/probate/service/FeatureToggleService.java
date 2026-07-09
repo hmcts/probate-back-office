@@ -49,6 +49,10 @@ public class FeatureToggleService {
         return isFeatureToggleOn("probate-newfee-register-code", true);
     }
 
+    public boolean isNewFee2026Enabled() {
+        return isFeatureToggleOn("probate-fee-increase-2026", false);
+    }
+
     public boolean enableNewMarkdownFiltering() {
         return isFeatureToggleOn("probate-enable-new-markdown-filtering", false);
     }
