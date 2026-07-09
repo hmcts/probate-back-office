@@ -5,5 +5,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "attachScannedDocs", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boStopCaseForCasePrinted", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boResolveStop", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boEscalateToRegistrar", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boEscalateToRegistrar", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForAwaitingDocumentation", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "moveToCWEscalation", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
 ]
