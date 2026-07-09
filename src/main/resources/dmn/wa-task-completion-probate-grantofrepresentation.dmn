@@ -121,7 +121,7 @@
       </rule>
       <rule id="DecisionRule_0ilvmf5">
         <inputEntry id="UnaryTests_10hxh6t">
-          <text>"resolveCWEscalation"</text>
+          <text>"moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0v8jayz">
           <text>"ExamineDigitalCaseAdmonWill"</text>
