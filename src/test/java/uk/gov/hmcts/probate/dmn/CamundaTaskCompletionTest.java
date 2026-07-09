@@ -92,7 +92,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
-                        "resolveCWEscalation",
+                        "moveToCWEscalation",
                         List.of(
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
