@@ -61,6 +61,9 @@
           <text>"ExamineDigitalCaseProbate"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0uaunu4">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1kqt5nx">
         <inputEntry id="UnaryTests_0zf4ps4">
           <text>"moveToCWEscalation"</text>
