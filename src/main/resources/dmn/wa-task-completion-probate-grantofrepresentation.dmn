@@ -55,7 +55,7 @@
       </rule>
       <rule id="DecisionRule_14v68e6">
         <inputEntry id="UnaryTests_1oye7pf">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCasePrinted", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0b0njdn">
           <text>"ExamineDeBonisNon"</text>
