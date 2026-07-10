@@ -51,6 +51,6 @@
         <notes><![CDATA[
    file name: postgresql-42.7.11.jar
    ]]></notes>
-    </suppress>
         <cve>CVE-2026-54291</cve>
+    </suppress>
 </suppressions>
