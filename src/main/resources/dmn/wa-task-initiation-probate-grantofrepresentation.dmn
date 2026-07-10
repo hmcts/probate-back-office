@@ -25,12 +25,11 @@
       </input>
       <input id="InputClause_0igjxpg" label="caseType" biodi:width="291" camunda:inputVariable="caseType">
         <inputExpression id="LiteralExpression_176w5mt" typeRef="string">
-          <text>if(additionalData != null and additionalData.Data != null and
-            additionalData.Data.evidenceHandled
-            != null) then
-            additionalData.Data.caseType
-            else
-            ""
+          <text>if(additionalData != null and additionalData.Data.caseType
+  != null) then
+  additionalData.Data.caseType
+  else
+  ""
           </text>
         </inputExpression>
         <inputValues id="UnaryTests_0s5s50h">
@@ -101,7 +100,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0nmqzhb">
         <inputEntry id="UnaryTests_1f06n36">
-          <text>"applyforGrantPaperApplication"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0uux0lw">
           <text>"CasePrinted"</text>
@@ -113,7 +112,7 @@ else false</text>
           <text>"gop"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1kd4rdo">
-          <text></text>
+          <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0j8iwnt">
           <text></text>
