@@ -66,7 +66,7 @@
       </rule>
       <rule id="DecisionRule_0i0u0io">
         <inputEntry id="UnaryTests_1cfgkd3">
-          <text>"boIssueGrantForCaseMatching", "boStopCaseForCasePrinted", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1xpi8ow">
           <text>"ExamineFiatWill"</text>
