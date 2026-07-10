@@ -101,19 +101,19 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "boAmendCaseDetailsForAwaitingDocumentation",
                         "CasePrinted",
-                        additionalDataEvidenceHandledTrue,
+                        additionalData(true, "gop"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boAmendCaseDetailsForAwaitingDocumentation",
                         "CasePrinted",
-                        additionalDataCaseTypeOther,
+                        additionalData(false, "other"),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boAmendCaseDetailsForAwaitingDocumentation",
                         "CasePrinted",
-                        additionalDataHandOffListNotEmpty,
+                        additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
                 ),
                 Arguments.of(
