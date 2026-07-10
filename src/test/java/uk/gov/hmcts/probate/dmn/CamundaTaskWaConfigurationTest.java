@@ -56,7 +56,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .isUrgent()
                                 .build(),
                         "boAmendCaseDetailsForAwaitingDocumentation",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations().build()
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
