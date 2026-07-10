@@ -83,6 +83,7 @@ fee.api:
   applicantType: all
   keyword: NewFee
   newCopiesFeeKeyword: GrantWill
+  newCopiesFee2026Keyword: GrantWillCopiesIndividualApplication
 
 markdown.templatesDirectory: templates/markdown/
 

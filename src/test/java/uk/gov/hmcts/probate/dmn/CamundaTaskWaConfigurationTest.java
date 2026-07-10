@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.dmnutils.CaseDataBuilder;
 import uk.gov.hmcts.probate.dmnutils.ConfigurationExpectationBuilder;
 
 import java.io.IOException;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
@@ -23,18 +24,12 @@ import java.util.stream.Stream;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_MANAGEMENT_CATEGORY;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.CASE_NAME;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.DESCRIPTION;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_ADMON;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.EXAMINE_DIGITAL_CASE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.LOCATION;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.REGION;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.ROLE_CATEGORY;
-import static uk.gov.hmcts.probate.dmnutils.CamundaTaskConstants.WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -48,29 +43,30 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     }
 
     static Stream<Arguments> scenarioProvider() throws IOException {
+        String dateOrigin = ZonedDateTime.now(ZoneId.of("UTC")).toString();
         return Stream.of(
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase()
                                 .isUrgent()
                                 .build(),
-                        ConfigurationExpectationBuilder.defaultExpectations()
-                                .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
-                                        + "/trigger/boSelectForQA)", true)
-                                .expectedValue(WORK_TYPE, "decision_making_work", true)
-                                .expectedValue(CASE_MANAGEMENT_CATEGORY,
-                                        "someCaseType", true)
-                                .expectedValue(CASE_NAME, "someDeceasedForenames someDeceasedSurname", true)
-                                .expectedValue(REGION, "someRegion", true)
-                                .expectedValue(ROLE_CATEGORY, "CTSC", true)
-                                .expectedValue(LOCATION, "someRegistryLocation", true)
-                                .build()
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations().build()
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_PROBATE,
+                        CaseDataBuilder.defaultWaCase()
+                                .isUrgent()
+                                .build(),
+                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         CaseDataBuilder.defaultCase()
                                 .isUrgent()
                                 .build(),
+                        "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
                                          + "/trigger/boSelectForQA)", true)
@@ -81,6 +77,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         CaseDataBuilder.defaultCase()
                                 .isUrgent()
                                 .build(),
+                        "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boSelectForQA)", true)
@@ -95,13 +92,14 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(9, logic.getRules().size());
+        assertEquals(16, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
     @MethodSource("scenarioProvider")
     void should_return_correct_configuration_values_for_scenario(
             String taskType, Map<String, Object> caseData,
+            String eventId,
             List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
 
@@ -113,6 +111,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("taskAttributes", taskAttributes);
         inputVariables.putValue("taskType", taskType);
         inputVariables.putValue("caseData", caseData);
+        inputVariables.putValue("eventId", eventId);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
 
@@ -126,78 +125,4 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 && (now.isEqual(result) || now.isAfter(result));
     }
 
-    private void resultsMatchUsingNameKey(List<Map<String, Object>> results, List<Map<String, Object>> expectation) {
-        assertThat(results.size(), is(expectation.size()));
-
-        for (Map<String, Object> expectedEntry : expectation) {
-            String expectedName = (String) expectedEntry.get("name");
-            Map<String, Object> resultEntry = results.stream()
-                    .filter(result -> expectedName.equals(result.get("name")))
-                    .findFirst()
-                    .orElseThrow(() -> new AssertionError("No result found for name: " + expectedName));
-
-            for (String key : expectedEntry.keySet()) {
-                assertEquals(expectedEntry.get(key), resultEntry.get(key),
-                        "Mismatch for key: " + key + " in entry with name: " + expectedName);
-            }
-        }
-    }
-
-    @Test
-    void shouldMatchResultsWhenAllEntriesMatchByName() {
-        List<Map<String, Object>> results = List.of(
-                Map.of("name", "task1", "value", "value1", "canReconfigure", true),
-                Map.of("name", "task2", "value", "value2", "canReconfigure", false)
-        );
-
-        List<Map<String, Object>> expectation = List.of(
-                Map.of("name", "task1", "value", "value1", "canReconfigure", true),
-                Map.of("name", "task2", "value", "value2", "canReconfigure", false)
-        );
-
-        resultsMatchUsingNameKey(results, expectation);
-    }
-
-    @Test
-    void shouldThrowErrorWhenResultIsMissingForExpectedName() {
-        List<Map<String, Object>> results = List.of(
-                Map.of("name", "task1", "value", "value1", "canReconfigure", true)
-        );
-
-        List<Map<String, Object>> expectation = List.of(
-                Map.of("name", "task1", "value", "value1", "canReconfigure", true),
-                Map.of("name", "task2", "value", "value2", "canReconfigure", false)
-        );
-
-        assertThrows(AssertionError.class, () -> resultsMatchUsingNameKey(results, expectation));
-    }
-
-    @Test
-    void shouldThrowErrorWhenValuesDoNotMatchForSameName() {
-        List<Map<String, Object>> results = List.of(
-                Map.of("name", "task1", "value", "value1", "canReconfigure", true),
-                Map.of("name", "task2", "value", "wrongValue", "canReconfigure", false)
-        );
-
-        List<Map<String, Object>> expectation = List.of(
-                Map.of("name", "task1", "value", "value1", "canReconfigure", true),
-                Map.of("name", "task2", "value", "value2", "canReconfigure", false)
-        );
-
-        assertThrows(AssertionError.class, () -> resultsMatchUsingNameKey(results, expectation));
-    }
-
-    @Test
-    void shouldThrowErrorWhenResultsSizeDoesNotMatchExpectationSize() {
-        List<Map<String, Object>> results = List.of(
-                Map.of("name", "task1", "value", "value1", "canReconfigure", true)
-        );
-
-        List<Map<String, Object>> expectation = List.of(
-                Map.of("name", "task1", "value", "value1", "canReconfigure", true),
-                Map.of("name", "task2", "value", "value2", "canReconfigure", false)
-        );
-
-        assertThrows(AssertionError.class, () -> resultsMatchUsingNameKey(results, expectation));
-    }
 }
