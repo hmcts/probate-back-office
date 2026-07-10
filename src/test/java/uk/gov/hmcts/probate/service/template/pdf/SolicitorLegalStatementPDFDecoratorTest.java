@@ -52,7 +52,7 @@ class SolicitorLegalStatementPDFDecoratorTest {
     }
 
     @Test
-    void shouldReturnSiblingRelationshipForSolicitorWholeBloodSibling() {
+    void shouldReturnWholeSiblingRelationshipForSolicitorWithSameParent() {
         List<CollectionMember<AdditionalExecutorApplying>> executors = new ArrayList<>();
         executors.add(new CollectionMember<>("1", AdditionalExecutorApplying.builder()
                 .applyingExecutorName("John Doe")
@@ -69,7 +69,7 @@ class SolicitorLegalStatementPDFDecoratorTest {
     }
 
     @Test
-    void shouldReturnSiblingRelationshipForSolicitorHalfBloodSibling() {
+    void shouldReturnHalfSiblingRelationshipForSolicitorWithOneSameParent() {
         List<CollectionMember<AdditionalExecutorApplying>> executors = new ArrayList<>();
         executors.add(new CollectionMember<>("1", AdditionalExecutorApplying.builder()
                 .applyingExecutorName("John Doe")
@@ -83,5 +83,39 @@ class SolicitorLegalStatementPDFDecoratorTest {
 
         String result = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
         assertTrue(result.contains("John Doe is the half blood sibling"));
+    }
+
+    @Test
+    void shouldReturnSiblingRelationshipForSolicitorAndEmptySameParent() {
+        List<CollectionMember<AdditionalExecutorApplying>> executors = new ArrayList<>();
+        executors.add(new CollectionMember<>("1", AdditionalExecutorApplying.builder()
+                .applyingExecutorName("John Doe")
+                .applicantFamilyDetails(ApplicantFamilyDetails.builder()
+                        .relationshipToDeceased("child").build())
+                .build()));
+        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+        when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(SOLICITOR_SIBLING);
+        when(caseDataMock.getApplicantSameParentsAsDeceased()).thenReturn("");
+        when(caseDataMock.getExecutorsApplyingLegalStatement()).thenReturn(executors);
+
+        String result = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
+        assertTrue(result.contains("John Doe is the sibling"));
+    }
+
+    @Test
+    void shouldReturnSiblingRelationshipForSolicitorAndNulSameParent() {
+        List<CollectionMember<AdditionalExecutorApplying>> executors = new ArrayList<>();
+        executors.add(new CollectionMember<>("1", AdditionalExecutorApplying.builder()
+                .applyingExecutorName("John Doe")
+                .applicantFamilyDetails(ApplicantFamilyDetails.builder()
+                        .relationshipToDeceased("child").build())
+                .build()));
+        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+        when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn(SOLICITOR_SIBLING);
+        when(caseDataMock.getApplicantSameParentsAsDeceased()).thenReturn(null);
+        when(caseDataMock.getExecutorsApplyingLegalStatement()).thenReturn(executors);
+
+        String result = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
+        assertTrue(result.contains("John Doe is the sibling"));
     }
 }

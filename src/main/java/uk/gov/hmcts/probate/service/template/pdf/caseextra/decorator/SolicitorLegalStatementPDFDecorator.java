@@ -94,8 +94,12 @@ public class SolicitorLegalStatementPDFDecorator {
         if (i == 0) {
             String key = lang.equals("ENGLISH") ? "ENGLISH_APPLICANT" : "WELSH_APPLICANT";
             if (caseData.getSolsApplicantRelationshipToDeceased().equals(SOLICITOR_SIBLING)) {
-                return RELATIONSHIP_MAP.get(key).getOrDefault(caseData.getApplicantSameParentsAsDeceased(),
-                        "");
+                String sameParents = caseData.getApplicantSameParentsAsDeceased();
+                return RELATIONSHIP_MAP.get(key).getOrDefault(
+                        (sameParents == null || sameParents.isBlank())
+                                ? caseData.getSolsApplicantRelationshipToDeceased() : sameParents,
+                        SIBLING
+                );
             }
             return RELATIONSHIP_MAP.get(key).getOrDefault(caseData.getSolsApplicantRelationshipToDeceased(),
                     "");
