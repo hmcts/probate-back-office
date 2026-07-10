@@ -88,7 +88,6 @@ public final class Constants {
     public static final String LS_SPOUSE = "husband, wife or civil partner";
     public static final String LS_WHOLE_SIBLING = "whole blood sibling";
     public static final String LS_HALF_SIBLING = "half blood sibling";
-
     public static final String LS_WHOLE_NIECE_NEPHEW = "niece or nephew";
     public static final String LS_HALF_NIECE_NEPHEW = "half-niece or half-nephew";
 
