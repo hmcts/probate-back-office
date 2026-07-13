@@ -21,6 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
@@ -41,6 +42,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON,
                 "name", "Examine - De Bonis Non",
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineWindrushSchemeTaskAttributes = Map.of(
+                "taskId", EXAMINE_WINDRUSH_SCHEME,
+                "name", "Examine - Windrush Scheme",
                 "processCategories", "case progression"
         );
 
@@ -142,6 +149,75 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 + "  \"caseType\" : \"" + "gop" + "\",\n"
                 + "  \"caseHandedOffToLegacySite\" : \"" + true + "\",\n"
                 + "  \"boHandoffReasonList\" : []\n"
+                + "  }\n"
+                + "}");
+
+        Map<String, Object> additionalDataHandOffListWindrushScheme = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + false + "\",\n"
+                + "  \"caseType\" : \"" + "intestacy" + "\",\n"
+                + "  \"caseHandedOffToLegacySite\" : \"" + true + "\",\n"
+                + "  \"boHandoffReasonList\" : [\n"
+                + "    {\n"
+                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+                + "      \"value\": {\n"
+                + "        \"caseHandoffReason\": \"WindrushScheme\"\n"
+                + "      }\n"
+                + "    },\n"
+                + "    {\n"
+                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+                + "      \"value\": {\n"
+                + "        \"caseHandoffReason\": \"OtherReason\"\n"
+                + "      }\n"
+                + "    }\n"
+                + "  ]\n"
+                + "  }\n"
+                + "}");
+
+        Map<String, Object> additionalDataHandOffListWindrushSchemeEvidenceHandledBlank = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"caseType\" : \"" + "admonWill" + "\",\n"
+                + "  \"caseHandedOffToLegacySite\" : \"" + true + "\",\n"
+                + "  \"boHandoffReasonList\" : [\n"
+                + "    {\n"
+                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+                + "      \"value\": {\n"
+                + "        \"caseHandoffReason\": \"WindrushScheme\"\n"
+                + "      }\n"
+                + "    }\n"
+                + "  ]\n"
+                + "  }\n"
+                + "}");
+
+        Map<String, Object> additionalDataHandOffListWindrushSchemeEvidenceHandledTrue = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + true + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"caseHandedOffToLegacySite\" : \"" + true + "\",\n"
+                + "  \"boHandoffReasonList\" : [\n"
+                + "    {\n"
+                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+                + "      \"value\": {\n"
+                + "        \"caseHandoffReason\": \"WindrushScheme\"\n"
+                + "      }\n"
+                + "    }\n"
+                + "  ]\n"
+                + "  }\n"
+                + "}");
+
+        Map<String, Object> additionalDataHandOffListWindrushSchemeLegacySiteNo = mapAdditionalData("{\n"
+                + "  \"Data\":{\n"
+                + "  \"evidenceHandled\" : \"" + false + "\",\n"
+                + "  \"caseType\" : \"" + "gop" + "\",\n"
+                + "  \"caseHandedOffToLegacySite\" : \"" + false + "\",\n"
+                + "  \"boHandoffReasonList\" : [\n"
+                + "    {\n"
+                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+                + "      \"value\": {\n"
+                + "        \"caseHandoffReason\": \"WindrushScheme\"\n"
+                + "      }\n"
+                + "    }\n"
+                + "  ]\n"
                 + "  }\n"
                 + "}");
 
@@ -295,6 +371,60 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "BOReadyToIssue",
                         additionalDataHandOffListEmpty,
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushScheme,
+                        List.of(examineWindrushSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushScheme,
+                        List.of(examineWindrushSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushScheme,
+                        List.of(examineWindrushSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushScheme,
+                        List.of(examineWindrushSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushSchemeEvidenceHandledBlank,
+                        List.of(examineWindrushSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushSchemeEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushSchemeLegacySiteNo,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListOtherReason,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalDataHandOffListWindrushScheme,
+                        Collections.emptyList()
                 )
         );
     }
@@ -305,7 +435,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(5));
+        assertThat(logic.getRules().size(), is(6));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")

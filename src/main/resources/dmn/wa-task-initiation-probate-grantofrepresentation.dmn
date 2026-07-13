@@ -238,6 +238,41 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0windrush">
+        <inputEntry id="UnaryTests_0windrush_event">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0windrush_state">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0windrush_evidence">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0windrush_case_type">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0windrush_handoff_present">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0windrush_reason">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "WindrushScheme")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0windrush_legacy">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0windrush_task_id">
+          <text>"ExamineWindrushScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0windrush_task_name">
+          <text>"Examine - Windrush Scheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0windrush_delay">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0windrush_category">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
