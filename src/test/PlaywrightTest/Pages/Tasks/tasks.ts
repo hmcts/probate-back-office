@@ -1,4 +1,4 @@
-import { expect } from "@playwright/test";
+import { APIRequestContext, expect } from "@playwright/test";
 import { BasePage } from "../utility/basePage.ts";
 
 export class TasksPage extends BasePage {
@@ -30,54 +30,35 @@ export class TasksPage extends BasePage {
   readonly nextStepsLocator = this.page.locator(
     "//span[text()='Next steps']/../..//a",
   );
+  readonly activeTasksHeadingLocator = this.page.locator(
+    "//h2[text()='Active tasks']",
+  );
 
-  //flicks between tabs to check if the task is displayed in the tasks tab on the case
-  async verifyTaskIsDisplayed(taskName: string) {
-    let taskVisible = false;
+  // waits for task to be in correct state or throws error
+  async verifyTaskVisibilty(taskName: string, shouldBeVisible: boolean) {
+    let taskVisible = !shouldBeVisible; // Initialize to the opposite state to enter the loop
     const taskLocator = `//exui-case-task[./*[normalize-space()='${taskName}']][1]`;
     const startTime = Date.now();
     const timeout = 200000;
 
-    while (Date.now() - startTime < timeout) {
-      taskVisible = await this.page.isVisible(taskLocator);
-      if (taskVisible) {
-        break;
-      }
-      await this.page.getByRole("tab", { name: "Event History" }).click();
-      await this.page.waitForTimeout(30000);
-      await this.page.getByRole("tab", { name: "Tasks" }).click();
-      await this.page.waitForTimeout(2000);
-    }
-
-    if (!taskVisible) {
-      throw new Error(
-        `Task "${taskName}" is not displayed within ${timeout / 1000} seconds.`,
-      );
-    }
-  }
-
-  async verifyTaskIsHidden(taskName: string) {
-    let taskVisible = true;
     await this.page.getByRole("tab", { name: "Tasks" }).click();
-
-    const taskLocator = `//exui-case-task[./*[normalize-space()='${taskName}']][1]`;
-    const startTime = Date.now();
-    const timeout = 200000;
+    await expect(this.activeTasksHeadingLocator).toBeVisible();
 
     while (Date.now() - startTime < timeout) {
       taskVisible = await this.page.isVisible(taskLocator);
-      if (!taskVisible) {
+
+      if (taskVisible === shouldBeVisible) {
         break;
       }
-      await this.page.getByRole("tab", { name: "Event History" }).click();
-      await this.page.waitForTimeout(30000);
-      await this.page.getByRole("tab", { name: "Tasks" }).click();
-      await this.page.waitForTimeout(2000);
+
+      await this.page.reload();
+      await this.page.waitForTimeout(15000);
+      await expect(this.activeTasksHeadingLocator).toBeVisible();
     }
 
-    if (taskVisible) {
+    if (taskVisible !== shouldBeVisible) {
       throw new Error(
-        `Task "${taskName}" is still displayed after waiting for ${timeout / 1000} seconds.`,
+        `Task "${taskName}" was expected to be (${shouldBeVisible ? "visible" : "hidden"}) within ${timeout / 1000} seconds but was not.`,
       );
     }
   }
@@ -87,8 +68,12 @@ export class TasksPage extends BasePage {
     await expect(this.assignedToLocator).toHaveText(user);
   }
 
-  async verifyUnassignedTaskData(workingDays: number, priority: string) {
-    let dueDate = this.calculateDueDate(workingDays);
+  async verifyUnassignedTaskData(
+    workingDays: number,
+    priority: string,
+    request: APIRequestContext,
+  ) {
+    let dueDate = await this.calculateDueDate(workingDays, request);
     await expect(this.priorityLocator).toHaveText(priority);
     await expect(this.dueDateLocator).toHaveText(dueDate);
     await expect(this.assignedToLocator).toHaveText("Unassigned");

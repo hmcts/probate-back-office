@@ -1,4 +1,4 @@
-import { expect } from "@playwright/test";
+import { APIRequestContext, expect } from "@playwright/test";
 import { BasePage } from "../utility/basePage.ts";
 
 //the logic used here to verify the task is displayed correctly currently just checks the top row of the table. 
@@ -18,6 +18,7 @@ export class MyWorkPage extends BasePage {
     expectedTaskName: string,
     workingDaysToComplete: number,
     expectedPriority: string,
+    request: APIRequestContext
   ) {
     const row = this.topRowTaskLocator;
     const taskNameValue = await row.locator("xpath=./td[5]").innerText();
@@ -26,7 +27,7 @@ export class MyWorkPage extends BasePage {
       await row.locator("xpath=./td[8]").innerText()
     ).toLocaleLowerCase();
     const manageButton = row.locator("xpath=./td[9]//button");
-    const expectedDueDate = this.calculateDueDate(workingDaysToComplete);
+    const expectedDueDate = await this.calculateDueDate(workingDaysToComplete, request);
 
     expect(taskNameValue).toEqual(expectedTaskName);
     expect(dueDateValue).toEqual(expectedDueDate);

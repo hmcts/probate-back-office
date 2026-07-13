@@ -6,13 +6,14 @@ import caseProgressConfig from "../../Pages/caseProgressStandard/caseProgressCon
 import tasks from "../../Pages/Tasks/tasks.json" with { type: "json" };
 
 test.describe("Work Allocation - Examine Digital Case - Probate Task", () => {
-  test("Create task via manual, assign and complete a probate task via escalate to registrar event @webkit", async ({
+  test("Create task via manual, assign and complete a probate task via escalate to registrar event", async ({
     basePage,
     signInPage,
     createCasePage,
     tasksPage,
     myWorkPage,
     cwEventActionsPage,
+    request
   }) => {
     const scenarioName =
       "Work Allocation - Examine Digital Case - Probate Task";
@@ -73,10 +74,11 @@ test.describe("Work Allocation - Examine Digital Case - Probate Task", () => {
       "Confirming task is created and visible in the tasks tab on the case",
       caseRef,
     );
-    await tasksPage.verifyTaskIsDisplayed(tasks.ExamineDigitalCaseProbate.Name);
+    await tasksPage.verifyTaskVisibilty(tasks.ExamineDigitalCaseProbate.Name, true);
     await tasksPage.verifyUnassignedTaskData(
       tasks.ExamineDigitalCaseProbate.WorkingDaysToComplete,
       tasks.ExamineDigitalCaseProbate.Priority,
+      request
     );
     // Assign the task to yourself - verify data in task tab
     await basePage.logInfo(
@@ -101,6 +103,7 @@ test.describe("Work Allocation - Examine Digital Case - Probate Task", () => {
       tasks.ExamineDigitalCaseProbate.Name,
       tasks.ExamineDigitalCaseProbate.WorkingDaysToComplete,
       tasks.ExamineDigitalCaseProbate.Priority,
+      request
     );
     // Complete the task using Escalate to registrar event link
     await basePage.logInfo(
@@ -123,6 +126,6 @@ test.describe("Work Allocation - Examine Digital Case - Probate Task", () => {
       "Verifying the task disappears from the UI after completion",
       caseRef,
     );
-    await tasksPage.verifyTaskIsHidden(tasks.ExamineDigitalCaseProbate.Name);
+    await tasksPage.verifyTaskVisibilty(tasks.ExamineDigitalCaseProbate.Name, false);
   });
 });

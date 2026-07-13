@@ -1,5 +1,11 @@
 import { AxeUtils } from "@hmcts/playwright-common";
-import {expect, Locator, Page, TestInfo} from "@playwright/test";
+import {
+  expect,
+  Locator,
+  Page,
+  TestInfo,
+  APIRequestContext,
+} from "@playwright/test";
 import { testConfig } from "../../Configs/config.ts";
 import commonConfig from "../common/commonConfig.json" with { type: "json" };
 
@@ -10,7 +16,6 @@ export class BasePage {
   readonly submitButtonLocator = this.page.getByRole("button", {
     name: "Submit",
   });
-
 
   constructor(public readonly page: Page) {}
 
@@ -70,11 +75,15 @@ export class BasePage {
       .join("");
   }
 
-  async waitForNavigationToComplete(buttonLocator: Locator | string, timeout: number = 5_000): Promise<void> {
+  async waitForNavigationToComplete(
+    buttonLocator: Locator | string,
+    timeout: number = 5_000,
+  ): Promise<void> {
     const currentUrl = await this.page.url();
-    const locator = typeof buttonLocator === 'string'
-      ? this.page.locator(buttonLocator)  // String - convert to Locator
-      : buttonLocator;
+    const locator =
+      typeof buttonLocator === "string"
+        ? this.page.locator(buttonLocator) // String - convert to Locator
+        : buttonLocator;
     await expect(locator).toBeVisible();
     await expect(locator).toBeEnabled();
 
@@ -87,14 +96,16 @@ export class BasePage {
       await expect(this.page).not.toHaveURL(currentUrl);
       // console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
     }).toPass({ intervals: [2_000], timeout: 60_000 });
-
   }
 
-  async verifyPageLoad(pageLocator: Locator, timeout: number = 5_000): Promise<void> {
+  async verifyPageLoad(
+    pageLocator: Locator,
+    timeout: number = 5_000,
+  ): Promise<void> {
     await expect(async () => {
       if (!(await pageLocator.isVisible())) {
         await this.page.reload();
-        await this.page.waitForLoadState('load');
+        await this.page.waitForLoadState("load");
       }
       await expect(pageLocator).toBeVisible({ timeout: timeout });
     }).toPass({ intervals: [1_000], timeout: 60_000 });
@@ -108,22 +119,22 @@ export class BasePage {
     nextStep?: string,
     endState?: string,
     delay: number = testConfig.CaseDetailsDelayDefault,
-    nocEvent?: boolean
+    nocEvent?: boolean,
   ) {
     if (tabConfigFile.tabName && tabConfigFile.tabName !== "Documents") {
       await expect(
-        this.page.getByLabel(`${tabConfigFile.tabName}`, { exact: true })
+        this.page.getByLabel(`${tabConfigFile.tabName}`, { exact: true }),
       ).toBeVisible();
     }
 
     await expect(
-      this.page.getByRole("heading", { name: caseRef })
+      this.page.getByRole("heading", { name: caseRef }),
     ).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
     await this.page.waitForTimeout(delay);
 
-    if(!nocEvent) {
+    if (!nocEvent) {
       await this.runAccessibilityTest();
     }
 
@@ -140,26 +151,27 @@ export class BasePage {
         if (textCount > 1) {
           if (tabConfigFile.fields[i] === "Caveat not matched") {
             await expect(
-              this.page.getByText(tabConfigFile.fields[i]).nth(2)
+              this.page.getByText(tabConfigFile.fields[i]).nth(2),
             ).toBeVisible();
           }
           if (nocEvent) {
             await expect(
-              this.page.getByText(tabConfigFile.fields[i]).first()
+              this.page.getByText(tabConfigFile.fields[i]).first(),
             ).toBeVisible();
           } else {
             await expect(
-              this.page.getByText(tabConfigFile.fields[i], { exact: true }).first()
+              this.page
+                .getByText(tabConfigFile.fields[i], { exact: true })
+                .first(),
             ).toBeVisible();
           }
-
         } else if (tabConfigFile.tabName === "Event History") {
           await expect(
-            this.page.getByRole("table", { name: "Details" })
+            this.page.getByRole("table", { name: "Details" }),
           ).toContainText(tabConfigFile.fields[i]);
         } else {
           await expect(
-            this.page.getByRole("table", { name: "case viewer table" })
+            this.page.getByRole("table", { name: "case viewer table" }),
           ).toContainText(tabConfigFile.fields[i]);
         }
       }
@@ -182,7 +194,7 @@ export class BasePage {
         nextStep === "Apply NoC Decision"
       ) {
         await expect(
-          this.page.getByRole("cell", { name: endState, exact: true })
+          this.page.getByRole("cell", { name: endState, exact: true }),
         ).toBeVisible();
         await expect(this.page.getByLabel(nextStep).nth(1)).toBeVisible();
         // await expect(this.page.getByLabel(nextStep), {exact: true}).toBeVisible();
@@ -190,12 +202,12 @@ export class BasePage {
         await expect(
           this.page
             .getByRole("cell", { name: endState, exact: true })
-            .locator("span")
+            .locator("span"),
         ).toBeVisible();
         await expect(
           this.page
             .getByRole("cell", { name: nextStep, exact: true })
-            .locator("span")
+            .locator("span"),
         ).toBeVisible();
       }
       let eventSummaryPrefix = nextStep;
@@ -203,10 +215,10 @@ export class BasePage {
         eventSummaryPrefix.replace(/\s+/g, "_").toLowerCase() + "_";
       if (dataConfigKeys && nextStep !== "Change state") {
         await expect(
-          this.page.getByText(eventSummaryPrefix + dataConfigFile.summary)
+          this.page.getByText(eventSummaryPrefix + dataConfigFile.summary),
         ).toBeVisible();
         await expect(
-          this.page.getByText(eventSummaryPrefix + dataConfigFile.comment)
+          this.page.getByText(eventSummaryPrefix + dataConfigFile.comment),
         ).toBeVisible();
       }
     } else if (dataConfigKeys) {
@@ -216,13 +228,15 @@ export class BasePage {
           .count();
         if (textCount > 1) {
           await expect(
-            this.page.getByText(dataConfigFile[tabConfigFile.dataKeys[i]], {
-              exact: true,
-            }).first()
+            this.page
+              .getByText(dataConfigFile[tabConfigFile.dataKeys[i]], {
+                exact: true,
+              })
+              .first(),
           ).toBeVisible();
         } else {
           await expect(
-            this.page.getByRole("table", { name: "case viewer table" })
+            this.page.getByRole("table", { name: "case viewer table" }),
           ).toContainText(dataConfigFile[tabConfigFile.dataKeys[i]]);
         }
       }
@@ -235,10 +249,10 @@ export class BasePage {
     tabConfigFile, // TODO: type?
     tabUpdates, // TODO: type?
     tabUpdatesConfigFile, // TODO: type?
-    forUpdateApplication?: boolean
+    forUpdateApplication?: boolean,
   ) {
     await expect(
-      this.page.getByRole("heading", { name: caseRef })
+      this.page.getByRole("heading", { name: caseRef }),
     ).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
@@ -273,12 +287,16 @@ export class BasePage {
     const delay = testConfig.CaseDetailsDelayDefault;
 
     if (tabConfigFile.tabName) {
-      await expect(this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`)).toBeEnabled();
+      await expect(
+        this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`),
+      ).toBeEnabled();
       // const tabXPath = `//div[contains(text(),"${tabConfigFile.tabName}")]`;
       // Tabs are hidden when there are more tabs
       // await I.waitForElement(tabXPath, tabConfigFile.testTimeToWaitForTab || 60);
     }
-    await expect(this.page.getByRole("heading", { name: caseRef })).toBeVisible();
+    await expect(
+      this.page.getByRole("heading", { name: caseRef }),
+    ).toBeVisible();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).focus();
     await this.page.getByRole("tab", { name: tabConfigFile.tabName }).click();
     await this.page.waitForTimeout(delay);
@@ -289,20 +307,26 @@ export class BasePage {
     // await I.runAccessibilityTest();
 
     if (tabConfigFile.waitForText) {
-      await expect(this.page.getByLabel(tabConfigFile.waitForText)).toBeVisible();
+      await expect(
+        this.page.getByLabel(tabConfigFile.waitForText),
+      ).toBeVisible();
       // await I.waitForText(tabConfigFile.waitForText, testConfig.WaitForTextTimeout || 60);
     }
 
     /* eslint-disable no-await-in-loop */
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
-      if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
-        await expect(this.page.getByText(tabConfigFile.fields[i]).first()).toBeVisible();
+      if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== "") {
+        await expect(
+          this.page.getByText(tabConfigFile.fields[i]).first(),
+        ).toBeVisible();
         // await I.see(tabConfigFile.fields[i]);
       }
     }
 
     for (let i = 0; i < tabConfigFile.dataKeysBilingual.length; i++) {
-      await expect(this.page.getByText(dataConfigFile[tabConfigFile.dataKeysBilingual[i]])).toBeVisible();
+      await expect(
+        this.page.getByText(dataConfigFile[tabConfigFile.dataKeysBilingual[i]]),
+      ).toBeVisible();
       // await I.waitForText(dataConfigFile[tabConfigFile.dataKeysBilingual[i]], testConfig.WaitForTextTimeout || 60);
     }
   }
@@ -314,7 +338,7 @@ export class BasePage {
     for (let i = 0; i < fieldLabelsNotToBeShown.length; i++) {
       visibleElements = await this.page
         .locator(
-          `xpath=//div[contains(@class, 'case-viewer-label')][text()='${fieldLabelsNotToBeShown[i]}']`
+          `xpath=//div[contains(@class, 'case-viewer-label')][text()='${fieldLabelsNotToBeShown[i]}']`,
         )
         .filter({ visible: true });
       numElements = await visibleElements.count();
@@ -330,8 +354,10 @@ export class BasePage {
   }
 
   async caseProgressContinueWithoutChangingAnything(numTimes = 1) {
-    for (let i=0; i < numTimes; i++) {
-      await expect(this.page.locator(commonConfig.continueButton)).toBeEnabled()
+    for (let i = 0; i < numTimes; i++) {
+      await expect(
+        this.page.locator(commonConfig.continueButton),
+      ).toBeEnabled();
       await this.waitForNavigationToComplete(commonConfig.continueButton);
       // await I.waitForElement({css: commonConfig.continueButton});
       // await I.waitForNavigationToComplete(commonConfig.continueButton,testConfig.CaseProgressContinueWithoutChangingDelay);
@@ -346,7 +372,6 @@ export class BasePage {
       return "demo";
     }
   }
-
 
   async resolvePlaceholders(template: string, data: Record<string, string>) {
     return template.replace(/{{(.*?)}}/g, (_, key) => {
@@ -363,21 +388,40 @@ export class BasePage {
     await expect(this.page).toHaveURL(`${baseUrl}${urlSuffix}`);
   }
 
-  calculateDueDate(daysToAdd: number): string {
+  async calculateDueDate(daysToAdd: number, request: APIRequestContext): Promise<string> {
+    // get public holidays
+    const response = await request.get("https://www.gov.uk/bank-holidays.json");
+    if (!response.ok()) {
+      throw new Error(
+        `Failed to fetch bank holidays: ${response.statusText()}`,
+      );
+    }
+
+    const holidayData = await response.json();
+
+    // extract dates
+    const holidayDates = new Set<string>(
+      holidayData["england-and-wales"].events.map(
+        (event: { date: string }) => event.date,
+      ),
+    );
+
     const currentDate = new Date();
     let addedDays = 0;
 
-    // Each loop adds one day to current date, and checks if it's a weekend.
-    // If not a weekend add 1 to addedDays, until addedDays equals daysToAdd
-    // If it is a weekend, do not add to addedDays, but still add 1 to currentDate
     while (addedDays < daysToAdd) {
       currentDate.setDate(currentDate.getDate() + 1);
       const dayOfWeek = currentDate.getDay();
 
-      //0 = Sunday, 6 = Saturday
+      // 0 = Sunday, 6 = Saturday
       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
 
-      if (!isWeekend) {
+      // make date match json date format
+      const dateString = currentDate.toISOString().split("T")[0];
+      const isHoliday = holidayDates.has(dateString);
+
+      // count day if regular weekday and not public holiday
+      if (!isWeekend && !isHoliday) {
         addedDays++;
       }
     }
