@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +75,9 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         expected = expected.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
         expected = expected.replaceAll(Pattern.quote("<today-welsh/>"), this.todaysDateWelsh);
 
-        switch (jsonPath.get("data.caseType").toString()) {
+        final String caseType = getCaseType(jsonPath, jsonFile);
+        assertNotNull(caseType, "Expected case type in callback response or request payload for: " + jsonFile);
+        switch (caseType) {
             case "gop":
                 expected = replaceAllInString(expected,"{willExists}",
                     "<li>the original will</li>");
@@ -105,9 +108,21 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
+        assertNotNull(taskList, "Expected data.taskList in callback response but got: " + response);
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
 
 
+    }
+
+    private String getCaseType(JsonPath responseJsonPath, String jsonFile) throws IOException {
+        final String responseCaseType = responseJsonPath.get("data.caseType");
+        if (responseCaseType != null) {
+            return responseCaseType;
+        }
+
+        // Some callbacks no longer echo caseType in the response, so derive it from the posted payload.
+        final String requestJson = utils.getJsonFromFile(jsonFile);
+        return JsonPath.from(requestJson).get("case_details.case_data.caseType");
     }
 
     private String postSolJson(String jsonFileName, String path) throws IOException {

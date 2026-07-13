@@ -8,6 +8,8 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @Slf4j
 public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
     protected static final String GENERATE_GRANT = "/document/generate-grant";
@@ -32,8 +34,7 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
 
         final JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
-        final String documentUrl =
-            jsonPath.get("data." + documentName + ".document_binary_url");
+        final String documentUrl = getDocumentUrl(jsonPath, documentName);
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         return response;
@@ -62,8 +63,7 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
     }
 
     protected String getDocumentText(JsonPath jsonPath, String documentName) {
-        final String documentUrl =
-            jsonPath.get("data." + documentName + ".document_binary_url");
+        final String documentUrl = getDocumentUrl(jsonPath, documentName);
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         return response;
@@ -79,10 +79,25 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
-        final String documentUrl =
-                jsonPath.get("data." + documentName + ".document_binary_url");
+        final String documentUrl = getDocumentUrl(jsonPath, documentName);
         final String response = utils.downloadPdfAndParseToString(documentUrl);
         return removeCrLfs(response);
+    }
+
+    private String getDocumentUrl(JsonPath jsonPath, String documentName) {
+        String documentUrl = jsonPath.get("data." + documentName + ".document_binary_url");
+        if (documentUrl == null) {
+            documentUrl = jsonPath.get("data." + documentName + ".document_url");
+        }
+        if (documentUrl == null) {
+            documentUrl = jsonPath.get("data.solsLegalStatementDocument.document_binary_url");
+        }
+        if (documentUrl == null) {
+            documentUrl = jsonPath.get("data.solsLegalStatementDocument.document_url");
+        }
+
+        assertNotNull(documentUrl, "No generated document URL found for path data." + documentName);
+        return documentUrl;
     }
 
     protected String generateDocument(String jsonFileName, String path, String documentName) throws IOException {

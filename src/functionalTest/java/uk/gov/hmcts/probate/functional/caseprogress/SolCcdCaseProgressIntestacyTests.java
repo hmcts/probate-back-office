@@ -35,7 +35,7 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
 
     @Test
     void shouldTransformAppUpdatedStateCorrectly() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogressintestacy/02-appUpdated.json", SOLS_VALIDATE_PROBATE_URL,
+        verifyCaseProgressHtmlSolPost("caseprogressintestacy/02-appUpdated.json", SOLS_VALIDATE_INTESTACY_URL,
             "/application-updated-html.txt", getReviewOrSubmitUrl());
     }
 
@@ -48,7 +48,7 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     @Test
     void shouldTransformAppUpdatedStateReenterDetailsCorrectly() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/02b-appUpdated-update-app.json",
-            SOLS_VALIDATE_PROBATE_URL, "/application-updated-update-app-html.txt", getReviewOrSubmitUrl());
+            SOLS_VALIDATE_INTESTACY_URL, "/application-updated-update-app-html.txt", getReviewOrSubmitUrl());
     }
 
     @Test

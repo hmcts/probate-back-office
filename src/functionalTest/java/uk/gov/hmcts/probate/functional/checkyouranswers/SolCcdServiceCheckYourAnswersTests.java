@@ -18,6 +18,7 @@ import static io.restassured.RestAssured.given;
 
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
@@ -310,9 +311,20 @@ class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     private String extractDocumentId(Response response) {
         final String bodyString = response.body().asString();
         final JsonPath jsonPath = JsonPath.from(bodyString);
-        final String urlNode = jsonPath.get("data.solsLegalStatementDocument.document_url");
-        final String[] url = urlNode.split("/");
-        return url[4];
+        String urlNode = jsonPath.get("data.solsLegalStatementDocument.document_url");
+        if (urlNode == null) {
+            urlNode = jsonPath.get("data.solsLegalStatementDocument.document_binary_url");
+        }
+        if (urlNode == null) {
+            urlNode = jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_url");
+        }
+        if (urlNode == null) {
+            urlNode = jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_binary_url");
+        }
+
+        assertNotNull(urlNode, "No legal statement document URL returned in response: " + bodyString);
+        final String[] url = urlNode.replace("/binary", "").split("/");
+        return url[url.length - 1];
     }
 
     private void downloadPdfAndVerifyString(String documentId, String validationString) {
