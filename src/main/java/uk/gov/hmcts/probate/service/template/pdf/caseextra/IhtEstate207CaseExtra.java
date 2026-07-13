@@ -11,5 +11,6 @@ public class IhtEstate207CaseExtra {
 
     private final String showIhtEstate;
     private final String ihtEstate207Text;
+    private final String ihtEstate207TextWelsh;
 
 }

@@ -8,10 +8,21 @@ filename=$(basename ${filepath})
 uploadFilename="$(date +"%Y%m%d-%H%M%S")-${filename}"
 echo filepath =$filepath
 
-echo Get User token
-userToken=$(${dir}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Password12})
-echo Get Service token
-serviceToken=$(${dir}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctspublic.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAC}))
+if [ -z "${USER_TOKEN:-}" ]; then
+  echo Get User token
+  userToken=$(${dir}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME} ${CCD_CONFIGURER_IMPORTER_PASSWORD})
+else
+  echo Use cache User token
+  userToken=${USER_TOKEN}
+fi
+
+if [ -z "${SERVICE_TOKEN:-}" ]; then
+  echo Get Service token
+  serviceToken=$(${dir}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
+else
+  echo Use cache Service token
+  serviceToken=${SERVICE_TOKEN}
+fi
 
 echo CCD_DEFINITION_STORE_API_BASE_URL = $CCD_DEFINITION_STORE_API_BASE_URL
 uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error -X POST \

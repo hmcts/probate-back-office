@@ -19,9 +19,11 @@ public class EmailTemplates {
     private String grantRaised;
     private String grantRaisedPaperFormBulkScan;
     private String caveatRaised;
+    private String caveatRaisedOld;
     private String caveatExtend;
     private String caveatRaisedCtsc;
     private String caveatRaisedSols;
+    private String caveatRaisedSolsOld;
     private String requestInformation;
     private String requestInformationByPost;
     private String redeclarationSot;
@@ -36,8 +38,10 @@ public class EmailTemplates {
     private String caveatDisposalReminder;
     private String draftCasePaymentSuccess;
     private String firstStopReminder;
+    private String firstRedecReminder;
     private String firstStopReminderForHub;
     private String secondStopReminder;
+    private String secondRedecReminder;
     private String secondStopReminderForHub;
     private String hseReminder;
     private String hseReminderForHub;

@@ -83,6 +83,7 @@ fee.api:
   applicantType: all
   keyword: NewFee
   newCopiesFeeKeyword: GrantWill
+  newCopiesFee2026Keyword: GrantWillCopiesIndividualApplication
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -138,7 +139,9 @@ notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-01-01"
   grantAwaitingDocumentationNotificationPeriodDays: 35
-  govNotifyApiKey: ${PROBATE_NOTIFY_KEY:dummykey}
+  govNotifyApiKeyPrimary: ${PROBATE_NOTIFY_KEY_PRIMARY:dummykey_primary}
+  govNotifyApiKeySecondary: ${PROBATE_NOTIFY_KEY_SECONDARY:dummykey_secondary}
+  govNotifyBaseUrl: https://api.notifications.service.gov.uk
   templates:
     email:
       english:
@@ -263,6 +266,7 @@ notifications:
           grantRaised: "sol-grant-raised-welsh"
           grantRaisedPaperFormBulkScan: "sol-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "sols-caveat-raised-welsh"
+          caveatRaisedSols: "solicitor-caveat-raised-welsh"
           requestInformation: "sols-request-information-welsh"
           redeclarationSot: "sols-redeclaration-sot-welsh"
           grantDelayed: "sols-grantDelayed-welsh"
@@ -580,3 +584,8 @@ automated_notification:
   dormant_reminder_days: 365
   unsubmitted_application_days: 28
   declaration_not_signed_days: 3
+upload_doc:
+  expiry_weeks: 26
+
+supplementary-data:
+  hmctsid: ${SUPPLEMENTARY_DATA_HMCTSID:ABA6}

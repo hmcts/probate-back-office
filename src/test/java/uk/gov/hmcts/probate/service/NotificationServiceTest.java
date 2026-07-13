@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.RequestInformationParameterException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -17,10 +19,17 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AuditEvent;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.NotificationService.CommonNotificationResult;
+import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.AutomatedNotificationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
@@ -43,9 +52,11 @@ import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.TemplatePreview;
 
+import java.io.IOException;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,6 +77,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -73,6 +85,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_IMPORTED;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_PENDING;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 
 
 class NotificationServiceTest {
@@ -82,8 +101,6 @@ class NotificationServiceTest {
     private NotificationTemplates notificationTemplatesMock;
     @Mock
     private RegistriesProperties registriesPropertiesMock;
-    @Mock
-    private NotificationClient notificationClientMock;
     @Mock
     private MarkdownTransformationService markdownTransformationServiceMock;
     @Mock
@@ -106,10 +123,15 @@ class NotificationServiceTest {
     private SentEmailPersonalisationService sentEmailPersonalisationServiceMock;
     @Mock
     private TemplateService templateServiceMock;
+
+    @Mock
+    private AuditEventService auditEventServiceMock;
     @Mock
     private AuthTokenGenerator serviceAuthTokenGeneratorMock;
     @Mock
     private NotificationClientService notificationClientServiceMock;
+    @Mock
+    private NotificationClient notificationClient;
     @Mock
     private DocumentManagementService documentManagementServiceMock;
     @Mock
@@ -128,11 +150,18 @@ class NotificationServiceTest {
     private LocalDateToWelshStringConverter localDateToWelshStringConverterMock;
     @Mock
     private Clock clockMock;
+    @Mock
+    private SendEmailResponse sendEmailResponse;
+
+    @Mock
+    private SecurityUtils securityUtils;
 
     private NotificationService notificationService;
 
     private AutoCloseable closeableMocks;
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
+    private static final Long ID = 1L;
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
     @BeforeEach
     void setUp() {
@@ -142,7 +171,6 @@ class NotificationServiceTest {
                 emailAddressesMock,
                 notificationTemplatesMock,
                 registriesPropertiesMock,
-                notificationClientMock,
                 markdownTransformationServiceMock,
                 pdfManagementServiceMock,
                 eventValidationServiceMock,
@@ -154,6 +182,7 @@ class NotificationServiceTest {
                 caveatPersonalisationServiceMock,
                 sentEmailPersonalisationServiceMock,
                 templateServiceMock,
+                auditEventServiceMock,
                 serviceAuthTokenGeneratorMock,
                 notificationClientServiceMock,
                 documentManagementServiceMock,
@@ -164,10 +193,17 @@ class NotificationServiceTest {
                 objectMapperMock,
                 emailValidationServiceMock,
                 localDateToWelshStringConverterMock,
-                clockMock);
+                clockMock,
+                securityUtils);
 
         when(clockMock.instant()).thenReturn(Instant.now());
         when(clockMock.getZone()).thenReturn(ZoneId.of("Europe/London"));
+        Registry registry = mock(Registry.class);
+        when(registry.getEmailReplyToId()).thenReturn("replyToId");
+        Map<String, Registry> registriesMap = new HashMap<>();
+        registriesMap.put("ctsc", registry);
+        when(registriesPropertiesMock.getRegistries()).thenReturn(registriesMap);
+        ReflectionTestUtils.setField(notificationService, "expiryWeeks", "26");
     }
 
     @AfterEach
@@ -266,6 +302,130 @@ class NotificationServiceTest {
     }
 
     @Test
+    void returnsSentEmailDocumentWithUploadCheckYes() throws NotificationClientException, IOException {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "FirstName");
+        when(grantOfRepresentationPersonalisationServiceMock.getPersonalisation((CaseDetails) any(), any()))
+                .thenReturn(personalisation);
+        final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
+                Map.of(),
+                List.of());
+
+        when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
+                .thenReturn(mockResult);
+        when(notificationClientServiceMock.sendEmail(any(), any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        when(documentManagementServiceMock.getDocumentByBinaryUrl("http://example.com/test.pdf"))
+                .thenReturn(new byte[] {1, 2, 3});
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedDateOfDeath(LocalDate.now())
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
+                .primaryApplicantForenames("Fred Smith")
+                .registryLocation("ctsc")
+                .uploadFileCheck(YES)
+                .languagePreferenceWelsh("No")
+                .cwDocumentUpload(UploadDocument.builder()
+                        .documentLink(DocumentLink.builder()
+                                .documentBinaryUrl("http://example.com/test.pdf")
+                                .build())
+                        .build())
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails);
+
+        verify(notificationClientServiceMock).sendEmail(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldThrowBusinessValidationExceptionWhenCwDocumentFileSizeExceeds2MB() throws IOException,
+            NotificationClientException {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "FirstName");
+        when(grantOfRepresentationPersonalisationServiceMock.getPersonalisation((CaseDetails) any(), any()))
+                .thenReturn(personalisation);
+        final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
+                Map.of(),
+                List.of());
+
+        when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
+                .thenReturn(mockResult);
+        when(notificationClientServiceMock.sendEmail(any(), any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        byte[] largeFile = new byte[2 * 1024 * 1024 + 1];
+        when(documentManagementServiceMock.getDocumentByBinaryUrl("http://example.com/test.pdf"))
+                .thenReturn(largeFile);
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedDateOfDeath(LocalDate.now())
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
+                .primaryApplicantForenames("Fred Smith")
+                .registryLocation("ctsc")
+                .uploadFileCheck(YES)
+                .languagePreferenceWelsh("No")
+                .cwDocumentUpload(UploadDocument.builder()
+                        .documentLink(DocumentLink.builder()
+                                .documentBinaryUrl("http://example.com/test.pdf")
+                                .build())
+                        .build())
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        BusinessValidationException exception = assertThrows(BusinessValidationException.class, () ->
+                notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails)
+        );
+
+        assertEquals("The file you are trying to upload is too large. Please upload a file smaller than 2 MB.",
+                exception.getUserMessage());
+    }
+
+    @Test
+    void returnsSentEmailDocumentWithUploadCheckNo() throws NotificationClientException, IOException {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put("applicant_name", "FirstName");
+        when(grantOfRepresentationPersonalisationServiceMock.getPersonalisation((CaseDetails) any(), any()))
+                .thenReturn(personalisation);
+        final PersonalisationValidationResult mockResult = new PersonalisationValidationResult(
+                Map.of(),
+                List.of());
+
+        when(personalisationValidationRuleMock.validatePersonalisation(personalisation))
+                .thenReturn(mockResult);
+        when(notificationClientServiceMock.sendEmail(any(), any(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        when(documentManagementServiceMock.getDocumentByBinaryUrl("http://example.com/test.pdf"))
+                .thenReturn(new byte[] {1, 2, 3});
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedDateOfDeath(LocalDate.now())
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
+                .primaryApplicantForenames("Fred Smith")
+                .registryLocation("ctsc")
+                .uploadFileCheck(NO)
+                .languagePreferenceWelsh("No")
+                .cwDocumentUpload(UploadDocument.builder()
+                        .documentLink(DocumentLink.builder()
+                                .documentBinaryUrl("http://example.com/test.pdf")
+                                .build())
+                        .build())
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails);
+
+        verify(notificationClientServiceMock).sendEmail(any(), any(), any(), any(), any());
+    }
+
+    @Test
     void shouldUpdatePersonalisationWithSolicitorName() {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
@@ -305,7 +465,7 @@ class NotificationServiceTest {
         CaseData caseData = mock(CaseData.class);
         CaseDetails caseDetails = mock(CaseDetails.class);
         when(caseDetails.getData()).thenReturn(caseData);
-        when(caseData.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getApplicationType()).thenReturn(PERSONAL);
         when(caseData.getSolsSolicitorEmail()).thenReturn("abc@gmail.com");
         when(caseData.getSolsSOTForenames()).thenReturn("John");
         when(caseData.getSolsSOTSurname()).thenReturn("Doe");
@@ -336,7 +496,7 @@ class NotificationServiceTest {
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
                 mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("applicationType", ApplicationType.PERSONAL);
+        data.put("applicationType", PERSONAL);
         data.put("languagePreference", LanguagePreference.ENGLISH);
         when(caseDetails.getData()).thenReturn(data);
         when(pdfManagementServiceMock.generateDocmosisDocumentAndUpload(any(), eq(DocumentType.DORMANT_REMINDER)))
@@ -358,7 +518,7 @@ class NotificationServiceTest {
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
                 mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
         Map<String, Object> data = new HashMap<>();
-        data.put("applicationType", ApplicationType.PERSONAL);
+        data.put("applicationType", PERSONAL);
         data.put("languagePreferenceWelsh", "Yes");
         when(caseDetails.getData()).thenReturn(data);
 
@@ -434,11 +594,11 @@ class NotificationServiceTest {
         CaseData caseData = mock(CaseData.class);
         when(caseDetails.getId()).thenReturn(12345L);
         when(caseDetails.getData()).thenReturn(caseData);
-        when(caseData.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(caseData.getApplicationType()).thenReturn(PERSONAL);
         when(caseData.getLanguagePreference()).thenReturn(LanguagePreference.ENGLISH);
         when(caseData.getSolsSOTName()).thenReturn("Solicitor Name");
         when(templateServiceMock.getStopResponseReceivedTemplateId(
-                ApplicationType.PERSONAL, LanguagePreference.ENGLISH)).thenReturn("template-id");
+                PERSONAL, LanguagePreference.ENGLISH)).thenReturn("template-id");
         when(grantOfRepresentationPersonalisationServiceMock.getStopResponseReceivedPersonalisation(
                 12345L, "Solicitor Name"))
                 .thenReturn(Map.of("key", "value"));
@@ -690,7 +850,7 @@ class NotificationServiceTest {
                 () -> assertThat(captured, hasKey("grant_issued_date_cy")),
                 () -> assertThat(result, sameInstance(documentMock)));
     }
-  
+
     @Test
     void shouldSendRegistrarEscalatedForPP() throws NotificationClientException, RegistrarEscalationException {
         final String applEmail = "abc@gmail.com";
@@ -776,7 +936,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
         when(caseData.getPrimaryApplicantFullName())
@@ -843,7 +1003,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
         when(caseData.getPrimaryApplicantFullName())
@@ -882,7 +1042,7 @@ class NotificationServiceTest {
                 () -> assertThat(captured, hasKey("applicant_name")),
                 () -> assertThat(result, sameInstance(documentMock)));
     }
-  
+
     @Test
     void shouldReturnNullIfRegistrarEscalatedDocumentGenThrows()
             throws NotificationClientException, RegistrarEscalationException {
@@ -903,7 +1063,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
         when(caseData.getPrimaryApplicantFullName())
@@ -961,7 +1121,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
         when(caseData.getPrimaryApplicantFullName())
@@ -1047,7 +1207,7 @@ class NotificationServiceTest {
 
         verify(pdfManagementServiceMock, never()).generateAndUpload(any(SentEmail.class), any());
     }
-  
+
     @Test
     void shouldReturnNullWhenPostGrantIssuedPdfUploadFails() throws NotificationClientException {
         final String applEmail = "abc@gmail.com";
@@ -1070,7 +1230,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
         when(caseData.getPrimaryApplicantFullName())
@@ -1409,7 +1569,7 @@ class NotificationServiceTest {
 
         assertEquals(expected, actual, "when instant is 0130 UTC but not in BST, time should be 01:30");
     }
-  
+
     @Test
     void shouldReturnNullForRegistrarEscalatedWhenApplEmailNull()
             throws NotificationClientException, RegistrarEscalationException {
@@ -1422,7 +1582,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
 
@@ -1444,7 +1604,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
 
@@ -1466,7 +1626,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
 
@@ -1488,7 +1648,7 @@ class NotificationServiceTest {
         when(caseDetails.getId()).thenReturn(1L);
 
         when(caseData.getApplicationType())
-                .thenReturn(ApplicationType.PERSONAL);
+                .thenReturn(PERSONAL);
         when(caseData.getPrimaryApplicantEmailAddress())
                 .thenReturn(applEmail);
 
@@ -1497,4 +1657,196 @@ class NotificationServiceTest {
         verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
         assertThat(result, nullValue());
     }
+
+    @Test
+    void sendRedecReminderEmailSuccessfullySendsEmail() throws NotificationClientException {
+        final Document documentMock = mock(Document.class);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(Map.of("applicationType", "SOLICITOR",
+                "solsSolicitorEmail", "abc@gmail.com"));
+        when(notificationClientServiceMock.sendEmail(anyString(), anyString(), any(), anyString()))
+                .thenReturn(mock(SendEmailResponse.class));
+        when(templateServiceMock.getRedecReminderTemplateId(any(), any(), eq(true)))
+                .thenReturn("template-id");
+        when(automatedNotificationPersonalisationServiceMock.getRedecReminderPersonalisation(any(), any()))
+                .thenReturn(Map.of("personalisationKey", "personalisationValue"));
+        when(pdfManagementServiceMock.generateAndUpload(any(SentEmail.class), any()))
+                .thenReturn(documentMock);
+        final Document result = notificationService.sendRedecReminderEmail(caseDetails, true);
+
+        assertNotNull(result);
+        verify(notificationClientServiceMock).sendEmail(eq("template-id"), eq("abc@gmail.com"), any(),
+                eq("12345"));
+        verify(pdfManagementServiceMock, times(1))
+                .generateAndUpload(any(SentEmail.class), any());
+    }
+
+    @Test
+    void notSendRedecReminderEmailWhenCaseDataIsNull() throws NotificationClientException {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(null);
+
+        final Document result = notificationService.sendRedecReminderEmail(caseDetails,false);
+
+        verify(notificationClientServiceMock, never()).sendEmail(any(), any(), any(), any());
+        assertThat(result, nullValue());
+
+    }
+
+    @Test
+    void sendRedecReminderEmailThrowsExceptionWhenEmailAddressIsMissing() throws NotificationClientException {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(Map.of("applicationType", "SOLICITOR"));
+        when(notificationClientServiceMock.sendEmail(anyString(), anyString(), any(), anyString()))
+                .thenReturn(mock(SendEmailResponse.class));
+        when(automatedNotificationPersonalisationServiceMock.getRedecReminderPersonalisation(any(), any()))
+                .thenReturn(Map.of("personalisationKey", "personalisationValue"));
+
+        NotificationClientException exception = assertThrows(NotificationClientException.class,
+                () -> notificationService.sendRedecReminderEmail(caseDetails, true));
+
+        assertEquals("sendRedecReminderEmail address not found for case ID: 12345", exception.getMessage());
+    }
+
+    @Test
+    void sendRedecReminderEmailUsesCorrectTemplateForFirstStopReminder() throws NotificationClientException {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(Map.of("applicationType", "SOLICITOR",
+                "solsSolicitorEmail", "abc@gmail.com"));
+        when(templateServiceMock.getRedecReminderTemplateId(any(), any(), eq(true)))
+                .thenReturn("first-redec-template-id");
+        when(notificationClientServiceMock.sendEmail(anyString(), anyString(), any(), anyString()))
+                .thenReturn(mock(SendEmailResponse.class));
+
+        notificationService.sendRedecReminderEmail(caseDetails, true);
+
+        verify(templateServiceMock).getRedecReminderTemplateId(any(), any(), eq(true));
+        verify(notificationClientServiceMock).sendEmail(eq("first-redec-template-id"),
+                anyString(), any(), eq("12345"));
+    }
+
+    @Test
+    void sendRedecReminderEmailUsesCorrectTemplateForSecondStopReminder() throws NotificationClientException {
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(caseDetails.getData()).thenReturn(Map.of("applicationType", "SOLICITOR",
+                "solsSolicitorEmail", "abc@gmail.com"));
+        when(templateServiceMock.getRedecReminderTemplateId(any(), any(), eq(false)))
+                .thenReturn("second-redec-template-id");
+        when(notificationClientServiceMock.sendEmail(anyString(), anyString(), any(), anyString()))
+                .thenReturn(mock(SendEmailResponse.class));
+
+        notificationService.sendRedecReminderEmail(caseDetails, false);
+
+        verify(templateServiceMock).getRedecReminderTemplateId(any(), any(), eq(false));
+        verify(notificationClientServiceMock).sendEmail(eq("second-redec-template-id"),
+                anyString(), any(), eq("12345"));
+    }
+
+    void isBoImportedStateBeforeDormantReturnsTrueWhenPreviousStateIsBoCaseImported()
+            throws NotificationClientException {
+        String caseReference = "12345";
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        AuditEvent auditEvent = AuditEvent.builder()
+                .stateId(STATE_BO_CASE_IMPORTED)
+                .createdDate(LocalDateTime.now())
+                .build();
+
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(caseReference, EventId.MAKE_CASE_DORMANT,
+                securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation()))
+                .thenReturn(Optional.of(auditEvent));
+
+        boolean result = notificationService.isBoImportedStateBeforeDormant(caseReference);
+
+        assertEquals(true, result);
+    }
+
+    @Test
+    void isBoImportedStateBeforeDormantReturnsFalseWhenPreviousStateIsNotBoCaseImported()
+            throws NotificationClientException {
+        String caseReference = "12345";
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        AuditEvent auditEvent = AuditEvent.builder()
+                .stateId(STATE_PENDING)
+                .createdDate(LocalDateTime.now())
+                .build();
+
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(caseReference, EventId.MAKE_CASE_DORMANT,
+                securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation()))
+                .thenReturn(Optional.of(auditEvent));
+
+        boolean result = notificationService.isBoImportedStateBeforeDormant(caseReference);
+
+        assertEquals(false, result);
+    }
+
+    @Test
+    void shouldThrowWhenPreviousStateEvent()
+            throws NotificationClientException {
+        String caseReference = "12345";
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        AuditEvent auditEvent = AuditEvent.builder()
+                .stateId(STATE_PENDING)
+                .createdDate(LocalDateTime.now())
+                .build();
+
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(caseReference, EventId.MAKE_CASE_DORMANT,
+                securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation()))
+                .thenReturn(Optional.empty());
+
+        assertThrows(NotificationClientException.class, () -> {
+            notificationService.isBoImportedStateBeforeDormant(caseReference);
+        });
+    }
+
+    @Test
+    void exceptionMessageIncludesCaseReferenceWhenNoPreviousStateFound()
+            throws NotificationClientException {
+        String caseReference = "12345";
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .serviceAuthorisation("serviceToken")
+                .authorisation("userToken")
+                .userId("id")
+                .build();
+        AuditEvent auditEvent = AuditEvent.builder()
+                .stateId(STATE_PENDING)
+                .createdDate(LocalDateTime.now())
+                .build();
+
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        when(auditEventServiceMock.getPreviousAuditEventOfByEventId(caseReference, EventId.MAKE_CASE_DORMANT,
+                securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation()))
+                .thenReturn(Optional.empty());
+
+        NotificationClientException exception = assertThrows(NotificationClientException.class, () -> {
+            notificationService.isBoImportedStateBeforeDormant(caseReference);
+        });
+
+        assertEquals("No previous state found for case ID: " + caseReference, exception.getMessage());
+    }
+
 }

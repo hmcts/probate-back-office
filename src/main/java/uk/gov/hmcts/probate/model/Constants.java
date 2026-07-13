@@ -95,7 +95,7 @@ public final class Constants {
     public static final String PA14_FORM_TEXT = "Medical certificate completed by a health professional";
 
     public static final String PA14_FORM_TEXT_WELSH
-            = "Tystysgrif feddygol wedi'i chwblhau gan weithiwr iechyd proffesiynol ";
+            = "Tystysgrif feddygol wedi'i chwblhau gan weithiwr iechyd proffesiynol";
     public static final String PA14_FORM_TEXT_AFTER = "(PA14) for ";
     public static final String PA14_FORM_TEXT_AFTER_WELSH = "(PA14) ar gyfer";
     public static final String PA15_FORM_URL = "https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights";

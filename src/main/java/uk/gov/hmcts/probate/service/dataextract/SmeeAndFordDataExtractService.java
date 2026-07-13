@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.zip.SmeeAndFordCommentMode;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
@@ -26,7 +27,7 @@ public class SmeeAndFordDataExtractService {
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
     private final ZipFileService zipFileService;
-    private final SmeeAndFordDataExtractStrategy smeeAndFOrdDataExtractStrategy;
+    private final SmeeAndFordDataExtractStrategy smeeAndFordDataExtractStrategy;
     @Value("${feature.blobstorage.smeeandford.enabled}")
     public boolean featureBlobStorageSmeeAndFord;
 
@@ -45,7 +46,8 @@ public class SmeeAndFordDataExtractService {
 
     private void performSmeeAndFordExtractForDate(String date) {
         log.info("Smee And Ford data extract initiated for date: {}", date);
-        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("Smee And Ford", date);
+        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate(
+                "Smee And Ford", date);
         log.info("Found {} cases with dated document for SF", cases.size());
 
         sendSmeeAndFordEmail(cases, date, date);
@@ -58,7 +60,9 @@ public class SmeeAndFordDataExtractService {
                 log.info("FeatureBlobStorageSmeeAndFord flag enabled is {}", featureBlobStorageSmeeAndFord);
                 if (featureBlobStorageSmeeAndFord) {
                     File tempFile = zipFileService.createTempZipFile("Probate_Docs_" + fromDate);
-                    zipFileService.generateAndUploadZipFile(cases, tempFile, fromDate, smeeAndFOrdDataExtractStrategy);
+                    zipFileService.generateAndUploadZipFile(
+                            cases, tempFile, fromDate, smeeAndFordDataExtractStrategy,
+                            SmeeAndFordCommentMode.INCLUDE_COMMENT);
                     log.info("Zip file uploaded on blob store");
                     Files.deleteIfExists(tempFile.toPath());
                 }

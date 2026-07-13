@@ -3,7 +3,7 @@ version: '3'
 
 services:
   ccd-user-profile-api:
-    image: "${CCD_USER_PROFILE_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/user-profile-api:${CCD_USER_PROFILE_API_TAG:-latest}"
+    image: "${CCD_USER_PROFILE_API_USE_LOCAL-hmctsprod.azurecr.io/}ccd/user-profile-api:${CCD_USER_PROFILE_API_TAG:-latest}"
     environment:
       USER_PROFILE_DB_HOST: ccd-shared-database
       USER_PROFILE_DB_PORT: 5432
@@ -25,7 +25,7 @@ services:
       - service-auth-provider-api
 
   ccd-definition-store-api:
-    image: "${CCD_DEFINITION_STORE_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/definition-store-api:${CCD_DEFINITION_STORE_API_TAG:-latest}"
+    image: "${CCD_DEFINITION_STORE_API_USE_LOCAL-hmctsprod.azurecr.io/}ccd/definition-store-api:${CCD_DEFINITION_STORE_API_TAG:-latest}"
     environment:
       DEFINITION_STORE_DB_HOST: ccd-shared-database
       DEFINITION_STORE_DB_PORT: 5432
@@ -56,7 +56,7 @@ services:
       - service-auth-provider-api
 
   ccd-data-store-api:
-    image: "${CCD_DATA_STORE_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/data-store-api:${CCD_DATA_STORE_API_TAG:-latest}"
+    image: "${CCD_DATA_STORE_API_USE_LOCAL-hmctsprod.azurecr.io/}ccd/data-store-api:${CCD_DATA_STORE_API_TAG:-latest}"
     environment:
       DATA_STORE_DB_HOST: ccd-shared-database
       DATA_STORE_DB_PORT: 5432
@@ -94,7 +94,7 @@ services:
       - service-auth-provider-api
 
   sidam-api:
-    image: "hmctspublic.azurecr.io/idam/api:stable"
+    image: "hmctsprod.azurecr.io/idam/api:stable"
     environment:
       JAVA_OPTS: -Xms128m -Xmx512m -Dlogging.level.uk.gov.hmcts=DEBUG
       TESTING_SUPPORT_ENABLED: "true"
@@ -131,7 +131,7 @@ services:
       - shared-db
 
   service-auth-provider-api:
-    image: "hmctspublic.azurecr.io/rpe/service-auth-provider:latest"
+    image: "hmctsprod.azurecr.io/rpe/service-auth-provider:latest"
     healthcheck:
       interval: 10s
       timeout: 10s
@@ -157,7 +157,7 @@ services:
       - 4502:8080
 
   fr-am:
-    image: "hmctsprivate.azurecr.io/idam/idam-fr-am:latest"
+    image: "hmctsprod.azurecr.io/idam/idam-fr-am:latest"
     environment:
       JAVA_OPTS: -Xms128m -Xmx512m
     ports:
@@ -167,7 +167,7 @@ services:
       - shared-db
 
   fr-idm:
-    image: "hmctsprivate.azurecr.io/idam/idam-fr-idm:latest"
+    image: "hmctsprod.azurecr.io/idam/idam-fr-idm:latest"
     environment:
       JAVA_TOOL_OPTIONS: -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=vm-ubuntu16 -Dcom.sun.management.jmxremote.rmi.port=9010
       JAVA_OPTS: -Xms128m -Xmx512m
@@ -201,7 +201,7 @@ services:
       - ccd-docker-ccd-shared-database-data:/var/lib/postgresql/data
 
   shared-db:
-    image: "hmctsprivate.azurecr.io/idam/shared-db:latest"
+    image: "hmctsprod.azurecr.io/idam/shared-db:latest"
     ports:
       - 5051:5432
 
@@ -230,7 +230,7 @@ services:
 
 
   pdf-service-api:
-    image: hmctspublic.azurecr.io/cmc/pdf-service:latest
+    image: hmctsprod.azurecr.io/cmc/pdf-service:latest
     container_name: pdf-service-api
     environment:
       - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
@@ -246,7 +246,7 @@ services:
       - 5500:5500
 
   fees-api:
-    image: hmctspublic.azurecr.io/fees-register/api
+    image: hmctsprod.azurecr.io/fees-register/api
     container_name: fees-api
     environment:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://fees-database:5432/fees_register"
@@ -273,7 +273,7 @@ services:
       - 5182:5432
 
   payments-api:
-    image: hmctspublic.azurecr.io/payment/api:latest
+    image: hmctsprod.azurecr.io/payment/api:latest
     container_name: payments-api
     environment:
       - auth.provider.service.client.baseUrl=http://service-auth-provider-api:8080/
@@ -359,7 +359,7 @@ services:
       - 5430:5432
 
 #  persistence-service:
-#    image: hmctspublic.azurecr.io/probate/persistence-service:pro-5125_persistence_to_orchestrator
+#    image: hmctsprod.azurecr.io/probate/persistence-service:pro-5125_persistence_to_orchestrator
 #    container_name: persistence-service
 #    environment:
 #      - SPRING_DATASOURCE_URL=jdbc:postgresql://ccd-shared-database:5432/probate
@@ -376,7 +376,7 @@ services:
 #      - 8282:8282
 #
 #  business-service:
-#    image: hmctspublic.azurecr.io/probate/business-service:latest
+#    image: hmctsprod.azurecr.io/probate/business-service:latest
 #    container_name: business-service
 #    environment:
 #    - SERVER_PORT=8081
@@ -393,7 +393,7 @@ services:
 #    - 8081:8081
 
 #  send-letter-service:
-#    image: hmctspublic.azurecr.io/rpe/send-letter-service
+#    image: hmctsprod.azurecr.io/rpe/send-letter-service
 #    container_name: send-letter-service
 #    environment:
 #      - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY

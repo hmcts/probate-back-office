@@ -1,0 +1,10 @@
+{
+  "multi_match": {
+    "query": ":deceasedAlias",
+    "operator": "and",
+    "boost": 2,
+    "fields": [
+      "data.deceasedFullAliasNameList.*"
+    ]
+  }
+}

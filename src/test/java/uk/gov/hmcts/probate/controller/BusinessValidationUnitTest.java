@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -44,6 +45,7 @@ import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
+import uk.gov.hmcts.probate.validator.AttorneyAppointedExecutorValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
@@ -83,14 +85,20 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.doReturn;
+
+
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
@@ -216,9 +224,15 @@ class BusinessValidationUnitTest {
     private ZeroApplyingExecutorsValidationRule zeroApplyingExecutorsValidationRule;
     @Mock
     private DocumentTransformer documentTransformerMock;
+    @Mock
+    private AttorneyAppointedExecutorValidationRule attorneyAppointedExecutorValidationRule;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
+    @Mock
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
+
+
     private BusinessValidationController underTest;
 
     @BeforeEach
@@ -262,7 +276,9 @@ class BusinessValidationUnitTest {
             zeroApplyingExecutorsValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
-            documentTransformerMock);
+            documentTransformerMock,
+            attorneyAppointedExecutorValidationRule,
+            ccdSupplementaryDataService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
         doReturn(CASEWORKER_USERINFO).when(userInfoServiceMock).getCaseworkerInfo();
@@ -314,10 +330,12 @@ class BusinessValidationUnitTest {
     void shouldVerifySolsAccessWithNoErrors() {
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1000L);
 
         ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess(AUTH_TOKEN,
-                "GrantOfRepresentation", callbackRequestMock);
+                "GrantOfRepresentation", true,callbackRequestMock);
 
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -374,6 +392,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        verify(attorneyAppointedExecutorValidationRule, times(1)).validate(caseDetailsMock);
     }
 
     @Test
@@ -395,6 +414,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        verify(attorneyAppointedExecutorValidationRule, times(1)).validate(caseDetailsMock);
     }
 
     @Test
@@ -1285,7 +1305,7 @@ class BusinessValidationUnitTest {
                 () -> assertThat(response.getStatusCode(), is(HttpStatus.OK)),
                 () -> assertThat(notificationsGenerated, empty()));
     }
-  
+
     @Test
     void shouldAttemptToEmailCaseworkerWhenEscalateToRegistrarFails() throws RegistrarEscalationException {
 
@@ -1395,4 +1415,37 @@ class BusinessValidationUnitTest {
         verify(notificationService, times(1))
                 .sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetailsMock);
     }
+
+    @Test
+    void shouldTransformForIssueGrant() {
+        ResponseEntity<CallbackResponse> response = underTest
+                .checkCaseMatches(callbackRequestMock, httpServletRequest);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(callbackResponseTransformerMock).transformForIssueGrant(any(), any());
+    }
+
+    @Test
+    void shouldSetSupplementaryData() {
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getId()).thenReturn(1000L);
+        ResponseEntity<CallbackResponse> response = underTest.setSupplementaryData(callbackRequestMock);
+
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCaseDetailsIsNull() {
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(null);
+        assertThrows(
+                NullPointerException.class,
+                () -> underTest.setSupplementaryData(callbackRequestMock)
+        );
+        verifyNoInteractions(ccdSupplementaryDataService);
+    }
+
+
+
 }
