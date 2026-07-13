@@ -103,6 +103,14 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", EXAMINE_DIGITAL_CASE_ADMON
                                 )
                         )
+                ),Arguments.of(
+                        "boStopCaseForCaseMatchingForExamining",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
+                                )
+                        )
                 ),
                 Arguments.of(
                         "otherEventId",
@@ -117,7 +125,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(11));
+        assertThat(logic.getRules().size(), is(12));
     }
 
     @ParameterizedTest(name = "event id: {0}")
