@@ -25,6 +25,8 @@ public class FeatureToggleService {
     private static final String SMEE_AND_FORD_COMMENT_FIELD_TOGGLE = "probate-smee-ford-comment-field";
     private static final String USE_JSON_LIB_FOR_CASE_MATCHING = "probate-use-json-lib-for-case-matching";
     private static final String USE_PRIMARY_NOTIFY_KEY = "probate-use-primary-notify-key";
+    private static final String PREVENT_UPDATING_EXISTING_UPLOADED_DOCUMENTS =
+            "probate-prevent-updating-existing-uploaded-documents";
 
     @Autowired
     public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,
@@ -131,5 +133,10 @@ public class FeatureToggleService {
     public boolean usePrimaryNotifyKey() {
         return this.isFeatureToggleOn(
                 USE_PRIMARY_NOTIFY_KEY, true);
+    }
+
+    public boolean usePreventUpdatingExistingUploadedDocumentsFeatureToggleOn() {
+        return this.isFeatureToggleOn(
+                PREVENT_UPDATING_EXISTING_UPLOADED_DOCUMENTS, false);
     }
 }

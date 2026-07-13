@@ -91,10 +91,10 @@ ccd:
       imagePullPolicy: Always
       autoscaling:
         maxReplicas: 2
-      devcpuRequests: 100m
-      devcpuLimits: 600m
-      devmemoryRequests: 1Gi
-      devmemoryLimits: 2Gi
+      devcpuRequests: 150m
+      devcpuLimits: 900m
+      devmemoryRequests: 1.5Gi
+      devmemoryLimits: 3Gi
       environment:
         DATA_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
@@ -156,10 +156,10 @@ ccd:
         ELASTIC_SEARCH_SCHEME: http
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
-      devcpuRequests: 500m
-      devcpuLimits: 1000m
-      devmemoryRequests: 1Gi
-      devmemoryLimits: 2Gi
+      devcpuRequests: 750m
+      devcpuLimits: 1500m
+      devmemoryRequests: 1.5Gi
+      devmemoryLimits: 3Gi
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
@@ -377,10 +377,10 @@ xui-webapp:
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
     image: hmctsprod.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
-    devcpuRequests: 20m
-    devcpuLimits: 200m
-    devmemoryRequests: 512Mi #timeout happens when 256Mi is used, so increase it to 512Mi to make sure the pod can be up and running.
-    devmemoryLimits: 800Mi
+    devcpuRequests: 30m
+    devcpuLimits: 300m
+    devmemoryRequests: 768Mi #timeout happens when 256Mi is used, so increase it to 512Mi to make sure the pod can be up and running.
+    devmemoryLimits: 1.2Gi
     environment:
       HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
@@ -453,10 +453,10 @@ aac-manage-case-assignment:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-  devcpuRequests: 150m
-  devcpuLimits: 250m
-  devmemoryRequests: 1Gi
-  devmemoryLimits: 1.5G
+  devcpuRequests: 225m
+  devcpuLimits: 375m
+  devmemoryRequests: 1.5Gi
+  devmemoryLimits: 2.25G
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
