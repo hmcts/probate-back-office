@@ -208,7 +208,8 @@ public class FunctionalTestUtils {
         log.info("caseDocumentManagermentUrl:" + caseDocumentManagermentUrl);
         log.info("FunctionalTestUtils.getDocumentResponse:" + documentUrl);
         if (documentUrl == null) {
-            throw new IllegalArgumentException("Document URL is null, callback response did not include a generated document link");
+            throw new IllegalArgumentException(
+                    "Document URL is null, callback response did not include a generated document link");
         }
         String docUrl = documentUrl.replaceAll("/binary", "");
         final String documentId = docUrl.substring(docUrl.lastIndexOf("/") + 1);
