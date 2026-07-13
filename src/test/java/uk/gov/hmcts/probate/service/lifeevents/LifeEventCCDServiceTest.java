@@ -36,7 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.same;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
@@ -104,7 +103,7 @@ class LifeEventCCDServiceTest {
         when(deathService.searchForDeathRecordsByNamesAndDate(firstName, lastName, localDate))
             .thenReturn(deathRecords);
 
-        mappedRecords = mock(List.class);
+        mappedRecords = new ArrayList<>();
 
         when(deathRecordService.mapDeathRecords(any())).thenReturn(mappedRecords);
         securityDTO = SecurityDTO.builder()
@@ -143,7 +142,7 @@ class LifeEventCCDServiceTest {
 
         final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
                 .getValue().getDeathRecords();
-        assertSame(capturedDeathRecords, mappedRecords);
+        assertSame(mappedRecords, capturedDeathRecords);
     }
 
     @Test
@@ -161,7 +160,7 @@ class LifeEventCCDServiceTest {
 
         final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
                 .getValue().getDeathRecords();
-        assertSame(capturedDeathRecords, mappedRecords);
+        assertSame(mappedRecords, capturedDeathRecords);
     }
 
     @Test
@@ -214,7 +213,7 @@ class LifeEventCCDServiceTest {
 
         final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
             .getValue().getDeathRecords();
-        assertSame(capturedDeathRecords, mappedRecords);
+        assertSame(mappedRecords, capturedDeathRecords);
     }
 
     @Test
@@ -235,7 +234,7 @@ class LifeEventCCDServiceTest {
 
         final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
                 .getValue().getDeathRecords();
-        assertSame(capturedDeathRecords, mappedRecords);
+        assertSame(mappedRecords, capturedDeathRecords);
     }
 
     @Test
