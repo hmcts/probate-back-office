@@ -240,7 +240,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1ai19yd">
         <inputEntry id="UnaryTests_0vo16wg">
-          <text>"handleEvidence", "boResolveStop", "moveToCWEscalation", "changeState"</text>
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1liallg">
           <text>"BOReadyToIssue"</text>
