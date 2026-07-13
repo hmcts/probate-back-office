@@ -11,4 +11,5 @@ public class AuthenticatedTranslationCaseExtra {
 
     private final String showAuthenticatedTranslation;
     private final String authenticatedTranslationText;
+    private final String authenticatedTranslationTextWelsh;
 }

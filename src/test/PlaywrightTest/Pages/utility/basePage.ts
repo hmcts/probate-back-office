@@ -59,12 +59,19 @@ export class BasePage {
       .join("-");
   }
 
-  async getSacCaseRef() {
-    await this.page.locator('//div[@class="column-one-half"]//ccd-case-header').textContent();
+  async getCaseRefFromUrlNoHyphen() {
+    const url = this.page.url();
+    return url
+      .replace("#Event%20History", "")
+      .replace("#Case%20Progress", "")
+      .split("/")
+      .pop()
+      .match(/.{4}/g)
+      .join("");
   }
 
   async waitForNavigationToComplete(buttonLocator: Locator | string, timeout: number = 5_000): Promise<void> {
-    const currentUrl = await this.page.url();
+    const currentUrl = this.page.url();
     const locator = typeof buttonLocator === 'string'
       ? this.page.locator(buttonLocator)  // String - convert to Locator
       : buttonLocator;
@@ -286,7 +293,6 @@ export class BasePage {
       // await I.waitForText(tabConfigFile.waitForText, testConfig.WaitForTextTimeout || 60);
     }
 
-    /* eslint-disable no-await-in-loop */
     for (let i = 0; i < tabConfigFile.fields.length; i++) {
       if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
         await expect(this.page.getByText(tabConfigFile.fields[i]).first()).toBeVisible();
@@ -329,5 +335,24 @@ export class BasePage {
       // await I.waitForElement({css: commonConfig.continueButton});
       // await I.waitForNavigationToComplete(commonConfig.continueButton,testConfig.CaseProgressContinueWithoutChangingDelay);
     }
+  }
+
+  async getEnv() {
+    const url = this.page.url();
+    if (url.includes("aat") || url.includes("preview")) {
+      return "aat";
+    } else if (url.includes("demo")) {
+      return "demo";
+    }
+  }
+
+
+  async resolvePlaceholders(template: string, data: Record<string, string>) {
+    return template.replace(/{{(.*?)}}/g, (_, key) => {
+      if (!(key in data)) {
+        throw new Error(`Missing dynamic value for placeholder: ${key}`);
+      }
+      return data[key];
+    });
   }
 }

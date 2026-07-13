@@ -12,10 +12,15 @@ public class AdmonWillRenunciationCaseExtra {
     private final String showAdmonWillRenunciation;
     private final String pa15FormUrl;
     private final String pa15FormText;
+    private final String pa15FormTextWelsh;
     private final String pa17FormUrl;
     private final String pa17FormText;
+    private final String pa17FormTextWelsh;
     private final String admonWillRenunciationBeforeLinksText;
+    private final String admonWillRenunciationBeforeLinksTextWelsh;
     private final String admonWillRenunciationMidLinksText;
+    private final String admonWillRenunciationMidLinksTextWelsh;
     private final String admonWillRenunciationAfterLinksText;
+    private final String admonWillRenunciationAfterLinksTextWelsh;
 
 }

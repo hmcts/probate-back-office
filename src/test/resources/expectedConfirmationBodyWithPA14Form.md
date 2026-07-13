@@ -120,7 +120,7 @@ Nawr, mae angen i chi anfon y canlynol atom:
 *   Y ddalen flaen wedi’i hargraffu (yn y tab dalen flaen) neu'ch cyfeirnod wedi'i 1 ysgrifennu ar ddalen o bapur
 *   ffurflen Treth Etifeddiant IHT207
 *   llungopi o'r datganiad cyfreithiol a’r datganiad wedi’u llofnodi
-*   <a href="https://www.gov.uk/government/publications/form-pa14-medical-certificate-probate" target="_blank">Tystysgrif feddygol wedi'i chwblhau gan weithiwr iechyd proffesiynol </a> (PA14) ar gyferTim Smith
+*   <a href="https://www.gov.uk/government/publications/form-pa14-medical-certificate-probate" target="_blank">Tystysgrif feddygol wedi'i chwblhau gan weithiwr iechyd proffesiynol</a> (PA14) ar gyferTim Smith
 
 Ble i anfon eich dogfennau
 -------------------------------

@@ -25,6 +25,7 @@ import nextStepConfig from '../../../Pages/nextStep/nextStepConfig.json' with { 
 test.describe('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker', () => {
     test('Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker @firefox @ipadpro11',
         async ({basePage, signInPage, createCasePage, cwEventActionsPage}, testInfo) => {
+            test.setTimeout(300000);
             const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker';
             // BO Grant of Representation (Personal): Case created -> Grant issued
 

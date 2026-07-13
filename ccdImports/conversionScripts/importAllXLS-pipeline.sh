@@ -9,6 +9,12 @@ xlsToJsonFolder=${1}
 echo binFolder = $binFolder
 echo xlsToJsonFolder = $xlsToJsonFolder
 
+USER_TOKEN=$(${binFolder}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME} ${CCD_CONFIGURER_IMPORTER_PASSWORD})
+export USER_TOKEN
+
+SERVICE_TOKEN=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctsprod.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
+export SERVICE_TOKEN
+
 echo CCD_Probate_Backoffice ....................
 ${binFolder}/ccd-import-definition-pipeline.sh "${xlsToJsonFolder}/CCD_Probate_Backoffice.xlsx"
 echo
