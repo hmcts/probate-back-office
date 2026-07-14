@@ -6,7 +6,7 @@ plugins {
   id 'org.springframework.boot' version '3.5.16'
   id 'uk.gov.hmcts.java' version '0.12.70'
   id 'com.github.ben-manes.versions' version '0.54.0'
-  id 'com.gorylenko.gradle-git-properties' version '3.0.3'
+  id 'com.gorylenko.gradle-git-properties' version '4.0.1'
   id 'info.solidsoft.pitest' version '1.19.0'
   id 'jacoco'
   id 'project-report'
