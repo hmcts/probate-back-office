@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import { WorkAllocation } from "../helpers/workAllocation.ts"; // Adjust path to your class
+import { WorkAllocation } from "../helpers/workAllocation.ts";
 
 export type HelperFixtures = {
   waEnabled: boolean;
