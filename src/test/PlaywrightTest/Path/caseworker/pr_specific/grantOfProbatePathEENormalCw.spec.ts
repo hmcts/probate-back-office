@@ -29,17 +29,24 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     myWorkPage,
     cwEventActionsPage,
     request,
+    waEnabled,
   }, testInfo) => {
     test.setTimeout(300000);
     const scenarioName =
       "Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker";
 
-    // BO Grant of Representation (Personal): Case created -> Grant issued
-    basePage.logInfo(scenarioName, "Login as Ctsc Admin");
-    await signInPage.authenticateUserWorkAllocation(
-      "CTSC Administrator",
-      testConfig.CaseProgressSignInDelay,
-    );
+    //if waEnabled = true sign in with ctsc admin else use caseworker
+    if (waEnabled) {
+      // BO Grant of Representation (Personal): Case created -> Grant issued
+      basePage.logInfo(scenarioName, "Login as Ctsc Admin");
+      await signInPage.authenticateUserWorkAllocation(
+        "CTSC Administrator",
+        testConfig.CaseProgressSignInDelay,
+      );
+    }
+    else{
+      await signInPage.authenticateWithIdamIfAvailable(false);
+    }
 
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now().toString();
@@ -82,73 +89,75 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     await createCasePage.checkMyAnswers(nextStepName);
     const workAllocationCaseRef = await basePage.getCaseRefFromUrl();
 
-    await basePage.logInfo(
-      scenarioName,
-      "Confirming the examine digital task is created and visible in the tasks tab",
-      workAllocationCaseRef,
-    );
-    await tasksPage.verifyTaskVisibilty(
-      tasks.ExamineDigitalCaseProbate.Name,
-      true,
-    );
-    await tasksPage.verifyUnassignedTaskData(
-      tasks.ExamineDigitalCaseProbate.WorkingDaysToComplete,
-      tasks.ExamineDigitalCaseProbate.Priority,
-      request,
-    );
-    await basePage.logInfo(
-      scenarioName,
-      "Assigning the examine digital task to the current user",
-      workAllocationCaseRef,
-    );
-    await tasksPage.assignTaskToSelf("probate ctsc administrator one");
-    await tasksPage.verifyAssignedTaskData(false);
-    await tasksPage.verifyNextStepsOptions(
-      tasks.ExamineDigitalCaseProbate.NextSteps,
-    );
-    await basePage.logInfo(
-      scenarioName,
-      "Confirming the task is visible in My Work and can be completed",
-      workAllocationCaseRef,
-    );
-    await basePage.navigateViaUrl("/work/my-work/list");
-    await myWorkPage.verifyTaskIsDisplayedOnMyWorkPage(
-      tasks.ExamineDigitalCaseProbate.Name,
-      tasks.ExamineDigitalCaseProbate.WorkingDaysToComplete,
-      tasks.ExamineDigitalCaseProbate.Priority,
-      request,
-    );
-    await myWorkPage.goToTopRowTask();
-    await tasksPage.triggerNextStepEvent(
-      tasks.ExamineDigitalCaseProbate.NextSteps[2],
-    );
-    await cwEventActionsPage.caseProgressSelectEscalateReason();
-    await cwEventActionsPage.enterEventSummary(
-      workAllocationCaseRef,
-      "Escalate to registrar",
-    );
-    await basePage.logInfo(
-      scenarioName,
-      "Verifying the work allocation task disappears after completion",
-      workAllocationCaseRef,
-    );
-    await tasksPage.verifyTaskVisibilty(
-      tasks.ExamineDigitalCaseProbate.Name,
-      false,
-    );
+    if (waEnabled) {
+      await basePage.logInfo(
+        scenarioName,
+        "Confirming the examine digital task is created and visible in the tasks tab",
+        workAllocationCaseRef,
+      );
+      await tasksPage.verifyTaskVisibilty(
+        tasks.ExamineDigitalCaseProbate.Name,
+        true,
+      );
+      await tasksPage.verifyUnassignedTaskData(
+        tasks.ExamineDigitalCaseProbate.WorkingDaysToComplete,
+        tasks.ExamineDigitalCaseProbate.Priority,
+        request,
+      );
+      await basePage.logInfo(
+        scenarioName,
+        "Assigning the examine digital task to the current user",
+        workAllocationCaseRef,
+      );
+      await tasksPage.assignTaskToSelf("probate ctsc administrator one");
+      await tasksPage.verifyAssignedTaskData(false);
+      await tasksPage.verifyNextStepsOptions(
+        tasks.ExamineDigitalCaseProbate.NextSteps,
+      );
+      await basePage.logInfo(
+        scenarioName,
+        "Confirming the task is visible in My Work and can be completed",
+        workAllocationCaseRef,
+      );
+      await basePage.navigateViaUrl("/work/my-work/list");
+      await myWorkPage.verifyTaskIsDisplayedOnMyWorkPage(
+        tasks.ExamineDigitalCaseProbate.Name,
+        tasks.ExamineDigitalCaseProbate.WorkingDaysToComplete,
+        tasks.ExamineDigitalCaseProbate.Priority,
+        request,
+      );
+      await myWorkPage.goToTopRowTask();
+      await tasksPage.triggerNextStepEvent(
+        tasks.ExamineDigitalCaseProbate.NextSteps[2],
+      );
+      await cwEventActionsPage.caseProgressSelectEscalateReason();
+      await cwEventActionsPage.enterEventSummary(
+        workAllocationCaseRef,
+        "Escalate to registrar",
+      );
+      await basePage.logInfo(
+        scenarioName,
+        "Verifying the work allocation task disappears after completion",
+        workAllocationCaseRef,
+      );
+      await tasksPage.verifyTaskVisibilty(
+        tasks.ExamineDigitalCaseProbate.Name,
+        false,
+      );
 
-    await basePage.logInfo(
-      scenarioName,
-      "Switching back to caseworker context",
-      undefined,
-    );
-    //sign out of WA user
-    await signInPage.signOut();
+      await basePage.logInfo(
+        scenarioName,
+        "Switching back to caseworker context",
+        undefined,
+      );
+      //sign out of WA user
+      await signInPage.signOut();
 
-    // SECOND case - the main test case
-    await signInPage.authenticateWithIdamIfAvailable(false);
+      // SECOND case - the main test case
+      await signInPage.authenticateWithIdamIfAvailable(false);
+    }
+
     let endState;
-
     await basePage.logInfo(scenarioName, nextStepName + " - second case", null);
     await createCasePage.selectNewCase();
     await createCasePage.selectCaseTypeOptions(

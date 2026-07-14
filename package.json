@@ -135,7 +135,8 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.59.4",
     "webdriverio": "^9.27.1",
-    "when": "^3.7.8"
+    "when": "^3.7.8",
+    "yaml": "^2.9.0"
   },
   "resolutions": {
     "axios": "^1.16.0",
