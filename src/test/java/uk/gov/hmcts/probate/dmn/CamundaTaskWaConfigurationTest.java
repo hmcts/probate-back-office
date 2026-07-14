@@ -33,9 +33,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     private static final String taskId = UUID.randomUUID().toString();
     private static final String roleAssignmentId = UUID.randomUUID().toString();
 
-    /** CCD state ID for "Awaiting documentation" */
     private static final String STATE_CASE_PRINTED = "CasePrinted";
-    /** CCD state ID for "Ready to issue" */
     private static final String STATE_READY_TO_ISSUE = "BOReadyToIssue";
 
     @BeforeAll
@@ -50,35 +48,45 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         STATE_CASE_PRINTED,
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.ExamineDigitalCaseExpectationsForState(STATE_CASE_PRINTED).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
+                                STATE_CASE_PRINTED
+                        ).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         STATE_CASE_PRINTED,
                         "boAmendCaseDetailsForAwaitingDocumentation",
-                        ConfigurationExpectationBuilder.ExamineDigitalCaseExpectationsForState(STATE_CASE_PRINTED).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
+                                STATE_CASE_PRINTED
+                        ).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         STATE_READY_TO_ISSUE,
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.ExamineDigitalCaseExpectationsForState(STATE_READY_TO_ISSUE).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
+                                STATE_READY_TO_ISSUE
+                        ).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         STATE_CASE_PRINTED,
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.ExamineDigitalCaseExpectationsForState(STATE_CASE_PRINTED).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
+                                STATE_CASE_PRINTED
+                        ).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         STATE_READY_TO_ISSUE,
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.ExamineDigitalCaseExpectationsForState(STATE_READY_TO_ISSUE).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
+                                STATE_READY_TO_ISSUE
+                        ).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
@@ -86,7 +94,8 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         null,
                         "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
-                                .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
+                                .expectedValue(DESCRIPTION,
+                                        "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boSelectForQA)", true)
                                 .build()
                 )

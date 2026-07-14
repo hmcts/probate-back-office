@@ -6,7 +6,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.*;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MAJOR_PRIORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINOR_PRIORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_CALENDAR;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_WORKING_DAYS_OF_WEEK;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_INTERVAL_DAYS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_ORIGIN;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_TIME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_CALENDAR_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_TIME_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_INTERVAL_DAYS_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF_VALUE;
 
 public class ConfigurationExpectationBuilder {
 
@@ -24,29 +51,10 @@ public class ConfigurationExpectationBuilder {
         return new ConfigurationExpectationBuilder();
     }
 
-    public static ConfigurationExpectationBuilder defaultExamineDigitalCaseExpectations() {
-        ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
-        builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true)
-                .expectedValue(WORK_TYPE, DECISION_WORK_TYPE, true)
-                .expectedValue(CASE_MANAGEMENT_CATEGORY, "DUMMY_PLACEHOLDER_CASE_MANAGEMENT_CATEGORY", true)
-                .expectedValue(CASE_NAME, "DUMMY_PLACEHOLDER_CASE_NAME", true)
-                .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
-                .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
-                .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
-                .expectedValue(LOCATION_NAME, REGISTRY_LOCATION_VALUE, true)
-                .expectedValue(DUE_DATE_NON_WORKING_CALENDAR, DUE_DATE_NON_WORKING_CALENDAR_VALUE, true)
-                .expectedValue(DUE_DATE_TIME, DUE_DATE_TIME_VALUE, true)
-                .expectedValue(DUE_DATE_INTERVAL_DAYS, DUE_DATE_INTERVAL_DAYS_VALUE, true)
-                .expectedValue(DUE_DATE_NON_WORKING_DAYS_OF_WEEK,
-                        DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE, true)
-                .expectedValue(PRIORITY_DATE_ORIGIN_REF, PRIORITY_DATE_ORIGIN_REF_VALUE, true);
-        return builder;
-    }
-
-    public static ConfigurationExpectationBuilder ExamineDigitalCaseExpectationsForState(String state) {
+    public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForState(String state) {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
 
-        if (state.equalsIgnoreCase("BOReadyToIssue")){
+        if (state.equalsIgnoreCase("BOReadyToIssue")) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE, true);
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
