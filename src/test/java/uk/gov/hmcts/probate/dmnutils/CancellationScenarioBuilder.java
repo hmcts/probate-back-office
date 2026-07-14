@@ -22,8 +22,8 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
     }
 
     public Map<String,String> invalidEventOrStateEntryMap(String eventId,
-                                                          String fromState,
-                                                          String toState) {
+                                                   String fromState,
+                                                   String toState) {
         return Map.of(
                 "event", eventId,
                 "fromState", fromState,
@@ -35,39 +35,39 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
         return Stream.of(
                 Arguments.of(
-                        cancelWithProperties(
-                                "boWithdrawApplicationForReadyToIssue",
-                                "BOReadyToIssue",
-                                "BOCaseClosed",
-                                "case progression",
-                                "Cancel"
-                        )
+                    cancelWithProperties(
+                            "boWithdrawApplicationForCasePrinted",
+                            "CasePrinted",
+                            "BOCaseClosed",
+                            "case progression",
+                            "Cancel"
+                    )
                 ),
-                // Withdraw application from BOReadyToIssue cancels no tasks
+                // Withdraw application from CasePrinted ("Awaiting documentation") cancels no tasks
                 // on the case when there is an invalid event
                 Arguments.of(
-                        invalidEventOrStateEntryMap(
-                                "someInvalidEvent",
-                                "BOReadyToIssue",
-                                "BOCaseClosed"
-                        )
+                    invalidEventOrStateEntryMap(
+                            "someInvalidEvent",
+                            "CasePrinted",
+                            "BOCaseClosed"
+                    )
                 ),
-                // Withdraw application from BOReadyToIssue cancels no tasks
+                // Withdraw application from CasePrinted ("Awaiting documentation") cancels no tasks
                 // on the case when fromState is the wrong state
                 Arguments.of(
                         invalidEventOrStateEntryMap(
-                                "boWithdrawApplicationForReadyToIssue",
-                                "BOCaseClosed",
-                                "BOCaseClosed"
+                        "boWithdrawApplicationForCasePrinted",
+                        "BOCaseClosed",
+                        "BOCaseClosed"
                         )
                 ),
-                // Withdraw application from BOReadyToIssue cancels no tasks
+                // Withdraw application from CasePrinted ("Awaiting documentation") cancels no tasks
                 // on the case when toState is a different state
                 Arguments.of(
                         invalidEventOrStateEntryMap(
-                                "boWithdrawApplicationForReadyToIssue",
-                                "BOReadyToIssue",
-                                "BOReadyToIssue"
+                        "boWithdrawApplicationForCasePrinted",
+                        "CasePrinted",
+                        "CasePrinted"
                         )
                 )
         );
