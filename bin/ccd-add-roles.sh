@@ -23,4 +23,5 @@ export SERVICE_TOKEN_ENV=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(doc
 (${binFolder}/ccd-add-role.sh caseworker-probate-bulkscan)
 (${binFolder}/ccd-add-role.sh caseworker-probate-caseadmin)
 (${binFolder}/ccd-add-role.sh TTL_profile)
+(${binFolder}/ccd-add-role.sh GS_profile)
 
