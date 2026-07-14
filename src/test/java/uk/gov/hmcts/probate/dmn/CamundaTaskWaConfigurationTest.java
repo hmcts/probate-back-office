@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import uk.gov.hmcts.probate.dmnutils.CaseDataBuilder;
 import uk.gov.hmcts.probate.dmnutils.ConfigurationExpectationBuilder;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,46 +30,60 @@ import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNam
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
-    private static final String REQUEST = "classpath:custom-case-data.json";
     private static final String taskId = UUID.randomUUID().toString();
     private static final String roleAssignmentId = UUID.randomUUID().toString();
+
+    /** CCD state ID for "Awaiting documentation" */
+    private static final String STATE_CASE_PRINTED = "CasePrinted";
+    /** CCD state ID for "Ready to issue" */
+    private static final String STATE_READY_TO_ISSUE = "BOReadyToIssue";
 
     @BeforeAll
     public static void initialization() {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_CONFIGURATION_PROBATE;
     }
 
-    static Stream<Arguments> scenarioProvider() throws IOException {
+    static Stream<Arguments> scenarioProvider() {
         return Stream.of(
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        STATE_CASE_PRINTED,
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
+                        ConfigurationExpectationBuilder.ExamineDigitalCaseExpectationsForState(STATE_CASE_PRINTED).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        STATE_CASE_PRINTED,
                         "boAmendCaseDetailsForAwaitingDocumentation",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
+                        ConfigurationExpectationBuilder.ExamineDigitalCaseExpectationsForState(STATE_CASE_PRINTED).build()
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_PROBATE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        STATE_READY_TO_ISSUE,
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.ExamineDigitalCaseExpectationsForState(STATE_READY_TO_ISSUE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultWaCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        STATE_CASE_PRINTED,
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
+                        ConfigurationExpectationBuilder.ExamineDigitalCaseExpectationsForState(STATE_CASE_PRINTED).build()
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_ADMON,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        STATE_READY_TO_ISSUE,
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.ExamineDigitalCaseExpectationsForState(STATE_READY_TO_ISSUE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
-                        CaseDataBuilder.defaultCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultCase().isUrgent().build(),
+                        null,
                         "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
@@ -82,28 +95,30 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
-        //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(2));
+        assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(29, logic.getRules().size());
+        assertEquals(31, logic.getRules().size());
     }
 
-    @ParameterizedTest(name = "task type: {0} case data: {1}")
+    @ParameterizedTest(name = "task type: {0} state: {2}")
     @MethodSource("scenarioProvider")
     void should_return_correct_configuration_values_for_scenario(
-            String taskType, Map<String, Object> caseData,
+            String taskType,
+            Map<String, Object> caseData,
+            String state,
             String eventId,
             List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
 
-        Map<String, String> taskAttributes = Map.of(
+        Map<String, Object> taskAttributes = Map.of(
                 "taskType", taskType,
                 "roleAssignmentId", roleAssignmentId,
                 "taskId", taskId
         );
         inputVariables.putValue("taskAttributes", taskAttributes);
         inputVariables.putValue("taskType", taskType);
+        inputVariables.putValue("state", state);
         inputVariables.putValue("caseData", caseData);
         inputVariables.putValue("eventId", eventId);
 

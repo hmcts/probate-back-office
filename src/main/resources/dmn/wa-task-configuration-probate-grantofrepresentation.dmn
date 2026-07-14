@@ -7,6 +7,11 @@
           <text></text>
         </inputExpression>
       </input>
+      <input id="InputClause_1gwrj3o7f" label="State" camunda:inputVariable="state">
+        <inputExpression id="LiteralExpression_1m4d7c4" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
       <input id="InputClause_00c59gm" label="Task type" biodi:width="405" camunda:inputVariable="taskType">
         <inputExpression id="LiteralExpression_1ngi22k" typeRef="string">
           <text>if(taskAttributes != null and taskAttributes.taskType != null) then
@@ -20,25 +25,11 @@
       <output id="Output_1" label="Name" name="name" typeRef="string" biodi:width="349" />
       <output id="OutputClause_021y3bb" label="Value" name="value" typeRef="string" biodi:width="932" />
       <output id="OutputClause_0tefly7" label="Can Reconfigure?" name="canReconfigure" typeRef="boolean" biodi:width="551" />
-      <rule id="DecisionRule_0gmi4fj">
-        <inputEntry id="UnaryTests_1sevjwl">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1f4grcr">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0imj3eu">
-          <text>"description"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1bi6f35">
-          <text>"[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1s0f2ec">
-          <text>true</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_0zibb9q">
         <inputEntry id="UnaryTests_0g95gdk">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0gw4emdk">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0do24dv">
@@ -58,8 +49,11 @@
         <inputEntry id="UnaryTests_1mcz2gy">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1mam2gy">
+          <text>"CasePrinted"</text>
+        </inputEntry>
         <inputEntry id="UnaryTests_0a3bnkb">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1whdf9l">
           <text>"description"</text>
@@ -71,12 +65,35 @@
           <text>true</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_06lzwv2_ready">
+        <inputEntry id="UnaryTests_06lzwv2_ready_caseData">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06lzwv2_ready_state">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06lzwv2_ready_taskType">
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06lzwv2_ready_name">
+          <text>"description"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06lzwv2_ready_value">
+          <text>"[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06lzwv2_ready_reconfig">
+          <text>true</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_0j5fpym">
         <inputEntry id="UnaryTests_07ckxmk">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_07cqwmmk">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_0wm8t08">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1pghx77">
           <text>"workType"</text>
@@ -92,8 +109,11 @@
         <inputEntry id="UnaryTests_0hr4stz">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0hsdmjtz">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_1qccoho">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1me1na3">
           <text>"caseManagementCategory"</text>
@@ -109,8 +129,11 @@
         <inputEntry id="UnaryTests_12xpv6u">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_11xdwk6u">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_1ifu8wu">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1uvmdeh">
           <text>"caseName"</text>
@@ -126,8 +149,11 @@
         <inputEntry id="UnaryTests_0h3m8si">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0h5mssi">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_0265cyh">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_19ge0vb">
           <text>"region"</text>
@@ -143,8 +169,11 @@
         <inputEntry id="UnaryTests_1xolkxo">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1x2kqxo">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_0ol0bht">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1vwmxcn">
           <text>"roleCategory"</text>
@@ -160,8 +189,11 @@
         <inputEntry id="UnaryTests_121ra98">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1223md98">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_0bs4y2i">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_13i06we">
           <text>"location"</text>
@@ -177,8 +209,11 @@
         <inputEntry id="UnaryTests_08lzaj3">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_02ldaj3">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_0n4h6rp">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1snulwi">
           <text>"locationName"</text>
@@ -194,8 +229,11 @@
         <inputEntry id="UnaryTests_0cntr2k">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_03dlrr2k">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_09ep7ys">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0kmzx5s">
           <text>"dueDateOrigin"</text>
@@ -211,8 +249,11 @@
         <inputEntry id="UnaryTests_0e1oy6f">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0e4m20sf">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_1974p73">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0agv2w5">
           <text>"dueDateNonWorkingCalendar"</text>
@@ -228,8 +269,11 @@
         <inputEntry id="UnaryTests_01h3iyo">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_049fiyo">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_1vk0ats">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0j93xsr">
           <text>"dueDateIntervalDays"</text>
@@ -245,8 +289,11 @@
         <inputEntry id="UnaryTests_0dptf4z">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0d3k44z">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_0fhauae">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1oktc01">
           <text>"priorityDateOriginRef"</text>
@@ -262,8 +309,11 @@
         <inputEntry id="UnaryTests_0n6v4f3">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0wk824f3">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_15uvuii">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_10u6fpl">
           <text>"dueDateNonWorkingDaysOfWeek"</text>
@@ -279,8 +329,11 @@
         <inputEntry id="UnaryTests_0vli1u6">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_0i12srt6">
+          <text></text>
+        </inputEntry>
         <inputEntry id="UnaryTests_17c1gn3">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0qzof0w">
           <text>"dueDateTime"</text>
@@ -289,227 +342,6 @@
           <text>"16:00"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1mz9vju">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_14ngfol">
-        <inputEntry id="UnaryTests_0cpcpfa">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1qovuvp">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0205tlm">
-          <text>"dueDateTime"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1qkg6hw">
-          <text>"16:00"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0zbf9p3">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0ninzxd">
-        <inputEntry id="UnaryTests_12wux7d">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_19lj7jy">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0etzaco">
-          <text>"dueDateNonWorkingDaysOfWeek"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_141ooda">
-          <text>"SATURDAY,SUNDAY"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1euh9zg">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0ke8z6w">
-        <inputEntry id="UnaryTests_01s1zt7">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_02py0av">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1yuid4v">
-          <text>"priorityDateOriginRef"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1oo6fw9">
-          <text>"dueDate"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_04a2mf4">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_10vaol4">
-        <inputEntry id="UnaryTests_0e7rle7">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0z9i6qc">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0thagp5">
-          <text>"dueDateIntervalDays"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0d3ypbt">
-          <text>10</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1lkx4ss">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_113qlec">
-        <inputEntry id="UnaryTests_072tuml">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1up6nvi">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1q96spr">
-          <text>"dueDateNonWorkingCalendar"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_028thi5">
-          <text>"https://www.gov.uk/bank-holidays/england-and-wales.json"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0d5p4f8">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1hkpcis">
-        <inputEntry id="UnaryTests_00i0n1h">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_02hftkx">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1v9sx10">
-          <text>"dueDateOrigin"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1pbatx6">
-          <text>now()</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1nn6604">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0lzs3jk">
-        <inputEntry id="UnaryTests_1uiilh8">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0b64cz9">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0g996dm">
-          <text>"location"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1do53e3">
-          <text>caseData.registryLocation</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_19jwomk">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0e4vjni">
-        <inputEntry id="UnaryTests_1336id5">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0dapsws">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1b1oqvm">
-          <text>"locationName"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1hfai51">
-          <text>caseData.registryLocation</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_15j2aj7">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1xxu643">
-        <inputEntry id="UnaryTests_132qbcw">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1m008k7">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_18ne9wv">
-          <text>"roleCategory"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1mx9pxe">
-          <text>"CTSC"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0fwwl8z">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_13xocef">
-        <inputEntry id="UnaryTests_1lr1gjj">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1tkjfz4">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1kxrdkh">
-          <text>"region"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_04dojmd">
-          <text>"DUMMY_PLACEHOLDER_REGION"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_190frq2">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1ez63l8">
-        <inputEntry id="UnaryTests_0wk6p52">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1y6if7q">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1xaes5r">
-          <text>"caseName"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_093kryi">
-          <text>"DUMMY_PLACEHOLDER_CASE_NAME"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0z0kxgi">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1mofcr7">
-        <inputEntry id="UnaryTests_1f1m3bk">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0vmtg4j">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0fcsn2e">
-          <text>"caseManagementCategory"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1t0uceh">
-          <text>"DUMMY_PLACEHOLDER_CASE_MANAGEMENT_CATEGORY"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1ie96o4">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0ifjwwr">
-        <inputEntry id="UnaryTests_126gbwk">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0mixm6f">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_18qnoun">
-          <text>"workType"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1w09ou4">
-          <text>"decision_making_work"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1cg9o02">
           <text>true</text>
         </outputEntry>
       </rule>
