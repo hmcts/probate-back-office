@@ -1,70 +1,73 @@
 import { CommonConfig, ProjectsConfig } from "@hmcts/playwright-common";
 import { defineConfig, devices } from "@playwright/test";
-const browserName = process.env.BROWSER_NAME || 'default';
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
-/**
- * @see https://playwright.dev/docs/test-configuration
- */
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const envFileName = process.env.TEST_ENV ? `.env.${process.env.TEST_ENV}` : ".env";
+const envFilePath = path.resolve(__dirname, "src/test/PlaywrightTest", envFileName);
+
+dotenv.config({ path: envFilePath, override: true });
+
+console.log(`Loading env file: ${envFilePath}`);
+console.log(`IDAM_API_URL present: ${process.env.IDAM_API_URL ? "yes" : "no"}`);
+console.log(`CW_USER_EMAIL present: ${process.env.CW_USER_EMAIL ? "yes" : "no"}`);
+
+const browserName = process.env.BROWSER_NAME || "default";
+
 export default defineConfig({
-  timeout: 600000,
-  testDir: "./src/test/PlaywrightTest",
-  ...CommonConfig.recommended,
+    timeout: 600000,
+    testDir: "./src/test/PlaywrightTest",
+    ...CommonConfig.recommended,
     expect: {
-        timeout: 30000, // for all expect() assertions
+        timeout: 30000,
     },
-
     reporter: [
-        ['html', { outputFolder: `./functional-output/reports/${browserName}`, open: 'never' }],
-        ['json', { outputFile: './functional-output/results.json' }],
-        ['list'], // Console output
+        ["html", { outputFolder: `./functional-output/reports/${browserName}`, open: "never" }],
+        ["json", { outputFile: "./functional-output/results.json" }],
+        ["list"],
     ],
-
     use: {
-        // Navigation timeout (affects goto, waitForLoadState, etc.)
         navigationTimeout: 60000,
-
-        // Action timeout (affects click, fill, etc.)
         actionTimeout: 20000,
-        // headless: false, // Run with visible browser
-        screenshot: 'only-on-failure',
-        video: 'retain-on-failure',
-        trace: 'on-first-retry',
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
+        trace: "on-first-retry",
     },
-
-  projects: [
-    /*{
-      ...ProjectsConfig.chrome,
-    },*/
-    {
-      ...ProjectsConfig.chromium,
-        outputDir: './test-results/FullFunctionalTests',
-    },
-    {
-      ...ProjectsConfig.edge,
-        outputDir: './test-results/edge',
-        grep: /@edge/,
-    },
-    {
-      ...ProjectsConfig.firefox,
-        outputDir: './test-results/firefox',
-        grep: /@firefox/,
-    },
-    {
-        ...ProjectsConfig.webkit,
-        outputDir: './test-results/webkit',
-        grep: /@webkit/,
-    },
-    {
-        name: 'galaxyS4',
-        outputDir: './test-results/galaxyS4',
-        use: { ...devices['Galaxy S4'] },
-        grep: /@galaxys4/,
-    },
-    {
-        name: 'iPadPro11',
-        outputDir: './test-results/ipadpro11',
-        use: { ...devices['iPad Pro 11'] },
-        grep: /@ipadpro11/,
-    },
-  ],
+    projects: [
+        {
+            ...ProjectsConfig.chromium,
+            outputDir: "./test-results/FullFunctionalTests",
+        },
+        {
+            ...ProjectsConfig.edge,
+            outputDir: "./test-results/edge",
+            grep: /@edge/,
+        },
+        {
+            ...ProjectsConfig.firefox,
+            outputDir: "./test-results/firefox",
+            grep: /@firefox/,
+        },
+        {
+            ...ProjectsConfig.webkit,
+            outputDir: "./test-results/webkit",
+            grep: /@webkit/,
+        },
+        {
+            name: "galaxyS4",
+            outputDir: "./test-results/galaxyS4",
+            use: { ...devices["Galaxy S4"] },
+            grep: /@galaxys4/,
+        },
+        {
+            name: "iPadPro11",
+            outputDir: "./test-results/ipadpro11",
+            use: { ...devices["iPad Pro 11"] },
+            grep: /@ipadpro11/,
+        },
+    ],
 });
