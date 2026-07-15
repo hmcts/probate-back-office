@@ -77,7 +77,7 @@
       </rule>
       <rule id="DecisionRule_1td45el">
         <inputEntry id="UnaryTests_1enpuip">
-          <text>"boStopCaseForCasePrinted", "boEscalateToRegistrar", "boIssueGrantForCaseMatching", "moveToCWEscalation", "boSelectForQA"</text>
+          <text>"boStopCaseForCasePrinted", "boEscalateToRegistrar", "boIssueGrantForCaseMatching", "moveToCWEscalation", "boSelectForQA", "boStopCaseForCaseMatchingForExamining"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_03b69y9">
           <text>"ExamineDigitalCaseAdmonWill"</text>
