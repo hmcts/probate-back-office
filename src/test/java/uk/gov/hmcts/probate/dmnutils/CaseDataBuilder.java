@@ -33,16 +33,15 @@ public class CaseDataBuilder {
 
     public static CaseDataBuilder defaultCase() {
         Map<String,Object> caseData = new HashMap<>();
-        String reference = "2345011612340987";
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
         caseData.put("dueDate", LocalDate.now());
+        String reference = "2345011612340987";
         return new CaseDataBuilder(caseData, reference);
     }
 
     public static CaseDataBuilder defaultWaCase() {
         Map<String,Object> caseData = new HashMap<>();
-        String reference = "2345011612340987";
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
         caseData.put(CASE_TYPE, CASE_TYPE_VALUE);
@@ -51,6 +50,7 @@ public class CaseDataBuilder {
         caseData.put(REGION, "someRegion");
         caseData.put(ROLE_CATEGORY, ROLE_CATEGORY_CTSC);
         caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
+        String reference = "2345011612340987";
         return new CaseDataBuilder(caseData, reference);
     }
 
