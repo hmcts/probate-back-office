@@ -7,5 +7,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "specific-access-legal-ops", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "specific-access-admin", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "specific-access-ctsc", "ReadOnly": "Y", "AccessProfiles": "GS_profile"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "idam:caseworker-ras-validation", "ReadOnly": "N", "AccessProfiles": "caseworker-ras-validation"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "RoleName": "idam:caseworker-ras-validation", "ReadOnly": "N", "AccessProfiles": "caseworker-ras-validation"}
 ]
