@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import static uk.gov.hmcts.probate.model.CaseOrigin.CASEWORKER;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
@@ -23,6 +24,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 public class TemplateService {
 
     private final NotificationTemplates notificationTemplates;
+    private final FeatureToggleService featureToggleService;
 
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
                                 LanguagePreference languagePreference) {
@@ -75,18 +77,18 @@ public class TemplateService {
             case NOC:
                 return emailTemplates.getNoticeOfChangeReceived();
             case CAVEAT_RAISED:
-                return emailTemplates.getCaveatRaised();
+                return getCaveatRaisedTemplateID(emailTemplates);
             case CAVEAT_EXTEND:
                 return emailTemplates.getCaveatExtend();
             case CAVEAT_RAISED_SOLS:
-                return notificationTemplates.getEmail().get(languagePreference).get(applicationType)
-                    .getCaveatRaisedSols();
+                return getCaveatRaisedSolsTemplateID(applicationType, languagePreference);
             case CAVEAT_WITHDRAW:
                 return emailTemplates.getCaveatWithdrawn();
             default:
                 throw new BadRequestException("Unsupported state");
         }
     }
+
 
     private boolean requestInfoByPostForPersonalApplication(String channelChoice,
                                                             ApplicationType applicationType,
@@ -96,6 +98,25 @@ public class TemplateService {
                 && !NO.equalsIgnoreCase(informationNeededByPost))
                 || CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase(channelChoice)
                 || CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase(channelChoice));
+    }
+
+    private String getCaveatRaisedTemplateID(EmailTemplates emailTemplates) {
+        if (featureToggleService.isNewFee2026Enabled()) {
+            return emailTemplates.getCaveatRaised();
+        } else {
+            return emailTemplates.getCaveatRaisedOld();
+        }
+    }
+
+    private String getCaveatRaisedSolsTemplateID(ApplicationType applicationType,
+                                                 LanguagePreference languagePreference) {
+        if (featureToggleService.isNewFee2026Enabled()) {
+            return notificationTemplates.getEmail().get(languagePreference).get(applicationType)
+                    .getCaveatRaisedSols();
+        } else {
+            return notificationTemplates.getEmail().get(languagePreference).get(applicationType)
+                    .getCaveatRaisedSolsOld();
+        }
     }
 
     public String getStopReminderTemplateId(ApplicationType applicationType,

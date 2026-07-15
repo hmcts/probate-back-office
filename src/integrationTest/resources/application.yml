@@ -83,6 +83,7 @@ fee.api:
   applicantType: all
   keyword: NewFee
   newCopiesFeeKeyword: GrantWill
+  newCopiesFee2026Keyword: GrantWillCopiesIndividualApplication
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -265,6 +266,7 @@ notifications:
           grantRaised: "sol-grant-raised-welsh"
           grantRaisedPaperFormBulkScan: "sol-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "sols-caveat-raised-welsh"
+          caveatRaisedSols: "solicitor-caveat-raised-welsh"
           requestInformation: "sols-request-information-welsh"
           redeclarationSot: "sols-redeclaration-sot-welsh"
           grantDelayed: "sols-grantDelayed-welsh"
@@ -584,3 +586,6 @@ automated_notification:
   declaration_not_signed_days: 3
 upload_doc:
   expiry_weeks: 26
+
+supplementary-data:
+  hmctsid: ${SUPPLEMENTARY_DATA_HMCTSID:ABA6}

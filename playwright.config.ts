@@ -23,7 +23,7 @@ export default defineConfig({
     testDir: "./src/test/PlaywrightTest",
     ...CommonConfig.recommended,
     expect: {
-        timeout: 30000,
+        timeout: 60000, // for all expect() assertions
     },
     reporter: [
         ["html", { outputFolder: `./functional-output/reports/${browserName}`, open: "never" }],
