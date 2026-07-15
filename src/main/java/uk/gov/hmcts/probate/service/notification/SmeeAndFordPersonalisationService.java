@@ -14,11 +14,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -62,6 +62,7 @@ public class SmeeAndFordPersonalisationService {
 
     private final FileSystemResourceService fileSystemResourceService;
     private final FeatureToggleService featureToggleService;
+    private final DateFormatterService dateFormatterService;
 
     public Map<String, String> getSmeeAndFordPersonalisation(List<ReturnedCaseDetails> cases, String fromDate,
                                                              String toDate) {
@@ -86,6 +87,7 @@ public class SmeeAndFordPersonalisationService {
     private StringBuilder getSmeeAndFordBuiltData(List<ReturnedCaseDetails> cases) {
         StringBuilder data = new StringBuilder();
         addHeaderRow(data);
+        log.info("gello");
         data.append(NEW_LINE);
 
         for (ReturnedCaseDetails retCase : cases) {
@@ -93,7 +95,8 @@ public class SmeeAndFordPersonalisationService {
             try {
                 data.append(currentCaseData.getRegistryLocation());
                 data.append(DELIMITER);
-                data.append(CONTENT_DATE.format(LocalDate.parse(currentCaseData.getGrantIssuedDate())));
+                data.append(dateFormatterService.formatDateSafely(
+                        currentCaseData.getGrantIssuedDate(), CONTENT_DATE));
                 data.append(DELIMITER);
                 data.append(retCase.getId().toString());
                 data.append(DELIMITER);
@@ -103,7 +106,8 @@ public class SmeeAndFordPersonalisationService {
                 data.append(DELIMITER);
                 data.append(getCaseType(currentCaseData));
                 data.append(DELIMITER);
-                data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfDeath()));
+                data.append(dateFormatterService.formatDateSafely(
+                        currentCaseData.getDeceasedDateOfDeath(), CONTENT_DATE));
                 data.append(DELIMITER);
                 data.append(getFullAddress(currentCaseData.getDeceasedAddress()));
                 data.append(getApplyingExecutorsDetails(currentCaseData.getAdditionalExecutorsApplying()));
@@ -117,7 +121,8 @@ public class SmeeAndFordPersonalisationService {
                         ? currentCaseData.getIhtNetValuePounds() : currentCaseData.getIhtNetValue().toString());
                 data.append(DELIMITER);
                 data.append(getSolicitorDetails(currentCaseData));
-                data.append(CONTENT_DATE.format(currentCaseData.getDeceasedDateOfBirth()));
+                data.append(dateFormatterService.formatDateSafely(
+                        currentCaseData.getDeceasedDateOfBirth(), CONTENT_DATE));
                 data.append(DELIMITER);
                 data.append(hasCodicil(currentCaseData));
                 data.append(DELIMITER);

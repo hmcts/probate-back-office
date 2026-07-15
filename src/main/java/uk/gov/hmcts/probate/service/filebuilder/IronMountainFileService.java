@@ -47,7 +47,7 @@ public class IronMountainFileService extends BaseFileService {
             fileData.add(DATE_FORMAT.format(data.getDeceasedDateOfDeath()));
             fileData.add("");
             fileData.add(DATE_FORMAT.format(data.getDeceasedDateOfBirth()));
-            fileData.add(String.valueOf(ageCalculator(data)));
+            fileData.add(ageCalculator(data));
             addAddress(fileData, deceasedAddress);
             fileData.add(id.toString());
             fileData.add(DATE_FORMAT.format(LocalDate.parse(data.getGrantIssuedDate())));
