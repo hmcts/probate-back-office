@@ -132,8 +132,8 @@
     "sonarqube-scanner": "^4.3.8",
     "supertest": "^7.0.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.59.4",
-    "webdriverio": "^9.27.1",
+    "typescript-eslint": "^8.62.0",
+    "webdriverio": "^9.29.0",
     "when": "^3.7.8",
     "yaml": "^2.9.0"
   },
