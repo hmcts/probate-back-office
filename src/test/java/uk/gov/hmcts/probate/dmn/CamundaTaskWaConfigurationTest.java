@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import uk.gov.hmcts.probate.dmnutils.CaseDataBuilder;
 import uk.gov.hmcts.probate.dmnutils.ConfigurationExpectationBuilder;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,11 +26,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
-    private static final String REQUEST = "classpath:custom-case-data.json";
     private static final String taskId = UUID.randomUUID().toString();
     private static final String roleAssignmentId = UUID.randomUUID().toString();
 
@@ -40,37 +39,29 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_CONFIGURATION_PROBATE;
     }
 
-    static Stream<Arguments> scenarioProvider() throws IOException {
+    static Stream<Arguments> scenarioProvider() {
         return Stream.of(
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "boAmendCaseDetailsForAwaitingDocumentation",
                         ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultWaCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
-                        CaseDataBuilder.defaultCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultCase().isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
@@ -105,11 +96,10 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("taskAttributes", taskAttributes);
         inputVariables.putValue("taskType", taskType);
         inputVariables.putValue("caseData", caseData);
+        inputVariables.putValue("reference", REFERENCE_VALUE);
         inputVariables.putValue("eventId", eventId);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
-
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
-
 }
