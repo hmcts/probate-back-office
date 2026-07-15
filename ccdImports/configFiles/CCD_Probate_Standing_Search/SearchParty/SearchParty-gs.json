@@ -1,0 +1,4 @@
+[
+  {"LiveFrom": "1/1/2022", "CaseTypeID": "StandingSearch", "SearchPartyName": "deceasedForenames,deceasedSurname", "SearchPartyEmailAddress": "", "SearchPartyAddressLine1": "", "SearchPartyPostCode": "", "SearchPartyDOB": "", "SearchPartyDOD": "deceasedDateOfDeath"},
+  {"LiveFrom": "1/1/2022", "CaseTypeID": "StandingSearch", "SearchPartyName": "applicantForenames,applicantSurname", "SearchPartyEmailAddress": "", "SearchPartyAddressLine1": "", "SearchPartyPostCode": "", "SearchPartyDOB": "", "SearchPartyDOD": "deceasedDateOfDeath"}
+]
