@@ -120,7 +120,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text>"admonWill"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1qr5yae">
-          <text></text>
+          <text>false</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0w3g61g">
           <text>"ExamineDigitalCaseAdmon"</text>
@@ -149,7 +149,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text>"intestacy"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vkaray">
-          <text></text>
+          <text>false</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0z8vdkn">
           <text>"ExamineDigitalCaseIntestacy"</text>
@@ -171,7 +171,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
         <inputEntry id="UnaryTests_0a3bnkb">
           <text>"CasePrinted"</text>
         </inputEntry>
-        <inputEntry id="LiteralExpression_1whdf9l">
+        <inputEntry id="UnaryTests_0a3bban">
           <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1qrdf9q">
@@ -190,6 +190,35 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0x0ofpm">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1cl5zsa">
+        <inputEntry id="UnaryTests_0bsqjhx">
+          <text>"attachScannedDocs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q4eyvy">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0w9ojdk">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qlpz9q">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0p2wk7i">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00h6mh5">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xor3z7">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fqjxin">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0aopq82">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
