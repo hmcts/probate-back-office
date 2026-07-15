@@ -5,6 +5,7 @@ export type HelperFixtures = {
   waEnabled: boolean;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export const helperFixtures = base.extend<{}, HelperFixtures>({
   waEnabled: [async ({}, use) => {
     const isEnabled = await WorkAllocation.isWaEnabled();

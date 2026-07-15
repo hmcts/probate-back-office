@@ -73,7 +73,7 @@ export class TasksPage extends BasePage {
     priority: string,
     request: APIRequestContext,
   ) {
-    let dueDate = await this.calculateDueDate(workingDays, request);
+    const dueDate = await this.calculateDueDate(workingDays, request);
     await expect(this.priorityLocator).toHaveText(priority);
     await expect(this.dueDateLocator).toHaveText(dueDate);
     await expect(this.assignedToLocator).toHaveText("Unassigned");

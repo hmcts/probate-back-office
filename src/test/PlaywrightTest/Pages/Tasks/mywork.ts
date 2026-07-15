@@ -21,16 +21,16 @@ export class MyWorkPage extends BasePage {
     request: APIRequestContext
   ) {
     const row = this.topRowTaskLocator;
-    const taskNameValue = await row.locator("xpath=./td[5]").innerText();
-    const dueDateValue = await row.locator("xpath=./td[6]").innerText();
+    const taskNameValue = row.locator("xpath=./td[5]");
+    const dueDateValue = row.locator("xpath=./td[6]");
     const priorityValue = (
       await row.locator("xpath=./td[8]").innerText()
     ).toLocaleLowerCase();
     const manageButton = row.locator("xpath=./td[9]//button");
     const expectedDueDate = await this.calculateDueDate(workingDaysToComplete, request);
 
-    expect(taskNameValue).toEqual(expectedTaskName);
-    expect(dueDateValue).toEqual(expectedDueDate);
+    await expect(taskNameValue).toHaveText(expectedTaskName);
+    await expect(dueDateValue).toHaveText(expectedDueDate);
     expect(priorityValue).toEqual(expectedPriority);
     await expect(manageButton).toBeVisible();
 

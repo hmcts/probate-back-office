@@ -38,7 +38,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     //if waEnabled = true sign in with ctsc admin else use caseworker
     if (waEnabled) {
       // BO Grant of Representation (Personal): Case created -> Grant issued
-      basePage.logInfo(scenarioName, "Login as Ctsc Admin");
+      await basePage.logInfo(scenarioName, "Login as Ctsc Admin");
       await signInPage.authenticateUserWorkAllocation(
         "CTSC Administrator",
         testConfig.CaseProgressSignInDelay,
