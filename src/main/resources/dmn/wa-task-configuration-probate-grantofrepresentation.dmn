@@ -99,7 +99,7 @@
           <text>"workType"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0yrjv8l">
-          <text>"decision_making_work"</text>
+          <text>"applications"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0x0ofpm">
           <text>true</text>
@@ -119,7 +119,7 @@
           <text>"caseManagementCategory"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_09iaklr">
-          <text>"DUMMY_PLACEHOLDER_CASE_MANAGEMENT_CATEGORY"</text>
+          <text>"Probate"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bv2xzf">
           <text>true</text>
@@ -139,7 +139,7 @@
           <text>"caseName"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0d5o0tk">
-          <text>"DUMMY_PLACEHOLDER_CASE_NAME"</text>
+          <text>reference</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15scpg9">
           <text>true</text>
@@ -213,7 +213,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0n4h6rp">
-          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1snulwi">
           <text>"locationName"</text>
@@ -233,7 +233,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_09ep7ys">
-          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0kmzx5s">
           <text>"dueDateOrigin"</text>
@@ -253,7 +253,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1974p73">
-          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0agv2w5">
           <text>"dueDateNonWorkingCalendar"</text>
@@ -273,7 +273,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vk0ats">
-          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0j93xsr">
           <text>"dueDateIntervalDays"</text>
@@ -293,7 +293,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0fhauae">
-          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1oktc01">
           <text>"priorityDateOriginRef"</text>
@@ -333,7 +333,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_17c1gn3">
-          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0qzof0w">
           <text>"dueDateTime"</text>

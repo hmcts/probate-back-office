@@ -24,11 +24,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY
 public class CaseDataBuilder {
 
     Map<String,Object> caseData;
+    String reference;
 
-    private static final MapTypeReference MAP_TYPE = new MapTypeReference();
-
-    private CaseDataBuilder(Map<String,Object> caseData) {
+    private CaseDataBuilder(Map<String,Object> caseData, String reference) {
         this.caseData = caseData;
+        this.reference = reference;
     }
 
     public static CaseDataBuilder defaultCase() {
@@ -36,7 +36,8 @@ public class CaseDataBuilder {
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
         caseData.put("dueDate", LocalDate.now());
-        return new CaseDataBuilder(caseData);
+        String reference = "2345011612340987";
+        return new CaseDataBuilder(caseData, reference);
     }
 
     public static CaseDataBuilder defaultWaCase() {
@@ -49,13 +50,8 @@ public class CaseDataBuilder {
         caseData.put(REGION, "someRegion");
         caseData.put(ROLE_CATEGORY, ROLE_CATEGORY_CTSC);
         caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
-        return new CaseDataBuilder(caseData);
-    }
-
-    public static CaseDataBuilder customCase(final String resourcePath) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
-        Map<String,Object> caseData = objectMapper.readValue(getFile(resourcePath), MAP_TYPE);
-        return new CaseDataBuilder(caseData);
+        String reference = "2345011612340987";
+        return new CaseDataBuilder(caseData, reference);
     }
 
     public Map<String,Object> build() {

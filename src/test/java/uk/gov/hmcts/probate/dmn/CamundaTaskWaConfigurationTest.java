@@ -26,6 +26,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
@@ -129,11 +130,10 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("taskType", taskType);
         inputVariables.putValue("state", state);
         inputVariables.putValue("caseData", caseData);
+        inputVariables.putValue("reference", REFERENCE_VALUE);
         inputVariables.putValue("eventId", eventId);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
-
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
-
 }

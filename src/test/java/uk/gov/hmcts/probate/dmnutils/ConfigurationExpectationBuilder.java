@@ -59,9 +59,9 @@ public class ConfigurationExpectationBuilder {
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }
-        builder.expectedValue(WORK_TYPE, DECISION_WORK_TYPE, true)
-                .expectedValue(CASE_MANAGEMENT_CATEGORY, "DUMMY_PLACEHOLDER_CASE_MANAGEMENT_CATEGORY", true)
-                .expectedValue(CASE_NAME, "DUMMY_PLACEHOLDER_CASE_NAME", true)
+         builder.expectedValue(WORK_TYPE, DECISION_WORK_TYPE_PROBATE, true)
+                .expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
+                .expectedValue(CASE_NAME, REFERENCE_VALUE, true)
                 .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
                 .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
                 .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
