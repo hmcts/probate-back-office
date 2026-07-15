@@ -54,7 +54,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     // FIRST case is only needed for case-matching with SECOND one
     //Using this first case to run WA test
     let nextStepName = "PA1P/PA1A/Solicitors Manual";
-    await basePage.logInfo(scenarioName, nextStepName + " - first case", null);
+    await basePage.logInfo(scenarioName, nextStepName + " - first case", undefined);
     await createCasePage.selectNewCase();
     await createCasePage.selectCaseTypeOptions(
       createCaseConfig.list2_text_gor,
@@ -63,7 +63,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     await basePage.logInfo(
       scenarioName,
       "enterGrantOfProbateManualPage1",
-      null,
+      undefined,
     );
     await createCasePage.enterGrantOfProbateManualPage1(
       "create",
@@ -74,13 +74,13 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     await basePage.logInfo(
       scenarioName,
       "enterGrantOfProbateManualPage2",
-      null,
+      undefined,
     );
     await createCasePage.enterGrantOfProbateManualPage2("create");
     await basePage.logInfo(
       scenarioName,
       "enterGrantOfProbateManualPage3",
-      null,
+      undefined,
     );
     await createCasePage.enterGrantOfProbateManualPage3(
       "create",
@@ -158,7 +158,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     }
 
     let endState;
-    await basePage.logInfo(scenarioName, nextStepName + " - second case", null);
+    await basePage.logInfo(scenarioName, nextStepName + " - second case", undefined);
     await createCasePage.selectNewCase();
     await createCasePage.selectCaseTypeOptions(
       createCaseConfig.list2_text_gor,
@@ -167,7 +167,7 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     await basePage.logInfo(
       scenarioName,
       "enterGrantOfProbateManualPage1",
-      null,
+      undefined,
     );
     await createCasePage.enterGrantOfProbateManualPage1(
       "create",
@@ -178,13 +178,13 @@ test.describe("Caseworker Grant of Representation - Personal application - Grant
     await basePage.logInfo(
       scenarioName,
       "enterGrantOfProbateManualPage2",
-      null,
+      undefined,
     );
     await createCasePage.enterGrantOfProbateManualPage2("create");
     await basePage.logInfo(
       scenarioName,
       "enterGrantOfProbateManualPage3",
-      null,
+      undefined,
     );
     await createCasePage.enterGrantOfProbateManualPage3(
       "create",
