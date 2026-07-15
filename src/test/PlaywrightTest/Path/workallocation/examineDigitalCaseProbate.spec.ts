@@ -21,13 +21,13 @@ test.describe("Work Allocation - Examine Digital Case - Probate Task", () => {
     const unique_deceased_user = Date.now().toString();
 
     // Create Examine Digital Case - Probate task using PA1P/PA1A/Solicitors Manual
-    basePage.logInfo(scenarioName, "Login as Ctsc Admin");
+    await basePage.logInfo(scenarioName, "Login as Ctsc Admin");
     await signInPage.authenticateUserWorkAllocation(
       "CTSC Administrator",
       testConfig.CaseProgressSignInDelay,
     );
 
-    let nextStepName = "Create PA1P/PA1A/Solicitors Manual case";
+    const nextStepName = "Create PA1P/PA1A/Solicitors Manual case";
 
     await basePage.logInfo(scenarioName, nextStepName, null);
     await createCasePage.selectNewCase();
