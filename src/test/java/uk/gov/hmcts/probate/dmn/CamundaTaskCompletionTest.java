@@ -57,6 +57,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         List.of(
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_DIGITAL_CASE_PROBATE
                                 ),
                                 Map.of(
@@ -68,6 +72,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "boEscalateToRegistrar",
                         List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
+                                ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_DIGITAL_CASE_PROBATE
@@ -83,6 +91,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         List.of(
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_DIGITAL_CASE_PROBATE
                                 ),
                                 Map.of(
@@ -94,6 +106,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "moveToCWEscalation",
                         List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
+                                ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_DIGITAL_CASE_PROBATE
