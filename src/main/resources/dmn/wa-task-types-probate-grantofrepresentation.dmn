@@ -57,6 +57,18 @@
           <text>"Examine - De Bonis Non"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0windrush">
+        <description>EWS</description>
+        <inputEntry id="UnaryTests_0windrush">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0windrush_id">
+          <text>"ExamineWindrushScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0windrush_name">
+          <text>"Examine - Windrush Scheme"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
