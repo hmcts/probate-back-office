@@ -17,38 +17,37 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 
 public class CaseDataBuilder {
 
     Map<String,Object> caseData;
-    String reference;
 
-    private CaseDataBuilder(Map<String,Object> caseData, String reference) {
+    private CaseDataBuilder(Map<String,Object> caseData) {
         this.caseData = caseData;
-        this.reference = reference;
     }
 
     public static CaseDataBuilder defaultCase() {
         Map<String,Object> caseData = new HashMap<>();
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
+        caseData.put("id", REFERENCE_VALUE);
         caseData.put("isUrgent", "No");
         caseData.put("dueDate", LocalDate.now());
-        String reference = "2345011612340987";
-        return new CaseDataBuilder(caseData, reference);
+        return new CaseDataBuilder(caseData);
     }
 
     public static CaseDataBuilder defaultWaCase() {
         Map<String,Object> caseData = new HashMap<>();
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
+        caseData.put("id", REFERENCE_VALUE);
         caseData.put(CASE_TYPE, CASE_TYPE_VALUE);
         caseData.put(DECEASED_FORENAMES, DECEASED_FORENAMES_VALUE);
         caseData.put(DECEASED_SURNAME, DECEASED_SURNAME_VALUE);
         caseData.put(REGION, "someRegion");
         caseData.put(ROLE_CATEGORY, ROLE_CATEGORY_CTSC);
         caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
-        String reference = "2345011612340987";
-        return new CaseDataBuilder(caseData, reference);
+        return new CaseDataBuilder(caseData);
     }
 
     public Map<String,Object> build() {
