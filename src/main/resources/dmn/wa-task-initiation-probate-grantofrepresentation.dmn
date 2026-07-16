@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
-      <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
+      <input id="Input_1" label="Event Id" biodi:width="301" camunda:inputVariable="eventId">
         <inputExpression id="InputExpression_1" typeRef="string">
           <text></text>
         </inputExpression>
@@ -108,7 +108,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
       </rule>
       <rule id="DecisionRule_0p8qcwb">
         <inputEntry id="UnaryTests_0r4ctab">
-          <text>"handleEvidence"</text>
+          <text>"createCaseFromBulkScan", "handleEvidence", "attachScannedDocs", "boResolveStop", "resolveCWEscalation", "changeState", "serviceRequestPaymentSuccess", "createCase", "createCasePaymentSuccess", "paymentSuccessApp"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0sywdbi">
           <text>"CasePrinted"</text>
