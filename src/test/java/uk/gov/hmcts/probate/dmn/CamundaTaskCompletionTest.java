@@ -35,7 +35,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
 
     static Stream<Arguments> scenarioProvider() {
 
-        Stream<Arguments> of = Stream.of(
+        return Stream.of(
                 Arguments.of(
                         "boSelectForQA",
                         List.of(
@@ -103,11 +103,19 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
+                        "boEscalateToRegistrar",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
+                                )
+                        )
+                ),
+                Arguments.of(
                         "otherEventId",
                         Collections.emptyList()
                 )
         );
-        return of;
     }
 
     @Test
