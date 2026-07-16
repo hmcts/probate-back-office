@@ -74,6 +74,7 @@ public class TaskAttributeConstants {
     public static final String PROCESS_REINSTATEMENT_DECISION_NOTICE_TASK = "processReinstatementDecisionNotice";
 
     public static final String REFERENCE_VALUE = "2345011612340987";
+    public static final String REGION_VALUE = "London";
     public static final String CASE_TYPE_VALUE = "someCaseType";
     public static final String DECEASED_FORENAMES_VALUE = "someDeceasedForenames";
     public static final String DECEASED_SURNAME_VALUE = "someDeceasedSurname";
