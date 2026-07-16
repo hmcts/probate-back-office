@@ -99,7 +99,7 @@
           <text>"caseName"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0d5o0tk">
-          <text>if(caseData.id != null) then string(caseData.id) else "DUMMY_PLACEHOLDER_CASE_NAME"</text>
+          <text>if(taskAttributes.caseId != null) then taskAttributes.caseId else "DUMMY_PLACEHOLDER_CASE_NAME"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15scpg9">
           <text>true</text>

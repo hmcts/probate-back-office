@@ -17,7 +17,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 
 public class CaseDataBuilder {
 
@@ -30,7 +29,6 @@ public class CaseDataBuilder {
     public static CaseDataBuilder defaultCase() {
         Map<String,Object> caseData = new HashMap<>();
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
-        caseData.put("id", REFERENCE_VALUE);
         caseData.put("isUrgent", "No");
         caseData.put("dueDate", LocalDate.now());
         return new CaseDataBuilder(caseData);
@@ -40,7 +38,6 @@ public class CaseDataBuilder {
         Map<String,Object> caseData = new HashMap<>();
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
-        caseData.put("id", REFERENCE_VALUE);
         caseData.put(CASE_TYPE, CASE_TYPE_VALUE);
         caseData.put(DECEASED_FORENAMES, DECEASED_FORENAMES_VALUE);
         caseData.put(DECEASED_SURNAME, DECEASED_SURNAME_VALUE);
