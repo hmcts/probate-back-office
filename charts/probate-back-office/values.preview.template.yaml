@@ -156,8 +156,8 @@ ccd:
         ELASTIC_SEARCH_SCHEME: http
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
-      devcpuRequests: 500m
-      devcpuLimits: 1000m
+      devcpuRequests: 250m
+      devcpuLimits: 2000m
       devmemoryRequests: 1Gi
       devmemoryLimits: 2Gi
   ccd-user-profile-api:
