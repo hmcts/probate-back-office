@@ -130,7 +130,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("taskType", taskType);
         inputVariables.putValue("state", state);
         inputVariables.putValue("caseData", caseData);
-        inputVariables.putValue("reference", REFERENCE_VALUE);
+        inputVariables.putValue("reference", Long.parseLong(REFERENCE_VALUE));
         inputVariables.putValue("eventId", eventId);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
