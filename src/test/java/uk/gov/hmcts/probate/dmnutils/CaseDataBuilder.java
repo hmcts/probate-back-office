@@ -21,11 +21,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY
 public class CaseDataBuilder {
 
     Map<String,Object> caseData;
-    String reference;
 
-    private CaseDataBuilder(Map<String,Object> caseData, String reference) {
+    private CaseDataBuilder(Map<String,Object> caseData) {
         this.caseData = caseData;
-        this.reference = reference;
     }
 
     public static CaseDataBuilder defaultCase() {
@@ -33,8 +31,7 @@ public class CaseDataBuilder {
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
         caseData.put("dueDate", LocalDate.now());
-        String reference = "2345011612340987";
-        return new CaseDataBuilder(caseData, reference);
+        return new CaseDataBuilder(caseData);
     }
 
     public static CaseDataBuilder defaultWaCase() {
@@ -47,8 +44,7 @@ public class CaseDataBuilder {
         caseData.put(REGION, "someRegion");
         caseData.put(ROLE_CATEGORY, ROLE_CATEGORY_CTSC);
         caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
-        String reference = "2345011612340987";
-        return new CaseDataBuilder(caseData, reference);
+        return new CaseDataBuilder(caseData);
     }
 
     public Map<String,Object> build() {
