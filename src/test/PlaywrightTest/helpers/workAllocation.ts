@@ -18,6 +18,7 @@ export class WorkAllocation {
       "../../../../charts/probate-back-office/values.preview.template.yaml";
 
     //get url from test config
+    //cannot use basePage method here as this function is run before a page is launched
     const envUrl = testConfig.TestBackOfficeUrl.toLowerCase();
 
     //use url to determine which environemnt being used and select right path for chart
