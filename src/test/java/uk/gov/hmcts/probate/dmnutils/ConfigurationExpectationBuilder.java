@@ -6,7 +6,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.*;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_INTERVAL_DAYS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_CALENDAR;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_ORIGIN;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_TIME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MAJOR_PRIORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINOR_PRIORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_CALENDAR_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_TIME_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_INTERVAL_DAYS_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_WORK_TYPE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_WORKING_DAYS_OF_WEEK;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF_VALUE;
+
 
 public class ConfigurationExpectationBuilder {
 
