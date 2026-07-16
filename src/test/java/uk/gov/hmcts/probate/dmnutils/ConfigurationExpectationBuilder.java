@@ -61,7 +61,7 @@ public class ConfigurationExpectationBuilder {
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }
-         builder.expectedValue(WORK_TYPE, DECISION_WORK_TYPE_PROBATE, true)
+        builder.expectedValue(WORK_TYPE, DECISION_WORK_TYPE_PROBATE, true)
                 .expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
                 .expectedValue(CASE_NAME, REFERENCE_VALUE, true)
                 .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
