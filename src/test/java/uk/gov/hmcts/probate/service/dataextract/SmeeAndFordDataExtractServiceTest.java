@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.dataextract;
 
 import com.google.common.collect.ImmutableList;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,14 +15,15 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +31,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 
 class SmeeAndFordDataExtractServiceTest {
 
@@ -48,21 +51,29 @@ class SmeeAndFordDataExtractServiceTest {
     private BlobUpload blobUpload;
     @Mock
     private SmeeAndFordDataExtractStrategy smeeAndFOrdDataExtractStrategy;
+    @Mock
+    private FeatureToggleService featureToggleService;
 
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private CaseData caseData1;
-    private CaseData caseData2;
-    private List<ReturnedCaseDetails> returnedCases;
+    private AutoCloseable mocks;
 
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
+    public void setup() throws Exception {
+        mocks = MockitoAnnotations.openMocks(this);
         smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = false;
-        CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
-            "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
-            "test", LocalDateTime.now()));
+        CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(
+            new ScannedDocument(
+                "1",
+                "test",
+                "other",
+                "will",
+                LocalDateTime.now(),
+                DocumentLink.builder().build(),
+                "test",
+                LocalDateTime.now()
+            )
+        );
         CollectionMember<ScannedDocument> scannedDocumentNullSubType = new CollectionMember<>(new ScannedDocument("1",
             "test", "other", null, LocalDateTime.now(), DocumentLink.builder().build(),
             "test", LocalDateTime.now()));
@@ -70,11 +81,11 @@ class SmeeAndFordDataExtractServiceTest {
         scannedDocuments.add(scannedDocument);
         scannedDocuments.add(scannedDocumentNullSubType);
 
-        caseData1 = CaseData.builder()
+        CaseData caseData1 = CaseData.builder()
             .deceasedSurname("smith")
             .scannedDocuments(scannedDocuments)
             .build();
-        caseData2 = CaseData.builder()
+        CaseData caseData2 = CaseData.builder()
             .deceasedSurname("jones")
             .scannedDocuments(scannedDocuments)
             .build();
@@ -83,23 +94,96 @@ class SmeeAndFordDataExtractServiceTest {
             .add(new ReturnedCaseDetails(caseData2, LAST_MODIFIED, 2L))
             .build();
 
-
         when(caseQueryService.findAllCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
         when(caseQueryService.findCaseStateWithinDateRangeSmeeAndFord(any(), any())).thenReturn(returnedCases);
     }
 
+    @AfterEach
+    public void tearDown() throws Exception {
+        if (mocks != null) {
+            mocks.close();
+        }
+    }
+
     @Test
     void shouldExtractForDate() throws NotificationClientException {
+        when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(false);
+
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
 
-        verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-30"));
+        verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), any(), any());
     }
 
     @Test
     void shouldExtractForDateRange() throws NotificationClientException {
+        when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(false);
+
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
-        verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
+        verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), any(), any());
+    }
+
+    @Test
+    void shouldExtractDataForDateRangeAndGenerateZipFileAndUploadWhenEmailDisabled()
+        throws NotificationClientException, IOException {
+        File tempFile = File.createTempFile(
+            "Probate_Docs_2000-12-30",
+            ".zip"
+        );
+        smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
+        when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(false);
+        when(zipFileService.createTempZipFile("Probate_Docs_2000-12-30")).thenReturn(tempFile);
+
+        smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
+
+        verify(zipFileService, times(1)).createTempZipFile("Probate_Docs_2000-12-30");
+        verify(zipFileService, times(1)).generateAndUploadZipFile(
+            any(),
+            eq(tempFile),
+            eq("2000-12-30"),
+            eq(smeeAndFOrdDataExtractStrategy),
+            any()
+        );
+        verify(notificationService, times(1)).sendSmeeAndFordEmail(
+            any(),
+            any(),
+            any()
+        );
+    }
+
+    @Test
+    void shouldExtractDataForDateRangeAndGenerateZipFileAndUploadWhenEmailEnabled()
+            throws NotificationClientException, IOException {
+        File tempFile = File.createTempFile(
+                "Probate_Docs_2000-12-30",
+                ".zip"
+        );
+        smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
+        when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(true);
+        when(zipFileService.createTempZipFile("Probate_Docs_2000-12-30")).thenReturn(tempFile);
+
+        smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
+
+        verify(zipFileService, times(1)).createTempZipFile("Probate_Docs_2000-12-30");
+        verify(zipFileService, times(1)).generateAndUploadZipFile(
+                any(),
+                eq(tempFile),
+                eq("2000-12-30"),
+                eq(smeeAndFOrdDataExtractStrategy),
+                any()
+        );
+        verify(notificationService, never()).sendSmeeAndFordEmail(
+                any(),
+                any(),
+                any()
+        );
+    }
+
+    @Test
+    void shouldNotSendSmeeAndFordEmailWhenEmailFeatureEnabled() throws NotificationClientException {
+        when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(true);
+        smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
+        verify(notificationService, never()).sendSmeeAndFordEmail(any(), any(), any());
     }
 
     @Test
@@ -112,12 +196,13 @@ class SmeeAndFordDataExtractServiceTest {
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
 
-        verify(notificationService, times(0)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-30"));
+        verify(notificationService, never()).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-30"));
     }
 
     @Test
     void shouldThrowClientExceptionForDateRange() {
         assertThrows(ClientException.class, () -> {
+            when(featureToggleService.isSmeeAndFordEmailNotificationDisabled()).thenReturn(false);
             when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
                     .thenThrow(NotificationClientException.class);
 
@@ -137,6 +222,6 @@ class SmeeAndFordDataExtractServiceTest {
         verify(zipFileService, times(0))
                 .generateAndUploadZipFile(any(), any(), any(), any(), any());
         verify(blobUpload, times(0)).uploadFile(any(), anyString(), anyString());
-        verify(notificationService, times(0)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
+        verify(notificationService, never()).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
     }
 }
