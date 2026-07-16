@@ -35,6 +35,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_INTE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION_VALUE;
 
 
 public class ConfigurationExpectationBuilder {
@@ -64,7 +65,7 @@ public class ConfigurationExpectationBuilder {
         builder.expectedValue(WORK_TYPE, DECISION_WORK_TYPE_PROBATE, true)
                 .expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
                 .expectedValue(CASE_NAME, REFERENCE_VALUE, true)
-                .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
+                .expectedValue(REGION, REGION_VALUE, true)
                 .expectedValue(ROLE_CATEGORY, ROLE_CATEGORY_CTSC, true)
                 .expectedValue(LOCATION, REGISTRY_LOCATION_VALUE, true)
                 .expectedValue(LOCATION_NAME, REGISTRY_LOCATION_VALUE, true)
