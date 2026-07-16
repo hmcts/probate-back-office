@@ -114,5 +114,9 @@
   "10112_Session Management Response Identified_http://probate-back-office-aat.service.core-compute-aat.internal/template/case-details/pa_GET": "IGNORE",
   "10112_Session Management Response Identified_http://probate-back-office-aat.service.core-compute-aat.internal/template/case-details/sol_GET": "IGNORE",
   "10112_Session Management Response Identified_http://probate-back-office-aat.service.core-compute-aat.internal/template/probateManLegacyCase_GET": "IGNORE",
-  "10112_Session Management Response Identified_http://probate-back-office-aat.service.core-compute-aat.internal/template/documents_POST": "IGNORE"
+  "10112_Session Management Response Identified_http://probate-back-office-aat.service.core-compute-aat.internal/template/documents_POST": "IGNORE",
+  "100000_A Client Error response code was returned by the server_http://probate-back-office-aat.service.core-compute-aat.internal/caveat/supplementaryData_POST": "IGNORE",
+  "100000_A Client Error response code was returned by the server_http://probate-back-office-aat.service.core-compute-aat.internal/document/supplementaryData_POST": "IGNORE",
+  "100000_A Client Error response code was returned by the server_http://probate-back-office-aat.service.core-compute-aat.internal/standing-search/supplementaryData_POST": "IGNORE",
+  "10049_Non-Storable Content_http://probate-back-office-aat.service.core-compute-aat.internal/standing-search/supplementaryData_POST": "IGNORE"
 }
