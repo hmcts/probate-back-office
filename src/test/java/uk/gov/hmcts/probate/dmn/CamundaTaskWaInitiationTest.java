@@ -51,59 +51,87 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             "processCategories", "case progression"
         );
 
-        Map<String, Object> additionalData = mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + false + "\",\n"
-                + "  \"caseType\" : \"" + "gop" + "\",\n"
-                + "  \"boHandoffReasonList\" : []\n"
-                + "  }\n"
-                + "}");
+        Map<String, Object> additionalData = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "boHandoffReasonList" : []
+                  }
+                }""");
 
-        Map<String, Object> additionalDataEvidenceHandledTrue = mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + true + "\",\n"
-                + "  \"caseType\" : \"" + "gop" + "\",\n"
-                + "  \"boHandoffReasonList\" : []\n"
-                + "  }\n"
-                + "}");
+        Map<String, Object> additionalDataEvidenceHandledTrue = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "true",
+                  "caseType" : "gop",
+                  "boHandoffReasonList" : []
+                  }
+                }""");
 
-        Map<String, Object> additionalDataCaseTypeOther = mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + false + "\",\n"
-                + "  \"caseType\" : \"" + "other" + "\",\n"
-                + "  \"boHandoffReasonList\" : []\n"
-                + "  }\n"
-                + "}");
+        Map<String, Object> additionalDataCaseTypeOther = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "other",
+                  "boHandoffReasonList" : []
+                  }
+                }""");
 
-        Map<String, Object> additionalDataHandOffListNotEmpty = mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + false + "\",\n"
-                + "  \"caseType\" : \"" + "gop" + "\",\n"
-                + "  \"boHandoffReasonList\" : [1]\n"
-                + "  }\n"
-                + "}");
+        Map<String, Object> additionalDataHandOffListNotEmpty = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "boHandoffReasonList" : [1]
+                  }
+                }""");
 
-        Map<String, Object> additionalDataHandOffListDeBonisNon = mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + false + "\",\n"
-                + "  \"caseType\" : \"" + "gop" + "\",\n"
-                + "  \"caseHandedOffToLegacySite\" : \"" + true + "\",\n"
-                + "  \"boHandoffReasonList\" : [\n"
-                + "    {\n"
-                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
-                + "      \"value\": {\n"
-                + "        \"caseHandoffReason\": \"DeBonisNon\"\n"
-                + "      }\n"
-                + "    },\n"
-                + "    {\n"
-                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
-                + "      \"value\": {\n"
-                + "        \"caseHandoffReason\": \"OtherReason\"\n"
-                + "      }\n"
-                + "    }\n"
-                + "  ]\n"
-                + "  }\n"
-                + "}");
+        Map<String, Object> additionalDataHandOffListDeBonisNon = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "true",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "DeBonisNon"
+                      }
+                    },
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "OtherReason"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListLegacySiteNo = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "false",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "DeBonisNon"
+                      }
+                    },
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "OtherReason"
+                      }
+                    }
+                  ]
+                  }
+                }""");
 
         Map<String, Object> additionalDataHandOffListFiatWill = mapAdditionalData("{\n"
             + "  \"Data\":{\n"
@@ -127,52 +155,47 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             + "  }\n"
             + "}");
 
-        Map<String, Object> additionalDataHandOffListLegacySiteNo = mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + false + "\",\n"
-                + "  \"caseType\" : \"" + "gop" + "\",\n"
-                + "  \"caseHandedOffToLegacySite\" : \"" + false + "\",\n"
-                + "  \"boHandoffReasonList\" : [\n"
-                + "    {\n"
-                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
-                + "      \"value\": {\n"
-                + "        \"caseHandoffReason\": \"DeBonisNon\"\n"
-                + "      }\n"
-                + "    },\n"
-                + "    {\n"
-                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
-                + "      \"value\": {\n"
-                + "        \"caseHandoffReason\": \"OtherReason\"\n"
-                + "      }\n"
-                + "    }\n"
-                + "  ]\n"
-                + "  }\n"
-                + "}");
+        Map<String, Object> additionalDataHandOffListOtherReason = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "true",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "OtherReason"
+                      }
+                    }
+                  ]
+                  }
+                }""");
 
-        Map<String, Object> additionalDataHandOffListOtherReason = mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + false + "\",\n"
-                + "  \"caseType\" : \"" + "gop" + "\",\n"
-                + "  \"caseHandedOffToLegacySite\" : \"" + true + "\",\n"
-                + "  \"boHandoffReasonList\" : [\n"
-                + "    {\n"
-                + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
-                + "      \"value\": {\n"
-                + "        \"caseHandoffReason\": \"OtherReason\"\n"
-                + "      }\n"
-                + "    }\n"
-                + "  ]\n"
-                + "  }\n"
-                + "}");
+        Map<String, Object> additionalDataHandOffListEmpty = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "true",
+                  "boHandoffReasonList" : []
+                  }
+                }""");
 
-        Map<String, Object> additionalDataHandOffListEmpty = mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + false + "\",\n"
-                + "  \"caseType\" : \"" + "gop" + "\",\n"
-                + "  \"caseHandedOffToLegacySite\" : \"" + true + "\",\n"
-                + "  \"boHandoffReasonList\" : []\n"
-                + "  }\n"
-                + "}");
+        Map<String, Object> additionalDataHandOffListMissing = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "true",
+                  }
+                }""");
+
+        Map<String, Object> additionalDataEmpty = mapAdditionalData("""
+                {
+                  "Data":{
+                  }
+                }""");
 
         return Stream.of(
                 Arguments.of(
@@ -254,6 +277,54 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalData,
+                        List.of(examineDigitalCaseProbateTaskAttributes)
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalDataEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalDataCaseTypeOther,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalData,
+                        List.of(examineDigitalCaseProbateTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalDataEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalDataCaseTypeOther,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalDataHandOffListNotEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
                         additionalDataHandOffListDeBonisNon,
@@ -281,6 +352,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "handleEvidence",
                         "BOReadyToIssue",
                         additionalDataHandOffListEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListMissing,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataEmpty,
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -314,6 +403,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListMissing,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalDataEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
                         additionalDataHandOffListDeBonisNon,
@@ -344,6 +451,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListMissing,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         "changeState",
                         "BOReadyToIssue",
                         additionalDataHandOffListDeBonisNon,
@@ -371,6 +496,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "changeState",
                         "BOReadyToIssue",
                         additionalDataHandOffListEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListMissing,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalDataEmpty,
                         Collections.emptyList()
                 )
         );

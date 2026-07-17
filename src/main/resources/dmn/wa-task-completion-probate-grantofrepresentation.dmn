@@ -53,6 +53,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0qrr3lf">
+        <inputEntry id="UnaryTests_13zf7bu">
+          <text>"boEscalateToRegistrar"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1jjr895">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0uaunu4">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_14v68e6">
         <inputEntry id="UnaryTests_1oye7pf">
           <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>

@@ -47,7 +47,4 @@
         <cve>CVE-2026-54399</cve>
         <cve>CVE-2026-54428</cve>
     </suppress>
-    <suppress>
-        <cve>CVE-2026-54291</cve>
-    </suppress>
 </suppressions>
