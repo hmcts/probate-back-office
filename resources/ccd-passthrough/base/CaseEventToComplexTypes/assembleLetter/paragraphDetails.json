@@ -1,55 +1,37 @@
 [ {
-  "LiveFrom" : "01/01/2017",
-  "ID" : "ParagraphDetails",
   "CaseEventID" : "assembleLetter",
   "CaseFieldID" : "paragraphDetails",
   "ListElementCode" : "enableType",
-  "EventElementLabel" : " ",
-  "FieldDisplayOrder" : 1,
-  "DisplayContext" : "READONLY"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ParagraphDetails",
+  "FieldDisplayOrder" : 1
+}, {
   "CaseEventID" : "assembleLetter",
   "CaseFieldID" : "paragraphDetails",
   "ListElementCode" : "label",
-  "EventElementLabel" : " ",
-  "FieldDisplayOrder" : 2,
-  "DisplayContext" : "READONLY"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ParagraphDetails",
+  "FieldDisplayOrder" : 2
+}, {
   "CaseEventID" : "assembleLetter",
   "CaseFieldID" : "paragraphDetails",
   "ListElementCode" : "textValue",
-  "EventElementLabel" : " ",
-  "FieldDisplayOrder" : 3,
-  "DisplayContext" : "MANDATORY"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ParagraphDetails",
+  "FieldDisplayOrder" : 3
+}, {
   "CaseEventID" : "assembleLetter",
   "CaseFieldID" : "paragraphDetails",
   "ListElementCode" : "textAreaValue",
-  "EventElementLabel" : " ",
-  "FieldDisplayOrder" : 4,
-  "DisplayContext" : "OPTIONAL"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ParagraphDetails",
+  "FieldDisplayOrder" : 4
+}, {
   "CaseEventID" : "assembleLetter",
   "CaseFieldID" : "paragraphDetails",
   "ListElementCode" : "dynamicList",
-  "EventElementLabel" : " ",
-  "FieldDisplayOrder" : 5,
-  "DisplayContext" : "MANDATORY"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ParagraphDetails",
+  "FieldDisplayOrder" : 5
+}, {
   "CaseEventID" : "assembleLetter",
   "CaseFieldID" : "paragraphDetails",
   "ListElementCode" : "dateValue",
-  "EventElementLabel" : " ",
-  "FieldDisplayOrder" : 6,
-  "DisplayContext" : "MANDATORY"
+  "ID" : "ParagraphDetails",
+  "FieldDisplayOrder" : 6
 } ]

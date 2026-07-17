@@ -1,25 +1,19 @@
 [ {
-  "LiveFrom" : "01/01/2017",
-  "ID" : "documentUpload",
   "CaseEventID" : "removeDocuments",
   "CaseFieldID" : "boDocumentsUploaded",
   "ListElementCode" : "DocumentType",
-  "FieldDisplayOrder" : 1,
-  "DisplayContext" : "READONLY"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "documentUpload",
+  "FieldDisplayOrder" : 1
+}, {
   "CaseEventID" : "removeDocuments",
   "CaseFieldID" : "boDocumentsUploaded",
   "ListElementCode" : "DocumentLink",
-  "FieldDisplayOrder" : 2,
-  "DisplayContext" : "READONLY"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "documentUpload",
+  "FieldDisplayOrder" : 2
+}, {
   "CaseEventID" : "removeDocuments",
   "CaseFieldID" : "boDocumentsUploaded",
   "ListElementCode" : "Comment",
-  "FieldDisplayOrder" : 3,
-  "DisplayContext" : "READONLY"
+  "ID" : "documentUpload",
+  "FieldDisplayOrder" : 3
 } ]

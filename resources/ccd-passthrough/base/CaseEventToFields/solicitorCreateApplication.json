@@ -1,24 +1,4 @@
 [ {
-  "CaseFieldID" : "solsForenames",
-  "FieldShowCondition" : "solsSolicitorWillSignSOT=\"No\""
-}, {
-  "CaseFieldID" : "solsSurname",
-  "FieldShowCondition" : "solsSolicitorWillSignSOT=\"No\""
-}, {
-  "CaseFieldID" : "applyForProbatePageHint1",
-  "FieldShowCondition" : "solsSolicitorIsExec=\"Yes\""
-}, {
-  "CaseFieldID" : "applyForProbatePageHint2",
-  "FieldShowCondition" : "solsSolicitorIsExec=\"No\" AND solsSolicitorIsApplying=\"Yes\""
-}, {
-  "CaseFieldID" : "solsSolicitorNotApplyingReason",
-  "FieldShowCondition" : "solsSolicitorIsApplying=\"No\" AND solsSolicitorIsExec=\"Yes\"",
-  "RetainHiddenValue" : "y"
-}, {
   "CaseFieldID" : "solsSolicitorAddress",
   "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/sols-create-validate"
-}, {
-  "CaseFieldID" : "applicantOrganisationPolicy",
-  "FieldShowCondition" : "[STATE]=\"NeverShowThisField\"",
-  "RetainHiddenValue" : "y"
 } ]

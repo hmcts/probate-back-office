@@ -1,7 +1,0 @@
-[ {
-  "CaseFieldID" : "caseType",
-  "FieldShowCondition" : "[STATE]=\"NeverShow\""
-}, {
-  "CaseFieldID" : "boHandoffReasonList",
-  "FieldShowCondition" : "[STATE]=\"NeverShow\""
-} ]

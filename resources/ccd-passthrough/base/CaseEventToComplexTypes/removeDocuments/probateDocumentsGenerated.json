@@ -1,33 +1,25 @@
 [ {
-  "LiveFrom" : "01/01/2017",
-  "ID" : "ProbateDocument",
   "CaseEventID" : "removeDocuments",
   "CaseFieldID" : "probateDocumentsGenerated",
   "ListElementCode" : "DocumentType",
-  "FieldDisplayOrder" : 1,
-  "DisplayContext" : "READONLY"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ProbateDocument",
+  "FieldDisplayOrder" : 1
+}, {
   "CaseEventID" : "removeDocuments",
   "CaseFieldID" : "probateDocumentsGenerated",
   "ListElementCode" : "DocumentLink",
-  "FieldDisplayOrder" : 2,
-  "DisplayContext" : "READONLY"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ProbateDocument",
+  "FieldDisplayOrder" : 2
+}, {
   "CaseEventID" : "removeDocuments",
   "CaseFieldID" : "probateDocumentsGenerated",
   "ListElementCode" : "DocumentDateAdded",
-  "FieldDisplayOrder" : 3,
-  "DisplayContext" : "READONLY"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ProbateDocument",
+  "FieldDisplayOrder" : 3
+}, {
   "CaseEventID" : "removeDocuments",
   "CaseFieldID" : "probateDocumentsGenerated",
   "ListElementCode" : "DocumentGeneratedBy",
-  "FieldDisplayOrder" : 4,
-  "DisplayContext" : "READONLY"
+  "ID" : "ProbateDocument",
+  "FieldDisplayOrder" : 4
 } ]

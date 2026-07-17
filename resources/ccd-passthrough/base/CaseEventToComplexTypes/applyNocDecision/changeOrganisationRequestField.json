@@ -1,57 +1,43 @@
 [ {
-  "LiveFrom" : "01/01/2017",
-  "ID" : "ChangeOrganisationRequest",
   "CaseEventID" : "applyNocDecision",
   "CaseFieldID" : "changeOrganisationRequestField",
   "ListElementCode" : "OrganisationToAdd.OrganisationID",
-  "FieldDisplayOrder" : "1",
-  "DisplayContext" : "OPTIONAL"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ChangeOrganisationRequest",
+  "FieldDisplayOrder" : "1"
+}, {
   "CaseEventID" : "applyNocDecision",
   "CaseFieldID" : "changeOrganisationRequestField",
   "ListElementCode" : "OrganisationToAdd.OrganisationName",
-  "FieldDisplayOrder" : "2",
-  "DisplayContext" : "OPTIONAL"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ChangeOrganisationRequest",
+  "FieldDisplayOrder" : "2"
+}, {
   "CaseEventID" : "applyNocDecision",
   "CaseFieldID" : "changeOrganisationRequestField",
   "ListElementCode" : "OrganisationToRemove.OrganisationID",
-  "FieldDisplayOrder" : "3",
-  "DisplayContext" : "OPTIONAL"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ChangeOrganisationRequest",
+  "FieldDisplayOrder" : "3"
+}, {
   "CaseEventID" : "applyNocDecision",
   "CaseFieldID" : "changeOrganisationRequestField",
   "ListElementCode" : "OrganisationToRemove.OrganisationName",
-  "FieldDisplayOrder" : "4",
-  "DisplayContext" : "OPTIONAL"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ChangeOrganisationRequest",
+  "FieldDisplayOrder" : "4"
+}, {
   "CaseEventID" : "applyNocDecision",
   "CaseFieldID" : "changeOrganisationRequestField",
   "ListElementCode" : "CaseRoleId",
-  "FieldDisplayOrder" : "5",
-  "DisplayContext" : "OPTIONAL"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ChangeOrganisationRequest",
+  "FieldDisplayOrder" : "5"
+}, {
   "CaseEventID" : "applyNocDecision",
   "CaseFieldID" : "changeOrganisationRequestField",
   "ListElementCode" : "RequestTimestamp",
-  "FieldDisplayOrder" : "6",
-  "DisplayContext" : "OPTIONAL"
-}, {
-  "LiveFrom" : "01/01/2017",
   "ID" : "ChangeOrganisationRequest",
+  "FieldDisplayOrder" : "6"
+}, {
   "CaseEventID" : "applyNocDecision",
   "CaseFieldID" : "changeOrganisationRequestField",
   "ListElementCode" : "ApprovalStatus",
-  "FieldDisplayOrder" : "7",
-  "DisplayContext" : "OPTIONAL"
+  "ID" : "ChangeOrganisationRequest",
+  "FieldDisplayOrder" : "7"
 } ]
