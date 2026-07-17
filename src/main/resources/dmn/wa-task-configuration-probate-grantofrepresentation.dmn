@@ -82,7 +82,7 @@
           <text>"caseName"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0d5o0tk">
-          <text>if(reference != null) then string(reference) else "probate"</text>
+          <text>taskAttributes.caseId</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15scpg9">
           <text>true</text>
