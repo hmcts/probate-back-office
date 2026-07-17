@@ -100,7 +100,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(2));
+        assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(3));
         assertEquals(16, logic.getRules().size());
     }
