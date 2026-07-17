@@ -317,7 +317,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
             grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataNoDOB);
 
         assertEquals(LocalDateTime.now().format(EXELA_DATE) + "will", response.get(PERSONALISATION_EXELA_NAME));
-        assertEquals(", Jack, Michelson, , 01/05/2019, 1, Cardiff\n",
+        assertEquals(", Jack, Michelson, INVALID DATE, 01/05/2019, 1, Cardiff\n",
             response.get(PERSONALISATION_CASE_DATA));
     }
 
