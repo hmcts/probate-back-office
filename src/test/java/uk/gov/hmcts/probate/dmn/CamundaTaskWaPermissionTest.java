@@ -31,6 +31,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WINDRUSH_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
@@ -79,6 +81,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                     EXAMINE_FIAT_WILL,
                     DUMMY_CASE_DATA,
                     getCtscExaminePermissions(FIAT_WILL_SKILL_CODE)
+                ),
+                Arguments.of(
+                    EXAMINE_WINDRUSH_SCHEME,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissionsWithTeamLeaderAuth(WINDRUSH_SCHEME_SKILL_CODE)
                 )
         );
     }
@@ -105,7 +112,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(8));
+        assertThat(logic.getRules().size(), is(9));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
@@ -150,6 +157,27 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         "autoAssignable", false
                 )
        );
+    }
+
+    private static List<Map<String, Object>> getCtscExaminePermissionsWithTeamLeaderAuth(String skillCode) {
+        return List.of(
+                Map.of(
+                        "name", "ctsc",
+                        "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
+                        "roleCategory", ROLE_CATEGORY_CTSC,
+                        "assignmentPriority", 1,
+                        "autoAssignable", false,
+                        "authorisations", skillCode
+                ),
+                Map.of(
+                        "name", "ctsc-team-leader",
+                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
+                        "roleCategory", ROLE_CATEGORY_CTSC,
+                        "assignmentPriority", 1,
+                        "autoAssignable", false,
+                        "authorisations", skillCode
+                )
+        );
     }
 
 }
