@@ -7,9 +7,9 @@
           <text></text>
         </inputExpression>
       </input>
-      <input id="InputClause_state" label="Case State" camunda:inputVariable="caseState">
+      <input id="InputClause_state" label="Case State" camunda:inputVariable="postEventState">
         <inputExpression id="LiteralExpression_state" typeRef="string">
-          <text>caseData.state</text>
+          <text></text>
         </inputExpression>
       </input>
       <input id="InputClause_00c59gm" label="Task type" biodi:width="405" camunda:inputVariable="taskType">
