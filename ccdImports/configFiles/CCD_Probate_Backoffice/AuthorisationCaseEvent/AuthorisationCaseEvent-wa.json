@@ -11,5 +11,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "resolveCWEscalation", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseFromBulkScan", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForAwaitingDocumentation", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "moveToCWEscalation", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "moveToCWEscalation", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "serviceRequestPaymentSuccess", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentSuccess", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "paymentSuccessApp", "UserRole": "caseworker-wa-task-configuration", "CRUD": "CRUD"}
 ]
