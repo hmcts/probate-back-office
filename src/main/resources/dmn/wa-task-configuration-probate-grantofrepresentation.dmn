@@ -159,7 +159,7 @@
           <text>"region"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1duwa2u">
-          <text>if(taskAttributes.region != null) then taskAttributes.region else "DUMMY_PLACEHOLDER_REGION"</text>
+          <text>"DUMMY_PLACEHOLDER_REGION"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gcz5d0">
           <text>true</text>
