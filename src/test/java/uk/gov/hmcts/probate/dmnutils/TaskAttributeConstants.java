@@ -29,7 +29,7 @@ public class TaskAttributeConstants {
     public static final String CASE_TYPE = "caseType";
 
     public static final String DECISION_WORK_TYPE = "decision_making_work";
-    public static final String DECISION_WORK_TYPE_PROBATE = "applications";
+    public static final String APPLICATIONS_WORK_TYPE_PROBATE = "applications";
     public static final String ROUTINE_WORK_TYPE = "routine_work";
     public static final String HEARING_WORK_TYPE = "hearing_work";
     public static final String PRIORITY_WORK_TYPE = "priority";
