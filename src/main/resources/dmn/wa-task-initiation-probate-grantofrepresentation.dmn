@@ -200,6 +200,40 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_infected_blood_interim_scheme">
+         <inputEntry id="UnaryTests_infected_blood_interim_event">
+           <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+         </inputEntry>
+         <inputEntry id="UnaryTests_infected_blood_interim_state">
+           <text>"BOReadyToIssue"</text>
+         </inputEntry>
+         <inputEntry id="UnaryTests_infected_blood_interim_evidence">
+           <text>false</text>
+         </inputEntry>
+         <inputEntry id="UnaryTests_infected_blood_interim_case_type">            <text></text>
+           </inputEntry>
+         <inputEntry id="UnaryTests_infected_blood_interim_handoff_present">
+           <text>true</text>
+         </inputEntry>
+         <inputEntry id="UnaryTests_infected_blood_interim_handoff_reason">
+           <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "IBIS")</text>
+         </inputEntry>
+         <inputEntry id="UnaryTests_infected_blood_interim_legacy_site">
+           <text>true</text>
+         </inputEntry>
+         <outputEntry id="LiteralExpression_infected_blood_interim_task_id">
+           <text>"ExamineInfectedBloodInterimScheme"</text>
+         </outputEntry>
+         <outputEntry id="LiteralExpression_infected_blood_interim_task_name">
+           <text>"Examine - Infected Blood Interim Scheme"</text>
+         </outputEntry>
+         <outputEntry id="LiteralExpression_infected_blood_interim_delay">
+           <text></text>
+         </outputEntry>
+         <outputEntry id="LiteralExpression_infected_blood_interim_process_category">
+           <text>"case progression"</text>
+         </outputEntry>
+      </rule>
       <rule id="DecisionRule_1ai19yd">
         <inputEntry id="UnaryTests_0vo16wg">
           <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>

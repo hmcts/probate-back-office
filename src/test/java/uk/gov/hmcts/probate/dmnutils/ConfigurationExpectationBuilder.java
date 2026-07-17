@@ -10,6 +10,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
@@ -66,6 +67,7 @@ public class ConfigurationExpectationBuilder {
                 && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
                 || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
                 || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY)
+                || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME)
                 || conditions.get("taskType").equals(EXAMINE_WINDRUSH_SCHEME)
             )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
