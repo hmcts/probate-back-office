@@ -1,7 +1,5 @@
 package uk.gov.hmcts.probate.dmnutils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
