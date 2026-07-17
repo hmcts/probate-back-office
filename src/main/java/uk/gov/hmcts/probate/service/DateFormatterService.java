@@ -64,25 +64,25 @@ public class DateFormatterService {
 
     public String formatDateSafely(String date, DateTimeFormatter dateFormat) {
         if (StringUtils.isBlank(date)) {
-            return "";
+            return "INVALID DATE";
         }
         try {
             return dateFormat.format(LocalDate.parse(date));
         } catch (Exception e) {
             log.warn("Unable to parse date '{}', defaulting to blank", date);
-            return "";
+            return "INVALID DATE";
         }
     }
 
     public String formatDateSafely(LocalDate date,DateTimeFormatter dateFormat) {
         if (date == null) {
-            return "";
+            return "INVALID DATE";
         }
         try {
             return dateFormat.format(date);
         } catch (Exception e) {
             log.warn("Unable to format date '{}', defaulting to blank", date);
-            return "";
+            return "INVALID DATE";
         }
     }
 }

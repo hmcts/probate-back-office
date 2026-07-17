@@ -87,7 +87,6 @@ public class SmeeAndFordPersonalisationService {
     private StringBuilder getSmeeAndFordBuiltData(List<ReturnedCaseDetails> cases) {
         StringBuilder data = new StringBuilder();
         addHeaderRow(data);
-        log.info("gello");
         data.append(NEW_LINE);
 
         for (ReturnedCaseDetails retCase : cases) {

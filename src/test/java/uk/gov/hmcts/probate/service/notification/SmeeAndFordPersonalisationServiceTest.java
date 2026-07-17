@@ -341,7 +341,7 @@ class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
+    void shouldMapAllAttributesWithInvalidDateListed() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
                 "YesWithoutTypeWill", true, true, true,
             false, false, true).build(), LAST_MODIFIED, ID);
@@ -375,7 +375,7 @@ class SmeeAndFordPersonalisationServiceTest {
         cases.add(returnedCaseDetailsSolicitor);
         byte[] actual = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
 
-        assertThat(2648, is(actual.length));
+        assertThat(2672, is(actual.length));
     }
 
     @Test
