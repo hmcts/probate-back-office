@@ -21,6 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
@@ -41,6 +42,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON,
                 "name", "Examine - De Bonis Non",
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineWindrushSchemeTaskAttributes = Map.of(
+                "taskId", EXAMINE_WINDRUSH_SCHEME,
+                "name", "Examine - Windrush Scheme",
                 "processCategories", "case progression"
         );
 
@@ -137,6 +144,46 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                       "id": "df3be732-2172-49da-80fe-cad8586e4928",
                       "value": {
                         "caseHandoffReason": "OtherReason"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListWindrushScheme = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "true",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "WindrushScheme"
+                      }
+                    },
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "OtherReason"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListWindrushSchemeLegacySiteNo = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "false",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "WindrushScheme"
                       }
                     }
                   ]
@@ -515,6 +562,48 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "changeState",
                         "BOReadyToIssue",
                         additionalDataEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushScheme,
+                        List.of(examineWindrushSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushScheme,
+                        List.of(examineWindrushSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushScheme,
+                        List.of(examineWindrushSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushScheme,
+                        List.of(examineWindrushSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListWindrushSchemeLegacySiteNo,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListOtherReason,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListEmpty,
                         Collections.emptyList()
                 )
         );
