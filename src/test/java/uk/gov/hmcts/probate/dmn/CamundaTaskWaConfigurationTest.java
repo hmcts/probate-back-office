@@ -28,7 +28,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION_VALUE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -93,8 +92,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 "taskType", taskType,
                 "roleAssignmentId", roleAssignmentId,
                 "taskId", taskId,
-                "caseId", REFERENCE_VALUE,
-                "region", REGION_VALUE
+                "caseId", REFERENCE_VALUE
         );
         inputVariables.putValue("taskAttributes", taskAttributes);
         inputVariables.putValue("taskType", taskType);
