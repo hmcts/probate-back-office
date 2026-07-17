@@ -48,10 +48,4 @@
         <cve>CVE-2026-54399</cve>
         <cve>CVE-2026-54428</cve>
     </suppress>
-    <suppress until = "2026-10-24">
-        <notes><![CDATA[
-   file name: postgresql-42.7.11.jar
-   ]]></notes>
-        <cve>CVE-2026-54291</cve>
-    </suppress>
 </suppressions>
