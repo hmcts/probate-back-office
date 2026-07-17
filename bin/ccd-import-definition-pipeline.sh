@@ -34,7 +34,7 @@ while true; do
   echo "Uploading ${filename} (${uploadFilename}) - attempt ${attempt}/${max_upload_attempts}"
 
   uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error -X POST \
-    "${ccdDefinitionStoreUrl}/import" \
+    ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/import \
     -H "Authorization: Bearer ${userToken}" \
     -H "ServiceAuthorization: Bearer ${serviceToken}" \
     -F "file=@${filepath};filename=${uploadFilename}")
