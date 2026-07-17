@@ -2,25 +2,5 @@
   "CaseEventID" : "solicitorCreateApplication",
   "CaseFieldID" : "applicantOrganisationPolicy",
   "ListElementCode" : "OrgPolicyCaseAssignedRole",
-  "ID" : "OrganisationPolicy",
-  "DefaultValue" : "[APPLICANTSOLICITOR]",
-  "FieldDisplayOrder" : 1
-}, {
-  "CaseEventID" : "solicitorCreateApplication",
-  "CaseFieldID" : "applicantOrganisationPolicy",
-  "ListElementCode" : "OrgPolicyReference",
-  "ID" : "OrganisationPolicy",
-  "FieldDisplayOrder" : 2
-}, {
-  "CaseEventID" : "solicitorCreateApplication",
-  "CaseFieldID" : "applicantOrganisationPolicy",
-  "ListElementCode" : "Organisation.OrganisationID",
-  "ID" : "OrganisationPolicy",
-  "FieldDisplayOrder" : 3
-}, {
-  "CaseEventID" : "solicitorCreateApplication",
-  "CaseFieldID" : "applicantOrganisationPolicy",
-  "ListElementCode" : "Organisation.OrganisationName",
-  "ID" : "OrganisationPolicy",
-  "FieldDisplayOrder" : 4
+  "DefaultValue" : "[APPLICANTSOLICITOR]"
 } ]
