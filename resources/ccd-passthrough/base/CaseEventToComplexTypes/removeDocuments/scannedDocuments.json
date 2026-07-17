@@ -1,0 +1,65 @@
+[ {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "ScannedDocument",
+  "CaseEventID" : "removeDocuments",
+  "CaseFieldID" : "scannedDocuments",
+  "ListElementCode" : "controlNumber",
+  "FieldDisplayOrder" : 1,
+  "DisplayContext" : "READONLY"
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "ScannedDocument",
+  "CaseEventID" : "removeDocuments",
+  "CaseFieldID" : "scannedDocuments",
+  "ListElementCode" : "fileName",
+  "FieldDisplayOrder" : 2,
+  "DisplayContext" : "READONLY"
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "ScannedDocument",
+  "CaseEventID" : "removeDocuments",
+  "CaseFieldID" : "scannedDocuments",
+  "ListElementCode" : "type",
+  "FieldDisplayOrder" : 3,
+  "DisplayContext" : "READONLY"
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "ScannedDocument",
+  "CaseEventID" : "removeDocuments",
+  "CaseFieldID" : "scannedDocuments",
+  "ListElementCode" : "subtype",
+  "FieldDisplayOrder" : 4,
+  "DisplayContext" : "READONLY"
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "ScannedDocument",
+  "CaseEventID" : "removeDocuments",
+  "CaseFieldID" : "scannedDocuments",
+  "ListElementCode" : "scannedDate",
+  "FieldDisplayOrder" : 5,
+  "DisplayContext" : "READONLY"
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "ScannedDocument",
+  "CaseEventID" : "removeDocuments",
+  "CaseFieldID" : "scannedDocuments",
+  "ListElementCode" : "url",
+  "FieldDisplayOrder" : 6,
+  "DisplayContext" : "READONLY"
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "ScannedDocument",
+  "CaseEventID" : "removeDocuments",
+  "CaseFieldID" : "scannedDocuments",
+  "ListElementCode" : "exceptionRecordReference",
+  "FieldDisplayOrder" : 7,
+  "DisplayContext" : "READONLY"
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "ScannedDocument",
+  "CaseEventID" : "removeDocuments",
+  "CaseFieldID" : "scannedDocuments",
+  "ListElementCode" : "deliveryDate",
+  "FieldDisplayOrder" : 8,
+  "DisplayContext" : "READONLY"
+} ]

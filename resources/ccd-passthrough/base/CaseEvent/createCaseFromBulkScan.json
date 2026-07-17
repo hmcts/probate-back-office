@@ -1,0 +1,6 @@
+[ {
+  "ID" : "createCaseFromBulkScan",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/notify/grant-received",
+  "CallBackURLSubmittedEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/supplementaryData",
+  "RetriesTimeoutURLAboutToSubmitEvent" : "60"
+} ]

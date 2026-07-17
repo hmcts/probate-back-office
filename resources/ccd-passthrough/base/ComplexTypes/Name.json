@@ -1,0 +1,15 @@
+[ {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "Name",
+  "ListElementCode" : "firstNames",
+  "FieldType" : "Text",
+  "ElementLabel" : "firstName(s)",
+  "SecurityClassification" : "Public"
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "Name",
+  "ListElementCode" : "surname",
+  "FieldType" : "Text",
+  "ElementLabel" : "surname",
+  "SecurityClassification" : "Public"
+} ]

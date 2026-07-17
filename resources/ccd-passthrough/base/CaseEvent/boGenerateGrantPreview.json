@@ -1,0 +1,5 @@
+[ {
+  "ID" : "boGenerateGrantPreview",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/generate-grant-draft",
+  "RetriesTimeoutURLAboutToSubmitEvent" : "60"
+} ]

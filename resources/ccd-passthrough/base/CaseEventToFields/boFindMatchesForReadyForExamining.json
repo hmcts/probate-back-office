@@ -1,0 +1,13 @@
+[ {
+  "CaseFieldID" : "issueEarlySwitch",
+  "FieldShowCondition" : "[STATE]=\"NeverShow\""
+}, {
+  "CaseFieldID" : "caseType",
+  "FieldShowCondition" : "[STATE]=\"NeverShow\""
+}, {
+  "CaseFieldID" : "issueEarlyGopORAdmonWill",
+  "FieldShowCondition" : "caseType=\"gop\" OR caseType=\"admonWill\""
+}, {
+  "CaseFieldID" : "issueEarlyIntestacyORAdColligendaBona",
+  "FieldShowCondition" : "caseType=\"intestacy\" OR caseType=\"adColligendaBona\""
+} ]

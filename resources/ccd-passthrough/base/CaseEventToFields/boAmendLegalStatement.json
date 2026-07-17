@@ -1,0 +1,5 @@
+[ {
+  "CaseFieldID" : "amendedLegalStatement",
+  "CaseEventFieldHint" : "Download the legal statement and amend it on your device. You can then upload it as a PDF in the next step.",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/validateAmendLegalStatement"
+} ]

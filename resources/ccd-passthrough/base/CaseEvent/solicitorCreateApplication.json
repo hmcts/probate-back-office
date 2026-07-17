@@ -1,0 +1,5 @@
+[ {
+  "ID" : "solicitorCreateApplication",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/sols-created",
+  "CallBackURLSubmittedEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/sols-access?caseTypeId=GrantOfRepresentation&supplementaryData=true"
+} ]

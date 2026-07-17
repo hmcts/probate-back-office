@@ -1,0 +1,101 @@
+[ {
+  "CaseFieldID" : "deceasedDateOfBirth",
+  "CaseEventFieldLabel" : "What was their date of birth?"
+}, {
+  "CaseFieldID" : "deceasedDateOfDeath",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/default-iht-estate",
+  "CaseEventFieldLabel" : "What was their date of death?"
+}, {
+  "CaseFieldID" : "domicilityCountry",
+  "FieldShowCondition" : "deceasedDomicileInEngWales=\"No\""
+}, {
+  "CaseFieldID" : "deceasedAddress",
+  "CaseEventFieldLabel" : "What was the permanent address of the deceased at the time of their death?"
+}, {
+  "CaseFieldID" : "solsDeceasedAliasNamesList",
+  "FieldShowCondition" : "deceasedAnyOtherNames=\"Yes\""
+}, {
+  "CaseFieldID" : "dateOfDeathAfterEstateSwitch",
+  "FieldShowCondition" : "[STATE]=\"NeverShow\""
+}, {
+  "CaseFieldID" : "ihtFormEstateValuesCompleted",
+  "FieldShowCondition" : "dateOfDeathAfterEstateSwitch=\"Yes\"",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-iht-estate",
+  "CaseEventFieldLabel" : "Did you complete Inheritance Tax (IHT) forms to report the estate’s value?"
+}, {
+  "CaseFieldID" : "ihtFormEstate",
+  "FieldShowCondition" : "dateOfDeathAfterEstateSwitch=\"Yes\" AND ihtFormEstateValuesCompleted=\"Yes\""
+}, {
+  "CaseFieldID" : "labelIhtEstate",
+  "FieldShowCondition" : "dateOfDeathAfterEstateSwitch=\"Yes\" AND ihtFormEstateValuesCompleted=\"No\""
+}, {
+  "CaseFieldID" : "ihtEstateGrossValue",
+  "FieldShowCondition" : "dateOfDeathAfterEstateSwitch=\"Yes\" AND ihtFormEstateValuesCompleted=\"No\""
+}, {
+  "CaseFieldID" : "ihtEstateNetValue",
+  "FieldShowCondition" : "dateOfDeathAfterEstateSwitch=\"Yes\" AND ihtFormEstateValuesCompleted=\"No\""
+}, {
+  "CaseFieldID" : "ihtEstateNetQualifyingValue",
+  "FieldShowCondition" : "dateOfDeathAfterEstateSwitch=\"Yes\" AND ihtFormEstateValuesCompleted=\"No\"",
+  "CaseEventFieldHint" : "If the Net qualifying value is Nil, enter 0"
+}, {
+  "CaseFieldID" : "deceasedHadLateSpouseOrCivilPartner",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-values-page",
+  "CaseEventFieldLabel" : "Did the deceased have a late husband, wife or civil partner?"
+}, {
+  "CaseFieldID" : "ihtUnusedAllowanceClaimed",
+  "FieldShowCondition" : "dateOfDeathAfterEstateSwitch=\"Yes\" AND ihtFormEstateValuesCompleted=\"No\" AND deceasedHadLateSpouseOrCivilPartner=\"Yes\""
+}, {
+  "CaseFieldID" : "ihtFormId",
+  "FieldShowCondition" : "dateOfDeathAfterEstateSwitch=\"No\"",
+  "CaseEventFieldLabel" : "Which Inheritance Tax (IHT) form was completed?"
+}, {
+  "CaseFieldID" : "uniqueProbateCodeId",
+  "FieldShowCondition" : "hmrcLetterId=\"Yes\"",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-unique-code"
+}, {
+  "CaseFieldID" : "iht400Switch",
+  "FieldShowCondition" : "[STATE]=\"NeverShow\""
+}, {
+  "CaseFieldID" : "ihtNetValueSwitch",
+  "FieldShowCondition" : "[STATE]=\"NeverShow\""
+}, {
+  "CaseFieldID" : "valueOfAssetSection2",
+  "FieldShowCondition" : "(dateOfDeathAfterEstateSwitch=\"Yes\" AND ihtFormEstateValuesCompleted=\"Yes\" AND ihtFormEstate=\"IHT400\" AND hmrcLetterId=\"Yes\") OR (dateOfDeathAfterEstateSwitch=\"No\" AND ihtFormId=\"IHT400\" AND hmrcLetterId=\"Yes\")"
+}, {
+  "CaseFieldID" : "valueOfAssetSection1",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-iht-estate"
+}, {
+  "CaseFieldID" : "ihtGrossValue",
+  "CaseEventFieldLabel" : "What is the gross value of assets for probate?"
+}, {
+  "CaseFieldID" : "ihtNetValue",
+  "FieldShowCondition" : "ihtNetValueSwitch=\"Yes\"",
+  "CaseEventFieldLabel" : "What is the net value of the estate for probate?"
+}, {
+  "CaseFieldID" : "ihtFormNetValue",
+  "FieldShowCondition" : "(dateOfDeathAfterEstateSwitch=\"Yes\" AND ihtFormEstateValuesCompleted=\"Yes\" AND ihtFormEstate=\"IHT400\" AND hmrcLetterId=\"Yes\") OR (dateOfDeathAfterEstateSwitch=\"No\" AND ihtFormId=\"IHT400\" AND hmrcLetterId=\"Yes\")",
+  "CaseEventFieldLabel" : "What is the net value for probate?"
+}, {
+  "CaseFieldID" : "iht217",
+  "FieldShowCondition" : "dateOfDeathAfterEstateSwitch=\"No\" AND ihtFormId=\"IHT205\"",
+  "CaseEventFieldLabel" : "Did you complete the IHT217 to claim 100% unused nil-rate band?"
+}, {
+  "CaseFieldID" : "solsWillType",
+  "CaseEventFieldLabel" : "What kind of application are you making?"
+}, {
+  "CaseFieldID" : "noProofEntitlement",
+  "FieldShowCondition" : "willDispose=\"No\""
+}, {
+  "CaseFieldID" : "englishWillNo",
+  "FieldShowCondition" : "englishWill=\"No\""
+}, {
+  "CaseFieldID" : "appointExec",
+  "FieldShowCondition" : "englishWill=\"Yes\""
+}, {
+  "CaseFieldID" : "appointExecByDuties",
+  "FieldShowCondition" : "englishWill=\"No\""
+}, {
+  "CaseFieldID" : "appointExecNo",
+  "FieldShowCondition" : "englishWill=\"Yes\" AND appointExec=\"No\""
+} ]

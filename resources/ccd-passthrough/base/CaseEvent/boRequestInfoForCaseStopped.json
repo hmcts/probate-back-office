@@ -1,0 +1,5 @@
+[ {
+  "ID" : "boRequestInfoForCaseStopped",
+  "CallBackURLAboutToStartEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/notify/request-information-default-values",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/notify/stopped-information-request"
+} ]

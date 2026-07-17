@@ -1,0 +1,38 @@
+[ {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "OrganisationPolicy",
+  "CaseEventID" : "solicitorCreateApplication",
+  "CaseFieldID" : "applicantOrganisationPolicy",
+  "ListElementCode" : "OrgPolicyCaseAssignedRole",
+  "DefaultValue" : "[APPLICANTSOLICITOR]",
+  "FieldDisplayOrder" : 1,
+  "DisplayContext" : "OPTIONAL",
+  "FieldShowCondition" : "name=\"NeverShowThisField\""
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "OrganisationPolicy",
+  "CaseEventID" : "solicitorCreateApplication",
+  "CaseFieldID" : "applicantOrganisationPolicy",
+  "ListElementCode" : "OrgPolicyReference",
+  "FieldDisplayOrder" : 2,
+  "DisplayContext" : "OPTIONAL",
+  "FieldShowCondition" : "name=\"NeverShowThisField\""
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "OrganisationPolicy",
+  "CaseEventID" : "solicitorCreateApplication",
+  "CaseFieldID" : "applicantOrganisationPolicy",
+  "ListElementCode" : "Organisation.OrganisationID",
+  "FieldDisplayOrder" : 3,
+  "DisplayContext" : "OPTIONAL",
+  "FieldShowCondition" : "name=\"NeverShowThisField\""
+}, {
+  "LiveFrom" : "01/01/2017",
+  "ID" : "OrganisationPolicy",
+  "CaseEventID" : "solicitorCreateApplication",
+  "CaseFieldID" : "applicantOrganisationPolicy",
+  "ListElementCode" : "Organisation.OrganisationName",
+  "FieldDisplayOrder" : 4,
+  "DisplayContext" : "OPTIONAL",
+  "FieldShowCondition" : "name=\"NeverShowThisField\""
+} ]

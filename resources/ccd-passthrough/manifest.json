@@ -1,0 +1,1113 @@
+[ {
+  "relativePath" : "UserProfile.json",
+  "primaryKeys" : [ "UserIDAMId" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "FixedLists/WillAvailability.json",
+  "primaryKeys" : [ "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "ComplexTypes/Name.json",
+  "primaryKeys" : [ "ID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "ComplexTypes/Address.json",
+  "primaryKeys" : [ "ID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "ComplexTypes/Person.json",
+  "primaryKeys" : [ "ID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "ComplexTypes/Executor.json",
+  "primaryKeys" : [ "ID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedCaseForExamining/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedCaseForPostGrantIssue/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedCasesForCaseStopped/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedReadyToIssue/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedCaseStopped/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchesForReadyForExamining/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedCasesForCases/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchesNoQA/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchesForRegistrarEscalations/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedReissue/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedCaseForExaminingReissue/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedCaseForCaseStoppedReissue/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedCaseForGrantIssued/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boRequestInfoForCaseStopped/executorsApplyingNotifications.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boRedeclarationComplete/executorsApplyingNotifications.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boNotifyRedeclarationSOT/executorsApplyingNotifications.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/assembleLetter/paragraphDetails.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/assembleLetterForReissue/paragraphDetails.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/levSelectFromMultipleRecords/deathRecords.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/manuallyVerifyDeathRecord/deathRecords.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/solicitorCreateApplication/applicantOrganisationPolicy.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/registrarsDecision/registrarDirectionToAdd.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/removeDocuments/probateDocumentsGenerated.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/removeDocuments/boDocumentsUploaded.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/removeDocuments/scannedDocuments.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/nocRequest/changeOrganisationRequestField.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/applyNocDecision/changeOrganisationRequestField.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedCaseGrantRegistrarEscalation/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/boFindMatchedCasePostGrantRegistrarEscalation/caseMatches.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToComplexTypes/manageCaseTTL/TTL.json",
+  "primaryKeys" : [ "CaseEventID", "CaseFieldID", "ListElementCode" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/handleEvidence.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/applyforGrantPaperApplicationMan.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForAwaitingDocumentation.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/solicitorCreateApplication.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/solicitorUpdateAppSolDtls.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/solicitorUpdateApplication.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/solicitorUpdateProbate.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/solicitorUpdateIntestacy.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/solicitorUpdateAdmon.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/solicitorReviewAndConfirm.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boStopCase.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boStopCaseForCaseMatching.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boStopCaseForCaseMatchingForExamining.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchesNoQA.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetails.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendLegalStatement.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boStopCaseForRegistrarEscalations.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchesForRegistrarEscalations.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchedCaseForExamining.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchedCaseForPostGrantIssue.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchedCasesForCaseStopped.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchedReadyToIssue.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchedCaseStopped.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchesForReadyForExamining.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boIssueGrantForCaseMatching.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForImport.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForCaseCreated.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForReadyForExamination.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForCaseMatchingExamining.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForExamining.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForCaseStopped.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForCaveatPermenant.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForReadyToIssue.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForCaseQA.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForCaseMatchingIssueGrant.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForGrantIssued.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForCaseClosed.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForRegistrarEscalation.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForDormant.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchedCaseForGrantIssued.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boStopCaseForCaseCreated.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boStopCaseForCasePrinted.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boStopCaseForReadyForExamination.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boExamineCaseReissueAmendDetails.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchedReissue.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boStopCaseForGrantReissueExamining.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boStopCaseForGrantReissueMatching.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchedCaseForExaminingReissue.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchedCaseForCaseStoppedReissue.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFindMatchedCasesForCases.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boSendStopEmailForCaseStoppedReissue.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseForCaseStoppedReissue.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boRequestInfoForCaseStopped.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFullCaseAmend.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boFullCaseAmendAwaitRedec.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/assembleLetter.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/assembleLetterForReissue.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/levSelectFromMultipleRecords.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/manuallyVerifyDeathRecord.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/removeDocuments.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsForPostGrantIssue.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/applyForGrant.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/createCaseFromBulkScan.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boImportGrant.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsGrantRegistrarEscalation.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEventToFields/boAmendCaseDetailsPostGrantRegistrarEscalation.json",
+  "primaryKeys" : [ "CaseFieldID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentDocs.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentStop.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentForRegistrarEscalations.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentReadyToIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentQA.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentGrantCreated.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentForExaminingReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentForCaseMatchingReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentForCaseStoppedReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentForCWEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentForPostGrantIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentForGrantIssuedRegistrarEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAddCommentForPostGrantIssuedRegistrarEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/solicitorUpdateAdmon.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetails.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForCaseCreated.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForAwaitingDocumentation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForReadyForExamination.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForCaseMatchingExamining.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForDormant.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForExamining.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForCaseStopped.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForCaveatPermenant.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForReadyToIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForCaseQA.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForCaseMatchingIssueGrant.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForGrantIssued.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForCaseClosed.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForRegistrarEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseForCaseStoppedReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boExamineCaseReissueAmendDetails.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForPostGrantIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsGrantRegistrarEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsPostGrantRegistrarEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendCaseDetailsForImport.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boAmendLegalStatement.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/solicitorCreateApplication.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/applyNocDecision.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/assembleLetter.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/assembleLetterForReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/attachScannedDocs.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/scheduledUpdateGrantAwaitingDocsNotificationSent.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boCancelReissueForExaminingReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boCancelReissueForCaseMatchingReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boCancelReissueForCaseStopped.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/createCase.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/createCasePaymentSuccess.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/createCaseFromBulkScan.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boSendStopEmail.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boSendStopEmailForCaseStoppedReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/changeState.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/changeDob.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/solicitorReviewAndConfirm.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/createApplication.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/createCaseWithoutPayment.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/createDraft.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/solicitorUpdateApplication.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boEscalateToRegistrar.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boGrantIssuedEscalateToRegistrar.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boPostGrantIssuedEscalateToRegistrar.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boExamineCase.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boExamineCaseReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFailQA.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchedCaseForExamining.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchedCaseStopped.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchedCaseForGrantIssued.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchedCaseForExaminingReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchedCaseForCaseStoppedReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchedCaseForPostGrantIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchedCasesForCases.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchesForReadyForExamining.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchedCasesForCaseStopped.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchesForRegistrarEscalations.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchesNoQA.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchedReadyToIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFindMatchedReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFullCaseAmend.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boFullCaseAmendAwaitRedec.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/grantDraftReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boGenerateGrantPreviewForExamining.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boGenerateGrantPreview.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boGenerateGrantPreviewForCaseQA.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boGenerateGrantPreviewDraft.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boGenerateSOT.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boGenerateSOTForAwaitRedec.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/scheduledUpdateGrantDelayNotificationSent.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/solicitorUpdateProbate.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/grantResolved.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/grantStoppedDate.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/handleEvidence.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boHistoryCorrection.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boCorrection.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boImportGrant.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/solicitorUpdateIntestacy.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boIssueGrantForCaseMatching.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/superUserMakeCaseDormant.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/manuallyVerifyDeathRecord.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boMarkAsReadyForExamination.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/nocRequest.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/applyforGrantPaperApplication.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/applyforGrantPaperApplicationMan.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/applyForGrant.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/paymentSuccessApp.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/paymentSuccessCase.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/solicitorPaymentSuccessCase.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boPermenantStop.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boPostGrantIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boPrintCase.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/solicitorUpdateAppSolDtls.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/stopDormantCase.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boRedeclarationComplete.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boRedeclarationSoTForCaseStopped.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/registrarsDecision.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boGrantReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/removeDocuments.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/reprintDocument.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boRequestInfoForCaseStopped.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boResolvePostGrantIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/resolveCWEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boResolveCaveatStop.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boResolveStop.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boResolveStopReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boSelectForQA.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/levSelectFromMultipleRecords.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boNotifyRedeclarationSOT.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/serviceRequestPaymentFailed.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/serviceRequestPaymentSuccess.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/moveToCWEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boStopCaseForCaseMatchingForExamining.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boStopCase.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boStopCaseForRegistrarEscalations.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boStopCaseForCaseMatching.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boStopCaseForCaseCreated.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boStopCaseForCasePrinted.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boStopCaseForReadyForExamination.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boStopCaseForGrantReissueExamining.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boStopCaseForGrantReissueMatching.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/SYSTEM_MAINTENANCE.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/updateApplication.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsAwaitingDoc.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsExamine.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsStop.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForRegistrarEscalations.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForCaseCreated.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForCasePaymentFailed.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForReadyForExamination.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForCaveatPermenant.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForReadyToIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForCaseQa.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForCaseMatchingIssueGrant.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForCaseMatchingExamining.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForGrantIssued.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocsForGrantRegistrarEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocumentsForCaseClosed.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocsForExaminingReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocsForCaseMatchingReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocsForCaseStoppedReissue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocsForPostGrantIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocsForPostGrantRegistrarEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boUploadDocsForSMEReferral.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/uploadDocumentsDormantCase.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boRobotUploadDocuments.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawApplicationForCasePrinted.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawApplicationForReadyForExamination.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawApplicationForExamining.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawApplicationForCaseStopped.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawApplicationForCaveatPermenant.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawApplicationForRegistrarEscalation.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawApplicationForReadyToIssue.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawApplicationForCaseQA.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawApplicationForCaseMatchingIssueGrant.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawApplicationForCaseMatchingExamining.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/boWithdrawForRedeclarationSOT.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/citizenHubResponse.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseEvent/citizenHubResponseDraft.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ ]
+}, {
+  "relativePath" : "CaseField.json",
+  "primaryKeys" : [ "ID" ],
+  "overwriteColumns" : [ "FieldType", "FieldTypeParameter" ]
+} ]

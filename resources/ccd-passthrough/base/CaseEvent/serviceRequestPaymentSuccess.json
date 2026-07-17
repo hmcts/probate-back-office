@@ -1,0 +1,4 @@
+[ {
+  "ID" : "serviceRequestPaymentSuccess",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/payment/update-tasklist"
+} ]

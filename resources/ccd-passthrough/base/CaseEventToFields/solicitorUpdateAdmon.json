@@ -1,0 +1,48 @@
+[ {
+  "CaseFieldID" : "willAccessOriginal",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/sols-validate-will-and-codicil-dates"
+}, {
+  "CaseFieldID" : "willAccessNotarial",
+  "FieldShowCondition" : "willAccessOriginal=\"No\""
+}, {
+  "CaseFieldID" : "willAccessOriginalHintText",
+  "FieldShowCondition" : "willAccessOriginal=\"No\" AND willAccessNotarial=\"No\""
+}, {
+  "CaseFieldID" : "willAccessNotarialYesLabel",
+  "FieldShowCondition" : "willAccessOriginal=\"No\" AND willAccessNotarial=\"Yes\""
+}, {
+  "CaseFieldID" : "codicilAddedDateList",
+  "FieldShowCondition" : "willHasCodicils=\"Yes\""
+}, {
+  "CaseFieldID" : "languagePreferenceWelsh",
+  "CaseEventFieldLabel" : "Do you need a bilingual grant in English and Welsh?"
+}, {
+  "CaseFieldID" : "solsEntitledMinorityInfo",
+  "FieldShowCondition" : "solsEntitledMinority=\"Yes\""
+}, {
+  "CaseFieldID" : "deceasedDomicileInEngWales",
+  "FieldShowCondition" : "[STATE]=\"NeverShow\"",
+  "RetainHiddenValue" : "y"
+}, {
+  "CaseFieldID" : "immovableEstate",
+  "FieldShowCondition" : "deceasedDomicileInEngWales=\"No\""
+}, {
+  "CaseFieldID" : "immovableEstateInfo",
+  "FieldShowCondition" : "immovableEstate=\"No\""
+}, {
+  "CaseFieldID" : "solsDiedOrNotApplyingInfo",
+  "FieldShowCondition" : "solsDiedOrNotApplying=\"No\""
+}, {
+  "CaseFieldID" : "solsResiduaryInfo",
+  "FieldShowCondition" : "solsResiduary=\"No\""
+}, {
+  "CaseFieldID" : "solsResiduaryType",
+  "FieldShowCondition" : "solsResiduary=\"Yes\""
+}, {
+  "CaseFieldID" : "solsLifeInterestInfo",
+  "FieldShowCondition" : "solsLifeInterest=\"Yes\""
+}, {
+  "CaseFieldID" : "furtherEvidenceForApplication",
+  "CaseEventFieldHint" : "Where there is a will, this could include rule 12 (3) clearing, explanation of the plight and condition of the will, information supporting the will’s validity or information on any other documents of a testamentary nature that may exist. You may also wish to provide information to confirm the identity of an executor or beneficiary. You must account for executors not applying here and give details as to why they are not applying.",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-further-evidence"
+} ]

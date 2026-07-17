@@ -1,0 +1,5 @@
+[ {
+  "ID" : "boAmendLegalStatement",
+  "CallBackURLAboutToStartEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/startAmendLegalStatement",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/amendLegalStatement"
+} ]
