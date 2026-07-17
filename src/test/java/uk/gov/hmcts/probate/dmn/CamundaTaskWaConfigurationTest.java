@@ -46,8 +46,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         return Stream.of(
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        STATE_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCaseWithState(STATE_CASE_PRINTED).isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
                                 STATE_CASE_PRINTED
@@ -55,8 +54,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        STATE_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCaseWithState(STATE_CASE_PRINTED).isUrgent().build(),
                         "boAmendCaseDetailsForAwaitingDocumentation",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
                                 STATE_CASE_PRINTED
@@ -64,8 +62,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        STATE_READY_TO_ISSUE,
+                        CaseDataBuilder.defaultWaCaseWithState(STATE_READY_TO_ISSUE).isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
                                 STATE_READY_TO_ISSUE
@@ -73,8 +70,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        STATE_CASE_PRINTED,
+                        CaseDataBuilder.defaultWaCaseWithState(STATE_CASE_PRINTED).isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
                                 STATE_CASE_PRINTED
@@ -82,8 +78,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        STATE_READY_TO_ISSUE,
+                        CaseDataBuilder.defaultWaCaseWithState(STATE_READY_TO_ISSUE).isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
                                 STATE_READY_TO_ISSUE
@@ -92,7 +87,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
                         CaseDataBuilder.defaultCase().isUrgent().build(),
-                        null,
                         "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION,
@@ -106,7 +100,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(3));
+        assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
         assertEquals(16, logic.getRules().size());
     }
@@ -116,7 +110,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     void should_return_correct_configuration_values_for_scenario(
             String taskType,
             Map<String, Object> caseData,
-            String state,
             String eventId,
             List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
@@ -129,7 +122,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         );
         inputVariables.putValue("taskAttributes", taskAttributes);
         inputVariables.putValue("taskType", taskType);
-        inputVariables.putValue("state", state);
         inputVariables.putValue("caseData", caseData);
         inputVariables.putValue("eventId", eventId);
 
