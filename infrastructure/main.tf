@@ -5,8 +5,8 @@ provider "azurerm" {
 provider "azurerm" {
   features {}
   resource_provider_registrations = "none"
-  alias                      = "cft_vnet"
-  subscription_id            = var.aks_subscription_id
+  alias                           = "cft_vnet"
+  subscription_id                 = var.aks_subscription_id
 }
 
 locals {
