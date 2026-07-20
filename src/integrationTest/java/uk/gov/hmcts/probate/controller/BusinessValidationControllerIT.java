@@ -627,7 +627,7 @@ class BusinessValidationControllerIT {
     }
 
     @Test
-    void shouldSuccesfullyGenerateIntestacyDeclaration() throws Exception {
+    void shouldSuccessfullyGenerateIntestacyDeclaration() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
@@ -639,6 +639,8 @@ class BusinessValidationControllerIT {
         caseDataBuilder.applicationSubmittedDate(APPLICATION_SUBMITTED_DATE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        callbackRequest.setCaseDetailsBefore(caseDetails);
+        caseDetails.setState("Intestacy");
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
         Document probateDocument = Document.builder().documentType(DocumentType.LEGAL_STATEMENT_INTESTACY)

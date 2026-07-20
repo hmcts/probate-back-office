@@ -67,6 +67,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -100,6 +102,10 @@ import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW_LABEL;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING_LABEL;
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_GRANDCHILD;
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_PARENT;
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_SIBLING;
+import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_CHILD;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -893,6 +899,9 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
             responseCaseDataBuilder.caseType(caseType);
         }
+        if (GRANT_TYPE_INTESTACY.equalsIgnoreCase(callbackRequest.getCaseDetails().getData().getSolsWillType())) {
+            clearPPOrPAFieldsBasedOnRelationships(responseCaseDataBuilder, callbackRequest);
+        }
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -929,6 +938,16 @@ public class CallbackResponseTransformer {
                 .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformAmendDetails(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
+                        Optional.empty(),false);
+
+        clearPPOrPAFieldsBasedOnRelationships(responseCaseDataBuilder, callbackRequest);
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse clearFieldsBasedOnRelationships(CallbackRequest callbackRequest) {
@@ -1022,6 +1041,119 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder.halfBloodNiecesAndNephewsSurvived(null);
         responseCaseDataBuilder.halfBloodSiblingsOverEighteen(null);
         responseCaseDataBuilder.halfBloodNiecesAndNephewsOverEighteen(null);
+    }
+
+    private static final Map<String, BiConsumer<ResponseCaseDataBuilder<?, ?>, String>> CLEAR_RELATIONSHIP = Map.of(
+            SOLICITOR_GRANDCHILD, CallbackResponseTransformer::clearPPOrPAGrandchildRelatedFields,
+            SOLICITOR_PARENT, CallbackResponseTransformer::clearPPOrPAParentRelatedFields,
+            SOLICITOR_SIBLING, CallbackResponseTransformer::clearPPOrPASiblingRelatedFields,
+            SOLICITOR_CHILD, CallbackResponseTransformer::clearPPOrPAChildRelatedFields,
+            GRAND_CHILD, CallbackResponseTransformer::clearPPOrPAGrandchildRelatedFields,
+            PARENT, CallbackResponseTransformer::clearPPOrPAParentRelatedFields,
+            SIBLING, CallbackResponseTransformer::clearPPOrPASiblingRelatedFields,
+            CHILD, CallbackResponseTransformer::clearPPOrPAChildRelatedFields
+    );
+
+    private void clearPPOrPAFieldsBasedOnRelationships(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+                                                              CallbackRequest callbackRequest) {
+        var caseDataBefore = callbackRequest.getCaseDetailsBefore().getData();
+        var caseDataAfter = callbackRequest.getCaseDetails().getData();
+        ApplicationType applicationType = caseDataAfter.getApplicationType();
+        String relationshipBefore = SOLICITOR.equals(applicationType)
+                ? caseDataBefore.getSolsApplicantRelationshipToDeceased()
+                : caseDataBefore.getPrimaryApplicantRelationshipToDeceased();
+        String relationshipAfter = SOLICITOR.equals(applicationType)
+                ? caseDataAfter.getSolsApplicantRelationshipToDeceased()
+                : caseDataAfter.getPrimaryApplicantRelationshipToDeceased();
+
+        if (notEqual(relationshipBefore, relationshipAfter)) {
+            CLEAR_RELATIONSHIP.getOrDefault(relationshipBefore,
+                            (b,a) -> { })
+                    .accept(responseCaseDataBuilder, relationshipAfter);
+        }
+        if (notEqual(caseDataBefore.getApplicantSameParentsAsDeceased(),
+                caseDataAfter.getApplicantSameParentsAsDeceased())) {
+            if (HALF_SIBLING.equalsIgnoreCase(caseDataBefore.getApplicantSameParentsAsDeceased())) {
+                responseCaseDataBuilder.anyLivingWholeBloodSiblings(null);
+            }
+        }
+        if (notEqual(caseDataBefore.getPrimaryApplicantAdoptedIn(), caseDataAfter.getPrimaryApplicantAdoptedIn())) {
+            if (YES.equalsIgnoreCase(caseDataBefore.getPrimaryApplicantAdoptedIn())) {
+                responseCaseDataBuilder.primaryApplicantAdoptionInEnglandOrWales(null);
+            } else {
+                responseCaseDataBuilder.primaryApplicantAdoptedOut(null);
+            }
+        }
+
+        if (notEqual(caseDataBefore.getPrimaryApplicantParentAdoptedIn(),
+                caseDataAfter.getPrimaryApplicantParentAdoptedIn())) {
+            if (YES.equalsIgnoreCase(caseDataBefore.getPrimaryApplicantParentAdoptedIn())) {
+                responseCaseDataBuilder.primaryApplicantParentAdoptionInEnglandOrWales(null);
+            } else {
+                responseCaseDataBuilder.primaryApplicantParentAdoptedOut(null);
+            }
+        }
+
+        if (notEqual(caseDataBefore.getDeceasedAdoptedIn(), caseDataAfter.getDeceasedAdoptedIn())) {
+            if (YES.equalsIgnoreCase(caseDataBefore.getDeceasedAdoptedIn())) {
+                responseCaseDataBuilder.deceasedAdoptionInEnglandOrWales(null);
+            } else {
+                responseCaseDataBuilder.deceasedAdoptedOut(null);
+            }
+        }
+    }
+
+    private static boolean notEqual(String before, String after) {
+        return null != before && !before.equalsIgnoreCase(after);
+    }
+
+    private static void clearPPOrPAChildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+                                                  String relationshipAfter) {
+        if (SOLICITOR_PARENT.equalsIgnoreCase(relationshipAfter)) {
+            responseCaseDataBuilder.primaryApplicantAdoptedIn(null)
+                    .primaryApplicantAdoptedOut(null)
+                    .primaryApplicantAdoptionInEnglandOrWales(null);
+        }
+    }
+
+    private static void clearPPOrPAParentRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+                                                   String relationshipAfter) {
+        if (!SOLICITOR_SIBLING.equalsIgnoreCase(relationshipAfter)) {
+            responseCaseDataBuilder.deceasedAnyLivingDescendants(null)
+                    .deceasedAdoptedIn(null)
+                    .deceasedAdoptionInEnglandOrWales(null)
+                    .deceasedAdoptedOut(null);
+        }
+    }
+
+    private static void clearPPOrPASiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+                                                    String relationshipAfter) {
+        if (!SOLICITOR_PARENT.equalsIgnoreCase(relationshipAfter)) {
+            responseCaseDataBuilder.deceasedAnyLivingDescendants(null)
+                    .deceasedAdoptedIn(null)
+                    .deceasedAdoptionInEnglandOrWales(null)
+                    .deceasedAdoptedOut(null);
+        } else {
+            responseCaseDataBuilder.primaryApplicantAdoptedIn(null)
+                    .primaryApplicantAdoptedOut(null)
+                    .primaryApplicantAdoptionInEnglandOrWales(null);
+        }
+        responseCaseDataBuilder.deceasedAnyLivingParents(null);
+        responseCaseDataBuilder.applicantSameParentsAsDeceased(null);
+        responseCaseDataBuilder.anyLivingWholeBloodSiblings(null);
+    }
+
+    private static void clearPPOrPAGrandchildRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder,
+                                                       String relationshipAfter) {
+        if (SOLICITOR_PARENT.equalsIgnoreCase(relationshipAfter)) {
+            responseCaseDataBuilder.primaryApplicantAdoptedIn(null)
+                    .primaryApplicantAdoptedOut(null)
+                    .primaryApplicantAdoptionInEnglandOrWales(null);
+        }
+        responseCaseDataBuilder.isApplicantParentDeceasedChild(null)
+                .primaryApplicantParentAdoptedIn(null)
+                .primaryApplicantParentAdoptedOut(null)
+                .primaryApplicantParentAdoptionInEnglandOrWales(null);
     }
 
     public CallbackResponse transformCaseForAttachScannedDocs(CallbackRequest callbackRequest, Document document,
