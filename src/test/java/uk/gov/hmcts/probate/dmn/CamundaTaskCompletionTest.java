@@ -64,19 +64,6 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
-                        "boIssueGrantForCaseMatching",
-                        List.of(
-                                Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DE_BONIS_NON
-                                ),
-                                Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_FIAT_WILL
-                                )
-                        )
-                ),
-                Arguments.of(
                         "moveToCWEscalation",
                         List.of(
                                 Map.of(
@@ -133,6 +120,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_DE_BONIS_NON
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_FIAT_WILL
                                 )
                         )
                 ),
@@ -149,7 +140,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(8));
+        assertThat(logic.getRules().size(), is(9));
     }
 
     @ParameterizedTest(name = "event id: {0}")
