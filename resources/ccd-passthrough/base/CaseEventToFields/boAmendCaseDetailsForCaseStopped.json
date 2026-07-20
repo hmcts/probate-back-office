@@ -1,0 +1,16 @@
+[ {
+  "CaseFieldID" : "dateOfDeathType",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/default-iht-estate"
+}, {
+  "CaseFieldID" : "ihtFormEstateValuesCompleted",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-iht-estate"
+}, {
+  "CaseFieldID" : "labelIhtProbate",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-iht-estate"
+}, {
+  "CaseFieldID" : "solsSolicitorAddress",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/sols-create-validate"
+}, {
+  "CaseFieldID" : "willExists",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/sols-validate-will-and-codicil-dates"
+} ]

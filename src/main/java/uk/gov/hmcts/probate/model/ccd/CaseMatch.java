@@ -5,22 +5,37 @@ import lombok.Data;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 
 import java.io.Serializable;
+import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.type.FieldType;
 
 @Data
 @Builder
 public class CaseMatch implements Serializable {
+    @CCD(label = "Id", showCondition = "legacyCaseViewUrl=\"NeverShowThisField\"")
     private final String id;
+    @CCD(label = "ProbateMan Id")
     private final String recordId;
+    @CCD(label = "Full name")
     private final String fullName;
+    @CCD(label = "Aliases")
     private final String aliases;
+    @CCD(label = "Date of birth")
     private final String dob;
+    @CCD(label = "Date of death")
     private final String dod;
+    @CCD(label = "Postcode")
     private final String postcode;
+    @CCD(label = "Is match valid?", typeOverride = FieldType.YesOrNo)
     private final String valid;
+    @CCD(label = "Comment")
     private final String comment;
+    @CCD(label = "Type")
     private final String type;
+    @CCD(label = "Reference")
     private CaseLink caseLink;
+    @CCD(label = "Case Url")
     private final String legacyCaseViewUrl;
+    @CCD(label = "Do import?", typeOverride = FieldType.YesOrNo)
     private final String doImport;
 
     public boolean equals(final Object o) {
@@ -82,4 +97,9 @@ public class CaseMatch implements Serializable {
         }
         return otherCaseLink.getCaseReference();
     }
+
+  // ==== ccd-definition-converter: synthesised definition-only fields (retrofit) ====
+  @CCD(label = "CCD Case No", showCondition = "legacyCaseViewUrl=\"NeverShowThisField\"")
+  private String ccdCaseId;
+  // ==== end synthesised definition-only fields ====
 }

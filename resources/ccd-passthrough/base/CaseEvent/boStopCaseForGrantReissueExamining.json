@@ -1,0 +1,4 @@
+[ {
+  "ID" : "boStopCaseForGrantReissueExamining",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/case-stopped"
+} ]

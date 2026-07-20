@@ -1,0 +1,7 @@
+[ {
+  "CaseFieldID" : "willAccessOriginal",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/sols-validate-will-and-codicil-dates"
+}, {
+  "CaseFieldID" : "furtherEvidenceForApplication",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-further-evidence"
+} ]

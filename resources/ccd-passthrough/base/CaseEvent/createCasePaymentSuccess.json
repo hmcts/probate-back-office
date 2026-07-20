@@ -1,0 +1,5 @@
+[ {
+  "ID" : "createCasePaymentSuccess",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/pa-create",
+  "CallBackURLSubmittedEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/lifeevent/update"
+} ]

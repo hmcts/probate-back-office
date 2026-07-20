@@ -1,0 +1,10 @@
+[ {
+  "CaseFieldID" : "useAssembleLetterEvent",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/use-assemble-letter-event"
+}, {
+  "CaseFieldID" : "useCaveatNotificationEvent",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/use-caveat-notification-event"
+}, {
+  "CaseFieldID" : "boStopDetailsDeclarationParagraph",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/notify/information-request-email-preview"
+} ]

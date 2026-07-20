@@ -1,0 +1,6 @@
+[ {
+  "ID" : "boIssueGrantForCaseMatching",
+  "CallBackURLAboutToStartEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/checkCaseMatches",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/generate-grant",
+  "RetriesTimeoutURLAboutToSubmitEvent" : "60"
+} ]

@@ -1,0 +1,10 @@
+[ {
+  "CaseFieldID" : "letterType",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/assembleLetter"
+}, {
+  "CaseFieldID" : "categories",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/assembleLetter"
+}, {
+  "CaseFieldID" : "includeStatementOfTruth",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/previewLetter"
+} ]

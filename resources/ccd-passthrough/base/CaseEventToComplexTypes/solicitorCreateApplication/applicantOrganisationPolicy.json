@@ -1,0 +1,6 @@
+[ {
+  "CaseEventID" : "solicitorCreateApplication",
+  "CaseFieldID" : "applicantOrganisationPolicy",
+  "ListElementCode" : "OrgPolicyCaseAssignedRole",
+  "DefaultValue" : "[APPLICANTSOLICITOR]"
+} ]

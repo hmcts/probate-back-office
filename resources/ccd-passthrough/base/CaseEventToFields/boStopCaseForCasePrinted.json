@@ -1,0 +1,4 @@
+[ {
+  "CaseFieldID" : "boCaseStopReasonList",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-stop-reason"
+} ]

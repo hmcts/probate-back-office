@@ -1,0 +1,4 @@
+[ {
+  "ID" : "boCorrection",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/migration/grant_of_representation/rollback"
+} ]

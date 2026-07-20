@@ -1,0 +1,5 @@
+[ {
+  "ID" : "boImportGrant",
+  "CallBackURLAboutToSubmitEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/setLastModifiedDate",
+  "CallBackURLSubmittedEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/supplementaryData"
+} ]

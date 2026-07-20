@@ -1,0 +1,13 @@
+[ {
+  "CaseFieldID" : "solsSolicitorAddress",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/cw-create-validate-default-iht-estate"
+}, {
+  "CaseFieldID" : "ihtFormEstateValuesCompleted",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-iht-estate"
+}, {
+  "CaseFieldID" : "uniqueProbateCodeId",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-unique-code"
+}, {
+  "CaseFieldID" : "labelIhtProbate",
+  "CallBackURLMidEvent" : "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validate-iht-estate"
+} ]
