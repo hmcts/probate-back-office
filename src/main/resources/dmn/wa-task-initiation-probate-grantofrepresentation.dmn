@@ -375,6 +375,41 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_123s9ow">
+        <inputEntry id="UnaryTests_090oxrg">
+          <text>"changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03k3qka">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j6o37h">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e4idel">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04krt3p">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04krt3a">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04krt3b">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18wvaz7">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14mga0u">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15553xd">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0admzct">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
