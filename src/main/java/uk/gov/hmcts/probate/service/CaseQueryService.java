@@ -34,6 +34,7 @@ import java.util.List;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Service
@@ -58,10 +59,6 @@ public class CaseQueryService {
         "data.grantAwaitingDocumentatioNotificationSent";
     private static final String KEY_EVIDENCE_HANDLED = "data.evidenceHandled";
     private static final String KEY_PAPER_FORM = "data.paperForm";
-    private static final String GRANT_RANGE_QUERY_EXELA = "templates/elasticsearch/caseMatching/"
-        + "grants_issued_date_range_query_exela.json";
-    private static final String GRANT_RANGE_QUERY_HMRC = "templates/elasticsearch/caseMatching/"
-        + "grants_issued_date_range_query_hmrc.json";
     private static final String GRANT_RANGE_QUERY_SMEEFORD = "templates/elasticsearch/caseMatching/"
         + "grants_issued_date_range_query_smeeford.json";
     private static final String DORMANT_QUERY = "templates/elasticsearch/caseMatching/"
@@ -85,25 +82,29 @@ public class CaseQueryService {
         return result;
     }
 
-    public List<ReturnedCaseDetails> findGrantIssuedCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
+    public List<ReturnedCaseDetails> findCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
         BoolQueryBuilder query = boolQuery();
-        BoolQueryBuilder stateChecks = boolQuery();
-
-        for (String stateToMatch : Arrays.asList(STATE_MATCH)) {
-            stateChecks.should(new MatchQueryBuilder(STATE, stateToMatch));
-        }
-        stateChecks.minimumShouldMatch(1);
-
-        query.must(stateChecks);
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(0)
                 .sort(SORT_COLUMN)
                 .toString();
-
         return runQueryWithPagination(invokedFrom + " findGrantIssuedCasesWithGrantIssuedDate", jsonQuery,
                 queryDate, queryDate);
+    }
+
+    public List<ReturnedCaseDetails> findCasesWithGrantIssuedDateRange(String invokedFrom,
+                                                                       String fromDate, String toDate) {
+        BoolQueryBuilder query = boolQuery();
+        query.must(rangeQuery(GRANT_ISSUED_DATE).gte(fromDate).lte(toDate));
+        String jsonQuery = new SearchSourceBuilder().query(query)
+                .size(dataExtractPaginationSize)
+                .from(0)
+                .sort(SORT_COLUMN)
+                .toString();
+        return runQueryWithPagination(invokedFrom + " findGrantIssuedCasesWithGrantIssuedDateRange", jsonQuery,
+                fromDate, toDate);
     }
 
     public List<ReturnedCaseDetails> findAllCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
@@ -128,14 +129,6 @@ public class CaseQueryService {
         return findCaseStateWithinDateRange("ReactivateDormant", REACTIVATE_DORMANT_QUERY, date, date);
     }
 
-    public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
-        return findCaseStateWithinDateRange("Exela", GRANT_RANGE_QUERY_EXELA, startDate, endDate);
-    }
-
-    public List<ReturnedCaseDetails> findCaseStateWithinDateRangeHMRC(String startDate, String endDate) {
-        return findCaseStateWithinDateRange("HMRC", GRANT_RANGE_QUERY_HMRC, startDate, endDate);
-    }
-
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeSmeeAndFord(String startDate, String endDate) {
         return findCaseStateWithinDateRange("SMEEFORD", GRANT_RANGE_QUERY_SMEEFORD, startDate, endDate);
     }
@@ -147,7 +140,6 @@ public class CaseQueryService {
                 .replace(":size", "" + dataExtractPaginationSize)
                 .replace(":fromDate", startDate)
                 .replace(":toDate", endDate);
-
         return runQueryWithPagination(qryFrom + " findCaseStateWithinDateRange", jsonQuery, startDate, endDate);
     }
 
