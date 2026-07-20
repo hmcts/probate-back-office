@@ -32,8 +32,8 @@ def secrets = [
     secret('prof-user-sac-username', 'PROF_USER_SAC'),
     secret('prof-user-sac-password', 'PROF_USER_PASSWORD_SAC'),
     secret('prof-user-noc-username', 'PROF_USER_NOC'),
-    secret('prof-user-noc-password', 'PROF_USER_PASSWORD_NOC')
-    secret('wa-ctsc-admin-user-email', 'WA_CTSC_ADMIN_USER_EMAIL')
+    secret('prof-user-noc-password', 'PROF_USER_PASSWORD_NOC'),
+    secret('wa-ctsc-admin-user-email', 'WA_CTSC_ADMIN_USER_EMAIL'),
     secret('wa-ctsc-admin-password', 'WA_CTSC_ADMIN_USER_PASSWORD')
   ]
 ]
