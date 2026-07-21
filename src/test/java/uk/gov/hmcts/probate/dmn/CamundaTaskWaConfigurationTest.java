@@ -47,25 +47,29 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase(CASE_PRINTED_STATE).isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(CASE_PRINTED_STATE).build()
+                        ConfigurationExpectationBuilder
+                                .examineDigitalCaseExpectationsForState(CASE_PRINTED_STATE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase(CASE_PRINTED_STATE).isUrgent().build(),
                         "boAmendCaseDetailsForAwaitingDocumentation",
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(CASE_PRINTED_STATE).build()
+                        ConfigurationExpectationBuilder
+                                .examineDigitalCaseExpectationsForState(CASE_PRINTED_STATE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         CaseDataBuilder.defaultWaCase(CASE_PRINTED_STATE).isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(CASE_PRINTED_STATE).build()
+                        ConfigurationExpectationBuilder
+                                .examineDigitalCaseExpectationsForState(CASE_PRINTED_STATE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         CaseDataBuilder.defaultWaCase(READY_TO_ISSUE_STATE).isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(READY_TO_ISSUE_STATE).build()
+                        ConfigurationExpectationBuilder
+                                .examineDigitalCaseExpectationsForState(READY_TO_ISSUE_STATE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
