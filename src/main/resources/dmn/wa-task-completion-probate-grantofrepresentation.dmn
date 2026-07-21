@@ -75,6 +75,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_04roixe">
+        <inputEntry id="UnaryTests_0wec4ul">
+          <text>"boIssueGrantForCaseMatching"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_16wjeot">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02lkhcd">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
