@@ -1,14 +1,11 @@
 package uk.gov.hmcts.probate.dmnutils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.util.ResourceUtils.getFile;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_TYPE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_FORENAMES;
@@ -25,8 +22,6 @@ public class CaseDataBuilder {
 
     Map<String,Object> caseData;
 
-    private static final MapTypeReference MAP_TYPE = new MapTypeReference();
-
     private CaseDataBuilder(Map<String,Object> caseData) {
         this.caseData = caseData;
     }
@@ -39,7 +34,7 @@ public class CaseDataBuilder {
         return new CaseDataBuilder(caseData);
     }
 
-    public static CaseDataBuilder defaultWaCase() {
+    public static CaseDataBuilder defaultWaCase(String state) {
         Map<String,Object> caseData = new HashMap<>();
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
@@ -49,12 +44,7 @@ public class CaseDataBuilder {
         caseData.put(REGION, "someRegion");
         caseData.put(ROLE_CATEGORY, ROLE_CATEGORY_CTSC);
         caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
-        return new CaseDataBuilder(caseData);
-    }
-
-    public static CaseDataBuilder customCase(final String resourcePath) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
-        Map<String,Object> caseData = objectMapper.readValue(getFile(resourcePath), MAP_TYPE);
+        caseData.put("state", state);
         return new CaseDataBuilder(caseData);
     }
 

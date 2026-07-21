@@ -44,11 +44,11 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
+                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
                                 )
                         )
                 ),
@@ -110,6 +110,15 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_DIGITAL_CASE_ADMON
                                 ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
+                        List.of(
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_DIGITAL_CASE_PROBATE

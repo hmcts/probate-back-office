@@ -73,7 +73,7 @@ class IronMountainDataExtractServiceTest {
     void shouldExtractFoundCases() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
-        when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
 
         ironMountainDataExtractService.performIronMountainExtractForDate("2000-12-31");
 
@@ -86,7 +86,7 @@ class IronMountainDataExtractServiceTest {
     void shouldExtractWhenNoCasesFound() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
-        when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
 
         ironMountainDataExtractService.performIronMountainExtractForDate("2000-12-31");
 
@@ -100,7 +100,7 @@ class IronMountainDataExtractServiceTest {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
                     ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
-            when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+            when(caseQueryService.findCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
             when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
 
             ironMountainDataExtractService.performIronMountainExtractForDate("2000-12-31");
