@@ -48,7 +48,7 @@
           <text>"description"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0lu2r45">
-          <text>if(caseData.state = "CasePrinted") then
+          <text>if(caseData.additionalData.Data.state = "CasePrinted") then
           "[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetails) [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching) [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar) [Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA) [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation) [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)"
           else
           "[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetails) [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching) [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar) [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation) [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)" </text>

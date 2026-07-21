@@ -34,6 +34,12 @@ public class CaseDataBuilder {
         return new CaseDataBuilder(caseData);
     }
 
+    private static Map<String, Map<String, String>> additionalData(String state) {
+        Map<String, Map<String, String>> additionalData = new HashMap<>();
+        additionalData.put("Data", Map.of("state", state));
+        return additionalData;
+    }
+
     public static CaseDataBuilder defaultWaCase(String state) {
         Map<String,Object> caseData = new HashMap<>();
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
@@ -44,7 +50,7 @@ public class CaseDataBuilder {
         caseData.put(REGION, "someRegion");
         caseData.put(ROLE_CATEGORY, ROLE_CATEGORY_CTSC);
         caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
-        caseData.put("state", state);
+        caseData.put("additionalData", additionalData(state));
         return new CaseDataBuilder(caseData);
     }
 
