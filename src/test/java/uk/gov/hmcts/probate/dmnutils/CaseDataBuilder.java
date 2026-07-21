@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.dmnutils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,21 +31,20 @@ public class CaseDataBuilder {
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
         caseData.put("dueDate", LocalDate.now());
-        caseData.put("state", "CasePrinted");
         return new CaseDataBuilder(caseData);
     }
 
-    public static CaseDataBuilder defaultWaCaseWithState(String state) {
+    public static CaseDataBuilder defaultWaCase(String state) {
         Map<String,Object> caseData = new HashMap<>();
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
-        caseData.put("state", state);
         caseData.put(CASE_TYPE, CASE_TYPE_VALUE);
         caseData.put(DECEASED_FORENAMES, DECEASED_FORENAMES_VALUE);
         caseData.put(DECEASED_SURNAME, DECEASED_SURNAME_VALUE);
         caseData.put(REGION, "someRegion");
         caseData.put(ROLE_CATEGORY, ROLE_CATEGORY_CTSC);
         caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
+        caseData.put("state", state);
         return new CaseDataBuilder(caseData);
     }
 
@@ -54,5 +55,8 @@ public class CaseDataBuilder {
     public CaseDataBuilder isUrgent() {
         caseData.put("isUrgent", "Yes");
         return this;
+    }
+
+    private static class MapTypeReference extends TypeReference<Map<String, Object>> {
     }
 }

@@ -34,9 +34,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
     private static final String taskId = UUID.randomUUID().toString();
     private static final String roleAssignmentId = UUID.randomUUID().toString();
 
-    private static final String STATE_CASE_PRINTED = "CasePrinted";
-    private static final String STATE_READY_TO_ISSUE = "BOReadyToIssue";
-
     @BeforeAll
     public static void initialization() {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_CONFIGURATION_PROBATE;
@@ -46,57 +43,34 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         return Stream.of(
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCaseWithState(STATE_CASE_PRINTED).isUrgent().build(),
+                        CaseDataBuilder.defaultWaCase("CasePrinted").isUrgent().build(),
                         "handleEvidence",
-                        STATE_CASE_PRINTED,
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
-                                STATE_CASE_PRINTED
-                        ).build()
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCaseWithState(STATE_CASE_PRINTED).isUrgent().build(),
+                        CaseDataBuilder.defaultWaCase("CasePrinted").isUrgent().build(),
                         "boAmendCaseDetailsForAwaitingDocumentation",
-                        STATE_CASE_PRINTED,
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
-                                STATE_CASE_PRINTED
-                        ).build()
-                ),
-                Arguments.of(
-                        EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCaseWithState(STATE_READY_TO_ISSUE).isUrgent().build(),
-                        "handleEvidence",
-                        STATE_READY_TO_ISSUE,
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
-                                STATE_READY_TO_ISSUE
-                        ).build()
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultWaCaseWithState(STATE_CASE_PRINTED).isUrgent().build(),
+                        CaseDataBuilder.defaultWaCase("CasePrinted").isUrgent().build(),
                         "handleEvidence",
-                        STATE_CASE_PRINTED,
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
-                                STATE_CASE_PRINTED
-                        ).build()
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultWaCaseWithState(STATE_READY_TO_ISSUE).isUrgent().build(),
+                        CaseDataBuilder.defaultWaCase("BOReadyToIssue").isUrgent().build(),
                         "handleEvidence",
-                        STATE_READY_TO_ISSUE,
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(
-                                STATE_READY_TO_ISSUE
-                        ).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsStateReadyToIssue().build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
                         CaseDataBuilder.defaultCase().isUrgent().build(),
                         "handleEvidence",
-                        null,
                         ConfigurationExpectationBuilder.defaultExpectations()
-                                .expectedValue(DESCRIPTION,
-                                        "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
+                                .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boSelectForQA)", true)
                                 .build()
                 )
@@ -105,23 +79,22 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
+        //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
-        assertThat(logic.getInputs().size(), is(3));
+        assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(16, logic.getRules().size());
+        assertEquals(15, logic.getRules().size());
     }
 
-    @ParameterizedTest(name = "task type: {0} state: {2}")
+    @ParameterizedTest(name = "task type: {0} case data: {1}")
     @MethodSource("scenarioProvider")
     void should_return_correct_configuration_values_for_scenario(
-            String taskType,
-            Map<String, Object> caseData,
+            String taskType, Map<String, Object> caseData,
             String eventId,
-            String state,
             List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
 
-        Map<String, Object> taskAttributes = Map.of(
+        Map<String, String> taskAttributes = Map.of(
                 "taskType", taskType,
                 "roleAssignmentId", roleAssignmentId,
                 "taskId", taskId,
@@ -130,7 +103,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("taskAttributes", taskAttributes);
         inputVariables.putValue("taskType", taskType);
         inputVariables.putValue("caseData", caseData);
-        inputVariables.putValue("postEventState", state);
         inputVariables.putValue("eventId", eventId);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
