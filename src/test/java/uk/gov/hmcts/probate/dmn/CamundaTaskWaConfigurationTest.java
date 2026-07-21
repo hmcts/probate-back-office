@@ -28,6 +28,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -43,27 +45,27 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         return Stream.of(
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase("CasePrinted").isUrgent().build(),
+                        CaseDataBuilder.defaultWaCase(CASE_PRINTED_STATE).isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(CASE_PRINTED_STATE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase("CasePrinted").isUrgent().build(),
+                        CaseDataBuilder.defaultWaCase(CASE_PRINTED_STATE).isUrgent().build(),
                         "boAmendCaseDetailsForAwaitingDocumentation",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(CASE_PRINTED_STATE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultWaCase("CasePrinted").isUrgent().build(),
+                        CaseDataBuilder.defaultWaCase(CASE_PRINTED_STATE).isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations().build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(CASE_PRINTED_STATE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultWaCase("BOReadyToIssue").isUrgent().build(),
+                        CaseDataBuilder.defaultWaCase(READY_TO_ISSUE_STATE).isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsStateReadyToIssue().build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForState(READY_TO_ISSUE_STATE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
