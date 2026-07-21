@@ -65,7 +65,7 @@
           <text>"description"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0n1yxlg">
-          <text>"[Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)"</text>
+          <text>"[Amend Case Details](/cases/case-details/${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  [Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1cvv017">
           <text>true</text>
@@ -99,7 +99,7 @@
           <text>"caseManagementCategory"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_09iaklr">
-          <text>caseData.caseType</text>
+          <text>"DUMMY_PLACEHOLDER_CASE_MANAGEMENT_CATEGORY"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bv2xzf">
           <text>true</text>
@@ -116,7 +116,7 @@
           <text>"caseName"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0d5o0tk">
-          <text>caseData.deceasedForenames + " " + caseData.deceasedSurname</text>
+          <text>"DUMMY_PLACEHOLDER_CASE_NAME"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_15scpg9">
           <text>true</text>
@@ -133,7 +133,7 @@
           <text>"region"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1duwa2u">
-          <text>"someRegion"</text>
+          <text>"DUMMY_PLACEHOLDER_REGION"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1gcz5d0">
           <text>true</text>
@@ -170,6 +170,125 @@
           <text>caseData.registryLocation</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_08oiise">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0wplfxm">
+        <inputEntry id="UnaryTests_08lzaj3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0n4h6rp">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1snulwi">
+          <text>"locationName"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0orasga">
+          <text>caseData.registryLocation</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hdb8zu">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0y4ohc1">
+        <inputEntry id="UnaryTests_0cntr2k">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09ep7ys">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0kmzx5s">
+          <text>"dueDateOrigin"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0davc9r">
+          <text>now()</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0i31201">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1nevyol">
+        <inputEntry id="UnaryTests_0e1oy6f">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1974p73">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0agv2w5">
+          <text>"dueDateNonWorkingCalendar"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xky3y2">
+          <text>"https://www.gov.uk/bank-holidays/england-and-wales.json"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0coo8a0">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0oco872">
+        <inputEntry id="UnaryTests_01h3iyo">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vk0ats">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0j93xsr">
+          <text>"dueDateIntervalDays"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jxuh5p">
+          <text>10</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1dv19ap">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_14fm6k6">
+        <inputEntry id="UnaryTests_0dptf4z">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fhauae">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1oktc01">
+          <text>"priorityDateOriginRef"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16jt6ez">
+          <text>"dueDate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rmi44m">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1dkymz1">
+        <inputEntry id="UnaryTests_0n6v4f3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15uvuii">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10u6fpl">
+          <text>"dueDateNonWorkingDaysOfWeek"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18x6uk8">
+          <text>"SATURDAY,SUNDAY"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1w6pn13">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10l9zjb">
+        <inputEntry id="UnaryTests_0vli1u6">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17c1gn3">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0qzof0w">
+          <text>"dueDateTime"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hkz8cd">
+          <text>"16:00"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mz9vju">
           <text>true</text>
         </outputEntry>
       </rule>
