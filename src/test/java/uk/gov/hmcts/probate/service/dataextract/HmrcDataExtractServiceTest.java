@@ -88,9 +88,9 @@ class HmrcDataExtractServiceTest {
     void shouldExtractFoundCases() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
-        when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
 
-        hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
+        hmrcDataExtractService.performHmrcExtractForDateRange("2000-12-31", "2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
         verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
@@ -101,9 +101,9 @@ class HmrcDataExtractServiceTest {
     void shouldExtractWhenNoCasesFound() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
-        when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
 
-        hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
+        hmrcDataExtractService.performHmrcExtractForDateRange("2000-12-31", "2000-12-31");
 
         verify(fileTransferService, times(1)).uploadFile(any());
         verify(fileExtractDateFormatter, times(1)).getHmrcFormattedFileDate(anyString(), any());
@@ -115,9 +115,9 @@ class HmrcDataExtractServiceTest {
     void shouldExtractFoundCasesToFrom() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
-        when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCasesWithGrantIssuedDateRange(anyString(),any(), any())).thenReturn(returnedCases);
 
-        hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
+        hmrcDataExtractService.performHmrcExtractForDateRange("2000-10-30", "2000-12-31");
 
         verify(emailWithFileService, times(1)).emailFile(any(), any());
         verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
@@ -128,9 +128,9 @@ class HmrcDataExtractServiceTest {
     void shouldExtractForNoCasesFoundToFrom() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
-        when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
 
-        hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
+        hmrcDataExtractService.performHmrcExtractForDateRange("2000-10-30", "2000-12-31");
 
         verify(emailWithFileService, times(1)).emailFile(any(), any());
         verify(fileExtractDateFormatter, times(1)).getHmrcFormattedFileDate(anyString(), any());
@@ -142,10 +142,10 @@ class HmrcDataExtractServiceTest {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
                     ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
-            when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+            when(caseQueryService.findCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
             when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
 
-            hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
+            hmrcDataExtractService.performHmrcExtractForDateRange("2000-12-31", "2000-12-31");
 
             verify(fileTransferService).uploadFile(any());
             verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
@@ -158,12 +158,13 @@ class HmrcDataExtractServiceTest {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
                     ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
-            when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+            when(caseQueryService.findCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
             when(emailWithFileService.emailFile(any(), any())).thenReturn(false);
-            when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
+            when(caseQueryService.findCasesWithGrantIssuedDateRange(anyString(),any(), any()))
+                    .thenReturn(returnedCases);
             when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
 
-            hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2001-01-01");
+            hmrcDataExtractService.performHmrcExtractForDateRange("2000-12-31", "2001-01-01");
 
             verify(fileTransferService).uploadFile(any());
             verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
