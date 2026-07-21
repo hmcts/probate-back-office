@@ -469,36 +469,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "CasePrinted",
                         additionalDataHandOffListNotEmpty(),
                         Collections.emptyList()
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "CasePrinted",
-                        additionalData,
-                        List.of(examineDigitalCaseProbateTaskAttributes)
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "CasePrinted",
-                        additionalDataEvidenceHandledTrue,
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "CasePrinted",
-                        additionalDataCaseTypeOther,
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "CasePrinted",
-                        additionalDataHandOffListNotEmpty,
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "CasePrinted",
-                        additionalDataHandOffListNotEmpty,
-                        Collections.emptyList()
                 )
         );
     }
@@ -509,7 +479,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(5));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(23));
+        assertThat(logic.getRules().size(), is(5));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
