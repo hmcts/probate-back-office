@@ -40,7 +40,7 @@ public class HmrcExtractTask implements Runnable {
         try {
             dataExtractDateValidator.dateValidator(fromDate, toDate);
             log.info("Perform Hmrc data extract from date started");
-            hmrcDataExtractService.performHmrcExtractFromDate(fromDate, toDate);
+            hmrcDataExtractService.performHmrcExtractForDateRange(fromDate, toDate);
             log.info("Perform hmrc data extract from date finished");
         } catch (ApiClientException e) {
             log.error(e.getMessage());
