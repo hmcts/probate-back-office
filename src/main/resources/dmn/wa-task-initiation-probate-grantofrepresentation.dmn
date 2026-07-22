@@ -2,7 +2,7 @@
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
-      <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
+      <input id="Input_1" label="Event Id" biodi:width="203" camunda:inputVariable="eventId">
         <inputExpression id="InputExpression_1" typeRef="string">
           <text></text>
         </inputExpression>
@@ -33,7 +33,7 @@
           </text>
         </inputExpression>
         <inputValues id="UnaryTests_0s5s50h">
-          <text>"gop","admonWill","intestacy"</text>
+          <text>"gop","admonWill","intestacy","adColligendaBona"</text>
         </inputValues>
       </input>
       <input id="InputClause_0ts4kea" label="boHandoffReasonPresent" camunda:inputVariable="boHandoffReasonPresent">
@@ -372,6 +372,41 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0admzct">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0cn884k">
+        <inputEntry id="UnaryTests_1jkenqv">
+          <text>"applyforGrantPaperApplicationMan","handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kdbpd5">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08kwvmy">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13kcry6">
+          <text>"adColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bbas33">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cl9ipy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_135c4lg">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1s9m90i">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1c09hwl">
+          <text>"Examine Digital Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0brol3i">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1124ndl">
           <text>"case progression"</text>
         </outputEntry>
       </rule>

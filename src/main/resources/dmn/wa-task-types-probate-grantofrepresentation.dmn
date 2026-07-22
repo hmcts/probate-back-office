@@ -57,6 +57,18 @@
           <text>"Examine - De Bonis Non"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1mgn1xz">
+        <description>EDCACB</description>
+        <inputEntry id="UnaryTests_0973nn0">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p8qoft">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mju5sw">
+          <text>"Examine Digital Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

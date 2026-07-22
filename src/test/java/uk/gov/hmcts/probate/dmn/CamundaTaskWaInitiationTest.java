@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
@@ -41,6 +42,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
                 "taskId", EXAMINE_DE_BONIS_NON,
                 "name", "Examine - De Bonis Non",
+                "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineDigitalCaseAdColligendaBonaTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
+                "name", "Examine Digital Case - Ad Colligenda Bona",
                 "processCategories", "case progression"
         );
 
@@ -168,6 +175,33 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                   }
                 }""");
 
+        Map<String, Object> additionalDataAdColligendaBona = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "adColligendaBona",
+                  "boHandoffReasonList" : []
+                  }
+                }""");
+
+        Map<String, Object> additionalDataAdColligendaBonaEvidenceHandledTrue = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "true",
+                  "caseType" : "adColligendaBona",
+                  "boHandoffReasonList" : []
+                  }
+                }""");
+
+        Map<String, Object> additionalDataAdColligendaBonaHandOffListNotEmpty = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "adColligendaBona",
+                  "boHandoffReasonList" : [1]
+                  }
+                }""");
+
         return Stream.of(
                 Arguments.of(
                         "handleEvidence",
@@ -197,6 +231,30 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "handleEvidence",
                         "CasePrinted",
                         additionalDataHandOffListNotEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalDataAdColligendaBona,
+                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
+                ),
+                Arguments.of(
+                        "someOtherEventId",
+                        "CasePrinted",
+                        additionalDataAdColligendaBona,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalDataAdColligendaBonaEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalDataAdColligendaBonaHandOffListNotEmpty,
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -248,6 +306,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalDataAdColligendaBona,
+                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalDataAdColligendaBonaEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalDataAdColligendaBonaHandOffListNotEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         "attachScannedDocs",
                         "CasePrinted",
                         additionalData,
@@ -296,6 +372,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalDataAdColligendaBona,
+                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalDataAdColligendaBonaEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalDataAdColligendaBonaHandOffListNotEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         "changeState",
                         "CasePrinted",
                         additionalData,
@@ -317,6 +411,42 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "changeState",
                         "CasePrinted",
                         additionalDataHandOffListNotEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalDataAdColligendaBona,
+                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalDataAdColligendaBonaEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalDataAdColligendaBonaHandOffListNotEmpty,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalDataAdColligendaBona,
+                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalDataAdColligendaBonaEvidenceHandledTrue,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalDataAdColligendaBonaHandOffListNotEmpty,
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -496,7 +626,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(9));
+        assertThat(logic.getRules().size(), is(10));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
