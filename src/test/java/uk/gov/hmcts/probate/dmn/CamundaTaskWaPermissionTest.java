@@ -1,5 +1,12 @@
 package uk.gov.hmcts.probate.dmn;
 
+import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableInputImpl;
@@ -11,25 +18,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_PERMISSIONS_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HORIZON_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
-import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WITNESS_INTERVIEW_SKILL_CODE;
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
@@ -70,7 +77,23 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DE_BONIS_NON,
                         DUMMY_CASE_DATA,
-                        getCtscExaminePermissions(DE_BONIS_NON_SKILL_CODE)
+                    getCtscExaminePermissions(DE_BONIS_NON_SKILL_CODE)
+
+                ),
+                Arguments.of(
+                    EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE)
+                ),
+                Arguments.of(
+                    EXAMINE_WITNESS_INTERVIEW,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(WITNESS_INTERVIEW_SKILL_CODE)
+                ),
+                Arguments.of(
+                    EXAMINE_HORIZON_SCHEME,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(HORIZON_SCHEME_SKILL_CODE)
                 )
         );
     }
@@ -97,7 +120,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(6));
+        assertThat(logic.getRules().size(), is(12));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
@@ -139,7 +162,8 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
                         "roleCategory", ROLE_CATEGORY_CTSC,
                         "assignmentPriority", 1,
-                        "autoAssignable", false
+                        "autoAssignable", false,
+                        "authorisations", skillCode
                 )
        );
     }

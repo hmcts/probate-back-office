@@ -23,6 +23,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -48,6 +51,18 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", "Examine - De Bonis Non",
                         "taskTypeId", EXAMINE_DE_BONIS_NON
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Will or Codicil to be Notated",
+                    "taskTypeId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Witness Interview",
+                    "taskTypeId", EXAMINE_WITNESS_INTERVIEW
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Horizon Scheme",
+                    "taskTypeId", EXAMINE_HORIZON_SCHEME
                 )
         );
         return Stream.of(
@@ -63,7 +78,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(4));
+        assertThat(logic.getRules().size(), is(7));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")

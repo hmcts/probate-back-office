@@ -32,6 +32,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
@@ -103,7 +106,61 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boStopCaseForCaseMatchingForExamining)", true)
                                 .build()
-                )
+                ),
+                Arguments.of(
+                    EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+                        CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations()
+                            .expectedValue(WORK_TYPE, APPLICATION_WORK_TYPE, true)
+                            .expectedValue(DESCRIPTION, "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+                                + "/trigger/boIssueGrantForCaseMatching)  "
+                                + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                                + "/trigger/boEscalateToRegistrar)  "
+                                + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                                + "/trigger/moveToCWEscalation)  "
+                                + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                                + "/trigger/boStopCaseForCaseMatchingForExamining)", true)
+                            .build()
+                ),
+            Arguments.of(
+                EXAMINE_WITNESS_INTERVIEW,
+                    CaseDataBuilder.defaultWaCase()
+                        .isUrgent()
+                        .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations()
+                        .expectedValue(WORK_TYPE, APPLICATION_WORK_TYPE, true)
+                        .expectedValue(DESCRIPTION, "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+                            + "/trigger/boIssueGrantForCaseMatching)  "
+                            + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                            + "/trigger/boEscalateToRegistrar)  "
+                            + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                            + "/trigger/moveToCWEscalation)  "
+                            + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                            + "/trigger/boStopCaseForCaseMatchingForExamining)", true)
+                        .build()
+            ),
+            Arguments.of(
+                EXAMINE_HORIZON_SCHEME,
+                    CaseDataBuilder.defaultWaCase()
+                        .isUrgent()
+                        .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations()
+                        .expectedValue(WORK_TYPE, APPLICATION_WORK_TYPE, true)
+                        .expectedValue(DESCRIPTION, "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+                            + "/trigger/boIssueGrantForCaseMatching)  "
+                            + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                            + "/trigger/boEscalateToRegistrar)  "
+                            + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                            + "/trigger/moveToCWEscalation)  "
+                            + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                            + "/trigger/boStopCaseForCaseMatchingForExamining)", true)
+                        .build()
+            )
         );
     }
 
