@@ -152,7 +152,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text>false</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0en9vn1">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0hkzao9">
           <text>"Examine Digital Case - Admon"</text>

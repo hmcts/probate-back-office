@@ -83,7 +83,7 @@
       </rule>
       <rule id="DecisionRule_1ne1lmu">
         <inputEntry id="UnaryTests_1wv4gzo">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseAdmonWill","ExamineDigitalCaseAdmonWillReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0tbcvw7">
           <text></text>
@@ -141,7 +141,7 @@
       </rule>
       <rule id="DecisionRule_10s22ft">
         <inputEntry id="UnaryTests_0eharyd">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseAdmonWill","ExamineDigitalCaseAdmonWillReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1a6nyt4">
           <text></text>

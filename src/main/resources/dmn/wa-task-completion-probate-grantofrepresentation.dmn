@@ -33,12 +33,23 @@
       </rule>
       <rule id="DecisionRule_1td45el">
         <inputEntry id="UnaryTests_1enpuip">
-          <text>"boStopCaseForCasePrinted", "boEscalateToRegistrar", "boIssueGrantForCaseMatching", "moveToCWEscalation", "boSelectForQA", "boStopCaseForCaseMatchingForExamining"</text>
+          <text>"boStopCaseForCasePrinted", "boEscalateToRegistrar", "boIssueGrantForCaseMatching", "moveToCWEscalation", "boSelectForQA"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_03b69y9">
           <text>"ExamineDigitalCaseAdmonWill"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0a0i9c2">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1hakhbs">
+        <inputEntry id="UnaryTests_0me2u40">
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_13p3955">
+          <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_156m1d9">
           <text>"Auto"</text>
         </outputEntry>
       </rule>

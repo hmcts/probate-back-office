@@ -34,7 +34,7 @@ public class CaseDataBuilder {
         return new CaseDataBuilder(caseData);
     }
 
-    public static CaseDataBuilder defaultWaCase(String state) {
+    public static CaseDataBuilder defaultWaCase() {
         Map<String,Object> caseData = new HashMap<>();
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");

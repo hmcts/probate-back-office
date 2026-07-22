@@ -21,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.mapAdditionalData;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -32,24 +32,26 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     }
 
 
-    private static Map<String, Object> additionalData(boolean evidenceHandled, String caseType) {
-        return mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + evidenceHandled + "\",\n"
-                + "  \"caseType\" : \"" + caseType + "\",\n"
-                + "  \"boHandoffReasonList\" : []\n"
-                + "  }\n"
-                + "}");
+    private static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled, String caseType) {
+        Map<String, Map<String, Object>> additionalData = Map.of(
+                "Data", Map.of(
+                        "evidenceHandled", evidenceHandled,
+                        "caseType", caseType,
+                        "boHandoffReasonList", Collections.emptyList()
+                )
+        );
+        return additionalData;
     }
 
-    private static Map<String, Object> additionalDataHandOffListNotEmpty() {
-        return mapAdditionalData("{\n"
-                + "  \"Data\":{\n"
-                + "  \"evidenceHandled\" : \"" + false + "\",\n"
-                + "  \"caseType\" : \"" + "gop" + "\",\n"
-                + "  \"boHandoffReasonList\" : [1]\n"
-                + "  }\n"
-                + "}");
+    private static Map<String, Map<String, Object>> additionalDataHandOffListNotEmpty() {
+        Map<String, Map<String, Object>> additionalData = Map.of(
+                "Data", Map.of(
+                        "evidenceHandled", false,
+                        "caseType", "gop",
+                        "boHandoffReasonList", List.of(1)
+                )
+        );
+        return additionalData;
     }
 
     static Stream<Arguments> probateScenarios() {
@@ -271,6 +273,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineDigitalCaseAdmonReadyToIssueTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
+                "name", "Examine Digital Case - Admon",
+                "processCategories", "case progression"
+        );
+
         return Stream.of(
                 Arguments.of(
                         "someOtherEventId",
@@ -288,7 +296,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "handleEvidence",
                         "BOReadyToIssue",
                         additionalData(false, "admonWill"),
-                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         "handleEvidence",
@@ -366,7 +374,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "boResolveStop",
                         "BOReadyToIssue",
                         additionalData(false, "admonWill"),
-                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",
@@ -396,7 +404,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "changeState",
                         "BOReadyToIssue",
                         additionalData(false, "admonWill"),
-                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         "changeState",
@@ -426,7 +434,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "resolveCWEscalation",
                         "BOReadyToIssue",
                         additionalData(false, "admonWill"),
-                        List.of(examineDigitalCaseAdmonTaskAttributes)
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
@@ -492,7 +500,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);
         if (additionalData != null) {
-            inputVariables.putAll(additionalData);
+            inputVariables.putValue("additionalData", additionalData);
         }
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
@@ -508,7 +516,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);
         if (additionalData != null) {
-            inputVariables.putAll(additionalData);
+            inputVariables.putValue("additionalData", additionalData);
         }
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
