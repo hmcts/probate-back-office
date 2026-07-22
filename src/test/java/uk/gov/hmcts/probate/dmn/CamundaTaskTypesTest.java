@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_TYPES_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 
@@ -43,6 +44,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", "Examine Digital Case - Intestacy",
                         "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY
+                ),
+                Map.of(
+                        "taskTypeName", "Examine Digital Case - Admon",
+                        "taskTypeId", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
                 )
         );
         return Stream.of(
@@ -58,7 +63,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(3));
+        assertThat(logic.getRules().size(), is(4));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
