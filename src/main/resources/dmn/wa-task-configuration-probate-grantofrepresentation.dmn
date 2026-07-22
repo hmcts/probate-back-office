@@ -7,16 +7,19 @@
           <text></text>
         </inputExpression>
       </input>
-      <input id="InputClause_17dspxs" label="state" camunda:inputVariable="additionalData">
+      <input id="InputClause_17dspxs" label="state" camunda:inputVariable="state">
         <inputExpression id="LiteralExpression_0j4sjpr" typeRef="string">
           <text>if(additionalData != null and additionalData.Data != null and
             additionalData.Data.state
             != null) then
             additionalData.Data.state
             else
-            ""
+            "CasePrinted"
           </text>
         </inputExpression>
+        <inputValues id="UnaryTests_1nptv1d">
+          <text>"CasePrinted","BOReadyToIssue"</text>
+        </inputValues>
       </input>
       <input id="InputClause_00c59gm" label="Task type" biodi:width="405" camunda:inputVariable="taskType">
         <inputExpression id="LiteralExpression_1ngi22k" typeRef="string">
