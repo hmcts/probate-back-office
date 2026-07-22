@@ -25,7 +25,7 @@
       <output id="OutputClause_04cbxc1" label="Auto Assignable" name="autoAssignable" typeRef="boolean" biodi:width="150" />
       <rule id="DecisionRule_1qs3glb">
         <inputEntry id="UnaryTests_0l9ifw6">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseProbateReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_175p0w3">
           <text></text>
@@ -54,7 +54,7 @@
       </rule>
       <rule id="DecisionRule_00eu5yd">
         <inputEntry id="UnaryTests_0l346di">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseProbateReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1j98w96">
           <text></text>

@@ -28,6 +28,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
@@ -73,11 +74,11 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .examineDigitalCaseExpectationsForState(READY_TO_ISSUE_STATE).build()
                 ),
                 Arguments.of(
-                        EXAMINE_DIGITAL_CASE_ADMON,
+                        EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder
-                                .examineDigitalCaseExpectationsForState(CASE_PRINTED_STATE).build()
+                                .examineDigitalCaseExpectationsForState(READY_TO_ISSUE_STATE).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,

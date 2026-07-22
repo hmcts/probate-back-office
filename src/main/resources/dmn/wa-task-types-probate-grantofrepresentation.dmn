@@ -57,6 +57,18 @@
           <text>"Examine Digital Case - Admon"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0e506hv">
+        <description>EDCPRI</description>
+        <inputEntry id="UnaryTests_04rizqy">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xol2pq">
+          <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1c631u1">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

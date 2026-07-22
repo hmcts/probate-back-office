@@ -22,6 +22,7 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -62,6 +63,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineDigitalCaseProbateReadyToIssueTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
+                "name", "Examine Digital Case - Probate",
+                "processCategories", "case progression"
+        );
+
 
         return Stream.of(
                 Arguments.of(
@@ -74,7 +81,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "handleEvidence",
                         "BOReadyToIssue",
                         additionalData(false, "gop"),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
+                        List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         "someOtherEventId",
@@ -182,7 +189,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "boResolveStop",
                         "BOReadyToIssue",
                         additionalData(false, "gop"),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
+                        List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",
@@ -212,7 +219,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "changeState",
                         "BOReadyToIssue",
                         additionalData(false, "gop"),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
+                        List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         "changeState",
@@ -242,7 +249,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "resolveCWEscalation",
                         "BOReadyToIssue",
                         additionalData(false, "gop"),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
+                        List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",

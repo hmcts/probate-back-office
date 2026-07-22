@@ -166,7 +166,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
       </rule>
       <rule id="DecisionRule_1h68pw4">
         <inputEntry id="UnaryTests_185a4dp">
-          <text>"changeState", "resolveCWEscalation","boResolveStop","handleEvidence"</text>
+          <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1p102y0">
           <text>"BOReadyToIssue"</text>
@@ -181,7 +181,7 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text>false</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0bwe6ws">
-          <text>"ExamineDigitalCaseProbate"</text>
+          <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1fn3yn6">
           <text>"Examine Digital Case - Probate"</text>
