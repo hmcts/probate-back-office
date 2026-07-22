@@ -156,8 +156,8 @@ ccd:
         ELASTIC_SEARCH_SCHEME: http
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_FQDN}
-      devcpuRequests: 500m
-      devcpuLimits: 1000m
+      devcpuRequests: 250m
+      devcpuLimits: 2000m
       devmemoryRequests: 1Gi
       devmemoryLimits: 2Gi
   ccd-user-profile-api:
@@ -401,10 +401,12 @@ xui-webapp:
       FEATURE_TERMS_AND_CONDITIONS_ENABLED: false
       FEATURE_HELMET_ENABLED: true
       FEATURE_OIDC_ENABLED: false
+      GLOBAL_SEARCH_SERVICES: IA,CIVIL,PRIVATELAW,PUBLICLAW,SSCS,ST_CIC,EMPLOYMENT,PROBATE
       NOW: false
       REDISCLOUD_URL: http://dummyrediscloudurl
       UV_THREADPOOL_SIZE: 128
       PROTOCOL: http
+      
     keyVaults:
       rpx:
         resourceGroup: rpx
@@ -473,6 +475,8 @@ java:
     PROBATE_POSTGRESQL_HOSTNAME_VAL: '{{ .Values.global.postgresHostname }}'
     MANAGE_CASE_URL: https://xui-${SERVICE_FQDN}.preview.platform.hmcts.net
     FRONTEND_URL: http://probate.aat.platform.hmcts.net
+    PROBATE_WA_ENABLED: ${PROBATE_WA_ENABLED}
+    PROBATE_GS_ENABLED: ${PROBATE_GS_ENABLED}
 
   keyVaults:
     probate:
