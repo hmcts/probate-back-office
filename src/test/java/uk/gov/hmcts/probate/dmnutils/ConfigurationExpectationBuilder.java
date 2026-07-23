@@ -50,10 +50,6 @@ public class ConfigurationExpectationBuilder {
 
     private final Map<String, Map<String, Object>> expectations = new HashMap<>();
 
-    public static ConfigurationExpectationBuilder defaultExpectations() {
-        return new ConfigurationExpectationBuilder();
-    }
-
     public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForState(String state) {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
 
