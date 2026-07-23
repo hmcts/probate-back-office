@@ -1,3 +1,4 @@
 [
-  {"CaseTypeID": "WillLodgement", "UserRole": "GS_profile", "CRUD": "R"}
+  {"CaseTypeID": "WillLodgement", "UserRole": "GS_profile", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "UserRole": "caseworker-ras-validation", "CRUD": "R"}
 ]

@@ -34,4 +34,5 @@ ${dir}/ccd-add-role.sh caseworker-approver
 ${dir}/ccd-add-role.sh caseworker-wa-task-configuration
 ${dir}/ccd-add-role.sh TTL_profile
 ${dir}/ccd-add-role.sh GS_profile
+${dir}/ccd-add-role.sh caseworker-ras-validation
 
