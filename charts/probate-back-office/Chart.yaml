@@ -2,7 +2,7 @@ apiVersion: v2
 description: A Helm chart for the HMCTS probate back office service
 name: probate-back-office
 home: https://github.com/hmcts/probate-back-office
-version: 1.0.69
+version: 1.0.70
 maintainers:
   - name: HMCTS Probate Team
     email: probate-action-group@HMCTS.NET
@@ -29,7 +29,7 @@ dependencies:
     condition: postgresql.enabled
   #    Work Allocation
   - name: wa
-    version: ~1.1.0
+    version: 1.1.1-temp3
     repository: 'oci://hmctsprod.azurecr.io/helm'
     condition: wa.enabled
   - name: servicebus
