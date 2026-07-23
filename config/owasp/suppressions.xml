@@ -47,7 +47,10 @@
         <cve>CVE-2026-54399</cve>
         <cve>CVE-2026-54428</cve>
     </suppress>
-    <suppress>
+    <suppress until = "2026-10-24">
+        <notes><![CDATA[
+   file name: netty@4.2.16
+   ]]></notes>
         <cve>CVE-2026-55833</cve>
         <cve>CVE-2026-44891</cve>
         <cve>CVE-2026-55831</cve>
