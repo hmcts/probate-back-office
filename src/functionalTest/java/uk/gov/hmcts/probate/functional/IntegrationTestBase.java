@@ -17,8 +17,10 @@ import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -39,9 +41,23 @@ public abstract class IntegrationTestBase {
     private String solCcdServiceUrl;
     public static String evidenceManagementUrl;
     private static final long ES_DELAY = 20000L;
-    private static final String EXPIRY_DATE_WELSH_PATTERN = "Daw eich cafeat i ben ar: [^ ]+ [^ ]+ [0-9]+";
-    private static final String EXPIRY_DATE_ENGLISH_PATTERN = "Your caveat expiry date is: [^ ]+ [^ ]+ [0-9]+";
-    private static final String EXPIRY_DATE_PLACEHOLDER = "Your caveat expiry date is: {{EXPIRY_DATE}}";
+    private static final Pattern EXPIRY_DATE_WELSH_PATTERN =
+            Pattern.compile("Daw eich cafeat i ben ar:\\s+\\S+\\s+\\S+\\s+[0-9]+");
+
+    private static final Pattern EXPIRY_DATE_ENGLISH_PATTERN =
+            Pattern.compile("Your caveat expiry date is:\\s+\\S+\\s+\\S+\\s+[0-9]+");
+
+    private static final String EXPIRY_DATE_PLACEHOLDER =
+            "Your caveat expiry date is: {{EXPIRY_DATE}}";
+
+    private static final Pattern SENT_ON_PATTERN =
+            Pattern.compile("\\ASent on:.*?(?=From:)", Pattern.DOTALL);
+
+    private static final Pattern UNICODE_SPACES =
+            Pattern.compile("[\\s\\p{Z}\\u00A0\\u2007\\u202F]+");
+
+    private static final Pattern INVISIBLE_CHARACTERS =
+            Pattern.compile("[\\u200B\\u200C\\u200D\\u2060\\uFEFF]");
 
     @Autowired
     public void solCcdServiceUrl(@Value("${sol.ccd.service.base.url}") String solCcdServiceUrl) {
@@ -76,8 +92,15 @@ public abstract class IntegrationTestBase {
                         .setParam("http.connection-manager.timeout", 120000));
     }
 
-    protected String replaceAllInString(String request, String originalAttr, String updatedAttr) {
-        return request.replaceAll(Pattern.quote(originalAttr), updatedAttr);
+    protected String replaceAllInString(
+            String request,
+            String originalAttr,
+            String updatedAttr
+    ) {
+        return request.replaceAll(
+                Pattern.quote(originalAttr),
+                Matcher.quoteReplacement(updatedAttr)
+        );
     }
 
     protected String removeCarriageReturns(String text) {
@@ -93,17 +116,29 @@ public abstract class IntegrationTestBase {
     }
 
     private String normalizePdfText(String text) {
-        String normalizedText = text;
+        if (text == null) {
+            return "";
+        }
 
-        // Remove only the 'Sent on:' prefix and its date/time, even if the document is a single line
-        normalizedText = normalizedText.replaceFirst("^Sent on:.*?(From:)", "$1");
+        String normalizedText = Normalizer.normalize(text, Normalizer.Form.NFKC);
 
-        // Replace dynamic expiry date patterns
-        normalizedText = normalizedText.replaceAll(EXPIRY_DATE_WELSH_PATTERN, EXPIRY_DATE_PLACEHOLDER);
-        normalizedText = normalizedText.replaceAll(EXPIRY_DATE_ENGLISH_PATTERN, EXPIRY_DATE_PLACEHOLDER);
+        // Remove PDF-related invisible characters.
+        normalizedText = INVISIBLE_CHARACTERS.matcher(normalizedText).replaceAll("");
 
-        // Normalize whitespace
-        return normalizedText.replaceAll("\\s+", " ").trim();
+        // Remove the dynamic "Sent on:" section while preserving "From:".
+        normalizedText = SENT_ON_PATTERN.matcher(normalizedText).replaceFirst("");
+
+        // Replace dynamic expiry dates.
+        normalizedText = EXPIRY_DATE_WELSH_PATTERN.matcher(normalizedText)
+                .replaceAll(Matcher.quoteReplacement(EXPIRY_DATE_PLACEHOLDER));
+
+        normalizedText = EXPIRY_DATE_ENGLISH_PATTERN.matcher(normalizedText)
+                .replaceAll(Matcher.quoteReplacement(EXPIRY_DATE_PLACEHOLDER));
+
+        // Convert ordinary and Unicode whitespace to one regular space.
+        return UNICODE_SPACES.matcher(normalizedText)
+                .replaceAll(" ")
+                .trim();
     }
 
     protected String getJsonFromFile(String jsonFileName) throws IOException {
@@ -168,28 +203,94 @@ public abstract class IntegrationTestBase {
     }
 
 
-    protected final ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path,
+    protected final ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName,
+                                                                        String path,
                                                                         String originalAttr,
-                                                                  String updatedAttr) throws IOException {
+                                                                        String updatedAttr) throws IOException {
         String request = getJsonFromFile(jsonFileName);
         request = replaceAllInString(request, originalAttr, updatedAttr);
         return validatePostSuccessForPayload(request, path);
     }
 
-    protected void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl,
+    protected void assertExpectedContents(String expectedResponseFile,
+                                          String responseDocumentUrl,
                                           ResponseBody responseBody) throws IOException {
-        String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
+        String expectedText = normalizePdfText(
+                getJsonFromFile(expectedResponseFile)
+        );
 
-        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        final String documentUrl = jsonPath.get(responseDocumentUrl);
-        String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.getString(responseDocumentUrl);
 
-        response = normalizePdfText(response);
-        expectedText = normalizePdfText(expectedText);
+        String response = normalizePdfText(
+                utils.downloadPdfAndParseToString(documentUrl)
+        );
 
-        assertTrue(response.contains(expectedText),
-            "Actual response does not contain expected content.\nExpected: ["
-                + expectedText + "]\nActual: [" + response + "]");
+        assertContainsNormalizedText(expectedText, response);
+    }
+
+    private void assertContainsNormalizedText(String expected, String actual) {
+        if (actual.contains(expected)) {
+            return;
+        }
+
+        String difference = describeFirstDifference(expected, actual);
+
+        throw new AssertionError(
+                "Actual response does not contain expected content."
+                        + System.lineSeparator()
+                        + difference
+                        + System.lineSeparator()
+                        + "Expected length: " + expected.length()
+                        + System.lineSeparator()
+                        + "Actual length: " + actual.length()
+                        + System.lineSeparator()
+                        + "Expected: [" + expected + "]"
+                        + System.lineSeparator()
+                        + "Actual: [" + actual + "]"
+        );
+    }
+
+    private String describeFirstDifference(String expected, String actual) {
+        int commonLength = Math.min(expected.length(), actual.length());
+
+        for (int index = 0; index < commonLength; index++) {
+            char expectedCharacter = expected.charAt(index);
+            char actualCharacter = actual.charAt(index);
+
+            if (expectedCharacter != actualCharacter) {
+                return String.format(
+                        "First difference at index %d: "
+                                + "expected '%s' (U+%04X), actual '%s' (U+%04X)",
+                        index,
+                        printable(expectedCharacter),
+                        (int) expectedCharacter,
+                        printable(actualCharacter),
+                        (int) actualCharacter
+                );
+            }
+        }
+
+
+
+        if (expected.length() != actual.length()) {
+            return "The strings match for " + commonLength
+                    + " characters but have different lengths.";
+        }
+
+        return "No character-level difference was found.";
+    }
+
+    private String printable(char character) {
+        return switch (character) {
+            case ' ' -> "<space>";
+            case '\r' -> "\\r";
+            case '\n' -> "\\n";
+            case '\t' -> "\\t";
+            default -> Character.isISOControl(character)
+                    ? String.format("\\u%04X", (int) character)
+                    : Character.toString(character);
+        };
     }
 
     protected void assertExpectedContentsWithExpectedReplacement(
@@ -198,25 +299,20 @@ public abstract class IntegrationTestBase {
             ResponseBody responseBody,
             Map<String, String> expectedKeyValueReplacements
     ) throws IOException {
-        String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
+        String expectedText = getJsonFromFile(expectedResponseFile);
         for (Map.Entry<String, String> entry : expectedKeyValueReplacements.entrySet()) {
             expectedText = expectedText.replace(entry.getKey(), entry.getValue());
         }
 
-        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        final String documentUrl = jsonPath.get(responseDocumentUrl);
-        final String rawResponse = utils.downloadPdfAndParseToString(documentUrl);
-        String response = removeCrLfs(rawResponse);
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.getString(responseDocumentUrl);
 
-        response = normalizePdfText(response);
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+
         expectedText = normalizePdfText(expectedText);
+        response = normalizePdfText(response);
 
-        // Assertion with message
-        assertTrue(
-            response.contains(expectedText),
-            "Actual response does not contain expected content.\nExpected: ["
-                + expectedText + "]\nActual: [" + response + "]"
-        );
+        assertContainsNormalizedText(expectedText, response);
     }
 
     protected void assertExpectedContentsMissing(String expectedContentMissing, ResponseBody responseBody) {
