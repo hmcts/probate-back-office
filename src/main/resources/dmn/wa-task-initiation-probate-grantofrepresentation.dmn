@@ -377,7 +377,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_0cn884k">
         <inputEntry id="UnaryTests_1jkenqv">
-          <text>"applyforGrantPaperApplicationMan","handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0kdbpd5">
           <text>"CasePrinted"</text>

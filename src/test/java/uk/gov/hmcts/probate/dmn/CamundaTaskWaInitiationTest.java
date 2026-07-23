@@ -306,24 +306,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "applyforGrantPaperApplicationMan",
-                        "CasePrinted",
-                        additionalDataAdColligendaBona,
-                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
-                ),
-                Arguments.of(
-                        "applyforGrantPaperApplicationMan",
-                        "CasePrinted",
-                        additionalDataAdColligendaBonaEvidenceHandledTrue,
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "applyforGrantPaperApplicationMan",
-                        "CasePrinted",
-                        additionalDataAdColligendaBonaHandOffListNotEmpty,
-                        Collections.emptyList()
-                ),
-                Arguments.of(
                         "attachScannedDocs",
                         "CasePrinted",
                         additionalData,
