@@ -1,6 +1,8 @@
 package uk.gov.hmcts.probate.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -11,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class DateFormatterService {
@@ -56,6 +59,30 @@ public class DateFormatterService {
         } catch (ParseException ex) {
             ex.getMessage();
             return null;
+        }
+    }
+
+    public String formatDateSafely(String date, DateTimeFormatter dateFormat) {
+        if (StringUtils.isBlank(date)) {
+            return "INVALID DATE";
+        }
+        try {
+            return dateFormat.format(LocalDate.parse(date));
+        } catch (Exception e) {
+            log.warn("Unable to parse date '{}', defaulting to blank", date);
+            return "INVALID DATE";
+        }
+    }
+
+    public String formatDateSafely(LocalDate date,DateTimeFormatter dateFormat) {
+        if (date == null) {
+            return "INVALID DATE";
+        }
+        try {
+            return dateFormat.format(date);
+        } catch (Exception e) {
+            log.warn("Unable to format date '{}', defaulting to blank", date);
+            return "INVALID DATE";
         }
     }
 }

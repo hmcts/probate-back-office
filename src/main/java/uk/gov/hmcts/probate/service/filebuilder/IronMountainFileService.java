@@ -9,9 +9,9 @@ import uk.gov.hmcts.probate.model.DataExtractGrantType;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +22,7 @@ import java.util.Optional;
 public class IronMountainFileService extends BaseFileService {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
     private static final String DELIMITER = "|";
+    private final DateFormatterService dateFormatterService;
     private final TextFileBuilderService textFileBuilderService;
 
     public File createIronMountainFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
@@ -44,13 +45,13 @@ public class IronMountainFileService extends BaseFileService {
             fileData.add(Optional.ofNullable(data.getBoDeceasedTitle()).orElse(""));
             fileData.add(data.getDeceasedForenames());
             fileData.add(data.getDeceasedSurname());
-            fileData.add(DATE_FORMAT.format(data.getDeceasedDateOfDeath()));
+            fileData.add(dateFormatterService.formatDateSafely(data.getDeceasedDateOfDeath(), DATE_FORMAT));
             fileData.add("");
-            fileData.add(DATE_FORMAT.format(data.getDeceasedDateOfBirth()));
-            fileData.add(String.valueOf(ageCalculator(data)));
+            fileData.add(dateFormatterService.formatDateSafely(data.getDeceasedDateOfBirth(), DATE_FORMAT));
+            fileData.add(ageCalculator(data));
             addAddress(fileData, deceasedAddress);
             fileData.add(id.toString());
-            fileData.add(DATE_FORMAT.format(LocalDate.parse(data.getGrantIssuedDate())));
+            fileData.add(dateFormatterService.formatDateSafely(data.getGrantIssuedDate(), DATE_FORMAT));
             addGranteeDetails(fileData, createGrantee(data, 1));
             addGranteeDetails(fileData, createGrantee(data, 2));
             addGranteeDetails(fileData, createGrantee(data, 3));

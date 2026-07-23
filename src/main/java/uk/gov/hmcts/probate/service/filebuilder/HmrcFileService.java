@@ -91,7 +91,7 @@ public class HmrcFileService extends BaseFileService {
             fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfDeath()));
             fileData.add("");
             fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfBirth()));
-            fileData.add(String.valueOf(ageCalculator(data)));
+            fileData.add(ageCalculator(data));
             fileData.add(DOMICILE);
             addAddress(fileData, addressManager(data.getDeceasedAddress()));
             fileData.add(fileExtractDateFormatter.formatDataDate(LocalDate.parse(data.getGrantIssuedDate())));
