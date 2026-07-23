@@ -26,6 +26,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
@@ -34,54 +35,26 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
     private static final String DUMMY_CASE_DATA = "someCaseData";
 
-    private static final List<Map<String, Object>> ctscDefaultPermissions = List.of(
-            Map.of(
-                    "name", "ctsc",
-                    "value", "Read,Own,Claim,Unclaim,Manage,Complete",
-                    "roleCategory", ROLE_CATEGORY_CTSC,
-                    "assignmentPriority", 1,
-                    "autoAssignable", false
+    private static List<Map<String, Object>> ctscExamineDigitalCasePermissions(String caseType){
+        return List.of(
+                Map.of(
+                        "name", "ctsc",
+                        "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
+                        "roleCategory", ROLE_CATEGORY_CTSC,
+                        "assignmentPriority", 1,
+                        "autoAssignable", false,
+                        "authorisations", "SKILL:ABA6:" + caseType + "Examining"
+                ),
+                Map.of(
+                        "name", "ctsc-team-leader",
+                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
+                        "roleCategory", ROLE_CATEGORY_CTSC,
+                        "assignmentPriority", 1,
+                        "autoAssignable", false,
+                        "authorisations", "SKILL:ABA6:" + caseType + "Examining"
                 )
         );
-
-    private static final List<Map<String, Object>> ctscExamineDigitalCaseProbatePermissions = List.of(
-            Map.of(
-                    "name", "ctsc",
-                    "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
-                    "roleCategory", ROLE_CATEGORY_CTSC,
-                    "assignmentPriority", 1,
-                    "autoAssignable", false,
-                    "authorisations", "SKILL:ABA6:ProbateExamining"
-            ),
-            Map.of(
-                    "name", "ctsc-team-leader",
-                    "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                    "roleCategory", ROLE_CATEGORY_CTSC,
-                    "assignmentPriority", 1,
-                    "autoAssignable", false,
-                    "authorisations", "SKILL:ABA6:ProbateExamining"
-            )
-        );
-
-    private static final List<Map<String, Object>> ctscExamineDigitalCaseAdmonPermissions = List.of(
-        Map.of(
-                "name", "ctsc",
-                "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
-                "roleCategory", ROLE_CATEGORY_CTSC,
-                "assignmentPriority", 1,
-                "autoAssignable", false,
-                "authorisations", "SKILL:ABA6:AdmonExamining"
-        ),
-        Map.of(
-                "name", "ctsc-team-leader",
-                "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                "roleCategory", ROLE_CATEGORY_CTSC,
-                "assignmentPriority", 1,
-                "autoAssignable", false,
-                "authorisations", "SKILL:ABA6:AdmonExamining"
-        )
-    );
-
+    }
 
 
     @BeforeAll
@@ -94,27 +67,33 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         DUMMY_CASE_DATA,
-                        ctscExamineDigitalCaseProbatePermissions
-                ),
-                Arguments.of(
-                        EXAMINE_DIGITAL_CASE_ADMON,
-                        DUMMY_CASE_DATA,
-                        ctscExamineDigitalCaseAdmonPermissions
-                ),
-                Arguments.of(
-                        EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
-                        DUMMY_CASE_DATA,
-                        ctscExamineDigitalCaseAdmonPermissions
+                        ctscExamineDigitalCasePermissions("Probate")
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
                         DUMMY_CASE_DATA,
-                        ctscExamineDigitalCaseProbatePermissions
+                        ctscExamineDigitalCasePermissions("Probate")
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_ADMON,
+                        DUMMY_CASE_DATA,
+                        ctscExamineDigitalCasePermissions("Admon")
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
+                        DUMMY_CASE_DATA,
+                        ctscExamineDigitalCasePermissions("Admon")
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
                         DUMMY_CASE_DATA,
-                        ctscDefaultPermissions
+                        ctscExamineDigitalCasePermissions("Intestacy")
+
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
+                        DUMMY_CASE_DATA,
+                        ctscExamineDigitalCasePermissions("Intestacy")
                 )
         );
     }
@@ -141,7 +120,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(5));
+        assertThat(logic.getRules().size(), is(6));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

@@ -170,7 +170,7 @@
       </rule>
       <rule id="DecisionRule_14y4ltz">
         <inputEntry id="UnaryTests_1fkbl3x">
-          <text>"ExamineDigitalCaseAdmonWill","ExamineDigitalCaseAdmonWillReadyToIssue"</text>
+          <text>"ExamineDigitalCaseIntestacy","ExamineDigitalCaseIntestacyReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1hwkt1l">
           <text></text>
