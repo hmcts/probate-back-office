@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-configuration-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
   <decision id="wa-task-configuration-probate-grantofrepresentation" name="Task configuration DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_14cx079" hitPolicy="RULE ORDER">
       <input id="InputClause_1gxyo7f" label="CCD Case Data" camunda:inputVariable="caseData">
@@ -20,29 +20,12 @@
       <output id="Output_1" label="Name" name="name" typeRef="string" biodi:width="349" />
       <output id="OutputClause_021y3bb" label="Value" name="value" typeRef="string" biodi:width="932" />
       <output id="OutputClause_0tefly7" label="Can Reconfigure?" name="canReconfigure" typeRef="boolean" biodi:width="551" />
-      <rule id="DecisionRule_0zibb9q">
-        <inputEntry id="UnaryTests_0g95gdk">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_0do24dv">
-          <text>"ExamineDigitalCaseIntestacy"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0otn8nw">
-          <text>"description"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_10sxm5i">
-          <text>"[Select For QA](/cases/case-details/${[CASE_REFERENCE]}/trigger/boSelectForQA)"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0pwcpzx">
-          <text>true</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_06lzwv2">
         <inputEntry id="UnaryTests_1mcz2gy">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0a3bnkb">
-          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1whdf9l">
           <text>"description"</text>
@@ -59,7 +42,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0wm8t08">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1pghx77">
           <text>"workType"</text>
@@ -76,7 +59,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1qccoho">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1me1na3">
           <text>"caseManagementCategory"</text>
@@ -93,7 +76,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1ifu8wu">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1uvmdeh">
           <text>"caseName"</text>
@@ -110,7 +93,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0265cyh">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_19ge0vb">
           <text>"region"</text>
@@ -127,7 +110,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ol0bht">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1vwmxcn">
           <text>"roleCategory"</text>
@@ -144,7 +127,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0bs4y2i">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_13i06we">
           <text>"location"</text>
@@ -161,7 +144,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0n4h6rp">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1snulwi">
           <text>"locationName"</text>
@@ -178,7 +161,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_09ep7ys">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0kmzx5s">
           <text>"dueDateOrigin"</text>
@@ -195,7 +178,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1974p73">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0agv2w5">
           <text>"dueDateNonWorkingCalendar"</text>
@@ -212,7 +195,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1vk0ats">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0j93xsr">
           <text>"dueDateIntervalDays"</text>
@@ -229,7 +212,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0fhauae">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1oktc01">
           <text>"priorityDateOriginRef"</text>
@@ -246,7 +229,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_15uvuii">
-          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate", "ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_10u6fpl">
           <text>"dueDateNonWorkingDaysOfWeek"</text>
@@ -263,7 +246,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_17c1gn3">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseIntestacy"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0qzof0w">
           <text>"dueDateTime"</text>
