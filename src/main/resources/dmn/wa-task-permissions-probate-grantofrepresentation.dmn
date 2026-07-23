@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-permissions-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-permissions-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
   <decision id="wa-task-permissions-probate-grantofrepresentation" name="Task Permissions DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_1pr5oic" hitPolicy="RULE ORDER">
       <input id="InputClause_12crj6e" label="Task Type" biodi:width="299" camunda:inputVariable="taskType">
@@ -194,6 +194,64 @@
           <text>1</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_182ddia">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0g00iti">
+        <inputEntry id="UnaryTests_0ifs85b">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_081a1yq">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ikhrsx">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_112yii7">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0njl73f">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08oii2h">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1my3691">
+          <text>"SKILL:ABA6:AdColligendaBonaExamining"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0i4bdiv">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xjqw7m">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1q3dgtl">
+        <inputEntry id="UnaryTests_0kooyv7">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b27lru">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0llq894">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1x4ifbc">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04qz9kh">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1e59sre">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hwtrjx">
+          <text>"SKILL:ABA6:AdColligendaBonaExamining"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zf3qbs">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07nooar">
           <text>false</text>
         </outputEntry>
       </rule>

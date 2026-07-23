@@ -29,6 +29,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.APPLICATION_W
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
@@ -102,6 +103,16 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                         + "/trigger/moveToCWEscalation)  "
                                         + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boStopCaseForCaseMatchingForExamining)", true)
+                                .build()
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
+                        CaseDataBuilder.defaultWaCase()
+                                .isUrgent()
+                                .build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations()
+                                .expectedValue(WORK_TYPE, APPLICATION_WORK_TYPE, true)
                                 .build()
                 )
         );
