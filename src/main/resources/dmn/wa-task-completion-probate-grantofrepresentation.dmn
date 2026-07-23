@@ -20,17 +20,6 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0kzmtdl">
-        <inputEntry id="UnaryTests_0lle7fz">
-          <text>"boSelectForQA"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0up5w7w">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_072ovuc">
-          <text>"Auto"</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_0i7gnwi">
         <inputEntry id="UnaryTests_14kpkzi">
           <text>"boSelectForQA"</text>
@@ -75,14 +64,14 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_1kqt5nx">
-        <inputEntry id="UnaryTests_0zf4ps4">
-          <text>"moveToCWEscalation"</text>
+      <rule id="DecisionRule_04roixe">
+        <inputEntry id="UnaryTests_0wec4ul">
+          <text>"boIssueGrantForCaseMatching"</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_17gfw48">
+        <outputEntry id="LiteralExpression_16wjeot">
           <text>"ExamineDigitalCaseProbate"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0t81lei">
+        <outputEntry id="LiteralExpression_02lkhcd">
           <text>"Auto"</text>
         </outputEntry>
       </rule>
@@ -97,14 +86,25 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_04roixe">
-        <inputEntry id="UnaryTests_0wec4ul">
-          <text>"boIssueGrantForCaseMatching"</text>
+      <rule id="DecisionRule_1br4h1y">
+        <inputEntry id="UnaryTests_13qauv0">
+          <text>"moveToCWEscalation"</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_16wjeot">
+        <outputEntry id="LiteralExpression_14memun">
           <text>"ExamineDigitalCaseProbate"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_02lkhcd">
+        <outputEntry id="LiteralExpression_0flqv1j">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0fnx1hb">
+        <inputEntry id="UnaryTests_0na15d4">
+          <text>"boSelectForQA"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1iwzmok">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0cimku0">
           <text>"Auto"</text>
         </outputEntry>
       </rule>
