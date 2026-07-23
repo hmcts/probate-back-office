@@ -54,6 +54,7 @@ public class TaskAttributeConstants {
 
     public static final String EXAMINE_DIGITAL_CASE_PROBATE = "ExamineDigitalCaseProbate";
     public static final String EXAMINE_DIGITAL_CASE_ADMON = "ExamineDigitalCaseAdmonWill";
+    public static final String EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE = "ExamineDigitalCaseAdmonWillReadyToIssue";
     public static final String EXAMINE_DIGITAL_CASE_INTESTACY = "ExamineDigitalCaseIntestacy";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
@@ -97,5 +98,18 @@ public class TaskAttributeConstants {
             + "${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  "
             + "[Stop Case](/cases/case-details/"
             + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
+    public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE =
+            "[Amend Case Details](/cases/case-details/"
+                    + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
+                    + "[Issue Grant](/cases/case-details/"
+                    + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
+                    + "[Escalate to Registrar](/cases/case-details/"
+                    + "${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  "
+                    + "[SME Referral](/cases/case-details/"
+                    + "${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  "
+                    + "[Stop Case](/cases/case-details/"
+                    + "${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)";
+    public static final String CASE_PRINTED_STATE = "CasePrinted";
+    public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
 
 }

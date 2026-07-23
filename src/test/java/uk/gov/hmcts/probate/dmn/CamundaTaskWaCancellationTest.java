@@ -21,7 +21,10 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CANCELLATION_PROBATE
 
 class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
-    private static final String WITHDRAW_APPLICATION_EVENT_ID = "boWithdrawApplicationForCasePrinted";
+    private static final String
+            WITHDRAW_APPLICATION_FOR_CASE_PRINTED_EVENT_ID = "boWithdrawApplicationForCasePrinted";
+    private static final String
+            WITHDRAW_APPLICATION_FOR_READY_TO_ISSUE_EVENT_ID = "boWithdrawApplicationForReadyToIssue";
 
     @BeforeAll
     public static void initialization() {
@@ -34,7 +37,7 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(3));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(1));
+        assertThat(logic.getRules().size(), is(2));
     }
 
     @ParameterizedTest(name = "from state: {0}, event id: {1}, state: {2}")
@@ -48,10 +51,15 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         List<Map<String, Object>> dmnResultList = dmnDecisionTableResult.getResultList();
 
         // can be modified to use a switch case in future
-        if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_EVENT_ID)) {
-            testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
-        } else {
-            Assertions.assertEquals(0, dmnResultList.size());
+        switch (cancellationProperties.get("event")) {
+            case WITHDRAW_APPLICATION_FOR_CASE_PRINTED_EVENT_ID:
+                testBoWithdrawApplicationEvent("CasePrinted",dmnResultList, cancellationProperties);
+                break;
+            case WITHDRAW_APPLICATION_FOR_READY_TO_ISSUE_EVENT_ID:
+                testBoWithdrawApplicationEvent("BOReadyToIssue",dmnResultList, cancellationProperties);
+                break;
+            default:
+                Assertions.assertEquals(0, dmnResultList.size());
         }
 
     }
@@ -75,9 +83,9 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         return inputVariables;
     }
 
-    private void testBoWithdrawApplicationEvent(List<Map<String, Object>> dmnResultList,
+    private void testBoWithdrawApplicationEvent(String validState, List<Map<String, Object>> dmnResultList,
                                                 Map<String, String> cancellationProperties) {
-        if (cancellationProperties.containsValue("CasePrinted")
+        if (cancellationProperties.containsValue(validState)
                 && cancellationProperties.containsValue("BOCaseClosed")) {
             Assertions.assertEquals(1, dmnResultList.size());
             Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),

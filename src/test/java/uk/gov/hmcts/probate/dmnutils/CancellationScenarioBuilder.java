@@ -43,8 +43,15 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                             "Cancel"
                     )
                 ),
-                // Withdraw application from CasePrinted ("Awaiting documentation") cancels no tasks
-                // on the case when there is an invalid event
+                Arguments.of(
+                        cancelWithProperties(
+                                "boWithdrawApplicationForReadyToIssue",
+                                "BOReadyToIssue",
+                                "BOCaseClosed",
+                                "case progression",
+                                "Cancel"
+                        )
+                ),
                 Arguments.of(
                     invalidEventOrStateEntryMap(
                             "someInvalidEvent",
@@ -52,8 +59,6 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                             "BOCaseClosed"
                     )
                 ),
-                // Withdraw application from CasePrinted ("Awaiting documentation") cancels no tasks
-                // on the case when fromState is the wrong state
                 Arguments.of(
                         invalidEventOrStateEntryMap(
                         "boWithdrawApplicationForCasePrinted",
@@ -61,13 +66,25 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                         "BOCaseClosed"
                         )
                 ),
-                // Withdraw application from CasePrinted ("Awaiting documentation") cancels no tasks
-                // on the case when toState is a different state
                 Arguments.of(
                         invalidEventOrStateEntryMap(
                         "boWithdrawApplicationForCasePrinted",
                         "CasePrinted",
                         "CasePrinted"
+                        )
+                ),
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "boWithdrawApplicationForReadyToIssue",
+                                "CasePrinted",
+                                "BOCaseClosed"
+                        )
+                ),
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "boWithdrawApplicationForReadyToIssue",
+                                "BOReadyToIssue",
+                                "CasePrinted"
                         )
                 )
         );

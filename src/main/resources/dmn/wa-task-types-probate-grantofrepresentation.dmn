@@ -45,6 +45,18 @@
           <text>"Examine Digital Case - Intestacy"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1imgf9k">
+        <description>EDCAWRI</description>
+        <inputEntry id="UnaryTests_1swgjfg">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_04v0mpj">
+          <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xousyq">
+          <text>"Examine Digital Case - Admon"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

@@ -309,6 +309,35 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1ddxggc">
+        <inputEntry id="UnaryTests_05ozt6l">
+          <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1yfhpeo">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ve1yhr">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mw1dal">
+          <text>"admonWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vi6kx2">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0en9vn1">
+          <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hkzao9">
+          <text>"Examine Digital Case - Admon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ouqdo6">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0kdtg8g">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

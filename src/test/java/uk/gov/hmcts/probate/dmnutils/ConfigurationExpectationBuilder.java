@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADDITIONAL_PROPERTIES_ROLE_ASSIGNMENT_ID;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_MANAGEMENT_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_INTERVAL_DAYS;
@@ -19,21 +21,21 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LOCATION_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MAJOR_PRIORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.MINOR_PRIORITY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_WORKING_DAYS_OF_WEEK;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_CALENDAR_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_TIME_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_INTERVAL_DAYS_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_WORKING_DAYS_OF_WEEK_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.APPLICATIONS_WORK_TYPE_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_WORKING_DAYS_OF_WEEK;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 
 
 public class ConfigurationExpectationBuilder {
@@ -52,10 +54,15 @@ public class ConfigurationExpectationBuilder {
         return new ConfigurationExpectationBuilder();
     }
 
-    public static ConfigurationExpectationBuilder defaultExamineDigitalCaseExpectations() {
+    public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForState(String state) {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
-        builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true)
-                .expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true)
+
+        if (state.equalsIgnoreCase(READY_TO_ISSUE_STATE)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
+        } else {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
+        }
+        builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true)
                 .expectedValue(CASE_MANAGEMENT_CATEGORY, "Probate", true)
                 .expectedValue(CASE_NAME, REFERENCE_VALUE, true)
                 .expectedValue(REGION, "DUMMY_PLACEHOLDER_REGION", true)
