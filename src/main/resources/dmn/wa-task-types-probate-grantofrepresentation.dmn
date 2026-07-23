@@ -69,6 +69,18 @@
           <text>"Examine Digital Case - Probate"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0ej0tka">
+        <description>EDCIRI</description>
+        <inputEntry id="UnaryTests_0diu197">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xku01b">
+          <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0vts9ek">
+          <text>"Examine Digital Case - Intestacy"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

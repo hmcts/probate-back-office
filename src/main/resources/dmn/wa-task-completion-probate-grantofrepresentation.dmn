@@ -7,7 +7,7 @@
           <text>eventId</text>
         </inputExpression>
       </input>
-      <output id="Output_1" label="Task Type" name="taskType" typeRef="string" biodi:width="342" />
+      <output id="Output_1" label="Task Type" name="taskType" typeRef="string" biodi:width="361" />
       <output id="OutputClause_1mldd9e" label="Completion Mode" name="completionMode" typeRef="string" />
       <rule id="DecisionRule_0tn82oz">
         <inputEntry id="UnaryTests_152sy88">
@@ -61,6 +61,17 @@
           <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_158v5av">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0069rjp">
+        <inputEntry id="UnaryTests_1fvv8ff">
+          <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_097jzif">
+          <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ppse9o">
           <text>"Auto"</text>
         </outputEntry>
       </rule>

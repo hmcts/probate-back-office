@@ -59,7 +59,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1brhpfn">
-          <text>"ExamineDigitalCaseAdmonWillReadyToIssue","ExamineDigitalCaseProbateReadyToIssue"</text>
+          <text>"ExamineDigitalCaseAdmonWillReadyToIssue","ExamineDigitalCaseProbateReadyToIssue","ExamineDigitalCaseIntestacyReadyToIssue"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0q0y0wa">
           <text>"description"</text>
