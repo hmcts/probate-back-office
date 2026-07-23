@@ -37,8 +37,6 @@ echo definition_tmp_out_file = $definition_tmp_out_file
 echo definition_tmp_dir = $definition_tmp_dir
 echo CCD_DEF_AAC_URL=${CCD_DEF_AAC_URL}
 
-env AZURE_CONFIG_DIR=/opt/jenkins/.azure-nonprod az acr login --name hmctsprod
-
 docker run --rm --name json2xlsx \
     -v ${definition_tmp_dir}:/tmp/ccd-definition \
     -v ${definition_tmp_out_file}:/tmp/ccd-definition.xlsx \

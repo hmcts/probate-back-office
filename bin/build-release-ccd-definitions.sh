@@ -11,4 +11,6 @@ if [[ ${environment} != "prod" && ${environment} != "aat" && ${environment} != "
   exit 1
 fi
 
+env AZURE_CONFIG_DIR=/opt/jenkins/.azure-nonprod az acr login --name hmctsprod
+
 .././ccdImports/conversionScripts/createAllXLS-pipeline.sh probate-back-office-${environment}.service.core-compute-${environment}.internal ${environment} ${shutterOption} aac-manage-case-assignment-${environment}.service.core-compute-${environment}.internal $excludedFilenamePatterns
