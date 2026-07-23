@@ -4,9 +4,9 @@ provider "azurerm" {
 
 provider "azurerm" {
   features {}
-  resource_provider_registrations = "none"
-  alias                           = "cft_vnet"
-  subscription_id                 = var.aks_subscription_id
+  skip_provider_registration = true
+  alias                      = "cft_vnet"
+  subscription_id            = var.aks_subscription_id
 }
 
 locals {
@@ -27,7 +27,7 @@ module "postgresql" {
     azurerm.postgres_network = azurerm.cft_vnet
   }
 
-  source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=DTSPO-30107-additional-postgres-admins"
+  source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=master"
   env    = var.env
 
   product       = var.product
