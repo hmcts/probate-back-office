@@ -375,6 +375,64 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1f7j02h">
+        <inputEntry id="UnaryTests_097gm36">
+          <text>"resolveCWEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0b0uu13">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0v9n2fa">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rneoh6">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1anx08i">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xp2k1v">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0jw06jb">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jozu1p">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yxk5uq">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_08pps6u">
+        <inputEntry id="UnaryTests_1yyaki0">
+          <text>"applyforGrantPaperApplicationMan", "attachScannedDocs", "boResolveStop", "resolveCWEscalation", "changeState", "createCaseFromBulkScan", "handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06lwi0h">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kjp3x1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0pm8adb">
+          <text>"admonWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0cqt3ty">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02nklps">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0upp791">
+          <text>"Examine Digital Case - Admon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tmrbnq">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bz2q9x">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
