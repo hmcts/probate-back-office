@@ -22,12 +22,15 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
-import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.APPLICATION_WORK_TYPE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WORK_TYPE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -66,6 +69,24 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boSelectForQA)", true)
+                                .build()
+                ),
+                Arguments.of(
+                        EXAMINE_DE_BONIS_NON,
+                        CaseDataBuilder.defaultWaCase()
+                                .isUrgent()
+                                .build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations()
+                                .expectedValue(WORK_TYPE, APPLICATION_WORK_TYPE, true)
+                                .expectedValue(DESCRIPTION, "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+                                        + "/trigger/boIssueGrantForCaseMatching)  "
+                                        + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                                        + "/trigger/boEscalateToRegistrar)  "
+                                        + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                                        + "/trigger/moveToCWEscalation)  "
+                                        + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                                        + "/trigger/boStopCaseForCaseMatchingForExamining)", true)
                                 .build()
                 )
         );

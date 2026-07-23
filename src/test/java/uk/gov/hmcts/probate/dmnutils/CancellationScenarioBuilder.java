@@ -69,6 +69,43 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                         "CasePrinted",
                         "CasePrinted"
                         )
+                ),
+
+                Arguments.of(
+                        cancelWithProperties(
+                                "boWithdrawApplicationForReadyToIssue",
+                                "BOReadyToIssue",
+                                "BOCaseClosed",
+                                "case progression",
+                                "Cancel"
+                        )
+                ),
+                // Withdraw application from CasePrinted ("Awaiting documentation") cancels no tasks
+                // on the case when there is an invalid event
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "someInvalidEvent",
+                                "BOReadyToIssue",
+                                "BOCaseClosed"
+                        )
+                ),
+                // Withdraw application from CasePrinted ("Awaiting documentation") cancels no tasks
+                // on the case when fromState is the wrong state
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "boWithdrawApplicationForReadyToIssue",
+                                "BOCaseClosed",
+                                "BOCaseClosed"
+                        )
+                ),
+                // Withdraw application from CasePrinted ("Awaiting documentation") cancels no tasks
+                // on the case when toState is a different state
+                Arguments.of(
+                        invalidEventOrStateEntryMap(
+                                "boWithdrawApplicationForReadyToIssue",
+                                "BOReadyToIssue",
+                                "BOReadyToIssue"
+                        )
                 )
         );
     }

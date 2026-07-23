@@ -45,6 +45,18 @@
           <text>"Examine Digital Case - Intestacy"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0n139s3">
+        <description>EDBN</description>
+        <inputEntry id="UnaryTests_0jis367">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18ny0ws">
+          <text>"ExamineDeBonisNon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1s133fv">
+          <text>"Examine - De Bonis Non"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
