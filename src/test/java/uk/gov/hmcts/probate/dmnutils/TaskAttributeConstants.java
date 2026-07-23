@@ -57,6 +57,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DIGITAL_CASE_ADMON = "ExamineDigitalCaseAdmonWill";
     public static final String EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE = "ExamineDigitalCaseAdmonWillReadyToIssue";
     public static final String EXAMINE_DIGITAL_CASE_INTESTACY = "ExamineDigitalCaseIntestacy";
+    public static final String EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE = "ExamineDigitalCaseIntestacyReadyToIssue";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";

@@ -23,6 +23,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -488,37 +489,57 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+    static Stream<Arguments> intestacyScenarios(){
+
+        Map<String,Object> examineDigitalCaseIntestacyReadyToIssueTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
+                "name", "Examine Digital Case - Intestacy",
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy"),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy"),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy"),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy"),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                )
+        );
+    }
+
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(5));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(5));
+        assertThat(logic.getRules().size(), is(6));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
-    @MethodSource("probateScenarios")
-    void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
-                                                      String postEventState,
-                                                      Map<String, Object> additionalData,
-                                                      List<Map<String, Object>> expectation) {
-        VariableMap inputVariables = new VariableMapImpl();
-        inputVariables.putValue("eventId", eventId);
-        inputVariables.putValue("postEventState", postEventState);
-        if (additionalData != null) {
-            inputVariables.putValue("additionalData", additionalData);
-        }
-        DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
-        resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
-    }
-
-    @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
-    @MethodSource("admonScenarios")
-    void given_multiple_event_ids_should_evaluate_dmn_for_admon_scenarios(String eventId,
-                                                      String postEventState,
-                                                      Map<String, Object> additionalData,
-                                                      List<Map<String, Object>> expectation) {
+    @MethodSource({"intestacyScenarios", "probateScenarios", "admonScenarios"})
+    void given_multiple_event_ids_should_evaluate_dmn_for_intestacy_scenarios(String eventId,
+                                                                            String postEventState,
+                                                                            Map<String, Object> additionalData,
+                                                                            List<Map<String, Object>> expectation) {
         VariableMap inputVariables = new VariableMapImpl();
         inputVariables.putValue("eventId", eventId);
         inputVariables.putValue("postEventState", postEventState);
