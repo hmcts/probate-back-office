@@ -32,3 +32,33 @@ test.describe("Data Creation for Global Search Testing - Caveat", () => {
         }
     });
 });
+
+test.describe("Solicitor - Apply Caveat", () => {
+  test("Solicitor - Apply Caveat @webkit", async ({
+    basePage,
+    signInPage,
+    createCasePage,
+    solCreateCasePage,
+    cwEventActionsPage,
+  }, testInfo) => {
+    test.setTimeout(300000);
+    const scenarioName = "Solicitor - Apply Caveat";
+
+    await basePage.logInfo(scenarioName, "Login as Solicitor", null);
+    await signInPage.authenticateWithIdamIfAvailable(true);
+
+    let nextStepName = "Application details";
+    let endState = "Caveat created";
+    await createCasePage.selectNewCase();
+    await createCasePage.selectCaseTypeOptions(
+      createCaseConfig.list2_text_caveat,
+      createCaseConfig.list4_text_caveat
+    );
+    await solCreateCasePage.applyCaveatPage1();
+    await solCreateCasePage.applyCaveatPage2();
+    await solCreateCasePage.cyaPage();
+
+    await solCreateCasePage.seeEndState(endState);
+  });
+}); 
+

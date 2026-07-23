@@ -4,7 +4,7 @@ dotenv.config({ path: "./src/test/PlaywrightTest/.env" });
 
 export const testConfig = {
   TestBackOfficeUrl:
-    process.env.TEST_E2E_URL || "https://manage-case.aat.platform.hmcts.net",
+    process.env.TEST_E2E_URL || "http://xui-probate-back-office-pr-4026.preview.platform.hmcts.net",
   TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
   TestRetryFeatures: 2, // process.env.RETRY_FEATURES || 2,
   TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,
