@@ -489,7 +489,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
-    static Stream<Arguments> intestacyScenarios(){
+    static Stream<Arguments> intestacyScenarios() {
 
         Map<String,Object> examineDigitalCaseIntestacyReadyToIssueTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,

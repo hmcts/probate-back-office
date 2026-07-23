@@ -35,7 +35,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
     private static final String DUMMY_CASE_DATA = "someCaseData";
 
-    private static List<Map<String, Object>> ctscExamineDigitalCasePermissions(String caseType){
+    private static List<Map<String, Object>> ctscExamineDigitalCasePermissions(String caseType) {
         return List.of(
                 Map.of(
                         "name", "ctsc",
