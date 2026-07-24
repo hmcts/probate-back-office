@@ -61,10 +61,9 @@ public class ConfigurationExpectationBuilder {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
 
         if (conditions.containsValue(READY_TO_ISSUE_STATE) && conditions.containsKey("taskType")
-                && (
-                        conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
+                && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
                 || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
-        )) {
+            )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
