@@ -215,7 +215,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "boResolveStop",
                         "BOReadyToIssue",
-                        additionalData(false, "gop"),
+                        additionalData(false, "gop", false, Collections.emptyList()),
                         List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
@@ -245,7 +245,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "changeState",
                         "BOReadyToIssue",
-                        additionalData(false, "gop"),
+                        additionalData(false, "gop", false, Collections.emptyList()),
                         List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
@@ -275,7 +275,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
-                        additionalData(false, "gop"),
+                        additionalData(false, "gop", false, Collections.emptyList()),
                         List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
@@ -686,7 +686,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(6));
+        assertThat(logic.getRules().size(), is(7));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
