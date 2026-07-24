@@ -410,32 +410,38 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_1ddxggc">
-        <inputEntry id="UnaryTests_05ozt6l">
+      <rule id="DecisionRule_1marxds">
+        <inputEntry id="UnaryTests_1grawlz">
           <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_1yfhpeo">
+        <inputEntry id="UnaryTests_07mmfig">
           <text>"BOReadyToIssue"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0ve1yhr">
+        <inputEntry id="UnaryTests_0el2yzx">
           <text>false</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0mw1dal">
+        <inputEntry id="UnaryTests_078n53k">
           <text>"admonWill"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0vi6kx2">
+        <inputEntry id="UnaryTests_0gnp51i">
           <text>false</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_0en9vn1">
+        <inputEntry id="UnaryTests_05rg5ab">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mqm82i">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bgn9xq">
           <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0hkzao9">
+        <outputEntry id="LiteralExpression_01suyy4">
           <text>"Examine Digital Case - Admon"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0ouqdo6">
+        <outputEntry id="LiteralExpression_1hnmqgw">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0kdtg8g">
+        <outputEntry id="LiteralExpression_072583q">
           <text>"case progression"</text>
         </outputEntry>
       </rule>

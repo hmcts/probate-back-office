@@ -68,7 +68,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
                         DUMMY_CASE_DATA,
-                        ctscExamineDigitalCaseAdmonPermissions
+                        getCtscExaminePermissions(ADMON_WILL_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,

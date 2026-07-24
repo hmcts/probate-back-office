@@ -36,6 +36,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DE_BONIS_NON;
 
 
 public class ConfigurationExpectationBuilder {
@@ -54,11 +56,13 @@ public class ConfigurationExpectationBuilder {
         return new ConfigurationExpectationBuilder();
     }
 
-    public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForState(String state) {
+    public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForConditions(Map<String, String> conditions) {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
 
-        if (state.equalsIgnoreCase(READY_TO_ISSUE_STATE)) {
+        if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
+        } else if (conditions.containsKey("taskType") && conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DE_BONIS_NON, true);
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }

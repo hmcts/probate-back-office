@@ -110,6 +110,15 @@ public class TaskAttributeConstants {
                     + "${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  "
                     + "[Stop Case](/cases/case-details/"
                     + "${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)";
+    public static final String DESCRIPTION_EXAMINE_DE_BONIS_NON =
+            "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boIssueGrantForCaseMatching)  "
+                    + "[Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boEscalateToRegistrar)  "
+                    + "[SME Referral](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/moveToCWEscalation)  "
+                    + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/boStopCaseForCaseMatchingForExamining)";
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
 
