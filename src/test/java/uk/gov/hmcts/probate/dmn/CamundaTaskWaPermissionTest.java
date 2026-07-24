@@ -22,10 +22,14 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_PERMISSIONS_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
@@ -43,45 +47,6 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 )
         );
 
-    private static final List<Map<String, Object>> ctscExamineDigitalCaseProbatePermissions = List.of(
-            Map.of(
-                    "name", "ctsc",
-                    "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
-                    "roleCategory", ROLE_CATEGORY_CTSC,
-                    "assignmentPriority", 1,
-                    "autoAssignable", false,
-                    "authorisations", "SKILL:ABA6:ProbateExamining"
-            ),
-            Map.of(
-                    "name", "ctsc-team-leader",
-                    "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                    "roleCategory", ROLE_CATEGORY_CTSC,
-                    "assignmentPriority", 1,
-                    "autoAssignable", false,
-                    "authorisations", "SKILL:ABA6:ProbateExamining"
-            )
-        );
-
-    private static final List<Map<String, Object>> ctscExamineDigitalCaseAdmonPermissions = List.of(
-        Map.of(
-                "name", "ctsc",
-                "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
-                "roleCategory", ROLE_CATEGORY_CTSC,
-                "assignmentPriority", 1,
-                "autoAssignable", false,
-                "authorisations", "SKILL:ABA6:AdmonExamining"
-        ),
-        Map.of(
-                "name", "ctsc-team-leader",
-                "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                "roleCategory", ROLE_CATEGORY_CTSC,
-                "assignmentPriority", 1,
-                "autoAssignable", false,
-                "authorisations", "SKILL:ABA6:AdmonExamining"
-        )
-    );
-
-
 
     @BeforeAll
     public static void initialization() {
@@ -93,12 +58,12 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         DUMMY_CASE_DATA,
-                        ctscExamineDigitalCaseProbatePermissions
+                        getCtscExaminePermissions(PROBATE_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         DUMMY_CASE_DATA,
-                        ctscExamineDigitalCaseAdmonPermissions
+                        getCtscExaminePermissions(ADMON_WILL_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
@@ -109,6 +74,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_INTESTACY,
                         DUMMY_CASE_DATA,
                         ctscDefaultPermissions
+                ),
+                Arguments.of(
+                        EXAMINE_DE_BONIS_NON,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissionsDeBonisNon()
                 )
         );
     }
@@ -135,7 +105,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(5));
+        assertThat(logic.getRules().size(), is(7));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
@@ -160,6 +130,47 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
     private void assertThatOutputContainInOrder(List<String> outputColumnIds, List<DmnDecisionTableOutputImpl> output) {
         IntStream.range(0, output.size())
                 .forEach(i -> assertThat(output.get(i).getOutputName(), is(outputColumnIds.get(i))));
+    }
+
+    private static List<Map<String, Object>> getCtscExaminePermissions(String skillCode) {
+        return List.of(
+                Map.of(
+                        "name", "ctsc",
+                        "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
+                        "roleCategory", ROLE_CATEGORY_CTSC,
+                        "assignmentPriority", 1,
+                        "autoAssignable", false,
+                        "authorisations", skillCode
+                ),
+                Map.of(
+                        "name", "ctsc-team-leader",
+                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
+                        "roleCategory", ROLE_CATEGORY_CTSC,
+                        "assignmentPriority", 1,
+                        "autoAssignable", false,
+                        "authorisations", skillCode
+                )
+       );
+    }
+
+    private static List<Map<String, Object>> getCtscExaminePermissionsDeBonisNon() {
+        return List.of(
+                Map.of(
+                        "name", "ctsc",
+                        "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
+                        "roleCategory", ROLE_CATEGORY_CTSC,
+                        "assignmentPriority", 1,
+                        "autoAssignable", false,
+                        "authorisations", DE_BONIS_NON_SKILL_CODE
+                ),
+                Map.of(
+                        "name", "ctsc-team-leader",
+                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
+                        "roleCategory", ROLE_CATEGORY_CTSC,
+                        "assignmentPriority", 1,
+                        "autoAssignable", false
+                )
+       );
     }
 
 }

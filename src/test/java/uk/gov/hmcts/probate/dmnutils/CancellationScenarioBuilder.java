@@ -84,7 +84,7 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                         invalidEventOrStateEntryMap(
                                 "boWithdrawApplicationForReadyToIssue",
                                 "BOReadyToIssue",
-                                "CasePrinted"
+                                "BOReadyToIssue"
                         )
                 )
         );
