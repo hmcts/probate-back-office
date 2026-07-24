@@ -305,6 +305,41 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1ktizax">
+        <inputEntry id="UnaryTests_1uhsezk">
+          <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1iddn5j">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03td7rw">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1y9dkxs">
+          <text>"intestacy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12hq4ei">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lsiw85">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0cseyt3">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01h653j">
+          <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0w3f9ah">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04t6uxb">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gpv9v4">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1m2l1od">
         <inputEntry id="UnaryTests_1du9dwz">
           <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
