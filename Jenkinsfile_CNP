@@ -406,6 +406,7 @@ withPipeline("java", product, component) {
   before('smoketest:preview') {
 
     sh """
+      env AZURE_CONFIG_DIR=/opt/jenkins/.azure-nonprod az acr login --name hmctsprod
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
       ./bin/add-ccd-roles.sh
     """
