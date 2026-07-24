@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
@@ -820,7 +821,25 @@ public class BusinessValidationController {
             consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> clearSiblingFields(
             @RequestBody CallbackRequest callbackRequest) {
-        return ResponseEntity.ok(callbackResponseTransformer.clearSiblingFields(callbackRequest));
+        CaseData requestData = callbackRequest.getCaseDetails().getData();
+        log.info("TEMP_SIBLING_TRACE stage=BO_CONTROLLER_CLEAR_SIBLING_FIELDS_REQUEST eventId={} caseId={} "
+                        + "sameParents={} otherWholeBloodSiblings={} wholeBloodSiblingsDiedBeforeDeceased={}",
+                callbackRequest.getEventId(),
+                callbackRequest.getCaseDetails().getId(),
+                requestData == null ? null : requestData.getApplicantSameParentsAsDeceased(),
+                requestData == null ? null : requestData.getOtherWholeBloodSiblings(),
+                requestData == null ? null : requestData.getWholeBloodSiblingsDiedBeforeDeceased());
+
+        CallbackResponse response = callbackResponseTransformer.clearSiblingFields(callbackRequest);
+        ResponseCaseData responseData = response.getData();
+        log.info("TEMP_SIBLING_TRACE stage=BO_CONTROLLER_CLEAR_SIBLING_FIELDS_RESPONSE eventId={} caseId={} "
+                        + "sameParents={} otherWholeBloodSiblings={} wholeBloodSiblingsDiedBeforeDeceased={}",
+                callbackRequest.getEventId(),
+                callbackRequest.getCaseDetails().getId(),
+                responseData == null ? null : responseData.getApplicantSameParentsAsDeceased(),
+                responseData == null ? null : responseData.getOtherWholeBloodSiblings(),
+                responseData == null ? null : responseData.getWholeBloodSiblingsDiedBeforeDeceased());
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(path = "/registrars-decision", consumes = APPLICATION_JSON_VALUE,

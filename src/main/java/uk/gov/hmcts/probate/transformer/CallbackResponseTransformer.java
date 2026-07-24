@@ -952,7 +952,7 @@ public class CallbackResponseTransformer {
                     clearParentRelatedFields(responseCaseDataBuilder);
                     break;
                 case SIBLING:
-                    clearSiblingRelatedFields(responseCaseDataBuilder);
+                    clearSiblingRelatedFields(responseCaseDataBuilder, callbackRequest.getCaseDetails().getId());
                     break;
 
                 default:
@@ -997,7 +997,9 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder.deceasedAdoptedOut(null);
     }
 
-    private void clearSiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+    private void clearSiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder, Long caseId) {
+        log.info("TEMP_SIBLING_TRACE stage=BO_CLEAR_RELATIONSHIP_FIELDS caseId={} "
+            + "action=clearSiblingRelatedFields", caseId);
         responseCaseDataBuilder.deceasedAnyLivingDescendants(null);
         responseCaseDataBuilder.deceasedAnyLivingParents(null);
         responseCaseDataBuilder.deceasedAdoptedIn(null);
@@ -2461,10 +2463,15 @@ public class CallbackResponseTransformer {
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(),
                         Optional.empty(), false);
 
-        String applicantSameParentsAsDeceasedBefore = callbackRequest.getCaseDetailsBefore().getData()
-                .getApplicantSameParentsAsDeceased();
-        String applicantSameParentsAsDeceasedAfter = callbackRequest.getCaseDetails().getData()
-                .getApplicantSameParentsAsDeceased();
+        CaseData caseDataBefore = callbackRequest.getCaseDetailsBefore().getData();
+        CaseData caseDataAfter = callbackRequest.getCaseDetails().getData();
+        Long caseId = callbackRequest.getCaseDetails().getId();
+
+        logSiblingFieldTrace("BO_CLEAR_SIBLING_FIELDS_REQUEST_BEFORE", caseId, caseDataBefore);
+        logSiblingFieldTrace("BO_CLEAR_SIBLING_FIELDS_REQUEST_AFTER", caseId, caseDataAfter);
+
+        String applicantSameParentsAsDeceasedBefore = caseDataBefore.getApplicantSameParentsAsDeceased();
+        String applicantSameParentsAsDeceasedAfter = caseDataAfter.getApplicantSameParentsAsDeceased();
         if (applicantSameParentsAsDeceasedBefore != null && !applicantSameParentsAsDeceasedBefore
                 .equals(applicantSameParentsAsDeceasedAfter)) {
             switch (applicantSameParentsAsDeceasedBefore) {
@@ -2485,7 +2492,37 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.primaryApplicantAddress(null);
             responseCaseDataBuilder.primaryApplicantPhoneNumber(null);
         }
-        return transformResponse(responseCaseDataBuilder.build());
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        logSiblingFieldTrace("BO_CLEAR_SIBLING_FIELDS_RESPONSE", caseId, responseCaseData);
+        return transformResponse(responseCaseData);
+    }
+
+    private void logSiblingFieldTrace(String stage, Long caseId, CaseData caseData) {
+        if (caseData == null) {
+            log.info("TEMP_SIBLING_TRACE stage={} caseId={} caseData=null", stage, caseId);
+            return;
+        }
+        log.info("TEMP_SIBLING_TRACE stage={} caseId={} sameParents={} otherWholeBloodSiblings={} "
+                        + "wholeBloodSiblingsDiedBeforeDeceased={}",
+                stage,
+                caseId,
+                caseData.getApplicantSameParentsAsDeceased(),
+                caseData.getOtherWholeBloodSiblings(),
+                caseData.getWholeBloodSiblingsDiedBeforeDeceased());
+    }
+
+    private void logSiblingFieldTrace(String stage, Long caseId, ResponseCaseData responseCaseData) {
+        if (responseCaseData == null) {
+            log.info("TEMP_SIBLING_TRACE stage={} caseId={} responseCaseData=null", stage, caseId);
+            return;
+        }
+        log.info("TEMP_SIBLING_TRACE stage={} caseId={} sameParents={} otherWholeBloodSiblings={} "
+                        + "wholeBloodSiblingsDiedBeforeDeceased={}",
+                stage,
+                caseId,
+                responseCaseData.getApplicantSameParentsAsDeceased(),
+                responseCaseData.getOtherWholeBloodSiblings(),
+                responseCaseData.getWholeBloodSiblingsDiedBeforeDeceased());
     }
 
     public CallbackResponse setupDynamicList(CallbackRequest callbackRequest) {
