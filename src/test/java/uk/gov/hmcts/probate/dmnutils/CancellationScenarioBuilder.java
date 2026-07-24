@@ -76,7 +76,7 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                 Arguments.of(
                         invalidEventOrStateEntryMap(
                                 "boWithdrawApplicationForReadyToIssue",
-                                "CasePrinted",
+                                "BOCaseClosed",
                                 "BOCaseClosed"
                         )
                 ),
@@ -84,7 +84,7 @@ public class CancellationScenarioBuilder implements ArgumentsProvider {
                         invalidEventOrStateEntryMap(
                                 "boWithdrawApplicationForReadyToIssue",
                                 "BOReadyToIssue",
-                                "CasePrinted"
+                                "BOReadyToIssue"
                         )
                 )
         );
