@@ -95,12 +95,22 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
     private void addParentAdoptedOutErrors(List<FieldErrorResponse> errors, String relationshipToDeceased,
                                            SolsApplicantFamilyDetails details) {
 
-        if (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
-                && NO.equalsIgnoreCase(details.getGrandchildParentAdoptedIn())
-                && YES.equalsIgnoreCase(details.getGrandchildParentAdoptedOut())) {
+        if (isParentAdoptedOut(relationshipToDeceased, details)) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_ADOPTED_OUT));
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, PARENT_ADOPTED_OUT_WELSH));
         }
+    }
+
+    private boolean isParentAdoptedOut(String relationshipToDeceased, SolsApplicantFamilyDetails details) {
+        return (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
+                && NO.equalsIgnoreCase(details.getGrandchildParentAdoptedIn())
+                && YES.equalsIgnoreCase(details.getGrandchildParentAdoptedOut()))
+                || (WHOLE_BLOOD_NIECE_OR_NEPHEW.equalsIgnoreCase(relationshipToDeceased)
+                && NO.equalsIgnoreCase(details.getWholeNieceOrNephewParentAdoptedIn())
+                && YES.equalsIgnoreCase(details.getWholeNieceOrNephewParentAdoptedOut()))
+                || (HALF_BLOOD_NIECE_OR_NEPHEW.equalsIgnoreCase(relationshipToDeceased)
+                && NO.equalsIgnoreCase(details.getHalfNieceOrNephewParentAdoptedIn())
+                && YES.equalsIgnoreCase(details.getHalfNieceOrNephewParentAdoptedOut()));
     }
 
     private boolean isParentNotDeceased(String relationshipToDeceased, String grandchildParentIsDeceased,
@@ -119,7 +129,13 @@ public class IntestacyCoApplicantValidationRule implements ValidationRule {
                     && NO.equalsIgnoreCase(details.getCoApplicantAdoptionInEnglandOrWales()))
                 || (GRAND_CHILD.equalsIgnoreCase(relationshipToDeceased)
                     && YES.equalsIgnoreCase(details.getGrandchildParentAdoptedIn())
-                    && NO.equalsIgnoreCase(details.getGrandchildParentAdoptionInEnglandOrWales()));
+                    && NO.equalsIgnoreCase(details.getGrandchildParentAdoptionInEnglandOrWales()))
+                || (WHOLE_BLOOD_NIECE_OR_NEPHEW.equalsIgnoreCase(relationshipToDeceased)
+                    && YES.equalsIgnoreCase(details.getWholeNieceOrNephewParentAdoptedIn())
+                    && NO.equalsIgnoreCase(details.getWholeNieceOrNephewParentAdoptionInEnglandOrWales()))
+                || (HALF_BLOOD_NIECE_OR_NEPHEW.equalsIgnoreCase(relationshipToDeceased)
+                    && YES.equalsIgnoreCase(details.getHalfNieceOrNephewParentAdoptedIn())
+                    && NO.equalsIgnoreCase(details.getHalfNieceOrNephewParentAdoptionInEnglandOrWales()));
     }
 
     private static boolean isNonParentRelation(String relationshipToDeceased) {
