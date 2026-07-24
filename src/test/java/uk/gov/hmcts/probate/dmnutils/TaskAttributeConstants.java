@@ -32,7 +32,6 @@ public class TaskAttributeConstants {
     public static final String ROUTINE_WORK_TYPE = "routine_work";
     public static final String HEARING_WORK_TYPE = "hearing_work";
     public static final String PRIORITY_WORK_TYPE = "priority";
-    public static final String APPLICATION_WORK_TYPE = "applications";
     public static final String ACCESS_WORK_TYPE = "access_requests";
 
     public static final String ROLE_CATEGORY_ADMIN = "ADMIN";
