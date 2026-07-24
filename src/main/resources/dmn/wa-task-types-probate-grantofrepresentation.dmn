@@ -58,14 +58,26 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ww2054">
-        <description>EWOCTBN</description>
+        <description>EFW</description>
         <inputEntry id="UnaryTests_1cdpm5n">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0fi7y0x">
-          <text>"ExamineWillOrCodicilToBeNotated"</text>
+          <text>"ExamineFiatWill"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0fj9pa5">
+          <text>"Examine - Fiat Will"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ynvyec">
+        <description>EWOCTBN</description>
+        <inputEntry id="UnaryTests_0pqe5ub">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06zlqkp">
+          <text>"ExamineWillOrCodicilToBeNotated"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0f5knzm">
           <text>"Examine - Will or Codicil to be Notated"</text>
         </outputEntry>
       </rule>

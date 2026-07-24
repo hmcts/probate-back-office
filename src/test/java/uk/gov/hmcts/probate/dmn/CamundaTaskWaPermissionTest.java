@@ -29,6 +29,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
@@ -81,6 +83,12 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
                 ),
                 Arguments.of(
+                    EXAMINE_FIAT_WILL,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(FIAT_WILL_SKILL_CODE)
+
+                ),
+                Arguments.of(
                     EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
                     DUMMY_CASE_DATA,
                     getCtscExaminePermissions(WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE)
@@ -120,7 +128,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(12));
+        assertThat(logic.getRules().size(), is(14));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
