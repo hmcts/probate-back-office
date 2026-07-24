@@ -187,7 +187,13 @@
                     {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
                     rhiant
                     {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
-                    brawd/chwaer
+                        {% if case_details.case_data.applicantSameParentsAsDeceased == "bothParentsSame" %}
+                          brawd neu chwaer cyflawn
+                        {% elseif case_details.case_data.applicantSameParentsAsDeceased == "oneParentsSame" %}
+                            hanner brawd neu chwaer
+                        {% else %}
+                            brawd/chwaer
+                        {% endif %}
                     {% endif %}
                     o {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
                 {% endif %}
@@ -416,7 +422,13 @@
                     {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Parent" %}
                     parent
                     {% elseif case_details.case_data.solsApplicantRelationshipToDeceased == "Sibling" %}
-                    sibling
+                        {% if case_details.case_data.applicantSameParentsAsDeceased == "bothParentsSame" %}
+                            whole blood sibling
+                        {% elseif case_details.case_data.applicantSameParentsAsDeceased == "oneParentsSame" %}
+                            half blood sibling
+                        {% else %}
+                            sibling
+                        {% endif %}
                     {% endif %}
                     of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
                 {% endif %}
