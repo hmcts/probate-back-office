@@ -24,6 +24,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -49,6 +50,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", "Examine - De Bonis Non",
                         "taskTypeId", EXAMINE_DE_BONIS_NON
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Fiat Will",
+                    "taskTypeId", EXAMINE_FIAT_WILL
                 ),
                 Map.of(
                         "taskTypeName", "Examine Digital Case - Ad Colligenda Bona",
