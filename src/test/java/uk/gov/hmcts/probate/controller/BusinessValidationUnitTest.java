@@ -48,6 +48,8 @@ import uk.gov.hmcts.probate.validator.AdColligendaBonaCaseTypeValidationRule;
 import uk.gov.hmcts.probate.validator.AttorneyAppointedExecutorValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
+import uk.gov.hmcts.probate.validator.CheckIntestacyMaritalStatusRule;
+import uk.gov.hmcts.probate.validator.CheckIntestacyOtherApplicantRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
@@ -57,6 +59,11 @@ import uk.gov.hmcts.probate.validator.IHTFormIDValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyApplicantDetailsValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyDeceasedDetailsValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyCoApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationDateValidationRule;
+import uk.gov.hmcts.probate.validator.IntestacyDivorceOrSeparationValidationRule;
 import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
@@ -213,11 +220,23 @@ class BusinessValidationUnitTest {
     @Mock
     private IHTFormIDValidationRule ihtFormIDValidationRule;
     @Mock
+    private IntestacyDeceasedDetailsValidationRule intestacyDeceasedDetailsValidationRule;
+    @Mock
+    private IntestacyApplicantDetailsValidationRule intestacyApplicantDetailsValidationRule;
+    @Mock
+    private IntestacyCoApplicantValidationRule intestacyCoApplicantValidationRule;
+    @Mock
+    private IntestacyDivorceOrSeparationValidationRule intestacyDivorceOrSeparationValidationRule;
+    @Mock
     private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
     @Mock
     private BusinessValidationMessageService businessValidationMessageServiceMock;
     @Mock
     private AdColligendaBonaCaseTypeValidationRule adColligendaBonaCaseTypeValidationRule;
+    @Mock
+    private CheckIntestacyMaritalStatusRule checkIntestacyMaritalStatusRule;
+    @Mock
+    private CheckIntestacyOtherApplicantRule checkIntestacyOtherApplicantRule;
     @Mock
     private UserInfoService userInfoServiceMock;
     @Mock
@@ -226,6 +245,8 @@ class BusinessValidationUnitTest {
     private DocumentTransformer documentTransformerMock;
     @Mock
     private AttorneyAppointedExecutorValidationRule attorneyAppointedExecutorValidationRule;
+    @Mock
+    private IntestacyDivorceOrSeparationDateValidationRule intestacyDivorceOrSeparationDateValidationRule;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -274,6 +295,13 @@ class BusinessValidationUnitTest {
             pre1900DOBValidationRuleMock,
             adColligendaBonaCaseTypeValidationRule,
             zeroApplyingExecutorsValidationRule,
+            checkIntestacyOtherApplicantRule,
+            checkIntestacyMaritalStatusRule,
+            intestacyDeceasedDetailsValidationRule,
+            intestacyApplicantDetailsValidationRule,
+            intestacyDivorceOrSeparationValidationRule,
+            intestacyDivorceOrSeparationDateValidationRule,
+            intestacyCoApplicantValidationRule,
             businessValidationMessageServiceMock,
             userInfoServiceMock,
             documentTransformerMock,
@@ -1446,6 +1474,88 @@ class BusinessValidationUnitTest {
         verifyNoInteractions(ccdSupplementaryDataService);
     }
 
+    @Test
+    void shouldClearFieldsBasedOnRelationships() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.clearFieldsBasedOnRelationships(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+                .clearFieldsBasedOnRelationships(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 
+    @Test
+    void shouldClearSiblingFields() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.clearSiblingFields(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+                .clearSiblingFields(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 
+    @Test
+    void shouldValidateIntestacyApplicantAndSetupDynamicListWithNoErrors() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors()).thenReturn(Collections.emptyList());
+        CallbackResponse transformedResponse = mock(CallbackResponse.class);
+        when(callbackResponseTransformerMock.setupDynamicList(callbackRequestMock))
+                .thenReturn(transformedResponse);
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .validateIntestacyApplicantAndSetupDynamicList(callbackRequestMock, httpServletRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(transformedResponse, response.getBody());
+    }
+
+    @Test
+    void shouldValidateIntestacyApplicantAndSetupDynamicListWithErrors() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors()).thenReturn(List.of("error"));
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .validateIntestacyApplicantAndSetupDynamicList(callbackRequestMock, httpServletRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(callbackResponseMock, response.getBody());
+    }
+
+    @Test
+    void shouldValidateIntestacyCoApplicantWithNoErrors() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors()).thenReturn(Collections.emptyList());
+        CallbackResponse transformedResponse = mock(CallbackResponse.class);
+        when(callbackResponseTransformerMock.setupDynamicList(callbackRequestMock))
+                .thenReturn(transformedResponse);
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .validateIntestacyCoApplicants(callbackRequestMock, httpServletRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(callbackResponseTransformerMock).transformCase(callbackRequestMock, Optional.empty());
+    }
+
+    @Test
+    void shouldValidateIntestacyCoApplicantWithErrors() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(eq(callbackRequestMock), any()))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors()).thenReturn(List.of("error"));
+
+        ResponseEntity<CallbackResponse> response = underTest
+                .validateIntestacyCoApplicants(callbackRequestMock, httpServletRequest);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 }

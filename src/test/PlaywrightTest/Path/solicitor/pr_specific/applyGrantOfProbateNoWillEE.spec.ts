@@ -75,9 +75,11 @@ test.describe("Solicitor - Apply Grant of probate Excepted Estates - No Will (In
     await basePage.logInfo(scenarioName, nextStepName, caseRef);
     await cwEventActionsPage.chooseNextStep(nextStepName);
     await solCreateCasePage.intestacyDetailsPage1();
-    await solCreateCasePage.intestacyDetailsPage2();
+    await solCreateCasePage.intestacyDetailsPage2('SpouseOrCivil', {
+      isMarried: true
+    });
     await solCreateCasePage.intestacyDetailsPage3();
-    await solCreateCasePage.intestacyDetailsPage4();
+    // await solCreateCasePage.intestacyDetailsPage4();
     await solCreateCasePage.cyaPage();
 
     await solCreateCasePage.seeEndState(endState);
