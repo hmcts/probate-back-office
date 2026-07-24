@@ -66,37 +66,37 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         }
     }
 
-private VariableMap putAllCancellationProperties(VariableMap inputVariables,
+    private VariableMap putAllCancellationProperties(VariableMap inputVariables,
                                                  Map<String, String> cancellationProperties) {
-    if (cancellationProperties != null && !cancellationProperties.isEmpty()) {
-        inputVariables.putValue("event", cancellationProperties.get("event"));
-        inputVariables.putValue("fromState", cancellationProperties.get("fromState"));
-        inputVariables.putValue("state", cancellationProperties.get("state"));
-        if (cancellationProperties.size() == 3) {
-            return inputVariables;
+        if (cancellationProperties != null && !cancellationProperties.isEmpty()) {
+            inputVariables.putValue("event", cancellationProperties.get("event"));
+            inputVariables.putValue("fromState", cancellationProperties.get("fromState"));
+            inputVariables.putValue("state", cancellationProperties.get("state"));
+            if (cancellationProperties.size() == 3) {
+                return inputVariables;
+            }
+            inputVariables.putValue("action", cancellationProperties.get("action"));
+            // For when it is a 'cancel all' type of task cancellation
+            if (cancellationProperties.containsKey("processCategories")) {
+                inputVariables.putValue("processCategories",
+                        cancellationProperties.get("processCategories"));
+            }
         }
-        inputVariables.putValue("action", cancellationProperties.get("action"));
-        // For when it is a 'cancel all' type of task cancellation
-        if (cancellationProperties.containsKey("processCategories")) {
-            inputVariables.putValue("processCategories",
-                    cancellationProperties.get("processCategories"));
-        }
+        return inputVariables;
     }
-    return inputVariables;
-}
 
-private void testBoWithdrawApplicationEvent(List<Map<String, Object>> dmnResultList,
-                                            Map<String, String> cancellationProperties) {
-    if ((cancellationProperties.containsValue(CASE_PRINTED_STATE)
-            || cancellationProperties.containsValue(READY_TO_ISSUE_STATE))
-            && cancellationProperties.containsValue(BO_CASE_CLOSED)) {
-        Assertions.assertEquals(1, dmnResultList.size());
-        Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
-                cancellationProperties.get("processCategories"));
-        Assertions.assertEquals(dmnResultList.getFirst().get("action"),
-                cancellationProperties.get("action"));
-    } else {
-        Assertions.assertEquals(0, dmnResultList.size());
+    private void testBoWithdrawApplicationEvent(List<Map<String, Object>> dmnResultList,
+                                                Map<String, String> cancellationProperties) {
+        if ((cancellationProperties.containsValue(CASE_PRINTED_STATE)
+                || cancellationProperties.containsValue(READY_TO_ISSUE_STATE))
+                && cancellationProperties.containsValue(BO_CASE_CLOSED)) {
+            Assertions.assertEquals(1, dmnResultList.size());
+            Assertions.assertEquals(dmnResultList.getFirst().get("processCategories"),
+                    cancellationProperties.get("processCategories"));
+            Assertions.assertEquals(dmnResultList.getFirst().get("action"),
+                    cancellationProperties.get("action"));
+        } else {
+            Assertions.assertEquals(0, dmnResultList.size());
+        }
     }
-}
 }

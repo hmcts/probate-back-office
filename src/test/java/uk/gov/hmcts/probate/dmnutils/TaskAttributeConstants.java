@@ -99,7 +99,7 @@ public class TaskAttributeConstants {
             + "${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  "
             + "[Stop Case](/cases/case-details/"
             + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
-   public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE =
+    public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE =
             "[Amend Case Details](/cases/case-details/"
                     + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
                     + "[Issue Grant](/cases/case-details/"
