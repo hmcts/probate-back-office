@@ -81,7 +81,6 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                     EXAMINE_FIAT_WILL,
                     DUMMY_CASE_DATA,
                     getCtscExaminePermissions(FIAT_WILL_SKILL_CODE)
-                        getCtscExaminePermissions(DE_BONIS_NON_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
@@ -113,7 +112,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(8));
+        assertThat(logic.getRules().size(), is(10));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
