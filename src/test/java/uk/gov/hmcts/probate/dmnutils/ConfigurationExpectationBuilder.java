@@ -38,6 +38,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_E
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DE_BONIS_NON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_OTHER_CASES;
 
 
 public class ConfigurationExpectationBuilder {
@@ -56,14 +60,18 @@ public class ConfigurationExpectationBuilder {
         return new ConfigurationExpectationBuilder();
     }
 
-    public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForConditions(Map<String, String> conditions) {
+    public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForConditions(
+            Map<String, String> conditions) {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
 
-        if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
+        if (conditions.containsValue(READY_TO_ISSUE_STATE) && conditions.containsKey("taskType")
+                && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
+                || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
+            )) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
+        } else if ((conditions.containsValue(READY_TO_ISSUE_STATE)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
-        } else if (conditions.containsKey("taskType") && conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)) {
-            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DE_BONIS_NON, true);
-        } else {
+        else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }
         builder.expectedValue(WORK_TYPE, APPLICATIONS_WORK_TYPE_PROBATE, true)

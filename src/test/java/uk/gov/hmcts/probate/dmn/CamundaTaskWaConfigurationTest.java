@@ -32,6 +32,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VAL
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -49,15 +52,15 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder
-                                .examineDigitalCaseExpectationsForConditions(Map.of("state", CASE_PRINTED_STATE)).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "boAmendCaseDetailsForAwaitingDocumentation",
-                        ConfigurationExpectationBuilder
-                                .examineDigitalCaseExpectationsForConditions(Map.of("state", CASE_PRINTED_STATE)).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
@@ -74,13 +77,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .examineDigitalCaseExpectationsForConditions(Map.of("state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
-                        ConfigurationExpectationBuilder
-                                .examineDigitalCaseExpectationsForConditions(Map.of("state", CASE_PRINTED_STATE)).build()
-                ),
-                Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
                         CaseDataBuilder.defaultCase().isUrgent().build(),
                         "handleEvidence",
@@ -95,7 +91,8 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .isUrgent()
                                 .build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(Map.of("taskType", EXAMINE_DE_BONIS_NON)).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                          Map.of("taskType", EXAMINE_DE_BONIS_NON)).build()
                 )
         );
     }

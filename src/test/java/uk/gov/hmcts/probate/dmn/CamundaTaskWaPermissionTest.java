@@ -28,6 +28,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
@@ -78,7 +80,12 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DE_BONIS_NON,
                         DUMMY_CASE_DATA,
-                        getCtscExaminePermissionsDeBonisNon()
+                        getCtscExaminePermissionsOther(DE_BONIS_NON_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_FIAT_WILL,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissionsOther(FIAT_WILL_SKILL_CODE)
                 )
         );
     }
@@ -105,7 +112,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(7));
+        assertThat(logic.getRules().size(), is(9));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
@@ -153,7 +160,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
        );
     }
 
-    private static List<Map<String, Object>> getCtscExaminePermissionsDeBonisNon() {
+    private static List<Map<String, Object>> getCtscExaminePermissionsOther(String skillCode) {
         return List.of(
                 Map.of(
                         "name", "ctsc",
@@ -161,7 +168,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         "roleCategory", ROLE_CATEGORY_CTSC,
                         "assignmentPriority", 1,
                         "autoAssignable", false,
-                        "authorisations", DE_BONIS_NON_SKILL_CODE
+                        "authorisations", skillCode
                 ),
                 Map.of(
                         "name", "ctsc-team-leader",

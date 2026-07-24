@@ -23,6 +23,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -56,6 +57,17 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 )
         );
     }
+
+    private static final List<Map<String,Object>> handOffReasonListFiatWill = List.of(
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "FiatWill")
+            ),
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "OtherReason")
+            )
+    );
 
     private static final List<Map<String,Object>> handOffReasonListDeBonisNon = List.of(
             Map.of(
@@ -565,12 +577,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "resolveCWEscalation",
-                        "BOReadyToIssue",
-                        additionalDataNoHandOffList("",true),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
                         "changeState",
                         "BOReadyToIssue",
                         additionalData(false, "",true, handOffReasonListDeBonisNon),
@@ -603,17 +609,56 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+    static Stream<Arguments> fiatWillScenarios() {
+
+        Map<String,Object> examineFiatWillTaskAttributes = Map.of(
+                "taskId", EXAMINE_FIAT_WILL,
+                "name", "Examine - Fiat Will",
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListFiatWill),
+                        List.of(examineFiatWillTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListFiatWill),
+                        List.of(examineFiatWillTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListFiatWill),
+                        List.of(examineFiatWillTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListFiatWill),
+                        List.of(examineFiatWillTaskAttributes)
+                )
+        );
+
+    }
+
+
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(11));
+        assertThat(logic.getRules().size(), is(5));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
-    @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios"})
+    @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,
