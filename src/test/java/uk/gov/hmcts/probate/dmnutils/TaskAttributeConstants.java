@@ -29,6 +29,7 @@ public class TaskAttributeConstants {
     public static final String CASE_TYPE = "caseType";
 
     public static final String DECISION_WORK_TYPE = "decision_making_work";
+    public static final String APPLICATIONS_WORK_TYPE_PROBATE = "applications";
     public static final String ROUTINE_WORK_TYPE = "routine_work";
     public static final String HEARING_WORK_TYPE = "hearing_work";
     public static final String PRIORITY_WORK_TYPE = "priority";
@@ -73,6 +74,8 @@ public class TaskAttributeConstants {
 
     public static final String PROCESS_REINSTATEMENT_DECISION_NOTICE_TASK = "processReinstatementDecisionNotice";
 
+    public static final String REFERENCE_VALUE = "2345011612340987";
+    public static final String REGION_VALUE = "London";
     public static final String CASE_TYPE_VALUE = "someCaseType";
     public static final String DECEASED_FORENAMES_VALUE = "someDeceasedForenames";
     public static final String DECEASED_SURNAME_VALUE = "someDeceasedSurname";
@@ -97,6 +100,7 @@ public class TaskAttributeConstants {
             + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
+    public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
     public static final String DE_BONIS_NON_SKILL_CODE = "SKILL:ABA6:DeBonisNon";
 
 
