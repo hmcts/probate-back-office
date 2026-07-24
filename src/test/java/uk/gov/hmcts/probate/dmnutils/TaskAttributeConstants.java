@@ -100,6 +100,7 @@ public class TaskAttributeConstants {
             + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
+    public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
     public static final String DE_BONIS_NON_SKILL_CODE = "SKILL:ABA6:DeBonisNon";
 
 

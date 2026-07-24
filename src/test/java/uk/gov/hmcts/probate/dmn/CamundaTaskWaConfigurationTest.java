@@ -77,7 +77,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .isUrgent()
                                 .build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations()
+                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseExpectations()
                                 .expectedValue(WORK_TYPE, APPLICATION_WORK_TYPE, true)
                                 .expectedValue(DESCRIPTION, "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boIssueGrantForCaseMatching)  "
@@ -98,7 +98,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(15, logic.getRules().size());
+        assertEquals(17, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
