@@ -56,10 +56,15 @@ public class ConfigurationExpectationBuilder {
         return new ConfigurationExpectationBuilder();
     }
 
-    public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForConditions(Map<String, String> conditions) {
+    public static ConfigurationExpectationBuilder examineDigitalCaseExpectationsForConditions(
+            Map<String, String> conditions) {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
 
-        if (conditions.containsValue(READY_TO_ISSUE_STATE) && conditions.containsKey("taskType") && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON) || conditions.get("taskType").equals(EXAMINE_FIAT_WILL))) {
+        if (conditions.containsValue(READY_TO_ISSUE_STATE) && conditions.containsKey("taskType")
+                && (
+                        conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
+                || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
+        )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
