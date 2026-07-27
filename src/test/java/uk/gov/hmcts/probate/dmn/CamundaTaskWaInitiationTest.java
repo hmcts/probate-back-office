@@ -703,7 +703,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         List.of(examineFiatWillTaskAttributes)
                 )
         );
-
     }
 
 
