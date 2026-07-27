@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -35,6 +36,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -43,6 +45,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
+
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
@@ -141,6 +144,7 @@ public class BusinessValidationController {
     private final UserInfoService userInfoService;
     private final DocumentTransformer documentTransformer;
     private final AttorneyAppointedExecutorValidationRule attorneyAppointedExecutorValidationRule;
+    private final CcdSupplementaryDataService ccdSupplementaryDataService;
 
     @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
@@ -207,8 +211,13 @@ public class BusinessValidationController {
     public ResponseEntity<AfterSubmitCallbackResponse> solicitorAccess(
         @RequestHeader(value = "Authorization") String authToken,
         @RequestParam(value = "caseTypeId") String caseTypeId,
+        @RequestParam(value = "supplementaryData", required = false, defaultValue = "false")
+        boolean supplementaryData,
         @RequestBody CallbackRequest request) {
         assignCaseAccessService.assignCaseAccess(authToken, request.getCaseDetails().getId().toString(), caseTypeId);
+        if (supplementaryData) {
+            ccdSupplementaryDataService.submitSupplementaryDataToCcd(request.getCaseDetails().getId().toString());
+        }
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
@@ -848,6 +857,19 @@ public class BusinessValidationController {
         logRequest(httpRequest.getRequestURI(), callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer
                 .transformForIssueGrant(callbackRequest, Optional.empty()));
+    }
+
+    @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> setSupplementaryData(
+            @Valid @RequestBody final CallbackRequest callbackRequest) {
+
+        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                    callbackRequest.getCaseDetails().getId().toString());
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .build();
+
+        return ResponseEntity.ok(callbackResponse);
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {

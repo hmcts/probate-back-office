@@ -39,6 +39,7 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
@@ -102,6 +103,7 @@ public class DocumentController {
     private final UserInfoService userInfoService;
     private final FeatureToggleService featureToggleService;
     private final DocumentTransformer documentTransformer;
+    private final CcdSupplementaryDataService ccdSupplementaryDataService;
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -581,4 +583,17 @@ public class DocumentController {
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
+
+
+    @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<WillLodgementCallbackResponse> setWillLodgementSupplementaryData(
+           @Valid @RequestBody final WillLodgementCallbackRequest willLodgementCallbackRequest) {
+        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                willLodgementCallbackRequest.getCaseDetails().getId().toString());
+        WillLodgementCallbackResponse willLodgementCallbackResponse = WillLodgementCallbackResponse.builder().build();
+
+        return ResponseEntity.ok(willLodgementCallbackResponse);
+    }
+
 }

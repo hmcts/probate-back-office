@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
@@ -35,9 +36,12 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 class CaveatControllerUnitTest {
 
@@ -94,6 +98,8 @@ class CaveatControllerUnitTest {
     private CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
     @Mock
     private HttpServletRequest httpServletRequestMock;
+    @Mock
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
 
     @BeforeEach
     public void setUp() {
@@ -102,7 +108,8 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDodValidationRule,
             caveatDataTransformer, caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService,
             notificationService, caveatNotificationService, confirmationResponseService, paymentsService, feeService,
-            registrarDirectionService, documentGeneratorService, caveatAcknowledgementValidationRule);
+            registrarDirectionService, documentGeneratorService, caveatAcknowledgementValidationRule,
+                ccdSupplementaryDataService);
     }
 
     @Test
@@ -192,5 +199,26 @@ class CaveatControllerUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(caveatCallbackResponseTransformer, times(1))
                 .transformResponseWithNoChanges(caveatCallbackRequest);
+    }
+
+    @Test
+    void shouldSetSupplementaryData() {
+        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getId()).thenReturn(1000L);
+        ResponseEntity<CaveatCallbackResponse> response = underTest.setCaveatSupplementaryData(caveatCallbackRequest);
+
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCaseDetailsIsNull() {
+        when(caveatCallbackRequest.getCaseDetails())
+                .thenReturn(null);
+        assertThrows(
+                NullPointerException.class,
+                () -> underTest.setCaveatSupplementaryData(caveatCallbackRequest)
+        );
+        verifyNoInteractions(ccdSupplementaryDataService);
     }
 }

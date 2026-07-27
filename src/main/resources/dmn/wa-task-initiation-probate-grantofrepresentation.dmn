@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.48.0">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -13,40 +13,53 @@
         </inputExpression>
       </input>
       <input id="InputClause_03i3ghi" label="evidenceHandled" biodi:width="291" camunda:inputVariable="evidenceHandled">
-        <inputExpression id="LiteralExpression_0kx1xp4" typeRef="string">
+        <inputExpression id="LiteralExpression_0kx1xp4" typeRef="boolean">
           <text>if(additionalData != null and additionalData.Data != null and
             additionalData.Data.evidenceHandled
             != null) then
             additionalData.Data.evidenceHandled
             else
-            ""
+            false
           </text>
         </inputExpression>
-        <inputValues id="UnaryTests_0imp90y">
-          <text>"Yes","No"</text>
-        </inputValues>
       </input>
       <input id="InputClause_0igjxpg" label="caseType" biodi:width="291" camunda:inputVariable="caseType">
         <inputExpression id="LiteralExpression_176w5mt" typeRef="string">
-          <text>if(additionalData != null and additionalData.Data != null and
-            additionalData.Data.evidenceHandled
-            != null) then
-            additionalData.Data.caseType
-            else
-            ""
+          <text>if(additionalData != null and additionalData.Data.caseType
+  != null) then
+  additionalData.Data.caseType
+  else
+  ""
           </text>
         </inputExpression>
         <inputValues id="UnaryTests_0s5s50h">
           <text>"gop","admonWill","intestacy"</text>
         </inputValues>
       </input>
+      <input id="InputClause_0ts4kea" label="boHandoffReasonPresent" camunda:inputVariable="boHandoffReasonPresent">
+        <inputExpression id="LiteralExpression_1l94sjj" typeRef="boolean">
+          <text>if(additionalData != null and additionalData.Data != null and
+            additionalData.Data.boHandoffReasonList != null and
+count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
+            true else false</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1ws5wn0" label="Contains handOff Reason" camunda:inputVariable="cellInput">
+        <inputExpression id="LiteralExpression_0yvx8na" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_086j22w" label="caseHandedOffToLegacySite">
+        <inputExpression id="LiteralExpression_0aant9y" typeRef="boolean">
+          <text>if(additionalData != null and additionalData.Data != null and
+            additionalData.Data.caseHandedOffToLegacySite != null) then additionalData.Data.caseHandedOffToLegacySite
+else false</text>
+        </inputExpression>
+      </input>
       <output id="Output_1" label="Task Id" name="taskId" typeRef="string" biodi:width="320" />
       <output id="OutputClause_0p5fhhd" label="Task Name" name="name" typeRef="string" biodi:width="362" />
       <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" typeRef="integer" />
-      <output id="OutputClause_0i6c6c2" label="Working Days Allowed" name="workingDaysAllowed" typeRef="integer" />
       <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
-      <output id="OutputClause_1wziqr5" label="Work Type" name="workType" typeRef="string" />
-      <output id="OutputClause_09b12hk" label="Role Category" name="roleCategory" typeRef="string" />
       <rule id="DecisionRule_0in26ix">
         <inputEntry id="UnaryTests_1mtpy0d">
           <text>"handleEvidence"</text>
@@ -55,9 +68,18 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0izdcb4">
-          <text></text>
+          <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0dm0vju">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0py9fwu">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0gf483t">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mqfccx">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yp6gfj">
@@ -69,17 +91,43 @@
         <outputEntry id="LiteralExpression_0j4vwvw">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0h32jop">
-          <text>7</text>
-        </outputEntry>
         <outputEntry id="LiteralExpression_1p20qkn">
           <text>"case progression"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0te3ddw">
-          <text>"routine_work"</text>
+      </rule>
+      <rule id="DecisionRule_0nmqzhb">
+        <inputEntry id="UnaryTests_1f06n36">
+          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0uux0lw">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nljvi3">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1tnsteb">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kd4rdo">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0scizgw">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qe6hh7">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09b8joj">
+          <text>"ExamineDigitalCaseProbate"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_19ua141">
-          <text>"CTSC"</text>
+        <outputEntry id="LiteralExpression_1ciowfv">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0flgkzk">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1aqxna6">
+          <text>"case progression"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0qpj4ul">
@@ -90,10 +138,19 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_11p2mwh">
-          <text>"No"</text>
+          <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1fd6wo4">
           <text>"admonWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qr5yae">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b44n1j">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1dbdo82">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0w3g61g">
           <text>"ExamineDigitalCaseAdmon"</text>
@@ -104,17 +161,8 @@
         <outputEntry id="LiteralExpression_1acnnxj">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_03yus2w">
-          <text>7</text>
-        </outputEntry>
         <outputEntry id="LiteralExpression_1r5w3wg">
           <text>"case progression"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0vx9kp1">
-          <text>"routine_work"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1l9h9th">
-          <text>"CTSC"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0p8qcwb">
@@ -125,10 +173,19 @@
           <text>"CasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0g8530j">
-          <text>"No"</text>
+          <text>false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1qkrz9q">
           <text>"intestacy"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vkaray">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ic7t59">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lzwyla">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0z8vdkn">
           <text>"ExamineDigitalCaseIntestacy"</text>
@@ -139,17 +196,288 @@
         <outputEntry id="LiteralExpression_1xsk40t">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_02k8nc5">
-          <text>7</text>
-        </outputEntry>
         <outputEntry id="LiteralExpression_1hg6z8n">
           <text>"case progression"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_17gx2p0">
-          <text>"routine_work"</text>
+      </rule>
+      <rule id="DecisionRule_0l7h8s9">
+        <inputEntry id="UnaryTests_1mcz2gy">
+          <text>"applyforGrantPaperApplicationMan"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a3bnkb">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a3bban">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qrdf9q">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="LiteralExpression_0n1yxlg">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nqjeir">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_147bjty">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1cvv017">
+          <text>"ExamineDigitalCaseProbate"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_09u0200">
-          <text>"CTSC"</text>
+        <outputEntry id="LiteralExpression_1pghx77">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yrjv8l">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0x0ofpm">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1cnacr3">
+        <inputEntry id="UnaryTests_1d1fivb">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1kl157u">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fxnaat">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14qsrho">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vkikl0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ujujdk">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "DeBonisNon")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_004dtww">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0a93yyj">
+          <text>"ExamineDeBonisNon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0lini80">
+          <text>"Examine - De Bonis Non"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_06bhvwi">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1plun1x">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1cl5zsa">
+        <inputEntry id="UnaryTests_0bsqjhx">
+          <text>"attachScannedDocs"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q4eyvy">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0w9ojdk">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qlpz9q">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0p2wk7i">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nqjeia">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_147bjta">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00h6mh5">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xor3z7">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fqjxin">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0aopq82">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0tkr9ya">
+        <inputEntry id="UnaryTests_0ey8efk">
+          <text>"boResolveStop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0n8hld4">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11tubfk">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_055nxww">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nsahjt">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0nqjeib">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_147bjtb">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_11sbdse">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ofj9ql">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1afrevb">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cjuror">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ai19yd">
+        <inputEntry id="UnaryTests_0vo16wg">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1liallg">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rly34i">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1sc4jza">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0cybzuq">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0za2oh4">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "FiatWill")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12kayl1">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_17lzws3">
+          <text>"ExamineFiatWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0sevkvk">
+          <text>"Examine - Fiat Will"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10azhep">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04v65j7">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_123s9ow">
+        <inputEntry id="UnaryTests_090oxrg">
+          <text>"changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03k3qka">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j6o37h">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e4idel">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04krt3p">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04krt3a">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04krt3b">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18wvaz7">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14mga0u">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15553xd">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0admzct">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1f7j02h">
+        <inputEntry id="UnaryTests_097gm36">
+          <text>"resolveCWEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0b0uu13">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0v9n2fa">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rneoh6">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1anx08i">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04krt3c">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04krt3d">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xp2k1v">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0jw06jb">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jozu1p">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yxk5uq">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_08pps6u">
+        <inputEntry id="UnaryTests_1yyaki0">
+          <text>"applyforGrantPaperApplicationMan", "attachScannedDocs", "boResolveStop", "resolveCWEscalation", "changeState", "createCaseFromBulkScan", "handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06lwi0h">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kjp3x1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0pm8adb">
+          <text>"admonWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0cqt3ty">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04krt3e">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04krt3f">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02nklps">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0upp791">
+          <text>"Examine Digital Case - Admon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tmrbnq">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1bz2q9x">
+          <text>"case progression"</text>
         </outputEntry>
       </rule>
     </decisionTable>

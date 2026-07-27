@@ -25,14 +25,35 @@ else
 fi
 
 echo CCD_DEFINITION_STORE_API_BASE_URL = $CCD_DEFINITION_STORE_API_BASE_URL
-uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error -X POST \
-  ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/import \
-  -H "Authorization: Bearer ${userToken}" \
-  -H "ServiceAuthorization: Bearer ${serviceToken}" \
-  -F "file=@${filepath};filename=${uploadFilename}")
 
-upload_http_code=$(echo "$uploadResponse" | tail -n1)
-upload_response_content=$(echo "$uploadResponse" | sed '$d')
+max_upload_attempts=3
+upload_retry_delay=5
+attempt=1
+
+while true; do
+  echo "Uploading ${filename} (${uploadFilename}) - attempt ${attempt}/${max_upload_attempts}"
+
+  uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error -X POST \
+    ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/import \
+    -H "Authorization: Bearer ${userToken}" \
+    -H "ServiceAuthorization: Bearer ${serviceToken}" \
+    -F "file=@${filepath};filename=${uploadFilename}")
+
+  upload_http_code=$(echo "${uploadResponse}" | tail -n1)
+  upload_response_content=$(echo "${uploadResponse}" | sed '$d')
+  # Only retry if the HTTP code is 409 (Conflict). For other codes, break the loop and handle accordingly
+  if [[ "${upload_http_code}" != "409" ]]; then
+    break
+  fi
+
+  if [[ "${attempt}" -ge "${max_upload_attempts}" ]]; then
+    break
+  fi
+
+  echo "Upload returned HTTP 409. Retrying in ${upload_retry_delay} seconds..."
+  sleep "${upload_retry_delay}"
+  attempt=$((attempt + 1))
+done
 
 if [[ "${upload_http_code}" == '504' ]]; then
   for try in {1..20}
@@ -49,12 +70,10 @@ if [[ "${upload_http_code}" == '504' ]]; then
       exit 0
     fi
   done
-else
-  if [[ "${upload_response_content}" == 'Case Definition data successfully imported' ]]; then
-    echo "${filename} (${uploadFilename}) uploaded"
-    exit 0
-  fi
+elif [[ "${upload_response_content}" == 'Case Definition data successfully imported' ]]; then
+  echo "${filename} (${uploadFilename}) uploaded"
+  exit 0
 fi
 
-echo "${filename} (${uploadFilename}) upload failed (${upload_response_content})"
+echo "${filename} (${uploadFilename}) upload failed after ${attempt} attempt(s): HTTP ${upload_http_code} (${upload_response_content})"
 exit 1;

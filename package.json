@@ -134,7 +134,8 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.62.0",
     "webdriverio": "^9.29.0",
-    "when": "^3.7.8"
+    "when": "^3.7.8",
+    "yaml": "^2.9.0"
   },
   "resolutions": {
     "axios": "^1.18.1",
@@ -145,6 +146,6 @@
     "serialize-javascript": "^7.0.6",
     "yargs-parser": "^22.0.0"
   },
-  "packageManager": "yarn@4.16.0",
+  "packageManager": "yarn@4.17.1",
   "license": "MIT"
 }
