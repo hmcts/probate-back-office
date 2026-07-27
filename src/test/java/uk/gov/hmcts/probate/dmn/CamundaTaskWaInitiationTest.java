@@ -107,7 +107,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "someOtherEventId",
                         "CasePrinted",
-                        additionalDataNoHandOffList("gop", false),
+                        additionalData(false, "gop", false, Collections.emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -131,7 +131,19 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalData(false, "gop", true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalData(false, "gop", false, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -155,7 +167,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "boAmendCaseDetailsForAwaitingDocumentation",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "gop", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        "CasePrinted",
+                        additionalData(false, "gop", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -179,7 +197,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "gop", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalData(false, "gop", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -203,7 +227,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "attachScannedDocs",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "gop", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalData(false, "gop", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -233,7 +263,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "boResolveStop",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "gop", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalData(false, "gop", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -263,7 +299,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "changeState",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "gop", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalData(false, "gop", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -293,7 +335,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "resolveCWEscalation",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "gop", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalData(false, "gop", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 )
         );
@@ -317,7 +365,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "someOtherEventId",
                         "CasePrinted",
-                        additionalDataNoHandOffList("admonWill", false),
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -347,7 +395,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "admonWill", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -371,7 +425,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "attachScannedDocs",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "admonWill", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "attachScannedDocs",
+                        "CasePrinted",
+                        additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -395,7 +455,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "applyforGrantPaperApplicationMan",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "admonWill", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "applyforGrantPaperApplicationMan",
+                        "CasePrinted",
+                        additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -425,7 +491,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "boResolveStop",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "admonWill", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -455,7 +527,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "changeState",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "admonWill", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -485,7 +563,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "resolveCWEscalation",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "admonWill", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -509,7 +593,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "createCaseFromBulkScan",
                         "CasePrinted",
-                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        additionalData(false, "admonWill", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "createCaseFromBulkScan",
+                        "CasePrinted",
+                        additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 )
         );
