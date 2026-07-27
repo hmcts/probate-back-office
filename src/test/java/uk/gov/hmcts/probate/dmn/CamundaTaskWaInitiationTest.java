@@ -21,7 +21,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
@@ -48,6 +51,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         Map<String,Object> examineFiatWillTaskAttributes = Map.of(
             "taskId", EXAMINE_FIAT_WILL,
             "name", "Examine - Fiat Will",
+            "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineWillOrCodicilToBeNotatedTaskAttributes = Map.of(
+            "taskId", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+            "name", "Examine - Will or Codicil to be Notated",
+            "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineWitnessInterviewTaskAttributes = Map.of(
+            "taskId", EXAMINE_WITNESS_INTERVIEW,
+            "name", "Examine - Witness Interview",
+            "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineHorizonSchemeTaskAttributes = Map.of(
+            "taskId", EXAMINE_HORIZON_SCHEME,
+            "name", "Examine - Horizon Scheme",
             "processCategories", "case progression"
         );
 
@@ -143,6 +164,72 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
             + "      \"value\": {\n"
             + "        \"caseHandoffReason\": \"FiatWill\"\n"
+            + "      }\n"
+            + "    },\n"
+            + "    {\n"
+            + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+            + "      \"value\": {\n"
+            + "        \"caseHandoffReason\": \"OtherReason\"\n"
+            + "      }\n"
+            + "    }\n"
+            + "  ]\n"
+            + "  }\n"
+            + "}");
+
+        Map<String, Object> additionalDataHandOffListWillOrCodicilToBeNotated = mapAdditionalData("{\n"
+            + "  \"Data\":{\n"
+            + "  \"evidenceHandled\" : \"" + false + "\",\n"
+            + "  \"caseType\" : \"" + "gop" + "\",\n"
+            + "  \"caseHandedOffToLegacySite\" : \"" + true + "\",\n"
+            + "  \"boHandoffReasonList\" : [\n"
+            + "    {\n"
+            + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+            + "      \"value\": {\n"
+            + "        \"caseHandoffReason\": \"WillCodicilNotated\"\n"
+            + "      }\n"
+            + "    },\n"
+            + "    {\n"
+            + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+            + "      \"value\": {\n"
+            + "        \"caseHandoffReason\": \"OtherReason\"\n"
+            + "      }\n"
+            + "    }\n"
+            + "  ]\n"
+            + "  }\n"
+            + "}");
+
+        Map<String, Object> additionalDataHandOffListWitnessInterview = mapAdditionalData("{\n"
+            + "  \"Data\":{\n"
+            + "  \"evidenceHandled\" : \"" + false + "\",\n"
+            + "  \"caseType\" : \"" + "gop" + "\",\n"
+            + "  \"caseHandedOffToLegacySite\" : \"" + true + "\",\n"
+            + "  \"boHandoffReasonList\" : [\n"
+            + "    {\n"
+            + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+            + "      \"value\": {\n"
+            + "        \"caseHandoffReason\": \"WitnessInterview\"\n"
+            + "      }\n"
+            + "    },\n"
+            + "    {\n"
+            + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+            + "      \"value\": {\n"
+            + "        \"caseHandoffReason\": \"OtherReason\"\n"
+            + "      }\n"
+            + "    }\n"
+            + "  ]\n"
+            + "  }\n"
+            + "}");
+
+        Map<String, Object> additionalDataHandOffListHorizonScheme = mapAdditionalData("{\n"
+            + "  \"Data\":{\n"
+            + "  \"evidenceHandled\" : \"" + false + "\",\n"
+            + "  \"caseType\" : \"" + "gop" + "\",\n"
+            + "  \"caseHandedOffToLegacySite\" : \"" + true + "\",\n"
+            + "  \"boHandoffReasonList\" : [\n"
+            + "    {\n"
+            + "      \"id\": \"df3be732-2172-49da-80fe-cad8586e4928\",\n"
+            + "      \"value\": {\n"
+            + "        \"caseHandoffReason\": \"HorizonScheme\"\n"
             + "      }\n"
             + "    },\n"
             + "    {\n"
@@ -391,6 +478,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                     List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
+                    "handleEvidence",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListWillOrCodicilToBeNotated,
+                    List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                ),
+                Arguments.of(
+                    "handleEvidence",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListWitnessInterview,
+                    List.of(examineWitnessInterviewTaskAttributes)
+                ),
+                Arguments.of(
+                    "handleEvidence",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListHorizonScheme,
+                    List.of(examineHorizonSchemeTaskAttributes)
+                ),
+                Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
                         additionalDataHandOffListLegacySiteNo,
@@ -437,6 +542,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                     "BOReadyToIssue",
                     additionalDataHandOffListFiatWill,
                     List.of(examineFiatWillTaskAttributes)
+                ),
+                Arguments.of(
+                    "boResolveStop",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListWillOrCodicilToBeNotated,
+                    List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                ),
+                Arguments.of(
+                    "boResolveStop",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListWitnessInterview,
+                    List.of(examineWitnessInterviewTaskAttributes)
+                ),
+                Arguments.of(
+                    "boResolveStop",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListHorizonScheme,
+                    List.of(examineHorizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",
@@ -487,6 +610,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                     List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
+                    "resolveCWEscalation",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListWillOrCodicilToBeNotated,
+                    List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                ),
+                Arguments.of(
+                    "resolveCWEscalation",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListWitnessInterview,
+                    List.of(examineWitnessInterviewTaskAttributes)
+                ),
+                Arguments.of(
+                    "resolveCWEscalation",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListHorizonScheme,
+                    List.of(examineHorizonSchemeTaskAttributes)
+                ),
+                Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
                         additionalDataHandOffListLegacySiteNo,
@@ -533,6 +674,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                     "BOReadyToIssue",
                     additionalDataHandOffListFiatWill,
                     List.of(examineFiatWillTaskAttributes)
+                ),
+                Arguments.of(
+                    "changeState",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListWillOrCodicilToBeNotated,
+                    List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
+                ),
+                Arguments.of(
+                    "changeState",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListWitnessInterview,
+                    List.of(examineWitnessInterviewTaskAttributes)
+                ),
+                Arguments.of(
+                    "changeState",
+                    "BOReadyToIssue",
+                    additionalDataHandOffListHorizonScheme,
+                    List.of(examineHorizonSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         "changeState",
