@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -12,11 +13,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -47,27 +49,23 @@ public class EvidenceUploadService {
                 .map(CaseData::getBoDocumentsUploaded)
                 .orElse(Collections.emptyList());
 
-        Map<String, UploadDocument> afterById = new HashMap<>();
-        for (CollectionMember<UploadDocument> document : documentsAfter) {
-            if (document != null && document.getId() != null) {
-                afterById.put(document.getId(), document.getValue());
-            }
-        }
+        Set<String> afterDocumentUrls = documentsAfter.stream()
+                .map(this::getDocumentUrl)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
 
         for (CollectionMember<UploadDocument> existingDocument : documentsBefore) {
-            if (existingDocument == null || existingDocument.getId() == null) {
+            String existingDocumentUrl = getDocumentUrl(existingDocument);
+            if (existingDocumentUrl == null) {
+                log.warn("Skipping validation for document with id {} on case {} - no resolvable document URL",
+                        existingDocument.getId(),
+                        callbackRequest.getCaseDetails().getId());
                 continue;
             }
-            String existingDocumentId = existingDocument.getId();
-            boolean hasAfterDocument = afterById.containsKey(existingDocumentId);
-            UploadDocument afterDocument = hasAfterDocument ? afterById.get(existingDocumentId) : null;
-            if (!hasAfterDocument
-                    || !Objects.equals(existingDocument.getValue(), afterDocument)) {
-                Long caseId = Optional.ofNullable(callbackRequest.getCaseDetails())
-                        .map(CaseDetails::getId)
-                        .orElse(null);
-                log.error("Document with ID {} has been modified or removed for case {}",
-                        existingDocumentId,
+            if (!afterDocumentUrls.contains(existingDocumentUrl)) {
+                Long caseId = callbackRequest.getCaseDetails().getId();
+                log.error("Document with URL {} has been removed or replaced for case {}",
+                        existingDocumentUrl,
                         caseId);
                 throw new BusinessValidationException(
                         DOCUMENT_MODIFICATION_NOT_ALLOWED_ERROR,
@@ -75,5 +73,13 @@ public class EvidenceUploadService {
                 );
             }
         }
+    }
+
+    private String getDocumentUrl(CollectionMember<UploadDocument> documentMember) {
+        return Optional.ofNullable(documentMember)
+                .map(CollectionMember::getValue)
+                .map(UploadDocument::getDocumentLink)
+                .map(DocumentLink::getDocumentUrl)
+                .orElse(null);
     }
 }

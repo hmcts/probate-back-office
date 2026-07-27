@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -49,15 +50,35 @@ class EvidenceUploadServiceTest {
     }
 
     @Test
-    void shouldThrowWhenExistingUploadedDocumentWasModified() {
-        UploadDocument beforeDoc = UploadDocument.builder().comment("before").build();
-        UploadDocument afterDoc = UploadDocument.builder().comment("after").build();
+    void shouldNotThrowWhenOnlyCommentWasUpdatedOnExistingUploadedDocument() {
+        UploadDocument beforeDoc = uploadDocument("http://dm-store/documents/1", "before");
+        UploadDocument afterDoc = uploadDocument("http://dm-store/documents/1", "after");
 
         CaseData beforeData = CaseData.builder()
-                .boDocumentsUploaded(List.of(new CollectionMember<>("doc-id", beforeDoc)))
+                .boDocumentsUploaded(List.of(new CollectionMember<>("before-collection-id", beforeDoc)))
                 .build();
         CaseData afterData = CaseData.builder()
-                .boDocumentsUploaded(List.of(new CollectionMember<>("doc-id", afterDoc)))
+                .boDocumentsUploaded(List.of(new CollectionMember<>("after-collection-id", afterDoc)))
+                .build();
+
+        CaseDetails beforeDetails = new CaseDetails(beforeData, null, 123L);
+        CaseDetails afterDetails = new CaseDetails(afterData, null, 123L);
+        CallbackRequest callbackRequest = new CallbackRequest(afterDetails);
+        callbackRequest.setCaseDetailsBefore(beforeDetails);
+
+        assertDoesNotThrow(() -> evidenceUploadService.validateExistingUploadedDocuments(callbackRequest));
+    }
+
+    @Test
+    void shouldThrowWhenExistingUploadedDocumentWasRemovedOrReplaced() {
+        UploadDocument beforeDoc = uploadDocument("http://dm-store/documents/1", "before");
+        UploadDocument afterDoc = uploadDocument("http://dm-store/documents/2", "after");
+
+        CaseData beforeData = CaseData.builder()
+                .boDocumentsUploaded(List.of(new CollectionMember<>("before-collection-id", beforeDoc)))
+                .build();
+        CaseData afterData = CaseData.builder()
+                .boDocumentsUploaded(List.of(new CollectionMember<>("after-collection-id", afterDoc)))
                 .build();
 
         CaseDetails beforeDetails = new CaseDetails(beforeData, null, 123L);
@@ -67,6 +88,26 @@ class EvidenceUploadServiceTest {
 
         assertThrows(BusinessValidationException.class,
                 () -> evidenceUploadService.validateExistingUploadedDocuments(callbackRequest));
+    }
+
+    @Test
+    void shouldNotThrowWhenCollectionMemberIdChangesAndDocumentUrlIsUnchanged() {
+        UploadDocument beforeDoc = uploadDocument("http://dm-store/documents/1", "before");
+        UploadDocument afterDoc = uploadDocument("http://dm-store/documents/1", "before");
+
+        CaseData beforeData = CaseData.builder()
+                .boDocumentsUploaded(List.of(new CollectionMember<>("collection-id-1", beforeDoc)))
+                .build();
+        CaseData afterData = CaseData.builder()
+                .boDocumentsUploaded(List.of(new CollectionMember<>("collection-id-2", afterDoc)))
+                .build();
+
+        CaseDetails beforeDetails = new CaseDetails(beforeData, null, 123L);
+        CaseDetails afterDetails = new CaseDetails(afterData, null, 123L);
+        CallbackRequest callbackRequest = new CallbackRequest(afterDetails);
+        callbackRequest.setCaseDetailsBefore(beforeDetails);
+
+        assertDoesNotThrow(() -> evidenceUploadService.validateExistingUploadedDocuments(callbackRequest));
     }
 
     @Test
@@ -104,8 +145,8 @@ class EvidenceUploadServiceTest {
     }
 
     @Test
-    void shouldThrowBusinessValidationExceptionWhenCaseDetailsAfterIsNull() {
-        UploadDocument beforeDoc = UploadDocument.builder().comment("before").build();
+    void shouldThrowNullPointerExceptionWhenCaseDetailsAfterIsNull() {
+        UploadDocument beforeDoc = uploadDocument("http://dm-store/documents/1", "before");
         CaseData beforeData = CaseData.builder()
                 .boDocumentsUploaded(List.of(new CollectionMember<>("doc-id", beforeDoc)))
                 .build();
@@ -113,7 +154,14 @@ class EvidenceUploadServiceTest {
         CallbackRequest callbackRequest = new CallbackRequest(null);
         callbackRequest.setCaseDetailsBefore(beforeDetails);
 
-        assertThrows(BusinessValidationException.class,
+        assertThrows(NullPointerException.class,
                 () -> evidenceUploadService.validateExistingUploadedDocuments(callbackRequest));
+    }
+
+    private UploadDocument uploadDocument(String documentUrl, String comment) {
+        return UploadDocument.builder()
+                .documentLink(DocumentLink.builder().documentUrl(documentUrl).build())
+                .comment(comment)
+                .build();
     }
 }
