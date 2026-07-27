@@ -80,12 +80,12 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DE_BONIS_NON,
                         DUMMY_CASE_DATA,
-                        getCtscExaminePermissionsOther(DE_BONIS_NON_SKILL_CODE)
+                        getCtscExaminePermissions(DE_BONIS_NON_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_FIAT_WILL,
                         DUMMY_CASE_DATA,
-                        getCtscExaminePermissionsOther(FIAT_WILL_SKILL_CODE)
+                        getCtscExaminePermissions(FIAT_WILL_SKILL_CODE)
                 )
         );
     }
@@ -156,26 +156,6 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         "assignmentPriority", 1,
                         "autoAssignable", false,
                         "authorisations", skillCode
-                )
-       );
-    }
-
-    private static List<Map<String, Object>> getCtscExaminePermissionsOther(String skillCode) {
-        return List.of(
-                Map.of(
-                        "name", "ctsc",
-                        "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
-                        "roleCategory", ROLE_CATEGORY_CTSC,
-                        "assignmentPriority", 1,
-                        "autoAssignable", false,
-                        "authorisations", skillCode
-                ),
-                Map.of(
-                        "name", "ctsc-team-leader",
-                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                        "roleCategory", ROLE_CATEGORY_CTSC,
-                        "assignmentPriority", 1,
-                        "autoAssignable", false
                 )
        );
     }
