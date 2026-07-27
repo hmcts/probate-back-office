@@ -57,6 +57,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DE_BONIS_NON = "ExamineDeBonisNon";
     public static final String EXAMINE_FIAT_WILL = "ExamineFiatWill";
     public static final String EXAMINE_WINDRUSH_SCHEME = "ExamineWindrushScheme";
+    public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -102,4 +103,6 @@ public class TaskAttributeConstants {
     public static final String DE_BONIS_NON_SKILL_CODE = "SKILL:ABA6:DeBonisNon";
     public static final String FIAT_WILL_SKILL_CODE = "SKILL:ABA6:FiatWill";
     public static final String WINDRUSH_SCHEME_SKILL_CODE = "SKILL:ABA6:WindrushScheme";
+    public static final String INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE =
+        "SKILL:ABA6:InfectedBloodInterimScheme";
 }

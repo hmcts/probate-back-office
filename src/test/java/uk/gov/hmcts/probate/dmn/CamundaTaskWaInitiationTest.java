@@ -22,6 +22,7 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
@@ -55,6 +56,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         Map<String,Object> examineWindrushSchemeTaskAttributes = Map.of(
             "taskId", EXAMINE_WINDRUSH_SCHEME,
             "name", "Examine - Windrush Scheme",
+            "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineInfectedBloodInterimSchemeTaskAttributes = Map.of(
+            "taskId", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
+            "name", "Examine - Infected Blood Interim Scheme",
             "processCategories", "case progression"
         );
 
@@ -213,6 +220,46 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                       "id": "df3be732-2172-49da-80fe-cad8586e4928",
                       "value": {
                         "caseHandoffReason": "WindrushScheme"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListInfectedBloodInterimScheme = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "true",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "IBIS"
+                      }
+                    },
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "OtherReason"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListInfectedBloodInterimSchemeLegacySiteNo = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "false",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "IBIS"
                       }
                     }
                   ]
@@ -658,6 +705,36 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "BOReadyToIssue",
                         additionalDataHandOffListEmpty,
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListInfectedBloodInterimScheme,
+                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListInfectedBloodInterimScheme,
+                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListInfectedBloodInterimScheme,
+                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListInfectedBloodInterimScheme,
+                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListInfectedBloodInterimSchemeLegacySiteNo,
+                        Collections.emptyList()
                 )
         );
     }
@@ -668,7 +745,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(13));
+        assertThat(logic.getRules().size(), is(14));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")

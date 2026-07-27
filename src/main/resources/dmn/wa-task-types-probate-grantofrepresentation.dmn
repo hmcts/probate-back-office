@@ -81,6 +81,18 @@
           <text>"Examine - Windrush Scheme"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_infected_blood_interim_type">
+        <description>EIBIS</description>
+        <inputEntry id="UnaryTests_infected_blood_interim_type">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_infected_blood_interim_type_id">
+          <text>"ExamineInfectedBloodInterimScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_infected_blood_interim_type_name">
+          <text>"Examine - Infected Blood Interim Scheme"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
