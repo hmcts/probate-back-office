@@ -47,44 +47,44 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
     static Stream<Arguments> scenarioProvider() {
         return Stream.of(
-            Arguments.of(
-                    EXAMINE_DIGITAL_CASE_PROBATE,
-                    CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                    "handleEvidence",
-                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                            Map.of("state", CASE_PRINTED_STATE)).build()
-            ),
-            Arguments.of(
+                Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("state", CASE_PRINTED_STATE)).build()
-            ),
-            Arguments.of(
-                    EXAMINE_DIGITAL_CASE_ADMON,
-                    CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                    "handleEvidence",
-                    ConfigurationExpectationBuilder
-                            .examineDigitalCaseExpectationsForConditions(
+                ),
+                Arguments.of(
+                            EXAMINE_DIGITAL_CASE_PROBATE,
+                            CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                            "boAmendCaseDetailsForAwaitingDocumentation",
+                            ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                     Map.of("state", CASE_PRINTED_STATE)).build()
-            ),
-            Arguments.of(
-                    EXAMINE_DIGITAL_CASE_INTESTACY,
-                    CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                    "handleEvidence",
-                    ConfigurationExpectationBuilder
-                            .examineDigitalCaseExpectationsForConditions(
-                                    Map.of("state", CASE_PRINTED_STATE)).build()
-            ),
-            Arguments.of(
-                    EXAMINE_DE_BONIS_NON,
-                    CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                    "handleEvidence",
-                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                      Map.of("state", READY_TO_ISSUE_STATE, "taskType", EXAMINE_DE_BONIS_NON)).build()
-            ),
-            Arguments.of(
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_ADMON,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder
+                                .examineDigitalCaseExpectationsForConditions(
+                                        Map.of("state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_INTESTACY,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder
+                                .examineDigitalCaseExpectationsForConditions(
+                                        Map.of("state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_DE_BONIS_NON,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                          Map.of("state", READY_TO_ISSUE_STATE, "taskType", EXAMINE_DE_BONIS_NON)).build()
+                ),
+                Arguments.of(
                     EXAMINE_FIAT_WILL,
                     CaseDataBuilder.defaultWaCase()
                         .isUrgent()
