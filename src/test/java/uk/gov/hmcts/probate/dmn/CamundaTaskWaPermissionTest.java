@@ -1,12 +1,5 @@
 package uk.gov.hmcts.probate.dmn;
 
-import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableImpl;
 import org.camunda.bpm.dmn.engine.impl.DmnDecisionTableInputImpl;
@@ -18,6 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
@@ -36,6 +35,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HORIZON_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WITNESS_INTERVIEW_SKILL_CODE;
@@ -54,6 +54,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 )
         );
 
+
     @BeforeAll
     public static void initialization() {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_PERMISSIONS_PROBATE;
@@ -69,7 +70,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         DUMMY_CASE_DATA,
-                        ctscDefaultPermissions
+                        getCtscExaminePermissions(ADMON_WILL_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
@@ -79,8 +80,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DE_BONIS_NON,
                         DUMMY_CASE_DATA,
-                    getCtscExaminePermissions(DE_BONIS_NON_SKILL_CODE)
-
+                        getCtscExaminePermissions(DE_BONIS_NON_SKILL_CODE)
                 ),
                 Arguments.of(
                     EXAMINE_FIAT_WILL,
@@ -128,7 +128,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(14));
+        assertThat(logic.getRules().size(), is(9));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
