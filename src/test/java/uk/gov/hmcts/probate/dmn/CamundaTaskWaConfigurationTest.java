@@ -55,27 +55,25 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
-                            EXAMINE_DIGITAL_CASE_PROBATE,
-                            CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                            "boAmendCaseDetailsForAwaitingDocumentation",
-                            ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                    Map.of("state", CASE_PRINTED_STATE)).build()
+                        EXAMINE_DIGITAL_CASE_PROBATE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder
-                                .examineDigitalCaseExpectationsForConditions(
-                                        Map.of("state", CASE_PRINTED_STATE)).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder
-                                .examineDigitalCaseExpectationsForConditions(
-                                        Map.of("state", CASE_PRINTED_STATE)).build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DE_BONIS_NON,
