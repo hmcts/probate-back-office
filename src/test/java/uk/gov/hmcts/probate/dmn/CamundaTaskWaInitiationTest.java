@@ -884,7 +884,8 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         "admonScenarios",
         "deBonisNonScenarios",
         "fiatWillScenarios",
-        "intestacyScenarios"})
+        "intestacyScenarios",
+        "adCollScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,
