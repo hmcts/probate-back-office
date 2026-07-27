@@ -819,11 +819,11 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({
-                "probateScenarios",
-                "admonScenarios",
-                "deBonisNonScenarios",
-                "fiatWillScenarios",
-                "intestacyScenarios"})
+        "probateScenarios",
+        "admonScenarios",
+        "deBonisNonScenarios",
+        "fiatWillScenarios",
+        "intestacyScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,
