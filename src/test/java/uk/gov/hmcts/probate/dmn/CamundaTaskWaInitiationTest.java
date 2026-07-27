@@ -266,25 +266,25 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "createCaseFromBulkScan",
                         "CasePrinted",
-                        additionalData(false, "gop"),
+                        additionalData(false, "gop", false, Collections.emptyList()),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
                         "createCaseFromBulkScan",
                         "CasePrinted",
-                        additionalData(true, "gop"),
+                        additionalData(true, "gop", false, Collections.emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "createCaseFromBulkScan",
                         "CasePrinted",
-                        additionalData(false, "other"),
+                        additionalData(false, "other", false, Collections.emptyList()),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "createCaseFromBulkScan",
                         "CasePrinted",
-                        additionalDataHandOffListNotEmpty(),
+                        additionalData(false, "other", false, handOffReasonListOtherReason),
                         Collections.emptyList()
                 )
         );
