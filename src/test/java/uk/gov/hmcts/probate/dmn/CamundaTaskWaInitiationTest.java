@@ -352,24 +352,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "processCategories", "case progression"
         );
 
-        return Stream.of(
-                Arguments.of(
-                        "someOtherEventId",
-                        "CasePrinted",
-                        additionalData(false, "admonWill", false, Collections.emptyList()),
-                        Collections.emptyList()
-                )
-        );
-    }
-
-    static Stream<Arguments> admonScenarios() {
-
-        Map<String,Object> examineDigitalCaseAdmonTaskAttributes = Map.of(
-                "taskId", EXAMINE_DIGITAL_CASE_ADMON,
-                "name", "Examine Digital Case - Admon",
-                "processCategories", "case progression"
-        );
-
         Map<String,Object> examineDigitalCaseAdmonReadyToIssueTaskAttributes = Map.of(
                 "taskId", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
                 "name", "Examine Digital Case - Admon",
@@ -405,72 +387,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "handleEvidence",
                         "CasePrinted",
                         additionalData(false, "other", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "CasePrinted",
-                        additionalData(false, "admonWill", true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "createCaseFromBulkScan",
-                        "CasePrinted",
-                        additionalData(false, "admonWill", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdmonTaskAttributes)
-                ),
-                Arguments.of(
-                        "createCaseFromBulkScan",
-                        "CasePrinted",
-                        additionalData(true, "admonWill", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "createCaseFromBulkScan",
-                        "CasePrinted",
-                        additionalData(false, "other", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "createCaseFromBulkScan",
-                        "CasePrinted",
-                        additionalData(false, "admonWill", false, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "createCaseFromBulkScan",
-                        "CasePrinted",
-                        additionalData(false, "admonWill", true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                )
-        );
-    }
-
-    static Stream<Arguments> deBonisNonScenarios() {
-
-        Map<String,Object> examineDeBonisNonTaskAttributes = Map.of(
-                "taskId", EXAMINE_DE_BONIS_NON,
-                "name", "Examine - De Bonis Non",
-                "processCategories", "case progression"
-        );
-
-        return Stream.of(
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListDeBonisNon),
-                        List.of(examineDeBonisNonTaskAttributes)
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "CasePrinted",
-                        additionalData(false, "admonWill", false, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "CasePrinted",
-                        additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -658,6 +574,30 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "CasePrinted",
                         additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
                 )
         );
     }
