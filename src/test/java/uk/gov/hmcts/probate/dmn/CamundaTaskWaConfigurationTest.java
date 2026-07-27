@@ -34,6 +34,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSU
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -107,6 +108,13 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                     "handleEvidence",
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                             Map.of("state", READY_TO_ISSUE_STATE, "taskType", EXAMINE_FIAT_WILL)).build()
+            ),
+            Arguments.of(
+                    EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
+                    CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("state", READY_TO_ISSUE_STATE)).build()
             )
         );
     }

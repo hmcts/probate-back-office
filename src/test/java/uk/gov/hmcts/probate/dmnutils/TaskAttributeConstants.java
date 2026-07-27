@@ -59,6 +59,8 @@ public class TaskAttributeConstants {
             = "ExamineDigitalCaseIntestacyReadyToIssue";
     public static final String EXAMINE_DE_BONIS_NON = "ExamineDeBonisNon";
     public static final String EXAMINE_FIAT_WILL = "ExamineFiatWill";
+    public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+            = "ExamineDigitalCaseAdColligendaBonaReadyToIssue";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -131,6 +133,7 @@ public class TaskAttributeConstants {
     public static final String DE_BONIS_NON_SKILL_CODE = "SKILL:ABA6:DeBonisNon";
     public static final String FIAT_WILL_SKILL_CODE = "SKILL:ABA6:FiatWill";
     public static final String INTESTACY_EXAMINE_SKILL_CODE = "SKILL:ABA6:IntestacyExamining";
+    public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
 
 
 }

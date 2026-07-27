@@ -27,6 +27,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -807,14 +808,52 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
     }
 
+    static Stream<Arguments> adCollScenarios() {
 
-    @Test
+        Map<String,Object> examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes
+                = Map.of(
+                        "taskId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
+                "name", "Examine Digital Case - Ad Colligenda Bona",
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
+                )
+        );
+    }
+
+
+
+        @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(8));
+        assertThat(logic.getRules().size(), is(9));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -823,7 +862,8 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             "admonScenarios",
             "deBonisNonScenarios",
             "fiatWillScenarios",
-            "intestacyScenarios"
+            "intestacyScenarios",
+            "adCollScenarios"
     })
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
