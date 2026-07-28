@@ -203,15 +203,15 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
-                                ),
-                                Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_DE_BONIS_NON
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_FIAT_WILL
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
