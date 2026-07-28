@@ -423,12 +423,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "admonWill", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(true, "admonWill", false, Collections.emptyList()),
                         Collections.emptyList()
@@ -449,6 +443,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         HANDLE_EVIDENCE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(false, "admonWill", true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        CASE_PRINTED_STATE,
+                        null,
                         Collections.emptyList()
                 ),
                 Arguments.of(
