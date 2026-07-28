@@ -50,8 +50,6 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
-                                ),
                                         "taskType", EXAMINE_DIGITAL_CASE_ADMON
                                 )
                         )
@@ -61,7 +59,6 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         List.of(
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
                                         "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
                                 ),
                                 Map.of(
@@ -88,6 +85,14 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
                                         "taskType", EXAMINE_DIGITAL_CASE_ADMON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DE_BONIS_NON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_FIAT_WILL
                                 )
                         )
                 ),
@@ -101,10 +106,6 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_FIAT_WILL
-                                ),
-                                Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
                                 )
                         )
                 ),
@@ -130,10 +131,6 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_FIAT_WILL
-                                ),
-                                Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
                                 )
                         )
                 ),
@@ -201,7 +198,6 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
         assertThat(logic.getRules().size(), is(9));
-        assertThat(logic.getRules().size(), is(7));
     }
 
     @ParameterizedTest(name = "event id: {0}")
