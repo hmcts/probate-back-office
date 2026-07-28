@@ -54,8 +54,8 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         List<Map<String, Object>> dmnResultList = dmnDecisionTableResult.getResultList();
 
-        if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_EVENT_ID_CASE_PRINTED)
-                || cancellationProperties.containsValue(WITHDRAW_APPLICATION_EVENT_ID_READY_TO_ISSUE)) {
+        if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_PRINTED_EVENT_ID)
+                || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_READY_TO_ISSUE_EVENT_ID)) {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
