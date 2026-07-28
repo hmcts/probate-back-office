@@ -19,9 +19,11 @@ import java.util.stream.Stream;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_TYPES_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -43,6 +45,14 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", "Examine Digital Case - Intestacy",
                         "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY
+                ),
+                Map.of(
+                        "taskTypeName", "Examine - De Bonis Non",
+                        "taskTypeId", EXAMINE_DE_BONIS_NON
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Fiat Will",
+                    "taskTypeId", EXAMINE_FIAT_WILL
                 )
         );
         return Stream.of(
