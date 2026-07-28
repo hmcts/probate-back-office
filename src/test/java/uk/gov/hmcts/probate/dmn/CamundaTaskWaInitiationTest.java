@@ -996,6 +996,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 )
         );
     }
+
     static Stream<Arguments> willOrCodicilToBeNotatedScenarios() {
 
         Map<String,Object> examineWillOrCodicilToBeNotatedTaskAttributes = Map.of(
