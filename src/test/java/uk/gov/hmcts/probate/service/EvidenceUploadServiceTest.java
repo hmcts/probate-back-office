@@ -111,12 +111,37 @@ class EvidenceUploadServiceTest {
     }
 
     @Test
-    void shouldNotThrowWhenCaseDetailsBeforeIsNull() {
+    void shouldNotThrowWhenExistingDocumentUnchangedAndNewDocumentAdded() {
+        UploadDocument existingBeforeDoc = uploadDocument("http://dm-store/documents/1", "existing");
+        UploadDocument existingAfterDoc = uploadDocument("http://dm-store/documents/1", "existing");
+        UploadDocument newAfterDoc = uploadDocument("http://dm-store/documents/2", "new");
+
+        CaseData beforeData = CaseData.builder()
+                .boDocumentsUploaded(List.of(new CollectionMember<>("existing-before-id", existingBeforeDoc)))
+                .build();
+        CaseData afterData = CaseData.builder()
+                .boDocumentsUploaded(List.of(
+                        new CollectionMember<>("existing-after-id", existingAfterDoc),
+                        new CollectionMember<>("new-after-id", newAfterDoc)
+                ))
+                .build();
+
+        CaseDetails beforeDetails = new CaseDetails(beforeData, null, 123L);
+        CaseDetails afterDetails = new CaseDetails(afterData, null, 123L);
+        CallbackRequest callbackRequest = new CallbackRequest(afterDetails);
+        callbackRequest.setCaseDetailsBefore(beforeDetails);
+
+        assertDoesNotThrow(() -> evidenceUploadService.validateExistingUploadedDocuments(callbackRequest));
+    }
+
+    @Test
+    void shouldThrowBusinessValidationExceptionWhenCaseDetailsBeforeIsNull() {
         CaseData afterData = CaseData.builder().boDocumentsUploaded(Collections.emptyList()).build();
         CaseDetails afterDetails = new CaseDetails(afterData, null, 123L);
         CallbackRequest callbackRequest = new CallbackRequest(afterDetails);
 
-        assertDoesNotThrow(() -> evidenceUploadService.validateExistingUploadedDocuments(callbackRequest));
+        assertThrows(BusinessValidationException.class,
+                () -> evidenceUploadService.validateExistingUploadedDocuments(callbackRequest));
     }
 
     @Test
@@ -132,7 +157,7 @@ class EvidenceUploadServiceTest {
     }
 
     @Test
-    void shouldNotThrowWhenDocumentsBeforeContainsOnlyNullEntries() {
+    void shouldThrowWhenDocumentsBeforeContainsEntryWithNoResolvableUrl() {
         CaseData beforeData = CaseData.builder().boDocumentsUploaded(List.of(new CollectionMember<UploadDocument>(null),
                 new CollectionMember<>(null, UploadDocument.builder().comment("ignored").build()))).build();
         CaseData afterData = CaseData.builder().boDocumentsUploaded(Collections.emptyList()).build();
@@ -141,11 +166,12 @@ class EvidenceUploadServiceTest {
         CallbackRequest callbackRequest = new CallbackRequest(afterDetails);
         callbackRequest.setCaseDetailsBefore(beforeDetails);
 
-        assertDoesNotThrow(() -> evidenceUploadService.validateExistingUploadedDocuments(callbackRequest));
+        assertThrows(BusinessValidationException.class,
+                () -> evidenceUploadService.validateExistingUploadedDocuments(callbackRequest));
     }
 
     @Test
-    void shouldThrowNullPointerExceptionWhenCaseDetailsAfterIsNull() {
+    void shouldThrowBusinessValidationExceptionWhenCaseDetailsAfterIsNull() {
         UploadDocument beforeDoc = uploadDocument("http://dm-store/documents/1", "before");
         CaseData beforeData = CaseData.builder()
                 .boDocumentsUploaded(List.of(new CollectionMember<>("doc-id", beforeDoc)))
@@ -154,7 +180,7 @@ class EvidenceUploadServiceTest {
         CallbackRequest callbackRequest = new CallbackRequest(null);
         callbackRequest.setCaseDetailsBefore(beforeDetails);
 
-        assertThrows(NullPointerException.class,
+        assertThrows(BusinessValidationException.class,
                 () -> evidenceUploadService.validateExistingUploadedDocuments(callbackRequest));
     }
 

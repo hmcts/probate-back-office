@@ -27,6 +27,12 @@ public class EvidenceUploadService {
     private static final String DOCUMENT_MODIFICATION_NOT_ALLOWED_ERROR =
             "You have removed or modified a document that was previously uploaded to this application.";
 
+    private static final String NO_DOCUMENT_RESOLVABLE_ERROR =
+            "No document exists with a resolvable document URL for this document. "
+                    + "Please check the document has been uploaded correctly.";
+
+    private static final String MISSING_CASE_DETAILS_ERROR = "Case details are missing for this validation request.";
+
     public void updateLastEvidenceAddedDate(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
         log.info("Updating lastEvidenceAddedDate for case {}", caseDetails.getId());
@@ -34,6 +40,14 @@ public class EvidenceUploadService {
     }
 
     public void validateExistingUploadedDocuments(CallbackRequest callbackRequest) {
+        if (callbackRequest == null || callbackRequest.getCaseDetails() == null
+                || callbackRequest.getCaseDetailsBefore() == null) {
+            throw new BusinessValidationException(
+                    MISSING_CASE_DETAILS_ERROR,
+                    MISSING_CASE_DETAILS_ERROR
+            );
+        }
+
         List<CollectionMember<UploadDocument>> documentsBefore =
                 Optional.ofNullable(callbackRequest.getCaseDetailsBefore())
                 .map(CaseDetails::getData)
@@ -53,16 +67,19 @@ public class EvidenceUploadService {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
+        Long caseId = callbackRequest.getCaseDetails().getId();
         for (CollectionMember<UploadDocument> existingDocument : documentsBefore) {
             String existingDocumentUrl = getDocumentUrl(existingDocument);
             if (existingDocumentUrl == null) {
-                log.warn("Skipping validation for document with id {} on case {} - no resolvable document URL",
+                log.error("Skipping validation for document with id {} on case {} - no resolvable document URL",
                         existingDocument.getId(),
-                        callbackRequest.getCaseDetails().getId());
-                continue;
+                        caseId);
+                throw new BusinessValidationException(
+                        NO_DOCUMENT_RESOLVABLE_ERROR,
+                        NO_DOCUMENT_RESOLVABLE_ERROR
+                );
             }
             if (!afterDocumentUrls.contains(existingDocumentUrl)) {
-                Long caseId = callbackRequest.getCaseDetails().getId();
                 log.error("Document with URL {} has been removed or replaced for case {}",
                         existingDocumentUrl,
                         caseId);
