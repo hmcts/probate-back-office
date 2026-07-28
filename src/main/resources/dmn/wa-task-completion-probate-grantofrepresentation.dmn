@@ -20,17 +20,6 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0kzmtdl">
-        <inputEntry id="UnaryTests_0lle7fz">
-          <text>"boSelectForQA"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0up5w7w">
-          <text>"ExamineDigitalCaseAdmonWill"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_072ovuc">
-          <text>"Auto"</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_0i7gnwi">
         <inputEntry id="UnaryTests_14kpkzi">
           <text>"boSelectForQA"</text>
@@ -64,14 +53,25 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_1kqt5nx">
-        <inputEntry id="UnaryTests_0zf4ps4">
-          <text>"moveToCWEscalation"</text>
+      <rule id="DecisionRule_14v68e6">
+        <inputEntry id="UnaryTests_1oye7pf">
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_17gfw48">
-          <text>"ExamineDigitalCaseProbate"</text>
+        <outputEntry id="LiteralExpression_0b0njdn">
+          <text>"ExamineDeBonisNon"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0t81lei">
+        <outputEntry id="LiteralExpression_0zthyp3">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0i0u0io">
+        <inputEntry id="UnaryTests_1cfgkd3">
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xpi8ow">
+          <text>"ExamineFiatWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1gjp298">
           <text>"Auto"</text>
         </outputEntry>
       </rule>
@@ -83,6 +83,28 @@
           <text>"ExamineDigitalCaseProbate"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_02lkhcd">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1br4h1y">
+        <inputEntry id="UnaryTests_13qauv0">
+          <text>"moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14memun">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0flqv1j">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1td45el">
+        <inputEntry id="UnaryTests_1enpuip">
+          <text>"boStopCaseForCasePrinted", "boEscalateToRegistrar", "boIssueGrantForCaseMatching", "moveToCWEscalation", "boSelectForQA"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03b69y9">
+          <text>"ExamineDigitalCaseAdmonWill"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0a0i9c2">
           <text>"Auto"</text>
         </outputEntry>
       </rule>
