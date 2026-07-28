@@ -525,12 +525,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "admonWill", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(true, "admonWill", false, Collections.emptyList()),
                         Collections.emptyList()
@@ -561,12 +555,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "admonWill", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
                         CASE_PRINTED_STATE,
                         additionalData(true, "admonWill", false, Collections.emptyList()),
                         Collections.emptyList()
@@ -594,12 +582,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         CASE_PRINTED_STATE,
                         additionalData(false, "admonWill", false, Collections.emptyList()),
                         List.of(examineDigitalCaseAdmonTaskAttributes)
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "admonWill", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
