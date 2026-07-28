@@ -27,7 +27,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
@@ -45,6 +48,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 )
         );
 
+
     @BeforeAll
     public static void initialization() {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_PERMISSIONS_PROBATE;
@@ -60,7 +64,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         DUMMY_CASE_DATA,
-                        ctscDefaultPermissions
+                        getCtscExaminePermissions(ADMON_WILL_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
@@ -71,6 +75,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DE_BONIS_NON,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(DE_BONIS_NON_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_FIAT_WILL,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(FIAT_WILL_SKILL_CODE)
                 )
         );
     }
@@ -97,7 +106,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(6));
+        assertThat(logic.getRules().size(), is(9));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
@@ -139,7 +148,8 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
                         "roleCategory", ROLE_CATEGORY_CTSC,
                         "assignmentPriority", 1,
-                        "autoAssignable", false
+                        "autoAssignable", false,
+                        "authorisations", skillCode
                 )
        );
     }
