@@ -69,8 +69,8 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                         "taskTypeId", EXAMINE_DE_BONIS_NON
                 ),
                 Map.of(
-                        "taskTypeName", FIAT_WILL_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_FIAT_WILL
+                    "taskTypeName", "Examine - Fiat Will",
+                    "taskTypeId", EXAMINE_FIAT_WILL
                 ),
                 Map.of(
                         "taskTypeName", INTESTACY_TASK_TYPE_NAME,
