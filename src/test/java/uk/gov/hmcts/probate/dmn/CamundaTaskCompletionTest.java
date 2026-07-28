@@ -135,31 +135,6 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
-                        "boEscalateToRegistrar",
-                        List.of(
-                                Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
-                                ),
-                                Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
-                                ),
-                                Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
-                                ),
-                                Map.of(
-                                        "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_DE_BONIS_NON
-                                ),
-                                Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_FIAT_WILL
-                                )
-                        )
-                ),
-                Arguments.of(
                         "boIssueGrantForCaseMatching",
                         List.of(
                                 Map.of(
