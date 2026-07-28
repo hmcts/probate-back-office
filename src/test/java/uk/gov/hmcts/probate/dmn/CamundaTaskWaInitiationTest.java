@@ -72,8 +72,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
-    private static Map<String, Map<String, Object>> additionalDataNoHandOffList(String caseType,
-                                                                                boolean caseHandedOffToLegacySite) {
+    private static Map<String, Map<String, Object>> additionalDataNoHandOffList() {
         return Map.of(
                 "Data", Map.of(
                         evidenceHandledVar, false,
@@ -367,6 +366,30 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         CASE_PRINTED_STATE,
                         additionalData(false, "gop", true, handOffReasonListOtherReason),
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        "createCaseFromBulkScan",
+                        "CasePrinted",
+                        additionalData(false, "gop", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseProbateTaskAttributes)
+                ),
+                Arguments.of(
+                        "createCaseFromBulkScan",
+                        "CasePrinted",
+                        additionalData(true, "gop", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "createCaseFromBulkScan",
+                        "CasePrinted",
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "createCaseFromBulkScan",
+                        "CasePrinted",
+                        additionalData(false, "other", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
                 )
         );
     }
@@ -402,7 +425,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         HANDLE_EVIDENCE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "admonWill", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
                 ),
                 Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
@@ -625,6 +648,30 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         CASE_PRINTED_STATE,
                         additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
                 )
         );
     }
@@ -809,25 +856,108 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListFiatWill),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
                         additionalData(false, "",true, handOffReasonListFiatWill),
                         List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListFiatWill),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
                         additionalData(false, "",true, handOffReasonListFiatWill),
                         List.of(examineFiatWillTaskAttributes)
                 ),
                 Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListFiatWill),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
                         additionalData(false, "",true, handOffReasonListFiatWill),
                         List.of(examineFiatWillTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListFiatWill),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
                 )
         );
-
     }
 
     static Stream<Arguments> adCollScenarios() {
