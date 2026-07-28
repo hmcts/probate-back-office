@@ -69,6 +69,23 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
+                        "boStopCaseForCaseMatchingForExamining",
+                        List.of(
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DE_BONIS_NON
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_FIAT_WILL
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                )
+                        )
+                ),
+                Arguments.of(
                         "moveToCWEscalation",
                         List.of(
                                 Map.of(
@@ -117,23 +134,6 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
                                 )
 
-                        )
-                ),
-                Arguments.of(
-                        "boStopCaseForCaseMatchingForExamining",
-                        List.of(
-                                Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DE_BONIS_NON
-                                ),
-                                Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_FIAT_WILL
-                                ),
-                                Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
-                                )
                         )
                 ),
                 Arguments.of(
