@@ -39,148 +39,148 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
     static Stream<Arguments> scenarioProvider() {
 
         return Stream.of(
-            Arguments.of(
-                    "boSelectForQA",
-                    List.of(
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON
-                            )
-                    )
-            ),
-            Arguments.of(
-                    "boStopCaseForCasePrinted",
-                    List.of(
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON
-                            )
-                    )
-            ),
-            Arguments.of(
-                    "boEscalateToRegistrar",
-                    List.of(
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DE_BONIS_NON
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_FIAT_WILL
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
-                            )
-                    )
-            ),
-            Arguments.of(
-                    "boIssueGrantForCaseMatching",
-                    List.of(
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DE_BONIS_NON
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_FIAT_WILL
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
-                            )
-                    )
-            ),
-            Arguments.of(
-                    "moveToCWEscalation",
-                    List.of(
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DE_BONIS_NON
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_FIAT_WILL
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
-                            )
-                    )
-            ),
-            Arguments.of(
-                    "boStopCaseForCaseMatchingForExamining",
-                    List.of(
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DE_BONIS_NON
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_FIAT_WILL
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
-                            ),
-                            Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
-                            )
-                    )
-            ),
-            Arguments.of(
-                    "otherEventId",
-                    Collections.emptyList()
-            )
+                Arguments.of(
+                        "boSelectForQA",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_INTESTACY
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "boStopCaseForCasePrinted",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "boEscalateToRegistrar",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DE_BONIS_NON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_FIAT_WILL
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "boIssueGrantForCaseMatching",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DE_BONIS_NON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_FIAT_WILL
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DE_BONIS_NON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_FIAT_WILL
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "boStopCaseForCaseMatchingForExamining",
+                        List.of(
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DE_BONIS_NON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_FIAT_WILL
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "otherEventId",
+                        Collections.emptyList()
+                )
         );
     }
 
