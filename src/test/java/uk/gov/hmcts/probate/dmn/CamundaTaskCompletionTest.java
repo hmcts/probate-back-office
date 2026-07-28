@@ -70,7 +70,28 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
-                        "boEscalateToRegistrar",
+                        "boStopCaseForCaseMatchingForExamining",
+                        List.of(
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DE_BONIS_NON
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_FIAT_WILL
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
+                                )
+                        )
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
                         List.of(
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
@@ -99,7 +120,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
-                        "boIssueGrantForCaseMatching",
+                       "boEscalateToRegistrar",
                         List.of(
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
@@ -157,24 +178,33 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                         )
                 ),
                 Arguments.of(
-                        "boStopCaseForCaseMatchingForExamining",
+                        "boIssueGrantForCaseMatching",
                         List.of(
                                 Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DE_BONIS_NON
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_PROBATE
                                 ),
                                 Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_FIAT_WILL
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON
                                 ),
                                 Map.of(
-                                    "completionMode", AUTO_COMPLETE_MODE,
-                                    "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DE_BONIS_NON
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_FIAT_WILL
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
                                 ),
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE
                                 )
+
                         )
                 ),
                 Arguments.of(
