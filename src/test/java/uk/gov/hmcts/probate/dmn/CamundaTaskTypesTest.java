@@ -35,6 +35,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TAS
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -74,11 +75,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                     "taskTypeId", EXAMINE_FIAT_WILL
                 ),
                 Map.of(
-                        "taskTypeName", INTESTACY_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
-                ),
-                Map.of(
-                    "taskTypeName", "Examine - Infected Blood Compensation Authority",
+                    "taskTypeName", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
                     "taskTypeId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
                 ),
                 Map.of(
@@ -103,7 +100,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(9));
+        assertThat(logic.getRules().size(), is(10));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")

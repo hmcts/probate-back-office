@@ -139,14 +139,14 @@ public class TaskAttributeConstants {
         = "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
 
-
-
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
     public static final String INTESTACY_TASK_TYPE_NAME = "Examine Digital Case - Intestacy";
     public static final String DE_BONIS_NON_TASK_TYPE_NAME = "Examine - De Bonis Non";
     public static final String FIAT_WILL_TASK_TYPE_NAME = "Examine - Fiat Will";
     public static final String AD_COLLIGENDA_BONA_TASK_TYPE_NAME = "Examine Digital Case - Ad Colligenda Bona";
+    public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME
+            = "Examine - Infected Blood Compensation Authority";
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
