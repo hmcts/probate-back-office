@@ -156,7 +156,6 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("case", caseData);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
-
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
 
