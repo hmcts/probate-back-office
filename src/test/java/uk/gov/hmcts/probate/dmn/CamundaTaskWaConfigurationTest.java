@@ -35,6 +35,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -93,13 +94,23 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                             Map.of("taskType", EXAMINE_FIAT_WILL, "state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
-                        EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
-                        CaseDataBuilder.defaultWaCase()
-                                .isUrgent()
-                                .build(),
-                        "handleEvidence",
-                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("state", READY_TO_ISSUE_STATE)).build()
+                    EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                    CaseDataBuilder.defaultWaCase()
+                        .isUrgent()
+                        .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                                    "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                    EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
+                    CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,

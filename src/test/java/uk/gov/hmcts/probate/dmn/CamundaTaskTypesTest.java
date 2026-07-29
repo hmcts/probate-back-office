@@ -34,6 +34,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -71,6 +72,14 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                     "taskTypeName", FIAT_WILL_TASK_TYPE_NAME,
                     "taskTypeId", EXAMINE_FIAT_WILL
+                ),
+                Map.of(
+                        "taskTypeName", INTESTACY_TASK_TYPE_NAME,
+                        "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Infected Blood Compensation Authority",
+                    "taskTypeId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
                 ),
                 Map.of(
                         "taskTypeName", INTESTACY_TASK_TYPE_NAME,
