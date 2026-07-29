@@ -26,6 +26,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -63,6 +64,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                     "taskTypeName", "Examine - Fiat Will",
                     "taskTypeId", EXAMINE_FIAT_WILL
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Infected Blood Compensation Authority",
+                    "taskTypeId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
                 )
         );
         return Stream.of(
