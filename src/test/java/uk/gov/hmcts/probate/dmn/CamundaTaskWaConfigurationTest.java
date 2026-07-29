@@ -37,6 +37,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -142,6 +143,14 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", EXAMINE_DOUBLE_PROBATE,
+                                        "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_INCAPACITY_UNDER_RULE_35,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_INCAPACITY_UNDER_RULE_35,
                                         "state", READY_TO_ISSUE_STATE)).build()
                 )
         );

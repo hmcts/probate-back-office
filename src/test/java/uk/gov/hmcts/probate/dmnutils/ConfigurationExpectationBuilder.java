@@ -41,6 +41,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_OTHER_CASES;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
 
 
 public class ConfigurationExpectationBuilder {
@@ -68,6 +69,7 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
                 || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY)
                 || conditions.get("taskType").equals(EXAMINE_DOUBLE_PROBATE)
+                || conditions.get("taskType").equals(EXAMINE_INCAPACITY_UNDER_RULE_35)
             )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {

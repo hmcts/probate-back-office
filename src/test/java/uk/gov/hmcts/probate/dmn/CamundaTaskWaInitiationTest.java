@@ -47,6 +47,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CREATE_CASE_F
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CHANGE_STATE_EVENT;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -65,6 +67,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     private static final String doubleProbateHandOffReason = "DoubleProbate";
     private static final String fiatWillHandOffReason = "FiatWill";
     private static final String invalidHandOffReason = "OtherReason";
+    private static final String incapacityUnderRule35HandOffReason = "Incapacity under rule 35";
 
     private static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
@@ -1250,6 +1253,127 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+    static Stream<Arguments> incapacityUnderRule35Scenarios() {
+
+        Map<String,Object> examineDigitalCaseIncapacityUnderRule35TaskAttributes
+                = Map.of(
+                        "taskId", EXAMINE_INCAPACITY_UNDER_RULE_35,
+                        "name", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
+                        "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                        List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                        List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                        List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                        List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                )
+        );
+    }
+
 
   
     @Test
@@ -1258,7 +1382,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(11));
+        assertThat(logic.getRules().size(), is(12));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
@@ -1270,7 +1394,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         "infectedBloodCompensationAuthorityScenarios",
         "intestacyScenarios",
         "adCollScenarios",
-        "doubleProbateScenarios"})
+        "incapacityUnderRule35Scenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,

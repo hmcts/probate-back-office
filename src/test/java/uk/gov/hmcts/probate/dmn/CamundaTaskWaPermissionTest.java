@@ -43,32 +43,13 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DOUBLE_PROBATE_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE;
 
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
     private static final String DUMMY_CASE_DATA = "someCaseData";
-
-    private static List<Map<String, Object>> ctscExamineDigitalCasePermissions(String caseType) {
-        return List.of(
-                Map.of(
-                        "name", "ctsc",
-                        "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
-                        "roleCategory", ROLE_CATEGORY_CTSC,
-                        "assignmentPriority", 1,
-                        "autoAssignable", false,
-                        "authorisations", "SKILL:ABA6:" + caseType + "Examining"
-                ),
-                Map.of(
-                        "name", "ctsc-team-leader",
-                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                        "roleCategory", ROLE_CATEGORY_CTSC,
-                        "assignmentPriority", 1,
-                        "autoAssignable", false,
-                        "authorisations", "SKILL:ABA6:" + caseType + "Examining"
-                )
-        );
-    }
 
 
     @BeforeAll
@@ -132,6 +113,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DOUBLE_PROBATE,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(DOUBLE_PROBATE_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_INCAPACITY_UNDER_RULE_35,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE)
                 )
         );
     }
@@ -158,7 +144,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(16));
+        assertThat(logic.getRules().size(), is(18));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

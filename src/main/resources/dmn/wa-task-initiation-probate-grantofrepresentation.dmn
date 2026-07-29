@@ -462,7 +462,7 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0pshqnq">
-          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "“Incapacity under rule 35”")</text>
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "Incapacity under rule 35")</text>
         </inputEntry>
         <inputEntry id="UnaryTests_16wv8ok">
           <text>true</text>
