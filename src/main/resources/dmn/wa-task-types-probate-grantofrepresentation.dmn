@@ -153,6 +153,18 @@
           <text>"Examine - Incapacity under rule 35"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_08eqx2u">
+        <description>ELOFG</description>
+        <inputEntry id="UnaryTests_012ebcb">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0dep4hw">
+          <text>"ExamineLeadingOrFollowingGrants"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0s92gqd">
+          <text>"Examine - Leading or following Grants"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

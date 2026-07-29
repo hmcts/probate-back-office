@@ -480,6 +480,41 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0x3pr17">
+        <inputEntry id="UnaryTests_11kdb8w">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00xay44">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fifzlm">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vixtid">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_15xwt8p">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_194kd88">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "Leading / following Grants")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0691y83">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0lzpn0r">
+          <text>"ExamineLeadingOrFollowingGrants"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qgo6tj">
+          <text>"Examine - Leading or following Grants"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ytdt3w">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mf4hdk">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
