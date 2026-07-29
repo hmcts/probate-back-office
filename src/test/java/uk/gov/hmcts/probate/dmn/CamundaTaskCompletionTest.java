@@ -31,6 +31,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 
 class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
 
@@ -102,6 +103,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DOUBLE_PROBATE
                                 )
                         )
                 ),
@@ -143,7 +148,11 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
-                                )   
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DOUBLE_PROBATE
+                                )
                         )
                 ),
                 Arguments.of(
@@ -184,7 +193,11 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
-                                )   
+                                ),
+                                Map.of(
+                                        "completionMode", AUTO_COMPLETE_MODE,
+                                        "taskType", EXAMINE_DOUBLE_PROBATE
+                                )
                         )
                 ),
                 Arguments.of(
@@ -225,6 +238,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_DOUBLE_PROBATE
                                 )
                         )
                 ),
@@ -241,7 +258,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(10));
+        assertThat(logic.getRules().size(), is(11));
     }
 
     @ParameterizedTest(name = "event id: {0}")

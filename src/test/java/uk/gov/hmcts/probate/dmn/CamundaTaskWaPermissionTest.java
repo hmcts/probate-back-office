@@ -41,6 +41,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DOUBLE_PROBATE_EXAMINE_SKILL_CODE;
 
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
@@ -125,6 +127,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_DOUBLE_PROBATE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(DOUBLE_PROBATE_EXAMINE_SKILL_CODE)
                 )
         );
     }
@@ -151,7 +158,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(14));
+        assertThat(logic.getRules().size(), is(16));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")

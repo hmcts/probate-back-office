@@ -63,6 +63,8 @@ public class TaskAttributeConstants {
             = "ExamineDigitalCaseAdColligendaBonaReadyToIssue";
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
         = "ExamineInfectedBloodCompensationAuthority";
+    public static final String EXAMINE_DOUBLE_PROBATE = "ExamineDoubleProbate";
+
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -138,6 +140,7 @@ public class TaskAttributeConstants {
     public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE
         = "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
+    public static final String DOUBLE_PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:DoubleProbate";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
@@ -147,6 +150,8 @@ public class TaskAttributeConstants {
     public static final String AD_COLLIGENDA_BONA_TASK_TYPE_NAME = "Examine Digital Case - Ad Colligenda Bona";
     public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME
             = "Examine - Infected Blood Compensation Authority";
+    public static final String EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME = "Examine - Double Probate";
+
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
