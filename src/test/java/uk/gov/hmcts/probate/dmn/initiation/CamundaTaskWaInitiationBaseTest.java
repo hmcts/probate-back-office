@@ -8,9 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
-import org.junit.jupiter.params.provider.MethodSource;
 import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
-import uk.gov.hmcts.probate.dmnutils.CancellationScenarioBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -83,7 +81,16 @@ public class CamundaTaskWaInitiationBaseTest extends DmnDecisionTableBaseUnitTes
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
-    @ArgumentsSource(CamundaTaskWaInitiationProbateTest.class)
+    @ArgumentsSource(CamundaTaskWaInitiationProbateTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationAdmonTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationDeBonisNonTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationIntestacyTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationAdCollingendaTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationDoubleProbateTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationFiatWillTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationIncapacityUnderRule35TestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationInfectedBloodTestProvider.class)
+    @ArgumentsSource(CamundaTaskWaInitiationLeadingOrFollowingGrantTestProvider.class)
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                                             String postEventState,
                                                                             Map<String, Object> additionalData,
