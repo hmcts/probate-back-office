@@ -36,6 +36,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_TASK_TYPE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -79,12 +80,16 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                     "taskTypeId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
                 ),
                 Map.of(
-                        "taskTypeName", INTESTACY_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                    "taskTypeName", "Examine - Windrush Scheme",
+                    "taskTypeId", EXAMINE_WINDRUSH_SCHEME
                 ),
                 Map.of(
-                        "taskTypeName", AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+                    "taskTypeName", "Examine Digital Case - Intestacy",
+                    "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                ),
+                Map.of(
+                    "taskTypeName", AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
+                    "taskTypeId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
                 )
         );
         return Stream.of(

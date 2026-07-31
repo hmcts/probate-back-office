@@ -63,6 +63,7 @@ public class TaskAttributeConstants {
             = "ExamineDigitalCaseAdColligendaBonaReadyToIssue";
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
         = "ExamineInfectedBloodCompensationAuthority";
+    public static final String EXAMINE_WINDRUSH_SCHEME = "ExamineWindrushScheme";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -137,7 +138,9 @@ public class TaskAttributeConstants {
     public static final String INTESTACY_EXAMINE_SKILL_CODE = "SKILL:ABA6:IntestacyExamining";
     public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE
         = "SKILL:ABA6:InfectedBloodCompensationAuthority";
-    public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
+    public static final String WINDRUSH_SCHEME_SKILL_CODE = "SKILL:ABA6:WindrushScheme";
+  
+  public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
@@ -157,5 +160,4 @@ public class TaskAttributeConstants {
     public static final String CHANGE_STATE_EVENT = "changeState";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
-
 }
