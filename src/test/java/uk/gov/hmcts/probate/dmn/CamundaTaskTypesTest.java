@@ -42,6 +42,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAP
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -85,12 +86,16 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                     "taskTypeId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
                 ),
                 Map.of(
-                        "taskTypeName", INTESTACY_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                    "taskTypeName", "Examine - Windrush Scheme",
+                    "taskTypeId", EXAMINE_WINDRUSH_SCHEME
                 ),
                 Map.of(
-                        "taskTypeName", AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
-                        "taskTypeId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+                    "taskTypeName", "Examine Digital Case - Intestacy",
+                    "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                ),
+                Map.of(
+                    "taskTypeName", AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
+                    "taskTypeId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
                 ),
                 Map.of(
                         "taskTypeName", EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME,
@@ -118,7 +123,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(13));
+        assertThat(logic.getRules().size(), is(14));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
