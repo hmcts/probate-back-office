@@ -66,7 +66,9 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DOUBLE_PROBATE = "ExamineDoubleProbate";
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35 = "ExamineIncapacityUnderRule35";
     public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS = "ExamineLeadingOrFollowingGrants";
-
+    public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
+    public static final String EXAMINE_CODICIL_MIS_RECITAL = "ExamineCodicilMisRecital";
+    public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL = "ExamineRectifyWillOrCodicil";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -145,6 +147,9 @@ public class TaskAttributeConstants {
     public static final String DOUBLE_PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:DoubleProbate";
     public static final String INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE = "SKILL:ABA6:IncapacityUnder_Rule35";
     public static final String LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE = "SKILL:ABA6:LeadingFollowingGrants";
+    public static final String INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE = "SKILL:ABA6:InfectedBloodInterimScheme";
+    public static final String CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE = "SKILL:ABA6:CodicilMisRecital";
+    public static final String RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE = "SKILL:ABA6:RectifyWillOrCodicil";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
@@ -158,6 +163,12 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME = "Examine - Incapacity under rule 35";
     public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME
             = "Examine - Leading or following Grants";
+    public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME
+            = "Examine - Infected Blood Interim Scheme";
+    public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME
+            = "Examine - Rectify a Will or Codicil";
+    public static final String EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME
+            = "Examine - Codicil Mis-Recital";
 
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";

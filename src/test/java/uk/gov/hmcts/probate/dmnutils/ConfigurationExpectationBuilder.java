@@ -43,6 +43,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_E
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
 
 
 public class ConfigurationExpectationBuilder {
@@ -72,6 +74,8 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_DOUBLE_PROBATE)
                 || conditions.get("taskType").equals(EXAMINE_INCAPACITY_UNDER_RULE_35)
                 || conditions.get("taskType").equals(EXAMINE_LEADING_OR_FOLLOWING_GRANTS)
+                || conditions.get("taskType").equals(EXAMINE_CODICIL_MIS_RECITAL)
+                || conditions.get("taskType").equals(EXAMINE_RECTIFY_WILL_OR_CODICIL)
             )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
