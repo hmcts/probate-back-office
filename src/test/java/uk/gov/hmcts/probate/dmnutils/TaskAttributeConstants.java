@@ -139,8 +139,7 @@ public class TaskAttributeConstants {
     public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE
         = "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String WINDRUSH_SCHEME_SKILL_CODE = "SKILL:ABA6:WindrushScheme";
-  
-  public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
+    public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
