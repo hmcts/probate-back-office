@@ -26,6 +26,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REVIEW_SME_REFERRAL;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -1105,18 +1106,84 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+    static Stream<Arguments> smeReferralScenarios() {
+
+        Map<String,Object> reviewSMEReferralTaskAttributes = Map.of(
+                "taskId", REVIEW_SME_REFERRAL,
+                "name", "Review SME Referral",
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        "someOtherEventId",
+                        "BOCaseWorkerEscalation",
+                        additionalData(true, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
+                        "BOCaseWorkerEscalation",
+                        additionalData(true, "",true, handOffReasonListOtherReason),
+                        List.of(reviewSMEReferralTaskAttributes)
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
+                        "SomeOtherState",
+                        additionalData(true, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
+                        "BOCaseWorkerEscalation",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "moveToCWEscalation",
+                        "BOCaseWorkerEscalation",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOCaseWorkerEscalation",
+                        additionalData(true, "",true, handOffReasonListOtherReason),
+                        List.of(reviewSMEReferralTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "SomeOtherState",
+                        additionalData(true, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOCaseWorkerEscalation",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOCaseWorkerEscalation",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                )
+        );
+    }
+
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(7));
+        assertThat(logic.getRules().size(), is(8));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios",
-        "infectedBloodCompensationAuthorityScenarios","windRushScenarios"})
+        "infectedBloodCompensationAuthorityScenarios","windRushScenarios","smeReferralScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,
