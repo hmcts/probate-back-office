@@ -28,135 +28,135 @@ public class CamundaTaskWaInitiationIncapacityUnderRule35TestProvider implements
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-            Map<String,Object> examineDigitalCaseIncapacityUnderRule35TaskAttributes
-                    = Map.of(
-                    "taskId", EXAMINE_INCAPACITY_UNDER_RULE_35,
-                    "name", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
-                    "processCategories", "case progression"
-            );
+        Map<String,Object> examineDigitalCaseIncapacityUnderRule35TaskAttributes
+                = Map.of(
+                "taskId", EXAMINE_INCAPACITY_UNDER_RULE_35,
+                "name", EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
 
-            return Stream.of(
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
-                            List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",false,
-                                    handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true, Collections.emptyList()),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            CHANGE_STATE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
-                            List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
-                    ),
-                    Arguments.of(
-                            CHANGE_STATE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",false,
-                                    handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            CHANGE_STATE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            CHANGE_STATE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true, Collections.emptyList()),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            RESOLVE_SME_REFERRAL_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
-                            List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
-                    ),
-                    Arguments.of(
-                            RESOLVE_SME_REFERRAL_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",false,
-                                    handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            RESOLVE_SME_REFERRAL_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            RESOLVE_SME_REFERRAL_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true, Collections.emptyList()),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            BO_RESOLVE_STOP_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
-                            List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
-                    ),
-                    Arguments.of(
-                            BO_RESOLVE_STOP_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",false,
-                                    handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            BO_RESOLVE_STOP_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            BO_RESOLVE_STOP_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true, Collections.emptyList()),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            null,
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalDataNoHandOffList(),
-                            Collections.emptyList()
-                    )
-            );
-        }
+        return Stream.of(
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                    List.of(examineDigitalCaseIncapacityUnderRule35TaskAttributes)
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(incapacityUnderRule35HandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    null,
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalDataNoHandOffList(),
+                    Collections.emptyList()
+            )
+        );
+    }
 
 }

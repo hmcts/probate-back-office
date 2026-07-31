@@ -46,298 +46,298 @@ public class CamundaTaskWaInitiationProbateTestProvider implements ArgumentsProv
 
 
         return Stream.of(
-                Arguments.of(
-                        "someOtherEventId",
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(true, "gop", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "other", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        HANDLE_EVIDENCE_EVENT,
-                        CASE_PRINTED_STATE,
-                        null,
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
-                ),
-                Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(true, "gop", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "other", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
-                ),
-                Arguments.of(
-                        APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(true, "gop", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "other", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        ATTACH_SCANNED_DOCS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
-                ),
-                Arguments.of(
-                        ATTACH_SCANNED_DOCS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(true, "gop", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        ATTACH_SCANNED_DOCS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "other", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        ATTACH_SCANNED_DOCS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        ATTACH_SCANNED_DOCS_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(true, "gop", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "other", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        BO_RESOLVE_STOP_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(true, "gop", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "other", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CHANGE_STATE_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        READY_TO_ISSUE_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(true, "gop", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "other", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        RESOLVE_SME_REFERRAL_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_FROM_BULK_SCAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false, Collections.emptyList()),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
-                ),
-                Arguments.of(
-                        CREATE_CASE_FROM_BULK_SCAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(true, "gop", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_FROM_BULK_SCAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "other", false, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_FROM_BULK_SCAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", false,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        CREATE_CASE_FROM_BULK_SCAN_EVENT,
-                        CASE_PRINTED_STATE,
-                        additionalData(false, "gop", true,
-                                handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                        Collections.emptyList()
-                )
+            Arguments.of(
+                    "someOtherEventId",
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateTaskAttributes)
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "gop", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "other", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    CASE_PRINTED_STATE,
+                    null,
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateTaskAttributes)
+            ),
+            Arguments.of(
+                    BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "gop", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "other", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateTaskAttributes)
+            ),
+            Arguments.of(
+                    APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "gop", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "other", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateTaskAttributes)
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "gop", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "other", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    ATTACH_SCANNED_DOCS_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateTaskAttributes)
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "gop", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "other", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateTaskAttributes)
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "gop", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "other", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateTaskAttributes)
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateReadyToIssueTaskAttributes)
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "gop", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "other", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CREATE_CASE_FROM_BULK_SCAN_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseProbateTaskAttributes)
+            ),
+            Arguments.of(
+                    CREATE_CASE_FROM_BULK_SCAN_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(true, "gop", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CREATE_CASE_FROM_BULK_SCAN_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "other", false, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CREATE_CASE_FROM_BULK_SCAN_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", false,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CREATE_CASE_FROM_BULK_SCAN_EVENT,
+                    CASE_PRINTED_STATE,
+                    additionalData(false, "gop", true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            )
         );
     }
 }

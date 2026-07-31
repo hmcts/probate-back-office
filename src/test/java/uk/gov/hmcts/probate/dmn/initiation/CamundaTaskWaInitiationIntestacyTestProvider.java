@@ -24,39 +24,39 @@ public class CamundaTaskWaInitiationIntestacyTestProvider implements ArgumentsPr
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
 
-            Map<String,Object> examineDigitalCaseIntestacyReadyToIssueTaskAttributes = Map.of(
-                    "taskId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
-                    "name", INTESTACY_TASK_TYPE_NAME,
-                    "processCategories", "case progression"
-            );
+        Map<String,Object> examineDigitalCaseIntestacyReadyToIssueTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
+                "name", INTESTACY_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
 
 
-            return Stream.of(
-                    Arguments.of(
-                            CHANGE_STATE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "intestacy",false, Collections.emptyList()),
-                            List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-                    ),
-                    Arguments.of(
-                            RESOLVE_SME_REFERRAL_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "intestacy",false, Collections.emptyList()),
-                            List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "intestacy",false, Collections.emptyList()),
-                            List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-                    ),
-                    Arguments.of(
-                            BO_RESOLVE_STOP_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "intestacy",false, Collections.emptyList()),
-                            List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-                    )
-            );
-        }
+        return Stream.of(
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "intestacy", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "intestacy", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "intestacy", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "intestacy", false, Collections.emptyList()),
+                    List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+            )
+        );
+    }
 
 }

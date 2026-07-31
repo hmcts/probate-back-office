@@ -28,133 +28,133 @@ public class CamundaTaskWaInitiationInfectedBloodTestProvider implements Argumen
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
 
-            Map<String,Object> examineInfectedBloodCompensationAuthorityTaskAttributes = Map.of(
-                    "taskId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
-                    "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
-                    "processCategories", "case progression"
-            );
+        Map<String,Object> examineInfectedBloodCompensationAuthorityTaskAttributes = Map.of(
+                "taskId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                "name", INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
 
-            return Stream.of(
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
-                            List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",false,
-                                    handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true, Collections.emptyList()),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            CHANGE_STATE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
-                            List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
-                    ),
-                    Arguments.of(
-                            CHANGE_STATE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",false,
-                                    handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            CHANGE_STATE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            CHANGE_STATE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true, Collections.emptyList()),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            RESOLVE_SME_REFERRAL_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
-                            List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
-                    ),
-                    Arguments.of(
-                            RESOLVE_SME_REFERRAL_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",false,
-                                    handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            RESOLVE_SME_REFERRAL_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            RESOLVE_SME_REFERRAL_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true, Collections.emptyList()),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            BO_RESOLVE_STOP_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
-                            List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
-                    ),
-                    Arguments.of(
-                            BO_RESOLVE_STOP_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",false,
-                                    handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            BO_RESOLVE_STOP_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true,
-                                    handOffReasonListWithHandOffReason(invalidHandOffReason)),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            BO_RESOLVE_STOP_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalData(false, "",true, Collections.emptyList()),
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            null,
-                            Collections.emptyList()
-                    ),
-                    Arguments.of(
-                            HANDLE_EVIDENCE_EVENT,
-                            READY_TO_ISSUE_STATE,
-                            additionalDataNoHandOffList(),
-                            Collections.emptyList()
-                    )
-            );
-        }
+        return Stream.of(
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    CHANGE_STATE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    RESOLVE_SME_REFERRAL_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                    List.of(examineInfectedBloodCompensationAuthorityTaskAttributes)
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",false,
+                            handOffReasonListWithHandOffReason(infectedBloodCompensationAuthorityHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true,
+                            handOffReasonListWithHandOffReason(invalidHandOffReason)),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    BO_RESOLVE_STOP_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalData(false, "",true, Collections.emptyList()),
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    null,
+                    Collections.emptyList()
+            ),
+            Arguments.of(
+                    HANDLE_EVIDENCE_EVENT,
+                    READY_TO_ISSUE_STATE,
+                    additionalDataNoHandOffList(),
+                    Collections.emptyList()
+            )
+        );
+    }
 }
