@@ -38,6 +38,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WINDRUSH_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE;
@@ -107,9 +109,14 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                     getCtscExaminePermissions(INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
-                        DUMMY_CASE_DATA,
-                        getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
+                    EXAMINE_WINDRUSH_SCHEME,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(WINDRUSH_SCHEME_SKILL_CODE)
+                ),
+                Arguments.of(
+                    EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DOUBLE_PROBATE,

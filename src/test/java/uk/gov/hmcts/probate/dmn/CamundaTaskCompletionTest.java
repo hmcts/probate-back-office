@@ -34,6 +34,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFEC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 
 class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
 
@@ -92,6 +93,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WINDRUSH_SCHEME
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
                                 ),
                                 Map.of(
@@ -119,6 +124,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                         "taskType", EXAMINE_LEADING_OR_FOLLOWING_GRANTS
                                 )
                         )
+
                 ),
                 Arguments.of(
                         "moveToCWEscalation",
@@ -142,6 +148,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WINDRUSH_SCHEME
                                 ),
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
@@ -198,6 +208,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WINDRUSH_SCHEME
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
                                 ),
                                 Map.of(
@@ -251,6 +265,10 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                     "completionMode", AUTO_COMPLETE_MODE,
+                                    "taskType", EXAMINE_WINDRUSH_SCHEME
+                                ),
+                                Map.of(
+                                    "completionMode", AUTO_COMPLETE_MODE,
                                     "taskType", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE
                                 ),
                                 Map.of(
@@ -292,7 +310,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(13));
+        assertThat(logic.getRules().size(), is(14));
     }
 
     @ParameterizedTest(name = "event id: {0}")
