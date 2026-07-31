@@ -165,6 +165,42 @@
           <text>"Examine - Leading or following Grants"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1l3mew7">
+        <description>ERWOC</description>
+        <inputEntry id="UnaryTests_06ymplz">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0f6rq1d">
+          <text>"ExamineRectifyWillOrCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0009nbc">
+          <text>"Examine - Rectify a Will or Codicil"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_167unsw">
+        <description>ECMR</description>
+        <inputEntry id="UnaryTests_0m47br4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1qexp82">
+          <text>"ExamineCodicilMisRecital"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_030o68g">
+          <text>"Examine - Codicil Mis-Recital"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15t2fkc">
+        <description>EIBIS</description>
+        <inputEntry id="UnaryTests_1300w12">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05qo65m">
+          <text>"ExamineInfectedBloodInterimScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16n0d3e">
+          <text>"Examine - Infected Blood Interim Scheme"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
