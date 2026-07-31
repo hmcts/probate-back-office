@@ -144,7 +144,6 @@ public class TaskAttributeConstants {
         = "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String WINDRUSH_SCHEME_SKILL_CODE = "SKILL:ABA6:WindrushScheme";
     public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
-    public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
     public static final String DOUBLE_PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:DoubleProbate";
     public static final String INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE = "SKILL:ABA6:IncapacityUnder_Rule35";
     public static final String LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE = "SKILL:ABA6:LeadingFollowingGrants";

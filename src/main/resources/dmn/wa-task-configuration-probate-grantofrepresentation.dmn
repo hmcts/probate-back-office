@@ -59,7 +59,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0wm8t08">
-          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseAdmonWillReadyToIssue","ExamineDigitalCaseProbateReadyToIssue","ExamineDigitalCaseIntestacyReadyToIssue","ExamineDigitalCaseIntestacy","ExamineDigitalCaseAdColligendaBonaReadyToIssue","ExamineDeBonisNon","ExamineFiatWill","ExamineInfectedBloodCompensationAuthority","ExamineDoubleProbate","ExamineIncapacityUnderRule35","ExamineLeadingOrFollowingGrants"</text>
+          <text>"ExamineDigitalCaseProbate","ExamineDigitalCaseAdmonWill","ExamineDigitalCaseAdmonWillReadyToIssue","ExamineDigitalCaseProbateReadyToIssue","ExamineDigitalCaseIntestacyReadyToIssue","ExamineDigitalCaseIntestacy","ExamineDigitalCaseAdColligendaBonaReadyToIssue","ExamineDeBonisNon","ExamineFiatWill","ExamineInfectedBloodCompensationAuthority","ExamineDoubleProbate","ExamineIncapacityUnderRule35","ExamineLeadingOrFollowingGrants","ExamineWindrushScheme"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1pghx77">
           <text>"workType"</text>
@@ -280,7 +280,7 @@
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ico2r9">
-          <text>"ExamineDeBonisNon", "ExamineFiatWill","ExamineInfectedBloodCompensationAuthority", "ExamineWindrushScheme"</text>
+          <text>"ExamineDeBonisNon", "ExamineFiatWill","ExamineInfectedBloodCompensationAuthority", "ExamineWindrushScheme","ExamineDoubleProbate","ExamineIncapacityUnderRule35","ExamineLeadingOrFollowingGrants"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1eszbgu">
           <text>"description"</text>
@@ -289,23 +289,6 @@
           <text>"[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  [Escalate to Registrar](/cases/case-details/${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  [SME Referral](/cases/case-details/${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  [Stop Case](/cases/case-details/${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0x6smwi">
-          <text>true</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_0bub45n">
-        <inputEntry id="UnaryTests_08ims08">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_1v0k3uj">
-          <text>"ExamineDeBonisNon","ExamineFiatWill","ExamineInfectedBloodCompensationAuthority", "ExamineWindrushScheme"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_0ekukf5">
-          <text>"workType"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_02r0tuv">
-          <text>"applications"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1ltmxmg">
           <text>true</text>
         </outputEntry>
       </rule>

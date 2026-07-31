@@ -72,6 +72,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     private static final String invalidHandOffReason = "OtherReason";
     private static final String incapacityUnderRule35HandOffReason = "Incapacity under rule 35";
     private static final String leadingFollowingGrantsHandOffReason = "Leading / following Grants";
+    private static final String windrushSchemeHandOffReason = "WindrushScheme";
 
     private static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
                                                                    String caseType,
@@ -105,17 +106,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 )
         );
     }
-
-    private static final List<Map<String,Object>> handOffReasonListWindrush = List.of(
-        Map.of(
-            "id", "df3be732-2172-49da-80fe-cad8586e4928",
-            "value", Map.of("caseHandoffReason", "WindrushScheme")
-        ),
-        Map.of(
-            "id", "df3be732-2172-49da-80fe-cad8586e4928",
-            "value", Map.of("caseHandoffReason", "OtherReason")
-        )
-    );
 
     static Stream<Arguments> probateScenarios() {
 
@@ -1192,19 +1182,19 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             Arguments.of(
                 "handleEvidence",
                 "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWindrush),
+                additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
                 List.of(examineWindrushSchemeTaskAttributes)
             ),
             Arguments.of(
                 "handleEvidence",
                 "BOReadyToIssue",
-                additionalData(false, "",false, handOffReasonListWindrush),
+                additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
                 Collections.emptyList()
             ),
             Arguments.of(
                 "handleEvidence",
                 "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListOtherReason),
+                additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
                 Collections.emptyList()
             ),
             Arguments.of(
@@ -1228,19 +1218,19 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             Arguments.of(
                 "boResolveStop",
                 "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWindrush),
+                additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
                 List.of(examineWindrushSchemeTaskAttributes)
             ),
             Arguments.of(
                 "boResolveStop",
                 "BOReadyToIssue",
-                additionalData(false, "",false, handOffReasonListWindrush),
+                additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
                 Collections.emptyList()
             ),
             Arguments.of(
                 "boResolveStop",
                 "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListOtherReason),
+                additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
                 Collections.emptyList()
             ),
             Arguments.of(
@@ -1258,19 +1248,19 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             Arguments.of(
                 "resolveCWEscalation",
                 "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWindrush),
+                additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
                 List.of(examineWindrushSchemeTaskAttributes)
             ),
             Arguments.of(
                 "resolveCWEscalation",
                 "BOReadyToIssue",
-                additionalData(false, "",false, handOffReasonListWindrush),
+                additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
                 Collections.emptyList()
             ),
             Arguments.of(
                 "resolveCWEscalation",
                 "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListOtherReason),
+                additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
                 Collections.emptyList()
             ),
             Arguments.of(
@@ -1282,19 +1272,19 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             Arguments.of(
                 "changeState",
                 "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListWindrush),
+                additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
                 List.of(examineWindrushSchemeTaskAttributes)
             ),
             Arguments.of(
                 "changeState",
                 "BOReadyToIssue",
-                additionalData(false, "",false, handOffReasonListWindrush),
+                additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason)),
                 Collections.emptyList()
             ),
             Arguments.of(
                 "changeState",
                 "BOReadyToIssue",
-                additionalData(false, "",true, handOffReasonListOtherReason),
+                additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason)),
                 Collections.emptyList()
             ),
             Arguments.of(
@@ -1766,7 +1756,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios",
         "infectedBloodCompensationAuthorityScenarios","windRushScenarios","intestacyScenarios",
-        "adCollScenarios""doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios"})
+        "adCollScenarios","doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,
