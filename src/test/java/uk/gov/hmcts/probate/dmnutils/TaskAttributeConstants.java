@@ -32,7 +32,6 @@ public class TaskAttributeConstants {
     public static final String ROUTINE_WORK_TYPE = "routine_work";
     public static final String HEARING_WORK_TYPE = "hearing_work";
     public static final String PRIORITY_WORK_TYPE = "priority";
-    public static final String APPLICATION_WORK_TYPE = "applications";
     public static final String ACCESS_WORK_TYPE = "access_requests";
 
     public static final String ROLE_CATEGORY_ADMIN = "ADMIN";
@@ -102,6 +101,17 @@ public class TaskAttributeConstants {
             + "${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  "
             + "[Stop Case](/cases/case-details/"
             + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
+    public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE =
+            "[Amend Case Details](/cases/case-details/"
+                    + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
+                    + "[Issue Grant](/cases/case-details/"
+                    + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
+                    + "[Escalate to Registrar](/cases/case-details/"
+                    + "${[CASE_REFERENCE]}/trigger/boEscalateToRegistrar)  "
+                    + "[SME Referral](/cases/case-details/"
+                    + "${[CASE_REFERENCE]}/trigger/moveToCWEscalation)  "
+                    + "[Stop Case](/cases/case-details/"
+                    + "${[CASE_REFERENCE]}/trigger/boStopCaseForCaseMatchingForExamining)";
     public static final String DESCRIPTION_EXAMINE_OTHER_CASES =
             "[Issue Grant](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boIssueGrantForCaseMatching)  "
