@@ -86,6 +86,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_ibis_completion">
+        <inputEntry id="UnaryTests_ibis_completion_events">
+          <text>"boIssueGrantForCaseMatching", "boStopCaseForCaseMatchingForExamining", "boEscalateToRegistrar", "moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_ibis_completion_task">
+          <text>"ExamineInfectedBloodInterimScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_completion_mode">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1hakhbs">
         <inputEntry id="UnaryTests_0me2u40">
           <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
