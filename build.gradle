@@ -192,7 +192,7 @@ def versions = [
         serviceAuthVersion              : '5.3.4',
         springBootVersion               : '3.5.16',
         springCloud                     : '4.3.0',
-        springDocOpenUi                 : '2.8.17',
+        springDocOpenUi                 : '2.9.0',
         swaggerAnnotations              : '2.2.52',
         springSecurityVersion           : '6.5.11',
         tomcat                          : '10.1.57',
