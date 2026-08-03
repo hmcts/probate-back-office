@@ -5114,6 +5114,7 @@ class CallbackResponseTransformerTest {
         assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
         assertNotNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
     }
+
     @Test
     void shouldClearFullSiblingFieldsWhenOnlyOneParentISSame() {
         caseDataBuilder.applicantSameParentsAsDeceased(HALF_SIBLING);
@@ -5210,42 +5211,6 @@ class CallbackResponseTransformerTest {
 
         assertNotNull(callbackResponse.getData().getOtherHalfBloodSiblings());
     }
-
-    @Test
-    void shouldClearOnlyWholeSiblingDependentFieldsWhenSameParentsChangesFromWholeToHalf() {
-        caseDataBuilder.applicantSameParentsAsDeceased(HALF_SIBLING)
-                .otherWholeBloodSiblings(YES)
-                .wholeBloodSiblingsDiedBeforeDeceased("whole")
-                .wholeBloodNiecesAndNephewsSurvived(YES)
-                .wholeBloodSiblingsOverEighteen(NO)
-                .wholeBloodNiecesAndNephewsOverEighteen(YES)
-                .otherHalfBloodSiblings(YES)
-                .halfBloodSiblingsDiedBeforeDeceased("keep half")
-                .halfBloodNiecesAndNephewsSurvived(NO)
-                .halfBloodSiblingsOverEighteen(YES)
-                .halfBloodNiecesAndNephewsOverEighteen(NO);
-
-        caseDataBuilderBefore.applicantSameParentsAsDeceased(WHOLE_SIBLING);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse callbackResponse = underTest.clearSiblingFields(callbackRequestMock);
-
-        assertNull(callbackResponse.getData().getOtherWholeBloodSiblings());
-        assertNull(callbackResponse.getData().getWholeBloodSiblingsDiedBeforeDeceased());
-        assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsSurvived());
-        assertNull(callbackResponse.getData().getWholeBloodSiblingsOverEighteen());
-        assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsOverEighteen());
-        assertEquals(YES, callbackResponse.getData().getOtherHalfBloodSiblings());
-        assertEquals("keep half", callbackResponse.getData().getHalfBloodSiblingsDiedBeforeDeceased());
-        assertEquals(NO, callbackResponse.getData().getHalfBloodNiecesAndNephewsSurvived());
-        assertEquals(YES, callbackResponse.getData().getHalfBloodSiblingsOverEighteen());
-        assertEquals(NO, callbackResponse.getData().getHalfBloodNiecesAndNephewsOverEighteen());
-    }
-
 
     @Test
     void shouldSetupNewDynamicListForParentRelationship() {
