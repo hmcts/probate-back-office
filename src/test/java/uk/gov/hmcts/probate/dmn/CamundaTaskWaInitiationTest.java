@@ -22,8 +22,10 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 
 class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
@@ -95,6 +97,17 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                     "id", "df3be732-2172-49da-80fe-cad8586e4928",
                     "value", Map.of("caseHandoffReason", "OtherReason")
             )
+    );
+
+    private static final List<Map<String,Object>> handOffReasonListWindrush = List.of(
+        Map.of(
+            "id", "df3be732-2172-49da-80fe-cad8586e4928",
+            "value", Map.of("caseHandoffReason", "WindrushScheme")
+        ),
+        Map.of(
+            "id", "df3be732-2172-49da-80fe-cad8586e4928",
+            "value", Map.of("caseHandoffReason", "OtherReason")
+        )
     );
 
     static Stream<Arguments> probateScenarios() {
@@ -363,6 +376,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineDigitalCaseAdmonReadyToIssueTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
+                "name", "Examine Digital Case - Admon",
+                "processCategories", "case progression"
+        );
+
         return Stream.of(
                 Arguments.of(
                         "someOtherEventId",
@@ -585,6 +604,30 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "CasePrinted",
                         additionalData(false, "admonWill", true, handOffReasonListOtherReason),
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "admonWill", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
                 )
         );
     }
@@ -961,18 +1004,150 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+    static Stream<Arguments> windRushScenarios() {
+
+        Map<String,Object> examineWindrushSchemeTaskAttributes = Map.of(
+            "taskId", EXAMINE_WINDRUSH_SCHEME,
+            "name", "Examine - Windrush Scheme",
+            "processCategories", "case progression"
+        );
+
+        return Stream.of(
+            Arguments.of(
+                "handleEvidence",
+                "BOReadyToIssue",
+                additionalData(false, "",true, handOffReasonListWindrush),
+                List.of(examineWindrushSchemeTaskAttributes)
+            ),
+            Arguments.of(
+                "handleEvidence",
+                "BOReadyToIssue",
+                additionalData(false, "",false, handOffReasonListWindrush),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "handleEvidence",
+                "BOReadyToIssue",
+                additionalData(false, "",true, handOffReasonListOtherReason),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "handleEvidence",
+                "BOReadyToIssue",
+                additionalData(false, "",true, Collections.emptyList()),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "handleEvidence",
+                "BOReadyToIssue",
+                additionalDataNoHandOffList(),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "handleEvidence",
+                "BOReadyToIssue",
+                null,
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "boResolveStop",
+                "BOReadyToIssue",
+                additionalData(false, "",true, handOffReasonListWindrush),
+                List.of(examineWindrushSchemeTaskAttributes)
+            ),
+            Arguments.of(
+                "boResolveStop",
+                "BOReadyToIssue",
+                additionalData(false, "",false, handOffReasonListWindrush),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "boResolveStop",
+                "BOReadyToIssue",
+                additionalData(false, "",true, handOffReasonListOtherReason),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "boResolveStop",
+                "BOReadyToIssue",
+                additionalData(false, "",true, Collections.emptyList()),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "boResolveStop",
+                "BOReadyToIssue",
+                additionalDataNoHandOffList(),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "resolveCWEscalation",
+                "BOReadyToIssue",
+                additionalData(false, "",true, handOffReasonListWindrush),
+                List.of(examineWindrushSchemeTaskAttributes)
+            ),
+            Arguments.of(
+                "resolveCWEscalation",
+                "BOReadyToIssue",
+                additionalData(false, "",false, handOffReasonListWindrush),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "resolveCWEscalation",
+                "BOReadyToIssue",
+                additionalData(false, "",true, handOffReasonListOtherReason),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "resolveCWEscalation",
+                "BOReadyToIssue",
+                additionalData(false, "",true, Collections.emptyList()),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "changeState",
+                "BOReadyToIssue",
+                additionalData(false, "",true, handOffReasonListWindrush),
+                List.of(examineWindrushSchemeTaskAttributes)
+            ),
+            Arguments.of(
+                "changeState",
+                "BOReadyToIssue",
+                additionalData(false, "",false, handOffReasonListWindrush),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "changeState",
+                "BOReadyToIssue",
+                additionalData(false, "",true, handOffReasonListOtherReason),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "changeState",
+                "BOReadyToIssue",
+                additionalData(false, "",true, Collections.emptyList()),
+                Collections.emptyList()
+            ),
+            Arguments.of(
+                "changeState",
+                "BOReadyToIssue",
+                additionalDataNoHandOffList(),
+                Collections.emptyList()
+            )
+        );
+    }
+
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(6));
+        assertThat(logic.getRules().size(), is(8));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios",
-        "infectedBloodCompensationAuthorityScenarios"})
+        "infectedBloodCompensationAuthorityScenarios","windRushScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,
@@ -986,4 +1161,5 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
+ 
 }

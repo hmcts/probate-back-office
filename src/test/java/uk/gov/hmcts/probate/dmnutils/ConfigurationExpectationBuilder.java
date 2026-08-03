@@ -35,9 +35,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.APPLICATIONS_WORK_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_OTHER_CASES;
 
 
@@ -65,8 +67,11 @@ public class ConfigurationExpectationBuilder {
                 && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
                 || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
                 || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY)
+                || conditions.get("taskType").equals(EXAMINE_WINDRUSH_SCHEME)
             )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
+        } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
         } else {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
         }
@@ -102,3 +107,4 @@ public class ConfigurationExpectationBuilder {
         return this;
     }
 }
+
