@@ -5130,7 +5130,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldClearFullSiblingFieldsWhenOnlyOneParentISSame() {
+    void shouldClearWholeBloodSiblingFieldsWhenSameParentsChangesToHalfSibling() {
         caseDataBuilder.applicantSameParentsAsDeceased(HALF_SIBLING)
                 .otherHalfBloodSiblings(YES)
                 .halfBloodSiblingsDiedBeforeDeceased("keepHalf")
@@ -5175,7 +5175,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldClearHalfSiblingFieldsWhenBothParentISSame() {
+    void shouldClearHalfBloodSiblingFieldsWhenSameParentsChangesToWholeSibling() {
         caseDataBuilder.applicantSameParentsAsDeceased(WHOLE_SIBLING)
                 .otherWholeBloodSiblings(YES)
                 .wholeBloodSiblingsDiedBeforeDeceased("keepWhole")
@@ -5220,7 +5220,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldNotClearFieldsWhenSameParentsOptionIsUnchanged() {
+    void shouldNotClearSiblingFieldsWhenSameParentsOptionUnchanged() {
         caseDataBuilder.applicantSameParentsAsDeceased(HALF_SIBLING)
                 .otherHalfBloodSiblings(YES)
                 .halfBloodSiblingsDiedBeforeDeceased("YesSome")
@@ -5301,7 +5301,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldSetupNewDynamicListForSiblingRelationship() {
+    void shouldSetupWholeBloodSiblingDynamicListWhenRelationshipIsSibling() {
         caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
                 .otherExecutorExists(YES)
                 .applicantSameParentsAsDeceased(WHOLE_SIBLING);
@@ -5328,7 +5328,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldSetupNewDynamicListForHalfSiblingRelationship() {
+    void shouldSetupHalfBloodSiblingDynamicListWhenRelationshipIsSibling() {
         caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
                 .otherExecutorExists(YES)
                 .applicantSameParentsAsDeceased(HALF_SIBLING);
