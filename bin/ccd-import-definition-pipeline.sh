@@ -6,7 +6,10 @@ dir=$(dirname ${0})
 filepath=${1}
 filename=$(basename ${filepath})
 uploadFilename="$(date +"%Y%m%d-%H%M%S")-${filename}"
+importJobId=$(uuidgen | tr '[:upper:]' '[:lower:]')
+
 echo filepath =$filepath
+echo "Import job ID = ${importJobId}"
 
 if [ -z "${USER_TOKEN:-}" ]; then
   echo Get User token
@@ -24,23 +27,65 @@ else
   serviceToken=${SERVICE_TOKEN}
 fi
 
-echo CCD_DEFINITION_STORE_API_BASE_URL = $CCD_DEFINITION_STORE_API_BASE_URL
+ccdDefinitionStoreUrl=${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}
+echo "ccdDefinitionStoreUrl = ${ccdDefinitionStoreUrl}"
+
+poll_import_status() {
+  for try in {1..10}; do
+    sleep 5
+
+    echo "Checking import job ${importJobId} status (Try ${try})"
+
+    jobResponse=$(curl --insecure --silent --show-error \
+      -X GET \
+      "${ccdDefinitionStoreUrl}/import-jobs/${importJobId}" \
+      -H "Authorization: Bearer ${userToken}" \
+      -H "ServiceAuthorization: Bearer ${serviceToken}" || true)
+
+    if [[ "${jobResponse}" == *"COMPLETED"* ]]; then
+      echo "${filename} (${uploadFilename}) uploaded"
+      exit 0
+    fi
+
+    if [[ "${jobResponse}" == *"FAILED"* ]]; then
+      echo "${filename} (${uploadFilename}) upload failed: ${jobResponse}"
+      exit 1
+    fi
+
+    if [[ "${jobResponse}" == *"EXPIRED"* ]]; then
+      echo "${filename} (${uploadFilename}) upload expired: ${jobResponse}"
+      exit 1
+    fi
+  done
+
+  echo "${filename} (${uploadFilename}) upload status could not be confirmed"
+  exit 1
+}
 
 max_upload_attempts=3
 upload_retry_delay=5
 attempt=1
+upload_curl_failed=false
 
 while true; do
   echo "Uploading ${filename} (${uploadFilename}) - attempt ${attempt}/${max_upload_attempts}"
 
-  uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error -X POST \
-    ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/import \
+  if uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error \
+    -X POST \
+    "${ccdDefinitionStoreUrl}/import" \
     -H "Authorization: Bearer ${userToken}" \
     -H "ServiceAuthorization: Bearer ${serviceToken}" \
-    -F "file=@${filepath};filename=${uploadFilename}")
+    -H "X-Import-Job-Id: ${importJobId}" \
+    -F "file=@${filepath};filename=${uploadFilename}"); then
 
-  upload_http_code=$(echo "${uploadResponse}" | tail -n1)
-  upload_response_content=$(echo "${uploadResponse}" | sed '$d')
+    upload_http_code=$(echo "${uploadResponse}" | tail -n1)
+    upload_response_content=$(echo "${uploadResponse}" | sed '$d')
+  else
+    upload_curl_failed=true
+    echo "Import request encountered a connection or technical error"
+    break
+  fi
+
   # Only retry if the HTTP code is 409 (Conflict). For other codes, break the loop and handle accordingly
   if [[ "${upload_http_code}" != "409" ]]; then
     break
@@ -55,25 +100,26 @@ while true; do
   attempt=$((attempt + 1))
 done
 
-if [[ "${upload_http_code}" == '504' ]]; then
-  for try in {1..20}
-  do
-    sleep 5
-    echo "Checking status of ${filename} (${uploadFilename}) upload (Try ${try})"
-    audit_response=$(curl --insecure --silent --show-error -X GET \
-      ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/api/import-audits \
-      -H "Authorization: Bearer ${userToken}" \
-      -H "ServiceAuthorization: Bearer ${serviceToken}")
+if [[ "${upload_curl_failed}" == "true" ]]; then
+  echo "Checking import job ${importJobId}"
+  poll_import_status
+  exit 1
+fi
 
-    if [[ ${audit_response} == *"${uploadFilename}"* ]]; then
-      echo "${filename} (${uploadFilename}) uploaded"
-      exit 0
-    fi
-  done
-elif [[ "${upload_response_content}" == 'Case Definition data successfully imported' ]]; then
+if [[ "${upload_http_code}" =~ ^2[0-9][0-9]$ ]]; then
   echo "${filename} (${uploadFilename}) uploaded"
   exit 0
 fi
 
-echo "${filename} (${uploadFilename}) upload failed after ${attempt} attempt(s): HTTP ${upload_http_code} (${upload_response_content})"
-exit 1;
+if [[ "${upload_http_code}" == "409" ]]; then
+  echo "${filename} (${uploadFilename}) upload failed after ${attempt} attempts: HTTP 409 (${upload_response_content})"
+  exit 1
+fi
+
+if [[ "${upload_http_code}" =~ ^4[0-9][0-9]$ ]]; then
+  echo "${filename} (${uploadFilename}) upload failed: HTTP ${upload_http_code} (${upload_response_content})"
+  exit 1
+fi
+
+echo "Import returned HTTP ${upload_http_code}; checking job ${importJobId}"
+poll_import_status
