@@ -81,6 +81,42 @@
           <text>"Examine - Windrush Scheme"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_section_116_type">
+        <description>ES116</description>
+        <inputEntry id="UnaryTests_section_116_type">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_section_116_type_id">
+          <text>"ExamineSection116"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_section_116_type_name">
+          <text>"Examine - Section 116"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_power_of_attorney_type">
+        <description>EPOA</description>
+        <inputEntry id="UnaryTests_power_of_attorney_type">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_power_of_attorney_type_id">
+          <text>"ExaminePowerOfAttorney"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_power_of_attorney_type_name">
+          <text>"Examine - Power of Attorney (POA)"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_reseal_foreign_grant_type">
+        <description>ERFG</description>
+        <inputEntry id="UnaryTests_reseal_foreign_grant_type">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_reseal_foreign_grant_type_id">
+          <text>"ExamineResealForeignGrant"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_reseal_foreign_grant_type_name">
+          <text>"Examine - Reseal Foreign Grant"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_infected_blood_interim_type">
         <description>EIBIS</description>
         <inputEntry id="UnaryTests_infected_blood_interim_type">

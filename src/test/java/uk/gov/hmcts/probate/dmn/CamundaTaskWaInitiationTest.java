@@ -23,6 +23,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.mapAdditionalData;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
@@ -56,6 +59,24 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         Map<String,Object> examineWindrushSchemeTaskAttributes = Map.of(
             "taskId", EXAMINE_WINDRUSH_SCHEME,
             "name", "Examine - Windrush Scheme",
+            "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineSection116TaskAttributes = Map.of(
+            "taskId", EXAMINE_SECTION_116,
+            "name", "Examine - Section 116",
+            "processCategories", "case progression"
+        );
+
+        Map<String,Object> examinePowerOfAttorneyTaskAttributes = Map.of(
+            "taskId", EXAMINE_POWER_OF_ATTORNEY,
+            "name", "Examine - Power of Attorney (POA)",
+            "processCategories", "case progression"
+        );
+
+        Map<String,Object> examineResealForeignGrantTaskAttributes = Map.of(
+            "taskId", EXAMINE_RESEAL_FOREIGN_GRANT,
+            "name", "Examine - Reseal Foreign Grant",
             "processCategories", "case progression"
         );
 
@@ -220,6 +241,126 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                       "id": "df3be732-2172-49da-80fe-cad8586e4928",
                       "value": {
                         "caseHandoffReason": "WindrushScheme"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListSection116 = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "true",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "Section116"
+                      }
+                    },
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "OtherReason"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListSection116LegacySiteNo = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "false",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "Section116"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListPowerOfAttorney = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "true",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "POA"
+                      }
+                    },
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "OtherReason"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListPowerOfAttorneyLegacySiteNo = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "false",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "POA"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListResealForeignGrant = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "true",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "ResealForeignGrant"
+                      }
+                    },
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "OtherReason"
+                      }
+                    }
+                  ]
+                  }
+                }""");
+
+        Map<String, Object> additionalDataHandOffListResealForeignGrantLegacySiteNo = mapAdditionalData("""
+                {
+                  "Data":{
+                  "evidenceHandled" : "false",
+                  "caseType" : "gop",
+                  "caseHandedOffToLegacySite" : "false",
+                  "boHandoffReasonList" : [
+                    {
+                      "id": "df3be732-2172-49da-80fe-cad8586e4928",
+                      "value": {
+                        "caseHandoffReason": "ResealForeignGrant"
                       }
                     }
                   ]
@@ -697,6 +838,96 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
+                        additionalDataHandOffListSection116,
+                        List.of(examineSection116TaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListSection116,
+                        List.of(examineSection116TaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListSection116,
+                        List.of(examineSection116TaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListSection116,
+                        List.of(examineSection116TaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListSection116LegacySiteNo,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListPowerOfAttorney,
+                        List.of(examinePowerOfAttorneyTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListPowerOfAttorney,
+                        List.of(examinePowerOfAttorneyTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListPowerOfAttorney,
+                        List.of(examinePowerOfAttorneyTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListPowerOfAttorney,
+                        List.of(examinePowerOfAttorneyTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListPowerOfAttorneyLegacySiteNo,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListResealForeignGrant,
+                        List.of(examineResealForeignGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListResealForeignGrant,
+                        List.of(examineResealForeignGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListResealForeignGrant,
+                        List.of(examineResealForeignGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListResealForeignGrant,
+                        List.of(examineResealForeignGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataHandOffListResealForeignGrantLegacySiteNo,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
                         additionalDataHandOffListOtherReason,
                         Collections.emptyList()
                 ),
@@ -745,7 +976,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(14));
+        assertThat(logic.getRules().size(), is(17));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")

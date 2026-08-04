@@ -31,6 +31,12 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.FIAT_WILL_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.POWER_OF_ATTORNEY_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESEAL_FOREIGN_GRANT_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SECTION_116_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
@@ -90,6 +96,21 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                     getCtscExaminePermissionsWithTeamLeaderAuth(WINDRUSH_SCHEME_SKILL_CODE)
                 ),
                 Arguments.of(
+                    EXAMINE_SECTION_116,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissionsWithTeamLeaderAuth(SECTION_116_SKILL_CODE)
+                ),
+                Arguments.of(
+                    EXAMINE_POWER_OF_ATTORNEY,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissionsWithTeamLeaderAuth(POWER_OF_ATTORNEY_SKILL_CODE)
+                ),
+                Arguments.of(
+                    EXAMINE_RESEAL_FOREIGN_GRANT,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissionsWithTeamLeaderAuth(RESEAL_FOREIGN_GRANT_SKILL_CODE)
+                ),
+                Arguments.of(
                     EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
                     DUMMY_CASE_DATA,
                     getCtscExaminePermissionsWithTeamLeaderAuth(INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE)
@@ -119,7 +140,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(12));
+        assertThat(logic.getRules().size(), is(18));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
