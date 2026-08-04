@@ -305,6 +305,76 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1marxds">
+        <inputEntry id="UnaryTests_1grawlz">
+          <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07mmfig">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0el2yzx">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_078n53k">
+          <text>"admonWill"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0gnp51i">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05rg5ab">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mqm82i">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bgn9xq">
+          <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01suyy4">
+          <text>"Examine Digital Case - Admon"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1hnmqgw">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_072583q">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1k5wuqk">
+        <inputEntry id="UnaryTests_0fl8lid">
+          <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rlvdc0">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_192uq3u">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06a7mrf">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06akbq0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wbwkar">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0oupngk">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ac64en">
+          <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pv036r">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0y9lryo">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_048ajak">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
