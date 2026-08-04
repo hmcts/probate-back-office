@@ -400,6 +400,64 @@
           <text>false</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_ibis_ctsc">
+        <inputEntry id="UnaryTests_ibis_ctsc_task">
+          <text>"ExamineInfectedBloodInterimScheme"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_ibis_ctsc_case">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_ibis_ctsc_category">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_ctsc_name">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_ctsc_value">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_ctsc_role">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_ctsc_auth">
+          <text>"SKILL:ABA6:InfectedBloodInterimScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_ctsc_priority">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_ctsc_auto">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_ibis_tl">
+        <inputEntry id="UnaryTests_ibis_tl_task">
+          <text>"ExamineInfectedBloodInterimScheme"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_ibis_tl_case">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_ibis_tl_category">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_tl_name">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_tl_value">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_tl_role">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_tl_auth">
+          <text>"SKILL:ABA6:InfectedBloodInterimScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_tl_priority">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ibis_tl_auto">
+          <text>false</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
