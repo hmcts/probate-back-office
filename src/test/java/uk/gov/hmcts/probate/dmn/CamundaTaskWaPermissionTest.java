@@ -37,6 +37,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WINDRUSH_SCHEME_SKILL_CODE;
@@ -94,6 +95,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(ADMON_WILL_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(PROBATE_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
