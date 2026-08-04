@@ -34,6 +34,7 @@ public class TaskAttributeConstants {
     public static final String PRIORITY_WORK_TYPE = "priority";
     public static final String APPLICATION_WORK_TYPE = "applications";
     public static final String ACCESS_WORK_TYPE = "access_requests";
+    public static final String DECISION_MAKING_WORK_WORK_TYPE = "decision_making_work";
 
     public static final String ROLE_CATEGORY_ADMIN = "ADMIN";
     public static final String ROLE_CATEGORY_LO = "LEGAL_OPERATIONS";
@@ -112,10 +113,14 @@ public class TaskAttributeConstants {
                     + "/trigger/moveToCWEscalation)  "
                     + "[Stop Case](/cases/case-details/${[CASE_REFERENCE]}"
                     + "/trigger/boStopCaseForCaseMatchingForExamining)";
+    public static final String DESCRIPTION_REVIEW_SME_REFERRAL =
+            "[Handle Supplementary Evidence](/cases/case-details/${[CASE_REFERENCE]}"
+                    + "/trigger/handleEvidence)";
 
     public static final String CASE_PRINTED_STATE = "CasePrinted";
     public static final String READY_TO_ISSUE_STATE = "BOReadyToIssue";
     public static final String BO_CASE_CLOSED = "BOCaseClosed";
+    public static final String BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
