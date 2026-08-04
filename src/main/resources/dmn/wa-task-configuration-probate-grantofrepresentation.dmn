@@ -20,8 +20,8 @@
       <output id="Output_1" label="Name" name="name" typeRef="string" biodi:width="349" />
       <output id="OutputClause_021y3bb" label="Value" name="value" typeRef="string" biodi:width="932" />
       <output id="OutputClause_0tefly7" label="Can Reconfigure?" name="canReconfigure" typeRef="boolean" biodi:width="551" />
-      <rule id="DecisionRule_1iljq5l">
-        <inputEntry id="UnaryTests_1x8zjbh">
+      <rule id="DecisionRule_0zibb9q">
+        <inputEntry id="UnaryTests_0g95gdk">
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_19trh4g">

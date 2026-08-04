@@ -61,7 +61,6 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
     private static final String DUMMY_CASE_DATA = "someCaseData";
 
-
     @BeforeAll
     public static void initialization() {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_PERMISSIONS_PROBATE;
@@ -88,6 +87,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(ADMON_WILL_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(PROBATE_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
