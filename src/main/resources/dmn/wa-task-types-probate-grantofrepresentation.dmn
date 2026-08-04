@@ -45,6 +45,30 @@
           <text>"Examine Digital Case - Intestacy"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1imgf9k">
+        <description>EDCAWRI</description>
+        <inputEntry id="UnaryTests_1swgjfg">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_04v0mpj">
+          <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xousyq">
+          <text>"Examine Digital Case - Admon"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0e506hv">
+        <description>EDCPRI</description>
+        <inputEntry id="UnaryTests_04rizqy">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xol2pq">
+          <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1c631u1">
+          <text>"Examine Digital Case - Probate"</text>
+         </outputEntry>
+      </rule>
       <rule id="DecisionRule_0n139s3">
         <description>EDBN</description>
         <inputEntry id="UnaryTests_0jis367">

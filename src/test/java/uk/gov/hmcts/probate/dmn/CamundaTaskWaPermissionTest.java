@@ -26,6 +26,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DE_BONIS_NON_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
@@ -35,6 +37,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFEC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WINDRUSH_SCHEME_SKILL_CODE;
@@ -71,6 +74,16 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_ADMON,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(ADMON_WILL_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(ADMON_WILL_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(PROBATE_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
