@@ -49,28 +49,6 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
     private static final String DUMMY_CASE_DATA = "someCaseData";
 
-    private static List<Map<String, Object>> ctscExamineDigitalCasePermissions(String caseType) {
-        return List.of(
-                Map.of(
-                        "name", "ctsc",
-                        "value", "Read,Own,Claim,Unclaim,Assign,Unassign",
-                        "roleCategory", ROLE_CATEGORY_CTSC,
-                        "assignmentPriority", 1,
-                        "autoAssignable", false,
-                        "authorisations", "SKILL:ABA6:" + caseType + "Examining"
-                ),
-                Map.of(
-                        "name", "ctsc-team-leader",
-                        "value", "Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign",
-                        "roleCategory", ROLE_CATEGORY_CTSC,
-                        "assignmentPriority", 1,
-                        "autoAssignable", false,
-                        "authorisations", "SKILL:ABA6:" + caseType + "Examining"
-                )
-        );
-    }
-
-
     @BeforeAll
     public static void initialization() {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_PERMISSIONS_PROBATE;
@@ -97,6 +75,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(ADMON_WILL_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(PROBATE_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
