@@ -36,6 +36,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -133,7 +136,35 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder
                                 .examineDigitalCaseExpectationsForConditions(
                                         Map.of("state", READY_TO_ISSUE_STATE)).build()
-                )
+                ),
+                Arguments.of(
+                    EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+                        CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED, "state",
+                                        READY_TO_ISSUE_STATE)).build()
+                ),
+            Arguments.of(
+                EXAMINE_WITNESS_INTERVIEW,
+                    CaseDataBuilder.defaultWaCase()
+                        .isUrgent()
+                        .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_WITNESS_INTERVIEW, "state", READY_TO_ISSUE_STATE)).build()
+            ),
+            Arguments.of(
+                EXAMINE_HORIZON_SCHEME,
+                    CaseDataBuilder.defaultWaCase()
+                        .isUrgent()
+                        .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_HORIZON_SCHEME, "state", READY_TO_ISSUE_STATE)).build()
+            )
         );
     }
 
