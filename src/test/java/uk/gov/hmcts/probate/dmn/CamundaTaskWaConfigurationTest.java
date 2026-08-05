@@ -165,7 +165,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                     "handleEvidence",
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                             Map.of("taskType", EXAMINE_HORIZON_SCHEME, "state", READY_TO_ISSUE_STATE)).build()
-            )
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
