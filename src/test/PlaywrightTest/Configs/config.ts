@@ -24,6 +24,8 @@ export const testConfig = {
   TestEnvProfPasswordSAC: process.env.PROF_USER_PASSWORD_SAC,
   TestEnvProfUserNoc: process.env.PROF_USER_NOC,
   TestEnvProfPasswordNoc: process.env.PROF_USER_PASSWORD_NOC,
+  TestEnvWaCtscAdminUser: process.env.WA_CTSC_ADMIN_USER_EMAIL,
+  TestEnvWaCtscAdminPassword: process.env.WA_CTSC_ADMIN_USER_PASSWORD,
   //  TestEnvProfUser2 User for share case e2e only
   //  For Local Environment please use below email for User2 to run shareCase, you should be able to share that case with the other PP user
   //  probatesolicitortestorg2test1@gmail.com

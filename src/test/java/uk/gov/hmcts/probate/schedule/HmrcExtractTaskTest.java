@@ -42,7 +42,7 @@ class HmrcExtractTaskTest {
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(date, date);
-        verify(hmrcDataExtractService).performHmrcExtractFromDate(date, date);
+        verify(hmrcDataExtractService).performHmrcExtractForDateRange(date, date);
     }
 
     @Test
@@ -54,7 +54,7 @@ class HmrcExtractTaskTest {
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(adhocDate, adhocDate);
-        verify(hmrcDataExtractService).performHmrcExtractFromDate(adhocDate, adhocDate);
+        verify(hmrcDataExtractService).performHmrcExtractForDateRange(adhocDate, adhocDate);
     }
 
     @Test
@@ -67,7 +67,7 @@ class HmrcExtractTaskTest {
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform hmrc data extract from date finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(adhocDate, adhocToDate);
-        verify(hmrcDataExtractService).performHmrcExtractFromDate(adhocDate, adhocToDate);
+        verify(hmrcDataExtractService).performHmrcExtractForDateRange(adhocDate, adhocToDate);
     }
 
     @Test

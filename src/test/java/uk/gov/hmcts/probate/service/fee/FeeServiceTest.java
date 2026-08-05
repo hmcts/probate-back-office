@@ -102,12 +102,12 @@ class FeeServiceTest {
             eq(FeeResponse.class))).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
-        when(featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(false);
+        when(featureToggleService.isNewFee2026Enabled()).thenReturn(false);
 
         FeeResponse copiesFee = feeService.getCopiesFeeResponse(1L);
 
         assertEquals(BigDecimal.ONE, copiesFee.getFeeAmount());
-        verify(feeServiceConfiguration, times(1)).getKeyword();
+        verify(feeServiceConfiguration, times(1)).getNewCopiesFeeKeyword();
     }
 
     @Test

@@ -1,21 +1,26 @@
 package uk.gov.hmcts.probate.dmnutils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static org.springframework.util.ResourceUtils.getFile;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_TYPE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_TYPE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_FORENAMES;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_FORENAMES_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_SURNAME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECEASED_SURNAME_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGISTRY_LOCATION_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 
 public class CaseDataBuilder {
 
     Map<String,Object> caseData;
-
-    private static final MapTypeReference MAP_TYPE = new MapTypeReference();
 
     private CaseDataBuilder(Map<String,Object> caseData) {
         this.caseData = caseData;
@@ -33,24 +38,12 @@ public class CaseDataBuilder {
         Map<String,Object> caseData = new HashMap<>();
         caseData.put("caseNameHmctsInternal", "Joe Blogs");
         caseData.put("isUrgent", "No");
-        caseData.put("dueDate", LocalDate.now());
-        String refusalOfEuLabel = "Refusal of a human rights claim";
-        caseData.put("caseManagementCategory", Map.of(
-                "value", Map.of("code", "refusalOfHumanRights", "label", "Refusal of a human rights claim"),
-                "list_items", List.of(Map.of("code", "refusalOfHumanRights", "label", refusalOfEuLabel))
-        ));
-        caseData.put("caseType", "someCaseType");
-        caseData.put("deceasedForenames", "someDeceasedForenames");
-        caseData.put("deceasedSurname", "someDeceasedSurname");
-        caseData.put("region", "someRegion");
-        caseData.put("roleCategory", "someRoleCategory");
-        caseData.put("registryLocation", "someRegistryLocation");
-        return new CaseDataBuilder(caseData);
-    }
-
-    public static CaseDataBuilder customCase(final String resourcePath) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
-        Map<String,Object> caseData = objectMapper.readValue(getFile(resourcePath), MAP_TYPE);
+        caseData.put(CASE_TYPE, CASE_TYPE_VALUE);
+        caseData.put(DECEASED_FORENAMES, DECEASED_FORENAMES_VALUE);
+        caseData.put(DECEASED_SURNAME, DECEASED_SURNAME_VALUE);
+        caseData.put(REGION, "someRegion");
+        caseData.put(ROLE_CATEGORY, ROLE_CATEGORY_CTSC);
+        caseData.put(REGISTRY_LOCATION, REGISTRY_LOCATION_VALUE);
         return new CaseDataBuilder(caseData);
     }
 

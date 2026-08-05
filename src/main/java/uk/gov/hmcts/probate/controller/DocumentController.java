@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
@@ -38,6 +39,7 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
@@ -101,6 +103,7 @@ public class DocumentController {
     private final UserInfoService userInfoService;
     private final FeatureToggleService featureToggleService;
     private final DocumentTransformer documentTransformer;
+    private final CcdSupplementaryDataService ccdSupplementaryDataService;
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -352,8 +355,19 @@ public class DocumentController {
         return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest, caseworkerInfo));
     }
 
+    @SuppressWarnings("java:S6863")
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
+        if (featureToggleService.usePreventUpdatingExistingUploadedDocumentsFeatureToggleOn()) {
+            try {
+                evidenceUploadService.validateExistingUploadedDocuments(callbackRequest);
+            } catch (BusinessValidationException exception) {
+                return ResponseEntity.ok(CallbackResponse.builder()
+                        .errors(List.of(exception.getUserMessage()))
+                        .build());
+            }
+        }
+
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         try {
             final CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -569,4 +583,17 @@ public class DocumentController {
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, caseworkerInfo);
         return ResponseEntity.ok(response);
     }
+
+
+    @PostMapping(path = "/supplementaryData", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<WillLodgementCallbackResponse> setWillLodgementSupplementaryData(
+           @Valid @RequestBody final WillLodgementCallbackRequest willLodgementCallbackRequest) {
+        ccdSupplementaryDataService.submitSupplementaryDataToCcd(
+                willLodgementCallbackRequest.getCaseDetails().getId().toString());
+        WillLodgementCallbackResponse willLodgementCallbackResponse = WillLodgementCallbackResponse.builder().build();
+
+        return ResponseEntity.ok(willLodgementCallbackResponse);
+    }
+
 }
