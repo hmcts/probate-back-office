@@ -190,7 +190,7 @@ class BuildStateDiagram {
     }
 
     private List<Event> getAllEvents(String caseType, List<State> allStates) throws IOException {
-        String caseEvent = getStringFromFile(BASE_DIR + caseType + "/CaseEvent.json");
+        String caseEvent = getStringFromFile(BASE_DIR + caseType + "/CaseEvent/CaseEvent.json");
         Map<String, Object>[] caseEvents = new ObjectMapper().readValue(caseEvent, HashMap[].class);
 
         List<Event> allEvents = new ArrayList<>();
@@ -256,7 +256,8 @@ class BuildStateDiagram {
 
 
         List<Event> allAuthdEvents = new ArrayList<>();
-        String allAuthEvents = getStringFromFile(BASE_DIR + caseType + "/AuthorisationCaseEvent.json");
+        String allAuthEvents = getStringFromFile(
+                BASE_DIR + caseType + "/AuthorisationCaseEvent/AuthorisationCaseEvent.json");
         Map<String, Object>[] authEventsMaps = new ObjectMapper().readValue(allAuthEvents, HashMap[].class);
         for (Map<String, Object> authEventMap : authEventsMaps) {
             String userRole = authEventMap.get("UserRole").toString();
@@ -307,7 +308,8 @@ class BuildStateDiagram {
 
 
         List<State> allAuthdStates = new ArrayList<>();
-        String allAuthSates = getStringFromFile(BASE_DIR + caseType + "/AuthorisationCaseState.json");
+        String allAuthSates = getStringFromFile(
+                BASE_DIR + caseType + "/AuthorisationCaseState/AuthorisationCaseState.json");
         Map<String, Object>[] authStatesMaps = new ObjectMapper().readValue(allAuthSates, HashMap[].class);
         for (Map<String, Object> authStateMaps : authStatesMaps) {
             String userRole = authStateMaps.get("UserRole").toString();
