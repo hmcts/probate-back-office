@@ -97,7 +97,7 @@
   "dependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@date-fns/upgrade": "^1.0.3",
-    "dotenv-extended": "^2.9.0",
+    "dotenv-extended": "^3.0.0",
     "html_codesniffer": "^2.5.1",
     "require-directory": "^2.1.1"
   },
@@ -111,8 +111,8 @@
     "date-fns": "^2.21.3",
     "dotenv": "^17.4.2",
     "eslint": "^10.8.0",
-    "eslint-plugin-playwright": "^1.8.3",
-    "husky": "^8.0.3",
+    "eslint-plugin-playwright": "^2.0.0",
+    "husky": "^9.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^11.8.0",
     "mocha-junit-reporter": "^2.2.1",
@@ -129,7 +129,6 @@
     "selenium-standalone": "^10.0.2",
     "sinon": "^22.1.0",
     "sinon-chai": "^3.7.0",
-    "sonarqube-scanner": "^4.4.0",
     "supertest": "^7.0.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.65.0",
@@ -141,7 +140,7 @@
     "axios": "^1.18.1",
     "diff": "^9.0.0",
     "flatted": "^3.4.2",
-    "get-uri": "^6.0.5",
+    "get-uri": "^8.0.0",
     "http-cache-semantics": "^4.2.0",
     "serialize-javascript": "^7.0.6",
     "yargs-parser": "^22.0.0"
