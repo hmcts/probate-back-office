@@ -406,7 +406,7 @@ xui-webapp:
       REDISCLOUD_URL: http://dummyrediscloudurl
       UV_THREADPOOL_SIZE: 128
       PROTOCOL: http
-      
+
     keyVaults:
       rpx:
         resourceGroup: rpx
@@ -455,8 +455,8 @@ aac-manage-case-assignment:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-  devcpuRequests: 150m
-  devcpuLimits: 250m
+  devcpuRequests: 200m
+  devcpuLimits: 300m
   devmemoryRequests: 1Gi
   devmemoryLimits: 1.5G
   environment:

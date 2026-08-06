@@ -13,9 +13,6 @@ import uk.gov.hmcts.probate.DmnDecisionTableBaseUnitTest;
 import uk.gov.hmcts.probate.dmnutils.CaseDataBuilder;
 import uk.gov.hmcts.probate.dmnutils.ConfigurationExpectationBuilder;
 
-import java.io.IOException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -26,14 +23,25 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_CONFIGURATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
-    private static final String REQUEST = "classpath:custom-case-data.json";
     private static final String taskId = UUID.randomUUID().toString();
     private static final String roleAssignmentId = UUID.randomUUID().toString();
 
@@ -42,47 +50,121 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         CURRENT_DMN_DECISION_TABLE = WA_TASK_CONFIGURATION_PROBATE;
     }
 
-    static Stream<Arguments> scenarioProvider() throws IOException {
-        String dateOrigin = ZonedDateTime.now(ZoneId.of("UTC")).toString();
+    static Stream<Arguments> scenarioProvider() {
         return Stream.of(
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations().build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
-                        CaseDataBuilder.defaultWaCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "boAmendCaseDetailsForAwaitingDocumentation",
-                        ConfigurationExpectationBuilder.defaultExamineDigitalCaseProbateExpectations().build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
-                        CaseDataBuilder.defaultCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         "handleEvidence",
-                        ConfigurationExpectationBuilder.defaultExpectations()
-                                .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
-                                         + "/trigger/boSelectForQA)", true)
-                                .build()
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY,
-                        CaseDataBuilder.defaultCase()
-                                .isUrgent()
-                                .build(),
+                        CaseDataBuilder.defaultCase().isUrgent().build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.defaultExpectations()
                                 .expectedValue(DESCRIPTION, "[Select For QA](/cases/case-details/${[CASE_REFERENCE]}"
                                         + "/trigger/boSelectForQA)", true)
                                 .build()
-                )
+                ),
+                Arguments.of(
+                        EXAMINE_DE_BONIS_NON,
+                        CaseDataBuilder.defaultWaCase()
+                                .isUrgent()
+                                .build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_DE_BONIS_NON, "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                    EXAMINE_FIAT_WILL,
+                    CaseDataBuilder.defaultWaCase()
+                        .isUrgent()
+                        .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_FIAT_WILL, "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                    EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                    CaseDataBuilder.defaultWaCase()
+                        .isUrgent()
+                        .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                                    "state", READY_TO_ISSUE_STATE)).build()
+                ),
+               Arguments.of(
+                   EXAMINE_WINDRUSH_SCHEME,
+                    CaseDataBuilder.defaultWaCase()
+                        .isUrgent()
+                        .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                        Map.of("taskType", EXAMINE_WINDRUSH_SCHEME,
+                            "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                    EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE,
+                    CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder
+                                .examineDigitalCaseExpectationsForConditions(
+                                        Map.of("state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                    EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+                        CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED, "state",
+                                        READY_TO_ISSUE_STATE)).build()
+                ),
+            Arguments.of(
+                EXAMINE_WITNESS_INTERVIEW,
+                    CaseDataBuilder.defaultWaCase()
+                        .isUrgent()
+                        .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_WITNESS_INTERVIEW, "state", READY_TO_ISSUE_STATE)).build()
+            ),
+            Arguments.of(
+                EXAMINE_HORIZON_SCHEME,
+                    CaseDataBuilder.defaultWaCase()
+                        .isUrgent()
+                        .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_HORIZON_SCHEME, "state", READY_TO_ISSUE_STATE)).build()
+            )
         );
     }
 
@@ -92,7 +174,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(2));
         assertThat(logic.getOutputs().size(), is(3));
-        assertEquals(16, logic.getRules().size());
+        assertEquals(18, logic.getRules().size());
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
@@ -106,7 +188,8 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         Map<String, String> taskAttributes = Map.of(
                 "taskType", taskType,
                 "roleAssignmentId", roleAssignmentId,
-                "taskId", taskId
+                "taskId", taskId,
+                "caseId", REFERENCE_VALUE
         );
         inputVariables.putValue("taskAttributes", taskAttributes);
         inputVariables.putValue("taskType", taskType);
@@ -114,15 +197,6 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
         inputVariables.putValue("eventId", eventId);
 
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
-
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
     }
-
-    private boolean validNow(ZonedDateTime expected, ZonedDateTime result) {
-        ZonedDateTime now = ZonedDateTime.now();
-        return result != null
-                && (expected.isEqual(result) || expected.isBefore(result))
-                && (now.isEqual(result) || now.isAfter(result));
-    }
-
 }
