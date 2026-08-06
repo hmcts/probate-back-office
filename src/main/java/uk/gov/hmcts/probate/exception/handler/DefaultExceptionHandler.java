@@ -148,7 +148,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataMigrationException.class)
-    public ResponseEntity<CallbackResponse>  handle(DataMigrationException exception) {
+    public ResponseEntity<CallbackResponse> handle(DataMigrationException exception) {
         log.error("Exception within data migration", exception);
 
         List<String> errors = List.of(exception.getMessage());

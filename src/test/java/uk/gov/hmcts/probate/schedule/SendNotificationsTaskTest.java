@@ -13,8 +13,10 @@ import uk.gov.hmcts.probate.service.notification.AutomatedNotificationService;
 import uk.gov.hmcts.probate.service.notification.DeclarationNotSignedNotification;
 import uk.gov.hmcts.probate.service.notification.DormantReminderNotification;
 import uk.gov.hmcts.probate.service.notification.DormantWarningNotification;
+import uk.gov.hmcts.probate.service.notification.FirstRedecReminderNotification;
 import uk.gov.hmcts.probate.service.notification.FirstStopReminderNotification;
 import uk.gov.hmcts.probate.service.notification.HseReminderNotification;
+import uk.gov.hmcts.probate.service.notification.SecondRedecReminderNotification;
 import uk.gov.hmcts.probate.service.notification.SecondStopReminderNotification;
 import uk.gov.hmcts.probate.service.notification.UnsubmittedApplicationNotification;
 
@@ -33,8 +35,10 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 import static uk.gov.hmcts.probate.model.NotificationType.DECLARATION_NOT_SIGNED;
 import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.DORMANT_WARNING;
+import static uk.gov.hmcts.probate.model.NotificationType.FIRST_REDEC_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.FIRST_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.HSE_REMINDER;
+import static uk.gov.hmcts.probate.model.NotificationType.SECOND_REDEC_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.SECOND_STOP_REMINDER;
 import static uk.gov.hmcts.probate.model.NotificationType.UNSUBMITTED_APPLICATION;
 
@@ -57,7 +61,13 @@ class SendNotificationsTaskTest {
     private FirstStopReminderNotification firstStopReminderNotification;
 
     @Mock
+    private FirstRedecReminderNotification firstRedecReminderNotification;
+
+    @Mock
     private SecondStopReminderNotification secondStopReminderNotification;
+
+    @Mock
+    private SecondRedecReminderNotification secondRedecReminderNotification;
 
     @Mock
     private HseReminderNotification hseReminderNotification;
@@ -126,7 +136,9 @@ class SendNotificationsTaskTest {
                 featureToggleService,
                 clock,
                 firstStopReminderNotification,
+                firstRedecReminderNotification,
                 secondStopReminderNotification,
+                secondRedecReminderNotification,
                 hseReminderNotification,
                 dormantWarningNotification,
                 dormantReminderNotification,
@@ -188,6 +200,7 @@ class SendNotificationsTaskTest {
 
         verify(dataExtractDateValidator).dateValidator(AD_HOC_DATE);
         verify(automatedNotificationService).sendNotification(SECOND_STOP_REMINDER_DATE, SECOND_STOP_REMINDER);
+        verify(automatedNotificationService).sendNotification(SECOND_STOP_REMINDER_DATE, SECOND_REDEC_REMINDER);
         verify(automatedNotificationService).sendNotification(HSE_REMINDER_DATE, HSE_REMINDER);
         verify(automatedNotificationService).sendNotification(DORMANT_WARNING_DATE, DORMANT_WARNING);
         verify(automatedNotificationService).sendNotification(UNSUBMITTED_APPLICATION_DATE, UNSUBMITTED_APPLICATION);
@@ -209,6 +222,7 @@ class SendNotificationsTaskTest {
 
         verify(dataExtractDateValidator).dateValidator(FIRST_STOP_REMINDER_DATE);
         verify(automatedNotificationService).sendNotification(FIRST_STOP_REMINDER_DATE, FIRST_STOP_REMINDER);
+        verify(automatedNotificationService).sendNotification(FIRST_STOP_REMINDER_DATE, FIRST_REDEC_REMINDER);
         verifyNoMoreInteractions(automatedNotificationService);
     }
 

@@ -984,6 +984,35 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }
 
+    public Document sendRedecReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails,
+                                          boolean isFirstStopReminder)
+            throws NotificationClientException {
+        log.info("sendRedecReminderEmail for case id: {}", caseDetails.getId());
+        Map<String, Object> data = caseDetails.getData();
+        if (data == null) {
+            log.error("sendRedecReminderEmail Case data is null for case ID: {}", caseDetails.getId());
+            return null;
+        }
+        String emailAddress = Optional.ofNullable(getEmail(data))
+                .orElseThrow(() -> new NotificationClientException(
+                        "sendRedecReminderEmail address not found for case ID: " + caseDetails.getId()));
+        ApplicationType applicationType = getApplicationType(caseDetails);
+        LanguagePreference languagePreference = getLanguagePreference(caseDetails);
+        String templateId = templateService.getRedecReminderTemplateId(applicationType,
+                languagePreference, isFirstStopReminder);
+        log.info("sendRedecReminderEmail applicationType {}, templateId: {}", applicationType, templateId);
+        Map<String, Object> personalisation =
+                automatedNotificationPersonalisationService.getRedecReminderPersonalisation(caseDetails,
+                        applicationType);
+        log.info("sendRedecReminderEmail start sendEmail");
+        SendEmailResponse response =
+                notificationClientService.sendEmail(templateId, emailAddress,
+                        personalisation, caseDetails.getId().toString());
+        log.info("Redec Reminder email reference response: {} isFirstRedecReminder: {}", response.getReference(),
+                isFirstStopReminder);
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
     public Document sendHseReminderEmail(uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails)
             throws NotificationClientException {
         log.info("sendHseReminderEmail for case id: {}", caseDetails.getId());

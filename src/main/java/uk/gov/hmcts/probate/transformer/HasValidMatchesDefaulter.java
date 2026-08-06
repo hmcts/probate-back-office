@@ -1,9 +1,11 @@
 package uk.gov.hmcts.probate.transformer;
 
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.probateman.LegacyCaseType;
 
 
 import java.util.List;
@@ -14,11 +16,13 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Component
 public class HasValidMatchesDefaulter {
     private static final List<String> VALID_CASE_TYPE_LIST = List.of(
-            "Grant of Representation",
-            "Caveat",
-            "Legacy CAVEAT",
-            "Legacy LEGACY APPLICATION",
-            "Legacy LEGACY GRANT");
+            CaseType.GRANT_OF_REPRESENTATION.getName(),
+            CaseType.CAVEAT.getName(),
+            CaseType.WILL_LODGEMENT.getName(),
+            LegacyCaseType.CAVEAT.getName(),
+            LegacyCaseType.GRANT_OF_REPRESENTATION.getName(),
+            LegacyCaseType.GRANT_OF_REPRESENTATION_DERIVED.getName(),
+            LegacyCaseType.WILL_LODGEMENT.getName());
 
     public String defaultHasValidMatches(CaseData caseData) {
         final List<CollectionMember<CaseMatch>> storedMatches = caseData.getCaseMatches();

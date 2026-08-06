@@ -664,6 +664,7 @@ public class CaseData extends CaseDataParent {
     private final String executorsNamed;
     private final String hasCoApplicant;
     private LocalDate firstStopReminderSentDate;
+    private LocalDate firstRedecReminderSentDate;
     private final String evidenceHandledDate;
     private final String childAlive;
     private final String isApplicantParentDeceasedChild;
@@ -682,6 +683,8 @@ public class CaseData extends CaseDataParent {
      * This is only intended for use during migrations and should not be persisted into the case record.
      */
     private final String migrationCallbackMetadata;
+
+    private final String caseNameHmctsInternal;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

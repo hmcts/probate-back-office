@@ -13,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -31,6 +32,7 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
+import uk.gov.hmcts.probate.service.CcdSupplementaryDataService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.user.UserInfoService;
@@ -58,14 +60,20 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 @ExtendWith(SpringExtension.class)
@@ -112,6 +120,10 @@ class DocumentControllerUnitTest {
     private FeatureToggleService featureToggleService;
     @Mock
     private DocumentTransformer documentTransformer;
+    @Mock
+    private CcdSupplementaryDataService ccdSupplementaryDataService;
+
+
 
     /// The object under test
     private DocumentController documentController;
@@ -141,7 +153,8 @@ class DocumentControllerUnitTest {
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
-            evidenceUploadService, userInfoService, featureToggleService,documentTransformer);
+            evidenceUploadService, userInfoService, featureToggleService,documentTransformer,ccdSupplementaryDataService
+        );
         doReturn(CASEWORKER_USERINFO).when(userInfoService).getCaseworkerInfo();
     }
 
@@ -252,6 +265,26 @@ class DocumentControllerUnitTest {
 
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         verify(documentTransformer, times(0)).addDocument(any(), any(), any());
+    }
+
+    @Test
+    void shouldReturnValidationErrorWhenExistingDocumentIsModified() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseData mockCaseData = CaseData.builder().applicationType(SOLICITOR).build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData, null, 0L);
+        mockCaseDetails.setState("BOCaseStopped");
+        when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
+        when(featureToggleService.usePreventUpdatingExistingUploadedDocumentsFeatureToggleOn()).thenReturn(true);
+        doThrow(new BusinessValidationException("validation error", "validation error"))
+                .when(evidenceUploadService)
+                .validateExistingUploadedDocuments(callbackRequest);
+
+        ResponseEntity<CallbackResponse> response = documentController.evidenceAdded(callbackRequest);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        assertThat(response.getBody().getErrors(), contains("validation error"));
+        verify(evidenceUploadService, never()).updateLastEvidenceAddedDate(mockCaseDetails);
+        verify(documentTransformer, never()).addDocument(any(), any(), any());
     }
 
     @Test
@@ -472,5 +505,35 @@ class DocumentControllerUnitTest {
                 any(),
                 any());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSubmitSupplementaryData() {
+        WillLodgementCallbackRequest callbackRequest = mock(WillLodgementCallbackRequest.class);
+        WillLodgementDetails caseDetailsMock = mock(WillLodgementDetails.class);
+
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        when(caseDetailsMock.getId()).thenReturn(1000L);
+        ResponseEntity<WillLodgementCallbackResponse> response = documentController
+                .setWillLodgementSupplementaryData(callbackRequest);
+        verify(ccdSupplementaryDataService).submitSupplementaryDataToCcd(anyString());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCaseDetailsIsNull() {
+        WillLodgementCallbackRequest callbackRequest = mock(WillLodgementCallbackRequest.class);
+
+        when(callbackRequest.getCaseDetails())
+                .thenReturn(null);
+        assertThrows(
+                NullPointerException.class,
+                () -> documentController.setWillLodgementSupplementaryData(callbackRequest)
+        );
+        verifyNoInteractions(ccdSupplementaryDataService);
     }
 }
