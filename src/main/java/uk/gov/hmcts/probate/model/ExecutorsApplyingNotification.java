@@ -16,7 +16,7 @@ public class ExecutorsApplyingNotification {
             regex = "[a-zA-Z0-9#$%'+=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@[a-zA-Z0-9](?:[a-zA-Z0-9-.]{0,30}[a-zA-Z0-9])?\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,10}[a-zA-Z0-9])?"
     )
     private String email;
-    @CCD(label = "Address of the executor")
+    @CCD(label = "Address of the executor", typeOverride = FieldType.AddressUK)
     private SolsAddress address;
     @CCD(label = "Do you wish to send a notification?", typeOverride = FieldType.YesOrNo)
     private String notification;

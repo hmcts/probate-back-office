@@ -38,7 +38,7 @@ public class ManageCaseTTL implements CCDConfig<CaseData, State, UserRole> {
             .grant(Permission.CRU, UserRole.TTL_PROFILE)
             .fields();
         fields.page("manageCaseTTLPage1");
-        fields.complex(CaseData::getManageCaseTtl)
+        fields.complex(CaseData::getTTL2)
                     .readonly(TTL::getSystemTTL)
                     .eventLabel("System TTL")
                     .optional(TTL::getOverrideTTL)

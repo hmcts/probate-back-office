@@ -2987,7 +2987,7 @@ public class CaseData extends CaseDataParent {
           hint = "Grant issued email notification",
           access = {RparobotCudSystemupdateCuAccess.class, CaseadminCaseofficerIssuerRegistrarCudAccess.class, SchedulerCudAccess.class}
   )
-  private uk.gov.hmcts.ccd.sdk.type.YesOrNo grantReissuedNotificationRequestedFlag;
+  private uk.gov.hmcts.ccd.sdk.type.YesOrNo boEmailGrantReissuedNotificationRequested2;
   @CCD(
           label = "Which state do you wish to return the case to?",
           typeOverride = FieldType.FixedList,
@@ -3177,7 +3177,7 @@ public class CaseData extends CaseDataParent {
           label = "Set up TTL",
           access = {TTLProfileCruAccess.class, SchedulerCrudAccess.class, SystemupdateCrudAccess.class}
   )
-  private uk.gov.hmcts.ccd.sdk.type.TTL manageCaseTtl;
+  private uk.gov.hmcts.ccd.sdk.type.TTL TTL2;
   @CCD(
           label = "Any executors died",
           access = {DefaultAccess.class, RparobotCrudSolicitorCrudSystemupdateCruAccess.class, CitizenCrudAccess.class}

@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.Permission;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.DocumentUpload;
-import uk.gov.hmcts.probate.model.ccd.raw.request.ProbateDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.State;
 import uk.gov.hmcts.probate.model.ccd.raw.request.UserRole;
 
@@ -43,16 +43,16 @@ public class RemoveDocuments implements CCDConfig<CaseData, State, UserRole> {
             .fields();
         fields.page("removeDocumentsPage1");
         fields.complex(CaseData::getProbateDocumentsGenerated, false).done();
-        fields.complex(CaseData::getProbateDocumentsGenerated, ProbateDocument.class)
-                    .readonly(ProbateDocument::getDocumentType)
-                    .readonly(ProbateDocument::getDocumentLink)
-                    .readonly(ProbateDocument::getDocumentDateAdded)
-                    .readonly(ProbateDocument::getDocumentGeneratedBy).done();
+        fields.complex(CaseData::getProbateDocumentsGenerated, Document.class)
+                    .readonly(Document::getDocumentType)
+                    .readonly(Document::getDocumentLink)
+                    .readonly(Document::getDocumentDateAdded)
+                    .readonly(Document::getDocumentGeneratedBy).done();
         fields.complex(CaseData::getBoDocumentsUploaded, false).done();
-        fields.complex(CaseData::getBoDocumentsUploaded, DocumentUpload.class)
-                    .readonly(DocumentUpload::getDocumentType)
-                    .readonly(DocumentUpload::getDocumentLink)
-                    .readonly(DocumentUpload::getComment).done();
+        fields.complex(CaseData::getBoDocumentsUploaded, UploadDocument.class)
+                    .readonly(UploadDocument::getDocumentType)
+                    .readonly(UploadDocument::getDocumentLink)
+                    .readonly(UploadDocument::getComment).done();
         fields.complex(CaseData::getScannedDocuments, false).done();
         fields.complex(CaseData::getScannedDocuments, ScannedDocument.class)
                     .readonly(ScannedDocument::getControlNumber)

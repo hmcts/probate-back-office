@@ -4,9 +4,8 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.ccd.sdk.api.CCDConfig;
 import uk.gov.hmcts.ccd.sdk.api.ConfigBuilder;
 import uk.gov.hmcts.ccd.sdk.api.Permission;
-import uk.gov.hmcts.probate.model.ccd.raw.request.Aliases;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.State;
 import uk.gov.hmcts.probate.model.ccd.raw.request.UserRole;
 
@@ -50,16 +49,6 @@ public class ManuallyVerifyDeathRecord implements CCDConfig<CaseData, State, Use
                     .readonly(DeathRecord::getSex)
                     .readonly(DeathRecord::getAddress)
                     .readonly(DeathRecord::getDateOfDeath)
-                    .mandatory(DeathRecord::getValid)
-                    .complex(DeathRecord::getAliases, Aliases.class)
-                    .readonly(Aliases::getType).done()
-                    .complex(DeathRecord::getAliases, Aliases.class)
-                    .readonly(Aliases::getPrefix).done()
-                    .complex(DeathRecord::getAliases, Aliases.class)
-                    .readonly(Aliases::getForenames).done()
-                    .complex(DeathRecord::getAliases, Aliases.class)
-                    .readonly(Aliases::getLastName).done()
-                    .complex(DeathRecord::getAliases, Aliases.class)
-                    .readonly(Aliases::getSuffix).done().done();
+                    .mandatory(DeathRecord::getValid).done();
     }
 }

@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.ccd.event.page;
 
 import uk.gov.hmcts.ccd.sdk.api.Event;
 import uk.gov.hmcts.ccd.sdk.api.FieldCollection;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.State;
 import uk.gov.hmcts.probate.model.ccd.raw.request.UserRole;
 

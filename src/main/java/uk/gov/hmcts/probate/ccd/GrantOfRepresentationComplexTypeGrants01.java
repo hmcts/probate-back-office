@@ -38,8 +38,8 @@ public final class GrantOfRepresentationComplexTypeGrants01 {
         builder.grantComplexType(CaseData::getApplicantOrganisationPolicy, "Organisation.OrganisationID", Permission.CRUD, UserRole.CASEWORKER_PROBATE_SCHEDULER);
         builder.grantComplexType(CaseData::getApplicantOrganisationPolicy, "Organisation.OrganisationName", Permission.CRUD, UserRole.CASEWORKER_PROBATE_SCHEDULER);
         builder.grantComplexType(CaseData::getApplicantOrganisationPolicy, "PrepopulateToUsersOrganisation", Permission.CRUD, UserRole.CASEWORKER_PROBATE_SCHEDULER);
-        builder.grantComplexType(CaseData::getManageCaseTtl, "SystemTTL", Set.of(Permission.R), UserRole.TTL_PROFILE);
-        builder.grantComplexType(CaseData::getManageCaseTtl, "OverrideTTL", Permission.CRU, UserRole.TTL_PROFILE);
-        builder.grantComplexType(CaseData::getManageCaseTtl, "Suspended", Permission.CRU, UserRole.TTL_PROFILE);
+        builder.grantComplexType(CaseData::getTTL2, "SystemTTL", Set.of(Permission.R), UserRole.TTL_PROFILE);
+        builder.grantComplexType(CaseData::getTTL2, "OverrideTTL", Permission.CRU, UserRole.TTL_PROFILE);
+        builder.grantComplexType(CaseData::getTTL2, "Suspended", Permission.CRU, UserRole.TTL_PROFILE);
     }
 }

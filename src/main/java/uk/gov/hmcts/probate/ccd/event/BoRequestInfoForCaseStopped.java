@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.ccd.event.page.BoRequestInfoForCaseStoppedBoRequestI
 import uk.gov.hmcts.probate.ccd.event.page.BoRequestInfoForCaseStoppedBoRequestInfoForCaseStoppedPage4Page;
 import uk.gov.hmcts.probate.ccd.event.page.BoRequestInfoForCaseStoppedBoRequestInfoForCaseStoppedPage5Page;
 import uk.gov.hmcts.probate.ccd.event.page.BoRequestInfoForCaseStoppedBoRequestInfoForCaseStoppedPage6Page;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.State;
 import uk.gov.hmcts.probate.model.ccd.raw.request.UserRole;
@@ -50,5 +51,19 @@ public class BoRequestInfoForCaseStopped implements CCDConfig<CaseData, State, U
         BoRequestInfoForCaseStoppedBoRequestInfoForCaseStoppedPage4Page.apply(fields);
         BoRequestInfoForCaseStoppedBoRequestInfoForCaseStoppedPage5Page.apply(fields);
         BoRequestInfoForCaseStoppedBoRequestInfoForCaseStoppedPage6Page.apply(fields);
+        fields.complex(CaseData::getExecutorsApplyingNotifications, ExecutorsApplyingNotification.class)
+                    .readonly(ExecutorsApplyingNotification::getName)
+                    .eventLabel("Name of the executor")
+                    .readonly(ExecutorsApplyingNotification::getEmail)
+                    .fieldShowCondition("name=\"NeverShowThisField\"")
+                    .eventLabel("Email of the executor")
+                    .readonly(ExecutorsApplyingNotification::getAddress)
+                    .fieldShowCondition("name=\"NeverShowThisField\"")
+                    .eventLabel("Address of the executor")
+                    .mandatory(ExecutorsApplyingNotification::getNotification)
+                    .eventLabel("Do you wish to send a notification?")
+                    .readonly(ExecutorsApplyingNotification::getResponseReceived)
+                    .fieldShowCondition("name=\"NeverShowThisField\"")
+                    .eventLabel("Has a response been received?").done();
     }
 }
