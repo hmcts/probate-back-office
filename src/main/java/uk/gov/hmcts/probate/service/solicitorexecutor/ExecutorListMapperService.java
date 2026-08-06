@@ -234,6 +234,12 @@ public class ExecutorListMapperService {
                         case WHOLE_BLOOD_NIECE_OR_NEPHEW:
                             builder.wholeBloodSiblingDiedBeforeDeceased(solsApplicantFamilyDetails
                                             .getWholeNieceOrNephewParentDieBeforeDeceased())
+                                    .wholeBloodSiblingAdoptedIn(solsApplicantFamilyDetails
+                                            .getWholeNieceOrNephewParentAdoptedIn())
+                                    .wholeBloodSiblingAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                            .getWholeNieceOrNephewParentAdoptionInEnglandOrWales())
+                                    .wholeBloodSiblingAdoptedOut(solsApplicantFamilyDetails
+                                            .getWholeNieceOrNephewParentAdoptedOut())
                                     .wholeBloodNieceOrNephewAdoptedIn(solsApplicantFamilyDetails
                                             .getCoApplicantAdoptedIn())
                                     .wholeBloodNieceOrNephewAdoptionInEnglandOrWales(solsApplicantFamilyDetails
@@ -250,6 +256,12 @@ public class ExecutorListMapperService {
                         case HALF_BLOOD_NIECE_OR_NEPHEW:
                             builder.halfBloodSiblingDiedBeforeDeceased(solsApplicantFamilyDetails
                                             .getHalfNieceOrNephewParentDieBeforeDeceased())
+                                    .halfBloodSiblingAdoptedIn(solsApplicantFamilyDetails
+                                            .getHalfNieceOrNephewParentAdoptedIn())
+                                    .halfBloodSiblingAdoptionInEnglandOrWales(solsApplicantFamilyDetails
+                                            .getHalfNieceOrNephewParentAdoptionInEnglandOrWales())
+                                    .halfBloodSiblingAdoptedOut(solsApplicantFamilyDetails
+                                            .getHalfNieceOrNephewParentAdoptedOut())
                                     .halfBloodNieceOrNephewAdoptedIn(solsApplicantFamilyDetails
                                             .getCoApplicantAdoptedIn())
                                     .halfBloodNieceOrNephewAdoptionInEnglandOrWales(solsApplicantFamilyDetails
