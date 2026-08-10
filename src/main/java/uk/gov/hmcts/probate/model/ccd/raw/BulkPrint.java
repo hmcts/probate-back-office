@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ProbateDocumentTypeEnum;
 
 @Data
 @Builder
@@ -13,7 +14,8 @@ public class BulkPrint {
     @CCD(
             label = "Document sent to bulk print",
             typeOverride = FieldType.FixedList,
-            typeParameterOverride = "probateDocumentTypeEnum"
+            typeParameterOverride = "probateDocumentTypeEnum",
+            typeParameterClass = ProbateDocumentTypeEnum.class
     )
     @JsonProperty("templateName")
     private final String templateName;

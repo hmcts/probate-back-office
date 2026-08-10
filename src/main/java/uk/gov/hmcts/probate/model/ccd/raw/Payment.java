@@ -4,12 +4,19 @@ import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
+import uk.gov.hmcts.probate.model.ccd.raw.request.PaymentStatusEnum;
+import uk.gov.hmcts.probate.model.ccd.raw.request.PaymentMethodEnum;
 
 @Data
 @Builder
 public class Payment {
 
-    @CCD(label = "Payment status", typeOverride = FieldType.FixedList, typeParameterOverride = "paymentStatusEnum")
+    @CCD(
+            label = "Payment status",
+            typeOverride = FieldType.FixedList,
+            typeParameterOverride = "paymentStatusEnum",
+            typeParameterClass = PaymentStatusEnum.class
+    )
     private final String status;
     @CCD(label = "Payment date", typeOverride = FieldType.Date)
     private final String date;
@@ -17,7 +24,12 @@ public class Payment {
     private final String reference;
     @CCD(label = "Payment amount", typeOverride = FieldType.MoneyGBP)
     private final String amount;
-    @CCD(label = "Payment method", typeOverride = FieldType.FixedList, typeParameterOverride = "paymentMethodEnum")
+    @CCD(
+            label = "Payment method",
+            typeOverride = FieldType.FixedList,
+            typeParameterOverride = "paymentMethodEnum",
+            typeParameterClass = PaymentMethodEnum.class
+    )
     private final String method;
     @CCD(label = "Payment transaction ID")
     private final String transactionId;

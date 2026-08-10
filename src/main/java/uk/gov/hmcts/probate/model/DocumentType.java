@@ -5,7 +5,10 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.api.ComplexType;
 
+@ComplexType(name = "documentUploadTypeEnum", generate = true)
 @Getter
 public enum DocumentType {
     @JsonProperty("legalStatementAdmon")
@@ -23,6 +26,7 @@ public enum DocumentType {
     @JsonProperty("legalStatement")
     LEGAL_STATEMENT("legalStatement"),
 
+    @CCD(label = "Uploaded Legal Statement")
     @JsonProperty("uploadedLegalStatement")
     UPLOADED_LEGAL_STATEMENT("uploadedLegalStatement"),
 
@@ -65,24 +69,30 @@ public enum DocumentType {
     @JsonProperty("sentEmail")
     SENT_EMAIL("sentEmail"),
 
+    @CCD(label = "Email")
     @JsonProperty("email")
     EMAIL("email"),
 
+    @CCD(label = "PA1 form")
     @JsonProperty("pa1Form")
     PA1_FORM("pa1Form"),
 
+    @CCD(label = "Affidavits")
     @JsonProperty("affidavits")
     AFFIDAVITS("affidavits"),
 
+    @CCD(label = "Witness questionnaires")
     @JsonProperty("witnessQuestionnaires")
     WITNESS_QUESTIONNAIRES("witnessQuestionnaires"),
 
+    @CCD(label = "Codicil")
     @JsonProperty("IHT")
     IHT("IHT"),
 
     @JsonProperty("warning")
     WARNING("warning"),
 
+    @CCD(label = "Other")
     @JsonProperty("other")
     OTHER("other"),
 
@@ -92,12 +102,15 @@ public enum DocumentType {
     @JsonProperty("deathCertificate")
     DEATH_CERT("deathCertificate"),
 
+    @CCD(label = "Correspondence")
     @JsonProperty("correspondence")
     CORRESPONDENCE("correspondence"),
 
+    @CCD(label = "Will")
     @JsonProperty("will")
     WILL("will"),
 
+    @CCD(label = "Citizen hub upload")
     @JsonProperty("citizenHubUpload")
     CITIZEN_HUB_UPLOAD("citizenHubUpload"),
 

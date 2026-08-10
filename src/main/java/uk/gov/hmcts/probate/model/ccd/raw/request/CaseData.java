@@ -245,6 +245,7 @@ public class CaseData extends CaseDataParent {
             label = "Why are they not applying?",
             typeOverride = FieldType.FixedRadioList,
             typeParameterOverride = "solsNotApplyingReasonFixedList",
+            typeParameterClass = SolsNotApplyingReasonFixedList.class,
             access = {DefaultAccess.class, RparobotCudSolicitorCrudSystemupdateCruAccess.class}
     )
     private String solsSolicitorNotApplyingReason;
@@ -390,6 +391,7 @@ public class CaseData extends CaseDataParent {
             label = "Inheritance Tax form",
             typeOverride = FieldType.FixedRadioList,
             typeParameterOverride = "IHTFormID",
+            typeParameterClass = IHTFormID.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, SolicitorCrudCitizenCudAccess.class}
     )
     private String ihtFormId;
@@ -414,6 +416,7 @@ public class CaseData extends CaseDataParent {
             label = "Application type",
             typeOverride = FieldType.FixedRadioList,
             typeParameterOverride = "solsWillTypes",
+            typeParameterClass = SolsWillTypes.class,
             access = {CaseadminCaseofficerIssuerRegistrarRparobotSchedulerSuperuserCudAccess.class, SolicitorCrudSystemupdateCuAccess.class}
     )
     private final String solsWillType;
@@ -485,6 +488,7 @@ public class CaseData extends CaseDataParent {
             label = "The applicant is: ",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "solsResiduaryTypes",
+            typeParameterClass = SolsResiduaryTypes.class,
             access = {DefaultAccess.class, RparobotCrudSolicitorCrudSystemupdateCruAccess.class}
     )
     private final String solsResiduaryType;
@@ -540,6 +544,7 @@ public class CaseData extends CaseDataParent {
             label = "Why aren't they applying?",
             typeOverride = FieldType.FixedRadioList,
             typeParameterOverride = "notApplyingExecutorReasonFixedList",
+            typeParameterClass = NotApplyingExecutorReasonFixedList.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, SolicitorCrudCitizenCuAccess.class}
     )
     private String solsPrimaryExecutorNotApplyingReason;
@@ -601,6 +606,7 @@ public class CaseData extends CaseDataParent {
             label = "What was the marital status of the deceased at the date of death?",
             typeOverride = FieldType.FixedRadioList,
             typeParameterOverride = "martialStatusFixedList",
+            typeParameterClass = MartialStatusFixedList.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, SolicitorCrudCitizenCuAccess.class}
     )
     @NotNull(groups = {ApplicationIntestacyGroup.class}, message = "{deceasedMaritalStatusIsNull}")
@@ -610,6 +616,7 @@ public class CaseData extends CaseDataParent {
             label = "What is the applicant’s relationship to the deceased?",
             typeOverride = FieldType.FixedRadioList,
             typeParameterOverride = "solsRelationshipsToDeceased",
+            typeParameterClass = SolsRelationshipsToDeceased.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, SolicitorCrudAccess.class}
     )
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantRelationshipToDeceasedIsNull}")
@@ -848,6 +855,7 @@ public class CaseData extends CaseDataParent {
             label = "How do you want to pay?",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "solsPaymentMethods",
+            typeParameterClass = SolsPaymentMethods.class,
             access = {CaseadminCaseofficerIssuerRegistrarRparobotSchedulerSuperuserCudAccess.class, SystemupdateCitizenCuAccess.class, SolicitorCudAccess.class}
     )
     private final String solsPaymentMethods;
@@ -863,6 +871,7 @@ public class CaseData extends CaseDataParent {
             label = "Case has been printed and entered into ProbateMan",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "casePrintedTypes",
+            typeParameterClass = CasePrintedTypes.class,
             access = {DefaultAccess.class, RparobotCrudSystemupdateCruAccess.class, CaseworkerCaaCrudAccess.class, SolicitorRAccess.class}
     )
     private final String casePrinted;
@@ -953,6 +962,7 @@ public class CaseData extends CaseDataParent {
             label = "Registry location",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "registryLocations",
+            typeParameterClass = RegistryLocations.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, CharityRAccess.class, SolicitorCAccess.class, CaseworkerWaTaskConfigurationCruAccess.class, CitizenCuAccess.class}
     )
     private final String registryLocation;
@@ -1073,6 +1083,7 @@ public class CaseData extends CaseDataParent {
             label = "What case type is this?",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "caseTypeFixedList",
+            typeParameterClass = CaseTypeFixedList.class,
             access = {DefaultAccess.class, RparobotCrudSystemupdateCruAccess.class, CharityRAccess.class, CaseworkerWaTaskConfigurationCruAccess.class, CitizenCuAccess.class}
     )
     private final String caseType;
@@ -1086,6 +1097,7 @@ public class CaseData extends CaseDataParent {
             label = "What is the channel choice?",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "channelChoiceFixedList",
+            typeParameterClass = ChannelChoiceFixedList.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, CitizenCuAccess.class}
     )
     private String channelChoice;
@@ -1104,6 +1116,7 @@ public class CaseData extends CaseDataParent {
             label = "What is the reason for the applicant’s name difference on the will?",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "aliasReasonList",
+            typeParameterClass = AliasReasonList.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, CitizenCuAccess.class}
     )
     private final String primaryApplicantAliasReason;
@@ -1125,6 +1138,7 @@ public class CaseData extends CaseDataParent {
             label = "Relationship to the deceased",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "relationshipToDeceasedFixedList",
+            typeParameterClass = RelationshipToDeceasedFixedList.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, CitizenCuAccess.class}
     )
     private final String primaryApplicantRelationshipToDeceased;
@@ -1232,6 +1246,7 @@ public class CaseData extends CaseDataParent {
             label = "In what capacity are the persons applying entitled to apply? ",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "entitledToApplyFixedList",
+            typeParameterClass = EntitledToApplyFixedList.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class}
     )
     private final String entitledToApply;
@@ -1485,6 +1500,7 @@ public class CaseData extends CaseDataParent {
             label = "Please select the correct payment method",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "paperPaymentMethodFixedList",
+            typeParameterClass = PaperPaymentMethodFixedList.class,
             access = {DefaultAccess.class, RparobotCrudSystemupdateCruAccess.class}
     )
     private final String paperPaymentMethod;
@@ -1505,6 +1521,7 @@ public class CaseData extends CaseDataParent {
             hint = "Use this to indicate if the exact date of death is not known",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "dateOfDeathTypeFixedList",
+            typeParameterClass = DateOfDeathTypeFixedList.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, CharityRAccess.class}
     )
     private final String dateOfDeathType;
@@ -1512,6 +1529,7 @@ public class CaseData extends CaseDataParent {
             label = "Which state do you wish to return the case to?",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "resolveStopStateFixedList",
+            typeParameterClass = ResolveStopStateFixedList.class,
             access = {RparobotCrudSystemupdateCruAccess.class, CaseadminCaseofficerIssuerSchedulerCrudAccess.class, RegistrarCrudAccess.class}
     )
     private final String resolveStopState;
@@ -1519,6 +1537,7 @@ public class CaseData extends CaseDataParent {
             label = "State to transfer case to",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "transferToStateFixedList",
+            typeParameterClass = TransferToStateFixedList.class,
             access = {SuperuserCrudAccess.class}
     )
     private final String transferToState;
@@ -1526,6 +1545,7 @@ public class CaseData extends CaseDataParent {
             label = "Which state do you wish to return the case to?",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "resolveCaveatStopStateFixedList",
+            typeParameterClass = ResolveCaveatStopStateFixedList.class,
             access = {DefaultAccess.class, SolicitorRAccess.class}
     )
     private final String resolveCaveatStopState;
@@ -1547,6 +1567,7 @@ public class CaseData extends CaseDataParent {
             hint = "The notation will appear below the grant title",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "reissueNotationFixedList",
+            typeParameterClass = ReissueNotationFixedList.class,
             access = {DefaultAccess.class, RparobotCrudSystemupdateCruAccess.class}
     )
     private final String reissueReasonNotation;
@@ -1657,6 +1678,7 @@ public class CaseData extends CaseDataParent {
             label = "Why isn't the deceased's spouse applying?",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "spouseNotApplyingReasonFixedList",
+            typeParameterClass = SpouseNotApplyingReasonFixedList.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, SolicitorCruCitizenCuAccess.class}
     )
     private final String deceasedSpouseNotApplyingReason;
@@ -1819,6 +1841,7 @@ public class CaseData extends CaseDataParent {
             label = "Resolve SME Referral state to?",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "resolveEscalationStateFixedList",
+            typeParameterClass = ResolveEscalationStateFixedList.class,
             access = {DefaultAccess.class, RparobotCrudAccess.class}
     )
     private String resolveCaseWorkerEscalationState;
@@ -2033,6 +2056,7 @@ public class CaseData extends CaseDataParent {
             label = "Which IHT forms did you complete to report the estate’s value?",
             typeOverride = FieldType.FixedRadioList,
             typeParameterOverride = "IHTFormEstate",
+            typeParameterClass = IHTFormEstate.class,
             access = {DefaultAccess.class, RparobotCudSolicitorCrudSystemupdateCudCitizenCudAccess.class}
     )
     private String ihtFormEstate;
@@ -2102,6 +2126,7 @@ public class CaseData extends CaseDataParent {
             label = "What type of letter do you want to assemble?",
             typeOverride = FieldType.FixedRadioList,
             typeParameterOverride = "LetterType",
+            typeParameterClass = LetterType.class,
             access = {DefaultAccess.class, RparobotSystemupdateCrudAccess.class}
     )
     private final String letterType;
@@ -2220,6 +2245,7 @@ public class CaseData extends CaseDataParent {
             label = "Do you need any information?",
             typeOverride = FieldType.FixedRadioList,
             typeParameterOverride = "informationNeededFixedList",
+            typeParameterClass = InformationNeededFixedList.class,
             access = {DefaultAccess.class, RparobotCrudSystemupdateCruAccess.class, CitizenRAccess.class}
     )
     private final String informationNeeded;

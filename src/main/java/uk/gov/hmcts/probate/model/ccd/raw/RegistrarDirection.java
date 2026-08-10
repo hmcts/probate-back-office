@@ -8,6 +8,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
+import uk.gov.hmcts.probate.model.ccd.raw.request.RegistrarsDecisionType;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
@@ -20,7 +21,8 @@ public class RegistrarDirection {
     @CCD(
             label = "Registrar decision",
             typeOverride = FieldType.FixedRadioList,
-            typeParameterOverride = "registrarsDecisionType"
+            typeParameterOverride = "registrarsDecisionType",
+            typeParameterClass = RegistrarsDecisionType.class
     )
     private final String decision;
     @CCD(label = "Further information", typeOverride = FieldType.TextArea)

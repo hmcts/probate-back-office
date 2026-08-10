@@ -88,6 +88,7 @@ public class CaseDataParent {
             label = "Do you have a death certificate or an interim death certificate?",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "deceasedDeathCertificateFixedList",
+            typeParameterClass = DeceasedDeathCertificateFixedList.class,
             access = {CaseadminCaseofficerIssuerRegistrarRparobotSchedulerSuperuserCudAccess.class, CitizenCuAccess.class}
     )
     protected final String deceasedDeathCertificate;
@@ -136,6 +137,7 @@ public class CaseDataParent {
             label = "What best describes the title and clearing type?",
             typeOverride = FieldType.FixedRadioList,
             typeParameterOverride = "TitleClearingTypes",
+            typeParameterClass = TitleClearingTypes.class,
             access = {DefaultAccess.class, RparobotCudSystemupdateCuAccess.class, SolicitorCrudAccess.class}
     )
     protected final String titleAndClearingType;
@@ -277,6 +279,7 @@ public class CaseDataParent {
             hint = "Select all that apply.",
             typeOverride = FieldType.MultiSelectList,
             typeParameterOverride = "SharingInProfits",
+            typeParameterClass = SharingInProfits.class,
             access = {CaseadminCaseofficerIssuerRegistrarRparobotSchedulerSuperuserCudAccess.class, SolicitorCrudSystemupdateCuAccess.class}
     )
     protected final List<String> whoSharesInCompanyProfits;
@@ -384,6 +387,7 @@ public class CaseDataParent {
             label = "Payment has been taken",
             typeOverride = FieldType.FixedList,
             typeParameterOverride = "paymentTaken",
+            typeParameterClass = PaymentTaken.class,
             access = {SchedulerSuperuserSystemupdateCudAccess.class, IssuerCuAccess.class}
     )
     private String paymentTaken;

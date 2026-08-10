@@ -1,11 +1,16 @@
 package uk.gov.hmcts.probate.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import uk.gov.hmcts.ccd.sdk.api.CCD;
+import uk.gov.hmcts.ccd.sdk.api.ComplexType;
 
+@ComplexType(name = "applicationTypes", generate = true)
 public enum ApplicationType {
+    @CCD(label = "Solicitor")
     @JsonProperty("Solicitor")
     SOLICITOR("sol", "Solicitor"),
 
+    @CCD(label = "Personal")
     @JsonProperty("Personal")
     PERSONAL("pa", "Personal");
 

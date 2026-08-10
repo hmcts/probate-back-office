@@ -7,6 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ScannedDocumentType;
 
 @Data
 @Builder
@@ -19,7 +20,12 @@ public class ScannedDocument {
     @CCD(label = "Document name")
     private final String fileName;
 
-    @CCD(label = "Document type", typeOverride = FieldType.FixedList, typeParameterOverride = "ScannedDocumentType")
+    @CCD(
+            label = "Document type",
+            typeOverride = FieldType.FixedList,
+            typeParameterOverride = "ScannedDocumentType",
+            typeParameterClass = ScannedDocumentType.class
+    )
     private final String type;
     
     @CCD(label = "Document Subtype")
