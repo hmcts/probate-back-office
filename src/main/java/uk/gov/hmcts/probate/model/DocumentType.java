@@ -99,6 +99,7 @@ public enum DocumentType {
     @JsonProperty("edgeCase")
     EDGE_CASE("edgeCase"),
 
+    @CCD(label = "Death Certificate")
     @JsonProperty("deathCertificate")
     DEATH_CERT("deathCertificate"),
 
