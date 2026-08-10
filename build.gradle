@@ -19,7 +19,7 @@ plugins {
 
 ccd {
   configDir = file('build/definitions')
-  rootPackage = 'uk.gov.hmcts.probate'
+  rootPackage = 'uk.gov.hmcts.probate.ccd'
 }
 
 application {
@@ -622,4 +622,11 @@ bootJar {
 
 rootProject.tasks.named("processResources") {
   dependsOn("generateGitProperties")
+}
+
+// The generator's Spring context has no web tier: run it with no embedded server. The generated
+// entry point takes no autoconfiguration, so nothing supplies a ServletWebServerFactory and Boot
+// would otherwise fail on deducing a servlet application from the service's classpath.
+tasks.named('generateCCDConfig') {
+    systemProperty 'spring.main.web-application-type', 'none'
 }

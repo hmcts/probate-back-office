@@ -6,6 +6,7 @@ import lombok.Data;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.ccd.sdk.api.CCD;
 import uk.gov.hmcts.ccd.sdk.type.FieldType;
+import uk.gov.hmcts.probate.model.ccd.raw.request.DocumentUploadTypeEnum;
 import uk.gov.hmcts.ccd.sdk.api.ComplexType;
 
 @ComplexType(name = "documentUpload", generate = true)
@@ -17,7 +18,12 @@ public class UploadDocument {
     @JsonProperty("DocumentLink")
     private final DocumentLink documentLink;
 
-    @CCD(label = "Type", typeOverride = FieldType.FixedList, typeParameterOverride = "documentUploadTypeEnum")
+    @CCD(
+            label = "Type",
+            typeOverride = FieldType.FixedList,
+            typeParameterOverride = "documentUploadTypeEnum",
+            typeParameterClass = DocumentUploadTypeEnum.class
+    )
     @JsonProperty("DocumentType")
     private final DocumentType documentType;
 
