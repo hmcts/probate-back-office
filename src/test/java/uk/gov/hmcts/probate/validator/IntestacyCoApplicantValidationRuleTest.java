@@ -359,4 +359,52 @@ class IntestacyCoApplicantValidationRuleTest {
 
         assertEquals(PARENT_IS_NOT_DECEASED, validationErrors.getFirst().getCode());
     }
+
+    @Test
+    void shouldValidateFailureIfWholeBloodNieceOrNephewParentIsAdoptedOut() {
+        List<Executor> executor = List.of(
+                Executor.builder()
+                        .applicantFamilyDetails(SolsApplicantFamilyDetails.builder()
+                                .wholeNieceOrNephewParentDieBeforeDeceased(YES)
+                                .wholeNieceOrNephewParentAdoptedIn(NO)
+                                .wholeNieceOrNephewParentAdoptedOut(YES)
+                                .relationship(DynamicRadioList.builder()
+                                        .value(DynamicRadioListElement.builder()
+                                                .code(WHOLE_BLOOD_NIECE_OR_NEPHEW)
+                                                .label("wholeBloodNieceOrNephew")
+                                                .build())
+                                        .build())
+                                .build())
+                        .build());
+
+        when(ccdDataMock.getExecutors()).thenReturn(executor);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertEquals(PARENT_ADOPTED_OUT, validationErrors.getFirst().getCode());
+    }
+
+    @Test
+    void shouldValidateFailureIfHalfBloodNieceOrNephewParentAdoptedInOutsideEnglandOrWales() {
+        List<Executor> executor = List.of(
+                Executor.builder()
+                        .applicantFamilyDetails(SolsApplicantFamilyDetails.builder()
+                                .halfNieceOrNephewParentDieBeforeDeceased(YES)
+                                .halfNieceOrNephewParentAdoptedIn(YES)
+                                .halfNieceOrNephewParentAdoptionInEnglandOrWales(NO)
+                                .relationship(DynamicRadioList.builder()
+                                        .value(DynamicRadioListElement.builder()
+                                                .code(HALF_BLOOD_NIECE_OR_NEPHEW)
+                                                .label("halfBloodNieceOrNephew")
+                                                .build())
+                                        .build())
+                                .build())
+                        .build());
+
+        when(ccdDataMock.getExecutors()).thenReturn(executor);
+
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
+
+        assertEquals(ADOPTED_OUTSIDE_ENGLAND_OR_WALES, validationErrors.getFirst().getCode());
+    }
 }

@@ -57,6 +57,18 @@
           <text>"Examine Digital Case - Admon"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0e506hv">
+        <description>EDCPRI</description>
+        <inputEntry id="UnaryTests_04rizqy">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xol2pq">
+          <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1c631u1">
+          <text>"Examine Digital Case - Probate"</text>
+         </outputEntry>
+      </rule>
       <rule id="DecisionRule_0n139s3">
         <description>EDBN</description>
         <inputEntry id="UnaryTests_0jis367">
@@ -103,6 +115,42 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_windrush_type_name">
           <text>"Examine - Windrush Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ynvyec">
+        <description>EWOCTBN</description>
+        <inputEntry id="UnaryTests_0pqe5ub">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06zlqkp">
+          <text>"ExamineWillOrCodicilToBeNotated"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0f5knzm">
+          <text>"Examine - Will or Codicil to be Notated"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1cjrc2t">
+        <description>EWI</description>
+        <inputEntry id="UnaryTests_1hbtyvp">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ko9ouz">
+          <text>"ExamineWitnessInterview"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02zetst">
+          <text>"Examine - Witness Interview"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1dxkhp9">
+        <description>EHS</description>
+        <inputEntry id="UnaryTests_1u37q58">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0aoded4">
+          <text>"ExamineHorizonScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xb98a3">
+          <text>"Examine - Horizon Scheme"</text>
         </outputEntry>
       </rule>
     </decisionTable>

@@ -51,6 +51,7 @@ public class TaskAttributeConstants {
     public static final String DEFAULT_DUE_DATE_WORKING_DAYS_OF_WEEK = "SATURDAY,SUNDAY";
 
     public static final String EXAMINE_DIGITAL_CASE_PROBATE = "ExamineDigitalCaseProbate";
+    public static final String EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE = "ExamineDigitalCaseProbateReadyToIssue";
     public static final String EXAMINE_DIGITAL_CASE_ADMON = "ExamineDigitalCaseAdmonWill";
     public static final String EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE = "ExamineDigitalCaseAdmonWillReadyToIssue";
     public static final String EXAMINE_DIGITAL_CASE_INTESTACY = "ExamineDigitalCaseIntestacy";
@@ -59,6 +60,12 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
         = "ExamineInfectedBloodCompensationAuthority";
     public static final String EXAMINE_WINDRUSH_SCHEME = "ExamineWindrushScheme";
+    public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
+        = "ExamineWillOrCodicilToBeNotated";
+    public static final String EXAMINE_WITNESS_INTERVIEW
+        = "ExamineWitnessInterview";
+    public static final String EXAMINE_HORIZON_SCHEME
+        = "ExamineHorizonScheme";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -133,4 +140,10 @@ public class TaskAttributeConstants {
     public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE
         = "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String WINDRUSH_SCHEME_SKILL_CODE = "SKILL:ABA6:WindrushScheme";
+    public static final String WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE
+        = "SKILL:ABA6:WillOrCodicilToBeNotated";
+    public static final String WITNESS_INTERVIEW_SKILL_CODE
+        = "SKILL:ABA6:WitnessInterview";
+    public static final String HORIZON_SCHEME_SKILL_CODE
+        = "SKILL:ABA6:HorizonScheme";
 }

@@ -34,7 +34,9 @@ import static uk.gov.hmcts.probate.model.Constants.CHILD;
 import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_NIECE_OR_NEPHEW;
+import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
@@ -137,6 +139,17 @@ class ExecutorListMapperServiceTest {
 
         assertEquals(2, newExecsNotApplying.size());
         assertEquals(SOLICITOR_ID, newExecsNotApplying.get(0).getId());
+    }
+
+    @Test
+    void shouldUpdateSolApplyingExec() {
+        List<CollectionMember<AdditionalExecutorApplying>> newExecsApplying = underTest
+                .addSolicitorToApplyingList(callbackRequestMock.getCaseDetails().getData(),
+                        additionalExecutorsApplyingMock);
+
+        assertEquals(2, newExecsApplying.size());
+        assertEquals(SOLICITOR_SOT_FULLNAME, newExecsApplying.get(0).getValue().getApplyingExecutorName());
+        assertEquals(SOLICITOR_ID, newExecsApplying.get(0).getId());
     }
 
     @Test
@@ -276,7 +289,7 @@ class ExecutorListMapperServiceTest {
 
     private static Stream<String> relationship() {
         return Stream.of(CHILD, GRAND_CHILD, WHOLE_BLOOD_SIBLING, WHOLE_BLOOD_NIECE_OR_NEPHEW,
-                HALF_BLOOD_SIBLING, HALF_BLOOD_NIECE_OR_NEPHEW);
+                HALF_BLOOD_SIBLING, HALF_BLOOD_NIECE_OR_NEPHEW, PARENT);
     }
 
     @ParameterizedTest
@@ -353,6 +366,52 @@ class ExecutorListMapperServiceTest {
     }
 
     @Test
+    void mapsWholeBloodNieceOrNephewFamilyDetails() {
+        DynamicRadioListElement radioListElement = DynamicRadioListElement.builder()
+                .code(WHOLE_BLOOD_NIECE_OR_NEPHEW)
+                .label(WHOLE_BLOOD_NIECE_OR_NEPHEW)
+                .build();
+        DynamicRadioList radioList = DynamicRadioList.builder()
+                .listItems(List.of(radioListElement))
+                .value(radioListElement)
+                .build();
+        SolsApplicantFamilyDetails familyDetails = SolsApplicantFamilyDetails.builder()
+                .relationship(radioList)
+                .wholeNieceOrNephewParentDieBeforeDeceased(YES)
+                .wholeNieceOrNephewParentAdoptedIn(NO)
+                .wholeNieceOrNephewParentAdoptionInEnglandOrWales(YES)
+                .wholeNieceOrNephewParentAdoptedOut(NO)
+                .coApplicantAdoptedIn(YES)
+                .coApplicantAdoptionInEnglandOrWales(NO)
+                .coApplicantAdoptedOut(YES)
+                .build();
+        IntestacyAdditionalExecutor additionalExecutor = IntestacyAdditionalExecutor.builder()
+                .additionalExecForenames(EXEC_FIRST_NAME)
+                .additionalExecLastname(EXEC_SURNAME)
+                .additionalExecAddress(EXEC_ADDRESS)
+                .solsApplicantFamilyDetails(familyDetails)
+                .build();
+        CaseData caseData = CaseData.builder()
+                .solsIntestacyExecutorList(List.of(new CollectionMember<>(EXEC_ID, additionalExecutor)))
+                .build();
+
+        AdditionalExecutorApplying applying =
+                underTest.mapFromSolsIntestacyExecutorListToApplyingExecutors(caseData).getFirst().getValue();
+
+        assertEquals(EXEC_FIRST_NAME, applying.getApplyingExecutorFirstName());
+        assertEquals(EXEC_SURNAME, applying.getApplyingExecutorLastName());
+        assertEquals(EXEC_NAME, applying.getApplyingExecutorName());
+        assertEquals(EXEC_ADDRESS, applying.getApplyingExecutorAddress());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodSiblingDiedBeforeDeceased());
+        assertEquals(NO, applying.getApplicantFamilyDetails().getWholeBloodSiblingAdoptedIn());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodSiblingAdoptionInEnglandOrWales());
+        assertEquals(NO, applying.getApplicantFamilyDetails().getWholeBloodSiblingAdoptedOut());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodNieceOrNephewAdoptedIn());
+        assertEquals(NO, applying.getApplicantFamilyDetails().getWholeBloodNieceOrNephewAdoptionInEnglandOrWales());
+        assertEquals(YES, applying.getApplicantFamilyDetails().getWholeBloodNieceOrNephewAdoptedOut());
+    }
+
+    @Test
     void shouldMapFromSolsAdditionalExecToNotApplyingExecutors() {
         List<CollectionMember<AdditionalExecutor>> solsAdditionalExecs = new ArrayList<>();
         solsAdditionalExecs.add(SOLS_EXEC_NOT_APPLYING);
@@ -385,6 +444,20 @@ class ExecutorListMapperServiceTest {
                 .build());
 
         assertEquals(expected.getValue(), result.getValue());
+    }
+
+    @Test
+    void shouldMapFromSolicitorToApplyingExecutorIntestacy() {
+        CaseData caseData = CaseData.builder()
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorAddress(SOLICITOR_ADDRESS)
+                .solsWillType(GRANT_TYPE_INTESTACY)
+                .build();
+
+        CollectionMember<AdditionalExecutorApplying> result = underTest.mapFromSolicitorToApplyingExecutor(caseData);
+
+        assertEquals(EXECUTOR_TYPE_APPLICANTS, result.getValue().getApplyingExecutorType());
     }
 
     @Test
@@ -453,7 +526,8 @@ class ExecutorListMapperServiceTest {
         assertEquals(result.getValue(), expected.getValue());
     }
 
-    public void shouldMapFromSolicitorToApplyingExecutorTrustCorps() {
+    @Test
+    void shouldMapFromSolicitorToApplyingExecutorTrustCorps() {
         CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder()
                 .solsSOTForenames(SOLICITOR_SOT_FORENAME)
                 .solsSOTSurname(SOLICITOR_SOT_SURNAME)
@@ -477,7 +551,7 @@ class ExecutorListMapperServiceTest {
                 .applyingExecutorFirstName(SOLICITOR_SOT_FORENAME)
                 .applyingExecutorLastName(SOLICITOR_SOT_SURNAME)
                 .applyingExecutorName(SOLICITOR_SOT_FULLNAME)
-                .applyingExecutorType(EXECUTOR_TYPE_NAMED)
+                .applyingExecutorType(EXECUTOR_TYPE_TRUST_CORP)
                 .applyingExecutorAddress(SOLICITOR_ADDRESS)
                 .applyingExecutorTrustCorpPosition(DIRECTOR)
                 .build());
