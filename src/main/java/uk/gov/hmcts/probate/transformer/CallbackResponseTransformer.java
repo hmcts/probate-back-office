@@ -992,9 +992,9 @@ public class CallbackResponseTransformer {
     private void clearParentRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         responseCaseDataBuilder.deceasedAnyLivingDescendants(null);
         responseCaseDataBuilder.deceasedAnyOtherParentAlive(null);
-        responseCaseDataBuilder.deceasedAdoptedIn(null);
-        responseCaseDataBuilder.deceasedAdoptionInEnglandOrWales(null);
-        responseCaseDataBuilder.deceasedAdoptedOut(null);
+        responseCaseDataBuilder.applicantAdoptedDeceasedIn(null);
+        responseCaseDataBuilder.applicantAdoptedDeceasedInEnglandOrWales(null);
+        responseCaseDataBuilder.applicantAdoptedDeceasedOut(null);
     }
 
     private void clearSiblingRelatedFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
@@ -2087,6 +2087,20 @@ public class CallbackResponseTransformer {
                 builder
                         .primaryApplicantOtherReason(null);
             }
+        }
+
+
+
+        if (PARENT.equalsIgnoreCase(caseData.getPrimaryApplicantRelationshipToDeceased())) {
+            builder
+                    .deceasedAdoptedIn(caseData.getApplicantAdoptedDeceasedIn())
+                    .deceasedAdoptionInEnglandOrWales(caseData.getApplicantAdoptedDeceasedInEnglandOrWales())
+                    .deceasedAdoptedOut(caseData.getApplicantAdoptedDeceasedOut());
+        } else {
+            builder
+                    .deceasedAdoptedIn(caseData.getDeceasedAdoptedIn())
+                    .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
+                    .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut());
         }
 
         solicitorExecutorTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
