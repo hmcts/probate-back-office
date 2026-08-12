@@ -13,6 +13,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DECISION_MAKI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_REVIEW_SME_REFERRAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REGION;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_NAME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION;
@@ -39,6 +42,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DUE_DATE_NON_
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.APPLICATIONS_WORK_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PRIORITY_DATE_ORIGIN_REF_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
@@ -84,7 +88,11 @@ public class ConfigurationExpectationBuilder {
                 && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
                 || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
                 || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY)
-                || conditions.get("taskType").equals(EXAMINE_WINDRUSH_SCHEME))) {
+                || conditions.get("taskType").equals(EXAMINE_WINDRUSH_SCHEME)
+                || conditions.get("taskType").equals(EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED)
+                || conditions.get("taskType").equals(EXAMINE_WITNESS_INTERVIEW)
+                || conditions.get("taskType").equals(EXAMINE_HORIZON_SCHEME)
+        )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
                 && conditions.get("taskType").equals(REVIEW_SME_REFERRAL)) {
@@ -114,3 +122,4 @@ public class ConfigurationExpectationBuilder {
         return this;
     }
 }
+
