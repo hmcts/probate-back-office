@@ -109,17 +109,37 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressSelectPenultimateNextStepAndGo() {
-    await this.verifyPageLoad(this.page.locator('#next-step'));
-    await expect(this.page.locator('#next-step')).toBeEnabled();
-    const penultimateOpt = await this.page.locator('#next-step option:nth-last-child(2)').innerText();
+    const nextStep = this.page.locator('#next-step');
+    await this.verifyPageLoad(nextStep);
+    await expect(nextStep).toBeEnabled();
+    const options = nextStep.locator('option');
+    await expect.poll(async () => options.count()).toBeGreaterThan(2);
 
-    if (penultimateOpt === 'Delete') {
-      const penultimateOptNew = await this.page.locator('#next-step option:nth-child(3)').getAttribute('value');
-      await this.page.locator('#next-step').selectOption(penultimateOptNew);
-    } else {
-      const penultimateOptFinal = await this.page.locator('#next-step option:nth-last-child(2)').getAttribute('value');
-      await this.page.locator('#next-step').selectOption(penultimateOptFinal);
+    const optionData = await options.evaluateAll(elements =>
+      elements.map(element => {
+        const option = element as HTMLOptionElement;
+
+        return {
+          text: option.text.trim(),
+          value: option.value
+        };
+      })
+    );
+
+    const penultimateIndex = optionData.length - 2;
+    const targetIndex =
+      optionData[penultimateIndex].text === 'Delete'
+        ? penultimateIndex - 1
+        : penultimateIndex;
+
+    const optionValue = optionData[targetIndex]?.value;
+
+    if (!optionValue) {
+      throw new Error('Unable to determine next-step option value');
     }
+
+    await nextStep.selectOption(optionValue);
+    await expect(nextStep).toHaveValue(optionValue);
 
     await this.waitForNavigationToComplete('button[type="submit"].button', 10_000);
     // await this.clickGoButton();
