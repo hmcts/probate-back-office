@@ -109,11 +109,20 @@ export class CaseProgressPage extends SignInPage {
   }
 
   async caseProgressSelectPenultimateNextStepAndGo() {
+    await this.caseProgressSelectPenultimateNextStep();
+    await this.waitForNavigationToComplete('button[type="submit"].button', 10_000);
+  }
+
+  async caseProgressSelectPenultimateNextStep(): Promise<void> {
     const nextStep = this.page.locator('#next-step');
+    const options = nextStep.locator('option');
+
     await this.verifyPageLoad(nextStep);
     await expect(nextStep).toBeEnabled();
-    const options = nextStep.locator('option');
-    await expect.poll(async () => options.count()).toBeGreaterThan(2);
+
+    await expect
+      .poll(() => options.count(), { timeout: 60_000 })
+      .toBeGreaterThan(2);
 
     const optionData = await options.evaluateAll(elements =>
       elements.map(element => {
@@ -121,42 +130,30 @@ export class CaseProgressPage extends SignInPage {
 
         return {
           text: option.text.trim(),
-          value: option.value
+          value: option.value,
         };
-      })
+      }),
     );
 
     const penultimateIndex = optionData.length - 2;
+    const penultimateOption = optionData[penultimateIndex];
+
+    // Preserve the original nth-child(3) behaviour.
     const targetIndex =
-      optionData[penultimateIndex].text === 'Delete'
-        ? penultimateIndex - 1
+      penultimateOption?.text === 'Delete'
+        ? 2
         : penultimateIndex;
 
-    const optionValue = optionData[targetIndex]?.value;
+    const optionValue = optionData[targetIndex]?.value?.trim();
 
     if (!optionValue) {
-      throw new Error('Unable to determine next-step option value');
+      throw new Error(
+        `Unable to determine next-step option value. Options: ${JSON.stringify(optionData)}`,
+      );
     }
 
-    await nextStep.selectOption(optionValue);
+    await nextStep.selectOption({ value: optionValue });
     await expect(nextStep).toHaveValue(optionValue);
-
-    await this.waitForNavigationToComplete('button[type="submit"].button', 10_000);
-    // await this.clickGoButton();
-  }
-
-  async caseProgressSelectPenultimateNextStep() {
-    await this.verifyPageLoad(this.page.locator('#next-step'));
-    await expect(this.page.locator('#next-step')).toBeEnabled();
-    const penultimateOpt = await this.page.locator('#next-step option:nth-last-child(2)').innerText();
-
-    if (penultimateOpt === 'Delete') {
-      const penultimateOptNew = await this.page.locator('#next-step option:nth-child(3)').getAttribute('value');
-      await this.page.locator('#next-step').selectOption(penultimateOptNew);
-    } else {
-      const penultimateOptFinal = await this.page.locator('#next-step option:nth-last-child(2)').getAttribute('value');
-      await this.page.locator('#next-step').selectOption(penultimateOptFinal);
-    }
   }
 
   async clickGoButton() {
