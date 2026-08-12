@@ -1611,6 +1611,9 @@ public class CallbackResponseTransformer {
             .deceasedAdoptedIn(caseData.getDeceasedAdoptedIn())
             .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
+            .applicantAdoptedDeceasedIn(caseData.getApplicantAdoptedDeceasedIn())
+            .applicantAdoptedDeceasedInEnglandOrWales(caseData.getApplicantAdoptedDeceasedInEnglandOrWales())
+            .applicantAdoptedDeceasedOut(caseData.getApplicantAdoptedDeceasedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
             .childAlive(caseData.getChildAlive())
             .isApplicantParentDeceasedChild(caseData.getIsApplicantParentDeceasedChild())
@@ -2087,20 +2090,6 @@ public class CallbackResponseTransformer {
                 builder
                         .primaryApplicantOtherReason(null);
             }
-        }
-
-
-
-        if (PARENT.equalsIgnoreCase(caseData.getPrimaryApplicantRelationshipToDeceased())) {
-            builder
-                    .deceasedAdoptedIn(caseData.getApplicantAdoptedDeceasedIn())
-                    .deceasedAdoptionInEnglandOrWales(caseData.getApplicantAdoptedDeceasedInEnglandOrWales())
-                    .deceasedAdoptedOut(caseData.getApplicantAdoptedDeceasedOut());
-        } else {
-            builder
-                    .deceasedAdoptedIn(caseData.getDeceasedAdoptedIn())
-                    .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
-                    .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut());
         }
 
         solicitorExecutorTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
