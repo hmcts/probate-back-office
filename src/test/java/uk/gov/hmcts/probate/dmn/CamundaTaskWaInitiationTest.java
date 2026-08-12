@@ -70,8 +70,8 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     private static final String doubleProbateHandOffReason = "DoubleProbate";
     private static final String fiatWillHandOffReason = "FiatWill";
     private static final String invalidHandOffReason = "OtherReason";
-    private static final String incapacityUnderRule35HandOffReason = "Incapacity under rule 35";
-    private static final String leadingFollowingGrantsHandOffReason = "Leading / following Grants";
+    private static final String incapacityUnderRule35HandOffReason = "IncapacityRule35";
+    private static final String leadingFollowingGrantsHandOffReason = "LeadingFollowing Grants";
     private static final String windrushSchemeHandOffReason = "WindrushScheme";
 
     private static Map<String, Map<String, Object>> additionalData(boolean evidenceHandled,
