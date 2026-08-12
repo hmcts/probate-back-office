@@ -92,12 +92,14 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED)
                 || conditions.get("taskType").equals(EXAMINE_WITNESS_INTERVIEW)
                 || conditions.get("taskType").equals(EXAMINE_HORIZON_SCHEME)
-        )) {
+            )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(BO_CASE_WORKER_ESCALATION) && conditions.containsKey("taskType")
                 && conditions.get("taskType").equals(REVIEW_SME_REFERRAL)) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_REVIEW_SME_REFERRAL, true)
                     .expectedValue(WORK_TYPE, DECISION_MAKING_WORK_WORK_TYPE, true);
+        } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
+            builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE, true);
         } else {
             builder.expectedValue(DESCRIPTION,
                             DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE, true);
