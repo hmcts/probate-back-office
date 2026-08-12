@@ -27,6 +27,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
@@ -147,6 +151,52 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
             "value", Map.of("caseHandoffReason", "OtherReason")
         )
     );
+
+    private static final List<Map<String,Object>> handOffReasonListSection116 = List.of(
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "Section116")
+            ),
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "OtherReason")
+            )
+    );
+
+    private static final List<Map<String,Object>> handOffReasonListPowerOfAttorney = List.of(
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "POA")
+            ),
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "OtherReason")
+            )
+    );
+
+    private static final List<Map<String,Object>> handOffReasonListResealForeignGrant = List.of(
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "ResealForeignGrant")
+            ),
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "OtherReason")
+            )
+    );
+
+    private static final List<Map<String,Object>> handOffReasonListInfectedBloodInterimScheme = List.of(
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "IBIS")
+            ),
+            Map.of(
+                    "id", "df3be732-2172-49da-80fe-cad8586e4928",
+                    "value", Map.of("caseHandoffReason", "OtherReason")
+            )
+    );
+
+
 
     static Stream<Arguments> probateScenarios() {
 
@@ -1848,19 +1898,504 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+
+    static Stream<Arguments> section116Scenarios() {
+
+        Map<String,Object> examineSection116TaskAttributes = Map.of(
+                "taskId", EXAMINE_SECTION_116,
+                "name", "Examine - Section 116",
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListSection116),
+                        List.of(examineSection116TaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListSection116),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListSection116),
+                        List.of(examineSection116TaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListSection116),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListSection116),
+                        List.of(examineSection116TaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListSection116),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListSection116),
+                        List.of(examineSection116TaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListSection116),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                )
+        );
+    }
+
+    static Stream<Arguments> powerOfAttorneyScenarios() {
+
+        Map<String,Object> examinePowerOfAttorneyTaskAttributes = Map.of(
+                "taskId", EXAMINE_POWER_OF_ATTORNEY,
+                "name", "Examine - Power of Attorney (POA)",
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListPowerOfAttorney),
+                        List.of(examinePowerOfAttorneyTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListPowerOfAttorney),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListPowerOfAttorney),
+                        List.of(examinePowerOfAttorneyTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListPowerOfAttorney),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListPowerOfAttorney),
+                        List.of(examinePowerOfAttorneyTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListPowerOfAttorney),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListPowerOfAttorney),
+                        List.of(examinePowerOfAttorneyTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListPowerOfAttorney),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                )
+        );
+    }
+
+    static Stream<Arguments> resealForeignGrantScenarios() {
+
+        Map<String,Object> examineResealForeignGrantTaskAttributes = Map.of(
+                "taskId", EXAMINE_RESEAL_FOREIGN_GRANT,
+                "name", "Examine - Reseal Foreign Grant",
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListResealForeignGrant),
+                        List.of(examineResealForeignGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListResealForeignGrant),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListResealForeignGrant),
+                        List.of(examineResealForeignGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListResealForeignGrant),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListResealForeignGrant),
+                        List.of(examineResealForeignGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListResealForeignGrant),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListResealForeignGrant),
+                        List.of(examineResealForeignGrantTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListResealForeignGrant),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                )
+        );
+    }
+
+    static Stream<Arguments> infectedBloodInterimSchemeScenarios() {
+
+        Map<String,Object> examineInfectedBloodInterimSchemeTaskAttributes = Map.of(
+                "taskId", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
+                "name", "Examine - Infected Blood Interim Scheme",
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListInfectedBloodInterimScheme),
+                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListInfectedBloodInterimScheme),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListInfectedBloodInterimScheme),
+                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListInfectedBloodInterimScheme),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListInfectedBloodInterimScheme),
+                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListInfectedBloodInterimScheme),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListInfectedBloodInterimScheme),
+                        List.of(examineInfectedBloodInterimSchemeTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",false, handOffReasonListInfectedBloodInterimScheme),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "",true, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        null,
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalDataNoHandOffList(),
+                        Collections.emptyList()
+                )
+        );
+    }
+
+
+
+
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(12));
+        assertThat(logic.getRules().size(), is(16));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios",
         "infectedBloodCompensationAuthorityScenarios","windRushScenarios","willOrCodicilToBeNotatedScenarios",
-        "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios"})
+        "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios", "section116Scenarios",
+        "powerOfAttorneyScenarios", "resealForeignGrantScenarios", "infectedBloodInterimSchemeScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,

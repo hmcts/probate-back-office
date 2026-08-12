@@ -151,7 +151,6 @@ public class TaskAttributeConstants {
         = "SKILL:ABA6:WitnessInterview";
     public static final String HORIZON_SCHEME_SKILL_CODE
         = "SKILL:ABA6:HorizonScheme";
-    public static final String WINDRUSH_SCHEME_SKILL_CODE = "SKILL:ABA6:WindrushScheme";
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";

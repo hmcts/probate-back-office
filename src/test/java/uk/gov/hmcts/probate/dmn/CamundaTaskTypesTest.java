@@ -94,10 +94,6 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                     "taskTypeName", "Examine - Horizon Scheme",
                     "taskTypeId", EXAMINE_HORIZON_SCHEME
                 ),
-                 Map.of(
-                    "taskTypeName", "Examine - Windrush Scheme",
-                    "taskTypeId", EXAMINE_WINDRUSH_SCHEME
-                ),
                 Map.of(
                     "taskTypeName", "Examine - Section 116",
                     "taskTypeId", EXAMINE_SECTION_116
@@ -128,7 +124,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(12));
+        assertThat(logic.getRules().size(), is(16));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
