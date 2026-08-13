@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -23,8 +24,6 @@ import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
-import static uk.gov.hmcts.reform.probate.model.YesNo.NO;
-import static uk.gov.hmcts.reform.probate.model.YesNo.YES;
 
 @Slf4j
 @Controller
@@ -75,7 +74,7 @@ public class WaTaskContoller {
                 paramCallbackRequest ->
                         paramCallbackRequest.getCaseDetails().getData().getCaseType()
                                 .equals(paramCallbackRequest.getCaseDetailsBefore().getData().getCaseType())
-                                ? NO : YES
+                                ? Constants.NO : Constants.YES
         );
         return responseBuilder.body(callbackResponse);
     }

@@ -2301,7 +2301,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse setCreateTask(CallbackRequest callbackRequest,
-                                          Function<CallbackRequest, YesNo> isTaskRequired) {
+                                          Function<CallbackRequest, String> isTaskRequired) {
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
                 .createTask(isTaskRequired.apply(callbackRequest));
         return transformResponse(builder.build());

@@ -424,5 +424,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String issueEarlySwitch;
     private String hasValidMatches;
     private final List<CollectionMember<UploadDocument>> cwDocumentUploadedList;
-    private final YesNo createTask;
+    private final String createTask;
 }

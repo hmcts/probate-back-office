@@ -15,13 +15,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.utils.TaskUtils;
-import uk.gov.hmcts.reform.probate.model.YesNo;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -36,8 +36,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
-import static uk.gov.hmcts.reform.probate.model.YesNo.NO;
-import static uk.gov.hmcts.reform.probate.model.YesNo.YES;
 
 @ExtendWith(MockitoExtension.class)
 class WaTaskContollerUnitTest {
@@ -70,7 +68,7 @@ class WaTaskContollerUnitTest {
     @Captor
     private ArgumentCaptor<Predicate<CallbackRequest>> predicateArgumentCaptor;
     @Captor
-    private ArgumentCaptor<Function<CallbackRequest, YesNo>> functionArgumentCaptor;
+    private ArgumentCaptor<Function<CallbackRequest, String>> functionArgumentCaptor;
     private final String clientContext = "clientContext";
 
 
@@ -96,7 +94,7 @@ class WaTaskContollerUnitTest {
                 .thenReturn(Optional.of("encodedClientContext"));
         when(callbackResponseTransformer.setCreateTask(
                 eq(callbackRequest),
-                functionArgumentCaptor.capture()
+                any()
         )).thenReturn(callbackResponse);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContext(
@@ -124,7 +122,7 @@ class WaTaskContollerUnitTest {
                 functionArgumentCaptor.capture());
 
         assertThat(functionArgumentCaptor.getValue()
-                .apply(callbackRequest)).isEqualTo(NO);
+                .apply(callbackRequest)).isEqualTo(Constants.NO);
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -145,7 +143,7 @@ class WaTaskContollerUnitTest {
                 .thenReturn(Optional.of("encodedClientContext"));
         when(callbackResponseTransformer.setCreateTask(
                 eq(callbackRequest),
-                functionArgumentCaptor.capture()
+                any()
         )).thenReturn(callbackResponse);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContext(
@@ -173,7 +171,7 @@ class WaTaskContollerUnitTest {
                 functionArgumentCaptor.capture());
 
         assertThat(functionArgumentCaptor.getValue()
-                .apply(callbackRequest)).isEqualTo(YES);
+                .apply(callbackRequest)).isEqualTo(Constants.YES);
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);

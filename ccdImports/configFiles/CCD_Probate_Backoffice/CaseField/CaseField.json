@@ -545,5 +545,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "uploadFileCheck", "Label": "Do you want to attach a file to the Request for Information?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "cwDocumentUpload", "Label": "Documents uploaded", "FieldType": "documentUpload", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "cwDocumentUploadedList", "Label": "Request Information upload docs", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "SecurityClassification": "Public"},
-  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "createTask", "Label": "Task creation flag", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
+  {"LiveFrom": "12/08/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "createTask", "Label": "Task creation flag", "FieldType": "Text", "SecurityClassification": "Public"}
 ]

@@ -71,17 +71,16 @@ import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
-import uk.gov.hmcts.reform.probate.model.YesNo;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 import uk.gov.hmcts.reform.probate.model.cases.MaritalStatus;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
-import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
-import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.math.BigDecimal;
@@ -135,12 +134,11 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
-import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
@@ -150,11 +148,12 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
@@ -5882,8 +5881,8 @@ class CallbackResponseTransformerTest {
     void testCreateTask() {
         CallbackResponse callbackResponse = underTest.setCreateTask(
                 callbackRequestMock,
-                callbackRequest -> YesNo.YES);
+                callbackRequest -> YES);
 
-        assertEquals(YesNo.YES, callbackResponse.getData().getCreateTask());
+        assertEquals(YES, callbackResponse.getData().getCreateTask());
     }
 }
