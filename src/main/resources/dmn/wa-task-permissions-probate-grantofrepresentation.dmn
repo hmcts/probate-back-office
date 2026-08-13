@@ -112,7 +112,7 @@
       </rule>
       <rule id="DecisionRule_0yjqbgt">
         <inputEntry id="UnaryTests_101rbvy">
-          <text>"ExamineDigitalCaseIntestacy"</text>
+          <text>"ExamineDigitalCaseIntestacy","ExamineDigitalCaseIntestacyReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_17cym5x">
           <text></text>
@@ -141,7 +141,7 @@
       </rule>
       <rule id="DecisionRule_0kjv62y">
         <inputEntry id="UnaryTests_1lpclj4">
-          <text>"ExamineDigitalCaseIntestacy"</text>
+          <text>"ExamineDigitalCaseIntestacy","ExamineDigitalCaseIntestacyReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0t2kjk9">
           <text></text>
