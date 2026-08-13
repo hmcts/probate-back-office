@@ -33,7 +33,7 @@
           </text>
         </inputExpression>
         <inputValues id="UnaryTests_0s5s50h">
-          <text>"gop","admonWill","intestacy"</text>
+          <text>"gop","admonWill","intestacy","adColligendaBona"</text>
         </inputValues>
       </input>
       <input id="InputClause_0ts4kea" label="boHandoffReasonPresent" camunda:inputVariable="boHandoffReasonPresent">
@@ -407,6 +407,41 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1bz2q9x">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0cn884k">
+        <inputEntry id="UnaryTests_1jkenqv">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0kdbpd5">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_08kwvmy">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13kcry6">
+          <text>"adColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bbas33">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cl9ipy">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_135c4lg">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1s9m90i">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1c09hwl">
+          <text>"Examine Digital Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0brol3i">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1124ndl">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
