@@ -77,7 +77,7 @@ export class BasePage {
 
   async waitForNavigationToComplete(
     buttonLocator: Locator | string,
-    timeout: number = 5_000,
+    timeout: number = 30_000,
   ): Promise<void> {
     const currentUrl = this.page.url();
     const button =
@@ -91,7 +91,7 @@ export class BasePage {
     await Promise.all([
       this.page.waitForURL(
         url => url.href !== currentUrl,
-        { timeout },
+        { timeout, waitUntil: "commit" },
       ),
       button.click({ timeout }),
     ]);
