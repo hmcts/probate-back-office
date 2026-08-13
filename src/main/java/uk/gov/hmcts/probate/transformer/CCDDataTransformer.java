@@ -152,7 +152,7 @@ public class CCDDataTransformer {
             .dateOfDivorcedCPJudicially(caseData.getDateOfDivorcedCPJudicially())
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .applicantAdoptedDeceasedIn(caseData.getApplicantAdoptedDeceasedIn())
-            .applicantAdoptedDeceasedInEnglandOrWales(caseData.getApplicantAdoptedDeceasedInEnglandOrWales())
+            .applicantAdoptionDeceasedInEnglandOrWales(caseData.getApplicantAdoptionDeceasedInEnglandOrWales())
             .applicantAdoptedDeceasedOut(caseData.getApplicantAdoptedDeceasedOut())
             .address(caseData.getDeceasedAddress())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())

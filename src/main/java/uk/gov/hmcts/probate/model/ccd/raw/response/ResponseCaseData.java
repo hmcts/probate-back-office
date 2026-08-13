@@ -329,7 +329,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String deceasedAdoptionInEnglandOrWales;
     private final String deceasedAdoptedOut;
     private final String applicantAdoptedDeceasedIn;
-    private final String applicantAdoptedDeceasedInEnglandOrWales;
+    private final String applicantAdoptionDeceasedInEnglandOrWales;
     private final String applicantAdoptedDeceasedOut;
     private final String deceasedSpouseNotApplyingReason;
     private final String deceasedOtherChildren;

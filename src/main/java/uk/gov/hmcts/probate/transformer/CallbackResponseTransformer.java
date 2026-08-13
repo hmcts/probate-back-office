@@ -993,7 +993,7 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder.deceasedAnyLivingDescendants(null);
         responseCaseDataBuilder.deceasedAnyOtherParentAlive(null);
         responseCaseDataBuilder.applicantAdoptedDeceasedIn(null);
-        responseCaseDataBuilder.applicantAdoptedDeceasedInEnglandOrWales(null);
+        responseCaseDataBuilder.applicantAdoptionDeceasedInEnglandOrWales(null);
         responseCaseDataBuilder.applicantAdoptedDeceasedOut(null);
     }
 
@@ -1612,7 +1612,7 @@ public class CallbackResponseTransformer {
             .deceasedAdoptionInEnglandOrWales(caseData.getDeceasedAdoptionInEnglandOrWales())
             .deceasedAdoptedOut(caseData.getDeceasedAdoptedOut())
             .applicantAdoptedDeceasedIn(caseData.getApplicantAdoptedDeceasedIn())
-            .applicantAdoptedDeceasedInEnglandOrWales(caseData.getApplicantAdoptedDeceasedInEnglandOrWales())
+            .applicantAdoptionDeceasedInEnglandOrWales(caseData.getApplicantAdoptionDeceasedInEnglandOrWales())
             .applicantAdoptedDeceasedOut(caseData.getApplicantAdoptedDeceasedOut())
             .deceasedAnyLivingParents(caseData.getDeceasedAnyLivingParents())
             .childAlive(caseData.getChildAlive())
