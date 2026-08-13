@@ -140,6 +140,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationFee", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "feeForUkCopies", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedMarriedAfterWillOrCodicilDate", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedMarriedAfterWillOrCodicilDateLabel", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedMarriedAfterWillOrCodicilDateYN", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "feeForNonUkCopies", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsBeforeSubmitPage", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
