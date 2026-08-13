@@ -711,6 +711,11 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineDigitalCaseIntestacyReadyToIssueTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
+                "name", "Examine Digital Case - Intestacy",
+                "processCategories", "case progression"
+        );
 
         return Stream.of(
                 Arguments.of(
@@ -982,6 +987,109 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "CasePrinted",
                         additionalData(false, "intestacy", false, handOffReasonListOtherReason),
                         Collections.emptyList()
+                ),
+                // BOReadyToIssue Tests
+                Arguments.of(
+                        "someOtherEventId",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(true, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(true, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(true, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(true, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
                 )
         );
     }
@@ -1115,43 +1223,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         additionalDataNoHandOffList(),
                         Collections.emptyList()
                 )
-        );
-    }
-
-    static Stream<Arguments> intestacyScenarios() {
-
-        Map<String,Object> examineDigitalCaseIntestacyReadyToIssueTaskAttributes = Map.of(
-                "taskId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
-                "name", "Examine Digital Case - Intestacy",
-                "processCategories", "case progression"
-          );
-
-
-        return Stream.of(
-              Arguments.of(
-                      "changeState",
-                      "BOReadyToIssue",
-                      additionalData(false, "intestacy",false, Collections.emptyList()),
-                      List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-              ),
-              Arguments.of(
-                      "resolveCWEscalation",
-                      "BOReadyToIssue",
-                      additionalData(false, "intestacy",false, Collections.emptyList()),
-                      List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-              ),
-              Arguments.of(
-                      "handleEvidence",
-                      "BOReadyToIssue",
-                      additionalData(false, "intestacy",false, Collections.emptyList()),
-                      List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-              ),
-              Arguments.of(
-                      "boResolveStop",
-                      "BOReadyToIssue",
-                      additionalData(false, "intestacy",false, Collections.emptyList()),
-                      List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-              )
         );
     }
 
@@ -1984,7 +2055,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(13));
+        assertThat(logic.getRules().size(), is(14));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
