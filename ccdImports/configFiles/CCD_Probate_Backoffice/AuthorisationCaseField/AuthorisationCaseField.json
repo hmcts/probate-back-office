@@ -1321,7 +1321,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedAdoptedOut", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantAdoptedDeceasedIn", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantAdoptionDeceasedInEnglandOrWales", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantAdoptedDeceasedOut", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantAdoptedDeceasedOut", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "parentsExistSurvived", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "parentsExistOverEighteenSurvived", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "parentsExistUnderEighteenSurvived", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
