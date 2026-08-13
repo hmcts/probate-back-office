@@ -137,7 +137,7 @@ ccd:
         LAUNCH_DARKLY_ENV: pr
         LD_SDK_KEY: ${LD_SDK_AM_KEY}
       devcpuRequests: 250m
-      devcpuLimits: 512m
+      devcpuLimits: 1000m
       devmemoryRequests: 1Gi
       devmemoryLimits: 2Gi
   ccd-definition-store-api:
