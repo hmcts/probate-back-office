@@ -1589,6 +1589,7 @@ __metadata:
     "@hmcts/playwright-common": "npm:^1.1.3"
     "@playwright/test": "npm:^1.62.1"
     "@types/node": "npm:^24.13.3"
+    axios: "npm:^1.19.0"
     chai: "npm:^4.5.0"
     chai-http: "npm:^4.3.0"
     chai-string: "npm:^1.6.0"
@@ -1616,7 +1617,6 @@ __metadata:
     selenium-standalone: "npm:^10.0.2"
     sinon: "npm:^22.1.0"
     sinon-chai: "npm:^3.7.0"
-    sonarqube-scanner: "npm:^4.4.0"
     supertest: "npm:^7.0.0"
     typescript: "npm:^5.9.3"
     typescript-eslint: "npm:^8.65.0"
@@ -1673,13 +1673,6 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: 10/690c673bb4d61b38ef82795fab58526471ad7f7e67c0e40c4ff1e10ecd80ce5312554ef633c9995bfc4e6d170cef165711f9ca9e49040b62c0c66fbf2dd3df2b
-  languageName: node
-  linkType: hard
-
-"adm-zip@npm:0.5.17":
-  version: 0.5.17
-  resolution: "adm-zip@npm:0.5.17"
-  checksum: 10/035ea96d04376c290bed3401b67d1a2a2654996450ec9056dccc0fb194cb6a956bf7ad388d2648b0e1775338a377805601deca4bcd689658dc1d39247a1e9bdd
   languageName: node
   linkType: hard
 
@@ -1923,7 +1916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.18.1":
+"axios@npm:^1.19.0":
   version: 1.19.0
   resolution: "axios@npm:1.19.0"
   dependencies:
@@ -2506,13 +2499,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:14.0.3, commander@npm:~14.0.3":
-  version: 14.0.3
-  resolution: "commander@npm:14.0.3"
-  checksum: 10/dfa9ebe2a433d277de5cb0252d23b10a543d245d892db858d23b516336a835c50fd4f52bee4cd13c705cc8acb6f03dc632c73dd806f7d06d3353eb09953dd17a
-  languageName: node
-  linkType: hard
-
 "commander@npm:^5.1.0":
   version: 5.1.0
   resolution: "commander@npm:5.1.0"
@@ -2531,6 +2517,13 @@ __metadata:
   version: 9.5.0
   resolution: "commander@npm:9.5.0"
   checksum: 10/41c49b3d0f94a1fbeb0463c85b13f15aa15a9e0b4d5e10a49c0a1d58d4489b549d62262b052ae0aa6cfda53299bee487bfe337825df15e342114dde543f82906
+  languageName: node
+  linkType: hard
+
+"commander@npm:~14.0.3":
+  version: 14.0.3
+  resolution: "commander@npm:14.0.3"
+  checksum: 10/dfa9ebe2a433d277de5cb0252d23b10a543d245d892db858d23b516336a835c50fd4f52bee4cd13c705cc8acb6f03dc632c73dd806f7d06d3353eb09953dd17a
   languageName: node
   linkType: hard
 
@@ -4140,13 +4133,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hpagent@npm:1.2.0":
-  version: 1.2.0
-  resolution: "hpagent@npm:1.2.0"
-  checksum: 10/bad186449da7e3456788a8cbae459fc6c0a855d5872a7f460c48ce4a613020d8d914839dad10047297099299c4f9e6c65a0eec3f5886af196c0a516e4ad8a845
-  languageName: node
-  linkType: hard
-
 "html_codesniffer@npm:^2.5.1":
   version: 2.5.1
   resolution: "html_codesniffer@npm:2.5.1"
@@ -4647,25 +4633,25 @@ __metadata:
   linkType: hard
 
 "js-yaml@npm:3.x":
-  version: 3.15.0
-  resolution: "js-yaml@npm:3.15.0"
+  version: 3.15.1
+  resolution: "js-yaml@npm:3.15.1"
   dependencies:
     argparse: "npm:^1.0.7"
     esprima: "npm:^4.0.0"
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: 10/2fdf3a1453ed93a8e06d6ca8054c0bec145cf40ab51f305d1071736a03668b95e40f47cfd0239d7d50019b4780a18cdaca3c935def935594c9876964c49f1185
+  checksum: 10/905842ce08c18b154ff2c187ff81bb41294cc5dda214331b5d9b8bcf395894e48b00fa37b9d4dd4c3ffec672b7496a94558e3876d3a8ad4d12b06248112e6d92
   languageName: node
   linkType: hard
 
 "js-yaml@npm:^4.1.0, js-yaml@npm:^4.3.0":
-  version: 4.3.0
-  resolution: "js-yaml@npm:4.3.0"
+  version: 4.3.1
+  resolution: "js-yaml@npm:4.3.1"
   dependencies:
     argparse: "npm:^2.0.1"
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: 10/2bcec3a8118d7f744badeb04e14366578d234a736f353d41fe35d2305e4ce2409a8e041d277f07cd6bbc8aaa12128d650a68ce43247072519bede20962d2126f
+  checksum: 10/2ce71b5d632abbd77da80447bf860e8a0264e54bffe94840984887d58b023761495b523727547904517a6107a1ef189854b361e0fc44995ee13a84f222d7bd42
   languageName: node
   linkType: hard
 
@@ -5494,13 +5480,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-forge@npm:1.4.0":
-  version: 1.4.0
-  resolution: "node-forge@npm:1.4.0"
-  checksum: 10/d70fd769768e646eda73343d4d4105ccb6869315d975905a22117431c04ae5b6df6c488e34ed275b1a66b50195a09b84b5c8aeca3b8605c20605fcb8e9f109d9
-  languageName: node
-  linkType: hard
-
 "node-gyp@npm:latest":
   version: 12.2.0
   resolution: "node-gyp@npm:12.2.0"
@@ -6145,13 +6124,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"properties-file@npm:5.0.5":
-  version: 5.0.5
-  resolution: "properties-file@npm:5.0.5"
-  checksum: 10/75fef1faa1f8777ae90be9bfb5d2c53b0be1151ceba632dfce73c851d4cc0400961b8d07d513945bc8614f8734b3c48c243a1c0e79fb6d94f84c818c808afe2e
-  languageName: node
-  linkType: hard
-
 "proxy-agent@npm:^6.5.0":
   version: 6.5.0
   resolution: "proxy-agent@npm:6.5.0"
@@ -6168,17 +6140,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proxy-from-env@npm:2.1.0, proxy-from-env@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "proxy-from-env@npm:2.1.0"
-  checksum: 10/fbbaf4dab2a6231dc9e394903a5f66f20475e36b734335790b46feb9da07c37d6b32e2c02e3e2ea4d4b23774c53d8562e5b7cc73282cb43f4a597b7eacaee2ee
-  languageName: node
-  linkType: hard
-
 "proxy-from-env@npm:^1.1.0":
   version: 1.1.0
   resolution: "proxy-from-env@npm:1.1.0"
   checksum: 10/f0bb4a87cfd18f77bc2fba23ae49c3b378fb35143af16cc478171c623eebe181678f09439707ad80081d340d1593cd54a33a0113f3ccb3f4bc9451488780ee23
+  languageName: node
+  linkType: hard
+
+"proxy-from-env@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "proxy-from-env@npm:2.1.0"
+  checksum: 10/fbbaf4dab2a6231dc9e394903a5f66f20475e36b734335790b46feb9da07c37d6b32e2c02e3e2ea4d4b23774c53d8562e5b7cc73282cb43f4a597b7eacaee2ee
   languageName: node
   linkType: hard
 
@@ -6558,7 +6530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.8.4, semver@npm:^7.3.5, semver@npm:^7.3.8, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.7.3, semver@npm:^7.7.4":
+"semver@npm:^7.3.5, semver@npm:^7.3.8, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.7.3, semver@npm:^7.7.4":
   version: 7.8.4
   resolution: "semver@npm:7.8.4"
   bin:
@@ -6715,13 +6687,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"slugify@npm:1.6.9":
-  version: 1.6.9
-  resolution: "slugify@npm:1.6.9"
-  checksum: 10/101599a77585ac3b3fe49662db8666260c8ee1c5090d28a13c6ecabf16b42057e69ea209654797f46b13faee4c53224f48784044bd734a9443b7b88e0357110e
-  languageName: node
-  linkType: hard
-
 "smart-buffer@npm:^4.2.0":
   version: 4.2.0
   resolution: "smart-buffer@npm:4.2.0"
@@ -6747,28 +6712,6 @@ __metadata:
     ip-address: "npm:^10.0.1"
     smart-buffer: "npm:^4.2.0"
   checksum: 10/d19366c95908c19db154f329bbe94c2317d315dc933a7c2b5101e73f32a555c84fb199b62174e1490082a593a4933d8d5a9b297bde7d1419c14a11a965f51356
-  languageName: node
-  linkType: hard
-
-"sonarqube-scanner@npm:^4.4.0":
-  version: 4.4.0
-  resolution: "sonarqube-scanner@npm:4.4.0"
-  dependencies:
-    adm-zip: "npm:0.5.17"
-    axios: "npm:1.17.0"
-    commander: "npm:14.0.3"
-    hpagent: "npm:1.2.0"
-    node-forge: "npm:1.4.0"
-    properties-file: "npm:5.0.5"
-    proxy-from-env: "npm:2.1.0"
-    semver: "npm:7.8.4"
-    slugify: "npm:1.6.9"
-    tar-stream: "npm:3.2.0"
-  bin:
-    sonar: bin/sonar-scanner.js
-    sonar-scanner: bin/sonar-scanner.js
-    sonar-scanner-npm: bin/sonar-scanner.js
-  checksum: 10/ebdcb5d477e5e3eeabba1b3663cabeb819fe56637cd8958cc2575875e4cb6226f5c96576dd9bce9b46977110b24577812781c11874496cda786cc2ccf9364902
   languageName: node
   linkType: hard
 
@@ -7066,7 +7009,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar-stream@npm:3.2.0, tar-stream@npm:^3.0.0, tar-stream@npm:^3.1.5":
+"tar-stream@npm:^3.0.0, tar-stream@npm:^3.1.5":
   version: 3.2.0
   resolution: "tar-stream@npm:3.2.0"
   dependencies:
