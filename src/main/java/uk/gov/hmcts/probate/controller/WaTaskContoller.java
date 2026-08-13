@@ -47,8 +47,6 @@ public class WaTaskContoller {
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateClientContext(
-            @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class,
-                        NextStepsConfirmationGroup.class})
             @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
