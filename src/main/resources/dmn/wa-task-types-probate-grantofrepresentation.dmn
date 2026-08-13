@@ -165,6 +165,18 @@
           <text>"Examine Digital Case - Ad Colligenda Bona"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1j3ezvk">
+        <description>EDCIRI</description>
+        <inputEntry id="UnaryTests_1l5eanv">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00bx5mi">
+          <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1flq7xg">
+          <text>"Examine Digital Case - Intestacy"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
