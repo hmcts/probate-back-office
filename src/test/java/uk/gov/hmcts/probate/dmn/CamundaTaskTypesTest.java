@@ -22,6 +22,7 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_TYPES_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
@@ -88,6 +89,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                     "taskTypeName", "Examine - Horizon Scheme",
                     "taskTypeId", EXAMINE_HORIZON_SCHEME
+                ),
+                Map.of(
+                        "taskTypeName", "Examine Digital Case - Ad Colligenda Bona",
+                        "taskTypeId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA
                 )
         );
         return Stream.of(
@@ -103,7 +108,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(12));
+        assertThat(logic.getRules().size(), is(13));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")

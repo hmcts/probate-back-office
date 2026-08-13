@@ -22,7 +22,7 @@
       </rule>
       <rule id="DecisionRule_0i7gnwi">
         <inputEntry id="UnaryTests_14kpkzi">
-          <text>"boSelectForQA"</text>
+          <text>"boSelectForQA","boIssueGrantForCaseMatching","boStopCaseForCasePrinted","boEscalateToRegistrar","moveToCWEscalation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0mk0via">
           <text>"ExamineDigitalCaseIntestacy"</text>
@@ -138,6 +138,17 @@
           <text>"ExamineHorizonScheme"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0sunn3p">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0u0hslv">
+        <inputEntry id="UnaryTests_1omjejm">
+          <text>"boSelectForQA","boIssueGrantForCaseMatching","boStopCaseForCasePrinted","boEscalateToRegistrar","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mpk527">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0s8es66">
           <text>"Auto"</text>
         </outputEntry>
       </rule>
