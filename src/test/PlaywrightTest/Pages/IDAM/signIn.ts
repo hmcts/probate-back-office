@@ -4,11 +4,20 @@ import { BasePage } from "../utility/basePage.ts";
 
 export class SignInPage extends BasePage {
   // this.signinPageLocator = page.getByLabel('Sign in');
-  readonly usernameLocator = this.page.getByText("Email address");
-  readonly passwordLocator = this.page.getByText("Password", { exact: true });
+  readonly usernameLocator = this.page.getByText('Enter your email address');
+  readonly passwordLocator = this.page.getByText('Enter your password');
+  readonly usernameTextboxLocator = this.page.getByRole("textbox", {
+    name: "Enter your email address",
+  });
+  readonly passwordTextboxLocator = this.page.getByRole("textbox", {
+    name: "Enter your password",
+  });
   readonly submitButtonLocator = this.page.getByRole("button", {
     name: "Sign in",
   });
+  readonly continueButtonLocator = this.page.getByRole("button", {
+    name: "Continue",
+  })
 
   constructor(page) {
     super(page);
@@ -23,42 +32,31 @@ export class SignInPage extends BasePage {
     });
     // await this.page.waitForTimeout(testConfig.ManualDelayLong);
     await this.verifyPageLoad(this.usernameLocator, 10_000);
-    await expect(
-      this.page.getByRole("heading", {
-        name: "Sign in",
-        exact: true,
-      }),
-    ).toBeVisible();
     await expect(this.usernameLocator).toBeVisible();
-    await expect(this.passwordLocator).toBeVisible();
     if (useProfessionalUser === "superUser") {
-      await this.page.locator("#username").fill(testConfig.TestEnvSuperCwUser);
-      await this.page
-        .locator("#password")
-        .fill(testConfig.TestEnvSuperCwPassword);
+      await this.usernameTextboxLocator.fill(testConfig.TestEnvSuperCwUser);
     } else {
-      await this.page
-        .locator("#username")
-        .fill(
-          useProfessionalUser
-            ? testConfig.TestEnvProfUser
-            : testConfig.TestEnvCwUser,
-        );
-      await this.page
-        .locator("#password")
-        .fill(
-          useProfessionalUser
-            ? testConfig.TestEnvProfPassword
-            : testConfig.TestEnvCwPassword,
-        );
+      await this.usernameTextboxLocator.fill(
+        useProfessionalUser
+          ? testConfig.TestEnvProfUser
+          : testConfig.TestEnvCwUser,
+      );
+      await this.continueButtonLocator.click();
+      await expect(this.passwordLocator).toBeVisible();
+
+      await this.passwordTextboxLocator.fill(
+        useProfessionalUser
+          ? testConfig.TestEnvProfPassword
+          : testConfig.TestEnvCwPassword,
+      );
     }
     // await this.page.waitForSelector(this.submitButtonLocator, signInDelay);
     // await expect(this.submitButtonLocator).toBeEnabled();
     // await this.submitButtonLocator.click();
-    await this.waitForNavigationToComplete(this.submitButtonLocator);
+    await this.waitForNavigationToComplete(this.continueButtonLocator);
     // await this.page.waitForTimeout(signInDelay);
     // await this.page.waitForLoadState('domcontentloaded');
-    await expect(this.usernameLocator).toBeHidden();
+    await expect(this.passwordLocator).toBeHidden();
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
   }
