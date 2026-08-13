@@ -71,6 +71,7 @@ import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
+import uk.gov.hmcts.reform.probate.model.YesNo;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
@@ -5875,5 +5876,14 @@ class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getHasValidMatches());
+    }
+
+    @Test
+    void testCreateTask() {
+        CallbackResponse callbackResponse = underTest.setCreateTask(
+                callbackRequestMock,
+                callbackRequest -> YesNo.YES);
+
+        assertEquals(YesNo.YES, callbackResponse.getData().getCreateTask());
     }
 }

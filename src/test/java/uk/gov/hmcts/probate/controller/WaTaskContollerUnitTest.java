@@ -1,0 +1,237 @@
+package uk.gov.hmcts.probate.controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.utils.TaskUtils;
+import uk.gov.hmcts.reform.probate.model.YesNo;
+
+import java.util.Collections;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.CLIENT_CONTEXT_HEADER_PARAMETER;
+import static uk.gov.hmcts.reform.probate.model.YesNo.NO;
+import static uk.gov.hmcts.reform.probate.model.YesNo.YES;
+
+@ExtendWith(MockitoExtension.class)
+class WaTaskContollerUnitTest {
+    @Mock
+    private CallbackRequest callbackRequest;
+    @Mock
+    private CaseDetails caseDetails;
+    @Mock
+    private CaseDetails caseDetailsBefore;
+    @Mock
+    private CaseData caseData;
+    @Mock
+    private CaseData caseDataBefore;
+    @Mock
+    private BindingResult bindingResult;
+    @Mock
+    private HttpServletRequest httpServletRequest;
+    @Mock
+    private ObjectMapper objectMapper;
+    @Mock
+    private TaskUtils taskUtils;
+    @Mock
+    private CallbackResponseTransformer callbackResponseTransformer;
+    @Mock
+    private CallbackResponse callbackResponse;
+
+    @InjectMocks
+    private WaTaskContoller waTaskContoller;
+
+    @Captor
+    private ArgumentCaptor<Predicate<CallbackRequest>> predicateArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<Function<CallbackRequest, YesNo>> functionArgumentCaptor;
+    private final String clientContext = "clientContext";
+
+
+    @BeforeEach
+    void setUp() {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+
+    }
+
+    @Test
+    void shouldNotCompleteTaskAndNoNewTaskCreated() throws JsonProcessingException {
+        when(callbackRequest.getCaseDetailsBefore()).thenReturn(caseDetailsBefore);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetailsBefore.getData()).thenReturn(caseDataBefore);
+        when(caseData.getCaseType()).thenReturn("gop");
+        when(caseDataBefore.getCaseType()).thenReturn("gop");
+
+        when(taskUtils.setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                 any()))
+                .thenReturn(Optional.of("encodedClientContext"));
+        when(callbackResponseTransformer.setCreateTask(
+                eq(callbackRequest),
+                functionArgumentCaptor.capture()
+        )).thenReturn(callbackResponse);
+
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContext(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isSameAs(callbackResponse);
+
+        assertThat(response.getHeaders())
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+
+        verify(taskUtils).setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                predicateArgumentCaptor.capture());
+
+        assertThat(predicateArgumentCaptor.getValue()
+               .test(callbackRequest)).isFalse();
+
+        verify(callbackResponseTransformer).setCreateTask(
+                eq(callbackRequest),
+                functionArgumentCaptor.capture());
+
+        assertThat(functionArgumentCaptor.getValue()
+                .apply(callbackRequest)).isEqualTo(NO);
+
+        verify(objectMapper)
+                .writeValueAsString(callbackRequest);
+    }
+
+    @Test
+    void shouldCompleteTheTaskAndNewTaskCreated() throws JsonProcessingException {
+        when(callbackRequest.getCaseDetailsBefore()).thenReturn(caseDetailsBefore);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseDetailsBefore.getData()).thenReturn(caseDataBefore);
+        when(caseData.getCaseType()).thenReturn("gop");
+        when(caseDataBefore.getCaseType()).thenReturn("intestacy");
+
+        when(taskUtils.setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                 any()))
+                .thenReturn(Optional.of("encodedClientContext"));
+        when(callbackResponseTransformer.setCreateTask(
+                eq(callbackRequest),
+                functionArgumentCaptor.capture()
+        )).thenReturn(callbackResponse);
+
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContext(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isSameAs(callbackResponse);
+
+        assertThat(response.getHeaders())
+                .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
+
+        verify(taskUtils).setTaskCompletion(
+                eq(clientContext),
+                eq(callbackRequest),
+                predicateArgumentCaptor.capture());
+
+        assertThat(predicateArgumentCaptor.getValue()
+               .test(callbackRequest)).isTrue();
+
+        verify(callbackResponseTransformer).setCreateTask(
+                eq(callbackRequest),
+                functionArgumentCaptor.capture());
+
+        assertThat(functionArgumentCaptor.getValue()
+                .apply(callbackRequest)).isEqualTo(YES);
+
+        verify(objectMapper)
+                .writeValueAsString(callbackRequest);
+    }
+
+    @Test
+    void shouldThrowBadRequestExceptionWhenBindingResultHasErrors() {
+        when(bindingResult.hasErrors()).thenReturn(true);
+
+        assertThatThrownBy(() ->
+                waTaskContoller.updateClientContext(
+                        callbackRequest,
+                        null,
+                        bindingResult,
+                        httpServletRequest
+                )
+        ).isInstanceOf(BadRequestException.class);
+
+        verifyNoInteractions(taskUtils);
+        verifyNoInteractions(callbackResponseTransformer);
+    }
+
+    @Test
+    void shouldContinueWhenObjectMapperFailsToLogRequest() throws Exception {
+        when(objectMapper.writeValueAsString(callbackRequest))
+                .thenThrow(new JsonProcessingException("Unable to serialize") {});
+
+        when(taskUtils.setTaskCompletion(
+                any(),
+                eq(callbackRequest),
+                any()
+        )).thenReturn(Optional.empty());
+
+        when(callbackResponseTransformer.setCreateTask(
+                eq(callbackRequest),
+                any()
+        )).thenReturn(callbackResponse);
+
+        ResponseEntity<CallbackResponse> response =
+                waTaskContoller.updateClientContext(
+                        callbackRequest,
+                        null,
+                        bindingResult,
+                        httpServletRequest
+                );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isSameAs(callbackResponse);
+
+        verify(taskUtils).setTaskCompletion(
+                any(),
+                eq(callbackRequest),
+                any()
+        );
+
+        verify(callbackResponseTransformer).setCreateTask(
+                eq(callbackRequest),
+                any()
+        );
+    }
+}

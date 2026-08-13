@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.33.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="wa-initiation-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.32.0">
   <decision id="wa-task-initiation-probate-grantofrepresentation" name="Task initiation DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_0jtevuc" hitPolicy="COLLECT">
       <input id="Input_1" label="Event Id" camunda:inputVariable="eventId">
@@ -56,6 +56,14 @@ count(list: additionalData.Data.boHandoffReasonList) &gt; 0) then
 else false</text>
         </inputExpression>
       </input>
+      <input id="InputClause_1e7n0w0" label="Create Task">
+        <inputExpression id="LiteralExpression_0wumces" typeRef="string" expressionLanguage="feel">
+          <text>if(additionalData != null and additionalData.Data != null and additionalData.Data.createTask != null) then additionalData.Data.createTask else ""</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_10t9g4h">
+          <text>"Yes","No"</text>
+        </inputValues>
+      </input>
       <output id="Output_1" label="Task Id" name="taskId" typeRef="string" biodi:width="320" />
       <output id="OutputClause_0p5fhhd" label="Task Name" name="name" typeRef="string" biodi:width="362" />
       <output id="OutputClause_165p3r3" label="Delay Duration" name="delayDuration" typeRef="integer" />
@@ -80,6 +88,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1mqfccx">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07o0znp">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yp6gfj">
@@ -117,6 +128,9 @@ else false</text>
         <inputEntry id="UnaryTests_0lzwyla">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1l461q9">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0z8vdkn">
           <text>"ExamineDigitalCaseIntestacy"</text>
         </outputEntry>
@@ -151,6 +165,9 @@ else false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_004dtww">
           <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1d7pk2e">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0a93yyj">
           <text>"ExamineDeBonisNon"</text>
@@ -187,6 +204,9 @@ else false</text>
         <inputEntry id="UnaryTests_windrush_legacy_site">
           <text>true</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_157sa96">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_windrush_task_id">
           <text>"ExamineWindrushScheme"</text>
         </outputEntry>
@@ -221,6 +241,9 @@ else false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_12kayl1">
           <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05lqwjq">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_17lzws3">
           <text>"ExamineFiatWill"</text>
@@ -257,6 +280,9 @@ else false</text>
         <inputEntry id="UnaryTests_071k1eu">
           <text>true</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_19kl4t3">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0foopux">
           <text>"ExamineInfectedBloodCompensationAuthority"</text>
         </outputEntry>
@@ -291,6 +317,9 @@ else false</text>
         </inputEntry>
         <inputEntry id="UnaryTests_049z0hz">
           <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ob4fom">
+          <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_14nb7gm">
           <text>"ExamineWillOrCodicilToBeNotated"</text>
@@ -327,6 +356,9 @@ else false</text>
         <inputEntry id="UnaryTests_0yvnszw">
           <text>true</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1pz73uy">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1n963n6">
           <text>"ExamineWitnessInterview"</text>
         </outputEntry>
@@ -362,6 +394,9 @@ else false</text>
         <inputEntry id="UnaryTests_1lhrvuf">
           <text>true</text>
         </inputEntry>
+        <inputEntry id="UnaryTests_1ns7zu1">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0gbmund">
           <text>"ExamineHorizonScheme"</text>
         </outputEntry>
@@ -395,6 +430,9 @@ else false</text>
           <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_04krt3f">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ux3ymn">
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_02nklps">
@@ -432,6 +470,9 @@ else false</text>
         <inputEntry id="UnaryTests_0mqm82i">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_01md3eo">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_0bgn9xq">
           <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
         </outputEntry>
@@ -467,6 +508,9 @@ else false</text>
         <inputEntry id="UnaryTests_0oupngk">
           <text></text>
         </inputEntry>
+        <inputEntry id="UnaryTests_12a99kg">
+          <text></text>
+        </inputEntry>
         <outputEntry id="LiteralExpression_1ac64en">
           <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
         </outputEntry>
@@ -477,6 +521,44 @@ else false</text>
           <text></text>
         </outputEntry>
         <outputEntry id="LiteralExpression_048ajak">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1bb9sqp">
+        <inputEntry id="UnaryTests_08ngk0x">
+          <text>"boAmendCaseDetailsPostGrantRegistrarEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0t67c1s">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1l4l7cl">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xgxa2x">
+          <text>"gop"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ho0nj1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0q8mkp9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19bobjh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1o4f7ue">
+          <text>"Yes"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0sf1pyd">
+          <text>"ExamineDigitalCaseProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0t4c7kq">
+          <text>"Examine Digital Case - Probate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ez0m9w">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1h2t90f">
           <text>"case progression"</text>
         </outputEntry>
       </rule>
