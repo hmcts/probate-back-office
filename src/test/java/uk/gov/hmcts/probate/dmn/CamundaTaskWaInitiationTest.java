@@ -495,7 +495,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "CasePrinted",
                         additionalData(false, "admonWill", true, handOffReasonListOtherReason,""),
                         Collections.emptyList()
-                ,""),
+                ),
                 Arguments.of(
                         "handleEvidence",
                         "CasePrinted",
@@ -1810,7 +1810,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "BOReadyToIssue",
                         additionalData(false, "",true, handOffReasonListOtherReason,""),
                         Collections.emptyList()
-                ,""),
+                ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
