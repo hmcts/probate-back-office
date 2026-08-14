@@ -1254,43 +1254,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 )
         );
     }
-
-    static Stream<Arguments> intestacyScenarios() {
-
-        Map<String,Object> examineDigitalCaseIntestacyReadyToIssueTaskAttributes = Map.of(
-                "taskId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
-                "name", INTESTACY_TASK_TYPE_NAME,
-                "processCategories", "case progression"
-          );
-
-
-        return Stream.of(
-              Arguments.of(
-                      CHANGE_STATE_EVENT,
-                      READY_TO_ISSUE_STATE,
-                      additionalData(false, "intestacy",false, Collections.emptyList()),
-                      List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-              ),
-              Arguments.of(
-                      RESOLVE_SME_REFERRAL_EVENT,
-                      READY_TO_ISSUE_STATE,
-                      additionalData(false, "intestacy",false, Collections.emptyList()),
-                      List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-              ),
-              Arguments.of(
-                      HANDLE_EVIDENCE_EVENT,
-                      READY_TO_ISSUE_STATE,
-                      additionalData(false, "intestacy",false, Collections.emptyList()),
-                      List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-              ),
-              Arguments.of(
-                      BO_RESOLVE_STOP_EVENT,
-                      READY_TO_ISSUE_STATE,
-                      additionalData(false, "intestacy",false, Collections.emptyList()),
-                      List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
-              )
-        );
-    }
   
     static Stream<Arguments> fiatWillScenarios() {
 
@@ -2050,6 +2013,13 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes
+                = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
+                "name", AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
+                "processCategories", "case progression"
+        );
+
         return Stream.of(
                 Arguments.of(
                         "someOtherEventId",
@@ -2129,25 +2099,30 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "CasePrinted",
                         additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
                         Collections.emptyList()
-                )
-        );
-    }
-
-    static Stream<Arguments> adCollScenarios() {
-
-        Map<String,Object> examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes
-                = Map.of(
-                        "taskId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
-                        "name", AD_COLLIGENDA_BONA_TASK_TYPE_NAME,
-                        "processCategories", "case progression"
-        );
-
-        return Stream.of(
+                ),
+                Arguments.of(
+                        "someOtherEventId",
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
                 Arguments.of(
                         CHANGE_STATE_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",false, Collections.emptyList()),
                         List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        CHANGE_STATE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
+                        Collections.emptyList()
                 ),
                 Arguments.of(
                         RESOLVE_SME_REFERRAL_EVENT,
@@ -2156,7 +2131,37 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
                 ),
                 Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        RESOLVE_SME_REFERRAL_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         HANDLE_EVIDENCE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        HANDLE_EVIDENCE_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
                         additionalData(false, "adColligendaBona",false, Collections.emptyList()),
                         List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
@@ -2164,8 +2169,14 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         BO_RESOLVE_STOP_EVENT,
                         READY_TO_ISSUE_STATE,
-                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
-                        List.of(examineDigitalCaseAdColligendaBonaReadyToIssueTaskAttributes)
+                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        BO_RESOLVE_STOP_EVENT,
+                        READY_TO_ISSUE_STATE,
+                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
+                        Collections.emptyList()
                 )
         );
     }
@@ -2176,7 +2187,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(14));
+        assertThat(logic.getRules().size(), is(15));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")

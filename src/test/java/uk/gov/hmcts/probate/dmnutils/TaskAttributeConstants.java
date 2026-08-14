@@ -154,9 +154,6 @@ public class TaskAttributeConstants {
         = "SKILL:ABA6:HorizonScheme";
     public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
 
-
-    public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
-
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
     public static final String INTESTACY_TASK_TYPE_NAME = "Examine Digital Case - Intestacy";
