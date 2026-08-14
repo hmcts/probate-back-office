@@ -178,6 +178,16 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                                 .build(),
                         "handleEvidence",
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
+                                        "state", CASE_PRINTED_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                        CaseDataBuilder.defaultWaCase()
+                                .isUrgent()
+                                .build(),
+                        "handleEvidence",
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
                                         "state", CASE_PRINTED_STATE)).build()
                 ),
@@ -241,7 +251,8 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
                         HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
-                                Map.of("state", CASE_PRINTED_STATE)).build()
+                                Map.of("taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
+                                        "state", CASE_PRINTED_STATE)).build()
                 )
         );
     }
