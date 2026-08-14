@@ -69,7 +69,7 @@ public class DateFormatterService {
         try {
             return dateFormat.format(LocalDate.parse(date));
         } catch (Exception e) {
-            log.warn("Unable to parse date '{}', defaulting to blank", date);
+            log.warn("Unable to parse/format date '{}', defaulting to INVALID DATE", date);
             return "INVALID DATE";
         }
     }
@@ -81,7 +81,7 @@ public class DateFormatterService {
         try {
             return dateFormat.format(date);
         } catch (Exception e) {
-            log.warn("Unable to format date '{}', defaulting to blank", date);
+            log.warn("Unable to parse/format date '{}', defaulting to INVALID DATE", date);
             return "INVALID DATE";
         }
     }
