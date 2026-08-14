@@ -67,8 +67,8 @@ public class WaTaskContoller {
                     log.info("Updated client context {}", new String(Base64.getDecoder().decode(value)));
                     responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
                 });
-
-        return responseBuilder.build();
+        CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, Optional.empty());
+        return responseBuilder.body(response);
     }
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {

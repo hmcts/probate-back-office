@@ -24,7 +24,6 @@ import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,16 +57,13 @@ class WaTaskContollerUnitTest {
     private TaskUtils taskUtils;
     @Mock
     private CallbackResponseTransformer callbackResponseTransformer;
-    @Mock
-    private CallbackResponse callbackResponse;
 
     @InjectMocks
     private WaTaskContoller waTaskContoller;
 
     @Captor
     private ArgumentCaptor<Predicate<CallbackRequest>> predicateArgumentCaptor;
-    @Captor
-    private ArgumentCaptor<Function<CallbackRequest, String>> functionArgumentCaptor;
+
     private final String clientContext = "clientContext";
 
 
@@ -75,7 +71,6 @@ class WaTaskContollerUnitTest {
     void setUp() {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-
     }
 
     @Test
@@ -113,6 +108,9 @@ class WaTaskContollerUnitTest {
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
+
+        verify(callbackResponseTransformer)
+                .transform(callbackRequest, Optional.empty());
     }
 
     @Test
@@ -151,6 +149,9 @@ class WaTaskContollerUnitTest {
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
+
+        verify(callbackResponseTransformer)
+                .transform(callbackRequest, Optional.empty());
     }
 
     @Test
