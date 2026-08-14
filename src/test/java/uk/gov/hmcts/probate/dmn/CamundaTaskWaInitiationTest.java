@@ -22,9 +22,11 @@ import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
@@ -759,6 +761,11 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 "processCategories", "case progression"
         );
 
+        Map<String,Object> examineDigitalCaseIntestacyReadyToIssueTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
+                "name", "Examine Digital Case - Intestacy",
+                "processCategories", "case progression"
+        );
 
         return Stream.of(
                 Arguments.of(
@@ -1028,6 +1035,109 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "paymentSuccessApp",
                         "CasePrinted",
+                        additionalData(false, "intestacy", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                // BOReadyToIssue Tests
+                Arguments.of(
+                        "someOtherEventId",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(true, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(true, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(true, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseIntestacyReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(true, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "BOReadyToIssue",
                         additionalData(false, "intestacy", false, handOffReasonListOtherReason),
                         Collections.emptyList()
                 )
@@ -1898,6 +2008,97 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+    static Stream<Arguments> adColligendaBonaScenarios() {
+
+        Map<String,Object> examineDigitalCaseAdColligendaBonaTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
+                "name", "Examine Digital Case - Ad Colligenda Bona",
+                "processCategories", "case progression"
+        );
+
+        return Stream.of(
+                Arguments.of(
+                        "someOtherEventId",
+                        "CasePrinted",
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "handleEvidence",
+                        "CasePrinted",
+                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boResolveStop",
+                        "CasePrinted",
+                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "changeState",
+                        "CasePrinted",
+                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalData(false, "adColligendaBona",false, Collections.emptyList()),
+                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalData(true, "adColligendaBona",false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "resolveCWEscalation",
+                        "CasePrinted",
+                        additionalData(false, "adColligendaBona",false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                )
+        );
+    }
+
 
     static Stream<Arguments> section116Scenarios() {
 
@@ -2388,14 +2589,15 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(7));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(16));
+        assertThat(logic.getRules().size(), is(14));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios",
         "infectedBloodCompensationAuthorityScenarios","windRushScenarios","willOrCodicilToBeNotatedScenarios",
-        "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios", "section116Scenarios",
-        "powerOfAttorneyScenarios", "resealForeignGrantScenarios", "infectedBloodInterimSchemeScenarios"})
+        "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios","adColligendaBonaScenarios",
+        "section116Scenarios", "powerOfAttorneyScenarios", "resealForeignGrantScenarios",
+        "infectedBloodInterimSchemeScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,

@@ -153,6 +153,30 @@
           <text>"Examine - Horizon Scheme"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1mgn1xz">
+        <description>EDCACB</description>
+        <inputEntry id="UnaryTests_0973nn0">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p8qoft">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mju5sw">
+          <text>"Examine Digital Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1j3ezvk">
+        <description>EDCIRI</description>
+        <inputEntry id="UnaryTests_1l5eanv">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00bx5mi">
+          <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1flq7xg">
+          <text>"Examine Digital Case - Intestacy"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_section_116_type">
         <description>ES116</description>
         <inputEntry id="UnaryTests_section_116_type">
