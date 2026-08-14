@@ -25,8 +25,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_CASE_CLOSE
 
 class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
 
-    private static final String WITHDRAW_APPLICATION_EVENT_ID_CASE_PRINTED = "boWithdrawApplicationForCasePrinted";
-    private static final String WITHDRAW_APPLICATION_EVENT_ID_READY_TO_ISSUE = "boWithdrawApplicationForReadyToIssue";
+    private static final String
+            WITHDRAW_APPLICATION_FOR_CASE_PRINTED_EVENT_ID = "boWithdrawApplicationForCasePrinted";
+    private static final String
+            WITHDRAW_APPLICATION_FOR_READY_TO_ISSUE_EVENT_ID = "boWithdrawApplicationForReadyToIssue";
 
     @BeforeAll
     public static void initialization() {
@@ -52,18 +54,16 @@ class CamundaTaskWaCancellationTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         List<Map<String, Object>> dmnResultList = dmnDecisionTableResult.getResultList();
 
-        // can be modified to use a switch case in future
-        if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_EVENT_ID_CASE_PRINTED)
-                || cancellationProperties.containsValue(WITHDRAW_APPLICATION_EVENT_ID_READY_TO_ISSUE)) {
+        if (cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_CASE_PRINTED_EVENT_ID)
+                || cancellationProperties.containsValue(WITHDRAW_APPLICATION_FOR_READY_TO_ISSUE_EVENT_ID)) {
             testBoWithdrawApplicationEvent(dmnResultList, cancellationProperties);
         } else {
             Assertions.assertEquals(0, dmnResultList.size());
         }
-
     }
 
     private VariableMap putAllCancellationProperties(VariableMap inputVariables,
-                                                     Map<String, String> cancellationProperties) {
+                                                 Map<String, String> cancellationProperties) {
         if (cancellationProperties != null && !cancellationProperties.isEmpty()) {
             inputVariables.putValue("event", cancellationProperties.get("event"));
             inputVariables.putValue("fromState", cancellationProperties.get("fromState"));

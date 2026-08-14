@@ -45,6 +45,30 @@
           <text>"Examine Digital Case - Intestacy"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1imgf9k">
+        <description>EDCAWRI</description>
+        <inputEntry id="UnaryTests_1swgjfg">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_04v0mpj">
+          <text>"ExamineDigitalCaseAdmonWillReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xousyq">
+          <text>"Examine Digital Case - Admon"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0e506hv">
+        <description>EDCPRI</description>
+        <inputEntry id="UnaryTests_04rizqy">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xol2pq">
+          <text>"ExamineDigitalCaseProbateReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1c631u1">
+          <text>"Examine Digital Case - Probate"</text>
+         </outputEntry>
+      </rule>
       <rule id="DecisionRule_0n139s3">
         <description>EDBN</description>
         <inputEntry id="UnaryTests_0jis367">
@@ -67,6 +91,90 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_0fj9pa5">
           <text>"Examine - Fiat Will"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0rj3bwk">
+        <description>EIBCA</description>
+        <inputEntry id="UnaryTests_0vxy4yy">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0wwwv9d">
+          <text>"ExamineInfectedBloodCompensationAuthority"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_12z1m1a">
+          <text>"Examine - Infected Blood Compensation Authority"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_windrush_type">
+        <description>EWS</description>
+        <inputEntry id="UnaryTests_windrush_type">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_windrush_type_id">
+          <text>"ExamineWindrushScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_windrush_type_name">
+          <text>"Examine - Windrush Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ynvyec">
+        <description>EWOCTBN</description>
+        <inputEntry id="UnaryTests_0pqe5ub">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06zlqkp">
+          <text>"ExamineWillOrCodicilToBeNotated"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0f5knzm">
+          <text>"Examine - Will or Codicil to be Notated"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1cjrc2t">
+        <description>EWI</description>
+        <inputEntry id="UnaryTests_1hbtyvp">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ko9ouz">
+          <text>"ExamineWitnessInterview"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02zetst">
+          <text>"Examine - Witness Interview"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1dxkhp9">
+        <description>EHS</description>
+        <inputEntry id="UnaryTests_1u37q58">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0aoded4">
+          <text>"ExamineHorizonScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xb98a3">
+          <text>"Examine - Horizon Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1mgn1xz">
+        <description>EDCACB</description>
+        <inputEntry id="UnaryTests_0973nn0">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p8qoft">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mju5sw">
+          <text>"Examine Digital Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1j3ezvk">
+        <description>EDCIRI</description>
+        <inputEntry id="UnaryTests_1l5eanv">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00bx5mi">
+          <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1flq7xg">
+          <text>"Examine Digital Case - Intestacy"</text>
         </outputEntry>
       </rule>
     </decisionTable>
