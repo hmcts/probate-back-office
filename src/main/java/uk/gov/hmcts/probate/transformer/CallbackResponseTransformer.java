@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
@@ -881,7 +882,19 @@ public class CallbackResponseTransformer {
                 false
         ).build();
 
+        //Setting task creation flag as mid event doesnt persist
+        setTaskCreation(callbackRequest, responseCaseData);
+
         return transformResponse(responseCaseData);
+    }
+
+    private void setTaskCreation(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
+        responseCaseData.setCreateTask("");
+        if (callbackRequest.getEventId().equals("boAmendCaseDetailsForAwaitingDocumentation")) {
+            responseCaseData.setCreateTask(callbackRequest.getCaseDetails().getData().getCaseType()
+                    .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType())
+                    ? Constants.NO : Constants.YES);
+        }
     }
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest, Optional<UserInfo> caseworkerInfo) {
@@ -2298,12 +2311,5 @@ public class CallbackResponseTransformer {
                 hasValidMatchesDefaulter.defaultHasValidMatches(caseDetails.getData())
         );
         return transformResponse(responseCaseDataBuilder.build());
-    }
-
-    public CallbackResponse setCreateTask(CallbackRequest callbackRequest,
-                                          Function<CallbackRequest, String> isTaskRequired) {
-        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
-                .createTask(isTaskRequired.apply(callbackRequest));
-        return transformResponse(builder.build());
     }
 }

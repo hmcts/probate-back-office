@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -69,14 +68,7 @@ public class WaTaskContoller {
                     responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
                 });
 
-        CallbackResponse callbackResponse = callbackResponseTransformer.setCreateTask(
-                callbackRequest,
-                paramCallbackRequest ->
-                        paramCallbackRequest.getCaseDetails().getData().getCaseType()
-                                .equals(paramCallbackRequest.getCaseDetailsBefore().getData().getCaseType())
-                                ? Constants.NO : Constants.YES
-        );
-        return responseBuilder.body(callbackResponse);
+        return responseBuilder.build();
     }
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {

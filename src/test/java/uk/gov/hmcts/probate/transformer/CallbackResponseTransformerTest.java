@@ -160,6 +160,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
 @ExtendWith(SpringExtension.class)
 class CallbackResponseTransformerTest {
@@ -519,7 +520,13 @@ class CallbackResponseTransformerTest {
     private CaseDetails caseDetailsMock;
 
     @Mock
+    private CaseDetails caseDetailsBeforeMock;
+
+    @Mock
     private CaseData caseDataMock;
+
+    @Mock
+    private CaseData caseDataBeforeMock;
 
     @Mock
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplyingMock;
@@ -4930,6 +4937,39 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
+        assertEquals("", callbackResponse.getData().getCreateTask());
+    }
+
+    @Test
+    void shouldSetTaskCreationFlagToYes() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("boAmendCaseDetailsForAwaitingDocumentation");
+        when(caseDataMock.getCaseType()).thenReturn(GRANT_OF_PROBATE_NAME);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDataBeforeMock.getCaseType()).thenReturn(INTESTACY_NAME);
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBeforeMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        assertEquals(YES, callbackResponse.getData().getCreateTask());
+    }
+
+    @Test
+    void shouldSetTaskCreationFlagToNo() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("boAmendCaseDetailsForAwaitingDocumentation");
+        when(caseDataMock.getCaseType()).thenReturn(GRANT_OF_PROBATE_NAME);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDataBeforeMock.getCaseType()).thenReturn(GRANT_OF_PROBATE_NAME);
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBeforeMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        assertEquals(NO, callbackResponse.getData().getCreateTask());
     }
 
     @ParameterizedTest
@@ -5875,14 +5915,5 @@ class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getHasValidMatches());
-    }
-
-    @Test
-    void testCreateTask() {
-        CallbackResponse callbackResponse = underTest.setCreateTask(
-                callbackRequestMock,
-                callbackRequest -> YES);
-
-        assertEquals(YES, callbackResponse.getData().getCreateTask());
     }
 }

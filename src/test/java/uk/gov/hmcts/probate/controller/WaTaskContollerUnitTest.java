@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -92,10 +91,6 @@ class WaTaskContollerUnitTest {
                 eq(callbackRequest),
                  any()))
                 .thenReturn(Optional.of("encodedClientContext"));
-        when(callbackResponseTransformer.setCreateTask(
-                eq(callbackRequest),
-                any()
-        )).thenReturn(callbackResponse);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContext(
                 callbackRequest,
@@ -104,7 +99,6 @@ class WaTaskContollerUnitTest {
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isSameAs(callbackResponse);
 
         assertThat(response.getHeaders())
                 .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
@@ -116,13 +110,6 @@ class WaTaskContollerUnitTest {
 
         assertThat(predicateArgumentCaptor.getValue()
                .test(callbackRequest)).isFalse();
-
-        verify(callbackResponseTransformer).setCreateTask(
-                eq(callbackRequest),
-                functionArgumentCaptor.capture());
-
-        assertThat(functionArgumentCaptor.getValue()
-                .apply(callbackRequest)).isEqualTo(Constants.NO);
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -141,10 +128,6 @@ class WaTaskContollerUnitTest {
                 eq(callbackRequest),
                  any()))
                 .thenReturn(Optional.of("encodedClientContext"));
-        when(callbackResponseTransformer.setCreateTask(
-                eq(callbackRequest),
-                any()
-        )).thenReturn(callbackResponse);
 
         ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContext(
                 callbackRequest,
@@ -153,7 +136,7 @@ class WaTaskContollerUnitTest {
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isSameAs(callbackResponse);
+
 
         assertThat(response.getHeaders())
                 .containsEntry(CLIENT_CONTEXT_HEADER_PARAMETER, Collections.singletonList("encodedClientContext"));
@@ -165,13 +148,6 @@ class WaTaskContollerUnitTest {
 
         assertThat(predicateArgumentCaptor.getValue()
                .test(callbackRequest)).isTrue();
-
-        verify(callbackResponseTransformer).setCreateTask(
-                eq(callbackRequest),
-                functionArgumentCaptor.capture());
-
-        assertThat(functionArgumentCaptor.getValue()
-                .apply(callbackRequest)).isEqualTo(Constants.YES);
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
@@ -205,10 +181,6 @@ class WaTaskContollerUnitTest {
                 any()
         )).thenReturn(Optional.empty());
 
-        when(callbackResponseTransformer.setCreateTask(
-                eq(callbackRequest),
-                any()
-        )).thenReturn(callbackResponse);
 
         ResponseEntity<CallbackResponse> response =
                 waTaskContoller.updateClientContext(
@@ -219,15 +191,9 @@ class WaTaskContollerUnitTest {
                 );
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isSameAs(callbackResponse);
 
         verify(taskUtils).setTaskCompletion(
                 any(),
-                eq(callbackRequest),
-                any()
-        );
-
-        verify(callbackResponseTransformer).setCreateTask(
                 eq(callbackRequest),
                 any()
         );

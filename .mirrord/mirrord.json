@@ -9,7 +9,7 @@
   },
   "target": {
     "path": {
-      "pod": "probate-back-office-pr-4079-java-7ddc9fc8bb-qp87g"
+      "pod": "probate-back-office-pr-4079-java-7b55cccb7f-kvlps"
     },
     "namespace": "probate"
   },
