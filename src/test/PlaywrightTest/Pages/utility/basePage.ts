@@ -99,15 +99,9 @@ export class BasePage {
 
   async verifyPageLoad(
     pageLocator: Locator,
-    timeout: number = 5_000,
+    timeout: number = 10_000,
   ): Promise<void> {
-    await expect(async () => {
-      if (!(await pageLocator.isVisible())) {
-        await this.page.reload();
-        await this.page.waitForLoadState("load");
-      }
-      await expect(pageLocator).toBeVisible({ timeout: timeout });
-    }).toPass({ intervals: [1_000], timeout: 60_000 });
+    await expect(pageLocator).toBeVisible({ timeout });
   }
 
   async seeCaseDetails(

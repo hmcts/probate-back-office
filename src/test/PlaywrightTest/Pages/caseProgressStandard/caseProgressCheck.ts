@@ -110,7 +110,13 @@ export class CaseProgressPage extends SignInPage {
 
   async caseProgressSelectPenultimateNextStepAndGo() {
     await this.caseProgressSelectPenultimateNextStep();
-    await this.waitForNavigationToComplete('button[type="submit"].button', 10_000);
+
+    await this.page.getByRole("button", { name: "Go", exact: true }).click();
+
+    // Proves that the event form has actually loaded.
+    await expect(
+      this.page.locator(commonConfig.continueButton),
+    ).toBeEnabled({ timeout: 10_000 });
   }
 
   async caseProgressSelectPenultimateNextStep(): Promise<void> {
