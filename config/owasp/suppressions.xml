@@ -55,8 +55,11 @@
         <cve>CVE-2026-44891</cve>
         <cve>CVE-2026-55831</cve>
     </suppress>
-    <suppress>
-        <cve>CVE-2026-64607</cve>
+    <suppress until = "2026-10-24">
+    <notes><![CDATA[
+   file name: tomcat-embed-core-10.1.57.jar
+   file name: tomcat-embed-websocket-10.1.57.jar
+   ]]></notes>
         <cve>CVE-2026-66299</cve>
     </suppress>
 </suppressions>
