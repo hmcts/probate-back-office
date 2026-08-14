@@ -24,7 +24,7 @@ export class WorkAllocation {
     //use url to determine which environemnt being used and select right path for chart
     const chartConfigPath = path.resolve(
       __dirname,
-      envUrl.includes("pr") ? previewValuesPath : aatValuesPath,
+      envUrl.includes("preview") ? previewValuesPath : aatValuesPath,
     );
 
     try {
@@ -36,12 +36,14 @@ export class WorkAllocation {
 
       //grab java envs from chart as this is where PROBATE_WA_ENABLED lives
       const config = yaml.parse(chartConfigContents) as {
-        java?: { environment?: { PROBATE_WA_ENABLED?: boolean } };
+        java?: { environment?: { PROBATE_WA_ENABLED?: boolean | string} };
       };
 
       //return the value for PROBATE_WA_ENABLED or return false, if somethings fails also return false
       //BEST GUESS FOR LOCATION OF PROBATE_WA_ENABLED FOR NOW
-      return config?.java?.environment?.PROBATE_WA_ENABLED ?? false;
+      const waEnabled =
+        config?.java?.environment?.PROBATE_WA_ENABLED;
+      return waEnabled === true || waEnabled === "true";
     } catch (error) {
       console.error(
         `Failed to read or parse chart config at ${chartConfigPath}:`,
