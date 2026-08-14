@@ -2615,7 +2615,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "feeForUkCopies", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedMarriedAfterWillOrCodicilDate", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedMarriedAfterWillOrCodicilDateYN", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedDivorcedInEnglandOrWalesLabel", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "feeForNonUkCopies", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsBeforeSubmitPage", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsCYANeedToUpdate", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
