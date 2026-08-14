@@ -117,6 +117,54 @@
           <text>"Examine - Windrush Scheme"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0ynvyec">
+        <description>EWOCTBN</description>
+        <inputEntry id="UnaryTests_0pqe5ub">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06zlqkp">
+          <text>"ExamineWillOrCodicilToBeNotated"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0f5knzm">
+          <text>"Examine - Will or Codicil to be Notated"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1cjrc2t">
+        <description>EWI</description>
+        <inputEntry id="UnaryTests_1hbtyvp">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ko9ouz">
+          <text>"ExamineWitnessInterview"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02zetst">
+          <text>"Examine - Witness Interview"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1dxkhp9">
+        <description>EHS</description>
+        <inputEntry id="UnaryTests_1u37q58">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0aoded4">
+          <text>"ExamineHorizonScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xb98a3">
+          <text>"Examine - Horizon Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1mgn1xz">
+        <description>EDCACB</description>
+        <inputEntry id="UnaryTests_0973nn0">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p8qoft">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mju5sw">
+          <text>"Examine Digital Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_1j3ezvk">
         <description>EDCIRI</description>
         <inputEntry id="UnaryTests_1l5eanv">
