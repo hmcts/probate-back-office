@@ -1026,6 +1026,7 @@ class CallbackResponseTransformerTest {
         when(taskListUpdateService.generateTaskList(any(CaseDetails.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class)))
             .thenAnswer(invocation -> invocation.getArgument(1));
+        when(callbackRequestMock.getEventId()).thenReturn("eventId");
         ReflectionTestUtils.setField(underTest, "makeDormantAddTimeMinutes", 5);
     }
 
