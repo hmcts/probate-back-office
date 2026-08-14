@@ -1,0 +1,36 @@
+2026-08-13 14:30:39.259+01:00 INFO  c.m.a.a.i.c.ConfigurationBuilder - Some telemetry may be sampled out because a default sampling configuration was added in version 3.4.0 to reduce the default billing cost. You can set the sampling configuration explicitly: https://learn.microsoft.com/azure/azure-monitor/app/java-standalone-config#sampling
+2026-08-13 14:30:40.565+01:00 ERROR c.m.applicationinsights.agent - 
+*************************
+Application Insights Java Agent 3.7.9 startup failed (PID 48517)
+*************************
+
+Description:
+No connection string provided
+
+Action:
+Please provide connection string: https://go.microsoft.com/fwlink/?linkid=2153358
+
+2026-08-13 17:40:14.631+01:00 INFO  c.m.a.a.i.c.ConfigurationBuilder - Some telemetry may be sampled out because a default sampling configuration was added in version 3.4.0 to reduce the default billing cost. You can set the sampling configuration explicitly: https://learn.microsoft.com/azure/azure-monitor/app/java-standalone-config#sampling
+2026-08-13 17:40:15.520+01:00 ERROR c.m.applicationinsights.agent - 
+*************************
+Application Insights Java Agent 3.7.9 startup failed (PID 85737)
+*************************
+
+Description:
+No connection string provided
+
+Action:
+Please provide connection string: https://go.microsoft.com/fwlink/?linkid=2153358
+
+2026-08-14 11:33:44.109+01:00 INFO  c.m.a.a.i.c.ConfigurationBuilder - Some telemetry may be sampled out because a default sampling configuration was added in version 3.4.0 to reduce the default billing cost. You can set the sampling configuration explicitly: https://learn.microsoft.com/azure/azure-monitor/app/java-standalone-config#sampling
+2026-08-14 11:33:44.768+01:00 ERROR c.m.applicationinsights.agent - 
+*************************
+Application Insights Java Agent 3.7.9 startup failed (PID 21017)
+*************************
+
+Description:
+No connection string provided
+
+Action:
+Please provide connection string: https://go.microsoft.com/fwlink/?linkid=2153358
+
