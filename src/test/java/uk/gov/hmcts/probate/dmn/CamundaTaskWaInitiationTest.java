@@ -217,7 +217,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "boAmendCaseDetailsForAwaitingDocumentation",
                         "CasePrinted",
-                        additionalData(false, "gop", false, Collections.emptyList(),""),
+                        additionalData(false, "gop", false, Collections.emptyList(),"Yes"),
                         List.of(examineDigitalCaseProbateTaskAttributes)
                 ),
                 Arguments.of(
@@ -435,12 +435,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "CasePrinted",
                         additionalData(false, "other", false, handOffReasonListOtherReason,""),
                         Collections.emptyList()
-                ),
-                Arguments.of(
-                        "boAmendCaseDetailsPostGrantRegistrarEscalation",
-                        "CasePrinted",
-                        additionalData(false, "gop", false, Collections.emptyList(),"Yes"),
-                        List.of(examineDigitalCaseProbateTaskAttributes)
                 )
         );
     }

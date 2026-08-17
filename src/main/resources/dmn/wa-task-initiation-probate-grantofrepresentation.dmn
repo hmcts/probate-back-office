@@ -70,7 +70,7 @@ else false</text>
       <output id="OutputClause_10rno4c" label="Process Categories Identifiers" name="processCategories" typeRef="string" biodi:width="300" />
       <rule id="DecisionRule_0in26ix">
         <inputEntry id="UnaryTests_1mtpy0d">
-          <text>"handleEvidence", "boAmendCaseDetailsForAwaitingDocumentation","applyforGrantPaperApplicationMan","attachScannedDocs","boResolveStop","changeState","resolveCWEscalation","createCaseFromBulkScan"</text>
+          <text>"handleEvidence","applyforGrantPaperApplicationMan","attachScannedDocs","boResolveStop","changeState","resolveCWEscalation","createCaseFromBulkScan"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0pzaled">
           <text>"CasePrinted"</text>
@@ -526,7 +526,7 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1bb9sqp">
         <inputEntry id="UnaryTests_08ngk0x">
-          <text>"boAmendCaseDetailsPostGrantRegistrarEscalation"</text>
+          <text>"boAmendCaseDetailsForAwaitingDocumentation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0t67c1s">
           <text>"CasePrinted"</text>
