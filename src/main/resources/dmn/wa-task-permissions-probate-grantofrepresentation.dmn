@@ -112,7 +112,7 @@
       </rule>
       <rule id="DecisionRule_0yjqbgt">
         <inputEntry id="UnaryTests_101rbvy">
-          <text>"ExamineDigitalCaseIntestacy"</text>
+          <text>"ExamineDigitalCaseIntestacy","ExamineDigitalCaseIntestacyReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_17cym5x">
           <text></text>
@@ -141,7 +141,7 @@
       </rule>
       <rule id="DecisionRule_0kjv62y">
         <inputEntry id="UnaryTests_1lpclj4">
-          <text>"ExamineDigitalCaseIntestacy"</text>
+          <text>"ExamineDigitalCaseIntestacy","ExamineDigitalCaseIntestacyReadyToIssue"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0t2kjk9">
           <text></text>
@@ -600,6 +600,64 @@
           <text>1</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0tw8e64">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0g00iti">
+        <inputEntry id="UnaryTests_0ifs85b">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_081a1yq">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ikhrsx">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_112yii7">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0njl73f">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08oii2h">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1my3691">
+          <text>"SKILL:ABA6:AdColligendaBonaExamining"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0i4bdiv">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xjqw7m">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1q3dgtl">
+        <inputEntry id="UnaryTests_0kooyv7">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b27lru">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0llq894">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1x4ifbc">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04qz9kh">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1e59sre">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0hwtrjx">
+          <text>"SKILL:ABA6:AdColligendaBonaExamining"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zf3qbs">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07nooar">
           <text>false</text>
         </outputEntry>
       </rule>
