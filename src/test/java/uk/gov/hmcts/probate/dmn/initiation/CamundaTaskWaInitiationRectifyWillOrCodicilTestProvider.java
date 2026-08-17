@@ -25,7 +25,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTI
 
 public class CamundaTaskWaInitiationRectifyWillOrCodicilTestProvider implements ArgumentsProvider {
 
-    private static final String rectifyWillOrCodicilHandOffReason = "Application to rectify a will or codicil";
+    private static final String rectifyWillOrCodicilHandOffReason = "RectifyWillCodicil";
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {

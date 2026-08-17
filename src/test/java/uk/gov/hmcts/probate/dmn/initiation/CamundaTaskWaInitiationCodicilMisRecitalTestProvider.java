@@ -23,7 +23,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODIC
 
 public class CamundaTaskWaInitiationCodicilMisRecitalTestProvider implements ArgumentsProvider {
 
-    private static final String codicilMisRecitalHandOffReason = "Codicil mis-recital";
+    private static final String codicilMisRecitalHandOffReason = "CodicilMis";
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
