@@ -55,6 +55,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DIGITAL_CASE_ADMON = "ExamineDigitalCaseAdmonWill";
     public static final String EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE = "ExamineDigitalCaseAdmonWillReadyToIssue";
     public static final String EXAMINE_DIGITAL_CASE_INTESTACY = "ExamineDigitalCaseIntestacy";
+    public static final String EXAMINE_DIGITAL_CASE_ADCOLLIGENDABONA = "ExamineDigitalCaseAdColligendaBona";
     public static final String EXAMINE_DE_BONIS_NON = "ExamineDeBonisNon";
     public static final String EXAMINE_FIAT_WILL = "ExamineFiatWill";
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY

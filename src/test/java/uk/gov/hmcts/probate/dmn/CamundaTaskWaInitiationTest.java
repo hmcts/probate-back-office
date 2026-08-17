@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static uk.gov.hmcts.probate.DmnDecisionTable.WA_TASK_INITIATION_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADCOLLIGENDABONA;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_ADMON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BONIS_NON;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY;
@@ -699,6 +700,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "BOReadyToIssue",
                         additionalData(false, "admonWill", false, Collections.emptyList(),""),
                         List.of(examineDigitalCaseAdmonReadyToIssueTaskAttributes)
+                ),
+                Arguments.of(
+                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        "CasePrinted",
+                        additionalData(false, "admonWill", false, Collections.emptyList(),"Yes"),
+                        List.of(examineDigitalCaseAdmonTaskAttributes)
                 )
         );
     }
@@ -982,6 +989,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         "CasePrinted",
                         additionalData(false, "intestacy", false, handOffReasonListOtherReason,""),
                         Collections.emptyList()
+                ),
+                Arguments.of(
+                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        "CasePrinted",
+                        additionalData(false, "intestacy", false, Collections.emptyList(),"Yes"),
+                        List.of(examineDigitalCaseIntestacyTaskAttributes)
                 )
         );
     }
@@ -1502,97 +1515,97 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWillOrCodicilToBeNotated,""),
+                        additionalData(false, "", true, handOffReasonListWillOrCodicilToBeNotated, ""),
                         List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
                 ),
                 Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWillOrCodicilToBeNotated,""),
+                        additionalData(false, "", false, handOffReasonListWillOrCodicilToBeNotated, ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason,""),
+                        additionalData(false, "", true, handOffReasonListOtherReason, ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, Collections.emptyList(),""),
+                        additionalData(false, "", true, Collections.emptyList(), ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "changeState",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWillOrCodicilToBeNotated,""),
+                        additionalData(false, "", true, handOffReasonListWillOrCodicilToBeNotated, ""),
                         List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
                 ),
                 Arguments.of(
                         "changeState",
                         "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWillOrCodicilToBeNotated,""),
+                        additionalData(false, "", false, handOffReasonListWillOrCodicilToBeNotated, ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "changeState",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason,""),
+                        additionalData(false, "", true, handOffReasonListOtherReason, ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "changeState",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, Collections.emptyList(),""),
+                        additionalData(false, "", true, Collections.emptyList(), ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWillOrCodicilToBeNotated,""),
+                        additionalData(false, "", true, handOffReasonListWillOrCodicilToBeNotated, ""),
                         List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWillOrCodicilToBeNotated,""),
+                        additionalData(false, "", false, handOffReasonListWillOrCodicilToBeNotated, ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason,""),
+                        additionalData(false, "", true, handOffReasonListOtherReason, ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, Collections.emptyList(),""),
+                        additionalData(false, "", true, Collections.emptyList(), ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWillOrCodicilToBeNotated,""),
+                        additionalData(false, "", true, handOffReasonListWillOrCodicilToBeNotated, ""),
                         List.of(examineWillOrCodicilToBeNotatedTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",
                         "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWillOrCodicilToBeNotated,""),
+                        additionalData(false, "", false, handOffReasonListWillOrCodicilToBeNotated, ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason,""),
+                        additionalData(false, "", true, handOffReasonListOtherReason, ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, Collections.emptyList(),""),
+                        additionalData(false, "", true, Collections.emptyList(), ""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -1850,19 +1863,38 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
+    static Stream<Arguments> adColligendaBonaScenarios() {
+
+        Map<String, Object> examineDigitalCaseAdColligendaBonaTaskAttributes = Map.of(
+                "taskId", EXAMINE_DIGITAL_CASE_ADCOLLIGENDABONA,
+                "name", "Examine Digital Case - Ad Colligenda Bona",
+                "processCategories", "case progression"
+        );
+
+
+        return Stream.of(
+                Arguments.of(
+                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        "CasePrinted",
+                        additionalData(false, "adColligendaBona", false, Collections.emptyList(),"Yes"),
+                        List.of(examineDigitalCaseAdColligendaBonaTaskAttributes)
+                )
+        );
+    }
+
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(8));
         assertThat(logic.getOutputs().size(), is(4));
-        assertThat(logic.getRules().size(), is(13));
+        assertThat(logic.getRules().size(), is(16));
     }
 
     @ParameterizedTest(name = "event id: {0} post event state: {1} evidenceHandled: {2} caseType: {3}")
     @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios",
         "infectedBloodCompensationAuthorityScenarios","windRushScenarios","willOrCodicilToBeNotatedScenarios",
-        "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios"})
+        "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios","adColligendaBonaScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,
