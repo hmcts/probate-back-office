@@ -11,7 +11,7 @@
       <output id="OutputClause_1mldd9e" label="Completion Mode" name="completionMode" typeRef="string" />
       <rule id="DecisionRule_0tn82oz">
         <inputEntry id="UnaryTests_152sy88">
-          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation","boAmendCaseDetailsPostGrantRegistrarEscalation"</text>
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation","boAmendCaseDetailsPostGrantRegistrarEscalation","boAmendCaseDetailsForAwaitingDocumentation"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1buwwcz">
           <text>"ExamineDigitalCaseProbate"</text>
