@@ -55,6 +55,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DIGITAL_CASE_ADMON = "ExamineDigitalCaseAdmonWill";
     public static final String EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE = "ExamineDigitalCaseAdmonWillReadyToIssue";
     public static final String EXAMINE_DIGITAL_CASE_INTESTACY = "ExamineDigitalCaseIntestacy";
+    public static final String EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+            = "ExamineDigitalCaseIntestacyReadyToIssue";
     public static final String EXAMINE_DE_BONIS_NON = "ExamineDeBonisNon";
     public static final String EXAMINE_FIAT_WILL = "ExamineFiatWill";
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
@@ -66,6 +68,7 @@ public class TaskAttributeConstants {
         = "ExamineWitnessInterview";
     public static final String EXAMINE_HORIZON_SCHEME
         = "ExamineHorizonScheme";
+    public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA = "ExamineDigitalCaseAdColligendaBona";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -137,6 +140,7 @@ public class TaskAttributeConstants {
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
     public static final String DE_BONIS_NON_SKILL_CODE = "SKILL:ABA6:DeBonisNon";
     public static final String FIAT_WILL_SKILL_CODE = "SKILL:ABA6:FiatWill";
+    public static final String INTESTACY_EXAMINE_SKILL_CODE = "SKILL:ABA6:IntestacyExamining";
     public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE
         = "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String WINDRUSH_SCHEME_SKILL_CODE = "SKILL:ABA6:WindrushScheme";
@@ -146,4 +150,7 @@ public class TaskAttributeConstants {
         = "SKILL:ABA6:WitnessInterview";
     public static final String HORIZON_SCHEME_SKILL_CODE
         = "SKILL:ABA6:HorizonScheme";
+    public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
+
+
 }
