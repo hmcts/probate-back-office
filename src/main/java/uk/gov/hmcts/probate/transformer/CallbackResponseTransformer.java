@@ -159,6 +159,7 @@ public class CallbackResponseTransformer {
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
     private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
+    private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
 
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
@@ -890,7 +891,8 @@ public class CallbackResponseTransformer {
 
     private void setTaskCreation(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         responseCaseData.setCreateTask("");
-        if (callbackRequest.getEventId() != null && callbackRequest.getEventId().equals("boAmendCaseDetailsForAwaitingDocumentation")) {
+        if (callbackRequest.getEventId() != null
+                && EVENT_CREATE_TASK_SET.contains(callbackRequest.getEventId())) {
             responseCaseData.setCreateTask(callbackRequest.getCaseDetails().getData().getCaseType()
                     .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType())
                     ? Constants.NO : Constants.YES);
