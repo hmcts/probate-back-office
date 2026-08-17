@@ -890,7 +890,7 @@ public class CallbackResponseTransformer {
 
     private void setTaskCreation(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
         responseCaseData.setCreateTask("");
-        if (callbackRequest.getEventId().equals("boAmendCaseDetailsForAwaitingDocumentation")) {
+        if (callbackRequest.getEventId() != null && callbackRequest.getEventId().equals("boAmendCaseDetailsForAwaitingDocumentation")) {
             responseCaseData.setCreateTask(callbackRequest.getCaseDetails().getData().getCaseType()
                     .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType())
                     ? Constants.NO : Constants.YES);
