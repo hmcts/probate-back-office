@@ -211,8 +211,9 @@ test.describe.serial("Solicitor - Apply Grant of probate Excepted Estates and Re
     await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, refundRef);
     await cwEventActionsPage.verifyAndInitiateProcessRefund(refundConfig.refundStatus4, refundRef, refundReviewConfig.rows, false, true);
 
+    authToken = await getAccessToken(idamUrl, testConfig.TestEnvCwUser, testConfig.TestEnvCwPassword);
     serviceAuthToken = await getServiceAuthToken(s2sUrl, 'ccpay_bubble');
-    await callback.refundsApprovalLiberata(env, remissionRefundRef, serviceAuthToken);
+    await callback.refundsApprovalLiberata(env, remissionRefundRef, authToken, serviceAuthToken);
     await solCreateCasePage.reviewPaymentDetailsForRefund(caseRef, true, remissionRefundRef);
     await cwEventActionsPage.verifyAndInitiateProcessRefund(refundConfig.refundStatus5, remissionRefundRef, refundReviewConfig.rows, true, true);
     await signInPage.signOut();
