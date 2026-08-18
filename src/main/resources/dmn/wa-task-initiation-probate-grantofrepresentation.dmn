@@ -552,13 +552,13 @@ else false</text>
       </rule>
       <rule id="DecisionRule_1daooso">
         <inputEntry id="UnaryTests_1vrhrv1">
-          <text>"moveToCWEscalation","boResolveStop"</text>
+          <text>"moveToCWEscalation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1y3p5qv">
           <text>"BOCaseWorkerEscalation"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0ovkcc9">
-          <text>true</text>
+          <text></text>
         </inputEntry>
         <inputEntry id="UnaryTests_1wxihwl">
           <text>-</text>

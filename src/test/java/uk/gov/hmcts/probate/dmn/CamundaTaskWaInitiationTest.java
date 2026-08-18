@@ -2062,6 +2062,12 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "someOtherEventId",
                         "BOCaseWorkerEscalation",
+                        additionalData(false, "",true, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "someOtherEventId",
+                        "BOCaseWorkerEscalation",
                         additionalData(true, "",true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
@@ -2073,43 +2079,19 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 ),
                 Arguments.of(
                         "moveToCWEscalation",
-                        "SomeOtherState",
-                        additionalData(true, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "moveToCWEscalation",
                         "BOCaseWorkerEscalation",
                         additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "moveToCWEscalation",
-                        "BOCaseWorkerEscalation",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "BOCaseWorkerEscalation",
-                        additionalData(true, "",true, handOffReasonListOtherReason),
                         List.of(reviewSMEReferralTaskAttributes)
                 ),
                 Arguments.of(
-                        "boResolveStop",
+                        "moveToCWEscalation",
                         "SomeOtherState",
                         additionalData(true, "",true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 ),
                 Arguments.of(
-                        "boResolveStop",
-                        "BOCaseWorkerEscalation",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "BOCaseWorkerEscalation",
+                        "moveToCWEscalation",
+                        "SomeOtherState",
                         additionalData(false, "",true, handOffReasonListOtherReason),
                         Collections.emptyList()
                 )
