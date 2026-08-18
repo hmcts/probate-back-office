@@ -408,9 +408,15 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantParentAdoptedIn", "Label": "Did the deceased legally adopt the applicant’s parent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantParentAdoptionInEnglandOrWales", "Label": "Did the adoption take place in England or Wales?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantParentAdoptedOut", "Label": "Did the deceased legally adopt the applicant’s parent out of the family?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAdoptedIn", "Label": "Was the deceased adopted in to the family?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAdoptionInEnglandOrWales", "Label": "Did the adoption take place in England or Wales?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAdoptedOut", "Label": "Was the deceased adopted out of the family?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantAdoptedDeceasedIn", "Label": "Did the applicant adopt the deceased in to their family?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantAdoptionDeceasedInEnglandOrWales", "Label": "Did the adoption take place in England or Wales?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantAdoptedDeceasedOut", "Label": "Did the applicant adopt the deceased out of their family?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedSpouseNotApplyingReason", "Label": "Why isn't the deceased's spouse applying?", "FieldType": "FixedList", "FieldTypeParameter": "spouseNotApplyingReasonFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedOtherChildren", "Label": "Did the deceased have any other children?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "allDeceasedChildrenOverEighteen", "Label": "Are all of the deceased's children over eighteen?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
