@@ -51,6 +51,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WINDRUSH_SCHE
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WITNESS_INTERVIEW_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE;
+
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
@@ -148,6 +151,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                    EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
                 )
         );
     }
@@ -174,7 +182,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(22));
+        assertThat(logic.getRules().size(), is(24));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
