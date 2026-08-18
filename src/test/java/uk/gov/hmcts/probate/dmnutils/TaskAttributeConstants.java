@@ -100,7 +100,7 @@ public class TaskAttributeConstants {
     public static final String DUE_DATE_TIME_VALUE = "16:00";
     public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_DEFAULT_VALUE =
             "[Amend Case Details](/cases/case-details/"
-            + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
+            + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForAwaitingDocumentation)  "
             + "[Issue Grant](/cases/case-details/"
             + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
             + "[Escalate to Registrar](/cases/case-details/"
@@ -113,7 +113,7 @@ public class TaskAttributeConstants {
             + "${[CASE_REFERENCE]}/trigger/boStopCaseForCasePrinted)";
     public static final String DESCRIPTION_EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE_VALUE =
             "[Amend Case Details](/cases/case-details/"
-                    + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetails)  "
+                    + "${[CASE_REFERENCE]}/trigger/boAmendCaseDetailsForAwaitingDocumentation)  "
                     + "[Issue Grant](/cases/case-details/"
                     + "${[CASE_REFERENCE]}/trigger/boIssueGrantForCaseMatching)  "
                     + "[Escalate to Registrar](/cases/case-details/"
