@@ -661,6 +661,64 @@
           <text>false</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0rht4pa">
+        <inputEntry id="UnaryTests_0vvsvh6">
+          <text>"ExamineDigitalCaseAdColligendaBonaReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0e1s0ue">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_17s4zsw">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07ns81t">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_127yn4w">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_12zppbv">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0wlkxtq">
+          <text>"SKILL:ABA6:AdColligendaBonaExamining"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ryfcez">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_034jswc">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_097lf4c">
+        <inputEntry id="UnaryTests_14ycq9y">
+          <text>"ExamineDigitalCaseAdColligendaBonaReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mkv5rd">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1n57ap1">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1oj0u74">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16muj91">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01mepia">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_05ijglz">
+          <text>"SKILL:ABA6:AdColligendaBonaExamining"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_164tnp8">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wxcjqi">
+          <text>false</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

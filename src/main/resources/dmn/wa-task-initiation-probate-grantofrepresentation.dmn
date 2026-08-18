@@ -550,6 +550,41 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0nc7hia">
+        <inputEntry id="UnaryTests_054i6zs">
+          <text>"changeState","resolveCWEscalation","boResolveStop","handleEvidence"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1et0f1l">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fyn0ej">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ozmtlk">
+          <text>"adColligendaBona"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ixomsg">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ze5vcn">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1czvq55">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1m9r1te">
+          <text>"ExamineDigitalCaseAdColligendaBonaReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ufuew8">
+          <text>"Examine Digital Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13vz3r7">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0u9jzwt">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
