@@ -25,9 +25,6 @@ public class TaskUtils {
         String clientContext,
         CallbackRequest callbackRequest,
         Predicate<CallbackRequest> completeTask) {
-        getWaMapper(clientContext)
-                .ifPresent(waMapper -> log.info("clientContext is present and userTask is {}",
-                        waMapper.getClientContext().getUserTask()));
 
         return getWaMapper(clientContext)
                 .map(WaMapper::getClientContext)
@@ -62,7 +59,7 @@ public class TaskUtils {
                 String clientContextToEncode = objectMapper.writeValueAsString(waMapper);
                 return Optional.of(Base64.getEncoder().encodeToString(clientContextToEncode.getBytes()));
             } catch (JsonProcessingException e) {
-                log.error("Exception while clientContext the Client-Context {}", e.getMessage());
+                log.error("Exception while encoding the Client-Context {}", e.getMessage());
                 throw new RuntimeException(e);
             }
         }
