@@ -25,6 +25,9 @@ public class TaskUtils {
         String clientContext,
         CallbackRequest callbackRequest,
         Predicate<CallbackRequest> completeTask) {
+        getWaMapper(clientContext)
+                .ifPresent(waMapper -> log.info("clientContext is present and userTask is {}",
+                        waMapper.getClientContext().getUserTask()));
 
         return getWaMapper(clientContext)
                 .map(WaMapper::getClientContext)
