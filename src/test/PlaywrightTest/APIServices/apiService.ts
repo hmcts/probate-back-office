@@ -23,7 +23,7 @@ export class apiService {
     const paymentApiUrl = `http://ccpay-refunds-api-${env}.service.core-compute-${env}.internal/refund/${refundRef}`;
     const updatePaymentDateResponse = await this.request.patch(paymentApiUrl, {
       headers: {
-        'Authorization': `${authToken}`,
+        'Authorization': `Bearer ${authToken}`,
         'ServiceAuthorization': `${serviceAuthToken}`,
         'Content-Type': 'application/json'
       },
