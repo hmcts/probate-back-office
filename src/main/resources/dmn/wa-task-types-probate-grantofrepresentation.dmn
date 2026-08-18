@@ -177,6 +177,18 @@
           <text>"Examine Digital Case - Intestacy"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1t3otn1">
+        <description>RSMER</description>
+        <inputEntry id="UnaryTests_162tcfo">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1qha2nz">
+          <text>"ReviewSMEReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0e905fp">
+          <text>"Review SME Referral"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

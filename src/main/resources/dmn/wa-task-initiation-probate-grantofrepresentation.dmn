@@ -550,6 +550,41 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1daooso">
+        <inputEntry id="UnaryTests_1vrhrv1">
+          <text>"moveToCWEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1y3p5qv">
+          <text>"BOCaseWorkerEscalation"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ovkcc9">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wxihwl">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1k0i9ji">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09ublzg">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09d2azt">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1l7w8c3">
+          <text>"ReviewSMEReferral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1124qge">
+          <text>"Review SME Referral"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18iu86i">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0shv3z4">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
