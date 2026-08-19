@@ -1092,6 +1092,30 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                         Collections.emptyList()
                 ),
                 Arguments.of(
+                        "serviceRequestPaymentSuccess",
+                        "CasePrinted",
+                        additionalData(false, "intestacy", false, Collections.emptyList()),
+                        List.of(examineDigitalCaseIntestacyTaskAttributes)
+                ),
+                Arguments.of(
+                        "serviceRequestPaymentSuccess",
+                        "CasePrinted",
+                        additionalData(true, "intestacy", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "serviceRequestPaymentSuccess",
+                        "CasePrinted",
+                        additionalData(false, "other", false, Collections.emptyList()),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
+                        "serviceRequestPaymentSuccess",
+                        "CasePrinted",
+                        additionalData(false, "intestacy", false, handOffReasonListOtherReason),
+                        Collections.emptyList()
+                ),
+                Arguments.of(
                         "paymentSuccessApp",
                         "CasePrinted",
                         additionalData(false, "intestacy", false, Collections.emptyList()),
