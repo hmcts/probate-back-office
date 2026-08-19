@@ -77,25 +77,24 @@ export class BasePage {
 
   async waitForNavigationToComplete(
     buttonLocator: Locator | string,
-    timeout: number = 5_000,
+    timeout: number = 30_000,
   ): Promise<void> {
-    const currentUrl = await this.page.url();
-    const locator =
+    const currentUrl = this.page.url();
+    const button =
       typeof buttonLocator === "string"
         ? this.page.locator(buttonLocator) // String - convert to Locator
         : buttonLocator;
-    await expect(locator).toBeVisible();
-    await expect(locator).toBeEnabled();
+    await expect(button).toBeVisible({ timeout });
+    await expect(button).toBeEnabled({ timeout });
 
-    await expect(async () => {
-      if (this.page.url() === currentUrl) {
-        await expect(locator).toBeVisible();
-        await expect(locator).toBeEnabled();
-        await locator.click({ timeout: timeout });
-      }
-      await expect(this.page).not.toHaveURL(currentUrl);
-      // console.log("The current url is: " + currentUrl + " and the new url is: " + this.page.url());
-    }).toPass({ intervals: [2_000], timeout: 60_000 });
+    // Register the URL wait before clicking. The click happens exactly once.
+    await Promise.all([
+      this.page.waitForURL(
+        url => url.href !== currentUrl,
+        { timeout, waitUntil: "commit" },
+      ),
+      button.click({ timeout }),
+    ]);
   }
 
   async verifyPageLoad(

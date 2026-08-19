@@ -55,11 +55,18 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DIGITAL_CASE_ADMON = "ExamineDigitalCaseAdmonWill";
     public static final String EXAMINE_DIGITAL_CASE_ADMON_READY_TO_ISSUE = "ExamineDigitalCaseAdmonWillReadyToIssue";
     public static final String EXAMINE_DIGITAL_CASE_INTESTACY = "ExamineDigitalCaseIntestacy";
-    public static final String EXAMINE_DIGITAL_CASE_ADCOLLIGENDABONA = "ExamineDigitalCaseAdColligendaBona";
+    public static final String EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+            = "ExamineDigitalCaseIntestacyReadyToIssue";
     public static final String EXAMINE_DE_BONIS_NON = "ExamineDeBonisNon";
     public static final String EXAMINE_FIAT_WILL = "ExamineFiatWill";
+    public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE
+            = "ExamineDigitalCaseAdColligendaBonaReadyToIssue";
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
         = "ExamineInfectedBloodCompensationAuthority";
+    public static final String EXAMINE_DOUBLE_PROBATE = "ExamineDoubleProbate";
+    public static final String EXAMINE_INCAPACITY_UNDER_RULE_35 = "ExamineIncapacityUnderRule35";
+    public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS = "ExamineLeadingOrFollowingGrants";
+
     public static final String EXAMINE_WINDRUSH_SCHEME = "ExamineWindrushScheme";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
         = "ExamineWillOrCodicilToBeNotated";
@@ -67,6 +74,7 @@ public class TaskAttributeConstants {
         = "ExamineWitnessInterview";
     public static final String EXAMINE_HORIZON_SCHEME
         = "ExamineHorizonScheme";
+    public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA = "ExamineDigitalCaseAdColligendaBona";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -136,9 +144,9 @@ public class TaskAttributeConstants {
 
     public static final String PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:ProbateExamining";
     public static final String ADMON_WILL_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdmonExamining";
-    public static final String INTESTACY_EXAMINE_SKILL_CODE = "SKILL:ABA6:IntestacyExamining";
     public static final String DE_BONIS_NON_SKILL_CODE = "SKILL:ABA6:DeBonisNon";
     public static final String FIAT_WILL_SKILL_CODE = "SKILL:ABA6:FiatWill";
+    public static final String INTESTACY_EXAMINE_SKILL_CODE = "SKILL:ABA6:IntestacyExamining";
     public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE
         = "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String WINDRUSH_SCHEME_SKILL_CODE = "SKILL:ABA6:WindrushScheme";
@@ -148,4 +156,34 @@ public class TaskAttributeConstants {
         = "SKILL:ABA6:WitnessInterview";
     public static final String HORIZON_SCHEME_SKILL_CODE
         = "SKILL:ABA6:HorizonScheme";
+    public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
+    public static final String DOUBLE_PROBATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:DoubleProbate";
+    public static final String INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE = "SKILL:ABA6:IncapacityUnder_Rule35";
+    public static final String LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE = "SKILL:ABA6:LeadingFollowingGrants";
+
+    public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
+    public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
+    public static final String INTESTACY_TASK_TYPE_NAME = "Examine Digital Case - Intestacy";
+    public static final String DE_BONIS_NON_TASK_TYPE_NAME = "Examine - De Bonis Non";
+    public static final String FIAT_WILL_TASK_TYPE_NAME = "Examine - Fiat Will";
+    public static final String AD_COLLIGENDA_BONA_TASK_TYPE_NAME = "Examine Digital Case - Ad Colligenda Bona";
+    public static final String INFECTED_BLOOD_COMPENSATION_AUTHORITY_TASK_TYPE_NAME
+            = "Examine - Infected Blood Compensation Authority";
+    public static final String EXAMINE_DOUBLE_PROBATE_TASK_TYPE_NAME = "Examine - Double Probate";
+    public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME = "Examine - Incapacity under rule 35";
+    public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME
+            = "Examine - Leading or following Grants";
+    public static final String EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME
+            = "Examine - Windrush Scheme";
+
+
+    public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
+    public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
+            = "boAmendCaseDetailsForAwaitingDocumentation";
+    public static final String APPLY_FOR_GRANT_PAPER_APPLICATION_MAN_EVENT = "applyforGrantPaperApplicationMan";
+    public static final String ATTACH_SCANNED_DOCS_EVENT = "attachScannedDocs";
+    public static final String BO_RESOLVE_STOP_EVENT = "boResolveStop";
+    public static final String CHANGE_STATE_EVENT = "changeState";
+    public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
+    public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
 }
