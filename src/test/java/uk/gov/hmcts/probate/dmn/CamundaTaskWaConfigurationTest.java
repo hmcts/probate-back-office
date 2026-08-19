@@ -31,6 +31,10 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
@@ -219,6 +223,43 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("taskType", EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
                                         "state", READY_TO_ISSUE_STATE)).build()
+            ),
+            Arguments.of(
+                EXAMINE_SECTION_116,
+                    CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_SECTION_116, "state", READY_TO_ISSUE_STATE)).build()
+            ),
+            Arguments.of(
+                EXAMINE_POWER_OF_ATTORNEY,
+                    CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_POWER_OF_ATTORNEY, "state", READY_TO_ISSUE_STATE)).build()
+            ),
+            Arguments.of(
+                EXAMINE_RESEAL_FOREIGN_GRANT,
+                    CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_RESEAL_FOREIGN_GRANT, "state", READY_TO_ISSUE_STATE)).build()
+            ),
+            Arguments.of(
+                EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
+                    CaseDataBuilder.defaultWaCase()
+                            .isUrgent()
+                            .build(),
+                    "handleEvidence",
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME, "state", READY_TO_ISSUE_STATE))
+                            .build()
                 ),
                 Arguments.of(
                         EXAMINE_CODICIL_MIS_RECITAL,
