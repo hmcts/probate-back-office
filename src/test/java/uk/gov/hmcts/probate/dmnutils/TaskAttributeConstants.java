@@ -177,6 +177,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME = "Examine - Incapacity under rule 35";
     public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME
             = "Examine - Leading or following Grants";
+    public static final String EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME
+            = "Examine - Windrush Scheme";
 
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
