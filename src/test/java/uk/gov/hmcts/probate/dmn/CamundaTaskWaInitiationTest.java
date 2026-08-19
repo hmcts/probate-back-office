@@ -1637,19 +1637,22 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
                         List.of(examineWindrushSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "handleEvidence",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason),""),
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason),""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -1673,19 +1676,22 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "boResolveStop",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
                         List.of(examineWindrushSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         "boResolveStop",
                         "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "boResolveStop",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason),""),
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason),""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -1703,19 +1709,22 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
                         List.of(examineWindrushSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "resolveCWEscalation",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason),""),
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason),""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
@@ -1727,19 +1736,22 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         "changeState",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
                         List.of(examineWindrushSchemeTaskAttributes)
                 ),
                 Arguments.of(
                         "changeState",
                         "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
+                        additionalData(false, "",false,
+                                handOffReasonListWithHandOffReason(windrushSchemeHandOffReason),""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
                         "changeState",
                         "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListWithHandOffReason(invalidHandOffReason),""),
+                        additionalData(false, "",true,
+                                handOffReasonListWithHandOffReason(invalidHandOffReason),""),
                         Collections.emptyList()
                 ),
                 Arguments.of(
