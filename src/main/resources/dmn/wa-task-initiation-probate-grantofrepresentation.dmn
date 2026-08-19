@@ -585,6 +585,41 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0kj7t17">
+        <inputEntry id="UnaryTests_0u3vw39">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ymr4n9">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_127ngkk">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06vebqt">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1l34ns3">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18abp7q">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "LostWill")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1fog2fc">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ersx2r">
+          <text>"ExamineLostWillOrCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_03tdpmc">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1k1qo45">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0njd08r">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

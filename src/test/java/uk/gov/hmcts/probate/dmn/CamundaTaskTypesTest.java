@@ -89,6 +89,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", "Examine - Literary Estate",
                         "taskTypeId", EXAMINE_LITERARY_ESTATE
+                ),
+                Map.of(
+                        "taskTypeName", "Examine - Lost Will or Codicil",
+                        "taskTypeId", EXAMINE_LOST_WILL_OR_CODICIL
                 )
         );
         return Stream.of(
@@ -104,7 +108,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(15));
+        assertThat(logic.getRules().size(), is(16));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")

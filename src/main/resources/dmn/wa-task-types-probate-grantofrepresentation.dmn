@@ -189,6 +189,18 @@
           <text>"Examine - Literary Estate"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1lkcfyv">
+        <description>ELWOC</description>
+        <inputEntry id="UnaryTests_1nv10ag">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_17rr4c1">
+          <text>"ExamineLostWillOrCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1xwtmv4">
+          <text>"Examine - Lost Will or Codicil"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

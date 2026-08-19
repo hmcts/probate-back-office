@@ -70,6 +70,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_HORIZON_SCHEME
         = "ExamineHorizonScheme";
     public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA = "ExamineDigitalCaseAdColligendaBona";
+    public static final String EXAMINE_LOST_WILL_OR_CODICIL = "ExamineLostWillOrCodicil";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
