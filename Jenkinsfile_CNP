@@ -150,7 +150,7 @@ def archiveCoreCaseDataDefinitions(targetEnv, branch_name) {
       shutterOption = "false"
     } else if("prod" == targetEnv){
       //WARNING, CHANGING THIS WILL SHUTTER PROD
-      shutterOption = "true"
+      shutterOption = "false"
     } else {
       shutterOption = "false"
     }
