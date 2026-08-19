@@ -60,6 +60,15 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WINDRUSH_SCHE
 import static uk.gov.hmcts.probate.dmnutils.CamundaVerifier.resultsMatchUsingNameKey;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WITNESS_INTERVIEW_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DOUBLE_PROBATE_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE;
+
 
 class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
 
@@ -157,6 +166,26 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                    EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_DOUBLE_PROBATE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(DOUBLE_PROBATE_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_INCAPACITY_UNDER_RULE_35,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_SECTION_116,

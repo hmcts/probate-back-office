@@ -38,12 +38,18 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTI
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.REFERENCE_VALUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CASE_PRINTED_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.READY_TO_ISSUE_STATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HANDLE_EVIDENCE_EVENT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT;
 
 class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
 
@@ -60,21 +66,21 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
+                        HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "boAmendCaseDetailsForAwaitingDocumentation",
+                        BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_ADMON,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
+                        HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                                 Map.of("state", CASE_PRINTED_STATE)).build()
                 ),
@@ -88,7 +94,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DE_BONIS_NON,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
+                        HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                           Map.of("state", READY_TO_ISSUE_STATE, "taskType", EXAMINE_DE_BONIS_NON)).build()
                 ),
@@ -97,7 +103,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                     CaseDataBuilder.defaultWaCase()
                         .isUrgent()
                         .build(),
-                    "handleEvidence",
+                    HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                             Map.of("taskType", EXAMINE_FIAT_WILL, "state", READY_TO_ISSUE_STATE)).build()
                 ),
@@ -106,7 +112,7 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                     CaseDataBuilder.defaultWaCase()
                         .isUrgent()
                         .build(),
-                    "handleEvidence",
+                    HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                             Map.of("taskType", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
                                     "state", READY_TO_ISSUE_STATE)).build()
@@ -126,14 +132,14 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                     CaseDataBuilder.defaultWaCase()
                             .isUrgent()
                             .build(),
-                    "handleEvidence",
+                    HANDLE_EVIDENCE_EVENT,
                     ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
                             Map.of("state", READY_TO_ISSUE_STATE)).build()
                 ),
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_PROBATE_READY_TO_ISSUE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
+                        HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder
                                 .examineDigitalCaseExpectationsForConditions(
                                         Map.of("state", READY_TO_ISSUE_STATE)).build()
@@ -179,10 +185,42 @@ class CamundaTaskWaConfigurationTest extends DmnDecisionTableBaseUnitTest {
                 Arguments.of(
                         EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE,
                         CaseDataBuilder.defaultWaCase().isUrgent().build(),
-                        "handleEvidence",
+                        HANDLE_EVIDENCE_EVENT,
                         ConfigurationExpectationBuilder
                                 .examineDigitalCaseExpectationsForConditions(
                                         Map.of("state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                    EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
+                    CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                    HANDLE_EVIDENCE_EVENT,
+                    ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                            Map.of("state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_DOUBLE_PROBATE,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_DOUBLE_PROBATE,
+                                        "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_INCAPACITY_UNDER_RULE_35,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_INCAPACITY_UNDER_RULE_35,
+                                        "state", READY_TO_ISSUE_STATE)).build()
+                ),
+                Arguments.of(
+                        EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                        CaseDataBuilder.defaultWaCase().isUrgent().build(),
+                        HANDLE_EVIDENCE_EVENT,
+                        ConfigurationExpectationBuilder.examineDigitalCaseExpectationsForConditions(
+                                Map.of("taskType", EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                                        "state", READY_TO_ISSUE_STATE)).build()
+                )
             ),
             Arguments.of(
                 EXAMINE_SECTION_116,

@@ -48,6 +48,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_OTHER_CASES;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
 
 
 public class ConfigurationExpectationBuilder {
@@ -74,6 +77,9 @@ public class ConfigurationExpectationBuilder {
                 && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
                 || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
                 || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY)
+                || conditions.get("taskType").equals(EXAMINE_DOUBLE_PROBATE)
+                || conditions.get("taskType").equals(EXAMINE_INCAPACITY_UNDER_RULE_35)
+                || conditions.get("taskType").equals(EXAMINE_LEADING_OR_FOLLOWING_GRANTS)
                 || conditions.get("taskType").equals(EXAMINE_WINDRUSH_SCHEME)
                 || conditions.get("taskType").equals(EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED)
                 || conditions.get("taskType").equals(EXAMINE_WITNESS_INTERVIEW)
