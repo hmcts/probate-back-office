@@ -63,10 +63,6 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                     "taskTypeId", EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
                 ),
                 Map.of(
-                        "taskTypeName", "Examine - Literary Estate",
-                        "taskTypeId", EXAMINE_LITERARY_ESTATE
-                ),
-                Map.of(
                     "taskTypeName", "Examine - Windrush Scheme",
                     "taskTypeId", EXAMINE_WINDRUSH_SCHEME
                 ),
@@ -89,6 +85,10 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                     "taskTypeName", "Examine Digital Case - Intestacy",
                     "taskTypeId", EXAMINE_DIGITAL_CASE_INTESTACY_READY_TO_ISSUE
+                ),
+                Map.of(
+                        "taskTypeName", "Examine - Literary Estate",
+                        "taskTypeId", EXAMINE_LITERARY_ESTATE
                 )
         );
         return Stream.of(
