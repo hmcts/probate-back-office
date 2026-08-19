@@ -1011,7 +1011,7 @@
       </rule>
       <rule id="DecisionRule_1s91spy">
         <inputEntry id="UnaryTests_064l0co">
-          <text>"ExamineInfectedBloodInterimScheme"</text>
+          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1jramb0">
           <text></text>
@@ -1040,7 +1040,7 @@
       </rule>
       <rule id="DecisionRule_1hgya8p">
         <inputEntry id="UnaryTests_00drbkk">
-          <text>"ExamineInfectedBloodInterimScheme"</text>
+          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
         </inputEntry>
         <inputEntry id="UnaryTests_055evzw">
           <text></text>

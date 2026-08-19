@@ -255,7 +255,7 @@
           <text></text>
         </inputEntry>
         <outputEntry id="LiteralExpression_05qo65m">
-          <text>"ExamineInfectedBloodInterimScheme"</text>
+          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_16n0d3e">
           <text>"Examine - Infected Blood Interim Scheme"</text>

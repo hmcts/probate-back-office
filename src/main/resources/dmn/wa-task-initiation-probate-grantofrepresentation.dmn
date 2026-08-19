@@ -783,7 +783,7 @@ else false</text>
           <text>true</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ljjwuy">
-          <text>"ExamineInfectedBloodInterimScheme"</text>
+          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_02o1qmj">
           <text>"Examine - Infected Blood Interim Scheme"</text>

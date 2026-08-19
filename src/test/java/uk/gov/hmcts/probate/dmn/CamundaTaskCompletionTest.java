@@ -34,7 +34,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFEC
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
@@ -74,7 +74,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME
+                                        "taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED
                                 )
                         )
                 ),
@@ -99,7 +99,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME
+                                        "taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED
                                 )
                         )
                 ),
@@ -257,7 +257,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME
+                                        "taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED
                                 )
                         )
                 ),
@@ -346,7 +346,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME
+                                        "taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED
                                 )
                         )
                 ),
@@ -435,7 +435,7 @@ class CamundaTaskCompletionTest extends DmnDecisionTableBaseUnitTest {
                                 ),
                                 Map.of(
                                         "completionMode", AUTO_COMPLETE_MODE,
-                                        "taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME
+                                        "taskType", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED
                                 )
                         )
                 ),

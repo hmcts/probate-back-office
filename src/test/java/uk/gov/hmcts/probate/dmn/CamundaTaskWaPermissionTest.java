@@ -62,7 +62,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LEADING_FOLLO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
 
@@ -190,7 +190,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE)
                 ),
                 Arguments.of(
-                        EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
+                        EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE)
                 ),
