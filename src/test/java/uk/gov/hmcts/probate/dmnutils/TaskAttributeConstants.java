@@ -188,17 +188,12 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_SECTION_116_TASK_TYPE_NAME = "Examine - Section 116";
     public static final String EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME = "Examine - Power of Attorney (POA)";
     public static final String EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME = "Examine - Reseal Foreign Grant";
-    public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME =
-            "Examine - Infected Blood Interim Scheme";
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME
             = "Examine - Infected Blood Interim Scheme";
     public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME
             = "Examine - Rectify a Will or Codicil";
     public static final String EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME
             = "Examine - Codicil Mis-Recital";
-    public static final String EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME
-            = "Examine - Windrush Scheme";
-
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
     public static final String BO_AMEND_CASE_DETAILS_FOR_AWAITING_DOCUMENTATION_EVENT
@@ -212,6 +207,4 @@ public class TaskAttributeConstants {
     public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
     public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
     public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
-    public static final String INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE =
-        "SKILL:ABA6:InfectedBloodInterimScheme";
 }
