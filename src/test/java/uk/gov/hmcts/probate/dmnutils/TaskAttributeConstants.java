@@ -177,8 +177,12 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME = "Examine - Incapacity under rule 35";
     public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME
             = "Examine - Leading or following Grants";
-    public static final String EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME
-            = "Examine - Windrush Scheme";
+    public static final String EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME = "Examine - Windrush Scheme";
+    public static final String EXAMINE_SECTION_116_TASK_TYPE_NAME = "Examine - Section 116";
+    public static final String EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME = "Examine - Power of Attorney (POA)";
+    public static final String EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME = "Examine - Reseal Foreign Grant";
+    public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME =
+            "Examine - Infected Blood Interim Scheme";
 
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
