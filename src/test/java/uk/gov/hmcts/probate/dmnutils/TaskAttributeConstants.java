@@ -61,6 +61,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_FIAT_WILL = "ExamineFiatWill";
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
         = "ExamineInfectedBloodCompensationAuthority";
+    public static final String EXAMINE_LITERARY_ESTATE = "ExamineLiteraryEstate";
     public static final String EXAMINE_WINDRUSH_SCHEME = "ExamineWindrushScheme";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
         = "ExamineWillOrCodicilToBeNotated";
