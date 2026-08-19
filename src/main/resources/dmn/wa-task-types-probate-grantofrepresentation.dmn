@@ -189,6 +189,42 @@
           <text>"Examine Digital Case - Ad Colligenda Bona"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0joiqei">
+        <description>EDB</description>
+        <inputEntry id="UnaryTests_0li6ex3">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18bxfqr">
+          <text>"ExamineDoubleProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0r7fpcp">
+          <text>"Examine - Double Probate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1lqewdb">
+        <description>EIUR35</description>
+        <inputEntry id="UnaryTests_0m2v2yf">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1f7anys">
+          <text>"ExamineIncapacityUnderRule35"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tqugxz">
+          <text>"Examine - Incapacity under rule 35"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_08eqx2u">
+        <description>ELOFG</description>
+        <inputEntry id="UnaryTests_012ebcb">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0dep4hw">
+          <text>"ExamineLeadingOrFollowingGrants"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0s92gqd">
+          <text>"Examine - Leading or following Grants"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
