@@ -30,11 +30,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFEC
 
 public class CamundaTaskWaInitiationInfectedBloodInterimSchemeTestProvider implements ArgumentsProvider {
 
-    private static final String infectedBloodInterimSchemeHandOffReason = "IBIS";
-
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
-
 
         Map<String,Object> examineInfectedBloodInterimSchemeTaskAttributes = Map.of(
                 "taskId", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
