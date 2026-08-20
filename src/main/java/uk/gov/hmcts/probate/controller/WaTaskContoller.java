@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 
@@ -33,6 +34,7 @@ public class WaTaskContoller {
     private final TaskUtils taskUtils;
     private final ObjectMapper objectMapper;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final WorkAllocationToggleService workAllocationToggleService;
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
     @PostMapping(path = "/case-type/updateClientContext",
@@ -44,31 +46,34 @@ public class WaTaskContoller {
                     required = false) String clientContext,
             BindingResult bindingResult,
             HttpServletRequest request) {
+        if (workAllocationToggleService.isProbateWAEnabled()) {
+            logRequest(request.getRequestURI(), callbackRequest);
 
-        logRequest(request.getRequestURI(), callbackRequest);
+            if (bindingResult.hasErrors()) {
+                log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+                throw new BadRequestException("Invalid payload", bindingResult);
+            }
 
-        if (bindingResult.hasErrors()) {
-            log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException("Invalid payload", bindingResult);
+            ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
+            Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
+                    clientContext,
+                    callbackRequest,
+                    paramCallbackRequest ->
+                            !paramCallbackRequest.getCaseDetails().getData().getCaseType()
+                                    .equals(paramCallbackRequest.getCaseDetailsBefore().getData().getCaseType())
+
+            );
+
+            encodedClientContext
+                    .ifPresent(value -> {
+                        log.info("Updated client context {}", new String(Base64.getDecoder().decode(value)));
+                        responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
+                    });
+            CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, Optional.empty());
+            //CallbackResponse response = CallbackResponse.builder().build();
+            return responseBuilder.body(CallbackResponse.builder().build());
         }
-
-        ResponseEntity.BodyBuilder responseBuilder =  ResponseEntity.ok();
-        Optional<String> encodedClientContext = taskUtils.setTaskCompletion(
-                clientContext,
-                callbackRequest,
-                paramCallbackRequest ->
-                        !paramCallbackRequest.getCaseDetails().getData().getCaseType()
-                                .equals(paramCallbackRequest.getCaseDetailsBefore().getData().getCaseType())
-
-        );
-
-        encodedClientContext
-                .ifPresent(value -> {
-                    log.info("Updated client context {}", new String(Base64.getDecoder().decode(value)));
-                    responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
-                });
-        CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, Optional.empty());
-        return responseBuilder.body(response);
+        return ResponseEntity.ok(CallbackResponse.builder().build());
     }
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {

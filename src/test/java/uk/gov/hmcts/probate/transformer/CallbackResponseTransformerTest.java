@@ -4940,7 +4940,7 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
-        assertEquals("", callbackResponse.getData().getCreateTask());
+        assertNull(callbackResponse.getData().getCreateTask());
     }
 
     @Test

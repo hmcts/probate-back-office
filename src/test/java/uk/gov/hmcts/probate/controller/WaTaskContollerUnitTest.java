@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -19,6 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 
@@ -57,6 +57,8 @@ class WaTaskContollerUnitTest {
     private TaskUtils taskUtils;
     @Mock
     private CallbackResponseTransformer callbackResponseTransformer;
+    @Mock
+    private WorkAllocationToggleService workAllocationToggleService;
 
     @InjectMocks
     private WaTaskContoller waTaskContoller;
@@ -66,20 +68,16 @@ class WaTaskContollerUnitTest {
 
     private final String clientContext = "clientContext";
 
-
-    @BeforeEach
-    void setUp() {
+    @Test
+    void shouldNotCompleteTheExistingTaskAndNoNewTaskCreated() throws JsonProcessingException {
         when(caseDetails.getId()).thenReturn(12345L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-    }
-
-    @Test
-    void shouldNotCompleteTaskAndNoNewTaskCreated() throws JsonProcessingException {
         when(callbackRequest.getCaseDetailsBefore()).thenReturn(caseDetailsBefore);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseDetailsBefore.getData()).thenReturn(caseDataBefore);
         when(caseData.getCaseType()).thenReturn("gop");
         when(caseDataBefore.getCaseType()).thenReturn("gop");
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         when(taskUtils.setTaskCompletion(
                 eq(clientContext),
@@ -114,12 +112,15 @@ class WaTaskContollerUnitTest {
     }
 
     @Test
-    void shouldCompleteTheTaskAndNewTaskCreated() throws JsonProcessingException {
+    void shouldCompleteTheExistingTaskAndNewTaskCreated() throws JsonProcessingException {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(callbackRequest.getCaseDetailsBefore()).thenReturn(caseDetailsBefore);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseDetailsBefore.getData()).thenReturn(caseDataBefore);
         when(caseData.getCaseType()).thenReturn("gop");
         when(caseDataBefore.getCaseType()).thenReturn("intestacy");
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         when(taskUtils.setTaskCompletion(
                 eq(clientContext),
@@ -155,8 +156,25 @@ class WaTaskContollerUnitTest {
     }
 
     @Test
+    void shouldByPassWaCompletionFlag() {
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+        ResponseEntity<CallbackResponse> response = waTaskContoller.updateClientContext(
+                callbackRequest,
+                clientContext,
+                bindingResult,
+                httpServletRequest);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        verifyNoInteractions(taskUtils, callbackResponseTransformer);
+    }
+
+
+    @Test
     void shouldThrowBadRequestExceptionWhenBindingResultHasErrors() {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(bindingResult.hasErrors()).thenReturn(true);
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         assertThatThrownBy(() ->
                 waTaskContoller.updateClientContext(
@@ -173,6 +191,8 @@ class WaTaskContollerUnitTest {
 
     @Test
     void shouldContinueWhenObjectMapperFailsToLogRequest() throws Exception {
+        when(caseDetails.getId()).thenReturn(12345L);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(objectMapper.writeValueAsString(callbackRequest))
                 .thenThrow(new JsonProcessingException("Unable to serialize") {});
 
@@ -181,7 +201,7 @@ class WaTaskContollerUnitTest {
                 eq(callbackRequest),
                 any()
         )).thenReturn(Optional.empty());
-
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         ResponseEntity<CallbackResponse> response =
                 waTaskContoller.updateClientContext(
