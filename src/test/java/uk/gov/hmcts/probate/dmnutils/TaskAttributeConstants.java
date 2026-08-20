@@ -75,6 +75,10 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_HORIZON_SCHEME
         = "ExamineHorizonScheme";
     public static final String EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA = "ExamineDigitalCaseAdColligendaBona";
+    public static final String EXAMINE_SECTION_116 = "ExamineSection116";
+    public static final String EXAMINE_POWER_OF_ATTORNEY = "ExaminePowerOfAttorney";
+    public static final String EXAMINE_RESEAL_FOREIGN_GRANT = "ExamineResealForeignGrant";
+    public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -173,8 +177,12 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35_TASK_TYPE_NAME = "Examine - Incapacity under rule 35";
     public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME
             = "Examine - Leading or following Grants";
-    public static final String EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME
-            = "Examine - Windrush Scheme";
+    public static final String EXAMINE_WINDRUSH_SCHEME_TASK_TYPE_NAME = "Examine - Windrush Scheme";
+    public static final String EXAMINE_SECTION_116_TASK_TYPE_NAME = "Examine - Section 116";
+    public static final String EXAMINE_POWER_OF_ATTORNEY_TASK_TYPE_NAME = "Examine - Power of Attorney (POA)";
+    public static final String EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME = "Examine - Reseal Foreign Grant";
+    public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME =
+            "Examine - Infected Blood Interim Scheme";
 
 
     public static final String HANDLE_EVIDENCE_EVENT = "handleEvidence";
@@ -186,4 +194,9 @@ public class TaskAttributeConstants {
     public static final String CHANGE_STATE_EVENT = "changeState";
     public static final String RESOLVE_SME_REFERRAL_EVENT = "resolveCWEscalation";
     public static final String CREATE_CASE_FROM_BULK_SCAN_EVENT = "createCaseFromBulkScan";
+    public static final String SECTION_116_SKILL_CODE = "SKILL:ABA6:Section116";
+    public static final String POWER_OF_ATTORNEY_SKILL_CODE = "SKILL:ABA6:PowerOfAttorney";
+    public static final String RESEAL_FOREIGN_GRANT_SKILL_CODE = "SKILL:ABA6:ResealForeignGrant";
+    public static final String INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE =
+        "SKILL:ABA6:InfectedBloodInterimScheme";
 }
