@@ -47,6 +47,11 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDR
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 
 class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
 
@@ -128,6 +133,22 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
                 Map.of(
                         "taskTypeName", EXAMINE_LEADING_OR_FOLLOWING_GRANTS_TASK_TYPE_NAME,
                         "taskTypeId", EXAMINE_LEADING_OR_FOLLOWING_GRANTS
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Section 116",
+                    "taskTypeId", EXAMINE_SECTION_116
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Power of Attorney (POA)",
+                    "taskTypeId", EXAMINE_POWER_OF_ATTORNEY
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Reseal Foreign Grant",
+                    "taskTypeId", EXAMINE_RESEAL_FOREIGN_GRANT
+                ),
+                Map.of(
+                    "taskTypeName", "Examine - Infected Blood Interim Scheme",
+                    "taskTypeId", EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME
                 )
         );
         return Stream.of(
@@ -143,7 +164,7 @@ class CamundaTaskTypesTest extends DmnDecisionTableBaseUnitTest {
         DmnDecisionTableImpl logic = (DmnDecisionTableImpl) decision.getDecisionLogic();
         assertThat(logic.getInputs().size(), is(1));
         assertThat(logic.getOutputs().size(), is(2));
-        assertThat(logic.getRules().size(), is(18));
+        assertThat(logic.getRules().size(), is(22));
     }
 
     @ParameterizedTest(name = "retrieve all task type data")
