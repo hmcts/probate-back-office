@@ -44,11 +44,29 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HORIZON_SCHEM
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_POWER_OF_ATTORNEY;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.POWER_OF_ATTORNEY_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RESEAL_FOREIGN_GRANT;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RESEAL_FOREIGN_GRANT_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_SECTION_116;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.SECTION_116_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ROLE_CATEGORY_CTSC;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WINDRUSH_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.WITNESS_INTERVIEW_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DOUBLE_PROBATE_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE;
+
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
@@ -124,24 +142,24 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(FIAT_WILL_SKILL_CODE)
                 ),
                 Arguments.of(
-                    EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
-                    DUMMY_CASE_DATA,
-                    getCtscExaminePermissions(INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE)
+                        EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE)
                 ),
                 Arguments.of(
-                    EXAMINE_WINDRUSH_SCHEME,
-                    DUMMY_CASE_DATA,
-                    getCtscExaminePermissions(WINDRUSH_SCHEME_SKILL_CODE)
+                        EXAMINE_WINDRUSH_SCHEME,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(WINDRUSH_SCHEME_SKILL_CODE)
                 ),
                 Arguments.of(
-                    EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
-                    DUMMY_CASE_DATA,
-                    getCtscExaminePermissions(WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE)
+                        EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(WILL_OR_CODICIL_TO_BE_NOTATED_SKILL_CODE)
                 ),
                 Arguments.of(
-                    EXAMINE_WITNESS_INTERVIEW,
-                    DUMMY_CASE_DATA,
-                    getCtscExaminePermissions(WITNESS_INTERVIEW_SKILL_CODE)
+                        EXAMINE_WITNESS_INTERVIEW,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(WITNESS_INTERVIEW_SKILL_CODE)
                 ),
                 Arguments.of(
                     EXAMINE_HORIZON_SCHEME,
@@ -152,6 +170,46 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                    EXAMINE_DIGITAL_CASE_AD_COLLIGENDA_BONA_READY_TO_ISSUE,
+                    DUMMY_CASE_DATA,
+                    getCtscExaminePermissions(AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_DOUBLE_PROBATE,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(DOUBLE_PROBATE_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_INCAPACITY_UNDER_RULE_35,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_LEADING_OR_FOLLOWING_GRANTS,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_SECTION_116,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(SECTION_116_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_POWER_OF_ATTORNEY,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(POWER_OF_ATTORNEY_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_RESEAL_FOREIGN_GRANT,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(RESEAL_FOREIGN_GRANT_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE)
                 ),
                 Arguments.of(
                         EXAMINE_LITERARY_ESTATE,
@@ -193,7 +251,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(28));
+        assertThat(logic.getRules().size(), is(44));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
