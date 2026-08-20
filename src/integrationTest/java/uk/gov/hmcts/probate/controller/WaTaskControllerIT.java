@@ -113,7 +113,7 @@ public class WaTaskControllerIT {
                     }
                    }
                 }
-        """;
+            """;
 
         when(workAllocationToggleService.isProbateWAEnabled())
                 .thenReturn(true);
