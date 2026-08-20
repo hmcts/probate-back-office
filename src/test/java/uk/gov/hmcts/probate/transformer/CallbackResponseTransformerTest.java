@@ -64,6 +64,7 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
@@ -598,6 +599,8 @@ class CallbackResponseTransformerTest {
     private AuditEventService auditEventService;
     @Mock
     private HasValidMatchesDefaulter hasValidMatchesDefaulter;
+    @Mock
+    private WorkAllocationToggleService workAllocationToggleService;
 
     @BeforeEach
     public void setup() {
@@ -4951,6 +4954,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBeforeMock);
         when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(YES, callbackResponse.getData().getCreateTask());
@@ -4967,9 +4971,25 @@ class CallbackResponseTransformerTest {
         when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBeforeMock);
         when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(true);
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
         assertEquals(NO, callbackResponse.getData().getCreateTask());
+    }
+
+    @Test
+    void shouldNotSetCreationFlagWhenWaDisabled() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("boAmendCaseDetailsForAwaitingDocumentation");
+        when(caseDataMock.getCaseType()).thenReturn(GRANT_OF_PROBATE_NAME);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDataBeforeMock.getCaseType()).thenReturn(GRANT_OF_PROBATE_NAME);
+        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBeforeMock);
+        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(workAllocationToggleService.isProbateWAEnabled()).thenReturn(false);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, CASEWORKER_USERINFO);
+        assertNull(callbackResponse.getData().getCreateTask());
     }
 
     @ParameterizedTest

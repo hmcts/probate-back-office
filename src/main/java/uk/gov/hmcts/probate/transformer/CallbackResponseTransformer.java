@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.service.ccd.AuditEventService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
@@ -159,6 +160,7 @@ public class CallbackResponseTransformer {
     private final AuditEventService auditEventService;
     private final SecurityUtils securityUtils;
     private final HasValidMatchesDefaulter hasValidMatchesDefaulter;
+    private final WorkAllocationToggleService workAllocationToggleService;
     private static final Set<String> EVENT_CREATE_TASK_SET = Set.of("boAmendCaseDetailsForAwaitingDocumentation");
 
     @Value("${make_dormant.add_time_minutes}")
@@ -890,12 +892,14 @@ public class CallbackResponseTransformer {
     }
 
     private void setTaskCreation(CallbackRequest callbackRequest, ResponseCaseData responseCaseData) {
-        responseCaseData.setCreateTask("");
-        if (callbackRequest.getEventId() != null
-                && EVENT_CREATE_TASK_SET.contains(callbackRequest.getEventId())) {
-            responseCaseData.setCreateTask(callbackRequest.getCaseDetails().getData().getCaseType()
-                    .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType())
-                    ? Constants.NO : Constants.YES);
+        if (workAllocationToggleService.isProbateWAEnabled()) {
+            responseCaseData.setCreateTask(Constants.NO);
+            if (callbackRequest.getEventId() != null
+                    && EVENT_CREATE_TASK_SET.contains(callbackRequest.getEventId())) {
+                responseCaseData.setCreateTask(callbackRequest.getCaseDetails().getData().getCaseType()
+                        .equals(callbackRequest.getCaseDetailsBefore().getData().getCaseType())
+                        ? Constants.NO : Constants.YES);
+            }
         }
     }
 
