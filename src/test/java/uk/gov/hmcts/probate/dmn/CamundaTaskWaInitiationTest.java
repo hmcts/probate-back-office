@@ -31,9 +31,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DIGIT
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_HORIZON_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNESS_INTERVIEW;
@@ -2789,198 +2786,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         );
     }
 
-    static Stream<Arguments> literaryEstateScenarios() {
-
-        Map<String,Object> examineLiteraryEstateTaskAttributes = Map.of(
-                "taskId", EXAMINE_LITERARY_ESTATE,
-                "name", "Examine - Literary Estate",
-                "processCategories", "case progression"
-        );
-
-        return Stream.of(
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListLiteraryEstate),
-                        List.of(examineLiteraryEstateTaskAttributes)
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListLiteraryEstate),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, Collections.emptyList()),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListLiteraryEstate),
-                        List.of(examineLiteraryEstateTaskAttributes)
-                ),
-                Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListLiteraryEstate),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListLiteraryEstate),
-                        List.of(examineLiteraryEstateTaskAttributes)
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListLiteraryEstate),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListLiteraryEstate),
-                        List.of(examineLiteraryEstateTaskAttributes)
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListLiteraryEstate),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        null,
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalDataNoHandOffList(),
-                        Collections.emptyList()
-                )
-        );
-    }
-
-    static Stream<Arguments> lostWillScenarios() {
-
-        Map<String,Object> examineLostWillOrCodicilTaskAttributes = Map.of(
-                "taskId", EXAMINE_LOST_WILL_OR_CODICIL,
-                "name", "Examine - Lost Will or Codicil",
-                "processCategories", "case progression"
-        );
-
-        return Stream.of(
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListLostWill),
-                        List.of(examineLostWillOrCodicilTaskAttributes)
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListLostWill),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListLostWill),
-                        List.of(examineLostWillOrCodicilTaskAttributes)
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListLostWill),
-                        List.of(examineLostWillOrCodicilTaskAttributes)
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListLostWill),
-                        List.of(examineLostWillOrCodicilTaskAttributes)
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalDataNoHandOffList(),
-                        Collections.emptyList()
-                )
-        );
-    }
-
-    static Stream<Arguments> minorityInterestScenarios() {
-
-        Map<String,Object> examineMinorityInterest = Map.of(
-                "taskId", EXAMINE_MINORITY_INTEREST,
-                "name", "Examine - Minority Interest",
-                "processCategories", "case progression"
-        );
-
-        return Stream.of(
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListMinorityInterest),
-                        List.of(examineMinorityInterest)
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",false, handOffReasonListMinorityInterest),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListOtherReason),
-                        Collections.emptyList()
-                ),
-                Arguments.of(
-                        "changeState",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListMinorityInterest),
-                        List.of(examineMinorityInterest)
-                ),
-                Arguments.of(
-                        "resolveCWEscalation",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListMinorityInterest),
-                        List.of(examineMinorityInterest)
-                ),
-                Arguments.of(
-                        "boResolveStop",
-                        "BOReadyToIssue",
-                        additionalData(false, "",true, handOffReasonListMinorityInterest),
-                        List.of(examineMinorityInterest)
-                ),
-                Arguments.of(
-                        "handleEvidence",
-                        "BOReadyToIssue",
-                        additionalDataNoHandOffList(),
-                        Collections.emptyList()
-                )
-        );
-    }
-
     @Test
     void if_this_test_fails_needs_updating_with_your_changes() {
         //The purpose of this test is to prevent adding new rows without being tested
@@ -2994,8 +2799,7 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
     @MethodSource({"probateScenarios","admonScenarios","deBonisNonScenarios", "fiatWillScenarios",
         "infectedBloodCompensationAuthorityScenarios","windRushScenarios","willOrCodicilToBeNotatedScenarios",
         "witnessInterviewScenarios", "horizonSchemeScenarios","intestacyScenarios","adColligendaBonaScenarios",
-        "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios",
-        "literaryEstateScenarios", "lostWillScenarios", "minorityInterestScenarios"})
+        "doubleProbateScenarios","incapacityUnderRule35Scenarios","leadingOrFollowingGrantsScenarios"})
     void given_multiple_event_ids_should_evaluate_dmn_for_probate_scenarios(String eventId,
                                                       String postEventState,
                                                       Map<String, Object> additionalData,
