@@ -2304,5 +2304,6 @@ class CamundaTaskWaInitiationTest extends DmnDecisionTableBaseUnitTest {
         }
         DmnDecisionTableResult dmnDecisionTableResult = evaluateDmnTable(inputVariables);
         resultsMatchUsingNameKey(dmnDecisionTableResult.getResultList(), expectation);
+
     }
 }
