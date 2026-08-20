@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
-import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import java.util.Base64;
@@ -33,7 +33,6 @@ public class WaTaskContoller {
 
     private final TaskUtils taskUtils;
     private final ObjectMapper objectMapper;
-    private final CallbackResponseTransformer callbackResponseTransformer;
     private final WorkAllocationToggleService workAllocationToggleService;
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -41,7 +40,7 @@ public class WaTaskContoller {
             consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateClientContext(
-            @RequestBody CallbackRequest callbackRequest,
+            @Valid @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = CLIENT_CONTEXT_HEADER_PARAMETER,
                     required = false) String clientContext,
             BindingResult bindingResult,
@@ -69,8 +68,6 @@ public class WaTaskContoller {
                         log.info("Updated client context {}", new String(Base64.getDecoder().decode(value)));
                         responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
                     });
-            CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, Optional.empty());
-            //CallbackResponse response = CallbackResponse.builder().build();
             return responseBuilder.body(CallbackResponse.builder().build());
         }
         return ResponseEntity.ok(CallbackResponse.builder().build());

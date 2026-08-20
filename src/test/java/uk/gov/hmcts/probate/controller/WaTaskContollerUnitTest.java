@@ -19,7 +19,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.wa.WorkAllocationToggleService;
-import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.utils.TaskUtils;
 
 import java.util.Collections;
@@ -55,8 +54,6 @@ class WaTaskContollerUnitTest {
     private ObjectMapper objectMapper;
     @Mock
     private TaskUtils taskUtils;
-    @Mock
-    private CallbackResponseTransformer callbackResponseTransformer;
     @Mock
     private WorkAllocationToggleService workAllocationToggleService;
 
@@ -106,9 +103,6 @@ class WaTaskContollerUnitTest {
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
-
-        verify(callbackResponseTransformer)
-                .transform(callbackRequest, Optional.empty());
     }
 
     @Test
@@ -150,9 +144,6 @@ class WaTaskContollerUnitTest {
 
         verify(objectMapper)
                 .writeValueAsString(callbackRequest);
-
-        verify(callbackResponseTransformer)
-                .transform(callbackRequest, Optional.empty());
     }
 
     @Test
@@ -165,7 +156,6 @@ class WaTaskContollerUnitTest {
                 httpServletRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        verifyNoInteractions(taskUtils, callbackResponseTransformer);
     }
 
 
@@ -186,7 +176,6 @@ class WaTaskContollerUnitTest {
         ).isInstanceOf(BadRequestException.class);
 
         verifyNoInteractions(taskUtils);
-        verifyNoInteractions(callbackResponseTransformer);
     }
 
     @Test
