@@ -201,6 +201,18 @@
           <text>"Examine - Lost Will or Codicil"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1tqqzjv">
+        <description>EMI</description>
+        <inputEntry id="UnaryTests_02cwq8e">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_082nou5">
+          <text>"ExamineMinorityInterest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13dzky2">
+          <text>"Examine - Minority Interest"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

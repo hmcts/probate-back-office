@@ -62,6 +62,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY
         = "ExamineInfectedBloodCompensationAuthority";
     public static final String EXAMINE_LITERARY_ESTATE = "ExamineLiteraryEstate";
+    public static final String EXAMINE_MINORITY_INTEREST = "ExamineMinorityInterest";
     public static final String EXAMINE_WINDRUSH_SCHEME = "ExamineWindrushScheme";
     public static final String EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED
         = "ExamineWillOrCodicilToBeNotated";
@@ -153,6 +154,7 @@ public class TaskAttributeConstants {
     public static final String HORIZON_SCHEME_SKILL_CODE
         = "SKILL:ABA6:HorizonScheme";
     public static final String AD_COLLIGENDA_BONA_EXAMINE_SKILL_CODE = "SKILL:ABA6:AdColligendaBonaExamining";
-
-
+    public static final String LITERARY_ESTATE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
+    public static final String LOST_WILL_CODICIL_SKILL_CODE = "SKILL:ABA6:LostWillCodicil";
+    public static final String MINORITY_INTEREST_SKILL_CODE = "SKILL:ABA6:MinorityInterest";
 }

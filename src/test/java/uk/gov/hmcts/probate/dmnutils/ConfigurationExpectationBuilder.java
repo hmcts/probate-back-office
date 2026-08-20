@@ -44,7 +44,9 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DE_BO
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_FIAT_WILL;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WINDRUSH_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_EXAMINE_OTHER_CASES;
-
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_MINORITY_INTEREST;
 
 public class ConfigurationExpectationBuilder {
 
@@ -74,6 +76,9 @@ public class ConfigurationExpectationBuilder {
                 || conditions.get("taskType").equals(EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED)
                 || conditions.get("taskType").equals(EXAMINE_WITNESS_INTERVIEW)
                 || conditions.get("taskType").equals(EXAMINE_HORIZON_SCHEME)
+                || conditions.get("taskType").equals(EXAMINE_LITERARY_ESTATE)
+                || conditions.get("taskType").equals(EXAMINE_LOST_WILL_OR_CODICIL)
+                || conditions.get("taskType").equals(EXAMINE_MINORITY_INTEREST)
             )) {
             builder.expectedValue(DESCRIPTION, DESCRIPTION_EXAMINE_OTHER_CASES, true);
         } else if (conditions.containsValue(READY_TO_ISSUE_STATE)) {
