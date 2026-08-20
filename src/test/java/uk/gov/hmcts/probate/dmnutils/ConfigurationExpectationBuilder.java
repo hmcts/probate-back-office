@@ -51,6 +51,8 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.DESCRIPTION_E
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_DOUBLE_PROBATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAPACITY_UNDER_RULE_35;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
 
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
@@ -76,13 +78,16 @@ public class ConfigurationExpectationBuilder {
             Map<String, String> conditions) {
         ConfigurationExpectationBuilder builder = new ConfigurationExpectationBuilder();
 
-        if (conditions.containsValue(READY_TO_ISSUE_STATE) && conditions.containsKey("taskType")
+        if (conditions.containsValue(READY_TO_ISSUE_STATE)
+                && conditions.containsKey("taskType")
                 && (conditions.get("taskType").equals(EXAMINE_DE_BONIS_NON)
                 || conditions.get("taskType").equals(EXAMINE_FIAT_WILL)
                 || conditions.get("taskType").equals(EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY)
                 || conditions.get("taskType").equals(EXAMINE_DOUBLE_PROBATE)
                 || conditions.get("taskType").equals(EXAMINE_INCAPACITY_UNDER_RULE_35)
                 || conditions.get("taskType").equals(EXAMINE_LEADING_OR_FOLLOWING_GRANTS)
+                || conditions.get("taskType").equals(EXAMINE_CODICIL_MIS_RECITAL)
+                || conditions.get("taskType").equals(EXAMINE_RECTIFY_WILL_OR_CODICIL)
                 || conditions.get("taskType").equals(EXAMINE_WINDRUSH_SCHEME)
                 || conditions.get("taskType").equals(EXAMINE_WILL_OR_CODICIL_TO_BE_NOTATED)
                 || conditions.get("taskType").equals(EXAMINE_WITNESS_INTERVIEW)

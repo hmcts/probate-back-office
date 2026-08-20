@@ -66,6 +66,12 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAP
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_RECTIFY_WILL_OR_CODICIL;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_CODICIL_MIS_RECITAL;
 
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LITERARY_ESTATE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LOST_WILL_OR_CODICIL;
@@ -212,6 +218,21 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         getCtscExaminePermissions(INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE)
                 ),
                 Arguments.of(
+                        EXAMINE_CODICIL_MIS_RECITAL,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_RECTIFY_WILL_OR_CODICIL,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
                         EXAMINE_LITERARY_ESTATE,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(LITERARY_ESTATE_SKILL_CODE)
@@ -251,7 +272,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(44));
+        assertThat(logic.getRules().size(), is(50));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
