@@ -1195,5 +1195,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "nocRequest", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "manageCaseTTL", "UserRole": "TTL_profile", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "manageCaseTTL", "UserRole": "TTL_profile", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "disposedCaseSearch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "storeDisposedCase", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"}
 ]
