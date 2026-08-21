@@ -284,6 +284,17 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1msgr6t">
+        <inputEntry id="UnaryTests_07rhn2k">
+          <text>"boSelectForQA","boStopCaseForCasePrinted","boEscalateToRegistrar","boIssueGrantForCaseMatching","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1e47isy">
+          <text>"ExamineDeBonisNonCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0icws5z">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>

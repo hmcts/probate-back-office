@@ -935,6 +935,41 @@ else false</text>
             <text>"case progression"</text>
           </outputEntry>
         </rule>
+      <rule id="DecisionRule_1adg5jb">
+        <inputEntry id="UnaryTests_1ru0ni9">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0lg9i1y">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1exo9bt">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1blctrz">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09d9vnl">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dcu2qm">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "DeBonisNon")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19qoxdp">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1d6f1io">
+          <text>"ExamineDeBonisNonCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1sjq1rf">
+          <text>"Examine - De Bonis Non"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1h9azm8">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0sn1uh9">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
