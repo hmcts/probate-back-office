@@ -65,7 +65,9 @@ public class WaTaskContoller {
 
             encodedClientContext
                     .ifPresent(value -> {
-                        log.info("Updated client context {}", new String(Base64.getDecoder().decode(value)));
+                        log.debug("Updated case id's {} client context {}",
+                                callbackRequest.getCaseDetails().getId(),
+                                new String(Base64.getDecoder().decode(value)));
                         responseBuilder.header(CLIENT_CONTEXT_HEADER_PARAMETER, value);
                     });
             return responseBuilder.body(CallbackResponse.builder().build());
