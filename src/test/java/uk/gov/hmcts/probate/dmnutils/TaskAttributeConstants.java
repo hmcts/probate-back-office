@@ -70,6 +70,7 @@ public class TaskAttributeConstants {
             "ExamineInfectedBloodInterimSchemeCasePrinted";
     public static final String EXAMINE_CODICIL_MIS_RECITAL = "ExamineCodicilMisRecital";
     public static final String EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED = "ExamineCodicilMisRecitalCasePrinted";
+    public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_CASE_PRINTED = "ExamineInfectedBloodCompensationAuthorityCasePrinted";
     public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL = "ExamineRectifyWillOrCodicil";
 
     public static final String EXAMINE_WINDRUSH_SCHEME = "ExamineWindrushScheme";
@@ -171,6 +172,7 @@ public class TaskAttributeConstants {
     public static final String LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE = "SKILL:ABA6:LeadingFollowingGrants";
     public static final String INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE = "SKILL:ABA6:InfectedBloodInterimScheme";
     public static final String CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE = "SKILL:ABA6:CodicilMisRecital";
+    public static final String EXAMINE_INFECTED_BLOOD_COMPENSATION_AUTHORITY_SKILL_CODE = "SKILL:ABA6:InfectedBloodCompensationAuthority";
     public static final String RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE = "SKILL:ABA6:RectifyWillOrCodicil";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";

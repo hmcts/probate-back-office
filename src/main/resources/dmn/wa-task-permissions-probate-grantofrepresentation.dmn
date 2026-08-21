@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-permissions-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="wa-permissions-definition" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.49.0">
   <decision id="wa-task-permissions-probate-grantofrepresentation" name="Task Permissions DMN" camunda:historyTimeToLive="P90D">
     <decisionTable id="DecisionTable_1pr5oic" hitPolicy="RULE ORDER">
       <input id="InputClause_12crj6e" label="Task Type" biodi:width="299" camunda:inputVariable="taskType">
@@ -1354,6 +1354,64 @@
           <text>1</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0v7r2ts">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0e7vu79">
+        <inputEntry id="UnaryTests_05dnjxx">
+          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jxuehx">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0n33as2">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0t86w6d">
+          <text>"ctsc"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04nbeau">
+          <text>"Read,Own,Claim,Unclaim,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0swn1ps">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_05ti1sg">
+          <text>"SKILL:ABA6:InfectedBloodCompensationAuthority"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_073vjuc">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1836xvr">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1is4lvm">
+        <inputEntry id="UnaryTests_0k9iwzl">
+          <text>"ExamineInfectedBloodCompensationAuthorityCasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1eo1wr5">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0l6zgfj">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0a99rjl">
+          <text>"ctsc-team-leader"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0mvbh1f">
+          <text>"Read,Own,Claim,Unclaim,Manage,Complete,Cancel,Assign,Unassign"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wx4809">
+          <text>"CTSC"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1wao220">
+          <text>"SKILL:ABA6:InfectedBloodCompensationAuthority"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1v8cc4a">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1blp3x2">
           <text>false</text>
         </outputEntry>
       </rule>
