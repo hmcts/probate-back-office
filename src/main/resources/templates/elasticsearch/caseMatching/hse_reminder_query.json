@@ -14,17 +14,16 @@
           "match": {
             "data.evidenceHandled": "Yes"
           }
-        }
-      ],
-      "must_not": [
+        },
         {
           "terms": {
             "state.keyword": [
-              "BOGrantIssued",
-              "BOCaseClosed"
+              "CasePrinted"
             ]
           }
-        },
+        }
+      ],
+      "must_not": [
         {
           "terms": {
             "data.boCaseStopReasonList.value.caseStopReason.keyword": [
