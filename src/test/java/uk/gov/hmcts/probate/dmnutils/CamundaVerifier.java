@@ -14,24 +14,36 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CamundaVerifier {
+
     public static void resultsMatchUsingNameKey(List<Map<String, Object>> results,
                                                 List<Map<String, Object>> expectation) {
+        resultsMatchUsingKey(results, expectation, "name");
+    }
+
+    public static void resultsMatchUsingTaskTypeKey(List<Map<String, Object>> results,
+                                                List<Map<String, Object>> expectation) {
+        resultsMatchUsingKey(results, expectation, "taskType");
+    }
+
+    public static void resultsMatchUsingKey(List<Map<String, Object>> results,
+                                            List<Map<String, Object>> expectation,
+                                            String matchingKey) {
         // Create a mutable copy of the results list
         results = new ArrayList<>(results);
 
         // Remove entries from results where the "name" key contains "dueDateOrigin"
-        results.removeIf(result -> result.containsKey("name")
-                && result.get("name").toString().contains("dueDateOrigin"));
+        results.removeIf(result -> result.containsKey(matchingKey)
+                && result.get(matchingKey).toString().contains("dueDateOrigin"));
 
 
         assertThat(results.size(), is(expectation.size()));
 
         for (Map<String, Object> expectedEntry : expectation) {
-            String expectedName = (String) expectedEntry.get("name");
+            String expectedName = (String) expectedEntry.get(matchingKey);
             Map<String, Object> resultEntry = results.stream()
-                    .filter(result -> expectedName.equals(result.get("name")))
+                    .filter(result -> expectedName.equals(result.get(matchingKey)))
                     .findFirst()
-                    .orElseThrow(() -> new AssertionError("No result found for name: " + expectedName));
+                    .orElseThrow(() -> new AssertionError("No result found for key: " + expectedName));
 
             for (String key : expectedEntry.keySet()) {
                 assertEquals(expectedEntry.get(key), resultEntry.get(key),
