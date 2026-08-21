@@ -67,7 +67,7 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1c631u1">
           <text>"Examine Digital Case - Probate"</text>
-         </outputEntry>
+        </outputEntry>
       </rule>
       <rule id="DecisionRule_0n139s3">
         <description>EDBN</description>
@@ -319,6 +319,18 @@
         </outputEntry>
         <outputEntry id="LiteralExpression_1wu3c6z">
           <text>"Examine - Codicil Mis-Recital"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ans9gm">
+        <description>ELOFGCP</description>
+        <inputEntry id="UnaryTests_1xvr3if">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15z0jzc">
+          <text>"ExamineLeadingOrFollowingGrantsCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1e1ycx1">
+          <text>"Examine - Leading or following Grants"</text>
         </outputEntry>
       </rule>
     </decisionTable>

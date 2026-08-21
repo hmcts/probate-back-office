@@ -44,7 +44,7 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_WITNE
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.HORIZON_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.PROBATE_EXAMINE_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INTESTACY_EXAMINE_SKILL_CODE;
+import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.ADMON_WILL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE;
@@ -69,7 +69,6 @@ import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INCAP
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INCAPACITY_UNDER_RULE_35_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_LEADING_OR_FOLLOWING_GRANTS;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE;
-import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE;
 import static uk.gov.hmcts.probate.dmnutils.TaskAttributeConstants.EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED;
@@ -233,6 +232,11 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
                         EXAMINE_CODICIL_MIS_RECITAL_CASE_PRINTED,
                         DUMMY_CASE_DATA,
                         getCtscExaminePermissions(CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE)
+                ),
+                Arguments.of(
+                        EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED,
+                        DUMMY_CASE_DATA,
+                        getCtscExaminePermissions(LEADING_FOLLOWING_GRANTS_EXAMINE_SKILL_CODE)
                 )
         );
     }
@@ -259,7 +263,7 @@ class CamundaTaskWaPermissionTest extends DmnDecisionTableBaseUnitTest {
         assertThat(logic.getOutputs().size(), is(7));
         assertThatOutputContainInOrder(outputColumnIds, logic.getOutputs());
         //Rules
-        assertThat(logic.getRules().size(), is(46));
+        assertThat(logic.getRules().size(), is(48));
     }
 
     @ParameterizedTest(name = "task type: {0} case data: {1}")
