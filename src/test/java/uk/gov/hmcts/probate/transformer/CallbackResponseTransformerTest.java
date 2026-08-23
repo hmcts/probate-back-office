@@ -141,11 +141,9 @@ import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CHILD;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
-import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.HALF_SIBLING;
-import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_SIBLING;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
@@ -5094,11 +5092,6 @@ class CallbackResponseTransformerTest {
                 .wholeBloodNiecesAndNephewsSurvived(YES)
                 .wholeBloodSiblingsOverEighteen(YES)
                 .wholeBloodNiecesAndNephewsOverEighteen(YES)
-                .otherHalfBloodSiblings(YES)
-                .halfBloodSiblingsDiedBeforeDeceased(NO)
-                .halfBloodNiecesAndNephewsSurvived(YES)
-                .halfBloodSiblingsOverEighteen(YES)
-                .halfBloodNiecesAndNephewsOverEighteen(YES)
                 .primaryApplicantAdoptedIn(YES)
                 .primaryApplicantAdoptionInEnglandOrWales(YES)
                 .primaryApplicantForenames("Jane")
@@ -5122,11 +5115,6 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsSurvived());
         assertNull(callbackResponse.getData().getWholeBloodSiblingsOverEighteen());
         assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsOverEighteen());
-        assertNull(callbackResponse.getData().getOtherHalfBloodSiblings());
-        assertNull(callbackResponse.getData().getHalfBloodSiblingsDiedBeforeDeceased());
-        assertNull(callbackResponse.getData().getHalfBloodNiecesAndNephewsSurvived());
-        assertNull(callbackResponse.getData().getHalfBloodSiblingsOverEighteen());
-        assertNull(callbackResponse.getData().getHalfBloodNiecesAndNephewsOverEighteen());
         assertNull(callbackResponse.getData().getPrimaryApplicantAdoptedIn());
         assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
         assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
@@ -5187,20 +5175,14 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldClearWholeBloodSiblingFieldsWhenSameParentsChangesToHalfSibling() {
-        caseDataBuilder.applicantSameParentsAsDeceased(HALF_SIBLING)
-                .otherHalfBloodSiblings(YES)
-                .halfBloodSiblingsDiedBeforeDeceased("keepHalf")
-                .halfBloodNiecesAndNephewsSurvived(NO)
-                .halfBloodSiblingsOverEighteen(YES)
-                .halfBloodNiecesAndNephewsOverEighteen(NO);
+    void shouldClearFullSiblingFieldsWhenOnlyOneParentISSame() {
+        caseDataBuilder.applicantSameParentsAsDeceased(HALF_SIBLING);
 
         caseDataBuilderBefore.applicantSameParentsAsDeceased(WHOLE_SIBLING)
                 .otherWholeBloodSiblings(YES)
                 .wholeBloodSiblingsDiedBeforeDeceased("YesSome")
                 .wholeBloodNiecesAndNephewsSurvived(YES)
                 .wholeBloodSiblingsOverEighteen(YES)
-                .wholeBloodNiecesAndNephewsOverEighteen(YES)
                 .primaryApplicantAdoptedIn(YES)
                 .primaryApplicantAdoptionInEnglandOrWales(YES)
                 .primaryApplicantForenames("John")
@@ -5218,12 +5200,6 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getOtherWholeBloodSiblings());
         assertNull(callbackResponse.getData().getWholeBloodSiblingsDiedBeforeDeceased());
         assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsSurvived());
-        assertNull(callbackResponse.getData().getWholeBloodNiecesAndNephewsOverEighteen());
-        assertEquals(YES, callbackResponse.getData().getOtherHalfBloodSiblings());
-        assertEquals("keepHalf", callbackResponse.getData().getHalfBloodSiblingsDiedBeforeDeceased());
-        assertEquals(NO, callbackResponse.getData().getHalfBloodNiecesAndNephewsSurvived());
-        assertEquals(YES, callbackResponse.getData().getHalfBloodSiblingsOverEighteen());
-        assertEquals(NO, callbackResponse.getData().getHalfBloodNiecesAndNephewsOverEighteen());
         assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
         assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
         assertNull(callbackResponse.getData().getPrimaryApplicantSurname());
@@ -5232,20 +5208,14 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldClearHalfBloodSiblingFieldsWhenSameParentsChangesToWholeSibling() {
-        caseDataBuilder.applicantSameParentsAsDeceased(WHOLE_SIBLING)
-                .otherWholeBloodSiblings(YES)
-                .wholeBloodSiblingsDiedBeforeDeceased("keepWhole")
-                .wholeBloodNiecesAndNephewsSurvived(NO)
-                .wholeBloodSiblingsOverEighteen(YES)
-                .wholeBloodNiecesAndNephewsOverEighteen(NO);
+    void shouldClearHalfSiblingFieldsWhenBothParentISSame() {
+        caseDataBuilder.applicantSameParentsAsDeceased(WHOLE_SIBLING);
 
         caseDataBuilderBefore.applicantSameParentsAsDeceased(HALF_SIBLING)
                 .otherHalfBloodSiblings(YES)
                 .halfBloodSiblingsDiedBeforeDeceased("YesSome")
                 .halfBloodNiecesAndNephewsSurvived(YES)
                 .halfBloodSiblingsOverEighteen(YES)
-                .halfBloodNiecesAndNephewsOverEighteen(YES)
                 .primaryApplicantAdoptedIn(YES)
                 .primaryApplicantAdoptionInEnglandOrWales(YES)
                 .primaryApplicantForenames("John")
@@ -5263,12 +5233,6 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getOtherHalfBloodSiblings());
         assertNull(callbackResponse.getData().getHalfBloodSiblingsDiedBeforeDeceased());
         assertNull(callbackResponse.getData().getHalfBloodNiecesAndNephewsSurvived());
-        assertNull(callbackResponse.getData().getHalfBloodNiecesAndNephewsOverEighteen());
-        assertEquals(YES, callbackResponse.getData().getOtherWholeBloodSiblings());
-        assertEquals("keepWhole", callbackResponse.getData().getWholeBloodSiblingsDiedBeforeDeceased());
-        assertEquals(NO, callbackResponse.getData().getWholeBloodNiecesAndNephewsSurvived());
-        assertEquals(YES, callbackResponse.getData().getWholeBloodSiblingsOverEighteen());
-        assertEquals(NO, callbackResponse.getData().getWholeBloodNiecesAndNephewsOverEighteen());
         assertNull(callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
         assertNull(callbackResponse.getData().getPrimaryApplicantForenames());
         assertNull(callbackResponse.getData().getPrimaryApplicantSurname());
@@ -5277,7 +5241,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldNotClearSiblingFieldsWhenSameParentsOptionUnchanged() {
+    void shouldNotClearFieldsWhenSameParentsOptionIsUnchanged() {
         caseDataBuilder.applicantSameParentsAsDeceased(HALF_SIBLING)
                 .otherHalfBloodSiblings(YES)
                 .halfBloodSiblingsDiedBeforeDeceased("YesSome")
@@ -5358,10 +5322,10 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldSetupWholeBloodSiblingDynamicListWhenRelationshipIsSibling() {
+    void shouldSetupNewDynamicListForSiblingRelationship() {
         caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
                 .otherExecutorExists(YES)
-                .applicantSameParentsAsDeceased(WHOLE_SIBLING);
+                .applicantSameParentsAsDeceased(YES);
         caseDataBuilderBefore.solsApplicantRelationshipToDeceased(CHILD);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -5380,33 +5344,6 @@ class CallbackResponseTransformerTest {
         DynamicRadioList relationshipList = executor.getSolsApplicantFamilyDetails().getRelationship();
         assertNotNull(relationshipList);
         assertEquals(2, relationshipList.getListItems().size());
-        assertEquals(WHOLE_BLOOD_SIBLING, relationshipList.getListItems().getFirst().getCode());
-    }
-
-    @Test
-    void shouldSetupHalfBloodSiblingDynamicListWhenRelationshipIsSibling() {
-        caseDataBuilder.solsApplicantRelationshipToDeceased(SIBLING)
-                .otherExecutorExists(YES)
-                .applicantSameParentsAsDeceased(HALF_SIBLING);
-        caseDataBuilderBefore.solsApplicantRelationshipToDeceased(CHILD);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(callbackRequestMock.getCaseDetailsBefore()).thenReturn(caseDetailsBeforeMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(caseDetailsBeforeMock.getData()).thenReturn(caseDataBuilderBefore.build());
-
-        CallbackResponse response = underTest.setupDynamicList(callbackRequestMock);
-
-        List<CollectionMember<IntestacyAdditionalExecutor>> executorList =
-                response.getData().getSolsIntestacyExecutorList();
-        assertNotNull(executorList);
-        assertEquals(1, executorList.size());
-        IntestacyAdditionalExecutor executor = executorList.getFirst().getValue();
-        assertNotNull(executor.getSolsApplicantFamilyDetails());
-        DynamicRadioList relationshipList = executor.getSolsApplicantFamilyDetails().getRelationship();
-        assertNotNull(relationshipList);
-        assertEquals(2, relationshipList.getListItems().size());
-        assertEquals(HALF_BLOOD_SIBLING, relationshipList.getListItems().getFirst().getCode());
     }
 
     @Test
