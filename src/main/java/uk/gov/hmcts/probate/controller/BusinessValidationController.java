@@ -203,8 +203,6 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> validateSolsCreate(
             @Validated({ApplicationCreatedGroup.class}) @RequestBody
             CallbackRequest callbackRequest) {
-        Long caseId = callbackRequest.getCaseDetails() != null ? callbackRequest.getCaseDetails().getId() : null;
-        log.info("[DTSPB-5795] BACKOFFICE junction solsCreateValidate caseId={}", caseId);
 
         final List<ValidationRule> solPcValidation = Arrays.asList(solicitorPostcodeValidationRule);
 

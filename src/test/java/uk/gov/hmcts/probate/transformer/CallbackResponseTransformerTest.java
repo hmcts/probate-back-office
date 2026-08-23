@@ -140,12 +140,10 @@ import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CHILD;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.GRAND_CHILD;
-import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.HALF_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.PARENT;
 import static uk.gov.hmcts.probate.model.Constants.SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.HALF_SIBLING;
-import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_NIECE_OR_NEPHEW;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_BLOOD_SIBLING;
 import static uk.gov.hmcts.probate.model.Constants.WHOLE_SIBLING;
 import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
@@ -5324,7 +5322,6 @@ class CallbackResponseTransformerTest {
         assertNotNull(relationshipList);
         assertEquals(2, relationshipList.getListItems().size());
         assertEquals(WHOLE_BLOOD_SIBLING, relationshipList.getListItems().getFirst().getCode());
-        assertEquals(WHOLE_BLOOD_NIECE_OR_NEPHEW, relationshipList.getListItems().get(1).getCode());
     }
 
     @Test
@@ -5351,7 +5348,6 @@ class CallbackResponseTransformerTest {
         assertNotNull(relationshipList);
         assertEquals(2, relationshipList.getListItems().size());
         assertEquals(HALF_BLOOD_SIBLING, relationshipList.getListItems().getFirst().getCode());
-        assertEquals(HALF_BLOOD_NIECE_OR_NEPHEW, relationshipList.getListItems().get(1).getCode());
     }
 
     @Test
