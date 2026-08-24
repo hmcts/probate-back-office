@@ -24,6 +24,7 @@ test.describe("Caseworker Grant of Representation - probateman case match", () =
   }, testInfo) => {
     const scenarioName =
       "Caseworker Grant of Representation - probateman case match";
+    // eslint-disable-next-line playwright/no-conditional-in-test
     if (
       testConfig.TestBackOfficeUrl.includes("demo") ||
       testConfig.TestBackOfficeUrl.includes("aat")

@@ -153,6 +153,162 @@
           <text>"Examine - Horizon Scheme"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1mgn1xz">
+        <description>EDCACB</description>
+        <inputEntry id="UnaryTests_0973nn0">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p8qoft">
+          <text>"ExamineDigitalCaseAdColligendaBona"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mju5sw">
+          <text>"Examine Digital Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1j3ezvk">
+        <description>EDCIRI</description>
+        <inputEntry id="UnaryTests_1l5eanv">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00bx5mi">
+          <text>"ExamineDigitalCaseIntestacyReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1flq7xg">
+          <text>"Examine Digital Case - Intestacy"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0all5nh">
+        <description>EDCACBRI</description>
+        <inputEntry id="UnaryTests_0ng7dwq">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_19jyo85">
+          <text>"ExamineDigitalCaseAdColligendaBonaReadyToIssue"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_073o744">
+          <text>"Examine Digital Case - Ad Colligenda Bona"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0joiqei">
+        <description>EDB</description>
+        <inputEntry id="UnaryTests_0li6ex3">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_18bxfqr">
+          <text>"ExamineDoubleProbate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0r7fpcp">
+          <text>"Examine - Double Probate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1lqewdb">
+        <description>EIUR35</description>
+        <inputEntry id="UnaryTests_0m2v2yf">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1f7anys">
+          <text>"ExamineIncapacityUnderRule35"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0tqugxz">
+          <text>"Examine - Incapacity under rule 35"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_08eqx2u">
+        <description>ELOFG</description>
+        <inputEntry id="UnaryTests_012ebcb">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0dep4hw">
+          <text>"ExamineLeadingOrFollowingGrants"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0s92gqd">
+          <text>"Examine - Leading or following Grants"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_section_116_type">
+        <description>ES116</description>
+        <inputEntry id="UnaryTests_section_116_type">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_section_116_type_id">
+          <text>"ExamineSection116"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_section_116_type_name">
+          <text>"Examine - Section 116"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_power_of_attorney_type">
+        <description>EPOA</description>
+        <inputEntry id="UnaryTests_power_of_attorney_type">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_power_of_attorney_type_id">
+          <text>"ExaminePowerOfAttorney"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_power_of_attorney_type_name">
+          <text>"Examine - Power of Attorney (POA)"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_reseal_foreign_grant_type">
+        <description>ERFG</description>
+        <inputEntry id="UnaryTests_reseal_foreign_grant_type">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_reseal_foreign_grant_type_id">
+          <text>"ExamineResealForeignGrant"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_reseal_foreign_grant_type_name">
+          <text>"Examine - Reseal Foreign Grant"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_infected_blood_interim_type">
+        <description>EIBIS</description>
+        <inputEntry id="UnaryTests_infected_blood_interim_type">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_infected_blood_interim_type_id">
+          <text>"ExamineInfectedBloodInterimScheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_infected_blood_interim_type_name">
+          <text>"Examine - Infected Blood Interim Scheme"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1l3mew7">
+        <description>ERWOC</description>
+        <inputEntry id="UnaryTests_06ymplz">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0f6rq1d">
+          <text>"ExamineRectifyWillOrCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0009nbc">
+          <text>"Examine - Rectify a Will or Codicil"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_167unsw">
+        <description>ECMR</description>
+        <inputEntry id="UnaryTests_0m47br4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1qexp82">
+          <text>"ExamineCodicilMisRecital"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_030o68g">
+          <text>"Examine - Codicil Mis-Recital"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15t2fkc">
+        <description>EIBIS</description>
+        <inputEntry id="UnaryTests_1300w12">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_05qo65m">
+          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_16n0d3e">
+          <text>"Examine - Infected Blood Interim Scheme"</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <dmndi:DMNDI>
