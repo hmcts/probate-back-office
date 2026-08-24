@@ -254,8 +254,8 @@ __metadata:
   linkType: hard
 
 "@hmcts/playwright-common@npm:^1.1.4":
-  version: 1.1.4
-  resolution: "@hmcts/playwright-common@npm:1.1.4"
+  version: 1.1.5
+  resolution: "@hmcts/playwright-common@npm:1.1.5"
   dependencies:
     "@axe-core/playwright": "npm:^4.11.0"
     "@eslint/js": "npm:^9.11.1"
@@ -278,7 +278,7 @@ __metadata:
   bin:
     delete-nightly-dev-branch: dist/scripts/delete-nightly-dev-branch.js
     get-secrets: dist/scripts/get-secrets.js
-  checksum: 10/670cf824c7110cd0558ff42e088eefc80dec1469155d562010beb0c8cdf22d4c7f86e6d29c6a43956513df1dbab76a9e0810d04c7479b9271c27c8706eb7cadf
+  checksum: 10/5263e4df26000ebffbf3d7fec461884566508319e9e19131b189bf2962daa43dfdcc4f0161f72e6041f895ec53509194f54263ed51f78fd6399738f47e024b82
   languageName: node
   linkType: hard
 
