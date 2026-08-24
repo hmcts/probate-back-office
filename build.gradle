@@ -195,7 +195,7 @@ def versions = [
         springDocOpenUi                 : '2.8.17',
         swaggerAnnotations              : '2.2.52',
         springSecurityVersion           : '6.5.11',
-        tomcat                          : '10.1.58',
+        tomcat                          : '10.1.57',
         camunda                         : '7.24.0'
 ]
 
@@ -291,7 +291,7 @@ dependencies {
 
   implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.6'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
-  implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.6.4'
+  implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.6.2'
 
   implementation group: 'org.pitest', name: 'pitest', version: '1.25.8'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.29.0'
