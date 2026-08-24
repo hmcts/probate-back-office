@@ -690,6 +690,111 @@ else false</text>
           <text>"case progression"</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_1wt1eed">
+        <inputEntry id="UnaryTests_065n100">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0p6qpqn">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0i6fjz2">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1l88d3z">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1wpelp1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1vxxozq">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "RectifyWillCodicil")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19zf54t">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09loh53">
+          <text>"ExamineRectifyWillOrCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1o0h2vi">
+          <text>"Examine - Rectify a Will or Codicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1mr6fye">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1s40blt">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1deznxl">
+        <inputEntry id="UnaryTests_09bwbqq">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0tcr8ml">
+          <text>"BOReadyToIssue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0mk7ygn">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wi2wlh">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_01la65b">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00yxjoq">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "CodicilMis")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0yfrj94">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09kckax">
+          <text>"ExamineCodicilMisRecital"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ikfyvs">
+          <text>"Examine - Codicil Mis-Recital"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_18z69zu">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1h811aq">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_03v8h5s">
+        <inputEntry id="UnaryTests_163j56d">
+          <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13aa0j4">
+          <text>"CasePrinted"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0bsrtz6">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0n535da">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_094s69r">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rae6f9">
+          <text>list contains(additionalData.Data.boHandoffReasonList.value.caseHandoffReason, "IBIS")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b2b9di">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ljjwuy">
+          <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_02o1qmj">
+          <text>"Examine - Infected Blood Interim Scheme"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10y9ddd">
+          <text></text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0k4e8eh">
+          <text>"case progression"</text>
+        </outputEntry>
+      </rule>
       <rule id="DecisionRule_section_116">
           <inputEntry id="UnaryTests_section_116_event">
             <text>"handleEvidence", "boResolveStop", "resolveCWEscalation", "changeState"</text>
