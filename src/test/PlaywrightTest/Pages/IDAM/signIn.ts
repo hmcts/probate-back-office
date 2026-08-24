@@ -4,11 +4,17 @@ import { BasePage } from "../utility/basePage.ts";
 
 export class SignInPage extends BasePage {
   // this.signinPageLocator = page.getByLabel('Sign in');
-  readonly usernameLocator = this.page.getByText("Email address");
-  readonly passwordLocator = this.page.getByText("Password", { exact: true });
-  readonly submitButtonLocator = this.page.getByRole("button", {
-    name: "Sign in",
+  readonly usernameLocator = this.page.getByText('Enter your email address');
+  readonly passwordLocator = this.page.getByText('Enter your password');
+  readonly usernameTextboxLocator = this.page.getByRole("textbox", {
+    name: "Enter your email address",
   });
+  readonly passwordTextboxLocator = this.page.getByRole("textbox", {
+    name: "Enter your password",
+  });
+  readonly continueButtonLocator = this.page.getByRole("button", {
+    name: "Continue",
+  })
 
   constructor(page) {
     super(page);
@@ -23,42 +29,22 @@ export class SignInPage extends BasePage {
     });
     // await this.page.waitForTimeout(testConfig.ManualDelayLong);
     await this.verifyPageLoad(this.usernameLocator, 10_000);
-    await expect(
-      this.page.getByRole("heading", {
-        name: "Sign in",
-        exact: true,
-      }),
-    ).toBeVisible();
     await expect(this.usernameLocator).toBeVisible();
-    await expect(this.passwordLocator).toBeVisible();
+    let username: string;
+    let password: string;
     if (useProfessionalUser === "superUser") {
-      await this.page.locator("#username").fill(testConfig.TestEnvSuperCwUser);
-      await this.page
-        .locator("#password")
-        .fill(testConfig.TestEnvSuperCwPassword);
+      username = testConfig.TestEnvSuperCwUser;
+      password = testConfig.TestEnvSuperCwPassword;
+    } else if (useProfessionalUser) {
+      username = testConfig.TestEnvProfUser;
+      password = testConfig.TestEnvProfPassword;
     } else {
-      await this.page
-        .locator("#username")
-        .fill(
-          useProfessionalUser
-            ? testConfig.TestEnvProfUser
-            : testConfig.TestEnvCwUser,
-        );
-      await this.page
-        .locator("#password")
-        .fill(
-          useProfessionalUser
-            ? testConfig.TestEnvProfPassword
-            : testConfig.TestEnvCwPassword,
-        );
+      username = testConfig.TestEnvCwUser;
+      password = testConfig.TestEnvCwPassword;
     }
-    // await this.page.waitForSelector(this.submitButtonLocator, signInDelay);
-    // await expect(this.submitButtonLocator).toBeEnabled();
-    // await this.submitButtonLocator.click();
-    await this.waitForNavigationToComplete(this.submitButtonLocator);
-    // await this.page.waitForTimeout(signInDelay);
-    // await this.page.waitForLoadState('domcontentloaded');
-    await expect(this.usernameLocator).toBeHidden();
+
+    await this.signIn(username, password);
+
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
   }
@@ -79,34 +65,22 @@ export class SignInPage extends BasePage {
     useProfessionalUser,
     signInDelay = testConfig.SignInDelayDefault,
   ) {
-    await this.page.goto(`${testConfig.TestBackOfficeUrl}/`);
-    // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-    await expect(
-      this.page.getByRole("heading", {
-        name: "Sign in",
-        exact: true,
-      }),
-    ).toBeVisible();
+    await this.page.goto(`${testConfig.TestBackOfficeUrl}/`, {
+      waitUntil: "load",
+      timeout: 60000,
+    });
+    await this.verifyPageLoad(this.usernameLocator, 10_000);
     await expect(this.usernameLocator).toBeVisible();
-    await expect(this.passwordLocator).toBeVisible();
-    await this.page
-      .locator("#username")
-      .fill(
-        useProfessionalUser
-          ? testConfig.TestEnvProfUser
-          : testConfig.TestEnvProfUserNoc,
-      );
-    await this.page
-      .locator("#password")
-      .fill(
-        useProfessionalUser
-          ? testConfig.TestEnvProfPassword
-          : testConfig.TestEnvProfPasswordNoc,
-      );
-    await expect(this.submitButtonLocator).toBeEnabled();
-    await this.submitButtonLocator.click();
+    const username = useProfessionalUser
+      ? testConfig.TestEnvProfUser
+      : testConfig.TestEnvProfUserNoc;
 
-    await expect(this.usernameLocator).toBeHidden();
+    const password = useProfessionalUser
+      ? testConfig.TestEnvProfPassword
+      : testConfig.TestEnvProfPasswordNoc;
+
+    await this.signIn(username, password);
+
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
   }
@@ -115,34 +89,22 @@ export class SignInPage extends BasePage {
     useProfessionalUser,
     signInDelay = testConfig.SignInDelayDefault,
   ) {
-    await this.page.goto(`${testConfig.TestBackOfficeUrl}/`);
-    // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-    await expect(
-      this.page.getByRole("heading", {
-        name: "Sign in",
-        exact: true,
-      }),
-    ).toBeVisible();
+    await this.page.goto(`${testConfig.TestBackOfficeUrl}/`, {
+      waitUntil: "load",
+      timeout: 60000,
+    });
+    await this.verifyPageLoad(this.usernameLocator, 10_000);
     await expect(this.usernameLocator).toBeVisible();
-    await expect(this.passwordLocator).toBeVisible();
-    await this.page
-      .locator("#username")
-      .fill(
-        useProfessionalUser
-          ? testConfig.TestEnvProfUser
-          : testConfig.TestEnvProfUserSAC,
-      );
-    await this.page
-      .locator("#password")
-      .fill(
-        useProfessionalUser
-          ? testConfig.TestEnvProfPassword
-          : testConfig.TestEnvProfPasswordSAC,
-      );
-    await expect(this.submitButtonLocator).toBeEnabled();
-    await this.submitButtonLocator.click();
+    const username = useProfessionalUser
+      ? testConfig.TestEnvProfUser
+      : testConfig.TestEnvProfUserSAC;
 
-    await expect(this.usernameLocator).toBeHidden();
+    const password = useProfessionalUser
+      ? testConfig.TestEnvProfPassword
+      : testConfig.TestEnvProfPasswordSAC;
+
+    await this.signIn(username, password);
+
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
   }
@@ -186,27 +148,32 @@ export class SignInPage extends BasePage {
         `Missing environment credentials for role: ${jobRole}. jobRole must be one of: ${Object.keys(USER_CREDENTIALS).join(", ")}`,
       );
     }
-    await this.page.goto(`${testConfig.TestBackOfficeUrl}/`);
-    // await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-    await expect(
-      this.page.getByRole("heading", {
-        name: "Sign in",
-        exact: true,
-      }),
-    ).toBeVisible();
-    await expect(this.usernameLocator).toBeVisible();
-    await expect(this.passwordLocator).toBeVisible();
-    await this.page
-      .locator("#username")
-      .fill(credentials.email);
-    await this.page
-      .locator("#password")
-      .fill(credentials.password);
-    await expect(this.submitButtonLocator).toBeEnabled();
-    await this.submitButtonLocator.click();
+    await this.page.goto(`${testConfig.TestBackOfficeUrl}/`, {
+      waitUntil: "load",
+      timeout: 60000,
+    });
 
-    await expect(this.usernameLocator).toBeHidden();
+    await this.verifyPageLoad(this.usernameLocator, 10_000);
+    await expect(this.usernameLocator).toBeVisible();
+
+    await this.signIn(credentials.email, credentials.password);
+
     await this.rejectCookies();
     await this.page.waitForTimeout(signInDelay);
+  }
+
+  private async signIn(username: string, password: string) {
+    await this.verifyPageLoad(this.usernameLocator, 10_000);
+    await expect(this.usernameLocator).toBeVisible();
+
+    await this.usernameTextboxLocator.fill(username);
+    await this.continueButtonLocator.click();
+
+    await expect(this.passwordLocator).toBeVisible();
+    await this.passwordTextboxLocator.fill(password);
+
+    await this.waitForNavigationToComplete(this.continueButtonLocator);
+
+    await expect(this.passwordLocator).toBeHidden();
   }
 }
