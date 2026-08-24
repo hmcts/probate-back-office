@@ -163,39 +163,6 @@
           <text>"Auto"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_1fwxdfy">
-        <inputEntry id="UnaryTests_0o4t13u">
-          <text>"boIssueGrantForCaseMatching","boStopCaseForCaseMatchingForExamining","boEscalateToRegistrar","moveToCWEscalation"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1b1yjmg">
-          <text>"ExamineLiteraryEstate"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_0devg47">
-          <text>"Auto"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1iteujr">
-        <inputEntry id="UnaryTests_0pqjbbn">
-          <text>"boIssueGrantForCaseMatching","boStopCaseForCaseMatchingForExamining","boEscalateToRegistrar","moveToCWEscalation"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_00sh5yz">
-          <text>"ExamineLostWillOrCodicil"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1ncvusz">
-          <text>"Auto"</text>
-        </outputEntry>
-      </rule>
-      <rule id="DecisionRule_1huu1v9">
-        <inputEntry id="UnaryTests_1m0csuf">
-          <text>"boIssueGrantForCaseMatching","boStopCaseForCaseMatchingForExamining","boEscalateToRegistrar","moveToCWEscalation"</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1db2trz">
-          <text>"ExamineMinorityInterest"</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1l2rfhp">
-          <text>"Auto"</text>
-        </outputEntry>
-      </rule>
       <rule id="DecisionRule_1bcdjcf">
         <inputEntry id="UnaryTests_0nq4b2o">
           <text>"boEscalateToRegistrar","boStopCaseForCaseMatchingForExamining","moveToCWEscalation","boIssueGrantForCaseMatching"</text>
@@ -314,6 +281,39 @@
           <text>"ExamineInfectedBloodInterimSchemeCasePrinted"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0e4vnmo">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1gypd4s">
+        <inputEntry id="UnaryTests_0cslvm4">
+          <text>"boIssueGrantForCaseMatching","boStopCaseForCaseMatchingForExamining","boEscalateToRegistrar","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0onz8tl">
+          <text>"ExamineLiteraryEstate"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0blwaok">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1b9otaq">
+        <inputEntry id="UnaryTests_09ot8wy">
+          <text>"boIssueGrantForCaseMatching","boStopCaseForCaseMatchingForExamining","boEscalateToRegistrar","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1o8ah8a">
+          <text>"ExamineLostWillOrCodicil"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08nopc0">
+          <text>"Auto"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_06qudjq">
+        <inputEntry id="UnaryTests_1ljvin3">
+          <text>"boIssueGrantForCaseMatching","boStopCaseForCaseMatchingForExamining","boEscalateToRegistrar","moveToCWEscalation"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1qz4izf">
+          <text>"ExamineMinorityInterest"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1n43bs1">
           <text>"Auto"</text>
         </outputEntry>
       </rule>
