@@ -175,6 +175,7 @@ def versions = [
         commonsValidator                : '1.11.0',
         documentClient                  : '1.59.2',
         elasticSearchVersion            : '9.5.2',
+        feignVersion                    : '13.14',
         fortifyClientVersion            : '1.4.10',
         hmctsJavaLogging                : '8.0.0',
         jacksonVersion                  : '2.22.2',
@@ -249,7 +250,6 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
-  implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.6'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
   //Solves CVE-2025-48976
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.6.0'
@@ -289,7 +289,9 @@ dependencies {
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchdarkly
 
-  implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.6'
+  implementation group: 'io.github.openfeign', name: 'feign-core', version: versions.feignVersion
+  implementation group: 'io.github.openfeign', name: 'feign-hc5', version: versions.feignVersion
+  implementation group: 'io.github.openfeign', name: 'feign-jackson', version: versions.feignVersion
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.11.0'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.6.4'
 
