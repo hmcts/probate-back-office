@@ -66,6 +66,8 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_DOUBLE_PROBATE = "ExamineDoubleProbate";
     public static final String EXAMINE_INCAPACITY_UNDER_RULE_35 = "ExamineIncapacityUnderRule35";
     public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS = "ExamineLeadingOrFollowingGrants";
+    public static final String EXAMINE_LEADING_OR_FOLLOWING_GRANTS_CASE_PRINTED =
+            "ExamineLeadingOrFollowingGrantsCasePrinted";
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_CASE_PRINTED =
             "ExamineInfectedBloodInterimSchemeCasePrinted";
     public static final String EXAMINE_CODICIL_MIS_RECITAL = "ExamineCodicilMisRecital";
