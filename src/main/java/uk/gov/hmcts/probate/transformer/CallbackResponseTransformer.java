@@ -434,6 +434,10 @@ public class CallbackResponseTransformer {
                     callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
 
         }
+        String grantIssuedDate = caseData.getGrantIssuedDate();
+        if (StringUtils.isBlank(grantIssuedDate)) {
+            grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
+        }
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)
@@ -443,7 +447,6 @@ public class CallbackResponseTransformer {
                 || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, WELSH_AD_COLLIGENDA_BONA_GRANT)) {
 
-            String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
             responseCaseDataBuilder
                     .boEmailGrantIssuedNotificationRequested(
                             callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
@@ -457,7 +460,6 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.evidenceHandledDate(dateTimeFormatter.format(LocalDate.now()));
 
         } else if (documentTransformer.hasDocumentWithType(documents, EDGE_CASE)) {
-            String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
 
             responseCaseDataBuilder.grantIssuedDate(grantIssuedDate);
         }

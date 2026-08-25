@@ -23,28 +23,28 @@ public class PlaceholderDecorator {
     private static final String GRANT_ISSUED_DATE_IN_WELSH = "grantIssuedDateInWelsh";
     private static final String GRANT_REISSUED_DATE = "reissueDate";
     private static final String GRANT_REISSUED_DATE_IN_WELSH = "grantReissuedDateInWelsh";
+
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
-    public void decorate(Map<String, Object> placeholders) {
-        if (placeholders.get(DECEASED_DATE_OF_DEATH) != null) {
-            String deceasedDate = (String) placeholders.get(DECEASED_DATE_OF_DEATH);
-            placeholders.put(DECEASED_DATE_OF_DEATH_IN_WELSH,
-                localDateToWelshStringConverter.convert(LocalDate.parse(deceasedDate)));
-        }
+    public void decorate(Map<String, Object> placeholders, String grantIssuedDate) {
+        putWelshDateIfPresent(placeholders, DECEASED_DATE_OF_DEATH, DECEASED_DATE_OF_DEATH_IN_WELSH);
+        putWelshDateIfPresent(placeholders, DECEASED_DATE_OF_BIRTH, DECEASED_DATE_OF_BIRTH_IN_WELSH);
 
-        if (placeholders.get(DECEASED_DATE_OF_BIRTH) != null) {
-            String deceasedDateOfBirth = (String) placeholders.get(DECEASED_DATE_OF_BIRTH);
-            placeholders.put(DECEASED_DATE_OF_BIRTH_IN_WELSH,
-                localDateToWelshStringConverter.convert(LocalDate.parse(deceasedDateOfBirth)));
-        }
-        placeholders.computeIfAbsent(GRANT_ISSUED_DATE, k -> dateTimeFormatter.format(LocalDate.now()));
+        String issuedDate = (String) placeholders.computeIfAbsent(GRANT_ISSUED_DATE, k -> grantIssuedDate);
         placeholders.put(GRANT_ISSUED_DATE_IN_WELSH,
-            localDateToWelshStringConverter.convert(LocalDate.parse((String) placeholders.get(GRANT_ISSUED_DATE))));
+            localDateToWelshStringConverter.convert(LocalDate.parse(issuedDate)));
 
-        if (placeholders.get(GRANT_REISSUED_DATE) != null) {
-            placeholders.put(GRANT_REISSUED_DATE_IN_WELSH,
-                localDateToWelshStringConverter.convert(
-                    LocalDate.parse((String) placeholders.get(GRANT_REISSUED_DATE))));
+        putWelshDateIfPresent(placeholders, GRANT_REISSUED_DATE, GRANT_REISSUED_DATE_IN_WELSH);
+    }
+
+    public void decorate(Map<String, Object> placeholders) {
+        decorate(placeholders, LocalDate.now().format(dateTimeFormatter));
+    }
+
+    private void putWelshDateIfPresent(Map<String, Object> placeholders, String sourceKey, String targetKey) {
+        Object dateValue = placeholders.get(sourceKey);
+        if (dateValue != null) {
+            placeholders.put(targetKey, localDateToWelshStringConverter.convert(LocalDate.parse((String) dateValue)));
         }
     }
 }

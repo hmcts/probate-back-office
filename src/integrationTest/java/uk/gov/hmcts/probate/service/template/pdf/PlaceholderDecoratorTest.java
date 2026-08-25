@@ -12,6 +12,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -37,7 +38,7 @@ class PlaceholderDecoratorTest {
         placeholderDecorator.decorate(placeholders);
         assertEquals("23 Rhagfyr 2019", placeholders.get(GRANT_ISSUED_DATE_IN_WELSH));
         assertEquals("19 Hydref 2018", placeholders.get(DECEASED_DATE_OF_DEATH_IN_WELSH));
-        assertEquals(null, placeholders.get(GRANT_REISSUED_DATE_IN_WELSH));
+        assertNull(placeholders.get(GRANT_REISSUED_DATE_IN_WELSH));
     }
 
     @Test
@@ -62,6 +63,15 @@ class PlaceholderDecoratorTest {
         placeholders.put(DECEASED_DATE_OF_DEATH, String.valueOf(LocalDate.of(2018,10,19)));
         placeholderDecorator.decorate(placeholders);
         assertNotNull(placeholders.get(GRANT_ISSUED_DATE_IN_WELSH));
-        assertEquals(null, placeholders.get(GRANT_REISSUED_DATE_IN_WELSH));
+        assertNull(placeholders.get(GRANT_REISSUED_DATE_IN_WELSH));
+    }
+
+    @Test
+    void shouldUseProvidedGrantIssuedDate() {
+        Map<String, Object> placeholders = new HashMap<>();
+        String grantIssuedDate = "2025-01-15";
+        placeholderDecorator.decorate(placeholders, grantIssuedDate);
+        assertEquals(grantIssuedDate, placeholders.get(GRANT_ISSUED_DATE));
+        assertNotNull(placeholders.get("grantIssuedDateInWelsh"));
     }
 }
