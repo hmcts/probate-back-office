@@ -16,9 +16,11 @@ import java.util.Locale;
 public class CaveatChangeSubmissionDateValidationRule {
 
     public static final String CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE = "applicationSubmittedDateIsInTheFuture";
-    public static final String CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE_WELSH = "applicationSubmittedDateIsInTheFutureWelsh";
+    public static final String CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE_WELSH =
+            "applicationSubmittedDateIsInTheFutureWelsh";
     public static final String CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD = "applicationSubmittedDateBeforeDod";
-    public static final String CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD_WELSH = "applicationSubmittedDateBeforeDodWelsh";
+    public static final String CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD_WELSH =
+            "applicationSubmittedDateBeforeDodWelsh";
     public static final String CODE_APPLICATION_SUBMITTED_DATE_DOD_MISSING_OR_INVALID =
             "applicationSubmittedDateDodMissingOrInvalid";
     public static final String CODE_APPLICATION_SUBMITTED_DATE_DOD_MISSING_OR_INVALID_WELSH =
@@ -64,4 +66,3 @@ public class CaveatChangeSubmissionDateValidationRule {
         errors.add(businessValidationMessageRetriever.getMessage(welshCode, null, Locale.UK));
     }
 }
-
