@@ -44,6 +44,10 @@ class CaveatChangeSubmissionDateValidationRuleTest {
         stubMessage(CaveatChangeSubmissionDateValidationRule
                         .CODE_APPLICATION_SUBMITTED_DATE_DOD_MISSING_OR_INVALID_WELSH,
                 "dod-missing-cy");
+        stubMessage(CaveatChangeSubmissionDateValidationRule.CODE_APPLICATION_SUBMITTED_DATE_MISSING,
+                "submitted-missing-en");
+        stubMessage(CaveatChangeSubmissionDateValidationRule.CODE_APPLICATION_SUBMITTED_DATE_MISSING_WELSH,
+                "submitted-missing-cy");
     }
 
     @Test
@@ -106,13 +110,21 @@ class CaveatChangeSubmissionDateValidationRuleTest {
         assertEquals(List.of("dod-missing-en", "dod-missing-cy"), errors);
     }
 
+    @Test
+    void shouldReturnErrorsWhenSubmissionDateMissing() {
+        CaveatData data = CaveatData.builder()
+                .applicationSubmittedDate(null)
+                .deceasedDateOfDeath(LocalDate.of(2024, 1, 1))
+                .build();
+
+        List<String> errors = underTest.validate(new CaveatDetails(data, LAST_MODIFIED, 1L));
+
+        assertEquals(List.of("submitted-missing-en", "submitted-missing-cy"), errors);
+    }
+
     private void stubMessage(String code, String message) {
         when(businessValidationMessageRetriever.getMessage(eq(code), isNull(), eq(Locale.UK)))
                 .thenReturn(message);
     }
 }
-
-
-
-
 
