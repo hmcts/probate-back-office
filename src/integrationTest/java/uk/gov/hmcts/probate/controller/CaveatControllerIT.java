@@ -512,7 +512,8 @@ class CaveatControllerIT {
         String submittedDate = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json")
                 .replace("\"deceasedAnyOtherNames\": \"No\",",
-                        "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \"" + submittedDate + "\",");
+                        "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \""
+                                + submittedDate + "\",");
 
         mockMvc.perform(post(CHANGE_SUBMISSION_DATE)
                         .content(caveatPayload)
