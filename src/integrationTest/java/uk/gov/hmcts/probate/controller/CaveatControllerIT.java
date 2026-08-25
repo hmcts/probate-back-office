@@ -66,6 +66,7 @@ class CaveatControllerIT {
     private static final String SETUP_FOR_REMOVAL = "/caveat/setup-for-permanent-removal";
     private static final String DELETE_REMOVED = "/caveat/permanently-delete-removed";
     private static final String ROLLBACK = "/caveat/rollback";
+    private static final String CHANGE_SUBMISSION_DATE = "/caveat/change-submission-date";
 
     @Autowired
     private MockMvc mockMvc;
@@ -489,4 +490,35 @@ class CaveatControllerIT {
         mockMvc.perform(post(ROLLBACK).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void shouldChangeSubmissionDateAndRecalculateExpiryDate() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json")
+                .replace("\"deceasedAnyOtherNames\": \"No\",",
+                        "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \"2024-02-01\",");
+
+        mockMvc.perform(post(CHANGE_SUBMISSION_DATE)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.applicationSubmittedDate").value("2024-02-01"))
+                .andExpect(jsonPath("$.data.expiryDate").value("2024-08-01"));
+
+        verifyNoInteractions(notificationService, paymentsService);
+    }
+
+    @Test
+    void shouldRejectFutureSubmissionDate() throws Exception {
+        String submittedDate = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json")
+                .replace("\"deceasedAnyOtherNames\": \"No\",",
+                        "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \"" + submittedDate + "\",");
+
+        mockMvc.perform(post(CHANGE_SUBMISSION_DATE)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("Application Submitted Date cannot be in the future"));
+    }
+
 }
