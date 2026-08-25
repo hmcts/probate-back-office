@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.validator.CaveatAcknowledgementValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
+import uk.gov.hmcts.probate.validator.CaveatChangeSubmissionDateValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatDodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -72,6 +73,7 @@ public class CaveatController {
     private final DocumentGeneratorService documentGeneratorService;
     private final CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
     private final CcdSupplementaryDataService ccdSupplementaryDataService;
+    private final CaveatChangeSubmissionDateValidationRule caveatChangeSubmissionDateValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -299,5 +301,19 @@ public class CaveatController {
                                                                                       callbackRequest) {
         caveatAcknowledgementValidationRule.validate(callbackRequest.getCaseDetails());
         return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
+    }
+
+    @PostMapping(path = "/change-submission-date")
+    public ResponseEntity<CaveatCallbackResponse> changeSubmissionDate(
+            @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+        List<String> errors = caveatChangeSubmissionDateValidationRule
+                .validate(caveatCallbackRequest.getCaseDetails());
+        if (!errors.isEmpty()) {
+            return ResponseEntity.ok(CaveatCallbackResponse.builder().errors(errors).build());
+        }
+
+        CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
+        caveatNotificationService.recalculateSubmissionExpiryDate(caveatData);
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.changeSubmissionDate(caveatCallbackRequest));
     }
 }
