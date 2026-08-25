@@ -173,7 +173,7 @@ def versions = [
         ccdClient                       : '5.3.0',
         commonsIO                       : '2.22.0',
         commonsValidator                : '1.11.0',
-        documentClient                  : '1.59.2',
+        documentClient                  : '2.0.0',
         elasticSearchVersion            : '9.5.2',
         feignVersion                    : '13.14',
         fortifyClientVersion            : '1.4.10',
