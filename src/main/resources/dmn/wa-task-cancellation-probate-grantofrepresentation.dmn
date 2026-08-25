@@ -45,26 +45,26 @@
           <text>"case progression"</text>
         </outputEntry>
       </rule>
-      <rule id="DecisionRule_0ulx1ne">
-        <inputEntry id="UnaryTests_1j3lvnt">
+      <rule id="DecisionRule_1605hs2">
+        <inputEntry id="UnaryTests_0l74573">
           <text>"BOReadyToIssue"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_0no8e7o">
+        <inputEntry id="UnaryTests_1kjszl2">
           <text>"boWithdrawApplicationForReadyToIssue"</text>
         </inputEntry>
-        <inputEntry id="UnaryTests_014j2bp">
+        <inputEntry id="UnaryTests_1yxsbz6">
           <text>"BOCaseClosed"</text>
         </inputEntry>
-        <outputEntry id="LiteralExpression_1724sh6">
+        <outputEntry id="LiteralExpression_0o7zpn6">
           <text>"Cancel"</text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1wn1qof">
+        <outputEntry id="LiteralExpression_1862tum">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_1uliqg6">
+        <outputEntry id="LiteralExpression_11mvsh7">
           <text></text>
         </outputEntry>
-        <outputEntry id="LiteralExpression_0r1d28b">
+        <outputEntry id="LiteralExpression_0uoiclz">
           <text>"case progression"</text>
         </outputEntry>
       </rule>

@@ -19,10 +19,11 @@ export class apiService {
     expect(updatePaymentDateResponse.status()).toBe(204);
   }
 
-  async refundsApprovalLiberata(env: string, refundRef: string, serviceAuthToken: string) {
+  async refundsApprovalLiberata(env: string, refundRef: string, authToken: string, serviceAuthToken: string) {
     const paymentApiUrl = `http://ccpay-refunds-api-${env}.service.core-compute-${env}.internal/refund/${refundRef}`;
     const updatePaymentDateResponse = await this.request.patch(paymentApiUrl, {
       headers: {
+        'Authorization': `Bearer ${authToken}`,
         'ServiceAuthorization': `${serviceAuthToken}`,
         'Content-Type': 'application/json'
       },
