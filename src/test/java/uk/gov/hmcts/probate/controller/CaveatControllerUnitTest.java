@@ -26,12 +26,14 @@ import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.CaveatAcknowledgementValidationRule;
+import uk.gov.hmcts.probate.validator.CaveatChangeSubmissionDateValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatDodValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -100,6 +102,8 @@ class CaveatControllerUnitTest {
     private HttpServletRequest httpServletRequestMock;
     @Mock
     private CcdSupplementaryDataService ccdSupplementaryDataService;
+    @Mock
+    private CaveatChangeSubmissionDateValidationRule caveatChangeSubmissionDateValidationRule;
 
     @BeforeEach
     public void setUp() {
@@ -109,7 +113,7 @@ class CaveatControllerUnitTest {
             caveatDataTransformer, caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService,
             notificationService, caveatNotificationService, confirmationResponseService, paymentsService, feeService,
             registrarDirectionService, documentGeneratorService, caveatAcknowledgementValidationRule,
-                ccdSupplementaryDataService);
+                ccdSupplementaryDataService, caveatChangeSubmissionDateValidationRule);
     }
 
     @Test
@@ -220,5 +224,43 @@ class CaveatControllerUnitTest {
                 () -> underTest.setCaveatSupplementaryData(caveatCallbackRequest)
         );
         verifyNoInteractions(ccdSupplementaryDataService);
+    }
+
+    @Test
+    void shouldChangeSubmissionDateAndRecalculateExpiryDate() {
+        CaveatData caveatData = CaveatData.builder()
+                .deceasedDateOfDeath(LocalDate.of(2024, 1, 1))
+                .applicationSubmittedDate(LocalDate.of(2024, 2, 1))
+                .expiryDate(LocalDate.of(2024, 3, 1))
+                .build();
+        CaveatDetails caveatDetails = new CaveatDetails(caveatData, new String[0], 1000L);
+        CaveatCallbackRequest request = new CaveatCallbackRequest(caveatDetails);
+
+        when(caveatChangeSubmissionDateValidationRule.validate(caveatDetails)).thenReturn(List.of());
+        when(caveatCallbackResponseTransformer.changeSubmissionDate(request)).thenReturn(caveatCallbackResponse);
+
+        ResponseEntity<CaveatCallbackResponse> response = underTest.changeSubmissionDate(request);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(caveatCallbackResponse));
+        verify(caveatNotificationService).recalculateSubmissionExpiryDate(caveatData);
+        verifyNoInteractions(paymentsService, notificationService);
+    }
+
+    @Test
+    void shouldReturnValidationErrorsForChangeSubmissionDate() {
+        CaveatData caveatData = CaveatData.builder().build();
+        CaveatDetails caveatDetails = new CaveatDetails(caveatData, new String[0], 1000L);
+        CaveatCallbackRequest request = new CaveatCallbackRequest(caveatDetails);
+
+        when(caveatChangeSubmissionDateValidationRule.validate(caveatDetails))
+                .thenReturn(List.of("error-1", "error-2"));
+
+        ResponseEntity<CaveatCallbackResponse> response = underTest.changeSubmissionDate(request);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors(), is(List.of("error-1", "error-2")));
+        verifyNoInteractions(caveatCallbackResponseTransformer, caveatNotificationService, paymentsService,
+                notificationService);
     }
 }
