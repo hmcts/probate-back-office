@@ -83,6 +83,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_POWER_OF_ATTORNEY = "ExaminePowerOfAttorney";
     public static final String EXAMINE_RESEAL_FOREIGN_GRANT = "ExamineResealForeignGrant";
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME = "ExamineInfectedBloodInterimScheme";
+    public static final String EXAMINE_LITERARY_ESTATE_CASE_PRINTED = "ExamineLiteraryEstateCasePrinted";
 
     public static final String CREATE_DUE_DATE = "createDueDate";
     public static final String ISSUE_DUE_DATE = "issueDueDate";
@@ -171,6 +172,7 @@ public class TaskAttributeConstants {
     public static final String INFECTED_BLOOD_INTERIM_SCHEME_SKILL_CODE = "SKILL:ABA6:InfectedBloodInterimScheme";
     public static final String CODICIL_MIS_RECITAL_EXAMINE_SKILL_CODE = "SKILL:ABA6:CodicilMisRecital";
     public static final String RECTIFY_WILL_OR_CODICIL_EXAMINE_SKILL_CODE = "SKILL:ABA6:RectifyWillOrCodicil";
+    public static final String LITERARY_ESTATE_EXAMINE_SKILL_CODE = "SKILL:ABA6:LiteraryEstate";
 
     public static final String PROBATE_TASK_TYPE_NAME = "Examine Digital Case - Probate";
     public static final String ADMON_TASK_TYPE_NAME = "Examine Digital Case - Admon";
@@ -190,6 +192,7 @@ public class TaskAttributeConstants {
     public static final String EXAMINE_RESEAL_FOREIGN_GRANT_TASK_TYPE_NAME = "Examine - Reseal Foreign Grant";
     public static final String EXAMINE_INFECTED_BLOOD_INTERIM_SCHEME_TASK_TYPE_NAME
             = "Examine - Infected Blood Interim Scheme";
+    public static final String EXAMINE_LITERARY_ESTATE_TASK_TYPE_NAME = "Examine - Literary Estate";
     public static final String EXAMINE_RECTIFY_WILL_OR_CODICIL_TASK_TYPE_NAME
             = "Examine - Rectify a Will or Codicil";
     public static final String EXAMINE_CODICIL_MIS_RECITAL_TASK_TYPE_NAME
