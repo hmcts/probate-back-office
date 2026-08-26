@@ -497,6 +497,7 @@ class CaveatControllerIT {
                 .replace("\"deceasedAnyOtherNames\": \"No\",",
                         "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \"2024-02-01\",");
 
+        when(paymentsService.isPaymentSuccessByCaseId("1542274092932452")).thenReturn(true);
         mockMvc.perform(post(CHANGE_SUBMISSION_DATE)
                         .content(caveatPayload)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -504,7 +505,7 @@ class CaveatControllerIT {
                 .andExpect(jsonPath("$.data.applicationSubmittedDate").value("2024-02-01"))
                 .andExpect(jsonPath("$.data.expiryDate").value("2024-08-01"));
 
-        verifyNoInteractions(notificationService, paymentsService);
+        verifyNoInteractions(notificationService);
     }
 
     @Test
@@ -515,13 +516,14 @@ class CaveatControllerIT {
                         "\"deceasedAnyOtherNames\": \"No\",\n      \"applicationSubmittedDate\": \""
                                 + submittedDate + "\",");
 
+        when(paymentsService.isPaymentSuccessByCaseId("1542274092932452")).thenReturn(true);
         mockMvc.perform(post(CHANGE_SUBMISSION_DATE)
                         .content(caveatPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]").value("Application Submitted Date cannot be in the future"));
 
-        verifyNoInteractions(notificationService, paymentsService);
+        verifyNoInteractions(notificationService);
     }
 
     @Test
